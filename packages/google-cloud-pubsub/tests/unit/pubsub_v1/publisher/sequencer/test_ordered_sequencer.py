@@ -25,7 +25,7 @@ _ORDERING_KEY = "ordering_key_1"
 
 
 def create_message():
-    return gapic_types.PubsubMessage(data=b"foo", attributes={"bar": u"baz"})
+    return gapic_types.PubsubMessage(data=b"foo", attributes={"bar": "baz"})
 
 
 def create_client():

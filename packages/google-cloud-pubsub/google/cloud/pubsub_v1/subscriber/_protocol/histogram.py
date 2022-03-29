@@ -72,8 +72,7 @@ class Histogram(object):
         return self._len
 
     def __contains__(self, needle: int) -> bool:
-        """Return ``True`` if needle is present in the histogram, ``False`` otherwise.
-        """
+        """Return ``True`` if needle is present in the histogram, ``False`` otherwise."""
         return needle in self._data
 
     def __repr__(self):

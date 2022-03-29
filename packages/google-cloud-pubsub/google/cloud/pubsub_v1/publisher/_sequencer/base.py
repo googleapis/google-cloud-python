@@ -27,21 +27,21 @@ if typing.TYPE_CHECKING:  # pragma: NO COVER
 
 class Sequencer(metaclass=abc.ABCMeta):
     """The base class for sequencers for Pub/Sub publishing. A sequencer
-       sequences messages to be published.
+    sequences messages to be published.
     """
 
     @abc.abstractmethod
     def is_finished(self) -> bool:  # pragma: NO COVER
-        """ Whether the sequencer is finished and should be cleaned up.
+        """Whether the sequencer is finished and should be cleaned up.
 
-            Returns:
-                bool: Whether the sequencer is finished and should be cleaned up.
+        Returns:
+            bool: Whether the sequencer is finished and should be cleaned up.
         """
         raise NotImplementedError
 
     @abc.abstractmethod
     def unpause(self) -> None:  # pragma: NO COVER
-        """ Unpauses this sequencer.
+        """Unpauses this sequencer.
 
         Raises:
             RuntimeError:
@@ -56,7 +56,7 @@ class Sequencer(metaclass=abc.ABCMeta):
         retry: "OptionalRetry" = gapic_v1.method.DEFAULT,
         timeout: gapic_types.TimeoutType = gapic_v1.method.DEFAULT,
     ) -> "futures.Future":  # pragma: NO COVER
-        """ Publish message for this ordering key.
+        """Publish message for this ordering key.
 
         Args:
             message:

@@ -24,7 +24,7 @@ from google.pubsub_v1 import types as gapic_types
 
 
 def create_message():
-    return gapic_types.PubsubMessage(data=b"foo", attributes={"bar": u"baz"})
+    return gapic_types.PubsubMessage(data=b"foo", attributes={"bar": "baz"})
 
 
 def create_client():

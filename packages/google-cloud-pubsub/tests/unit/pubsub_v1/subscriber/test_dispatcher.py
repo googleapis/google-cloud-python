@@ -245,7 +245,13 @@ def test_retry_modacks_in_new_thread():
     dispatcher_ = dispatcher.Dispatcher(manager, mock.sentinel.queue)
 
     f = futures.Future()
-    items = [requests.ModAckRequest(ack_id="ack_id_string", seconds=20, future=f,)]
+    items = [
+        requests.ModAckRequest(
+            ack_id="ack_id_string",
+            seconds=20,
+            future=f,
+        )
+    ]
     # failure triggers creation of new retry thread
     manager.send_unary_modack.side_effect = [([], items)]
     with mock.patch("time.sleep", return_value=None):
@@ -266,7 +272,13 @@ def test_retry_modacks():
     dispatcher_ = dispatcher.Dispatcher(manager, mock.sentinel.queue)
 
     f = futures.Future()
-    items = [requests.ModAckRequest(ack_id="ack_id_string", seconds=20, future=f,)]
+    items = [
+        requests.ModAckRequest(
+            ack_id="ack_id_string",
+            seconds=20,
+            future=f,
+        )
+    ]
     # first and second calls fail, third one succeeds
     manager.send_unary_modack.side_effect = [([], items), ([], items), (items, [])]
     with mock.patch("time.sleep", return_value=None):

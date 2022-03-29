@@ -128,31 +128,43 @@ class SchemaServiceTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.create_schema: gapic_v1.method.wrap_method(
-                self.create_schema, default_timeout=None, client_info=client_info,
+                self.create_schema,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_schema: gapic_v1.method.wrap_method(
-                self.get_schema, default_timeout=None, client_info=client_info,
+                self.get_schema,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_schemas: gapic_v1.method.wrap_method(
-                self.list_schemas, default_timeout=None, client_info=client_info,
+                self.list_schemas,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.delete_schema: gapic_v1.method.wrap_method(
-                self.delete_schema, default_timeout=None, client_info=client_info,
+                self.delete_schema,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.validate_schema: gapic_v1.method.wrap_method(
-                self.validate_schema, default_timeout=None, client_info=client_info,
+                self.validate_schema,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.validate_message: gapic_v1.method.wrap_method(
-                self.validate_message, default_timeout=None, client_info=client_info,
+                self.validate_message,
+                default_timeout=None,
+                client_info=client_info,
             ),
         }
 
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

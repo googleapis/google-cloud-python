@@ -88,7 +88,13 @@ def test__get_default_mtls_endpoint():
     assert SubscriberClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
 
 
-@pytest.mark.parametrize("client_class", [SubscriberClient, SubscriberAsyncClient,])
+@pytest.mark.parametrize(
+    "client_class",
+    [
+        SubscriberClient,
+        SubscriberAsyncClient,
+    ],
+)
 def test_subscriber_client_from_service_account_info(client_class):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
@@ -128,7 +134,13 @@ def test_subscriber_client_service_account_always_use_jwt(
         use_jwt.assert_not_called()
 
 
-@pytest.mark.parametrize("client_class", [SubscriberClient, SubscriberAsyncClient,])
+@pytest.mark.parametrize(
+    "client_class",
+    [
+        SubscriberClient,
+        SubscriberAsyncClient,
+    ],
+)
 def test_subscriber_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
@@ -483,7 +495,9 @@ def test_subscriber_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -616,10 +630,17 @@ def test_subscriber_client_create_channel_credentials_file(
         )
 
 
-@pytest.mark.parametrize("request_type", [pubsub.Subscription, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        pubsub.Subscription,
+        dict,
+    ],
+)
 def test_create_subscription(request_type, transport: str = "grpc"):
     client = SubscriberClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -664,7 +685,8 @@ def test_create_subscription_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = SubscriberClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -682,7 +704,8 @@ async def test_create_subscription_async(
     transport: str = "grpc_asyncio", request_type=pubsub.Subscription
 ):
     client = SubscriberAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -731,7 +754,9 @@ async def test_create_subscription_async_from_dict():
 
 
 def test_create_subscription_field_headers():
-    client = SubscriberClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -753,12 +778,17 @@ def test_create_subscription_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_create_subscription_field_headers_async():
-    client = SubscriberAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -780,11 +810,16 @@ async def test_create_subscription_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_create_subscription_flattened():
-    client = SubscriberClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -820,7 +855,9 @@ def test_create_subscription_flattened():
 
 
 def test_create_subscription_flattened_error():
-    client = SubscriberClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -836,7 +873,9 @@ def test_create_subscription_flattened_error():
 
 @pytest.mark.asyncio
 async def test_create_subscription_flattened_async():
-    client = SubscriberAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -875,7 +914,9 @@ async def test_create_subscription_flattened_async():
 
 @pytest.mark.asyncio
 async def test_create_subscription_flattened_error_async():
-    client = SubscriberAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -889,10 +930,17 @@ async def test_create_subscription_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [pubsub.GetSubscriptionRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        pubsub.GetSubscriptionRequest,
+        dict,
+    ],
+)
 def test_get_subscription(request_type, transport: str = "grpc"):
     client = SubscriberClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -935,7 +983,8 @@ def test_get_subscription_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = SubscriberClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -951,7 +1000,8 @@ async def test_get_subscription_async(
     transport: str = "grpc_asyncio", request_type=pubsub.GetSubscriptionRequest
 ):
     client = SubscriberAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -998,7 +1048,9 @@ async def test_get_subscription_async_from_dict():
 
 
 def test_get_subscription_field_headers():
-    client = SubscriberClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1018,14 +1070,17 @@ def test_get_subscription_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "subscription=subscription/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "subscription=subscription/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_get_subscription_field_headers_async():
-    client = SubscriberAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1045,13 +1100,16 @@ async def test_get_subscription_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "subscription=subscription/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "subscription=subscription/value",
+    ) in kw["metadata"]
 
 
 def test_get_subscription_flattened():
-    client = SubscriberClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_subscription), "__call__") as call:
@@ -1059,7 +1117,9 @@ def test_get_subscription_flattened():
         call.return_value = pubsub.Subscription()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_subscription(subscription="subscription_value",)
+        client.get_subscription(
+            subscription="subscription_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1071,19 +1131,24 @@ def test_get_subscription_flattened():
 
 
 def test_get_subscription_flattened_error():
-    client = SubscriberClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_subscription(
-            pubsub.GetSubscriptionRequest(), subscription="subscription_value",
+            pubsub.GetSubscriptionRequest(),
+            subscription="subscription_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_get_subscription_flattened_async():
-    client = SubscriberAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_subscription), "__call__") as call:
@@ -1093,7 +1158,9 @@ async def test_get_subscription_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(pubsub.Subscription())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_subscription(subscription="subscription_value",)
+        response = await client.get_subscription(
+            subscription="subscription_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1106,20 +1173,30 @@ async def test_get_subscription_flattened_async():
 
 @pytest.mark.asyncio
 async def test_get_subscription_flattened_error_async():
-    client = SubscriberAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_subscription(
-            pubsub.GetSubscriptionRequest(), subscription="subscription_value",
+            pubsub.GetSubscriptionRequest(),
+            subscription="subscription_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [pubsub.UpdateSubscriptionRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        pubsub.UpdateSubscriptionRequest,
+        dict,
+    ],
+)
 def test_update_subscription(request_type, transport: str = "grpc"):
     client = SubscriberClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1164,7 +1241,8 @@ def test_update_subscription_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = SubscriberClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1182,7 +1260,8 @@ async def test_update_subscription_async(
     transport: str = "grpc_asyncio", request_type=pubsub.UpdateSubscriptionRequest
 ):
     client = SubscriberAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1231,7 +1310,9 @@ async def test_update_subscription_async_from_dict():
 
 
 def test_update_subscription_field_headers():
-    client = SubscriberClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1261,7 +1342,9 @@ def test_update_subscription_field_headers():
 
 @pytest.mark.asyncio
 async def test_update_subscription_field_headers_async():
-    client = SubscriberAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1289,10 +1372,17 @@ async def test_update_subscription_field_headers_async():
     ) in kw["metadata"]
 
 
-@pytest.mark.parametrize("request_type", [pubsub.ListSubscriptionsRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        pubsub.ListSubscriptionsRequest,
+        dict,
+    ],
+)
 def test_list_subscriptions(request_type, transport: str = "grpc"):
     client = SubscriberClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1323,7 +1413,8 @@ def test_list_subscriptions_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = SubscriberClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1341,7 +1432,8 @@ async def test_list_subscriptions_async(
     transport: str = "grpc_asyncio", request_type=pubsub.ListSubscriptionsRequest
 ):
     client = SubscriberAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1354,7 +1446,9 @@ async def test_list_subscriptions_async(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            pubsub.ListSubscriptionsResponse(next_page_token="next_page_token_value",)
+            pubsub.ListSubscriptionsResponse(
+                next_page_token="next_page_token_value",
+            )
         )
         response = await client.list_subscriptions(request)
 
@@ -1374,7 +1468,9 @@ async def test_list_subscriptions_async_from_dict():
 
 
 def test_list_subscriptions_field_headers():
-    client = SubscriberClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1396,12 +1492,17 @@ def test_list_subscriptions_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "project=project/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "project=project/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_list_subscriptions_field_headers_async():
-    client = SubscriberAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1425,11 +1526,16 @@ async def test_list_subscriptions_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "project=project/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "project=project/value",
+    ) in kw["metadata"]
 
 
 def test_list_subscriptions_flattened():
-    client = SubscriberClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1439,7 +1545,9 @@ def test_list_subscriptions_flattened():
         call.return_value = pubsub.ListSubscriptionsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_subscriptions(project="project_value",)
+        client.list_subscriptions(
+            project="project_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1451,19 +1559,24 @@ def test_list_subscriptions_flattened():
 
 
 def test_list_subscriptions_flattened_error():
-    client = SubscriberClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_subscriptions(
-            pubsub.ListSubscriptionsRequest(), project="project_value",
+            pubsub.ListSubscriptionsRequest(),
+            project="project_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_list_subscriptions_flattened_async():
-    client = SubscriberAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1477,7 +1590,9 @@ async def test_list_subscriptions_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_subscriptions(project="project_value",)
+        response = await client.list_subscriptions(
+            project="project_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1490,19 +1605,23 @@ async def test_list_subscriptions_flattened_async():
 
 @pytest.mark.asyncio
 async def test_list_subscriptions_flattened_error_async():
-    client = SubscriberAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_subscriptions(
-            pubsub.ListSubscriptionsRequest(), project="project_value",
+            pubsub.ListSubscriptionsRequest(),
+            project="project_value",
         )
 
 
 def test_list_subscriptions_pager(transport_name: str = "grpc"):
     client = SubscriberClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1519,12 +1638,21 @@ def test_list_subscriptions_pager(transport_name: str = "grpc"):
                 ],
                 next_page_token="abc",
             ),
-            pubsub.ListSubscriptionsResponse(subscriptions=[], next_page_token="def",),
             pubsub.ListSubscriptionsResponse(
-                subscriptions=[pubsub.Subscription(),], next_page_token="ghi",
+                subscriptions=[],
+                next_page_token="def",
             ),
             pubsub.ListSubscriptionsResponse(
-                subscriptions=[pubsub.Subscription(), pubsub.Subscription(),],
+                subscriptions=[
+                    pubsub.Subscription(),
+                ],
+                next_page_token="ghi",
+            ),
+            pubsub.ListSubscriptionsResponse(
+                subscriptions=[
+                    pubsub.Subscription(),
+                    pubsub.Subscription(),
+                ],
             ),
             RuntimeError,
         )
@@ -1544,7 +1672,8 @@ def test_list_subscriptions_pager(transport_name: str = "grpc"):
 
 def test_list_subscriptions_pages(transport_name: str = "grpc"):
     client = SubscriberClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1561,12 +1690,21 @@ def test_list_subscriptions_pages(transport_name: str = "grpc"):
                 ],
                 next_page_token="abc",
             ),
-            pubsub.ListSubscriptionsResponse(subscriptions=[], next_page_token="def",),
             pubsub.ListSubscriptionsResponse(
-                subscriptions=[pubsub.Subscription(),], next_page_token="ghi",
+                subscriptions=[],
+                next_page_token="def",
             ),
             pubsub.ListSubscriptionsResponse(
-                subscriptions=[pubsub.Subscription(), pubsub.Subscription(),],
+                subscriptions=[
+                    pubsub.Subscription(),
+                ],
+                next_page_token="ghi",
+            ),
+            pubsub.ListSubscriptionsResponse(
+                subscriptions=[
+                    pubsub.Subscription(),
+                    pubsub.Subscription(),
+                ],
             ),
             RuntimeError,
         )
@@ -1577,7 +1715,9 @@ def test_list_subscriptions_pages(transport_name: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_list_subscriptions_async_pager():
-    client = SubscriberAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = SubscriberAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1595,16 +1735,27 @@ async def test_list_subscriptions_async_pager():
                 ],
                 next_page_token="abc",
             ),
-            pubsub.ListSubscriptionsResponse(subscriptions=[], next_page_token="def",),
             pubsub.ListSubscriptionsResponse(
-                subscriptions=[pubsub.Subscription(),], next_page_token="ghi",
+                subscriptions=[],
+                next_page_token="def",
             ),
             pubsub.ListSubscriptionsResponse(
-                subscriptions=[pubsub.Subscription(), pubsub.Subscription(),],
+                subscriptions=[
+                    pubsub.Subscription(),
+                ],
+                next_page_token="ghi",
+            ),
+            pubsub.ListSubscriptionsResponse(
+                subscriptions=[
+                    pubsub.Subscription(),
+                    pubsub.Subscription(),
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.list_subscriptions(request={},)
+        async_pager = await client.list_subscriptions(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -1616,7 +1767,9 @@ async def test_list_subscriptions_async_pager():
 
 @pytest.mark.asyncio
 async def test_list_subscriptions_async_pages():
-    client = SubscriberAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = SubscriberAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1634,12 +1787,21 @@ async def test_list_subscriptions_async_pages():
                 ],
                 next_page_token="abc",
             ),
-            pubsub.ListSubscriptionsResponse(subscriptions=[], next_page_token="def",),
             pubsub.ListSubscriptionsResponse(
-                subscriptions=[pubsub.Subscription(),], next_page_token="ghi",
+                subscriptions=[],
+                next_page_token="def",
             ),
             pubsub.ListSubscriptionsResponse(
-                subscriptions=[pubsub.Subscription(), pubsub.Subscription(),],
+                subscriptions=[
+                    pubsub.Subscription(),
+                ],
+                next_page_token="ghi",
+            ),
+            pubsub.ListSubscriptionsResponse(
+                subscriptions=[
+                    pubsub.Subscription(),
+                    pubsub.Subscription(),
+                ],
             ),
             RuntimeError,
         )
@@ -1650,10 +1812,17 @@ async def test_list_subscriptions_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [pubsub.DeleteSubscriptionRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        pubsub.DeleteSubscriptionRequest,
+        dict,
+    ],
+)
 def test_delete_subscription(request_type, transport: str = "grpc"):
     client = SubscriberClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1681,7 +1850,8 @@ def test_delete_subscription_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = SubscriberClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1699,7 +1869,8 @@ async def test_delete_subscription_async(
     transport: str = "grpc_asyncio", request_type=pubsub.DeleteSubscriptionRequest
 ):
     client = SubscriberAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1729,7 +1900,9 @@ async def test_delete_subscription_async_from_dict():
 
 
 def test_delete_subscription_field_headers():
-    client = SubscriberClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1751,14 +1924,17 @@ def test_delete_subscription_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "subscription=subscription/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "subscription=subscription/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_delete_subscription_field_headers_async():
-    client = SubscriberAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1780,13 +1956,16 @@ async def test_delete_subscription_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "subscription=subscription/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "subscription=subscription/value",
+    ) in kw["metadata"]
 
 
 def test_delete_subscription_flattened():
-    client = SubscriberClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1796,7 +1975,9 @@ def test_delete_subscription_flattened():
         call.return_value = None
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_subscription(subscription="subscription_value",)
+        client.delete_subscription(
+            subscription="subscription_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1808,19 +1989,24 @@ def test_delete_subscription_flattened():
 
 
 def test_delete_subscription_flattened_error():
-    client = SubscriberClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_subscription(
-            pubsub.DeleteSubscriptionRequest(), subscription="subscription_value",
+            pubsub.DeleteSubscriptionRequest(),
+            subscription="subscription_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_delete_subscription_flattened_async():
-    client = SubscriberAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1832,7 +2018,9 @@ async def test_delete_subscription_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_subscription(subscription="subscription_value",)
+        response = await client.delete_subscription(
+            subscription="subscription_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1845,20 +2033,30 @@ async def test_delete_subscription_flattened_async():
 
 @pytest.mark.asyncio
 async def test_delete_subscription_flattened_error_async():
-    client = SubscriberAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_subscription(
-            pubsub.DeleteSubscriptionRequest(), subscription="subscription_value",
+            pubsub.DeleteSubscriptionRequest(),
+            subscription="subscription_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [pubsub.ModifyAckDeadlineRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        pubsub.ModifyAckDeadlineRequest,
+        dict,
+    ],
+)
 def test_modify_ack_deadline(request_type, transport: str = "grpc"):
     client = SubscriberClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1886,7 +2084,8 @@ def test_modify_ack_deadline_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = SubscriberClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1904,7 +2103,8 @@ async def test_modify_ack_deadline_async(
     transport: str = "grpc_asyncio", request_type=pubsub.ModifyAckDeadlineRequest
 ):
     client = SubscriberAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1934,7 +2134,9 @@ async def test_modify_ack_deadline_async_from_dict():
 
 
 def test_modify_ack_deadline_field_headers():
-    client = SubscriberClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1956,14 +2158,17 @@ def test_modify_ack_deadline_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "subscription=subscription/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "subscription=subscription/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_modify_ack_deadline_field_headers_async():
-    client = SubscriberAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1985,13 +2190,16 @@ async def test_modify_ack_deadline_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "subscription=subscription/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "subscription=subscription/value",
+    ) in kw["metadata"]
 
 
 def test_modify_ack_deadline_flattened():
-    client = SubscriberClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2023,7 +2231,9 @@ def test_modify_ack_deadline_flattened():
 
 
 def test_modify_ack_deadline_flattened_error():
-    client = SubscriberClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2038,7 +2248,9 @@ def test_modify_ack_deadline_flattened_error():
 
 @pytest.mark.asyncio
 async def test_modify_ack_deadline_flattened_async():
-    client = SubscriberAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2073,7 +2285,9 @@ async def test_modify_ack_deadline_flattened_async():
 
 @pytest.mark.asyncio
 async def test_modify_ack_deadline_flattened_error_async():
-    client = SubscriberAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2086,10 +2300,17 @@ async def test_modify_ack_deadline_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [pubsub.AcknowledgeRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        pubsub.AcknowledgeRequest,
+        dict,
+    ],
+)
 def test_acknowledge(request_type, transport: str = "grpc"):
     client = SubscriberClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2115,7 +2336,8 @@ def test_acknowledge_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = SubscriberClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2131,7 +2353,8 @@ async def test_acknowledge_async(
     transport: str = "grpc_asyncio", request_type=pubsub.AcknowledgeRequest
 ):
     client = SubscriberAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2159,7 +2382,9 @@ async def test_acknowledge_async_from_dict():
 
 
 def test_acknowledge_field_headers():
-    client = SubscriberClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2179,14 +2404,17 @@ def test_acknowledge_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "subscription=subscription/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "subscription=subscription/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_acknowledge_field_headers_async():
-    client = SubscriberAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2206,13 +2434,16 @@ async def test_acknowledge_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "subscription=subscription/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "subscription=subscription/value",
+    ) in kw["metadata"]
 
 
 def test_acknowledge_flattened():
-    client = SubscriberClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.acknowledge), "__call__") as call:
@@ -2221,7 +2452,8 @@ def test_acknowledge_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.acknowledge(
-            subscription="subscription_value", ack_ids=["ack_ids_value"],
+            subscription="subscription_value",
+            ack_ids=["ack_ids_value"],
         )
 
         # Establish that the underlying call was made with the expected
@@ -2237,7 +2469,9 @@ def test_acknowledge_flattened():
 
 
 def test_acknowledge_flattened_error():
-    client = SubscriberClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2251,7 +2485,9 @@ def test_acknowledge_flattened_error():
 
 @pytest.mark.asyncio
 async def test_acknowledge_flattened_async():
-    client = SubscriberAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.acknowledge), "__call__") as call:
@@ -2262,7 +2498,8 @@ async def test_acknowledge_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.acknowledge(
-            subscription="subscription_value", ack_ids=["ack_ids_value"],
+            subscription="subscription_value",
+            ack_ids=["ack_ids_value"],
         )
 
         # Establish that the underlying call was made with the expected
@@ -2279,7 +2516,9 @@ async def test_acknowledge_flattened_async():
 
 @pytest.mark.asyncio
 async def test_acknowledge_flattened_error_async():
-    client = SubscriberAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2291,10 +2530,17 @@ async def test_acknowledge_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [pubsub.PullRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        pubsub.PullRequest,
+        dict,
+    ],
+)
 def test_pull(request_type, transport: str = "grpc"):
     client = SubscriberClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2320,7 +2566,8 @@ def test_pull_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = SubscriberClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2336,7 +2583,8 @@ async def test_pull_async(
     transport: str = "grpc_asyncio", request_type=pubsub.PullRequest
 ):
     client = SubscriberAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2364,7 +2612,9 @@ async def test_pull_async_from_dict():
 
 
 def test_pull_field_headers():
-    client = SubscriberClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2384,14 +2634,17 @@ def test_pull_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "subscription=subscription/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "subscription=subscription/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_pull_field_headers_async():
-    client = SubscriberAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2411,13 +2664,16 @@ async def test_pull_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "subscription=subscription/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "subscription=subscription/value",
+    ) in kw["metadata"]
 
 
 def test_pull_flattened():
-    client = SubscriberClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.pull), "__call__") as call:
@@ -2449,7 +2705,9 @@ def test_pull_flattened():
 
 
 def test_pull_flattened_error():
-    client = SubscriberClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2464,7 +2722,9 @@ def test_pull_flattened_error():
 
 @pytest.mark.asyncio
 async def test_pull_flattened_async():
-    client = SubscriberAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.pull), "__call__") as call:
@@ -2499,7 +2759,9 @@ async def test_pull_flattened_async():
 
 @pytest.mark.asyncio
 async def test_pull_flattened_error_async():
-    client = SubscriberAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2512,10 +2774,17 @@ async def test_pull_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [pubsub.StreamingPullRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        pubsub.StreamingPullRequest,
+        dict,
+    ],
+)
 def test_streaming_pull(request_type, transport: str = "grpc"):
     client = SubscriberClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2544,7 +2813,8 @@ async def test_streaming_pull_async(
     transport: str = "grpc_asyncio", request_type=pubsub.StreamingPullRequest
 ):
     client = SubscriberAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2576,10 +2846,17 @@ async def test_streaming_pull_async_from_dict():
     await test_streaming_pull_async(request_type=dict)
 
 
-@pytest.mark.parametrize("request_type", [pubsub.ModifyPushConfigRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        pubsub.ModifyPushConfigRequest,
+        dict,
+    ],
+)
 def test_modify_push_config(request_type, transport: str = "grpc"):
     client = SubscriberClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2607,7 +2884,8 @@ def test_modify_push_config_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = SubscriberClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2625,7 +2903,8 @@ async def test_modify_push_config_async(
     transport: str = "grpc_asyncio", request_type=pubsub.ModifyPushConfigRequest
 ):
     client = SubscriberAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2655,7 +2934,9 @@ async def test_modify_push_config_async_from_dict():
 
 
 def test_modify_push_config_field_headers():
-    client = SubscriberClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2677,14 +2958,17 @@ def test_modify_push_config_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "subscription=subscription/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "subscription=subscription/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_modify_push_config_field_headers_async():
-    client = SubscriberAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2706,13 +2990,16 @@ async def test_modify_push_config_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "subscription=subscription/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "subscription=subscription/value",
+    ) in kw["metadata"]
 
 
 def test_modify_push_config_flattened():
-    client = SubscriberClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2740,7 +3027,9 @@ def test_modify_push_config_flattened():
 
 
 def test_modify_push_config_flattened_error():
-    client = SubscriberClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2754,7 +3043,9 @@ def test_modify_push_config_flattened_error():
 
 @pytest.mark.asyncio
 async def test_modify_push_config_flattened_async():
-    client = SubscriberAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2785,7 +3076,9 @@ async def test_modify_push_config_flattened_async():
 
 @pytest.mark.asyncio
 async def test_modify_push_config_flattened_error_async():
-    client = SubscriberAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2797,10 +3090,17 @@ async def test_modify_push_config_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [pubsub.GetSnapshotRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        pubsub.GetSnapshotRequest,
+        dict,
+    ],
+)
 def test_get_snapshot(request_type, transport: str = "grpc"):
     client = SubscriberClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2810,7 +3110,10 @@ def test_get_snapshot(request_type, transport: str = "grpc"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_snapshot), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = pubsub.Snapshot(name="name_value", topic="topic_value",)
+        call.return_value = pubsub.Snapshot(
+            name="name_value",
+            topic="topic_value",
+        )
         response = client.get_snapshot(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2828,7 +3131,8 @@ def test_get_snapshot_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = SubscriberClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2844,7 +3148,8 @@ async def test_get_snapshot_async(
     transport: str = "grpc_asyncio", request_type=pubsub.GetSnapshotRequest
 ):
     client = SubscriberAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2855,7 +3160,10 @@ async def test_get_snapshot_async(
     with mock.patch.object(type(client.transport.get_snapshot), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            pubsub.Snapshot(name="name_value", topic="topic_value",)
+            pubsub.Snapshot(
+                name="name_value",
+                topic="topic_value",
+            )
         )
         response = await client.get_snapshot(request)
 
@@ -2876,7 +3184,9 @@ async def test_get_snapshot_async_from_dict():
 
 
 def test_get_snapshot_field_headers():
-    client = SubscriberClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2896,12 +3206,17 @@ def test_get_snapshot_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "snapshot=snapshot/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "snapshot=snapshot/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_get_snapshot_field_headers_async():
-    client = SubscriberAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2921,11 +3236,16 @@ async def test_get_snapshot_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "snapshot=snapshot/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "snapshot=snapshot/value",
+    ) in kw["metadata"]
 
 
 def test_get_snapshot_flattened():
-    client = SubscriberClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_snapshot), "__call__") as call:
@@ -2933,7 +3253,9 @@ def test_get_snapshot_flattened():
         call.return_value = pubsub.Snapshot()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_snapshot(snapshot="snapshot_value",)
+        client.get_snapshot(
+            snapshot="snapshot_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2945,19 +3267,24 @@ def test_get_snapshot_flattened():
 
 
 def test_get_snapshot_flattened_error():
-    client = SubscriberClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_snapshot(
-            pubsub.GetSnapshotRequest(), snapshot="snapshot_value",
+            pubsub.GetSnapshotRequest(),
+            snapshot="snapshot_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_get_snapshot_flattened_async():
-    client = SubscriberAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_snapshot), "__call__") as call:
@@ -2967,7 +3294,9 @@ async def test_get_snapshot_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(pubsub.Snapshot())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_snapshot(snapshot="snapshot_value",)
+        response = await client.get_snapshot(
+            snapshot="snapshot_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2980,20 +3309,30 @@ async def test_get_snapshot_flattened_async():
 
 @pytest.mark.asyncio
 async def test_get_snapshot_flattened_error_async():
-    client = SubscriberAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_snapshot(
-            pubsub.GetSnapshotRequest(), snapshot="snapshot_value",
+            pubsub.GetSnapshotRequest(),
+            snapshot="snapshot_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [pubsub.ListSnapshotsRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        pubsub.ListSnapshotsRequest,
+        dict,
+    ],
+)
 def test_list_snapshots(request_type, transport: str = "grpc"):
     client = SubscriberClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3022,7 +3361,8 @@ def test_list_snapshots_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = SubscriberClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3038,7 +3378,8 @@ async def test_list_snapshots_async(
     transport: str = "grpc_asyncio", request_type=pubsub.ListSnapshotsRequest
 ):
     client = SubscriberAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3049,7 +3390,9 @@ async def test_list_snapshots_async(
     with mock.patch.object(type(client.transport.list_snapshots), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            pubsub.ListSnapshotsResponse(next_page_token="next_page_token_value",)
+            pubsub.ListSnapshotsResponse(
+                next_page_token="next_page_token_value",
+            )
         )
         response = await client.list_snapshots(request)
 
@@ -3069,7 +3412,9 @@ async def test_list_snapshots_async_from_dict():
 
 
 def test_list_snapshots_field_headers():
-    client = SubscriberClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3089,12 +3434,17 @@ def test_list_snapshots_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "project=project/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "project=project/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_list_snapshots_field_headers_async():
-    client = SubscriberAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3116,11 +3466,16 @@ async def test_list_snapshots_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "project=project/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "project=project/value",
+    ) in kw["metadata"]
 
 
 def test_list_snapshots_flattened():
-    client = SubscriberClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_snapshots), "__call__") as call:
@@ -3128,7 +3483,9 @@ def test_list_snapshots_flattened():
         call.return_value = pubsub.ListSnapshotsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_snapshots(project="project_value",)
+        client.list_snapshots(
+            project="project_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3140,19 +3497,24 @@ def test_list_snapshots_flattened():
 
 
 def test_list_snapshots_flattened_error():
-    client = SubscriberClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_snapshots(
-            pubsub.ListSnapshotsRequest(), project="project_value",
+            pubsub.ListSnapshotsRequest(),
+            project="project_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_list_snapshots_flattened_async():
-    client = SubscriberAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_snapshots), "__call__") as call:
@@ -3164,7 +3526,9 @@ async def test_list_snapshots_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_snapshots(project="project_value",)
+        response = await client.list_snapshots(
+            project="project_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3177,19 +3541,23 @@ async def test_list_snapshots_flattened_async():
 
 @pytest.mark.asyncio
 async def test_list_snapshots_flattened_error_async():
-    client = SubscriberAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_snapshots(
-            pubsub.ListSnapshotsRequest(), project="project_value",
+            pubsub.ListSnapshotsRequest(),
+            project="project_value",
         )
 
 
 def test_list_snapshots_pager(transport_name: str = "grpc"):
     client = SubscriberClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3197,15 +3565,28 @@ def test_list_snapshots_pager(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             pubsub.ListSnapshotsResponse(
-                snapshots=[pubsub.Snapshot(), pubsub.Snapshot(), pubsub.Snapshot(),],
+                snapshots=[
+                    pubsub.Snapshot(),
+                    pubsub.Snapshot(),
+                    pubsub.Snapshot(),
+                ],
                 next_page_token="abc",
             ),
-            pubsub.ListSnapshotsResponse(snapshots=[], next_page_token="def",),
             pubsub.ListSnapshotsResponse(
-                snapshots=[pubsub.Snapshot(),], next_page_token="ghi",
+                snapshots=[],
+                next_page_token="def",
             ),
             pubsub.ListSnapshotsResponse(
-                snapshots=[pubsub.Snapshot(), pubsub.Snapshot(),],
+                snapshots=[
+                    pubsub.Snapshot(),
+                ],
+                next_page_token="ghi",
+            ),
+            pubsub.ListSnapshotsResponse(
+                snapshots=[
+                    pubsub.Snapshot(),
+                    pubsub.Snapshot(),
+                ],
             ),
             RuntimeError,
         )
@@ -3225,7 +3606,8 @@ def test_list_snapshots_pager(transport_name: str = "grpc"):
 
 def test_list_snapshots_pages(transport_name: str = "grpc"):
     client = SubscriberClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3233,15 +3615,28 @@ def test_list_snapshots_pages(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             pubsub.ListSnapshotsResponse(
-                snapshots=[pubsub.Snapshot(), pubsub.Snapshot(), pubsub.Snapshot(),],
+                snapshots=[
+                    pubsub.Snapshot(),
+                    pubsub.Snapshot(),
+                    pubsub.Snapshot(),
+                ],
                 next_page_token="abc",
             ),
-            pubsub.ListSnapshotsResponse(snapshots=[], next_page_token="def",),
             pubsub.ListSnapshotsResponse(
-                snapshots=[pubsub.Snapshot(),], next_page_token="ghi",
+                snapshots=[],
+                next_page_token="def",
             ),
             pubsub.ListSnapshotsResponse(
-                snapshots=[pubsub.Snapshot(), pubsub.Snapshot(),],
+                snapshots=[
+                    pubsub.Snapshot(),
+                ],
+                next_page_token="ghi",
+            ),
+            pubsub.ListSnapshotsResponse(
+                snapshots=[
+                    pubsub.Snapshot(),
+                    pubsub.Snapshot(),
+                ],
             ),
             RuntimeError,
         )
@@ -3252,7 +3647,9 @@ def test_list_snapshots_pages(transport_name: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_list_snapshots_async_pager():
-    client = SubscriberAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = SubscriberAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3261,19 +3658,34 @@ async def test_list_snapshots_async_pager():
         # Set the response to a series of pages.
         call.side_effect = (
             pubsub.ListSnapshotsResponse(
-                snapshots=[pubsub.Snapshot(), pubsub.Snapshot(), pubsub.Snapshot(),],
+                snapshots=[
+                    pubsub.Snapshot(),
+                    pubsub.Snapshot(),
+                    pubsub.Snapshot(),
+                ],
                 next_page_token="abc",
             ),
-            pubsub.ListSnapshotsResponse(snapshots=[], next_page_token="def",),
             pubsub.ListSnapshotsResponse(
-                snapshots=[pubsub.Snapshot(),], next_page_token="ghi",
+                snapshots=[],
+                next_page_token="def",
             ),
             pubsub.ListSnapshotsResponse(
-                snapshots=[pubsub.Snapshot(), pubsub.Snapshot(),],
+                snapshots=[
+                    pubsub.Snapshot(),
+                ],
+                next_page_token="ghi",
+            ),
+            pubsub.ListSnapshotsResponse(
+                snapshots=[
+                    pubsub.Snapshot(),
+                    pubsub.Snapshot(),
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.list_snapshots(request={},)
+        async_pager = await client.list_snapshots(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -3285,7 +3697,9 @@ async def test_list_snapshots_async_pager():
 
 @pytest.mark.asyncio
 async def test_list_snapshots_async_pages():
-    client = SubscriberAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = SubscriberAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3294,15 +3708,28 @@ async def test_list_snapshots_async_pages():
         # Set the response to a series of pages.
         call.side_effect = (
             pubsub.ListSnapshotsResponse(
-                snapshots=[pubsub.Snapshot(), pubsub.Snapshot(), pubsub.Snapshot(),],
+                snapshots=[
+                    pubsub.Snapshot(),
+                    pubsub.Snapshot(),
+                    pubsub.Snapshot(),
+                ],
                 next_page_token="abc",
             ),
-            pubsub.ListSnapshotsResponse(snapshots=[], next_page_token="def",),
             pubsub.ListSnapshotsResponse(
-                snapshots=[pubsub.Snapshot(),], next_page_token="ghi",
+                snapshots=[],
+                next_page_token="def",
             ),
             pubsub.ListSnapshotsResponse(
-                snapshots=[pubsub.Snapshot(), pubsub.Snapshot(),],
+                snapshots=[
+                    pubsub.Snapshot(),
+                ],
+                next_page_token="ghi",
+            ),
+            pubsub.ListSnapshotsResponse(
+                snapshots=[
+                    pubsub.Snapshot(),
+                    pubsub.Snapshot(),
+                ],
             ),
             RuntimeError,
         )
@@ -3313,10 +3740,17 @@ async def test_list_snapshots_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [pubsub.CreateSnapshotRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        pubsub.CreateSnapshotRequest,
+        dict,
+    ],
+)
 def test_create_snapshot(request_type, transport: str = "grpc"):
     client = SubscriberClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3326,7 +3760,10 @@ def test_create_snapshot(request_type, transport: str = "grpc"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_snapshot), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = pubsub.Snapshot(name="name_value", topic="topic_value",)
+        call.return_value = pubsub.Snapshot(
+            name="name_value",
+            topic="topic_value",
+        )
         response = client.create_snapshot(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -3344,7 +3781,8 @@ def test_create_snapshot_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = SubscriberClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3360,7 +3798,8 @@ async def test_create_snapshot_async(
     transport: str = "grpc_asyncio", request_type=pubsub.CreateSnapshotRequest
 ):
     client = SubscriberAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3371,7 +3810,10 @@ async def test_create_snapshot_async(
     with mock.patch.object(type(client.transport.create_snapshot), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            pubsub.Snapshot(name="name_value", topic="topic_value",)
+            pubsub.Snapshot(
+                name="name_value",
+                topic="topic_value",
+            )
         )
         response = await client.create_snapshot(request)
 
@@ -3392,7 +3834,9 @@ async def test_create_snapshot_async_from_dict():
 
 
 def test_create_snapshot_field_headers():
-    client = SubscriberClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3412,12 +3856,17 @@ def test_create_snapshot_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_create_snapshot_field_headers_async():
-    client = SubscriberAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3437,11 +3886,16 @@ async def test_create_snapshot_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_create_snapshot_flattened():
-    client = SubscriberClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_snapshot), "__call__") as call:
@@ -3450,7 +3904,8 @@ def test_create_snapshot_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.create_snapshot(
-            name="name_value", subscription="subscription_value",
+            name="name_value",
+            subscription="subscription_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -3466,7 +3921,9 @@ def test_create_snapshot_flattened():
 
 
 def test_create_snapshot_flattened_error():
-    client = SubscriberClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -3480,7 +3937,9 @@ def test_create_snapshot_flattened_error():
 
 @pytest.mark.asyncio
 async def test_create_snapshot_flattened_async():
-    client = SubscriberAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_snapshot), "__call__") as call:
@@ -3491,7 +3950,8 @@ async def test_create_snapshot_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.create_snapshot(
-            name="name_value", subscription="subscription_value",
+            name="name_value",
+            subscription="subscription_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -3508,7 +3968,9 @@ async def test_create_snapshot_flattened_async():
 
 @pytest.mark.asyncio
 async def test_create_snapshot_flattened_error_async():
-    client = SubscriberAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -3520,10 +3982,17 @@ async def test_create_snapshot_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [pubsub.UpdateSnapshotRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        pubsub.UpdateSnapshotRequest,
+        dict,
+    ],
+)
 def test_update_snapshot(request_type, transport: str = "grpc"):
     client = SubscriberClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3533,7 +4002,10 @@ def test_update_snapshot(request_type, transport: str = "grpc"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_snapshot), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = pubsub.Snapshot(name="name_value", topic="topic_value",)
+        call.return_value = pubsub.Snapshot(
+            name="name_value",
+            topic="topic_value",
+        )
         response = client.update_snapshot(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -3551,7 +4023,8 @@ def test_update_snapshot_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = SubscriberClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3567,7 +4040,8 @@ async def test_update_snapshot_async(
     transport: str = "grpc_asyncio", request_type=pubsub.UpdateSnapshotRequest
 ):
     client = SubscriberAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3578,7 +4052,10 @@ async def test_update_snapshot_async(
     with mock.patch.object(type(client.transport.update_snapshot), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            pubsub.Snapshot(name="name_value", topic="topic_value",)
+            pubsub.Snapshot(
+                name="name_value",
+                topic="topic_value",
+            )
         )
         response = await client.update_snapshot(request)
 
@@ -3599,7 +4076,9 @@ async def test_update_snapshot_async_from_dict():
 
 
 def test_update_snapshot_field_headers():
-    client = SubscriberClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3619,14 +4098,17 @@ def test_update_snapshot_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "snapshot.name=snapshot.name/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "snapshot.name=snapshot.name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_update_snapshot_field_headers_async():
-    client = SubscriberAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3646,15 +4128,23 @@ async def test_update_snapshot_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "snapshot.name=snapshot.name/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "snapshot.name=snapshot.name/value",
+    ) in kw["metadata"]
 
 
-@pytest.mark.parametrize("request_type", [pubsub.DeleteSnapshotRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        pubsub.DeleteSnapshotRequest,
+        dict,
+    ],
+)
 def test_delete_snapshot(request_type, transport: str = "grpc"):
     client = SubscriberClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3680,7 +4170,8 @@ def test_delete_snapshot_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = SubscriberClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3696,7 +4187,8 @@ async def test_delete_snapshot_async(
     transport: str = "grpc_asyncio", request_type=pubsub.DeleteSnapshotRequest
 ):
     client = SubscriberAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3724,7 +4216,9 @@ async def test_delete_snapshot_async_from_dict():
 
 
 def test_delete_snapshot_field_headers():
-    client = SubscriberClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3744,12 +4238,17 @@ def test_delete_snapshot_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "snapshot=snapshot/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "snapshot=snapshot/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_delete_snapshot_field_headers_async():
-    client = SubscriberAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3769,11 +4268,16 @@ async def test_delete_snapshot_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "snapshot=snapshot/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "snapshot=snapshot/value",
+    ) in kw["metadata"]
 
 
 def test_delete_snapshot_flattened():
-    client = SubscriberClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_snapshot), "__call__") as call:
@@ -3781,7 +4285,9 @@ def test_delete_snapshot_flattened():
         call.return_value = None
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_snapshot(snapshot="snapshot_value",)
+        client.delete_snapshot(
+            snapshot="snapshot_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3793,19 +4299,24 @@ def test_delete_snapshot_flattened():
 
 
 def test_delete_snapshot_flattened_error():
-    client = SubscriberClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_snapshot(
-            pubsub.DeleteSnapshotRequest(), snapshot="snapshot_value",
+            pubsub.DeleteSnapshotRequest(),
+            snapshot="snapshot_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_delete_snapshot_flattened_async():
-    client = SubscriberAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_snapshot), "__call__") as call:
@@ -3815,7 +4326,9 @@ async def test_delete_snapshot_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_snapshot(snapshot="snapshot_value",)
+        response = await client.delete_snapshot(
+            snapshot="snapshot_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3828,20 +4341,30 @@ async def test_delete_snapshot_flattened_async():
 
 @pytest.mark.asyncio
 async def test_delete_snapshot_flattened_error_async():
-    client = SubscriberAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_snapshot(
-            pubsub.DeleteSnapshotRequest(), snapshot="snapshot_value",
+            pubsub.DeleteSnapshotRequest(),
+            snapshot="snapshot_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [pubsub.SeekRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        pubsub.SeekRequest,
+        dict,
+    ],
+)
 def test_seek(request_type, transport: str = "grpc"):
     client = SubscriberClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3867,7 +4390,8 @@ def test_seek_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = SubscriberClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3883,7 +4407,8 @@ async def test_seek_async(
     transport: str = "grpc_asyncio", request_type=pubsub.SeekRequest
 ):
     client = SubscriberAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3911,7 +4436,9 @@ async def test_seek_async_from_dict():
 
 
 def test_seek_field_headers():
-    client = SubscriberClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3931,14 +4458,17 @@ def test_seek_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "subscription=subscription/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "subscription=subscription/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_seek_field_headers_async():
-    client = SubscriberAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3958,9 +4488,10 @@ async def test_seek_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "subscription=subscription/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "subscription=subscription/value",
+    ) in kw["metadata"]
 
 
 def test_credentials_transport_error():
@@ -3970,7 +4501,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = SubscriberClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -3990,7 +4522,10 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = SubscriberClient(client_options=options, transport=transport,)
+        client = SubscriberClient(
+            client_options=options,
+            transport=transport,
+        )
 
     # It is an error to provide an api_key and a credential.
     options = mock.Mock()
@@ -4006,7 +4541,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = SubscriberClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -4036,7 +4572,10 @@ def test_transport_get_channel():
 
 @pytest.mark.parametrize(
     "transport_class",
-    [transports.SubscriberGrpcTransport, transports.SubscriberGrpcAsyncIOTransport,],
+    [
+        transports.SubscriberGrpcTransport,
+        transports.SubscriberGrpcAsyncIOTransport,
+    ],
 )
 def test_transport_adc(transport_class):
     # Test default credentials are used if not provided.
@@ -4048,8 +4587,13 @@ def test_transport_adc(transport_class):
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
-    client = SubscriberClient(credentials=ga_credentials.AnonymousCredentials(),)
-    assert isinstance(client.transport, transports.SubscriberGrpcTransport,)
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    assert isinstance(
+        client.transport,
+        transports.SubscriberGrpcTransport,
+    )
 
 
 def test_subscriber_base_transport_error():
@@ -4112,7 +4656,8 @@ def test_subscriber_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.SubscriberTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -4153,7 +4698,10 @@ def test_subscriber_auth_adc():
 
 @pytest.mark.parametrize(
     "transport_class",
-    [transports.SubscriberGrpcTransport, transports.SubscriberGrpcAsyncIOTransport,],
+    [
+        transports.SubscriberGrpcTransport,
+        transports.SubscriberGrpcAsyncIOTransport,
+    ],
 )
 def test_subscriber_transport_auth_adc(transport_class):
     # If credentials and host are not provided, the transport class should use
@@ -4280,7 +4828,8 @@ def test_subscriber_grpc_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.SubscriberGrpcTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -4292,7 +4841,8 @@ def test_subscriber_grpc_asyncio_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.SubscriberGrpcAsyncIOTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -4399,7 +4949,8 @@ def test_snapshot_path():
     project = "squid"
     snapshot = "clam"
     expected = "projects/{project}/snapshots/{snapshot}".format(
-        project=project, snapshot=snapshot,
+        project=project,
+        snapshot=snapshot,
     )
     actual = SubscriberClient.snapshot_path(project, snapshot)
     assert expected == actual
@@ -4421,7 +4972,8 @@ def test_subscription_path():
     project = "oyster"
     subscription = "nudibranch"
     expected = "projects/{project}/subscriptions/{subscription}".format(
-        project=project, subscription=subscription,
+        project=project,
+        subscription=subscription,
     )
     actual = SubscriberClient.subscription_path(project, subscription)
     assert expected == actual
@@ -4442,7 +4994,10 @@ def test_parse_subscription_path():
 def test_topic_path():
     project = "winkle"
     topic = "nautilus"
-    expected = "projects/{project}/topics/{topic}".format(project=project, topic=topic,)
+    expected = "projects/{project}/topics/{topic}".format(
+        project=project,
+        topic=topic,
+    )
     actual = SubscriberClient.topic_path(project, topic)
     assert expected == actual
 
@@ -4481,7 +5036,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "whelk"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = SubscriberClient.common_folder_path(folder)
     assert expected == actual
 
@@ -4499,7 +5056,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "oyster"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = SubscriberClient.common_organization_path(organization)
     assert expected == actual
 
@@ -4517,7 +5076,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "cuttlefish"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = SubscriberClient.common_project_path(project)
     assert expected == actual
 
@@ -4537,7 +5098,8 @@ def test_common_location_path():
     project = "winkle"
     location = "nautilus"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = SubscriberClient.common_location_path(project, location)
     assert expected == actual
@@ -4562,7 +5124,8 @@ def test_client_with_default_client_info():
         transports.SubscriberTransport, "_prep_wrapped_messages"
     ) as prep:
         client = SubscriberClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -4571,14 +5134,16 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = SubscriberClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
 
 def test_set_iam_policy(transport: str = "grpc"):
     client = SubscriberClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4588,7 +5153,10 @@ def test_set_iam_policy(transport: str = "grpc"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = policy_pb2.Policy(version=774, etag=b"etag_blob",)
+        call.return_value = policy_pb2.Policy(
+            version=774,
+            etag=b"etag_blob",
+        )
 
         response = client.set_iam_policy(request)
 
@@ -4609,7 +5177,8 @@ def test_set_iam_policy(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_set_iam_policy_async(transport: str = "grpc_asyncio"):
     client = SubscriberAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4620,7 +5189,10 @@ async def test_set_iam_policy_async(transport: str = "grpc_asyncio"):
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            policy_pb2.Policy(version=774, etag=b"etag_blob",)
+            policy_pb2.Policy(
+                version=774,
+                etag=b"etag_blob",
+            )
         )
 
         response = await client.set_iam_policy(request)
@@ -4640,7 +5212,9 @@ async def test_set_iam_policy_async(transport: str = "grpc_asyncio"):
 
 
 def test_set_iam_policy_field_headers():
-    client = SubscriberClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -4660,12 +5234,17 @@ def test_set_iam_policy_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_set_iam_policy_field_headers_async():
-    client = SubscriberAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -4685,11 +5264,16 @@ async def test_set_iam_policy_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
 
 
 def test_set_iam_policy_from_dict():
-    client = SubscriberClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
@@ -4706,7 +5290,9 @@ def test_set_iam_policy_from_dict():
 
 @pytest.mark.asyncio
 async def test_set_iam_policy_from_dict_async():
-    client = SubscriberAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
@@ -4723,7 +5309,8 @@ async def test_set_iam_policy_from_dict_async():
 
 def test_get_iam_policy(transport: str = "grpc"):
     client = SubscriberClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4733,7 +5320,10 @@ def test_get_iam_policy(transport: str = "grpc"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = policy_pb2.Policy(version=774, etag=b"etag_blob",)
+        call.return_value = policy_pb2.Policy(
+            version=774,
+            etag=b"etag_blob",
+        )
 
         response = client.get_iam_policy(request)
 
@@ -4754,7 +5344,8 @@ def test_get_iam_policy(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_iam_policy_async(transport: str = "grpc_asyncio"):
     client = SubscriberAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4765,7 +5356,10 @@ async def test_get_iam_policy_async(transport: str = "grpc_asyncio"):
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            policy_pb2.Policy(version=774, etag=b"etag_blob",)
+            policy_pb2.Policy(
+                version=774,
+                etag=b"etag_blob",
+            )
         )
 
         response = await client.get_iam_policy(request)
@@ -4785,7 +5379,9 @@ async def test_get_iam_policy_async(transport: str = "grpc_asyncio"):
 
 
 def test_get_iam_policy_field_headers():
-    client = SubscriberClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -4805,12 +5401,17 @@ def test_get_iam_policy_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_get_iam_policy_field_headers_async():
-    client = SubscriberAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -4830,11 +5431,16 @@ async def test_get_iam_policy_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
 
 
 def test_get_iam_policy_from_dict():
-    client = SubscriberClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
@@ -4851,7 +5457,9 @@ def test_get_iam_policy_from_dict():
 
 @pytest.mark.asyncio
 async def test_get_iam_policy_from_dict_async():
-    client = SubscriberAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
@@ -4868,7 +5476,8 @@ async def test_get_iam_policy_from_dict_async():
 
 def test_test_iam_permissions(transport: str = "grpc"):
     client = SubscriberClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4901,7 +5510,8 @@ def test_test_iam_permissions(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_test_iam_permissions_async(transport: str = "grpc_asyncio"):
     client = SubscriberAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4934,7 +5544,9 @@ async def test_test_iam_permissions_async(transport: str = "grpc_asyncio"):
 
 
 def test_test_iam_permissions_field_headers():
-    client = SubscriberClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -4956,12 +5568,17 @@ def test_test_iam_permissions_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_test_iam_permissions_field_headers_async():
-    client = SubscriberAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -4985,11 +5602,16 @@ async def test_test_iam_permissions_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
 
 
 def test_test_iam_permissions_from_dict():
-    client = SubscriberClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
         type(client.transport.test_iam_permissions), "__call__"
@@ -5008,7 +5630,9 @@ def test_test_iam_permissions_from_dict():
 
 @pytest.mark.asyncio
 async def test_test_iam_permissions_from_dict_async():
-    client = SubscriberAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SubscriberAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
         type(client.transport.test_iam_permissions), "__call__"
@@ -5030,7 +5654,8 @@ async def test_test_iam_permissions_from_dict_async():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = SubscriberAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     with mock.patch.object(
         type(getattr(client.transport, "grpc_channel")), "close"

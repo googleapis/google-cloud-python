@@ -215,8 +215,8 @@ class Client(publisher_client.PublisherClient):
         return super()
 
     def _get_or_create_sequencer(self, topic: str, ordering_key: str) -> SequencerType:
-        """ Get an existing sequencer or create a new one given the (topic,
-            ordering_key) pair.
+        """Get an existing sequencer or create a new one given the (topic,
+        ordering_key) pair.
         """
         sequencer_key = (topic, ordering_key)
         sequencer = self._sequencers.get(sequencer_key)
@@ -232,7 +232,7 @@ class Client(publisher_client.PublisherClient):
         return sequencer
 
     def resume_publish(self, topic: str, ordering_key: str) -> None:
-        """ Resume publish on an ordering key that has had unrecoverable errors.
+        """Resume publish on an ordering key that has had unrecoverable errors.
 
         Args:
             topic: The topic to publish messages to.
@@ -403,9 +403,9 @@ class Client(publisher_client.PublisherClient):
                     # use the default retry for the publish GRPC method as a base
                     transport = self._transport
                     base_retry = transport._wrapped_methods[transport.publish]._retry
-                    retry = base_retry.with_deadline(2.0 ** 32)
+                    retry = base_retry.with_deadline(2.0**32)
                 else:
-                    retry = retry.with_deadline(2.0 ** 32)
+                    retry = retry.with_deadline(2.0**32)
 
             # Delegate the publishing to the sequencer.
             sequencer = self._get_or_create_sequencer(topic, ordering_key)
@@ -419,18 +419,18 @@ class Client(publisher_client.PublisherClient):
             return future
 
     def ensure_cleanup_and_commit_timer_runs(self) -> None:
-        """ Ensure a cleanup/commit timer thread is running.
+        """Ensure a cleanup/commit timer thread is running.
 
-            If a cleanup/commit timer thread is already running, this does nothing.
+        If a cleanup/commit timer thread is already running, this does nothing.
         """
         with self._batch_lock:
             self._ensure_commit_timer_runs_no_lock()
 
     def _ensure_commit_timer_runs_no_lock(self) -> None:
-        """ Ensure a commit timer thread is running, without taking
-            _batch_lock.
+        """Ensure a commit timer thread is running, without taking
+        _batch_lock.
 
-            _batch_lock must be held before calling this method.
+        _batch_lock must be held before calling this method.
         """
         if not self._commit_thread and self.batch_settings.max_latency < float("inf"):
             self._start_commit_thread()
@@ -448,8 +448,7 @@ class Client(publisher_client.PublisherClient):
         self._commit_thread.start()
 
     def _wait_and_commit_sequencers(self) -> None:
-        """ Wait up to the batching timeout, and commit all sequencers.
-        """
+        """Wait up to the batching timeout, and commit all sequencers."""
         # Sleep for however long we should be waiting.
         time.sleep(self.batch_settings.max_latency)
         _LOGGER.debug("Commit thread is waking up")
@@ -461,7 +460,7 @@ class Client(publisher_client.PublisherClient):
             self._commit_thread = None
 
     def _commit_sequencers(self) -> None:
-        """ Clean up finished sequencers and commit the rest. """
+        """Clean up finished sequencers and commit the rest."""
         finished_sequencer_keys = [
             key
             for key, sequencer in self._sequencers.items()

@@ -42,8 +42,7 @@ class Heartbeater(object):
         self._period = period
 
     def heartbeat(self) -> None:
-        """Periodically send streaming pull heartbeats.
-        """
+        """Periodically send streaming pull heartbeats."""
         while not self._stop_event.is_set():
             if self._manager.heartbeat():
                 _LOGGER.debug("Sent heartbeat.")

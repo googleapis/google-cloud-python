@@ -72,9 +72,19 @@ class Schema(proto.Message):
         PROTOCOL_BUFFER = 1
         AVRO = 2
 
-    name = proto.Field(proto.STRING, number=1,)
-    type_ = proto.Field(proto.ENUM, number=2, enum=Type,)
-    definition = proto.Field(proto.STRING, number=3,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    type_ = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=Type,
+    )
+    definition = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class CreateSchemaRequest(proto.Message):
@@ -99,9 +109,19 @@ class CreateSchemaRequest(proto.Message):
             for resource name constraints.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    schema = proto.Field(proto.MESSAGE, number=2, message="Schema",)
-    schema_id = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    schema = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="Schema",
+    )
+    schema_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class GetSchemaRequest(proto.Message):
@@ -117,8 +137,15 @@ class GetSchemaRequest(proto.Message):
             ``definition``. Set to ``FULL`` to retrieve all fields.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    view = proto.Field(proto.ENUM, number=2, enum="SchemaView",)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    view = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum="SchemaView",
+    )
 
 
 class ListSchemasRequest(proto.Message):
@@ -141,10 +168,23 @@ class ListSchemasRequest(proto.Message):
             next page of data.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    view = proto.Field(proto.ENUM, number=2, enum="SchemaView",)
-    page_size = proto.Field(proto.INT32, number=3,)
-    page_token = proto.Field(proto.STRING, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    view = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum="SchemaView",
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class ListSchemasResponse(proto.Message):
@@ -163,8 +203,15 @@ class ListSchemasResponse(proto.Message):
     def raw_page(self):
         return self
 
-    schemas = proto.RepeatedField(proto.MESSAGE, number=1, message="Schema",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    schemas = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Schema",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class DeleteSchemaRequest(proto.Message):
@@ -176,7 +223,10 @@ class DeleteSchemaRequest(proto.Message):
             ``projects/{project}/schemas/{schema}``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ValidateSchemaRequest(proto.Message):
@@ -190,13 +240,19 @@ class ValidateSchemaRequest(proto.Message):
             Required. The schema object to validate.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    schema = proto.Field(proto.MESSAGE, number=2, message="Schema",)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    schema = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="Schema",
+    )
 
 
 class ValidateSchemaResponse(proto.Message):
-    r"""Response for the ``ValidateSchema`` method. Empty for now.
-    """
+    r"""Response for the ``ValidateSchema`` method. Empty for now."""
 
 
 class ValidateMessageRequest(proto.Message):
@@ -229,18 +285,34 @@ class ValidateMessageRequest(proto.Message):
             The encoding expected for messages
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    name = proto.Field(proto.STRING, number=2, oneof="schema_spec",)
-    schema = proto.Field(
-        proto.MESSAGE, number=3, oneof="schema_spec", message="Schema",
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    message = proto.Field(proto.BYTES, number=4,)
-    encoding = proto.Field(proto.ENUM, number=5, enum="Encoding",)
+    name = proto.Field(
+        proto.STRING,
+        number=2,
+        oneof="schema_spec",
+    )
+    schema = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="schema_spec",
+        message="Schema",
+    )
+    message = proto.Field(
+        proto.BYTES,
+        number=4,
+    )
+    encoding = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum="Encoding",
+    )
 
 
 class ValidateMessageResponse(proto.Message):
-    r"""Response for the ``ValidateMessage`` method. Empty for now.
-    """
+    r"""Response for the ``ValidateMessage`` method. Empty for now."""
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

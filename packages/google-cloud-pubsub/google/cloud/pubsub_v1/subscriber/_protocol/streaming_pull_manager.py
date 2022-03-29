@@ -126,7 +126,9 @@ def _wrap_callback_errors(
         on_callback_error(exc)
 
 
-def _get_status(exc: exceptions.GoogleAPICallError,) -> Optional["status_pb2.Status"]:
+def _get_status(
+    exc: exceptions.GoogleAPICallError,
+) -> Optional["status_pb2.Status"]:
     if not exc.response:
         _LOGGER.debug("No response obj in errored RPC call.")
         return None
@@ -140,7 +142,9 @@ def _get_status(exc: exceptions.GoogleAPICallError,) -> Optional["status_pb2.Sta
         return None
 
 
-def _get_ack_errors(exc: exceptions.GoogleAPICallError,) -> Optional[Dict[str, str]]:
+def _get_ack_errors(
+    exc: exceptions.GoogleAPICallError,
+) -> Optional[Dict[str, str]]:
     status = _get_status(exc)
     if not status:
         _LOGGER.debug("Unable to get status of errored RPC.")

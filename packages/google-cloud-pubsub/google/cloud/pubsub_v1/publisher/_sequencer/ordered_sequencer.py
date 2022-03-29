@@ -76,21 +76,21 @@ class _OrderedSequencerStatus(str, enum.Enum):
 
 
 class OrderedSequencer(sequencer_base.Sequencer):
-    """ Sequences messages into batches ordered by an ordering key for one topic.
+    """Sequences messages into batches ordered by an ordering key for one topic.
 
-        A sequencer always has at least one batch in it, unless paused or stopped.
-        When no batches remain, the |publishes_done_callback| is called so the
-        client can perform cleanup.
+    A sequencer always has at least one batch in it, unless paused or stopped.
+    When no batches remain, the |publishes_done_callback| is called so the
+    client can perform cleanup.
 
-        Public methods are thread-safe.
+    Public methods are thread-safe.
 
-        Args:
-            client:
-                The publisher client used to create this sequencer.
-            topic:
-                The topic. The format for this is ``projects/{project}/topics/{topic}``.
-            ordering_key:
-                The ordering key for this sequencer.
+    Args:
+        client:
+            The publisher client used to create this sequencer.
+        topic:
+            The topic. The format for this is ``projects/{project}/topics/{topic}``.
+        ordering_key:
+            The ordering key for this sequencer.
     """
 
     def __init__(self, client: "PublisherClient", topic: str, ordering_key: str):
@@ -107,23 +107,23 @@ class OrderedSequencer(sequencer_base.Sequencer):
         self._state = _OrderedSequencerStatus.ACCEPTING_MESSAGES
 
     def is_finished(self) -> bool:
-        """ Whether the sequencer is finished and should be cleaned up.
+        """Whether the sequencer is finished and should be cleaned up.
 
-            Returns:
-                Whether the sequencer is finished and should be cleaned up.
+        Returns:
+            Whether the sequencer is finished and should be cleaned up.
         """
         with self._state_lock:
             return self._state == _OrderedSequencerStatus.FINISHED
 
     def stop(self) -> None:
-        """ Permanently stop this sequencer.
+        """Permanently stop this sequencer.
 
-            This differs from pausing, which may be resumed. Immediately commits
-            the first batch and cancels the rest.
+        This differs from pausing, which may be resumed. Immediately commits
+        the first batch and cancels the rest.
 
-            Raises:
-                RuntimeError:
-                    If called after stop() has already been called.
+        Raises:
+            RuntimeError:
+                If called after stop() has already been called.
         """
         with self._state_lock:
             if self._state == _OrderedSequencerStatus.STOPPED:
@@ -143,13 +143,13 @@ class OrderedSequencer(sequencer_base.Sequencer):
                     batch.cancel(batch_base.BatchCancellationReason.CLIENT_STOPPED)
 
     def commit(self) -> None:
-        """ Commit the first batch, if unpaused.
+        """Commit the first batch, if unpaused.
 
-            If paused or no batches exist, this method does nothing.
+        If paused or no batches exist, this method does nothing.
 
-            Raises:
-                RuntimeError:
-                    If called after stop() has already been called.
+        Raises:
+            RuntimeError:
+                If called after stop() has already been called.
         """
         with self._state_lock:
             if self._state == _OrderedSequencerStatus.STOPPED:
@@ -161,11 +161,11 @@ class OrderedSequencer(sequencer_base.Sequencer):
                 self._ordered_batches[0].commit()
 
     def _batch_done_callback(self, success: bool) -> None:
-        """ Deal with completion of a batch.
+        """Deal with completion of a batch.
 
-            Called when a batch has finished publishing, with either a success
-            or a failure. (Temporary failures are retried infinitely when
-            ordering keys are enabled.)
+        Called when a batch has finished publishing, with either a success
+        or a failure. (Temporary failures are retried infinitely when
+        ordering keys are enabled.)
         """
         ensure_cleanup_and_commit_timer_runs = False
         with self._state_lock:
@@ -209,10 +209,10 @@ class OrderedSequencer(sequencer_base.Sequencer):
             self._client.ensure_cleanup_and_commit_timer_runs()
 
     def _pause(self) -> None:
-        """ Pause this sequencer: set state to paused, cancel all batches, and
-            clear the list of ordered batches.
+        """Pause this sequencer: set state to paused, cancel all batches, and
+        clear the list of ordered batches.
 
-            _state_lock must be taken before calling this method.
+        _state_lock must be taken before calling this method.
         """
         assert (
             self._state != _OrderedSequencerStatus.FINISHED
@@ -225,7 +225,7 @@ class OrderedSequencer(sequencer_base.Sequencer):
         self._ordered_batches.clear()
 
     def unpause(self) -> None:
-        """ Unpause this sequencer.
+        """Unpause this sequencer.
 
         Raises:
             RuntimeError:
@@ -241,7 +241,7 @@ class OrderedSequencer(sequencer_base.Sequencer):
         commit_retry: "OptionalRetry" = gapic_v1.method.DEFAULT,
         commit_timeout: "types.OptionalTimeout" = gapic_v1.method.DEFAULT,
     ) -> "_batch.thread.Batch":
-        """ Create a new batch using the client's batch class and other stored
+        """Create a new batch using the client's batch class and other stored
             settings.
 
         Args:
@@ -266,7 +266,7 @@ class OrderedSequencer(sequencer_base.Sequencer):
         retry: "OptionalRetry" = gapic_v1.method.DEFAULT,
         timeout: "types.OptionalTimeout" = gapic_v1.method.DEFAULT,
     ) -> futures.Future:
-        """ Publish message for this ordering key.
+        """Publish message for this ordering key.
 
         Args:
             message:

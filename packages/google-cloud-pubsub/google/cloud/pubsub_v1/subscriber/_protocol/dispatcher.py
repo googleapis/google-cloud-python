@@ -208,7 +208,9 @@ class Dispatcher(object):
         # https://github.com/googleapis/python-pubsub/issues/395#issuecomment-829910303
         # https://github.com/googleapis/python-pubsub/issues/395#issuecomment-830092418
         retry_thread = threading.Thread(
-            name=thread_name, target=thread_target, daemon=True,
+            name=thread_name,
+            target=thread_target,
+            daemon=True,
         )
         # The thread finishes when the requests succeed or eventually fail with
         # a back-end timeout error or other permanent failure.

@@ -21,8 +21,7 @@ if typing.TYPE_CHECKING:  # pragma: NO COVER
 
 
 class MessagesOnHold(object):
-    """Tracks messages on hold by ordering key. Not thread-safe.
-    """
+    """Tracks messages on hold by ordering key. Not thread-safe."""
 
     def __init__(self):
         self._size = 0
@@ -58,7 +57,7 @@ class MessagesOnHold(object):
         return self._size
 
     def get(self) -> Optional["subscriber.message.Message"]:
-        """ Gets a message from the on-hold queue. A message with an ordering
+        """Gets a message from the on-hold queue. A message with an ordering
         key wont be returned if there's another message with the same key in
         flight.
 

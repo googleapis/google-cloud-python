@@ -104,7 +104,7 @@ def test_publish_large_messages(publisher, topic_path, cleanup):
     # cases well.
     # Mind that the total PublishRequest size must still be smaller than
     # 10 * 1024 * 1024 bytes in order to not exceed the max request body size limit.
-    msg_data = b"x" * (2 * 10 ** 6)
+    msg_data = b"x" * (2 * 10**6)
 
     publisher.batch_settings = types.BatchSettings(
         max_bytes=11 * 1000 * 1000,  # more than the server limit of 10 ** 7

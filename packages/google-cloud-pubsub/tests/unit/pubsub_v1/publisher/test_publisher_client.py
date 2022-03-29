@@ -308,7 +308,7 @@ def test_publish_with_ordering_key_uses_extended_retry_deadline(creds):
     _, kwargs = batch_class.call_args
 
     batch_commit_retry = kwargs["commit_retry"]
-    expected_retry = custom_retry.with_deadline(2.0 ** 32)
+    expected_retry = custom_retry.with_deadline(2.0**32)
     _assert_retries_equal(batch_commit_retry, expected_retry)
 
 
