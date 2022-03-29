@@ -27,7 +27,12 @@ from google.protobuf import api_pb2  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.api.serviceusage.v1",
-    manifest={"State", "Service", "ServiceConfig", "OperationMetadata",},
+    manifest={
+        "State",
+        "Service",
+        "ServiceConfig",
+        "OperationMetadata",
+    },
 )
 
 
@@ -64,10 +69,24 @@ class Service(proto.Message):
             for use by the consumer.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    parent = proto.Field(proto.STRING, number=5,)
-    config = proto.Field(proto.MESSAGE, number=2, message="ServiceConfig",)
-    state = proto.Field(proto.ENUM, number=4, enum="State",)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    parent = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    config = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="ServiceConfig",
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum="State",
+    )
 
 
 class ServiceConfig(proto.Message):
@@ -110,19 +129,43 @@ class ServiceConfig(proto.Message):
             'producer_destinations' field.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    title = proto.Field(proto.STRING, number=2,)
-    apis = proto.RepeatedField(proto.MESSAGE, number=3, message=api_pb2.Api,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    title = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    apis = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=api_pb2.Api,
+    )
     documentation = proto.Field(
-        proto.MESSAGE, number=6, message=documentation_pb2.Documentation,
+        proto.MESSAGE,
+        number=6,
+        message=documentation_pb2.Documentation,
     )
-    quota = proto.Field(proto.MESSAGE, number=10, message=quota_pb2.Quota,)
+    quota = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message=quota_pb2.Quota,
+    )
     authentication = proto.Field(
-        proto.MESSAGE, number=11, message=auth_pb2.Authentication,
+        proto.MESSAGE,
+        number=11,
+        message=auth_pb2.Authentication,
     )
-    usage = proto.Field(proto.MESSAGE, number=15, message=usage_pb2.Usage,)
+    usage = proto.Field(
+        proto.MESSAGE,
+        number=15,
+        message=usage_pb2.Usage,
+    )
     endpoints = proto.RepeatedField(
-        proto.MESSAGE, number=18, message=endpoint_pb2.Endpoint,
+        proto.MESSAGE,
+        number=18,
+        message=endpoint_pb2.Endpoint,
     )
     monitored_resources = proto.RepeatedField(
         proto.MESSAGE,
@@ -130,7 +173,9 @@ class ServiceConfig(proto.Message):
         message=monitored_resource_pb2.MonitoredResourceDescriptor,
     )
     monitoring = proto.Field(
-        proto.MESSAGE, number=28, message=monitoring_pb2.Monitoring,
+        proto.MESSAGE,
+        number=28,
+        message=monitoring_pb2.Monitoring,
     )
 
 
@@ -144,7 +189,10 @@ class OperationMetadata(proto.Message):
             operation is directly associated with.
     """
 
-    resource_names = proto.RepeatedField(proto.STRING, number=2,)
+    resource_names = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

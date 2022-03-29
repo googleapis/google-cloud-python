@@ -54,7 +54,10 @@ class EnableServiceRequest(proto.Message):
             ``123`` is the project number.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class EnableServiceResponse(proto.Message):
@@ -67,7 +70,11 @@ class EnableServiceResponse(proto.Message):
             The new state of the service after enabling.
     """
 
-    service = proto.Field(proto.MESSAGE, number=1, message=resources.Service,)
+    service = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=resources.Service,
+    )
 
 
 class DisableServiceRequest(proto.Message):
@@ -104,10 +111,18 @@ class DisableServiceRequest(proto.Message):
         SKIP = 1
         CHECK = 2
 
-    name = proto.Field(proto.STRING, number=1,)
-    disable_dependent_services = proto.Field(proto.BOOL, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    disable_dependent_services = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
     check_if_service_has_usage = proto.Field(
-        proto.ENUM, number=3, enum=CheckIfServiceHasUsage,
+        proto.ENUM,
+        number=3,
+        enum=CheckIfServiceHasUsage,
     )
 
 
@@ -121,7 +136,11 @@ class DisableServiceResponse(proto.Message):
             The new state of the service after disabling.
     """
 
-    service = proto.Field(proto.MESSAGE, number=1, message=resources.Service,)
+    service = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=resources.Service,
+    )
 
 
 class GetServiceRequest(proto.Message):
@@ -137,7 +156,10 @@ class GetServiceRequest(proto.Message):
             ``123`` is the project number.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListServicesRequest(proto.Message):
@@ -162,10 +184,22 @@ class ListServicesRequest(proto.Message):
             ``state:DISABLED``.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    filter = proto.Field(proto.STRING, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class ListServicesResponse(proto.Message):
@@ -184,8 +218,15 @@ class ListServicesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    services = proto.RepeatedField(proto.MESSAGE, number=1, message=resources.Service,)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    services = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=resources.Service,
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class BatchEnableServicesRequest(proto.Message):
@@ -216,8 +257,14 @@ class BatchEnableServicesRequest(proto.Message):
             changes will occur.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    service_ids = proto.RepeatedField(proto.STRING, number=2,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    service_ids = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
 
 
 class BatchEnableServicesResponse(proto.Message):
@@ -246,11 +293,25 @@ class BatchEnableServicesResponse(proto.Message):
                 could not be enabled.
         """
 
-        service_id = proto.Field(proto.STRING, number=1,)
-        error_message = proto.Field(proto.STRING, number=2,)
+        service_id = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        error_message = proto.Field(
+            proto.STRING,
+            number=2,
+        )
 
-    services = proto.RepeatedField(proto.MESSAGE, number=1, message=resources.Service,)
-    failures = proto.RepeatedField(proto.MESSAGE, number=2, message=EnableFailure,)
+    services = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=resources.Service,
+    )
+    failures = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=EnableFailure,
+    )
 
 
 class BatchGetServicesRequest(proto.Message):
@@ -272,8 +333,14 @@ class BatchGetServicesRequest(proto.Message):
             maximum of 30 services at a time.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    names = proto.RepeatedField(proto.STRING, number=2,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    names = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
 
 
 class BatchGetServicesResponse(proto.Message):
@@ -284,7 +351,11 @@ class BatchGetServicesResponse(proto.Message):
             The requested Service states.
     """
 
-    services = proto.RepeatedField(proto.MESSAGE, number=1, message=resources.Service,)
+    services = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=resources.Service,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
