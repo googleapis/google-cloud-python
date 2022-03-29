@@ -215,7 +215,9 @@ class Test_SinksAPI(unittest.TestCase):
         ) as call:
             call.return_value = logging_v2.types.ListSinksResponse(sinks=[sink_msg])
 
-            result = client.list_sinks(self.PARENT_PATH,)
+            result = client.list_sinks(
+                self.PARENT_PATH,
+            )
 
         sinks = list(result)
 

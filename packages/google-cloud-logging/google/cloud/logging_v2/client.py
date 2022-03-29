@@ -118,7 +118,7 @@ class Client(ClientWithProject):
             client_options (Optional[Union[dict, google.api_core.client_options.ClientOptions]]):
                 Client options used to set user options
                 on the client. API Endpoint should be set through client_options.
-            """
+        """
         super(Client, self).__init__(
             project=project,
             credentials=credentials,

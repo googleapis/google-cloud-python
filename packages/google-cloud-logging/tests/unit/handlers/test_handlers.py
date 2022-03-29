@@ -100,7 +100,15 @@ class TestCloudLoggingFilter(unittest.TestCase):
         import logging
 
         filter_obj = self._make_one()
-        record = logging.LogRecord(None, logging.INFO, None, None, None, None, None,)
+        record = logging.LogRecord(
+            None,
+            logging.INFO,
+            None,
+            None,
+            None,
+            None,
+            None,
+        )
         record.created = None
 
         success = filter_obj.filter(record)
@@ -128,7 +136,15 @@ class TestCloudLoggingFilter(unittest.TestCase):
         import logging
 
         filter_obj = self._make_one()
-        record = logging.LogRecord(None, logging.INFO, None, None, None, None, None,)
+        record = logging.LogRecord(
+            None,
+            logging.INFO,
+            None,
+            None,
+            None,
+            None,
+            None,
+        )
         record.created = None
 
         expected_path = "http://testserver/123"
@@ -170,7 +186,15 @@ class TestCloudLoggingFilter(unittest.TestCase):
         import logging
 
         filter_obj = self._make_one()
-        record = logging.LogRecord(None, logging.INFO, None, None, None, None, None,)
+        record = logging.LogRecord(
+            None,
+            logging.INFO,
+            None,
+            None,
+            None,
+            None,
+            None,
+        )
         record.created = None
 
         expected_path = "http://testserver/123"
@@ -368,7 +392,17 @@ class TestCloudLoggingHandler(unittest.TestCase):
         handler.handle(record)
         self.assertEqual(
             handler.transport.send_called_with,
-            (record, None, _GLOBAL_RESOURCE, None, None, None, False, None, None,),
+            (
+                record,
+                None,
+                _GLOBAL_RESOURCE,
+                None,
+                None,
+                None,
+                False,
+                None,
+                None,
+            ),
         )
 
     def test_emit_manual_field_override(self):
@@ -437,7 +471,9 @@ class TestCloudLoggingHandler(unittest.TestCase):
 
         client = _Client(self.PROJECT)
         handler = self._make_one(
-            client, transport=_Transport, resource=_GLOBAL_RESOURCE,
+            client,
+            transport=_Transport,
+            resource=_GLOBAL_RESOURCE,
         )
         logFormatter = logging.Formatter(fmt="%(name)s :: %(levelname)s :: %(message)s")
         handler.setFormatter(logFormatter)
@@ -473,7 +509,9 @@ class TestCloudLoggingHandler(unittest.TestCase):
 
         client = _Client(self.PROJECT)
         handler = self._make_one(
-            client, transport=_Transport, resource=_GLOBAL_RESOURCE,
+            client,
+            transport=_Transport,
+            resource=_GLOBAL_RESOURCE,
         )
         message = {"x": "test"}
         logname = "logname"
@@ -506,7 +544,9 @@ class TestCloudLoggingHandler(unittest.TestCase):
 
         client = _Client(self.PROJECT)
         handler = self._make_one(
-            client, transport=_Transport, resource=_GLOBAL_RESOURCE,
+            client,
+            transport=_Transport,
+            resource=_GLOBAL_RESOURCE,
         )
         message = "message"
         json_fields = {"hello": "world"}
@@ -541,7 +581,9 @@ class TestCloudLoggingHandler(unittest.TestCase):
 
         client = _Client(self.PROJECT)
         handler = self._make_one(
-            client, transport=_Transport, resource=_GLOBAL_RESOURCE,
+            client,
+            transport=_Transport,
+            resource=_GLOBAL_RESOURCE,
         )
         logFormatter = logging.Formatter(fmt='{ "x" : "%(name)s" }')
         handler.setFormatter(logFormatter)
@@ -574,7 +616,9 @@ class TestCloudLoggingHandler(unittest.TestCase):
 
         client = _Client(self.PROJECT)
         handler = self._make_one(
-            client, transport=_Transport, resource=_GLOBAL_RESOURCE,
+            client,
+            transport=_Transport,
+            resource=_GLOBAL_RESOURCE,
         )
         message = "name: %s"
         name_arg = "Daniel"

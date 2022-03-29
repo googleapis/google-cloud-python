@@ -170,23 +170,56 @@ class LogMetric(proto.Message):
         V2 = 0
         V1 = 1
 
-    name = proto.Field(proto.STRING, number=1,)
-    description = proto.Field(proto.STRING, number=2,)
-    filter = proto.Field(proto.STRING, number=3,)
-    disabled = proto.Field(proto.BOOL, number=12,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    disabled = proto.Field(
+        proto.BOOL,
+        number=12,
+    )
     metric_descriptor = proto.Field(
-        proto.MESSAGE, number=5, message=metric_pb2.MetricDescriptor,
+        proto.MESSAGE,
+        number=5,
+        message=metric_pb2.MetricDescriptor,
     )
-    value_extractor = proto.Field(proto.STRING, number=6,)
-    label_extractors = proto.MapField(proto.STRING, proto.STRING, number=7,)
+    value_extractor = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    label_extractors = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=7,
+    )
     bucket_options = proto.Field(
-        proto.MESSAGE, number=8, message=distribution_pb2.Distribution.BucketOptions,
+        proto.MESSAGE,
+        number=8,
+        message=distribution_pb2.Distribution.BucketOptions,
     )
-    create_time = proto.Field(proto.MESSAGE, number=9, message=timestamp_pb2.Timestamp,)
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message=timestamp_pb2.Timestamp,
+    )
     update_time = proto.Field(
-        proto.MESSAGE, number=10, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=10,
+        message=timestamp_pb2.Timestamp,
     )
-    version = proto.Field(proto.ENUM, number=4, enum=ApiVersion,)
+    version = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=ApiVersion,
+    )
 
 
 class ListLogMetricsRequest(proto.Message):
@@ -212,9 +245,18 @@ class ListLogMetricsRequest(proto.Message):
             results might be available.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_token = proto.Field(proto.STRING, number=2,)
-    page_size = proto.Field(proto.INT32, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=3,
+    )
 
 
 class ListLogMetricsResponse(proto.Message):
@@ -234,8 +276,15 @@ class ListLogMetricsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    metrics = proto.RepeatedField(proto.MESSAGE, number=1, message="LogMetric",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    metrics = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="LogMetric",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetLogMetricRequest(proto.Message):
@@ -250,7 +299,10 @@ class GetLogMetricRequest(proto.Message):
                 "projects/[PROJECT_ID]/metrics/[METRIC_ID]".
     """
 
-    metric_name = proto.Field(proto.STRING, number=1,)
+    metric_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CreateLogMetricRequest(proto.Message):
@@ -271,8 +323,15 @@ class CreateLogMetricRequest(proto.Message):
             must not have an identifier that already exists.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    metric = proto.Field(proto.MESSAGE, number=2, message="LogMetric",)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    metric = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="LogMetric",
+    )
 
 
 class UpdateLogMetricRequest(proto.Message):
@@ -294,8 +353,15 @@ class UpdateLogMetricRequest(proto.Message):
             Required. The updated metric.
     """
 
-    metric_name = proto.Field(proto.STRING, number=1,)
-    metric = proto.Field(proto.MESSAGE, number=2, message="LogMetric",)
+    metric_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    metric = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="LogMetric",
+    )
 
 
 class DeleteLogMetricRequest(proto.Message):
@@ -310,7 +376,10 @@ class DeleteLogMetricRequest(proto.Message):
                 "projects/[PROJECT_ID]/metrics/[METRIC_ID]".
     """
 
-    metric_name = proto.Field(proto.STRING, number=1,)
+    metric_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

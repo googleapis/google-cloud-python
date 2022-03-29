@@ -96,7 +96,11 @@ def test__get_default_mtls_endpoint():
 
 
 @pytest.mark.parametrize(
-    "client_class", [LoggingServiceV2Client, LoggingServiceV2AsyncClient,]
+    "client_class",
+    [
+        LoggingServiceV2Client,
+        LoggingServiceV2AsyncClient,
+    ],
 )
 def test_logging_service_v2_client_from_service_account_info(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -138,7 +142,11 @@ def test_logging_service_v2_client_service_account_always_use_jwt(
 
 
 @pytest.mark.parametrize(
-    "client_class", [LoggingServiceV2Client, LoggingServiceV2AsyncClient,]
+    "client_class",
+    [
+        LoggingServiceV2Client,
+        LoggingServiceV2AsyncClient,
+    ],
 )
 def test_logging_service_v2_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -512,7 +520,9 @@ def test_logging_service_v2_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -658,10 +668,17 @@ def test_logging_service_v2_client_create_channel_credentials_file(
         )
 
 
-@pytest.mark.parametrize("request_type", [logging.DeleteLogRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        logging.DeleteLogRequest,
+        dict,
+    ],
+)
 def test_delete_log(request_type, transport: str = "grpc"):
     client = LoggingServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -687,7 +704,8 @@ def test_delete_log_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = LoggingServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -703,7 +721,8 @@ async def test_delete_log_async(
     transport: str = "grpc_asyncio", request_type=logging.DeleteLogRequest
 ):
     client = LoggingServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -731,7 +750,9 @@ async def test_delete_log_async_from_dict():
 
 
 def test_delete_log_field_headers():
-    client = LoggingServiceV2Client(credentials=ga_credentials.AnonymousCredentials(),)
+    client = LoggingServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -751,7 +772,10 @@ def test_delete_log_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "log_name=log_name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "log_name=log_name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -778,11 +802,16 @@ async def test_delete_log_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "log_name=log_name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "log_name=log_name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_log_flattened():
-    client = LoggingServiceV2Client(credentials=ga_credentials.AnonymousCredentials(),)
+    client = LoggingServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_log), "__call__") as call:
@@ -790,7 +819,9 @@ def test_delete_log_flattened():
         call.return_value = None
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_log(log_name="log_name_value",)
+        client.delete_log(
+            log_name="log_name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -802,13 +833,16 @@ def test_delete_log_flattened():
 
 
 def test_delete_log_flattened_error():
-    client = LoggingServiceV2Client(credentials=ga_credentials.AnonymousCredentials(),)
+    client = LoggingServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_log(
-            logging.DeleteLogRequest(), log_name="log_name_value",
+            logging.DeleteLogRequest(),
+            log_name="log_name_value",
         )
 
 
@@ -826,7 +860,9 @@ async def test_delete_log_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_log(log_name="log_name_value",)
+        response = await client.delete_log(
+            log_name="log_name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -847,14 +883,22 @@ async def test_delete_log_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_log(
-            logging.DeleteLogRequest(), log_name="log_name_value",
+            logging.DeleteLogRequest(),
+            log_name="log_name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [logging.WriteLogEntriesRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        logging.WriteLogEntriesRequest,
+        dict,
+    ],
+)
 def test_write_log_entries(request_type, transport: str = "grpc"):
     client = LoggingServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -882,7 +926,8 @@ def test_write_log_entries_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = LoggingServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -900,7 +945,8 @@ async def test_write_log_entries_async(
     transport: str = "grpc_asyncio", request_type=logging.WriteLogEntriesRequest
 ):
     client = LoggingServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -932,7 +978,9 @@ async def test_write_log_entries_async_from_dict():
 
 
 def test_write_log_entries_flattened():
-    client = LoggingServiceV2Client(credentials=ga_credentials.AnonymousCredentials(),)
+    client = LoggingServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -968,7 +1016,9 @@ def test_write_log_entries_flattened():
 
 
 def test_write_log_entries_flattened_error():
-    client = LoggingServiceV2Client(credentials=ga_credentials.AnonymousCredentials(),)
+    client = LoggingServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1043,10 +1093,17 @@ async def test_write_log_entries_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [logging.ListLogEntriesRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        logging.ListLogEntriesRequest,
+        dict,
+    ],
+)
 def test_list_log_entries(request_type, transport: str = "grpc"):
     client = LoggingServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1075,7 +1132,8 @@ def test_list_log_entries_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = LoggingServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1091,7 +1149,8 @@ async def test_list_log_entries_async(
     transport: str = "grpc_asyncio", request_type=logging.ListLogEntriesRequest
 ):
     client = LoggingServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1102,7 +1161,9 @@ async def test_list_log_entries_async(
     with mock.patch.object(type(client.transport.list_log_entries), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            logging.ListLogEntriesResponse(next_page_token="next_page_token_value",)
+            logging.ListLogEntriesResponse(
+                next_page_token="next_page_token_value",
+            )
         )
         response = await client.list_log_entries(request)
 
@@ -1122,7 +1183,9 @@ async def test_list_log_entries_async_from_dict():
 
 
 def test_list_log_entries_flattened():
-    client = LoggingServiceV2Client(credentials=ga_credentials.AnonymousCredentials(),)
+    client = LoggingServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_log_entries), "__call__") as call:
@@ -1152,7 +1215,9 @@ def test_list_log_entries_flattened():
 
 
 def test_list_log_entries_flattened_error():
-    client = LoggingServiceV2Client(credentials=ga_credentials.AnonymousCredentials(),)
+    client = LoggingServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1221,7 +1286,8 @@ async def test_list_log_entries_flattened_error_async():
 
 def test_list_log_entries_pager(transport_name: str = "grpc"):
     client = LoggingServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1236,12 +1302,21 @@ def test_list_log_entries_pager(transport_name: str = "grpc"):
                 ],
                 next_page_token="abc",
             ),
-            logging.ListLogEntriesResponse(entries=[], next_page_token="def",),
             logging.ListLogEntriesResponse(
-                entries=[log_entry.LogEntry(),], next_page_token="ghi",
+                entries=[],
+                next_page_token="def",
             ),
             logging.ListLogEntriesResponse(
-                entries=[log_entry.LogEntry(), log_entry.LogEntry(),],
+                entries=[
+                    log_entry.LogEntry(),
+                ],
+                next_page_token="ghi",
+            ),
+            logging.ListLogEntriesResponse(
+                entries=[
+                    log_entry.LogEntry(),
+                    log_entry.LogEntry(),
+                ],
             ),
             RuntimeError,
         )
@@ -1258,7 +1333,8 @@ def test_list_log_entries_pager(transport_name: str = "grpc"):
 
 def test_list_log_entries_pages(transport_name: str = "grpc"):
     client = LoggingServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1273,12 +1349,21 @@ def test_list_log_entries_pages(transport_name: str = "grpc"):
                 ],
                 next_page_token="abc",
             ),
-            logging.ListLogEntriesResponse(entries=[], next_page_token="def",),
             logging.ListLogEntriesResponse(
-                entries=[log_entry.LogEntry(),], next_page_token="ghi",
+                entries=[],
+                next_page_token="def",
             ),
             logging.ListLogEntriesResponse(
-                entries=[log_entry.LogEntry(), log_entry.LogEntry(),],
+                entries=[
+                    log_entry.LogEntry(),
+                ],
+                next_page_token="ghi",
+            ),
+            logging.ListLogEntriesResponse(
+                entries=[
+                    log_entry.LogEntry(),
+                    log_entry.LogEntry(),
+                ],
             ),
             RuntimeError,
         )
@@ -1307,16 +1392,27 @@ async def test_list_log_entries_async_pager():
                 ],
                 next_page_token="abc",
             ),
-            logging.ListLogEntriesResponse(entries=[], next_page_token="def",),
             logging.ListLogEntriesResponse(
-                entries=[log_entry.LogEntry(),], next_page_token="ghi",
+                entries=[],
+                next_page_token="def",
             ),
             logging.ListLogEntriesResponse(
-                entries=[log_entry.LogEntry(), log_entry.LogEntry(),],
+                entries=[
+                    log_entry.LogEntry(),
+                ],
+                next_page_token="ghi",
+            ),
+            logging.ListLogEntriesResponse(
+                entries=[
+                    log_entry.LogEntry(),
+                    log_entry.LogEntry(),
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.list_log_entries(request={},)
+        async_pager = await client.list_log_entries(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -1346,12 +1442,21 @@ async def test_list_log_entries_async_pages():
                 ],
                 next_page_token="abc",
             ),
-            logging.ListLogEntriesResponse(entries=[], next_page_token="def",),
             logging.ListLogEntriesResponse(
-                entries=[log_entry.LogEntry(),], next_page_token="ghi",
+                entries=[],
+                next_page_token="def",
             ),
             logging.ListLogEntriesResponse(
-                entries=[log_entry.LogEntry(), log_entry.LogEntry(),],
+                entries=[
+                    log_entry.LogEntry(),
+                ],
+                next_page_token="ghi",
+            ),
+            logging.ListLogEntriesResponse(
+                entries=[
+                    log_entry.LogEntry(),
+                    log_entry.LogEntry(),
+                ],
             ),
             RuntimeError,
         )
@@ -1363,11 +1468,16 @@ async def test_list_log_entries_async_pages():
 
 
 @pytest.mark.parametrize(
-    "request_type", [logging.ListMonitoredResourceDescriptorsRequest, dict,]
+    "request_type",
+    [
+        logging.ListMonitoredResourceDescriptorsRequest,
+        dict,
+    ],
 )
 def test_list_monitored_resource_descriptors(request_type, transport: str = "grpc"):
     client = LoggingServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1398,7 +1508,8 @@ def test_list_monitored_resource_descriptors_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = LoggingServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1417,7 +1528,8 @@ async def test_list_monitored_resource_descriptors_async(
     request_type=logging.ListMonitoredResourceDescriptorsRequest,
 ):
     client = LoggingServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1453,7 +1565,8 @@ async def test_list_monitored_resource_descriptors_async_from_dict():
 
 def test_list_monitored_resource_descriptors_pager(transport_name: str = "grpc"):
     client = LoggingServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1471,7 +1584,8 @@ def test_list_monitored_resource_descriptors_pager(transport_name: str = "grpc")
                 next_page_token="abc",
             ),
             logging.ListMonitoredResourceDescriptorsResponse(
-                resource_descriptors=[], next_page_token="def",
+                resource_descriptors=[],
+                next_page_token="def",
             ),
             logging.ListMonitoredResourceDescriptorsResponse(
                 resource_descriptors=[
@@ -1503,7 +1617,8 @@ def test_list_monitored_resource_descriptors_pager(transport_name: str = "grpc")
 
 def test_list_monitored_resource_descriptors_pages(transport_name: str = "grpc"):
     client = LoggingServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1521,7 +1636,8 @@ def test_list_monitored_resource_descriptors_pages(transport_name: str = "grpc")
                 next_page_token="abc",
             ),
             logging.ListMonitoredResourceDescriptorsResponse(
-                resource_descriptors=[], next_page_token="def",
+                resource_descriptors=[],
+                next_page_token="def",
             ),
             logging.ListMonitoredResourceDescriptorsResponse(
                 resource_descriptors=[
@@ -1565,7 +1681,8 @@ async def test_list_monitored_resource_descriptors_async_pager():
                 next_page_token="abc",
             ),
             logging.ListMonitoredResourceDescriptorsResponse(
-                resource_descriptors=[], next_page_token="def",
+                resource_descriptors=[],
+                next_page_token="def",
             ),
             logging.ListMonitoredResourceDescriptorsResponse(
                 resource_descriptors=[
@@ -1581,7 +1698,9 @@ async def test_list_monitored_resource_descriptors_async_pager():
             ),
             RuntimeError,
         )
-        async_pager = await client.list_monitored_resource_descriptors(request={},)
+        async_pager = await client.list_monitored_resource_descriptors(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -1617,7 +1736,8 @@ async def test_list_monitored_resource_descriptors_async_pages():
                 next_page_token="abc",
             ),
             logging.ListMonitoredResourceDescriptorsResponse(
-                resource_descriptors=[], next_page_token="def",
+                resource_descriptors=[],
+                next_page_token="def",
             ),
             logging.ListMonitoredResourceDescriptorsResponse(
                 resource_descriptors=[
@@ -1642,10 +1762,17 @@ async def test_list_monitored_resource_descriptors_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [logging.ListLogsRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        logging.ListLogsRequest,
+        dict,
+    ],
+)
 def test_list_logs(request_type, transport: str = "grpc"):
     client = LoggingServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1656,7 +1783,8 @@ def test_list_logs(request_type, transport: str = "grpc"):
     with mock.patch.object(type(client.transport.list_logs), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = logging.ListLogsResponse(
-            log_names=["log_names_value"], next_page_token="next_page_token_value",
+            log_names=["log_names_value"],
+            next_page_token="next_page_token_value",
         )
         response = client.list_logs(request)
 
@@ -1675,7 +1803,8 @@ def test_list_logs_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = LoggingServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1691,7 +1820,8 @@ async def test_list_logs_async(
     transport: str = "grpc_asyncio", request_type=logging.ListLogsRequest
 ):
     client = LoggingServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1703,7 +1833,8 @@ async def test_list_logs_async(
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             logging.ListLogsResponse(
-                log_names=["log_names_value"], next_page_token="next_page_token_value",
+                log_names=["log_names_value"],
+                next_page_token="next_page_token_value",
             )
         )
         response = await client.list_logs(request)
@@ -1725,7 +1856,9 @@ async def test_list_logs_async_from_dict():
 
 
 def test_list_logs_field_headers():
-    client = LoggingServiceV2Client(credentials=ga_credentials.AnonymousCredentials(),)
+    client = LoggingServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1745,7 +1878,10 @@ def test_list_logs_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1774,11 +1910,16 @@ async def test_list_logs_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_logs_flattened():
-    client = LoggingServiceV2Client(credentials=ga_credentials.AnonymousCredentials(),)
+    client = LoggingServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_logs), "__call__") as call:
@@ -1786,7 +1927,9 @@ def test_list_logs_flattened():
         call.return_value = logging.ListLogsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_logs(parent="parent_value",)
+        client.list_logs(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1798,13 +1941,16 @@ def test_list_logs_flattened():
 
 
 def test_list_logs_flattened_error():
-    client = LoggingServiceV2Client(credentials=ga_credentials.AnonymousCredentials(),)
+    client = LoggingServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_logs(
-            logging.ListLogsRequest(), parent="parent_value",
+            logging.ListLogsRequest(),
+            parent="parent_value",
         )
 
 
@@ -1824,7 +1970,9 @@ async def test_list_logs_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_logs(parent="parent_value",)
+        response = await client.list_logs(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1845,13 +1993,15 @@ async def test_list_logs_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_logs(
-            logging.ListLogsRequest(), parent="parent_value",
+            logging.ListLogsRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_logs_pager(transport_name: str = "grpc"):
     client = LoggingServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1859,11 +2009,29 @@ def test_list_logs_pager(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             logging.ListLogsResponse(
-                log_names=[str(), str(), str(),], next_page_token="abc",
+                log_names=[
+                    str(),
+                    str(),
+                    str(),
+                ],
+                next_page_token="abc",
             ),
-            logging.ListLogsResponse(log_names=[], next_page_token="def",),
-            logging.ListLogsResponse(log_names=[str(),], next_page_token="ghi",),
-            logging.ListLogsResponse(log_names=[str(), str(),],),
+            logging.ListLogsResponse(
+                log_names=[],
+                next_page_token="def",
+            ),
+            logging.ListLogsResponse(
+                log_names=[
+                    str(),
+                ],
+                next_page_token="ghi",
+            ),
+            logging.ListLogsResponse(
+                log_names=[
+                    str(),
+                    str(),
+                ],
+            ),
             RuntimeError,
         )
 
@@ -1882,7 +2050,8 @@ def test_list_logs_pager(transport_name: str = "grpc"):
 
 def test_list_logs_pages(transport_name: str = "grpc"):
     client = LoggingServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1890,11 +2059,29 @@ def test_list_logs_pages(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             logging.ListLogsResponse(
-                log_names=[str(), str(), str(),], next_page_token="abc",
+                log_names=[
+                    str(),
+                    str(),
+                    str(),
+                ],
+                next_page_token="abc",
             ),
-            logging.ListLogsResponse(log_names=[], next_page_token="def",),
-            logging.ListLogsResponse(log_names=[str(),], next_page_token="ghi",),
-            logging.ListLogsResponse(log_names=[str(), str(),],),
+            logging.ListLogsResponse(
+                log_names=[],
+                next_page_token="def",
+            ),
+            logging.ListLogsResponse(
+                log_names=[
+                    str(),
+                ],
+                next_page_token="ghi",
+            ),
+            logging.ListLogsResponse(
+                log_names=[
+                    str(),
+                    str(),
+                ],
+            ),
             RuntimeError,
         )
         pages = list(client.list_logs(request={}).pages)
@@ -1915,14 +2102,34 @@ async def test_list_logs_async_pager():
         # Set the response to a series of pages.
         call.side_effect = (
             logging.ListLogsResponse(
-                log_names=[str(), str(), str(),], next_page_token="abc",
+                log_names=[
+                    str(),
+                    str(),
+                    str(),
+                ],
+                next_page_token="abc",
             ),
-            logging.ListLogsResponse(log_names=[], next_page_token="def",),
-            logging.ListLogsResponse(log_names=[str(),], next_page_token="ghi",),
-            logging.ListLogsResponse(log_names=[str(), str(),],),
+            logging.ListLogsResponse(
+                log_names=[],
+                next_page_token="def",
+            ),
+            logging.ListLogsResponse(
+                log_names=[
+                    str(),
+                ],
+                next_page_token="ghi",
+            ),
+            logging.ListLogsResponse(
+                log_names=[
+                    str(),
+                    str(),
+                ],
+            ),
             RuntimeError,
         )
-        async_pager = await client.list_logs(request={},)
+        async_pager = await client.list_logs(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -1945,11 +2152,29 @@ async def test_list_logs_async_pages():
         # Set the response to a series of pages.
         call.side_effect = (
             logging.ListLogsResponse(
-                log_names=[str(), str(), str(),], next_page_token="abc",
+                log_names=[
+                    str(),
+                    str(),
+                    str(),
+                ],
+                next_page_token="abc",
             ),
-            logging.ListLogsResponse(log_names=[], next_page_token="def",),
-            logging.ListLogsResponse(log_names=[str(),], next_page_token="ghi",),
-            logging.ListLogsResponse(log_names=[str(), str(),],),
+            logging.ListLogsResponse(
+                log_names=[],
+                next_page_token="def",
+            ),
+            logging.ListLogsResponse(
+                log_names=[
+                    str(),
+                ],
+                next_page_token="ghi",
+            ),
+            logging.ListLogsResponse(
+                log_names=[
+                    str(),
+                    str(),
+                ],
+            ),
             RuntimeError,
         )
         pages = []
@@ -1959,10 +2184,17 @@ async def test_list_logs_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [logging.TailLogEntriesRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        logging.TailLogEntriesRequest,
+        dict,
+    ],
+)
 def test_tail_log_entries(request_type, transport: str = "grpc"):
     client = LoggingServiceV2Client(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1991,7 +2223,8 @@ async def test_tail_log_entries_async(
     transport: str = "grpc_asyncio", request_type=logging.TailLogEntriesRequest
 ):
     client = LoggingServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2030,7 +2263,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = LoggingServiceV2Client(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -2050,7 +2284,10 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = LoggingServiceV2Client(client_options=options, transport=transport,)
+        client = LoggingServiceV2Client(
+            client_options=options,
+            transport=transport,
+        )
 
     # It is an error to provide an api_key and a credential.
     options = mock.Mock()
@@ -2066,7 +2303,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = LoggingServiceV2Client(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -2111,8 +2349,13 @@ def test_transport_adc(transport_class):
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
-    client = LoggingServiceV2Client(credentials=ga_credentials.AnonymousCredentials(),)
-    assert isinstance(client.transport, transports.LoggingServiceV2GrpcTransport,)
+    client = LoggingServiceV2Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    assert isinstance(
+        client.transport,
+        transports.LoggingServiceV2GrpcTransport,
+    )
 
 
 def test_logging_service_v2_base_transport_error():
@@ -2162,7 +2405,8 @@ def test_logging_service_v2_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.LoggingServiceV2Transport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -2344,7 +2588,8 @@ def test_logging_service_v2_grpc_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.LoggingServiceV2GrpcTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -2356,7 +2601,8 @@ def test_logging_service_v2_grpc_asyncio_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.LoggingServiceV2GrpcAsyncIOTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -2466,7 +2712,10 @@ def test_logging_service_v2_transport_channel_mtls_with_adc(transport_class):
 def test_log_path():
     project = "squid"
     log = "clam"
-    expected = "projects/{project}/logs/{log}".format(project=project, log=log,)
+    expected = "projects/{project}/logs/{log}".format(
+        project=project,
+        log=log,
+    )
     actual = LoggingServiceV2Client.log_path(project, log)
     assert expected == actual
 
@@ -2505,7 +2754,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "cuttlefish"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = LoggingServiceV2Client.common_folder_path(folder)
     assert expected == actual
 
@@ -2523,7 +2774,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "winkle"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = LoggingServiceV2Client.common_organization_path(organization)
     assert expected == actual
 
@@ -2541,7 +2794,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "scallop"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = LoggingServiceV2Client.common_project_path(project)
     assert expected == actual
 
@@ -2561,7 +2816,8 @@ def test_common_location_path():
     project = "squid"
     location = "clam"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = LoggingServiceV2Client.common_location_path(project, location)
     assert expected == actual
@@ -2586,7 +2842,8 @@ def test_client_with_default_client_info():
         transports.LoggingServiceV2Transport, "_prep_wrapped_messages"
     ) as prep:
         client = LoggingServiceV2Client(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -2595,7 +2852,8 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = LoggingServiceV2Client.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -2603,7 +2861,8 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = LoggingServiceV2AsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     with mock.patch.object(
         type(getattr(client.transport, "grpc_channel")), "close"

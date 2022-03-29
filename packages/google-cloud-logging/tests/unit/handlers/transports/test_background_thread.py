@@ -64,7 +64,9 @@ class TestBackgroundThreadHandler(unittest.TestCase):
         transport.send(record, message, resource=_GLOBAL_RESOURCE)
 
         transport.worker.enqueue.assert_called_once_with(
-            record, message, resource=_GLOBAL_RESOURCE,
+            record,
+            message,
+            resource=_GLOBAL_RESOURCE,
         )
 
     def test_trace_send(self):
@@ -86,7 +88,10 @@ class TestBackgroundThreadHandler(unittest.TestCase):
         transport.send(record, message, resource=_GLOBAL_RESOURCE, trace=trace)
 
         transport.worker.enqueue.assert_called_once_with(
-            record, message, resource=_GLOBAL_RESOURCE, trace=trace,
+            record,
+            message,
+            resource=_GLOBAL_RESOURCE,
+            trace=trace,
         )
 
     def test_span_send(self):
@@ -108,7 +113,10 @@ class TestBackgroundThreadHandler(unittest.TestCase):
         transport.send(record, message, resource=_GLOBAL_RESOURCE, span_id=span_id)
 
         transport.worker.enqueue.assert_called_once_with(
-            record, message, resource=_GLOBAL_RESOURCE, span_id=span_id,
+            record,
+            message,
+            resource=_GLOBAL_RESOURCE,
+            span_id=span_id,
         )
 
     def test_flush(self):

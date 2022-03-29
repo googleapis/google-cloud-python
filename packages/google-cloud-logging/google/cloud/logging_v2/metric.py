@@ -20,8 +20,8 @@ from google.cloud.exceptions import NotFound
 class Metric(object):
     """Metrics represent named filters for log entries.
 
-        See
-        https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.metrics
+    See
+    https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.metrics
     """
 
     def __init__(self, name, *, filter_=None, client=None, description=""):

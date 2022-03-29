@@ -59,7 +59,10 @@ class ConfigServiceV2ClientMeta(type):
     _transport_registry["grpc"] = ConfigServiceV2GrpcTransport
     _transport_registry["grpc_asyncio"] = ConfigServiceV2GrpcAsyncIOTransport
 
-    def get_transport_class(cls, label: str = None,) -> Type[ConfigServiceV2Transport]:
+    def get_transport_class(
+        cls,
+        label: str = None,
+    ) -> Type[ConfigServiceV2Transport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -164,9 +167,13 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         return self._transport
 
     @staticmethod
-    def cmek_settings_path(project: str,) -> str:
+    def cmek_settings_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified cmek_settings string."""
-        return "projects/{project}/cmekSettings".format(project=project,)
+        return "projects/{project}/cmekSettings".format(
+            project=project,
+        )
 
     @staticmethod
     def parse_cmek_settings_path(path: str) -> Dict[str, str]:
@@ -175,10 +182,16 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def log_bucket_path(project: str, location: str, bucket: str,) -> str:
+    def log_bucket_path(
+        project: str,
+        location: str,
+        bucket: str,
+    ) -> str:
         """Returns a fully-qualified log_bucket string."""
         return "projects/{project}/locations/{location}/buckets/{bucket}".format(
-            project=project, location=location, bucket=bucket,
+            project=project,
+            location=location,
+            bucket=bucket,
         )
 
     @staticmethod
@@ -191,10 +204,14 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def log_exclusion_path(project: str, exclusion: str,) -> str:
+    def log_exclusion_path(
+        project: str,
+        exclusion: str,
+    ) -> str:
         """Returns a fully-qualified log_exclusion string."""
         return "projects/{project}/exclusions/{exclusion}".format(
-            project=project, exclusion=exclusion,
+            project=project,
+            exclusion=exclusion,
         )
 
     @staticmethod
@@ -204,9 +221,15 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def log_sink_path(project: str, sink: str,) -> str:
+    def log_sink_path(
+        project: str,
+        sink: str,
+    ) -> str:
         """Returns a fully-qualified log_sink string."""
-        return "projects/{project}/sinks/{sink}".format(project=project, sink=sink,)
+        return "projects/{project}/sinks/{sink}".format(
+            project=project,
+            sink=sink,
+        )
 
     @staticmethod
     def parse_log_sink_path(path: str) -> Dict[str, str]:
@@ -215,10 +238,18 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def log_view_path(project: str, location: str, bucket: str, view: str,) -> str:
+    def log_view_path(
+        project: str,
+        location: str,
+        bucket: str,
+        view: str,
+    ) -> str:
         """Returns a fully-qualified log_view string."""
         return "projects/{project}/locations/{location}/buckets/{bucket}/views/{view}".format(
-            project=project, location=location, bucket=bucket, view=view,
+            project=project,
+            location=location,
+            bucket=bucket,
+            view=view,
         )
 
     @staticmethod
@@ -231,9 +262,13 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def settings_path(project: str,) -> str:
+    def settings_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified settings string."""
-        return "projects/{project}/settings".format(project=project,)
+        return "projects/{project}/settings".format(
+            project=project,
+        )
 
     @staticmethod
     def parse_settings_path(path: str) -> Dict[str, str]:
@@ -242,7 +277,9 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_billing_account_path(billing_account: str,) -> str:
+    def common_billing_account_path(
+        billing_account: str,
+    ) -> str:
         """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
@@ -255,9 +292,13 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(folder: str,) -> str:
+    def common_folder_path(
+        folder: str,
+    ) -> str:
         """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(folder=folder,)
+        return "folders/{folder}".format(
+            folder=folder,
+        )
 
     @staticmethod
     def parse_common_folder_path(path: str) -> Dict[str, str]:
@@ -266,9 +307,13 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(organization: str,) -> str:
+    def common_organization_path(
+        organization: str,
+    ) -> str:
         """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(organization=organization,)
+        return "organizations/{organization}".format(
+            organization=organization,
+        )
 
     @staticmethod
     def parse_common_organization_path(path: str) -> Dict[str, str]:
@@ -277,9 +322,13 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(project: str,) -> str:
+    def common_project_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified project string."""
-        return "projects/{project}".format(project=project,)
+        return "projects/{project}".format(
+            project=project,
+        )
 
     @staticmethod
     def parse_common_project_path(path: str) -> Dict[str, str]:
@@ -288,10 +337,14 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(project: str, location: str,) -> str:
+    def common_location_path(
+        project: str,
+        location: str,
+    ) -> str:
         """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
-            project=project, location=location,
+            project=project,
+            location=location,
         )
 
     @staticmethod
@@ -563,12 +616,20 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListBucketsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -637,7 +698,12 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -709,7 +775,12 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -789,7 +860,12 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -855,7 +931,10 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def undelete_bucket(
@@ -916,7 +995,10 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def list_views(
@@ -1009,12 +1091,20 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListViewsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1083,7 +1173,12 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1154,7 +1249,12 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1227,7 +1327,12 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1291,7 +1396,10 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def list_sinks(
@@ -1388,12 +1496,20 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListSinksPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1502,7 +1618,12 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1628,7 +1749,12 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1783,7 +1909,12 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1879,7 +2010,10 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def list_exclusions(
@@ -1978,12 +2112,20 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListExclusionsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -2088,7 +2230,12 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2213,7 +2360,12 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2352,7 +2504,12 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2444,7 +2601,10 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def get_cmek_settings(
@@ -2534,7 +2694,12 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2631,7 +2796,12 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2753,7 +2923,12 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2885,7 +3060,12 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2958,7 +3138,12 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.copy_log_entries]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -2987,7 +3172,9 @@ class ConfigServiceV2Client(metaclass=ConfigServiceV2ClientMeta):
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-logging",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-logging",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()

@@ -454,18 +454,18 @@ class _MetricsAPI(object):
     def metric_update(self, project, metric_name, filter_, description):
         """Update a metric resource.
 
-        See
-        https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.metrics/update
+         See
+         https://cloud.google.com/logging/docs/reference/v2/rest/v2/projects.metrics/update
 
-       Args:
-            project (str): ID of the project containing the metric.
-            metric_name (str): the name of the metric
-            filter_ (str): the advanced logs filter expression defining the
-                entries exported by the metric.
-            description (str): description of the metric.
+        Args:
+             project (str): ID of the project containing the metric.
+             metric_name (str): the name of the metric
+             filter_ (str): the advanced logs filter expression defining the
+                 entries exported by the metric.
+             description (str): description of the metric.
 
-        Returns:
-            dict: The returned (updated) resource.
+         Returns:
+             dict: The returned (updated) resource.
         """
         target = f"/projects/{project}/metrics/{metric_name}"
         data = {"name": metric_name, "filter": filter_, "description": description}
