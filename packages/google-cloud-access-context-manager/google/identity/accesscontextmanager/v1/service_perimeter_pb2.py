@@ -39,9 +39,9 @@ DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(
 
 _SERVICEPERIMETER = DESCRIPTOR.message_types_by_name["ServicePerimeter"]
 _SERVICEPERIMETERCONFIG = DESCRIPTOR.message_types_by_name["ServicePerimeterConfig"]
-_SERVICEPERIMETERCONFIG_VPCACCESSIBLESERVICES = _SERVICEPERIMETERCONFIG.nested_types_by_name[
-    "VpcAccessibleServices"
-]
+_SERVICEPERIMETERCONFIG_VPCACCESSIBLESERVICES = (
+    _SERVICEPERIMETERCONFIG.nested_types_by_name["VpcAccessibleServices"]
+)
 _SERVICEPERIMETER_PERIMETERTYPE = _SERVICEPERIMETER.enum_types_by_name["PerimeterType"]
 ServicePerimeter = _reflection.GeneratedProtocolMessageType(
     "ServicePerimeter",
