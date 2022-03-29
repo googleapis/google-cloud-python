@@ -80,15 +80,43 @@ class Deployment(proto.Message):
                 ID>/experiments/<Experiment ID>.
         """
 
-        deployment_test_results = proto.RepeatedField(proto.STRING, number=1,)
-        experiment = proto.Field(proto.STRING, number=2,)
+        deployment_test_results = proto.RepeatedField(
+            proto.STRING,
+            number=1,
+        )
+        experiment = proto.Field(
+            proto.STRING,
+            number=2,
+        )
 
-    name = proto.Field(proto.STRING, number=1,)
-    flow_version = proto.Field(proto.STRING, number=2,)
-    state = proto.Field(proto.ENUM, number=3, enum=State,)
-    result = proto.Field(proto.MESSAGE, number=4, message=Result,)
-    start_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
-    end_time = proto.Field(proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    flow_version = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=State,
+    )
+    result = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=Result,
+    )
+    start_time = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 class ListDeploymentsRequest(proto.Message):
@@ -109,9 +137,18 @@ class ListDeploymentsRequest(proto.Message):
             request.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListDeploymentsResponse(proto.Message):
@@ -134,8 +171,15 @@ class ListDeploymentsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    deployments = proto.RepeatedField(proto.MESSAGE, number=1, message="Deployment",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    deployments = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Deployment",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetDeploymentRequest(proto.Message):
@@ -150,7 +194,10 @@ class GetDeploymentRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>/deployments/<Deployment ID>``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

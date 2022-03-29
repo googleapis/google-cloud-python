@@ -115,11 +115,27 @@ class Webhook(proto.Message):
                         -extfile <(printf "\nsubjectAltName='DNS:www.example.com'")
         """
 
-        uri = proto.Field(proto.STRING, number=1,)
-        username = proto.Field(proto.STRING, number=2,)
-        password = proto.Field(proto.STRING, number=3,)
-        request_headers = proto.MapField(proto.STRING, proto.STRING, number=4,)
-        allowed_ca_certs = proto.RepeatedField(proto.BYTES, number=5,)
+        uri = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        username = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        password = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+        request_headers = proto.MapField(
+            proto.STRING,
+            proto.STRING,
+            number=4,
+        )
+        allowed_ca_certs = proto.RepeatedField(
+            proto.BYTES,
+            number=5,
+        )
 
     class ServiceDirectoryConfig(proto.Message):
         r"""Represents configuration for a `Service
@@ -138,21 +154,45 @@ class Webhook(proto.Message):
                 webhook.
         """
 
-        service = proto.Field(proto.STRING, number=1,)
+        service = proto.Field(
+            proto.STRING,
+            number=1,
+        )
         generic_web_service = proto.Field(
-            proto.MESSAGE, number=2, message="Webhook.GenericWebService",
+            proto.MESSAGE,
+            number=2,
+            message="Webhook.GenericWebService",
         )
 
-    name = proto.Field(proto.STRING, number=1,)
-    display_name = proto.Field(proto.STRING, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
     generic_web_service = proto.Field(
-        proto.MESSAGE, number=4, oneof="webhook", message=GenericWebService,
+        proto.MESSAGE,
+        number=4,
+        oneof="webhook",
+        message=GenericWebService,
     )
     service_directory = proto.Field(
-        proto.MESSAGE, number=7, oneof="webhook", message=ServiceDirectoryConfig,
+        proto.MESSAGE,
+        number=7,
+        oneof="webhook",
+        message=ServiceDirectoryConfig,
     )
-    timeout = proto.Field(proto.MESSAGE, number=6, message=duration_pb2.Duration,)
-    disabled = proto.Field(proto.BOOL, number=5,)
+    timeout = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=duration_pb2.Duration,
+    )
+    disabled = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
 
 
 class ListWebhooksRequest(proto.Message):
@@ -171,9 +211,18 @@ class ListWebhooksRequest(proto.Message):
             request.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListWebhooksResponse(proto.Message):
@@ -194,8 +243,15 @@ class ListWebhooksResponse(proto.Message):
     def raw_page(self):
         return self
 
-    webhooks = proto.RepeatedField(proto.MESSAGE, number=1, message="Webhook",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    webhooks = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Webhook",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetWebhookRequest(proto.Message):
@@ -208,7 +264,10 @@ class GetWebhookRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/webhooks/<Webhook ID>``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CreateWebhookRequest(proto.Message):
@@ -223,8 +282,15 @@ class CreateWebhookRequest(proto.Message):
             Required. The webhook to create.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    webhook = proto.Field(proto.MESSAGE, number=2, message="Webhook",)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    webhook = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="Webhook",
+    )
 
 
 class UpdateWebhookRequest(proto.Message):
@@ -240,9 +306,15 @@ class UpdateWebhookRequest(proto.Message):
             updated.
     """
 
-    webhook = proto.Field(proto.MESSAGE, number=1, message="Webhook",)
+    webhook = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="Webhook",
+    )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -269,8 +341,14 @@ class DeleteWebhookRequest(proto.Message):
                fulfillments that point to this webhook will be removed).
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    force = proto.Field(proto.BOOL, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    force = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
 
 
 class WebhookRequest(proto.Message):
@@ -354,7 +432,10 @@ class WebhookRequest(proto.Message):
                 which fulfillment is being called.
         """
 
-        tag = proto.Field(proto.STRING, number=1,)
+        tag = proto.Field(
+            proto.STRING,
+            number=1,
+        )
 
     class IntentInfo(proto.Message):
         r"""Represents intent information communicated to the webhook.
@@ -392,20 +473,34 @@ class WebhookRequest(proto.Message):
                     parameter extracted from user utterance.
             """
 
-            original_value = proto.Field(proto.STRING, number=1,)
+            original_value = proto.Field(
+                proto.STRING,
+                number=1,
+            )
             resolved_value = proto.Field(
-                proto.MESSAGE, number=2, message=struct_pb2.Value,
+                proto.MESSAGE,
+                number=2,
+                message=struct_pb2.Value,
             )
 
-        last_matched_intent = proto.Field(proto.STRING, number=1,)
-        display_name = proto.Field(proto.STRING, number=3,)
+        last_matched_intent = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        display_name = proto.Field(
+            proto.STRING,
+            number=3,
+        )
         parameters = proto.MapField(
             proto.STRING,
             proto.MESSAGE,
             number=2,
             message="WebhookRequest.IntentInfo.IntentParameterValue",
         )
-        confidence = proto.Field(proto.FLOAT, number=4,)
+        confidence = proto.Field(
+            proto.FLOAT,
+            number=4,
+        )
 
     class SentimentAnalysisResult(proto.Message):
         r"""Represents the result of sentiment analysis.
@@ -420,25 +515,77 @@ class WebhookRequest(proto.Message):
                 of score (positive or negative).
         """
 
-        score = proto.Field(proto.FLOAT, number=1,)
-        magnitude = proto.Field(proto.FLOAT, number=2,)
+        score = proto.Field(
+            proto.FLOAT,
+            number=1,
+        )
+        magnitude = proto.Field(
+            proto.FLOAT,
+            number=2,
+        )
 
-    detect_intent_response_id = proto.Field(proto.STRING, number=1,)
-    text = proto.Field(proto.STRING, number=10, oneof="query",)
-    trigger_intent = proto.Field(proto.STRING, number=11, oneof="query",)
-    transcript = proto.Field(proto.STRING, number=12, oneof="query",)
-    trigger_event = proto.Field(proto.STRING, number=14, oneof="query",)
-    language_code = proto.Field(proto.STRING, number=15,)
-    fulfillment_info = proto.Field(proto.MESSAGE, number=6, message=FulfillmentInfo,)
-    intent_info = proto.Field(proto.MESSAGE, number=3, message=IntentInfo,)
-    page_info = proto.Field(proto.MESSAGE, number=4, message="PageInfo",)
-    session_info = proto.Field(proto.MESSAGE, number=5, message="SessionInfo",)
-    messages = proto.RepeatedField(
-        proto.MESSAGE, number=7, message=response_message.ResponseMessage,
+    detect_intent_response_id = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    payload = proto.Field(proto.MESSAGE, number=8, message=struct_pb2.Struct,)
+    text = proto.Field(
+        proto.STRING,
+        number=10,
+        oneof="query",
+    )
+    trigger_intent = proto.Field(
+        proto.STRING,
+        number=11,
+        oneof="query",
+    )
+    transcript = proto.Field(
+        proto.STRING,
+        number=12,
+        oneof="query",
+    )
+    trigger_event = proto.Field(
+        proto.STRING,
+        number=14,
+        oneof="query",
+    )
+    language_code = proto.Field(
+        proto.STRING,
+        number=15,
+    )
+    fulfillment_info = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=FulfillmentInfo,
+    )
+    intent_info = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=IntentInfo,
+    )
+    page_info = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="PageInfo",
+    )
+    session_info = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message="SessionInfo",
+    )
+    messages = proto.RepeatedField(
+        proto.MESSAGE,
+        number=7,
+        message=response_message.ResponseMessage,
+    )
+    payload = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=struct_pb2.Struct,
+    )
     sentiment_analysis_result = proto.Field(
-        proto.MESSAGE, number=9, message=SentimentAnalysisResult,
+        proto.MESSAGE,
+        number=9,
+        message=SentimentAnalysisResult,
     )
 
 
@@ -499,7 +646,9 @@ class WebhookResponse(proto.Message):
             REPLACE = 2
 
         messages = proto.RepeatedField(
-            proto.MESSAGE, number=1, message=response_message.ResponseMessage,
+            proto.MESSAGE,
+            number=1,
+            message=response_message.ResponseMessage,
         )
         merge_behavior = proto.Field(
             proto.ENUM,
@@ -508,13 +657,35 @@ class WebhookResponse(proto.Message):
         )
 
     fulfillment_response = proto.Field(
-        proto.MESSAGE, number=1, message=FulfillmentResponse,
+        proto.MESSAGE,
+        number=1,
+        message=FulfillmentResponse,
     )
-    page_info = proto.Field(proto.MESSAGE, number=2, message="PageInfo",)
-    session_info = proto.Field(proto.MESSAGE, number=3, message="SessionInfo",)
-    payload = proto.Field(proto.MESSAGE, number=4, message=struct_pb2.Struct,)
-    target_page = proto.Field(proto.STRING, number=5, oneof="transition",)
-    target_flow = proto.Field(proto.STRING, number=6, oneof="transition",)
+    page_info = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="PageInfo",
+    )
+    session_info = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="SessionInfo",
+    )
+    payload = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=struct_pb2.Struct,
+    )
+    target_page = proto.Field(
+        proto.STRING,
+        number=5,
+        oneof="transition",
+    )
+    target_flow = proto.Field(
+        proto.STRING,
+        number=6,
+        oneof="transition",
+    )
 
 
 class PageInfo(proto.Message):
@@ -608,23 +779,48 @@ class PageInfo(proto.Message):
                 INVALID = 2
                 FILLED = 3
 
-            display_name = proto.Field(proto.STRING, number=1,)
-            required = proto.Field(proto.BOOL, number=2,)
+            display_name = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            required = proto.Field(
+                proto.BOOL,
+                number=2,
+            )
             state = proto.Field(
                 proto.ENUM,
                 number=3,
                 enum="PageInfo.FormInfo.ParameterInfo.ParameterState",
             )
-            value = proto.Field(proto.MESSAGE, number=4, message=struct_pb2.Value,)
-            just_collected = proto.Field(proto.BOOL, number=5,)
+            value = proto.Field(
+                proto.MESSAGE,
+                number=4,
+                message=struct_pb2.Value,
+            )
+            just_collected = proto.Field(
+                proto.BOOL,
+                number=5,
+            )
 
         parameter_info = proto.RepeatedField(
-            proto.MESSAGE, number=2, message="PageInfo.FormInfo.ParameterInfo",
+            proto.MESSAGE,
+            number=2,
+            message="PageInfo.FormInfo.ParameterInfo",
         )
 
-    current_page = proto.Field(proto.STRING, number=1,)
-    display_name = proto.Field(proto.STRING, number=4,)
-    form_info = proto.Field(proto.MESSAGE, number=3, message=FormInfo,)
+    current_page = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    form_info = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=FormInfo,
+    )
 
 
 class SessionInfo(proto.Message):
@@ -658,9 +854,15 @@ class SessionInfo(proto.Message):
             The map is keyed by parameters' display names.
     """
 
-    session = proto.Field(proto.STRING, number=1,)
+    session = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     parameters = proto.MapField(
-        proto.STRING, proto.MESSAGE, number=2, message=struct_pb2.Value,
+        proto.STRING,
+        proto.MESSAGE,
+        number=2,
+        message=struct_pb2.Value,
     )
 
 

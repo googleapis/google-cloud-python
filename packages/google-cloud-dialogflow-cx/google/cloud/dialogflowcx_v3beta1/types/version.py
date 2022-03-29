@@ -48,7 +48,10 @@ class CreateVersionOperationMetadata(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/versions/<Version ID>``.
     """
 
-    version = proto.Field(proto.STRING, number=1,)
+    version = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class Version(proto.Message):
@@ -86,12 +89,33 @@ class Version(proto.Message):
         SUCCEEDED = 2
         FAILED = 3
 
-    name = proto.Field(proto.STRING, number=1,)
-    display_name = proto.Field(proto.STRING, number=2,)
-    description = proto.Field(proto.STRING, number=3,)
-    nlu_settings = proto.Field(proto.MESSAGE, number=4, message=flow.NluSettings,)
-    create_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
-    state = proto.Field(proto.ENUM, number=6, enum=State,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    nlu_settings = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=flow.NluSettings,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum=State,
+    )
 
 
 class ListVersionsRequest(proto.Message):
@@ -112,9 +136,18 @@ class ListVersionsRequest(proto.Message):
             request.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListVersionsResponse(proto.Message):
@@ -137,8 +170,15 @@ class ListVersionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    versions = proto.RepeatedField(proto.MESSAGE, number=1, message="Version",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    versions = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Version",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetVersionRequest(proto.Message):
@@ -153,7 +193,10 @@ class GetVersionRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/versions/<Version ID>``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CreateVersionRequest(proto.Message):
@@ -171,8 +214,15 @@ class CreateVersionRequest(proto.Message):
             Required. The version to create.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    version = proto.Field(proto.MESSAGE, number=2, message="Version",)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    version = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="Version",
+    )
 
 
 class UpdateVersionRequest(proto.Message):
@@ -188,9 +238,15 @@ class UpdateVersionRequest(proto.Message):
             updated.
     """
 
-    version = proto.Field(proto.MESSAGE, number=1, message="Version",)
+    version = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="Version",
+    )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -206,7 +262,10 @@ class DeleteVersionRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/versions/<Version ID>``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class LoadVersionRequest(proto.Message):
@@ -227,8 +286,14 @@ class LoadVersionRequest(proto.Message):
             (i.e. intents, entities, webhooks).
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    allow_override_agent_resources = proto.Field(proto.BOOL, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    allow_override_agent_resources = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
 
 
 class CompareVersionsRequest(proto.Message):
@@ -258,9 +323,18 @@ class CompareVersionsRequest(proto.Message):
             before they can be used.
     """
 
-    base_version = proto.Field(proto.STRING, number=1,)
-    target_version = proto.Field(proto.STRING, number=2,)
-    language_code = proto.Field(proto.STRING, number=3,)
+    base_version = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    target_version = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    language_code = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class CompareVersionsResponse(proto.Message):
@@ -278,10 +352,18 @@ class CompareVersionsResponse(proto.Message):
             The timestamp when the two version compares.
     """
 
-    base_version_content_json = proto.Field(proto.STRING, number=1,)
-    target_version_content_json = proto.Field(proto.STRING, number=2,)
+    base_version_content_json = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    target_version_content_json = proto.Field(
+        proto.STRING,
+        number=2,
+    )
     compare_time = proto.Field(
-        proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
     )
 
 

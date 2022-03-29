@@ -83,7 +83,13 @@ def test__get_default_mtls_endpoint():
     assert PagesClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
 
 
-@pytest.mark.parametrize("client_class", [PagesClient, PagesAsyncClient,])
+@pytest.mark.parametrize(
+    "client_class",
+    [
+        PagesClient,
+        PagesAsyncClient,
+    ],
+)
 def test_pages_client_from_service_account_info(client_class):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
@@ -121,7 +127,13 @@ def test_pages_client_service_account_always_use_jwt(transport_class, transport_
         use_jwt.assert_not_called()
 
 
-@pytest.mark.parametrize("client_class", [PagesClient, PagesAsyncClient,])
+@pytest.mark.parametrize(
+    "client_class",
+    [
+        PagesClient,
+        PagesAsyncClient,
+    ],
+)
 def test_pages_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
@@ -460,7 +472,9 @@ def test_pages_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -591,10 +605,17 @@ def test_pages_client_create_channel_credentials_file(
         )
 
 
-@pytest.mark.parametrize("request_type", [page.ListPagesRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        page.ListPagesRequest,
+        dict,
+    ],
+)
 def test_list_pages(request_type, transport: str = "grpc"):
     client = PagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -623,7 +644,8 @@ def test_list_pages_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = PagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -639,7 +661,8 @@ async def test_list_pages_async(
     transport: str = "grpc_asyncio", request_type=page.ListPagesRequest
 ):
     client = PagesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -650,7 +673,9 @@ async def test_list_pages_async(
     with mock.patch.object(type(client.transport.list_pages), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            page.ListPagesResponse(next_page_token="next_page_token_value",)
+            page.ListPagesResponse(
+                next_page_token="next_page_token_value",
+            )
         )
         response = await client.list_pages(request)
 
@@ -670,7 +695,9 @@ async def test_list_pages_async_from_dict():
 
 
 def test_list_pages_field_headers():
-    client = PagesClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = PagesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -690,12 +717,17 @@ def test_list_pages_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_list_pages_field_headers_async():
-    client = PagesAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = PagesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -717,11 +749,16 @@ async def test_list_pages_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_pages_flattened():
-    client = PagesClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = PagesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_pages), "__call__") as call:
@@ -729,7 +766,9 @@ def test_list_pages_flattened():
         call.return_value = page.ListPagesResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_pages(parent="parent_value",)
+        client.list_pages(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -741,19 +780,24 @@ def test_list_pages_flattened():
 
 
 def test_list_pages_flattened_error():
-    client = PagesClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = PagesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_pages(
-            page.ListPagesRequest(), parent="parent_value",
+            page.ListPagesRequest(),
+            parent="parent_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_list_pages_flattened_async():
-    client = PagesAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = PagesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_pages), "__call__") as call:
@@ -765,7 +809,9 @@ async def test_list_pages_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_pages(parent="parent_value",)
+        response = await client.list_pages(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -778,19 +824,23 @@ async def test_list_pages_flattened_async():
 
 @pytest.mark.asyncio
 async def test_list_pages_flattened_error_async():
-    client = PagesAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = PagesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_pages(
-            page.ListPagesRequest(), parent="parent_value",
+            page.ListPagesRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_pages_pager(transport_name: str = "grpc"):
     client = PagesClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -798,11 +848,29 @@ def test_list_pages_pager(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             page.ListPagesResponse(
-                pages=[page.Page(), page.Page(), page.Page(),], next_page_token="abc",
+                pages=[
+                    page.Page(),
+                    page.Page(),
+                    page.Page(),
+                ],
+                next_page_token="abc",
             ),
-            page.ListPagesResponse(pages=[], next_page_token="def",),
-            page.ListPagesResponse(pages=[page.Page(),], next_page_token="ghi",),
-            page.ListPagesResponse(pages=[page.Page(), page.Page(),],),
+            page.ListPagesResponse(
+                pages=[],
+                next_page_token="def",
+            ),
+            page.ListPagesResponse(
+                pages=[
+                    page.Page(),
+                ],
+                next_page_token="ghi",
+            ),
+            page.ListPagesResponse(
+                pages=[
+                    page.Page(),
+                    page.Page(),
+                ],
+            ),
             RuntimeError,
         )
 
@@ -821,7 +889,8 @@ def test_list_pages_pager(transport_name: str = "grpc"):
 
 def test_list_pages_pages(transport_name: str = "grpc"):
     client = PagesClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -829,11 +898,29 @@ def test_list_pages_pages(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             page.ListPagesResponse(
-                pages=[page.Page(), page.Page(), page.Page(),], next_page_token="abc",
+                pages=[
+                    page.Page(),
+                    page.Page(),
+                    page.Page(),
+                ],
+                next_page_token="abc",
             ),
-            page.ListPagesResponse(pages=[], next_page_token="def",),
-            page.ListPagesResponse(pages=[page.Page(),], next_page_token="ghi",),
-            page.ListPagesResponse(pages=[page.Page(), page.Page(),],),
+            page.ListPagesResponse(
+                pages=[],
+                next_page_token="def",
+            ),
+            page.ListPagesResponse(
+                pages=[
+                    page.Page(),
+                ],
+                next_page_token="ghi",
+            ),
+            page.ListPagesResponse(
+                pages=[
+                    page.Page(),
+                    page.Page(),
+                ],
+            ),
             RuntimeError,
         )
         pages = list(client.list_pages(request={}).pages)
@@ -843,7 +930,9 @@ def test_list_pages_pages(transport_name: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_list_pages_async_pager():
-    client = PagesAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = PagesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -852,14 +941,34 @@ async def test_list_pages_async_pager():
         # Set the response to a series of pages.
         call.side_effect = (
             page.ListPagesResponse(
-                pages=[page.Page(), page.Page(), page.Page(),], next_page_token="abc",
+                pages=[
+                    page.Page(),
+                    page.Page(),
+                    page.Page(),
+                ],
+                next_page_token="abc",
             ),
-            page.ListPagesResponse(pages=[], next_page_token="def",),
-            page.ListPagesResponse(pages=[page.Page(),], next_page_token="ghi",),
-            page.ListPagesResponse(pages=[page.Page(), page.Page(),],),
+            page.ListPagesResponse(
+                pages=[],
+                next_page_token="def",
+            ),
+            page.ListPagesResponse(
+                pages=[
+                    page.Page(),
+                ],
+                next_page_token="ghi",
+            ),
+            page.ListPagesResponse(
+                pages=[
+                    page.Page(),
+                    page.Page(),
+                ],
+            ),
             RuntimeError,
         )
-        async_pager = await client.list_pages(request={},)
+        async_pager = await client.list_pages(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -871,7 +980,9 @@ async def test_list_pages_async_pager():
 
 @pytest.mark.asyncio
 async def test_list_pages_async_pages():
-    client = PagesAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = PagesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -880,11 +991,29 @@ async def test_list_pages_async_pages():
         # Set the response to a series of pages.
         call.side_effect = (
             page.ListPagesResponse(
-                pages=[page.Page(), page.Page(), page.Page(),], next_page_token="abc",
+                pages=[
+                    page.Page(),
+                    page.Page(),
+                    page.Page(),
+                ],
+                next_page_token="abc",
             ),
-            page.ListPagesResponse(pages=[], next_page_token="def",),
-            page.ListPagesResponse(pages=[page.Page(),], next_page_token="ghi",),
-            page.ListPagesResponse(pages=[page.Page(), page.Page(),],),
+            page.ListPagesResponse(
+                pages=[],
+                next_page_token="def",
+            ),
+            page.ListPagesResponse(
+                pages=[
+                    page.Page(),
+                ],
+                next_page_token="ghi",
+            ),
+            page.ListPagesResponse(
+                pages=[
+                    page.Page(),
+                    page.Page(),
+                ],
+            ),
             RuntimeError,
         )
         pages = []
@@ -894,10 +1023,17 @@ async def test_list_pages_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [page.GetPageRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        page.GetPageRequest,
+        dict,
+    ],
+)
 def test_get_page(request_type, transport: str = "grpc"):
     client = PagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -930,7 +1066,8 @@ def test_get_page_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = PagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -946,7 +1083,8 @@ async def test_get_page_async(
     transport: str = "grpc_asyncio", request_type=page.GetPageRequest
 ):
     client = PagesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -983,7 +1121,9 @@ async def test_get_page_async_from_dict():
 
 
 def test_get_page_field_headers():
-    client = PagesClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = PagesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1003,12 +1143,17 @@ def test_get_page_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_get_page_field_headers_async():
-    client = PagesAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = PagesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1028,11 +1173,16 @@ async def test_get_page_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_page_flattened():
-    client = PagesClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = PagesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_page), "__call__") as call:
@@ -1040,7 +1190,9 @@ def test_get_page_flattened():
         call.return_value = page.Page()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_page(name="name_value",)
+        client.get_page(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1052,19 +1204,24 @@ def test_get_page_flattened():
 
 
 def test_get_page_flattened_error():
-    client = PagesClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = PagesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_page(
-            page.GetPageRequest(), name="name_value",
+            page.GetPageRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_get_page_flattened_async():
-    client = PagesAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = PagesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_page), "__call__") as call:
@@ -1074,7 +1231,9 @@ async def test_get_page_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(page.Page())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_page(name="name_value",)
+        response = await client.get_page(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1087,20 +1246,30 @@ async def test_get_page_flattened_async():
 
 @pytest.mark.asyncio
 async def test_get_page_flattened_error_async():
-    client = PagesAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = PagesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_page(
-            page.GetPageRequest(), name="name_value",
+            page.GetPageRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [gcdc_page.CreatePageRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcdc_page.CreatePageRequest,
+        dict,
+    ],
+)
 def test_create_page(request_type, transport: str = "grpc"):
     client = PagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1133,7 +1302,8 @@ def test_create_page_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = PagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1149,7 +1319,8 @@ async def test_create_page_async(
     transport: str = "grpc_asyncio", request_type=gcdc_page.CreatePageRequest
 ):
     client = PagesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1186,7 +1357,9 @@ async def test_create_page_async_from_dict():
 
 
 def test_create_page_field_headers():
-    client = PagesClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = PagesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1206,12 +1379,17 @@ def test_create_page_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_create_page_field_headers_async():
-    client = PagesAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = PagesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1231,11 +1409,16 @@ async def test_create_page_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_page_flattened():
-    client = PagesClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = PagesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_page), "__call__") as call:
@@ -1244,7 +1427,8 @@ def test_create_page_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.create_page(
-            parent="parent_value", page=gcdc_page.Page(name="name_value"),
+            parent="parent_value",
+            page=gcdc_page.Page(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -1260,7 +1444,9 @@ def test_create_page_flattened():
 
 
 def test_create_page_flattened_error():
-    client = PagesClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = PagesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1274,7 +1460,9 @@ def test_create_page_flattened_error():
 
 @pytest.mark.asyncio
 async def test_create_page_flattened_async():
-    client = PagesAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = PagesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_page), "__call__") as call:
@@ -1285,7 +1473,8 @@ async def test_create_page_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.create_page(
-            parent="parent_value", page=gcdc_page.Page(name="name_value"),
+            parent="parent_value",
+            page=gcdc_page.Page(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -1302,7 +1491,9 @@ async def test_create_page_flattened_async():
 
 @pytest.mark.asyncio
 async def test_create_page_flattened_error_async():
-    client = PagesAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = PagesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1314,10 +1505,17 @@ async def test_create_page_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [gcdc_page.UpdatePageRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcdc_page.UpdatePageRequest,
+        dict,
+    ],
+)
 def test_update_page(request_type, transport: str = "grpc"):
     client = PagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1350,7 +1548,8 @@ def test_update_page_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = PagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1366,7 +1565,8 @@ async def test_update_page_async(
     transport: str = "grpc_asyncio", request_type=gcdc_page.UpdatePageRequest
 ):
     client = PagesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1403,7 +1603,9 @@ async def test_update_page_async_from_dict():
 
 
 def test_update_page_field_headers():
-    client = PagesClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = PagesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1423,12 +1625,17 @@ def test_update_page_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "page.name=page.name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "page.name=page.name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_update_page_field_headers_async():
-    client = PagesAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = PagesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1448,11 +1655,16 @@ async def test_update_page_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "page.name=page.name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "page.name=page.name/value",
+    ) in kw["metadata"]
 
 
 def test_update_page_flattened():
-    client = PagesClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = PagesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_page), "__call__") as call:
@@ -1478,7 +1690,9 @@ def test_update_page_flattened():
 
 
 def test_update_page_flattened_error():
-    client = PagesClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = PagesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1492,7 +1706,9 @@ def test_update_page_flattened_error():
 
 @pytest.mark.asyncio
 async def test_update_page_flattened_async():
-    client = PagesAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = PagesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_page), "__call__") as call:
@@ -1521,7 +1737,9 @@ async def test_update_page_flattened_async():
 
 @pytest.mark.asyncio
 async def test_update_page_flattened_error_async():
-    client = PagesAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = PagesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1533,10 +1751,17 @@ async def test_update_page_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [page.DeletePageRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        page.DeletePageRequest,
+        dict,
+    ],
+)
 def test_delete_page(request_type, transport: str = "grpc"):
     client = PagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1562,7 +1787,8 @@ def test_delete_page_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = PagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1578,7 +1804,8 @@ async def test_delete_page_async(
     transport: str = "grpc_asyncio", request_type=page.DeletePageRequest
 ):
     client = PagesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1606,7 +1833,9 @@ async def test_delete_page_async_from_dict():
 
 
 def test_delete_page_field_headers():
-    client = PagesClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = PagesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1626,12 +1855,17 @@ def test_delete_page_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_delete_page_field_headers_async():
-    client = PagesAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = PagesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1651,11 +1885,16 @@ async def test_delete_page_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_page_flattened():
-    client = PagesClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = PagesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_page), "__call__") as call:
@@ -1663,7 +1902,9 @@ def test_delete_page_flattened():
         call.return_value = None
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_page(name="name_value",)
+        client.delete_page(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1675,19 +1916,24 @@ def test_delete_page_flattened():
 
 
 def test_delete_page_flattened_error():
-    client = PagesClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = PagesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_page(
-            page.DeletePageRequest(), name="name_value",
+            page.DeletePageRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_delete_page_flattened_async():
-    client = PagesAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = PagesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_page), "__call__") as call:
@@ -1697,7 +1943,9 @@ async def test_delete_page_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_page(name="name_value",)
+        response = await client.delete_page(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1710,13 +1958,16 @@ async def test_delete_page_flattened_async():
 
 @pytest.mark.asyncio
 async def test_delete_page_flattened_error_async():
-    client = PagesAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = PagesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_page(
-            page.DeletePageRequest(), name="name_value",
+            page.DeletePageRequest(),
+            name="name_value",
         )
 
 
@@ -1727,7 +1978,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = PagesClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -1747,7 +1999,10 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = PagesClient(client_options=options, transport=transport,)
+        client = PagesClient(
+            client_options=options,
+            transport=transport,
+        )
 
     # It is an error to provide an api_key and a credential.
     options = mock.Mock()
@@ -1763,7 +2018,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = PagesClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -1793,7 +2049,10 @@ def test_transport_get_channel():
 
 @pytest.mark.parametrize(
     "transport_class",
-    [transports.PagesGrpcTransport, transports.PagesGrpcAsyncIOTransport,],
+    [
+        transports.PagesGrpcTransport,
+        transports.PagesGrpcAsyncIOTransport,
+    ],
 )
 def test_transport_adc(transport_class):
     # Test default credentials are used if not provided.
@@ -1805,8 +2064,13 @@ def test_transport_adc(transport_class):
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
-    client = PagesClient(credentials=ga_credentials.AnonymousCredentials(),)
-    assert isinstance(client.transport, transports.PagesGrpcTransport,)
+    client = PagesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    assert isinstance(
+        client.transport,
+        transports.PagesGrpcTransport,
+    )
 
 
 def test_pages_base_transport_error():
@@ -1855,7 +2119,8 @@ def test_pages_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.PagesTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -1896,7 +2161,10 @@ def test_pages_auth_adc():
 
 @pytest.mark.parametrize(
     "transport_class",
-    [transports.PagesGrpcTransport, transports.PagesGrpcAsyncIOTransport,],
+    [
+        transports.PagesGrpcTransport,
+        transports.PagesGrpcAsyncIOTransport,
+    ],
 )
 def test_pages_transport_auth_adc(transport_class):
     # If credentials and host are not provided, the transport class should use
@@ -2018,7 +2286,10 @@ def test_pages_grpc_transport_channel():
     channel = grpc.secure_channel("http://localhost/", grpc.local_channel_credentials())
 
     # Check that channel is used if provided.
-    transport = transports.PagesGrpcTransport(host="squid.clam.whelk", channel=channel,)
+    transport = transports.PagesGrpcTransport(
+        host="squid.clam.whelk",
+        channel=channel,
+    )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
     assert transport._ssl_channel_credentials == None
@@ -2029,7 +2300,8 @@ def test_pages_grpc_asyncio_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.PagesGrpcAsyncIOTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -2134,7 +2406,10 @@ def test_entity_type_path():
     agent = "whelk"
     entity_type = "octopus"
     expected = "projects/{project}/locations/{location}/agents/{agent}/entityTypes/{entity_type}".format(
-        project=project, location=location, agent=agent, entity_type=entity_type,
+        project=project,
+        location=location,
+        agent=agent,
+        entity_type=entity_type,
     )
     actual = PagesClient.entity_type_path(project, location, agent, entity_type)
     assert expected == actual
@@ -2159,8 +2434,13 @@ def test_flow_path():
     location = "nautilus"
     agent = "scallop"
     flow = "abalone"
-    expected = "projects/{project}/locations/{location}/agents/{agent}/flows/{flow}".format(
-        project=project, location=location, agent=agent, flow=flow,
+    expected = (
+        "projects/{project}/locations/{location}/agents/{agent}/flows/{flow}".format(
+            project=project,
+            location=location,
+            agent=agent,
+            flow=flow,
+        )
     )
     actual = PagesClient.flow_path(project, location, agent, flow)
     assert expected == actual
@@ -2186,7 +2466,10 @@ def test_intent_path():
     agent = "cuttlefish"
     intent = "mussel"
     expected = "projects/{project}/locations/{location}/agents/{agent}/intents/{intent}".format(
-        project=project, location=location, agent=agent, intent=intent,
+        project=project,
+        location=location,
+        agent=agent,
+        intent=intent,
     )
     actual = PagesClient.intent_path(project, location, agent, intent)
     assert expected == actual
@@ -2213,7 +2496,11 @@ def test_page_path():
     flow = "octopus"
     page = "oyster"
     expected = "projects/{project}/locations/{location}/agents/{agent}/flows/{flow}/pages/{page}".format(
-        project=project, location=location, agent=agent, flow=flow, page=page,
+        project=project,
+        location=location,
+        agent=agent,
+        flow=flow,
+        page=page,
     )
     actual = PagesClient.page_path(project, location, agent, flow, page)
     assert expected == actual
@@ -2274,7 +2561,10 @@ def test_webhook_path():
     agent = "scallop"
     webhook = "abalone"
     expected = "projects/{project}/locations/{location}/agents/{agent}/webhooks/{webhook}".format(
-        project=project, location=location, agent=agent, webhook=webhook,
+        project=project,
+        location=location,
+        agent=agent,
+        webhook=webhook,
     )
     actual = PagesClient.webhook_path(project, location, agent, webhook)
     assert expected == actual
@@ -2316,7 +2606,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "cuttlefish"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = PagesClient.common_folder_path(folder)
     assert expected == actual
 
@@ -2334,7 +2626,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "winkle"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = PagesClient.common_organization_path(organization)
     assert expected == actual
 
@@ -2352,7 +2646,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "scallop"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = PagesClient.common_project_path(project)
     assert expected == actual
 
@@ -2372,7 +2668,8 @@ def test_common_location_path():
     project = "squid"
     location = "clam"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = PagesClient.common_location_path(project, location)
     assert expected == actual
@@ -2395,14 +2692,16 @@ def test_client_with_default_client_info():
 
     with mock.patch.object(transports.PagesTransport, "_prep_wrapped_messages") as prep:
         client = PagesClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
     with mock.patch.object(transports.PagesTransport, "_prep_wrapped_messages") as prep:
         transport_class = PagesClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -2410,7 +2709,8 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = PagesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     with mock.patch.object(
         type(getattr(client.transport, "grpc_channel")), "close"

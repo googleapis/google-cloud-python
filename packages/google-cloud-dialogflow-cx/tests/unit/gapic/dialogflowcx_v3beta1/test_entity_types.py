@@ -85,7 +85,13 @@ def test__get_default_mtls_endpoint():
     assert EntityTypesClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
 
 
-@pytest.mark.parametrize("client_class", [EntityTypesClient, EntityTypesAsyncClient,])
+@pytest.mark.parametrize(
+    "client_class",
+    [
+        EntityTypesClient,
+        EntityTypesAsyncClient,
+    ],
+)
 def test_entity_types_client_from_service_account_info(client_class):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
@@ -125,7 +131,13 @@ def test_entity_types_client_service_account_always_use_jwt(
         use_jwt.assert_not_called()
 
 
-@pytest.mark.parametrize("client_class", [EntityTypesClient, EntityTypesAsyncClient,])
+@pytest.mark.parametrize(
+    "client_class",
+    [
+        EntityTypesClient,
+        EntityTypesAsyncClient,
+    ],
+)
 def test_entity_types_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
@@ -480,7 +492,9 @@ def test_entity_types_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -611,10 +625,17 @@ def test_entity_types_client_create_channel_credentials_file(
         )
 
 
-@pytest.mark.parametrize("request_type", [entity_type.ListEntityTypesRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        entity_type.ListEntityTypesRequest,
+        dict,
+    ],
+)
 def test_list_entity_types(request_type, transport: str = "grpc"):
     client = EntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -645,7 +666,8 @@ def test_list_entity_types_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = EntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -663,7 +685,8 @@ async def test_list_entity_types_async(
     transport: str = "grpc_asyncio", request_type=entity_type.ListEntityTypesRequest
 ):
     client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -698,7 +721,9 @@ async def test_list_entity_types_async_from_dict():
 
 
 def test_list_entity_types_field_headers():
-    client = EntityTypesClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -720,12 +745,17 @@ def test_list_entity_types_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_list_entity_types_field_headers_async():
-    client = EntityTypesAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EntityTypesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -749,11 +779,16 @@ async def test_list_entity_types_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_entity_types_flattened():
-    client = EntityTypesClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -763,7 +798,9 @@ def test_list_entity_types_flattened():
         call.return_value = entity_type.ListEntityTypesResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_entity_types(parent="parent_value",)
+        client.list_entity_types(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -775,19 +812,24 @@ def test_list_entity_types_flattened():
 
 
 def test_list_entity_types_flattened_error():
-    client = EntityTypesClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_entity_types(
-            entity_type.ListEntityTypesRequest(), parent="parent_value",
+            entity_type.ListEntityTypesRequest(),
+            parent="parent_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_list_entity_types_flattened_async():
-    client = EntityTypesAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EntityTypesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -801,7 +843,9 @@ async def test_list_entity_types_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_entity_types(parent="parent_value",)
+        response = await client.list_entity_types(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -814,19 +858,23 @@ async def test_list_entity_types_flattened_async():
 
 @pytest.mark.asyncio
 async def test_list_entity_types_flattened_error_async():
-    client = EntityTypesAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EntityTypesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_entity_types(
-            entity_type.ListEntityTypesRequest(), parent="parent_value",
+            entity_type.ListEntityTypesRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_entity_types_pager(transport_name: str = "grpc"):
     client = EntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -844,13 +892,20 @@ def test_list_entity_types_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             entity_type.ListEntityTypesResponse(
-                entity_types=[], next_page_token="def",
+                entity_types=[],
+                next_page_token="def",
             ),
             entity_type.ListEntityTypesResponse(
-                entity_types=[entity_type.EntityType(),], next_page_token="ghi",
+                entity_types=[
+                    entity_type.EntityType(),
+                ],
+                next_page_token="ghi",
             ),
             entity_type.ListEntityTypesResponse(
-                entity_types=[entity_type.EntityType(), entity_type.EntityType(),],
+                entity_types=[
+                    entity_type.EntityType(),
+                    entity_type.EntityType(),
+                ],
             ),
             RuntimeError,
         )
@@ -870,7 +925,8 @@ def test_list_entity_types_pager(transport_name: str = "grpc"):
 
 def test_list_entity_types_pages(transport_name: str = "grpc"):
     client = EntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -888,13 +944,20 @@ def test_list_entity_types_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             entity_type.ListEntityTypesResponse(
-                entity_types=[], next_page_token="def",
+                entity_types=[],
+                next_page_token="def",
             ),
             entity_type.ListEntityTypesResponse(
-                entity_types=[entity_type.EntityType(),], next_page_token="ghi",
+                entity_types=[
+                    entity_type.EntityType(),
+                ],
+                next_page_token="ghi",
             ),
             entity_type.ListEntityTypesResponse(
-                entity_types=[entity_type.EntityType(), entity_type.EntityType(),],
+                entity_types=[
+                    entity_type.EntityType(),
+                    entity_type.EntityType(),
+                ],
             ),
             RuntimeError,
         )
@@ -905,7 +968,9 @@ def test_list_entity_types_pages(transport_name: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_list_entity_types_async_pager():
-    client = EntityTypesAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = EntityTypesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -924,17 +989,26 @@ async def test_list_entity_types_async_pager():
                 next_page_token="abc",
             ),
             entity_type.ListEntityTypesResponse(
-                entity_types=[], next_page_token="def",
+                entity_types=[],
+                next_page_token="def",
             ),
             entity_type.ListEntityTypesResponse(
-                entity_types=[entity_type.EntityType(),], next_page_token="ghi",
+                entity_types=[
+                    entity_type.EntityType(),
+                ],
+                next_page_token="ghi",
             ),
             entity_type.ListEntityTypesResponse(
-                entity_types=[entity_type.EntityType(), entity_type.EntityType(),],
+                entity_types=[
+                    entity_type.EntityType(),
+                    entity_type.EntityType(),
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.list_entity_types(request={},)
+        async_pager = await client.list_entity_types(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -946,7 +1020,9 @@ async def test_list_entity_types_async_pager():
 
 @pytest.mark.asyncio
 async def test_list_entity_types_async_pages():
-    client = EntityTypesAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = EntityTypesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -965,13 +1041,20 @@ async def test_list_entity_types_async_pages():
                 next_page_token="abc",
             ),
             entity_type.ListEntityTypesResponse(
-                entity_types=[], next_page_token="def",
+                entity_types=[],
+                next_page_token="def",
             ),
             entity_type.ListEntityTypesResponse(
-                entity_types=[entity_type.EntityType(),], next_page_token="ghi",
+                entity_types=[
+                    entity_type.EntityType(),
+                ],
+                next_page_token="ghi",
             ),
             entity_type.ListEntityTypesResponse(
-                entity_types=[entity_type.EntityType(), entity_type.EntityType(),],
+                entity_types=[
+                    entity_type.EntityType(),
+                    entity_type.EntityType(),
+                ],
             ),
             RuntimeError,
         )
@@ -982,10 +1065,17 @@ async def test_list_entity_types_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [entity_type.GetEntityTypeRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        entity_type.GetEntityTypeRequest,
+        dict,
+    ],
+)
 def test_get_entity_type(request_type, transport: str = "grpc"):
     client = EntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1027,7 +1117,8 @@ def test_get_entity_type_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = EntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1043,7 +1134,8 @@ async def test_get_entity_type_async(
     transport: str = "grpc_asyncio", request_type=entity_type.GetEntityTypeRequest
 ):
     client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1089,7 +1181,9 @@ async def test_get_entity_type_async_from_dict():
 
 
 def test_get_entity_type_field_headers():
-    client = EntityTypesClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1109,12 +1203,17 @@ def test_get_entity_type_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_get_entity_type_field_headers_async():
-    client = EntityTypesAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EntityTypesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1136,11 +1235,16 @@ async def test_get_entity_type_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_entity_type_flattened():
-    client = EntityTypesClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_entity_type), "__call__") as call:
@@ -1148,7 +1252,9 @@ def test_get_entity_type_flattened():
         call.return_value = entity_type.EntityType()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_entity_type(name="name_value",)
+        client.get_entity_type(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1160,19 +1266,24 @@ def test_get_entity_type_flattened():
 
 
 def test_get_entity_type_flattened_error():
-    client = EntityTypesClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_entity_type(
-            entity_type.GetEntityTypeRequest(), name="name_value",
+            entity_type.GetEntityTypeRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_get_entity_type_flattened_async():
-    client = EntityTypesAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EntityTypesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_entity_type), "__call__") as call:
@@ -1184,7 +1295,9 @@ async def test_get_entity_type_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_entity_type(name="name_value",)
+        response = await client.get_entity_type(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1197,22 +1310,30 @@ async def test_get_entity_type_flattened_async():
 
 @pytest.mark.asyncio
 async def test_get_entity_type_flattened_error_async():
-    client = EntityTypesAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EntityTypesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_entity_type(
-            entity_type.GetEntityTypeRequest(), name="name_value",
+            entity_type.GetEntityTypeRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [gcdc_entity_type.CreateEntityTypeRequest, dict,]
+    "request_type",
+    [
+        gcdc_entity_type.CreateEntityTypeRequest,
+        dict,
+    ],
 )
 def test_create_entity_type(request_type, transport: str = "grpc"):
     client = EntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1256,7 +1377,8 @@ def test_create_entity_type_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = EntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1275,7 +1397,8 @@ async def test_create_entity_type_async(
     request_type=gcdc_entity_type.CreateEntityTypeRequest,
 ):
     client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1323,7 +1446,9 @@ async def test_create_entity_type_async_from_dict():
 
 
 def test_create_entity_type_field_headers():
-    client = EntityTypesClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1345,12 +1470,17 @@ def test_create_entity_type_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_create_entity_type_field_headers_async():
-    client = EntityTypesAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EntityTypesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1374,11 +1504,16 @@ async def test_create_entity_type_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_entity_type_flattened():
-    client = EntityTypesClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1406,7 +1541,9 @@ def test_create_entity_type_flattened():
 
 
 def test_create_entity_type_flattened_error():
-    client = EntityTypesClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1420,7 +1557,9 @@ def test_create_entity_type_flattened_error():
 
 @pytest.mark.asyncio
 async def test_create_entity_type_flattened_async():
-    client = EntityTypesAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EntityTypesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1453,7 +1592,9 @@ async def test_create_entity_type_flattened_async():
 
 @pytest.mark.asyncio
 async def test_create_entity_type_flattened_error_async():
-    client = EntityTypesAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EntityTypesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1466,11 +1607,16 @@ async def test_create_entity_type_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [gcdc_entity_type.UpdateEntityTypeRequest, dict,]
+    "request_type",
+    [
+        gcdc_entity_type.UpdateEntityTypeRequest,
+        dict,
+    ],
 )
 def test_update_entity_type(request_type, transport: str = "grpc"):
     client = EntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1514,7 +1660,8 @@ def test_update_entity_type_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = EntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1533,7 +1680,8 @@ async def test_update_entity_type_async(
     request_type=gcdc_entity_type.UpdateEntityTypeRequest,
 ):
     client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1581,7 +1729,9 @@ async def test_update_entity_type_async_from_dict():
 
 
 def test_update_entity_type_field_headers():
-    client = EntityTypesClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1603,14 +1753,17 @@ def test_update_entity_type_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "entity_type.name=entity_type.name/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "entity_type.name=entity_type.name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_update_entity_type_field_headers_async():
-    client = EntityTypesAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EntityTypesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1634,13 +1787,16 @@ async def test_update_entity_type_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "entity_type.name=entity_type.name/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "entity_type.name=entity_type.name/value",
+    ) in kw["metadata"]
 
 
 def test_update_entity_type_flattened():
-    client = EntityTypesClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1668,7 +1824,9 @@ def test_update_entity_type_flattened():
 
 
 def test_update_entity_type_flattened_error():
-    client = EntityTypesClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1682,7 +1840,9 @@ def test_update_entity_type_flattened_error():
 
 @pytest.mark.asyncio
 async def test_update_entity_type_flattened_async():
-    client = EntityTypesAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EntityTypesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1715,7 +1875,9 @@ async def test_update_entity_type_flattened_async():
 
 @pytest.mark.asyncio
 async def test_update_entity_type_flattened_error_async():
-    client = EntityTypesAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EntityTypesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1727,10 +1889,17 @@ async def test_update_entity_type_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [entity_type.DeleteEntityTypeRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        entity_type.DeleteEntityTypeRequest,
+        dict,
+    ],
+)
 def test_delete_entity_type(request_type, transport: str = "grpc"):
     client = EntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1758,7 +1927,8 @@ def test_delete_entity_type_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = EntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1776,7 +1946,8 @@ async def test_delete_entity_type_async(
     transport: str = "grpc_asyncio", request_type=entity_type.DeleteEntityTypeRequest
 ):
     client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1806,7 +1977,9 @@ async def test_delete_entity_type_async_from_dict():
 
 
 def test_delete_entity_type_field_headers():
-    client = EntityTypesClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1828,12 +2001,17 @@ def test_delete_entity_type_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_delete_entity_type_field_headers_async():
-    client = EntityTypesAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EntityTypesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1855,11 +2033,16 @@ async def test_delete_entity_type_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_entity_type_flattened():
-    client = EntityTypesClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1869,7 +2052,9 @@ def test_delete_entity_type_flattened():
         call.return_value = None
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_entity_type(name="name_value",)
+        client.delete_entity_type(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1881,19 +2066,24 @@ def test_delete_entity_type_flattened():
 
 
 def test_delete_entity_type_flattened_error():
-    client = EntityTypesClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_entity_type(
-            entity_type.DeleteEntityTypeRequest(), name="name_value",
+            entity_type.DeleteEntityTypeRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_delete_entity_type_flattened_async():
-    client = EntityTypesAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EntityTypesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1905,7 +2095,9 @@ async def test_delete_entity_type_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_entity_type(name="name_value",)
+        response = await client.delete_entity_type(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1918,13 +2110,16 @@ async def test_delete_entity_type_flattened_async():
 
 @pytest.mark.asyncio
 async def test_delete_entity_type_flattened_error_async():
-    client = EntityTypesAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EntityTypesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_entity_type(
-            entity_type.DeleteEntityTypeRequest(), name="name_value",
+            entity_type.DeleteEntityTypeRequest(),
+            name="name_value",
         )
 
 
@@ -1935,7 +2130,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = EntityTypesClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -1955,7 +2151,10 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = EntityTypesClient(client_options=options, transport=transport,)
+        client = EntityTypesClient(
+            client_options=options,
+            transport=transport,
+        )
 
     # It is an error to provide an api_key and a credential.
     options = mock.Mock()
@@ -1971,7 +2170,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = EntityTypesClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -2001,7 +2201,10 @@ def test_transport_get_channel():
 
 @pytest.mark.parametrize(
     "transport_class",
-    [transports.EntityTypesGrpcTransport, transports.EntityTypesGrpcAsyncIOTransport,],
+    [
+        transports.EntityTypesGrpcTransport,
+        transports.EntityTypesGrpcAsyncIOTransport,
+    ],
 )
 def test_transport_adc(transport_class):
     # Test default credentials are used if not provided.
@@ -2013,8 +2216,13 @@ def test_transport_adc(transport_class):
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
-    client = EntityTypesClient(credentials=ga_credentials.AnonymousCredentials(),)
-    assert isinstance(client.transport, transports.EntityTypesGrpcTransport,)
+    client = EntityTypesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    assert isinstance(
+        client.transport,
+        transports.EntityTypesGrpcTransport,
+    )
 
 
 def test_entity_types_base_transport_error():
@@ -2063,7 +2271,8 @@ def test_entity_types_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.EntityTypesTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -2104,7 +2313,10 @@ def test_entity_types_auth_adc():
 
 @pytest.mark.parametrize(
     "transport_class",
-    [transports.EntityTypesGrpcTransport, transports.EntityTypesGrpcAsyncIOTransport,],
+    [
+        transports.EntityTypesGrpcTransport,
+        transports.EntityTypesGrpcAsyncIOTransport,
+    ],
 )
 def test_entity_types_transport_auth_adc(transport_class):
     # If credentials and host are not provided, the transport class should use
@@ -2227,7 +2439,8 @@ def test_entity_types_grpc_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.EntityTypesGrpcTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -2239,7 +2452,8 @@ def test_entity_types_grpc_asyncio_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.EntityTypesGrpcAsyncIOTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -2344,7 +2558,10 @@ def test_entity_type_path():
     agent = "whelk"
     entity_type = "octopus"
     expected = "projects/{project}/locations/{location}/agents/{agent}/entityTypes/{entity_type}".format(
-        project=project, location=location, agent=agent, entity_type=entity_type,
+        project=project,
+        location=location,
+        agent=agent,
+        entity_type=entity_type,
     )
     actual = EntityTypesClient.entity_type_path(project, location, agent, entity_type)
     assert expected == actual
@@ -2386,7 +2603,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "scallop"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = EntityTypesClient.common_folder_path(folder)
     assert expected == actual
 
@@ -2404,7 +2623,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "squid"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = EntityTypesClient.common_organization_path(organization)
     assert expected == actual
 
@@ -2422,7 +2643,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "whelk"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = EntityTypesClient.common_project_path(project)
     assert expected == actual
 
@@ -2442,7 +2665,8 @@ def test_common_location_path():
     project = "oyster"
     location = "nudibranch"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = EntityTypesClient.common_location_path(project, location)
     assert expected == actual
@@ -2467,7 +2691,8 @@ def test_client_with_default_client_info():
         transports.EntityTypesTransport, "_prep_wrapped_messages"
     ) as prep:
         client = EntityTypesClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -2476,7 +2701,8 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = EntityTypesClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -2484,7 +2710,8 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = EntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     with mock.patch.object(
         type(getattr(client.transport, "grpc_channel")), "close"

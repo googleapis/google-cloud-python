@@ -128,25 +128,39 @@ class FlowsTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.create_flow: gapic_v1.method.wrap_method(
-                self.create_flow, default_timeout=None, client_info=client_info,
+                self.create_flow,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.delete_flow: gapic_v1.method.wrap_method(
-                self.delete_flow, default_timeout=None, client_info=client_info,
+                self.delete_flow,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_flows: gapic_v1.method.wrap_method(
-                self.list_flows, default_timeout=None, client_info=client_info,
+                self.list_flows,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_flow: gapic_v1.method.wrap_method(
-                self.get_flow, default_timeout=None, client_info=client_info,
+                self.get_flow,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.update_flow: gapic_v1.method.wrap_method(
-                self.update_flow, default_timeout=None, client_info=client_info,
+                self.update_flow,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.train_flow: gapic_v1.method.wrap_method(
-                self.train_flow, default_timeout=None, client_info=client_info,
+                self.train_flow,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.validate_flow: gapic_v1.method.wrap_method(
-                self.validate_flow, default_timeout=None, client_info=client_info,
+                self.validate_flow,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_flow_validation_result: gapic_v1.method.wrap_method(
                 self.get_flow_validation_result,
@@ -154,19 +168,23 @@ class FlowsTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.import_flow: gapic_v1.method.wrap_method(
-                self.import_flow, default_timeout=None, client_info=client_info,
+                self.import_flow,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.export_flow: gapic_v1.method.wrap_method(
-                self.export_flow, default_timeout=None, client_info=client_info,
+                self.export_flow,
+                default_timeout=None,
+                client_info=client_info,
             ),
         }
 
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

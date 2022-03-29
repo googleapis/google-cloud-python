@@ -63,10 +63,22 @@ class ListChangelogsRequest(proto.Message):
             request.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    filter = proto.Field(proto.STRING, number=2,)
-    page_size = proto.Field(proto.INT32, number=3,)
-    page_token = proto.Field(proto.STRING, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class ListChangelogsResponse(proto.Message):
@@ -88,8 +100,15 @@ class ListChangelogsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    changelogs = proto.RepeatedField(proto.MESSAGE, number=1, message="Changelog",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    changelogs = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Changelog",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetChangelogRequest(proto.Message):
@@ -102,7 +121,10 @@ class GetChangelogRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/changelogs/<Changelog ID>``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class Changelog(proto.Message):
@@ -127,13 +149,35 @@ class Changelog(proto.Message):
             The timestamp of the change.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    user_email = proto.Field(proto.STRING, number=2,)
-    display_name = proto.Field(proto.STRING, number=7,)
-    action = proto.Field(proto.STRING, number=11,)
-    type_ = proto.Field(proto.STRING, number=8,)
-    resource = proto.Field(proto.STRING, number=3,)
-    create_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    user_email = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    action = proto.Field(
+        proto.STRING,
+        number=11,
+    )
+    type_ = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    resource = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

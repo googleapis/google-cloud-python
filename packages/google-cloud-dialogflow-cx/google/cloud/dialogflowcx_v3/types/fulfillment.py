@@ -20,7 +20,10 @@ from google.protobuf import struct_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.dialogflow.cx.v3", manifest={"Fulfillment",},
+    package="google.cloud.dialogflow.cx.v3",
+    manifest={
+        "Fulfillment",
+    },
 )
 
 
@@ -87,8 +90,15 @@ class Fulfillment(proto.Message):
                 clears the parameter.
         """
 
-        parameter = proto.Field(proto.STRING, number=1,)
-        value = proto.Field(proto.MESSAGE, number=2, message=struct_pb2.Value,)
+        parameter = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        value = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message=struct_pb2.Value,
+        )
 
     class ConditionalCases(proto.Message):
         r"""A list of cascading if-else conditions. Cases are mutually
@@ -153,7 +163,10 @@ class Fulfillment(proto.Message):
                     message="Fulfillment.ConditionalCases",
                 )
 
-            condition = proto.Field(proto.STRING, number=1,)
+            condition = proto.Field(
+                proto.STRING,
+                number=1,
+            )
             case_content = proto.RepeatedField(
                 proto.MESSAGE,
                 number=2,
@@ -161,20 +174,37 @@ class Fulfillment(proto.Message):
             )
 
         cases = proto.RepeatedField(
-            proto.MESSAGE, number=1, message="Fulfillment.ConditionalCases.Case",
+            proto.MESSAGE,
+            number=1,
+            message="Fulfillment.ConditionalCases.Case",
         )
 
     messages = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=response_message.ResponseMessage,
+        proto.MESSAGE,
+        number=1,
+        message=response_message.ResponseMessage,
     )
-    webhook = proto.Field(proto.STRING, number=2,)
-    return_partial_responses = proto.Field(proto.BOOL, number=8,)
-    tag = proto.Field(proto.STRING, number=3,)
+    webhook = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    return_partial_responses = proto.Field(
+        proto.BOOL,
+        number=8,
+    )
+    tag = proto.Field(
+        proto.STRING,
+        number=3,
+    )
     set_parameter_actions = proto.RepeatedField(
-        proto.MESSAGE, number=4, message=SetParameterAction,
+        proto.MESSAGE,
+        number=4,
+        message=SetParameterAction,
     )
     conditional_cases = proto.RepeatedField(
-        proto.MESSAGE, number=5, message=ConditionalCases,
+        proto.MESSAGE,
+        number=5,
+        message=ConditionalCases,
     )
 
 

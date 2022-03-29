@@ -126,28 +126,38 @@ class WebhooksTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.list_webhooks: gapic_v1.method.wrap_method(
-                self.list_webhooks, default_timeout=None, client_info=client_info,
+                self.list_webhooks,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_webhook: gapic_v1.method.wrap_method(
-                self.get_webhook, default_timeout=None, client_info=client_info,
+                self.get_webhook,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.create_webhook: gapic_v1.method.wrap_method(
-                self.create_webhook, default_timeout=None, client_info=client_info,
+                self.create_webhook,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.update_webhook: gapic_v1.method.wrap_method(
-                self.update_webhook, default_timeout=None, client_info=client_info,
+                self.update_webhook,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.delete_webhook: gapic_v1.method.wrap_method(
-                self.delete_webhook, default_timeout=None, client_info=client_info,
+                self.delete_webhook,
+                default_timeout=None,
+                client_info=client_info,
             ),
         }
 
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

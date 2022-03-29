@@ -126,34 +126,48 @@ class ExperimentsTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.list_experiments: gapic_v1.method.wrap_method(
-                self.list_experiments, default_timeout=None, client_info=client_info,
+                self.list_experiments,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_experiment: gapic_v1.method.wrap_method(
-                self.get_experiment, default_timeout=None, client_info=client_info,
+                self.get_experiment,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.create_experiment: gapic_v1.method.wrap_method(
-                self.create_experiment, default_timeout=None, client_info=client_info,
+                self.create_experiment,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.update_experiment: gapic_v1.method.wrap_method(
-                self.update_experiment, default_timeout=None, client_info=client_info,
+                self.update_experiment,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.delete_experiment: gapic_v1.method.wrap_method(
-                self.delete_experiment, default_timeout=None, client_info=client_info,
+                self.delete_experiment,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.start_experiment: gapic_v1.method.wrap_method(
-                self.start_experiment, default_timeout=None, client_info=client_info,
+                self.start_experiment,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.stop_experiment: gapic_v1.method.wrap_method(
-                self.stop_experiment, default_timeout=None, client_info=client_info,
+                self.stop_experiment,
+                default_timeout=None,
+                client_info=client_info,
             ),
         }
 
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

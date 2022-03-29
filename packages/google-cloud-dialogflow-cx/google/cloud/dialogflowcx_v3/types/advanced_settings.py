@@ -17,7 +17,10 @@ import proto  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.dialogflow.cx.v3", manifest={"AdvancedSettings",},
+    package="google.cloud.dialogflow.cx.v3",
+    manifest={
+        "AdvancedSettings",
+    },
 )
 
 
@@ -49,10 +52,20 @@ class AdvancedSettings(proto.Message):
                 enabled.
         """
 
-        enable_stackdriver_logging = proto.Field(proto.BOOL, number=2,)
-        enable_interaction_logging = proto.Field(proto.BOOL, number=3,)
+        enable_stackdriver_logging = proto.Field(
+            proto.BOOL,
+            number=2,
+        )
+        enable_interaction_logging = proto.Field(
+            proto.BOOL,
+            number=3,
+        )
 
-    logging_settings = proto.Field(proto.MESSAGE, number=6, message=LoggingSettings,)
+    logging_settings = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=LoggingSettings,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

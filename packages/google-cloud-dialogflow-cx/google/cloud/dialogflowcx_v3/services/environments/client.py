@@ -59,7 +59,10 @@ class EnvironmentsClientMeta(type):
     _transport_registry["grpc"] = EnvironmentsGrpcTransport
     _transport_registry["grpc_asyncio"] = EnvironmentsGrpcAsyncIOTransport
 
-    def get_transport_class(cls, label: str = None,) -> Type[EnvironmentsTransport]:
+    def get_transport_class(
+        cls,
+        label: str = None,
+    ) -> Type[EnvironmentsTransport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -193,11 +196,17 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
 
     @staticmethod
     def environment_path(
-        project: str, location: str, agent: str, environment: str,
+        project: str,
+        location: str,
+        agent: str,
+        environment: str,
     ) -> str:
         """Returns a fully-qualified environment string."""
         return "projects/{project}/locations/{location}/agents/{agent}/environments/{environment}".format(
-            project=project, location=location, agent=agent, environment=environment,
+            project=project,
+            location=location,
+            agent=agent,
+            environment=environment,
         )
 
     @staticmethod
@@ -210,10 +219,18 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def test_case_path(project: str, location: str, agent: str, test_case: str,) -> str:
+    def test_case_path(
+        project: str,
+        location: str,
+        agent: str,
+        test_case: str,
+    ) -> str:
         """Returns a fully-qualified test_case string."""
         return "projects/{project}/locations/{location}/agents/{agent}/testCases/{test_case}".format(
-            project=project, location=location, agent=agent, test_case=test_case,
+            project=project,
+            location=location,
+            agent=agent,
+            test_case=test_case,
         )
 
     @staticmethod
@@ -227,7 +244,11 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
 
     @staticmethod
     def test_case_result_path(
-        project: str, location: str, agent: str, test_case: str, result: str,
+        project: str,
+        location: str,
+        agent: str,
+        test_case: str,
+        result: str,
     ) -> str:
         """Returns a fully-qualified test_case_result string."""
         return "projects/{project}/locations/{location}/agents/{agent}/testCases/{test_case}/results/{result}".format(
@@ -249,11 +270,19 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
 
     @staticmethod
     def version_path(
-        project: str, location: str, agent: str, flow: str, version: str,
+        project: str,
+        location: str,
+        agent: str,
+        flow: str,
+        version: str,
     ) -> str:
         """Returns a fully-qualified version string."""
         return "projects/{project}/locations/{location}/agents/{agent}/flows/{flow}/versions/{version}".format(
-            project=project, location=location, agent=agent, flow=flow, version=version,
+            project=project,
+            location=location,
+            agent=agent,
+            flow=flow,
+            version=version,
         )
 
     @staticmethod
@@ -266,7 +295,9 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_billing_account_path(billing_account: str,) -> str:
+    def common_billing_account_path(
+        billing_account: str,
+    ) -> str:
         """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
@@ -279,9 +310,13 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(folder: str,) -> str:
+    def common_folder_path(
+        folder: str,
+    ) -> str:
         """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(folder=folder,)
+        return "folders/{folder}".format(
+            folder=folder,
+        )
 
     @staticmethod
     def parse_common_folder_path(path: str) -> Dict[str, str]:
@@ -290,9 +325,13 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(organization: str,) -> str:
+    def common_organization_path(
+        organization: str,
+    ) -> str:
         """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(organization=organization,)
+        return "organizations/{organization}".format(
+            organization=organization,
+        )
 
     @staticmethod
     def parse_common_organization_path(path: str) -> Dict[str, str]:
@@ -301,9 +340,13 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(project: str,) -> str:
+    def common_project_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified project string."""
-        return "projects/{project}".format(project=project,)
+        return "projects/{project}".format(
+            project=project,
+        )
 
     @staticmethod
     def parse_common_project_path(path: str) -> Dict[str, str]:
@@ -312,10 +355,14 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(project: str, location: str,) -> str:
+    def common_location_path(
+        project: str,
+        location: str,
+    ) -> str:
         """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
-            project=project, location=location,
+            project=project,
+            location=location,
         )
 
     @staticmethod
@@ -582,12 +629,20 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListEnvironmentsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -695,7 +750,12 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -830,7 +890,12 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -969,7 +1034,12 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1063,7 +1133,10 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def lookup_environment_history(
@@ -1160,12 +1233,20 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.LookupEnvironmentHistoryPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1257,7 +1338,12 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1363,12 +1449,20 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListContinuousTestResultsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1461,7 +1555,12 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(

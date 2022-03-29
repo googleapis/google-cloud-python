@@ -100,7 +100,11 @@ def test__get_default_mtls_endpoint():
 
 
 @pytest.mark.parametrize(
-    "client_class", [TransitionRouteGroupsClient, TransitionRouteGroupsAsyncClient,]
+    "client_class",
+    [
+        TransitionRouteGroupsClient,
+        TransitionRouteGroupsAsyncClient,
+    ],
 )
 def test_transition_route_groups_client_from_service_account_info(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -142,7 +146,11 @@ def test_transition_route_groups_client_service_account_always_use_jwt(
 
 
 @pytest.mark.parametrize(
-    "client_class", [TransitionRouteGroupsClient, TransitionRouteGroupsAsyncClient,]
+    "client_class",
+    [
+        TransitionRouteGroupsClient,
+        TransitionRouteGroupsAsyncClient,
+    ],
 )
 def test_transition_route_groups_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -524,7 +532,9 @@ def test_transition_route_groups_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -668,11 +678,16 @@ def test_transition_route_groups_client_create_channel_credentials_file(
 
 
 @pytest.mark.parametrize(
-    "request_type", [transition_route_group.ListTransitionRouteGroupsRequest, dict,]
+    "request_type",
+    [
+        transition_route_group.ListTransitionRouteGroupsRequest,
+        dict,
+    ],
 )
 def test_list_transition_route_groups(request_type, transport: str = "grpc"):
     client = TransitionRouteGroupsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -703,7 +718,8 @@ def test_list_transition_route_groups_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TransitionRouteGroupsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -722,7 +738,8 @@ async def test_list_transition_route_groups_async(
     request_type=transition_route_group.ListTransitionRouteGroupsRequest,
 ):
     client = TransitionRouteGroupsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -781,7 +798,10 @@ def test_list_transition_route_groups_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -812,7 +832,10 @@ async def test_list_transition_route_groups_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_transition_route_groups_flattened():
@@ -828,7 +851,9 @@ def test_list_transition_route_groups_flattened():
         call.return_value = transition_route_group.ListTransitionRouteGroupsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_transition_route_groups(parent="parent_value",)
+        client.list_transition_route_groups(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -871,7 +896,9 @@ async def test_list_transition_route_groups_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_transition_route_groups(parent="parent_value",)
+        response = await client.list_transition_route_groups(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -899,7 +926,8 @@ async def test_list_transition_route_groups_flattened_error_async():
 
 def test_list_transition_route_groups_pager(transport_name: str = "grpc"):
     client = TransitionRouteGroupsClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -917,7 +945,8 @@ def test_list_transition_route_groups_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             transition_route_group.ListTransitionRouteGroupsResponse(
-                transition_route_groups=[], next_page_token="def",
+                transition_route_groups=[],
+                next_page_token="def",
             ),
             transition_route_group.ListTransitionRouteGroupsResponse(
                 transition_route_groups=[
@@ -951,7 +980,8 @@ def test_list_transition_route_groups_pager(transport_name: str = "grpc"):
 
 def test_list_transition_route_groups_pages(transport_name: str = "grpc"):
     client = TransitionRouteGroupsClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -969,7 +999,8 @@ def test_list_transition_route_groups_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             transition_route_group.ListTransitionRouteGroupsResponse(
-                transition_route_groups=[], next_page_token="def",
+                transition_route_groups=[],
+                next_page_token="def",
             ),
             transition_route_group.ListTransitionRouteGroupsResponse(
                 transition_route_groups=[
@@ -1013,7 +1044,8 @@ async def test_list_transition_route_groups_async_pager():
                 next_page_token="abc",
             ),
             transition_route_group.ListTransitionRouteGroupsResponse(
-                transition_route_groups=[], next_page_token="def",
+                transition_route_groups=[],
+                next_page_token="def",
             ),
             transition_route_group.ListTransitionRouteGroupsResponse(
                 transition_route_groups=[
@@ -1029,7 +1061,9 @@ async def test_list_transition_route_groups_async_pager():
             ),
             RuntimeError,
         )
-        async_pager = await client.list_transition_route_groups(request={},)
+        async_pager = await client.list_transition_route_groups(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -1065,7 +1099,8 @@ async def test_list_transition_route_groups_async_pages():
                 next_page_token="abc",
             ),
             transition_route_group.ListTransitionRouteGroupsResponse(
-                transition_route_groups=[], next_page_token="def",
+                transition_route_groups=[],
+                next_page_token="def",
             ),
             transition_route_group.ListTransitionRouteGroupsResponse(
                 transition_route_groups=[
@@ -1091,11 +1126,16 @@ async def test_list_transition_route_groups_async_pages():
 
 
 @pytest.mark.parametrize(
-    "request_type", [transition_route_group.GetTransitionRouteGroupRequest, dict,]
+    "request_type",
+    [
+        transition_route_group.GetTransitionRouteGroupRequest,
+        dict,
+    ],
 )
 def test_get_transition_route_group(request_type, transport: str = "grpc"):
     client = TransitionRouteGroupsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1108,7 +1148,8 @@ def test_get_transition_route_group(request_type, transport: str = "grpc"):
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = transition_route_group.TransitionRouteGroup(
-            name="name_value", display_name="display_name_value",
+            name="name_value",
+            display_name="display_name_value",
         )
         response = client.get_transition_route_group(request)
 
@@ -1127,7 +1168,8 @@ def test_get_transition_route_group_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TransitionRouteGroupsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1146,7 +1188,8 @@ async def test_get_transition_route_group_async(
     request_type=transition_route_group.GetTransitionRouteGroupRequest,
 ):
     client = TransitionRouteGroupsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1160,7 +1203,8 @@ async def test_get_transition_route_group_async(
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             transition_route_group.TransitionRouteGroup(
-                name="name_value", display_name="display_name_value",
+                name="name_value",
+                display_name="display_name_value",
             )
         )
         response = await client.get_transition_route_group(request)
@@ -1206,7 +1250,10 @@ def test_get_transition_route_group_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1237,7 +1284,10 @@ async def test_get_transition_route_group_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_transition_route_group_flattened():
@@ -1253,7 +1303,9 @@ def test_get_transition_route_group_flattened():
         call.return_value = transition_route_group.TransitionRouteGroup()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_transition_route_group(name="name_value",)
+        client.get_transition_route_group(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1273,7 +1325,8 @@ def test_get_transition_route_group_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_transition_route_group(
-            transition_route_group.GetTransitionRouteGroupRequest(), name="name_value",
+            transition_route_group.GetTransitionRouteGroupRequest(),
+            name="name_value",
         )
 
 
@@ -1295,7 +1348,9 @@ async def test_get_transition_route_group_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_transition_route_group(name="name_value",)
+        response = await client.get_transition_route_group(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1316,17 +1371,22 @@ async def test_get_transition_route_group_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_transition_route_group(
-            transition_route_group.GetTransitionRouteGroupRequest(), name="name_value",
+            transition_route_group.GetTransitionRouteGroupRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
     "request_type",
-    [gcdc_transition_route_group.CreateTransitionRouteGroupRequest, dict,],
+    [
+        gcdc_transition_route_group.CreateTransitionRouteGroupRequest,
+        dict,
+    ],
 )
 def test_create_transition_route_group(request_type, transport: str = "grpc"):
     client = TransitionRouteGroupsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1339,7 +1399,8 @@ def test_create_transition_route_group(request_type, transport: str = "grpc"):
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = gcdc_transition_route_group.TransitionRouteGroup(
-            name="name_value", display_name="display_name_value",
+            name="name_value",
+            display_name="display_name_value",
         )
         response = client.create_transition_route_group(request)
 
@@ -1360,7 +1421,8 @@ def test_create_transition_route_group_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TransitionRouteGroupsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1381,7 +1443,8 @@ async def test_create_transition_route_group_async(
     request_type=gcdc_transition_route_group.CreateTransitionRouteGroupRequest,
 ):
     client = TransitionRouteGroupsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1395,7 +1458,8 @@ async def test_create_transition_route_group_async(
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             gcdc_transition_route_group.TransitionRouteGroup(
-                name="name_value", display_name="display_name_value",
+                name="name_value",
+                display_name="display_name_value",
             )
         )
         response = await client.create_transition_route_group(request)
@@ -1443,7 +1507,10 @@ def test_create_transition_route_group_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1474,7 +1541,10 @@ async def test_create_transition_route_group_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_transition_route_group_flattened():
@@ -1583,11 +1653,15 @@ async def test_create_transition_route_group_flattened_error_async():
 
 @pytest.mark.parametrize(
     "request_type",
-    [gcdc_transition_route_group.UpdateTransitionRouteGroupRequest, dict,],
+    [
+        gcdc_transition_route_group.UpdateTransitionRouteGroupRequest,
+        dict,
+    ],
 )
 def test_update_transition_route_group(request_type, transport: str = "grpc"):
     client = TransitionRouteGroupsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1600,7 +1674,8 @@ def test_update_transition_route_group(request_type, transport: str = "grpc"):
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = gcdc_transition_route_group.TransitionRouteGroup(
-            name="name_value", display_name="display_name_value",
+            name="name_value",
+            display_name="display_name_value",
         )
         response = client.update_transition_route_group(request)
 
@@ -1621,7 +1696,8 @@ def test_update_transition_route_group_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TransitionRouteGroupsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1642,7 +1718,8 @@ async def test_update_transition_route_group_async(
     request_type=gcdc_transition_route_group.UpdateTransitionRouteGroupRequest,
 ):
     client = TransitionRouteGroupsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1656,7 +1733,8 @@ async def test_update_transition_route_group_async(
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             gcdc_transition_route_group.TransitionRouteGroup(
-                name="name_value", display_name="display_name_value",
+                name="name_value",
+                display_name="display_name_value",
             )
         )
         response = await client.update_transition_route_group(request)
@@ -1849,11 +1927,16 @@ async def test_update_transition_route_group_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [transition_route_group.DeleteTransitionRouteGroupRequest, dict,]
+    "request_type",
+    [
+        transition_route_group.DeleteTransitionRouteGroupRequest,
+        dict,
+    ],
 )
 def test_delete_transition_route_group(request_type, transport: str = "grpc"):
     client = TransitionRouteGroupsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1881,7 +1964,8 @@ def test_delete_transition_route_group_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TransitionRouteGroupsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1900,7 +1984,8 @@ async def test_delete_transition_route_group_async(
     request_type=transition_route_group.DeleteTransitionRouteGroupRequest,
 ):
     client = TransitionRouteGroupsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1954,7 +2039,10 @@ def test_delete_transition_route_group_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1983,7 +2071,10 @@ async def test_delete_transition_route_group_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_transition_route_group_flattened():
@@ -1999,7 +2090,9 @@ def test_delete_transition_route_group_flattened():
         call.return_value = None
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_transition_route_group(name="name_value",)
+        client.delete_transition_route_group(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2040,7 +2133,9 @@ async def test_delete_transition_route_group_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_transition_route_group(name="name_value",)
+        response = await client.delete_transition_route_group(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2073,7 +2168,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = TransitionRouteGroupsClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -2094,7 +2190,8 @@ def test_credentials_transport_error():
     options.api_key = "api_key"
     with pytest.raises(ValueError):
         client = TransitionRouteGroupsClient(
-            client_options=options, transport=transport,
+            client_options=options,
+            transport=transport,
         )
 
     # It is an error to provide an api_key and a credential.
@@ -2111,7 +2208,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = TransitionRouteGroupsClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -2159,7 +2257,10 @@ def test_transport_grpc_default():
     client = TransitionRouteGroupsClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
-    assert isinstance(client.transport, transports.TransitionRouteGroupsGrpcTransport,)
+    assert isinstance(
+        client.transport,
+        transports.TransitionRouteGroupsGrpcTransport,
+    )
 
 
 def test_transition_route_groups_base_transport_error():
@@ -2208,7 +2309,8 @@ def test_transition_route_groups_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.TransitionRouteGroupsTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -2382,7 +2484,8 @@ def test_transition_route_groups_grpc_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.TransitionRouteGroupsGrpcTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -2394,7 +2497,8 @@ def test_transition_route_groups_grpc_asyncio_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.TransitionRouteGroupsGrpcAsyncIOTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -2506,8 +2610,13 @@ def test_flow_path():
     location = "clam"
     agent = "whelk"
     flow = "octopus"
-    expected = "projects/{project}/locations/{location}/agents/{agent}/flows/{flow}".format(
-        project=project, location=location, agent=agent, flow=flow,
+    expected = (
+        "projects/{project}/locations/{location}/agents/{agent}/flows/{flow}".format(
+            project=project,
+            location=location,
+            agent=agent,
+            flow=flow,
+        )
     )
     actual = TransitionRouteGroupsClient.flow_path(project, location, agent, flow)
     assert expected == actual
@@ -2533,7 +2642,10 @@ def test_intent_path():
     agent = "scallop"
     intent = "abalone"
     expected = "projects/{project}/locations/{location}/agents/{agent}/intents/{intent}".format(
-        project=project, location=location, agent=agent, intent=intent,
+        project=project,
+        location=location,
+        agent=agent,
+        intent=intent,
     )
     actual = TransitionRouteGroupsClient.intent_path(project, location, agent, intent)
     assert expected == actual
@@ -2560,7 +2672,11 @@ def test_page_path():
     flow = "mussel"
     page = "winkle"
     expected = "projects/{project}/locations/{location}/agents/{agent}/flows/{flow}/pages/{page}".format(
-        project=project, location=location, agent=agent, flow=flow, page=page,
+        project=project,
+        location=location,
+        agent=agent,
+        flow=flow,
+        page=page,
     )
     actual = TransitionRouteGroupsClient.page_path(project, location, agent, flow, page)
     assert expected == actual
@@ -2621,7 +2737,10 @@ def test_webhook_path():
     agent = "whelk"
     webhook = "octopus"
     expected = "projects/{project}/locations/{location}/agents/{agent}/webhooks/{webhook}".format(
-        project=project, location=location, agent=agent, webhook=webhook,
+        project=project,
+        location=location,
+        agent=agent,
+        webhook=webhook,
     )
     actual = TransitionRouteGroupsClient.webhook_path(project, location, agent, webhook)
     assert expected == actual
@@ -2663,7 +2782,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "scallop"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = TransitionRouteGroupsClient.common_folder_path(folder)
     assert expected == actual
 
@@ -2681,7 +2802,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "squid"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = TransitionRouteGroupsClient.common_organization_path(organization)
     assert expected == actual
 
@@ -2699,7 +2822,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "whelk"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = TransitionRouteGroupsClient.common_project_path(project)
     assert expected == actual
 
@@ -2719,7 +2844,8 @@ def test_common_location_path():
     project = "oyster"
     location = "nudibranch"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = TransitionRouteGroupsClient.common_location_path(project, location)
     assert expected == actual
@@ -2744,7 +2870,8 @@ def test_client_with_default_client_info():
         transports.TransitionRouteGroupsTransport, "_prep_wrapped_messages"
     ) as prep:
         client = TransitionRouteGroupsClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -2753,7 +2880,8 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = TransitionRouteGroupsClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -2761,7 +2889,8 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = TransitionRouteGroupsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     with mock.patch.object(
         type(getattr(client.transport, "grpc_channel")), "close"

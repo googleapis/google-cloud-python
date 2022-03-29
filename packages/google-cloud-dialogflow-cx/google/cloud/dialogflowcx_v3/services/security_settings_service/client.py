@@ -60,7 +60,8 @@ class SecuritySettingsServiceClientMeta(type):
     _transport_registry["grpc_asyncio"] = SecuritySettingsServiceGrpcAsyncIOTransport
 
     def get_transport_class(
-        cls, label: str = None,
+        cls,
+        label: str = None,
     ) -> Type[SecuritySettingsServiceTransport]:
         """Returns an appropriate transport class.
 
@@ -167,7 +168,9 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
 
     @staticmethod
     def deidentify_template_path(
-        organization: str, location: str, deidentify_template: str,
+        organization: str,
+        location: str,
+        deidentify_template: str,
     ) -> str:
         """Returns a fully-qualified deidentify_template string."""
         return "organizations/{organization}/locations/{location}/deidentifyTemplates/{deidentify_template}".format(
@@ -187,7 +190,9 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
 
     @staticmethod
     def inspect_template_path(
-        organization: str, location: str, inspect_template: str,
+        organization: str,
+        location: str,
+        inspect_template: str,
     ) -> str:
         """Returns a fully-qualified inspect_template string."""
         return "organizations/{organization}/locations/{location}/inspectTemplates/{inspect_template}".format(
@@ -207,11 +212,15 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
 
     @staticmethod
     def security_settings_path(
-        project: str, location: str, security_settings: str,
+        project: str,
+        location: str,
+        security_settings: str,
     ) -> str:
         """Returns a fully-qualified security_settings string."""
         return "projects/{project}/locations/{location}/securitySettings/{security_settings}".format(
-            project=project, location=location, security_settings=security_settings,
+            project=project,
+            location=location,
+            security_settings=security_settings,
         )
 
     @staticmethod
@@ -224,7 +233,9 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_billing_account_path(billing_account: str,) -> str:
+    def common_billing_account_path(
+        billing_account: str,
+    ) -> str:
         """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
@@ -237,9 +248,13 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(folder: str,) -> str:
+    def common_folder_path(
+        folder: str,
+    ) -> str:
         """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(folder=folder,)
+        return "folders/{folder}".format(
+            folder=folder,
+        )
 
     @staticmethod
     def parse_common_folder_path(path: str) -> Dict[str, str]:
@@ -248,9 +263,13 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(organization: str,) -> str:
+    def common_organization_path(
+        organization: str,
+    ) -> str:
         """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(organization=organization,)
+        return "organizations/{organization}".format(
+            organization=organization,
+        )
 
     @staticmethod
     def parse_common_organization_path(path: str) -> Dict[str, str]:
@@ -259,9 +278,13 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(project: str,) -> str:
+    def common_project_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified project string."""
-        return "projects/{project}".format(project=project,)
+        return "projects/{project}".format(
+            project=project,
+        )
 
     @staticmethod
     def parse_common_project_path(path: str) -> Dict[str, str]:
@@ -270,10 +293,14 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(project: str, location: str,) -> str:
+    def common_location_path(
+        project: str,
+        location: str,
+    ) -> str:
         """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
-            project=project, location=location,
+            project=project,
+            location=location,
         )
 
     @staticmethod
@@ -557,7 +584,12 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -654,7 +686,12 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -771,7 +808,12 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -868,12 +910,20 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListSecuritySettingsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -960,7 +1010,10 @@ class SecuritySettingsServiceClient(metaclass=SecuritySettingsServiceClientMeta)
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def __enter__(self):

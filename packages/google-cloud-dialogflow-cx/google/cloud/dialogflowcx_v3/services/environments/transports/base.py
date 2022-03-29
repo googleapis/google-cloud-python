@@ -128,19 +128,29 @@ class EnvironmentsTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.list_environments: gapic_v1.method.wrap_method(
-                self.list_environments, default_timeout=None, client_info=client_info,
+                self.list_environments,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_environment: gapic_v1.method.wrap_method(
-                self.get_environment, default_timeout=None, client_info=client_info,
+                self.get_environment,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.create_environment: gapic_v1.method.wrap_method(
-                self.create_environment, default_timeout=None, client_info=client_info,
+                self.create_environment,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.update_environment: gapic_v1.method.wrap_method(
-                self.update_environment, default_timeout=None, client_info=client_info,
+                self.update_environment,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.delete_environment: gapic_v1.method.wrap_method(
-                self.delete_environment, default_timeout=None, client_info=client_info,
+                self.delete_environment,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.lookup_environment_history: gapic_v1.method.wrap_method(
                 self.lookup_environment_history,
@@ -148,7 +158,9 @@ class EnvironmentsTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.run_continuous_test: gapic_v1.method.wrap_method(
-                self.run_continuous_test, default_timeout=None, client_info=client_info,
+                self.run_continuous_test,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_continuous_test_results: gapic_v1.method.wrap_method(
                 self.list_continuous_test_results,
@@ -156,16 +168,18 @@ class EnvironmentsTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.deploy_flow: gapic_v1.method.wrap_method(
-                self.deploy_flow, default_timeout=None, client_info=client_info,
+                self.deploy_flow,
+                default_timeout=None,
+                client_info=client_info,
             ),
         }
 
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

@@ -54,7 +54,10 @@ class DeploymentsClientMeta(type):
     _transport_registry["grpc"] = DeploymentsGrpcTransport
     _transport_registry["grpc_asyncio"] = DeploymentsGrpcAsyncIOTransport
 
-    def get_transport_class(cls, label: str = None,) -> Type[DeploymentsTransport]:
+    def get_transport_class(
+        cls,
+        label: str = None,
+    ) -> Type[DeploymentsTransport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -162,7 +165,11 @@ class DeploymentsClient(metaclass=DeploymentsClientMeta):
 
     @staticmethod
     def deployment_path(
-        project: str, location: str, agent: str, environment: str, deployment: str,
+        project: str,
+        location: str,
+        agent: str,
+        environment: str,
+        deployment: str,
     ) -> str:
         """Returns a fully-qualified deployment string."""
         return "projects/{project}/locations/{location}/agents/{agent}/environments/{environment}/deployments/{deployment}".format(
@@ -184,7 +191,11 @@ class DeploymentsClient(metaclass=DeploymentsClientMeta):
 
     @staticmethod
     def experiment_path(
-        project: str, location: str, agent: str, environment: str, experiment: str,
+        project: str,
+        location: str,
+        agent: str,
+        environment: str,
+        experiment: str,
     ) -> str:
         """Returns a fully-qualified experiment string."""
         return "projects/{project}/locations/{location}/agents/{agent}/environments/{environment}/experiments/{experiment}".format(
@@ -206,7 +217,11 @@ class DeploymentsClient(metaclass=DeploymentsClientMeta):
 
     @staticmethod
     def test_case_result_path(
-        project: str, location: str, agent: str, test_case: str, result: str,
+        project: str,
+        location: str,
+        agent: str,
+        test_case: str,
+        result: str,
     ) -> str:
         """Returns a fully-qualified test_case_result string."""
         return "projects/{project}/locations/{location}/agents/{agent}/testCases/{test_case}/results/{result}".format(
@@ -228,11 +243,19 @@ class DeploymentsClient(metaclass=DeploymentsClientMeta):
 
     @staticmethod
     def version_path(
-        project: str, location: str, agent: str, flow: str, version: str,
+        project: str,
+        location: str,
+        agent: str,
+        flow: str,
+        version: str,
     ) -> str:
         """Returns a fully-qualified version string."""
         return "projects/{project}/locations/{location}/agents/{agent}/flows/{flow}/versions/{version}".format(
-            project=project, location=location, agent=agent, flow=flow, version=version,
+            project=project,
+            location=location,
+            agent=agent,
+            flow=flow,
+            version=version,
         )
 
     @staticmethod
@@ -245,7 +268,9 @@ class DeploymentsClient(metaclass=DeploymentsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_billing_account_path(billing_account: str,) -> str:
+    def common_billing_account_path(
+        billing_account: str,
+    ) -> str:
         """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
@@ -258,9 +283,13 @@ class DeploymentsClient(metaclass=DeploymentsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(folder: str,) -> str:
+    def common_folder_path(
+        folder: str,
+    ) -> str:
         """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(folder=folder,)
+        return "folders/{folder}".format(
+            folder=folder,
+        )
 
     @staticmethod
     def parse_common_folder_path(path: str) -> Dict[str, str]:
@@ -269,9 +298,13 @@ class DeploymentsClient(metaclass=DeploymentsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(organization: str,) -> str:
+    def common_organization_path(
+        organization: str,
+    ) -> str:
         """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(organization=organization,)
+        return "organizations/{organization}".format(
+            organization=organization,
+        )
 
     @staticmethod
     def parse_common_organization_path(path: str) -> Dict[str, str]:
@@ -280,9 +313,13 @@ class DeploymentsClient(metaclass=DeploymentsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(project: str,) -> str:
+    def common_project_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified project string."""
-        return "projects/{project}".format(project=project,)
+        return "projects/{project}".format(
+            project=project,
+        )
 
     @staticmethod
     def parse_common_project_path(path: str) -> Dict[str, str]:
@@ -291,10 +328,14 @@ class DeploymentsClient(metaclass=DeploymentsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(project: str, location: str,) -> str:
+    def common_location_path(
+        project: str,
+        location: str,
+    ) -> str:
         """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
-            project=project, location=location,
+            project=project,
+            location=location,
         )
 
     @staticmethod
@@ -561,12 +602,20 @@ class DeploymentsClient(metaclass=DeploymentsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListDeploymentsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -666,7 +715,12 @@ class DeploymentsClient(metaclass=DeploymentsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response

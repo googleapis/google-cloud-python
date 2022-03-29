@@ -128,9 +128,15 @@ class Experiment(proto.Message):
                 This field is a member of `oneof`_ ``variants``.
         """
 
-        condition = proto.Field(proto.STRING, number=1,)
+        condition = proto.Field(
+            proto.STRING,
+            number=1,
+        )
         version_variants = proto.Field(
-            proto.MESSAGE, number=2, oneof="variants", message="VersionVariants",
+            proto.MESSAGE,
+            number=2,
+            oneof="variants",
+            message="VersionVariants",
         )
 
     class Result(proto.Message):
@@ -180,10 +186,22 @@ class Experiment(proto.Message):
                     Upper bound of the interval.
             """
 
-            confidence_level = proto.Field(proto.DOUBLE, number=1,)
-            ratio = proto.Field(proto.DOUBLE, number=2,)
-            lower_bound = proto.Field(proto.DOUBLE, number=3,)
-            upper_bound = proto.Field(proto.DOUBLE, number=4,)
+            confidence_level = proto.Field(
+                proto.DOUBLE,
+                number=1,
+            )
+            ratio = proto.Field(
+                proto.DOUBLE,
+                number=2,
+            )
+            lower_bound = proto.Field(
+                proto.DOUBLE,
+                number=3,
+            )
+            upper_bound = proto.Field(
+                proto.DOUBLE,
+                number=4,
+            )
 
         class Metric(proto.Message):
             r"""Metric and corresponding confidence intervals.
@@ -216,15 +234,29 @@ class Experiment(proto.Message):
             """
 
             type_ = proto.Field(
-                proto.ENUM, number=1, enum="Experiment.Result.MetricType",
+                proto.ENUM,
+                number=1,
+                enum="Experiment.Result.MetricType",
             )
             count_type = proto.Field(
-                proto.ENUM, number=5, enum="Experiment.Result.CountType",
+                proto.ENUM,
+                number=5,
+                enum="Experiment.Result.CountType",
             )
-            ratio = proto.Field(proto.DOUBLE, number=2, oneof="value",)
-            count = proto.Field(proto.DOUBLE, number=4, oneof="value",)
+            ratio = proto.Field(
+                proto.DOUBLE,
+                number=2,
+                oneof="value",
+            )
+            count = proto.Field(
+                proto.DOUBLE,
+                number=4,
+                oneof="value",
+            )
             confidence_interval = proto.Field(
-                proto.MESSAGE, number=3, message="Experiment.Result.ConfidenceInterval",
+                proto.MESSAGE,
+                number=3,
+                message="Experiment.Result.ConfidenceInterval",
             )
 
         class VersionMetrics(proto.Message):
@@ -243,39 +275,101 @@ class Experiment(proto.Message):
                     this version.
             """
 
-            version = proto.Field(proto.STRING, number=1,)
-            metrics = proto.RepeatedField(
-                proto.MESSAGE, number=2, message="Experiment.Result.Metric",
+            version = proto.Field(
+                proto.STRING,
+                number=1,
             )
-            session_count = proto.Field(proto.INT32, number=3,)
+            metrics = proto.RepeatedField(
+                proto.MESSAGE,
+                number=2,
+                message="Experiment.Result.Metric",
+            )
+            session_count = proto.Field(
+                proto.INT32,
+                number=3,
+            )
 
         version_metrics = proto.RepeatedField(
-            proto.MESSAGE, number=1, message="Experiment.Result.VersionMetrics",
+            proto.MESSAGE,
+            number=1,
+            message="Experiment.Result.VersionMetrics",
         )
         last_update_time = proto.Field(
-            proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,
+            proto.MESSAGE,
+            number=2,
+            message=timestamp_pb2.Timestamp,
         )
 
-    name = proto.Field(proto.STRING, number=1,)
-    display_name = proto.Field(proto.STRING, number=2,)
-    description = proto.Field(proto.STRING, number=3,)
-    state = proto.Field(proto.ENUM, number=4, enum=State,)
-    definition = proto.Field(proto.MESSAGE, number=5, message=Definition,)
-    rollout_config = proto.Field(proto.MESSAGE, number=14, message="RolloutConfig",)
-    rollout_state = proto.Field(proto.MESSAGE, number=15, message="RolloutState",)
-    rollout_failure_reason = proto.Field(proto.STRING, number=16,)
-    result = proto.Field(proto.MESSAGE, number=6, message=Result,)
-    create_time = proto.Field(proto.MESSAGE, number=7, message=timestamp_pb2.Timestamp,)
-    start_time = proto.Field(proto.MESSAGE, number=8, message=timestamp_pb2.Timestamp,)
-    end_time = proto.Field(proto.MESSAGE, number=9, message=timestamp_pb2.Timestamp,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=State,
+    )
+    definition = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=Definition,
+    )
+    rollout_config = proto.Field(
+        proto.MESSAGE,
+        number=14,
+        message="RolloutConfig",
+    )
+    rollout_state = proto.Field(
+        proto.MESSAGE,
+        number=15,
+        message="RolloutState",
+    )
+    rollout_failure_reason = proto.Field(
+        proto.STRING,
+        number=16,
+    )
+    result = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=Result,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=timestamp_pb2.Timestamp,
+    )
+    start_time = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message=timestamp_pb2.Timestamp,
+    )
     last_update_time = proto.Field(
-        proto.MESSAGE, number=10, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=10,
+        message=timestamp_pb2.Timestamp,
     )
     experiment_length = proto.Field(
-        proto.MESSAGE, number=11, message=duration_pb2.Duration,
+        proto.MESSAGE,
+        number=11,
+        message=duration_pb2.Duration,
     )
     variants_history = proto.RepeatedField(
-        proto.MESSAGE, number=12, message="VariantsHistory",
+        proto.MESSAGE,
+        number=12,
+        message="VariantsHistory",
     )
 
 
@@ -302,11 +396,24 @@ class VersionVariants(proto.Message):
                 Whether the variant is for the control group.
         """
 
-        version = proto.Field(proto.STRING, number=1,)
-        traffic_allocation = proto.Field(proto.FLOAT, number=2,)
-        is_control_group = proto.Field(proto.BOOL, number=3,)
+        version = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        traffic_allocation = proto.Field(
+            proto.FLOAT,
+            number=2,
+        )
+        is_control_group = proto.Field(
+            proto.BOOL,
+            number=3,
+        )
 
-    variants = proto.RepeatedField(proto.MESSAGE, number=1, message=Variant,)
+    variants = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=Variant,
+    )
 
 
 class VariantsHistory(proto.Message):
@@ -324,9 +431,16 @@ class VariantsHistory(proto.Message):
     """
 
     version_variants = proto.Field(
-        proto.MESSAGE, number=1, oneof="variants", message="VersionVariants",
+        proto.MESSAGE,
+        number=1,
+        oneof="variants",
+        message="VersionVariants",
     )
-    update_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 class RolloutConfig(proto.Message):
@@ -368,15 +482,33 @@ class RolloutConfig(proto.Message):
                 hour.
         """
 
-        display_name = proto.Field(proto.STRING, number=1,)
-        traffic_percent = proto.Field(proto.INT32, number=2,)
+        display_name = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        traffic_percent = proto.Field(
+            proto.INT32,
+            number=2,
+        )
         min_duration = proto.Field(
-            proto.MESSAGE, number=3, message=duration_pb2.Duration,
+            proto.MESSAGE,
+            number=3,
+            message=duration_pb2.Duration,
         )
 
-    rollout_steps = proto.RepeatedField(proto.MESSAGE, number=1, message=RolloutStep,)
-    rollout_condition = proto.Field(proto.STRING, number=2,)
-    failure_condition = proto.Field(proto.STRING, number=3,)
+    rollout_steps = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=RolloutStep,
+    )
+    rollout_condition = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    failure_condition = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class RolloutState(proto.Message):
@@ -393,9 +525,19 @@ class RolloutState(proto.Message):
             Start time of the current step.
     """
 
-    step = proto.Field(proto.STRING, number=1,)
-    step_index = proto.Field(proto.INT32, number=3,)
-    start_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
+    step = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    step_index = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    start_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 class ListExperimentsRequest(proto.Message):
@@ -416,9 +558,18 @@ class ListExperimentsRequest(proto.Message):
             request.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListExperimentsResponse(proto.Message):
@@ -441,8 +592,15 @@ class ListExperimentsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    experiments = proto.RepeatedField(proto.MESSAGE, number=1, message="Experiment",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    experiments = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Experiment",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetExperimentRequest(proto.Message):
@@ -457,7 +615,10 @@ class GetExperimentRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>/experiments/<Experiment ID>``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CreateExperimentRequest(proto.Message):
@@ -475,8 +636,15 @@ class CreateExperimentRequest(proto.Message):
             Required. The experiment to create.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    experiment = proto.Field(proto.MESSAGE, number=2, message="Experiment",)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    experiment = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="Experiment",
+    )
 
 
 class UpdateExperimentRequest(proto.Message):
@@ -491,9 +659,15 @@ class UpdateExperimentRequest(proto.Message):
             get updated.
     """
 
-    experiment = proto.Field(proto.MESSAGE, number=1, message="Experiment",)
+    experiment = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="Experiment",
+    )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -509,7 +683,10 @@ class DeleteExperimentRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>/experiments/<Experiment ID>``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class StartExperimentRequest(proto.Message):
@@ -522,7 +699,10 @@ class StartExperimentRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>/experiments/<Experiment ID>``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class StopExperimentRequest(proto.Message):
@@ -535,7 +715,10 @@ class StopExperimentRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>/experiments/<Experiment ID>``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

@@ -61,7 +61,10 @@ class AgentsClientMeta(type):
     _transport_registry["grpc"] = AgentsGrpcTransport
     _transport_registry["grpc_asyncio"] = AgentsGrpcAsyncIOTransport
 
-    def get_transport_class(cls, label: str = None,) -> Type[AgentsTransport]:
+    def get_transport_class(
+        cls,
+        label: str = None,
+    ) -> Type[AgentsTransport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -168,10 +171,16 @@ class AgentsClient(metaclass=AgentsClientMeta):
         return self._transport
 
     @staticmethod
-    def agent_path(project: str, location: str, agent: str,) -> str:
+    def agent_path(
+        project: str,
+        location: str,
+        agent: str,
+    ) -> str:
         """Returns a fully-qualified agent string."""
         return "projects/{project}/locations/{location}/agents/{agent}".format(
-            project=project, location=location, agent=agent,
+            project=project,
+            location=location,
+            agent=agent,
         )
 
     @staticmethod
@@ -184,10 +193,16 @@ class AgentsClient(metaclass=AgentsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def agent_validation_result_path(project: str, location: str, agent: str,) -> str:
+    def agent_validation_result_path(
+        project: str,
+        location: str,
+        agent: str,
+    ) -> str:
         """Returns a fully-qualified agent_validation_result string."""
         return "projects/{project}/locations/{location}/agents/{agent}/validationResult".format(
-            project=project, location=location, agent=agent,
+            project=project,
+            location=location,
+            agent=agent,
         )
 
     @staticmethod
@@ -201,11 +216,17 @@ class AgentsClient(metaclass=AgentsClientMeta):
 
     @staticmethod
     def environment_path(
-        project: str, location: str, agent: str, environment: str,
+        project: str,
+        location: str,
+        agent: str,
+        environment: str,
     ) -> str:
         """Returns a fully-qualified environment string."""
         return "projects/{project}/locations/{location}/agents/{agent}/environments/{environment}".format(
-            project=project, location=location, agent=agent, environment=environment,
+            project=project,
+            location=location,
+            agent=agent,
+            environment=environment,
         )
 
     @staticmethod
@@ -218,10 +239,18 @@ class AgentsClient(metaclass=AgentsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def flow_path(project: str, location: str, agent: str, flow: str,) -> str:
+    def flow_path(
+        project: str,
+        location: str,
+        agent: str,
+        flow: str,
+    ) -> str:
         """Returns a fully-qualified flow string."""
         return "projects/{project}/locations/{location}/agents/{agent}/flows/{flow}".format(
-            project=project, location=location, agent=agent, flow=flow,
+            project=project,
+            location=location,
+            agent=agent,
+            flow=flow,
         )
 
     @staticmethod
@@ -235,11 +264,17 @@ class AgentsClient(metaclass=AgentsClientMeta):
 
     @staticmethod
     def flow_validation_result_path(
-        project: str, location: str, agent: str, flow: str,
+        project: str,
+        location: str,
+        agent: str,
+        flow: str,
     ) -> str:
         """Returns a fully-qualified flow_validation_result string."""
         return "projects/{project}/locations/{location}/agents/{agent}/flows/{flow}/validationResult".format(
-            project=project, location=location, agent=agent, flow=flow,
+            project=project,
+            location=location,
+            agent=agent,
+            flow=flow,
         )
 
     @staticmethod
@@ -253,11 +288,15 @@ class AgentsClient(metaclass=AgentsClientMeta):
 
     @staticmethod
     def security_settings_path(
-        project: str, location: str, security_settings: str,
+        project: str,
+        location: str,
+        security_settings: str,
     ) -> str:
         """Returns a fully-qualified security_settings string."""
         return "projects/{project}/locations/{location}/securitySettings/{security_settings}".format(
-            project=project, location=location, security_settings=security_settings,
+            project=project,
+            location=location,
+            security_settings=security_settings,
         )
 
     @staticmethod
@@ -270,7 +309,9 @@ class AgentsClient(metaclass=AgentsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_billing_account_path(billing_account: str,) -> str:
+    def common_billing_account_path(
+        billing_account: str,
+    ) -> str:
         """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
@@ -283,9 +324,13 @@ class AgentsClient(metaclass=AgentsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(folder: str,) -> str:
+    def common_folder_path(
+        folder: str,
+    ) -> str:
         """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(folder=folder,)
+        return "folders/{folder}".format(
+            folder=folder,
+        )
 
     @staticmethod
     def parse_common_folder_path(path: str) -> Dict[str, str]:
@@ -294,9 +339,13 @@ class AgentsClient(metaclass=AgentsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(organization: str,) -> str:
+    def common_organization_path(
+        organization: str,
+    ) -> str:
         """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(organization=organization,)
+        return "organizations/{organization}".format(
+            organization=organization,
+        )
 
     @staticmethod
     def parse_common_organization_path(path: str) -> Dict[str, str]:
@@ -305,9 +354,13 @@ class AgentsClient(metaclass=AgentsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(project: str,) -> str:
+    def common_project_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified project string."""
-        return "projects/{project}".format(project=project,)
+        return "projects/{project}".format(
+            project=project,
+        )
 
     @staticmethod
     def parse_common_project_path(path: str) -> Dict[str, str]:
@@ -316,10 +369,14 @@ class AgentsClient(metaclass=AgentsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(project: str, location: str,) -> str:
+    def common_location_path(
+        project: str,
+        location: str,
+    ) -> str:
         """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
-            project=project, location=location,
+            project=project,
+            location=location,
         )
 
     @staticmethod
@@ -584,12 +641,20 @@ class AgentsClient(metaclass=AgentsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListAgentsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -692,7 +757,12 @@ class AgentsClient(metaclass=AgentsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -813,7 +883,12 @@ class AgentsClient(metaclass=AgentsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -936,7 +1011,12 @@ class AgentsClient(metaclass=AgentsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1018,7 +1098,10 @@ class AgentsClient(metaclass=AgentsClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def export_agent(
@@ -1104,7 +1187,12 @@ class AgentsClient(metaclass=AgentsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1218,7 +1306,12 @@ class AgentsClient(metaclass=AgentsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1299,7 +1392,12 @@ class AgentsClient(metaclass=AgentsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1393,7 +1491,12 @@ class AgentsClient(metaclass=AgentsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response

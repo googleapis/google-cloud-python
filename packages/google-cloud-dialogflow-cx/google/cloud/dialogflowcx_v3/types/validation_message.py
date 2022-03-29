@@ -18,7 +18,10 @@ import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.dialogflow.cx.v3",
-    manifest={"ValidationMessage", "ResourceName",},
+    manifest={
+        "ValidationMessage",
+        "ResourceName",
+    },
 )
 
 
@@ -65,13 +68,29 @@ class ValidationMessage(proto.Message):
         WARNING = 2
         ERROR = 3
 
-    resource_type = proto.Field(proto.ENUM, number=1, enum=ResourceType,)
-    resources = proto.RepeatedField(proto.STRING, number=2,)
-    resource_names = proto.RepeatedField(
-        proto.MESSAGE, number=6, message="ResourceName",
+    resource_type = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=ResourceType,
     )
-    severity = proto.Field(proto.ENUM, number=3, enum=Severity,)
-    detail = proto.Field(proto.STRING, number=4,)
+    resources = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+    resource_names = proto.RepeatedField(
+        proto.MESSAGE,
+        number=6,
+        message="ResourceName",
+    )
+    severity = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=Severity,
+    )
+    detail = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class ResourceName(proto.Message):
@@ -84,8 +103,14 @@ class ResourceName(proto.Message):
             Display name.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    display_name = proto.Field(proto.STRING, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

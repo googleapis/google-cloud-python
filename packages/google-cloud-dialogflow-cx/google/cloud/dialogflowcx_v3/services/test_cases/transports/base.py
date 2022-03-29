@@ -128,7 +128,9 @@ class TestCasesTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.list_test_cases: gapic_v1.method.wrap_method(
-                self.list_test_cases, default_timeout=None, client_info=client_info,
+                self.list_test_cases,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.batch_delete_test_cases: gapic_v1.method.wrap_method(
                 self.batch_delete_test_cases,
@@ -136,16 +138,24 @@ class TestCasesTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.get_test_case: gapic_v1.method.wrap_method(
-                self.get_test_case, default_timeout=None, client_info=client_info,
+                self.get_test_case,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.create_test_case: gapic_v1.method.wrap_method(
-                self.create_test_case, default_timeout=None, client_info=client_info,
+                self.create_test_case,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.update_test_case: gapic_v1.method.wrap_method(
-                self.update_test_case, default_timeout=None, client_info=client_info,
+                self.update_test_case,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.run_test_case: gapic_v1.method.wrap_method(
-                self.run_test_case, default_timeout=None, client_info=client_info,
+                self.run_test_case,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.batch_run_test_cases: gapic_v1.method.wrap_method(
                 self.batch_run_test_cases,
@@ -153,13 +163,19 @@ class TestCasesTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.calculate_coverage: gapic_v1.method.wrap_method(
-                self.calculate_coverage, default_timeout=None, client_info=client_info,
+                self.calculate_coverage,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.import_test_cases: gapic_v1.method.wrap_method(
-                self.import_test_cases, default_timeout=None, client_info=client_info,
+                self.import_test_cases,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.export_test_cases: gapic_v1.method.wrap_method(
-                self.export_test_cases, default_timeout=None, client_info=client_info,
+                self.export_test_cases,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_test_case_results: gapic_v1.method.wrap_method(
                 self.list_test_case_results,
@@ -176,9 +192,9 @@ class TestCasesTransport(abc.ABC):
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

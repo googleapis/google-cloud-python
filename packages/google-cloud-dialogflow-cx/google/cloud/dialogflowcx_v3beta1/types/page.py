@@ -119,18 +119,37 @@ class Page(proto.Message):
             input.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    display_name = proto.Field(proto.STRING, number=2,)
-    entry_fulfillment = proto.Field(
-        proto.MESSAGE, number=7, message=fulfillment.Fulfillment,
+    name = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    form = proto.Field(proto.MESSAGE, number=4, message="Form",)
-    transition_route_groups = proto.RepeatedField(proto.STRING, number=11,)
+    display_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    entry_fulfillment = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=fulfillment.Fulfillment,
+    )
+    form = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="Form",
+    )
+    transition_route_groups = proto.RepeatedField(
+        proto.STRING,
+        number=11,
+    )
     transition_routes = proto.RepeatedField(
-        proto.MESSAGE, number=9, message="TransitionRoute",
+        proto.MESSAGE,
+        number=9,
+        message="TransitionRoute",
     )
     event_handlers = proto.RepeatedField(
-        proto.MESSAGE, number=10, message="EventHandler",
+        proto.MESSAGE,
+        number=10,
+        message="EventHandler",
     )
 
 
@@ -239,23 +258,52 @@ class Form(proto.Message):
             """
 
             initial_prompt_fulfillment = proto.Field(
-                proto.MESSAGE, number=3, message=fulfillment.Fulfillment,
+                proto.MESSAGE,
+                number=3,
+                message=fulfillment.Fulfillment,
             )
             reprompt_event_handlers = proto.RepeatedField(
-                proto.MESSAGE, number=5, message="EventHandler",
+                proto.MESSAGE,
+                number=5,
+                message="EventHandler",
             )
 
-        display_name = proto.Field(proto.STRING, number=1,)
-        required = proto.Field(proto.BOOL, number=2,)
-        entity_type = proto.Field(proto.STRING, number=3,)
-        is_list = proto.Field(proto.BOOL, number=4,)
-        fill_behavior = proto.Field(
-            proto.MESSAGE, number=7, message="Form.Parameter.FillBehavior",
+        display_name = proto.Field(
+            proto.STRING,
+            number=1,
         )
-        default_value = proto.Field(proto.MESSAGE, number=9, message=struct_pb2.Value,)
-        redact = proto.Field(proto.BOOL, number=11,)
+        required = proto.Field(
+            proto.BOOL,
+            number=2,
+        )
+        entity_type = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+        is_list = proto.Field(
+            proto.BOOL,
+            number=4,
+        )
+        fill_behavior = proto.Field(
+            proto.MESSAGE,
+            number=7,
+            message="Form.Parameter.FillBehavior",
+        )
+        default_value = proto.Field(
+            proto.MESSAGE,
+            number=9,
+            message=struct_pb2.Value,
+        )
+        redact = proto.Field(
+            proto.BOOL,
+            number=11,
+        )
 
-    parameters = proto.RepeatedField(proto.MESSAGE, number=1, message=Parameter,)
+    parameters = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=Parameter,
+    )
 
 
 class EventHandler(proto.Message):
@@ -307,13 +355,29 @@ class EventHandler(proto.Message):
             This field is a member of `oneof`_ ``target``.
     """
 
-    name = proto.Field(proto.STRING, number=6,)
-    event = proto.Field(proto.STRING, number=4,)
-    trigger_fulfillment = proto.Field(
-        proto.MESSAGE, number=5, message=fulfillment.Fulfillment,
+    name = proto.Field(
+        proto.STRING,
+        number=6,
     )
-    target_page = proto.Field(proto.STRING, number=2, oneof="target",)
-    target_flow = proto.Field(proto.STRING, number=3, oneof="target",)
+    event = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    trigger_fulfillment = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=fulfillment.Fulfillment,
+    )
+    target_page = proto.Field(
+        proto.STRING,
+        number=2,
+        oneof="target",
+    )
+    target_flow = proto.Field(
+        proto.STRING,
+        number=3,
+        oneof="target",
+    )
 
 
 class TransitionRoute(proto.Message):
@@ -384,14 +448,33 @@ class TransitionRoute(proto.Message):
             This field is a member of `oneof`_ ``target``.
     """
 
-    name = proto.Field(proto.STRING, number=6,)
-    intent = proto.Field(proto.STRING, number=1,)
-    condition = proto.Field(proto.STRING, number=2,)
-    trigger_fulfillment = proto.Field(
-        proto.MESSAGE, number=3, message=fulfillment.Fulfillment,
+    name = proto.Field(
+        proto.STRING,
+        number=6,
     )
-    target_page = proto.Field(proto.STRING, number=4, oneof="target",)
-    target_flow = proto.Field(proto.STRING, number=5, oneof="target",)
+    intent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    condition = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    trigger_fulfillment = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=fulfillment.Fulfillment,
+    )
+    target_page = proto.Field(
+        proto.STRING,
+        number=4,
+        oneof="target",
+    )
+    target_flow = proto.Field(
+        proto.STRING,
+        number=5,
+        oneof="target",
+    )
 
 
 class ListPagesRequest(proto.Message):
@@ -436,10 +519,22 @@ class ListPagesRequest(proto.Message):
             request.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    language_code = proto.Field(proto.STRING, number=2,)
-    page_size = proto.Field(proto.INT32, number=3,)
-    page_token = proto.Field(proto.STRING, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    language_code = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class ListPagesResponse(proto.Message):
@@ -460,8 +555,15 @@ class ListPagesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    pages = proto.RepeatedField(proto.MESSAGE, number=1, message="Page",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    pages = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Page",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetPageRequest(proto.Message):
@@ -500,8 +602,14 @@ class GetPageRequest(proto.Message):
             before they can be used.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    language_code = proto.Field(proto.STRING, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    language_code = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class CreatePageRequest(proto.Message):
@@ -541,9 +649,19 @@ class CreatePageRequest(proto.Message):
             before they can be used.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page = proto.Field(proto.MESSAGE, number=2, message="Page",)
-    language_code = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="Page",
+    )
+    language_code = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class UpdatePageRequest(proto.Message):
@@ -584,10 +702,19 @@ class UpdatePageRequest(proto.Message):
             updated.
     """
 
-    page = proto.Field(proto.MESSAGE, number=1, message="Page",)
-    language_code = proto.Field(proto.STRING, number=2,)
+    page = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="Page",
+    )
+    language_code = proto.Field(
+        proto.STRING,
+        number=2,
+    )
     update_mask = proto.Field(
-        proto.MESSAGE, number=3, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=3,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -613,8 +740,14 @@ class DeletePageRequest(proto.Message):
                cleared).
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    force = proto.Field(proto.BOOL, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    force = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

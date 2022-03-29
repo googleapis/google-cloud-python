@@ -110,18 +110,42 @@ class TestCase(proto.Message):
             The latest test result.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    tags = proto.RepeatedField(proto.STRING, number=2,)
-    display_name = proto.Field(proto.STRING, number=3,)
-    notes = proto.Field(proto.STRING, number=4,)
-    test_config = proto.Field(proto.MESSAGE, number=13, message="TestConfig",)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    tags = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    notes = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    test_config = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        message="TestConfig",
+    )
     test_case_conversation_turns = proto.RepeatedField(
-        proto.MESSAGE, number=5, message="ConversationTurn",
+        proto.MESSAGE,
+        number=5,
+        message="ConversationTurn",
     )
     creation_time = proto.Field(
-        proto.MESSAGE, number=10, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=10,
+        message=timestamp_pb2.Timestamp,
     )
-    last_test_result = proto.Field(proto.MESSAGE, number=12, message="TestCaseResult",)
+    last_test_result = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        message="TestCaseResult",
+    )
 
 
 class TestCaseResult(proto.Message):
@@ -145,13 +169,29 @@ class TestCaseResult(proto.Message):
             The time that the test was run.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    environment = proto.Field(proto.STRING, number=2,)
-    conversation_turns = proto.RepeatedField(
-        proto.MESSAGE, number=3, message="ConversationTurn",
+    name = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    test_result = proto.Field(proto.ENUM, number=4, enum="TestResult",)
-    test_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
+    environment = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    conversation_turns = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message="ConversationTurn",
+    )
+    test_result = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum="TestResult",
+    )
+    test_time = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 class TestConfig(proto.Message):
@@ -182,9 +222,18 @@ class TestConfig(proto.Message):
             start flow.
     """
 
-    tracking_parameters = proto.RepeatedField(proto.STRING, number=1,)
-    flow = proto.Field(proto.STRING, number=2,)
-    page = proto.Field(proto.STRING, number=3,)
+    tracking_parameters = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
+    flow = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    page = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ConversationTurn(proto.Message):
@@ -222,12 +271,24 @@ class ConversationTurn(proto.Message):
                 Whether sentiment analysis is enabled.
         """
 
-        input = proto.Field(proto.MESSAGE, number=5, message=session.QueryInput,)
-        injected_parameters = proto.Field(
-            proto.MESSAGE, number=2, message=struct_pb2.Struct,
+        input = proto.Field(
+            proto.MESSAGE,
+            number=5,
+            message=session.QueryInput,
         )
-        is_webhook_enabled = proto.Field(proto.BOOL, number=3,)
-        enable_sentiment_analysis = proto.Field(proto.BOOL, number=7,)
+        injected_parameters = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message=struct_pb2.Struct,
+        )
+        is_webhook_enabled = proto.Field(
+            proto.BOOL,
+            number=3,
+        )
+        enable_sentiment_analysis = proto.Field(
+            proto.BOOL,
+            number=7,
+        )
 
     class VirtualAgentOutput(proto.Message):
         r"""The output from the virtual agent.
@@ -264,26 +325,50 @@ class ConversationTurn(proto.Message):
         """
 
         session_parameters = proto.Field(
-            proto.MESSAGE, number=4, message=struct_pb2.Struct,
+            proto.MESSAGE,
+            number=4,
+            message=struct_pb2.Struct,
         )
         differences = proto.RepeatedField(
-            proto.MESSAGE, number=5, message="TestRunDifference",
+            proto.MESSAGE,
+            number=5,
+            message="TestRunDifference",
         )
         diagnostic_info = proto.Field(
-            proto.MESSAGE, number=6, message=struct_pb2.Struct,
+            proto.MESSAGE,
+            number=6,
+            message=struct_pb2.Struct,
         )
         triggered_intent = proto.Field(
-            proto.MESSAGE, number=7, message=gcdc_intent.Intent,
+            proto.MESSAGE,
+            number=7,
+            message=gcdc_intent.Intent,
         )
-        current_page = proto.Field(proto.MESSAGE, number=8, message=gcdc_page.Page,)
+        current_page = proto.Field(
+            proto.MESSAGE,
+            number=8,
+            message=gcdc_page.Page,
+        )
         text_responses = proto.RepeatedField(
-            proto.MESSAGE, number=9, message=response_message.ResponseMessage.Text,
+            proto.MESSAGE,
+            number=9,
+            message=response_message.ResponseMessage.Text,
         )
-        status = proto.Field(proto.MESSAGE, number=10, message=status_pb2.Status,)
+        status = proto.Field(
+            proto.MESSAGE,
+            number=10,
+            message=status_pb2.Status,
+        )
 
-    user_input = proto.Field(proto.MESSAGE, number=1, message=UserInput,)
+    user_input = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=UserInput,
+    )
     virtual_agent_output = proto.Field(
-        proto.MESSAGE, number=2, message=VirtualAgentOutput,
+        proto.MESSAGE,
+        number=2,
+        message=VirtualAgentOutput,
     )
 
 
@@ -307,8 +392,15 @@ class TestRunDifference(proto.Message):
         PARAMETERS = 3
         UTTERANCE = 4
 
-    type_ = proto.Field(proto.ENUM, number=1, enum=DiffType,)
-    description = proto.Field(proto.STRING, number=2,)
+    type_ = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=DiffType,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class TransitionCoverage(proto.Message):
@@ -351,10 +443,16 @@ class TransitionCoverage(proto.Message):
         """
 
         page = proto.Field(
-            proto.MESSAGE, number=1, oneof="kind", message=gcdc_page.Page,
+            proto.MESSAGE,
+            number=1,
+            oneof="kind",
+            message=gcdc_page.Page,
         )
         flow = proto.Field(
-            proto.MESSAGE, number=2, oneof="kind", message=gcdc_flow.Flow,
+            proto.MESSAGE,
+            number=2,
+            oneof="kind",
+            message=gcdc_flow.Flow,
         )
 
     class Transition(proto.Message):
@@ -389,22 +487,45 @@ class TransitionCoverage(proto.Message):
         """
 
         source = proto.Field(
-            proto.MESSAGE, number=1, message="TransitionCoverage.TransitionNode",
+            proto.MESSAGE,
+            number=1,
+            message="TransitionCoverage.TransitionNode",
         )
-        index = proto.Field(proto.INT32, number=4,)
+        index = proto.Field(
+            proto.INT32,
+            number=4,
+        )
         target = proto.Field(
-            proto.MESSAGE, number=2, message="TransitionCoverage.TransitionNode",
+            proto.MESSAGE,
+            number=2,
+            message="TransitionCoverage.TransitionNode",
         )
-        covered = proto.Field(proto.BOOL, number=3,)
+        covered = proto.Field(
+            proto.BOOL,
+            number=3,
+        )
         transition_route = proto.Field(
-            proto.MESSAGE, number=5, oneof="detail", message=gcdc_page.TransitionRoute,
+            proto.MESSAGE,
+            number=5,
+            oneof="detail",
+            message=gcdc_page.TransitionRoute,
         )
         event_handler = proto.Field(
-            proto.MESSAGE, number=6, oneof="detail", message=gcdc_page.EventHandler,
+            proto.MESSAGE,
+            number=6,
+            oneof="detail",
+            message=gcdc_page.EventHandler,
         )
 
-    transitions = proto.RepeatedField(proto.MESSAGE, number=1, message=Transition,)
-    coverage_score = proto.Field(proto.FLOAT, number=2,)
+    transitions = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=Transition,
+    )
+    coverage_score = proto.Field(
+        proto.FLOAT,
+        number=2,
+    )
 
 
 class TransitionRouteGroupCoverage(proto.Message):
@@ -449,9 +570,14 @@ class TransitionRouteGroupCoverage(proto.Message):
             """
 
             transition_route = proto.Field(
-                proto.MESSAGE, number=1, message=gcdc_page.TransitionRoute,
+                proto.MESSAGE,
+                number=1,
+                message=gcdc_page.TransitionRoute,
             )
-            covered = proto.Field(proto.BOOL, number=2,)
+            covered = proto.Field(
+                proto.BOOL,
+                number=2,
+            )
 
         route_group = proto.Field(
             proto.MESSAGE,
@@ -463,10 +589,20 @@ class TransitionRouteGroupCoverage(proto.Message):
             number=2,
             message="TransitionRouteGroupCoverage.Coverage.Transition",
         )
-        coverage_score = proto.Field(proto.FLOAT, number=3,)
+        coverage_score = proto.Field(
+            proto.FLOAT,
+            number=3,
+        )
 
-    coverages = proto.RepeatedField(proto.MESSAGE, number=1, message=Coverage,)
-    coverage_score = proto.Field(proto.FLOAT, number=2,)
+    coverages = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=Coverage,
+    )
+    coverage_score = proto.Field(
+        proto.FLOAT,
+        number=2,
+    )
 
 
 class IntentCoverage(proto.Message):
@@ -493,11 +629,24 @@ class IntentCoverage(proto.Message):
                 least one of the agent's test cases.
         """
 
-        intent = proto.Field(proto.STRING, number=1,)
-        covered = proto.Field(proto.BOOL, number=2,)
+        intent = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        covered = proto.Field(
+            proto.BOOL,
+            number=2,
+        )
 
-    intents = proto.RepeatedField(proto.MESSAGE, number=1, message=Intent,)
-    coverage_score = proto.Field(proto.FLOAT, number=2,)
+    intents = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=Intent,
+    )
+    coverage_score = proto.Field(
+        proto.FLOAT,
+        number=2,
+    )
 
 
 class CalculateCoverageRequest(proto.Message):
@@ -519,8 +668,15 @@ class CalculateCoverageRequest(proto.Message):
         PAGE_TRANSITION = 2
         TRANSITION_ROUTE_GROUP = 3
 
-    agent = proto.Field(proto.STRING, number=3,)
-    type_ = proto.Field(proto.ENUM, number=2, enum=CoverageType,)
+    agent = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    type_ = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=CoverageType,
+    )
 
 
 class CalculateCoverageResponse(proto.Message):
@@ -553,12 +709,21 @@ class CalculateCoverageResponse(proto.Message):
             This field is a member of `oneof`_ ``coverage_type``.
     """
 
-    agent = proto.Field(proto.STRING, number=5,)
+    agent = proto.Field(
+        proto.STRING,
+        number=5,
+    )
     intent_coverage = proto.Field(
-        proto.MESSAGE, number=2, oneof="coverage_type", message="IntentCoverage",
+        proto.MESSAGE,
+        number=2,
+        oneof="coverage_type",
+        message="IntentCoverage",
     )
     transition_coverage = proto.Field(
-        proto.MESSAGE, number=4, oneof="coverage_type", message="TransitionCoverage",
+        proto.MESSAGE,
+        number=4,
+        oneof="coverage_type",
+        message="TransitionCoverage",
     )
     route_group_coverage = proto.Field(
         proto.MESSAGE,
@@ -598,10 +763,23 @@ class ListTestCasesRequest(proto.Message):
         BASIC = 1
         FULL = 2
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    view = proto.Field(proto.ENUM, number=4, enum=TestCaseView,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    view = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=TestCaseView,
+    )
 
 
 class ListTestCasesResponse(proto.Message):
@@ -622,8 +800,15 @@ class ListTestCasesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    test_cases = proto.RepeatedField(proto.MESSAGE, number=1, message="TestCase",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    test_cases = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="TestCase",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class BatchDeleteTestCasesRequest(proto.Message):
@@ -639,8 +824,14 @@ class BatchDeleteTestCasesRequest(proto.Message):
             ``projects/<Project ID>/locations/ <Location ID>/agents/<AgentID>/testCases/<TestCase ID>``.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    names = proto.RepeatedField(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    names = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 class CreateTestCaseRequest(proto.Message):
@@ -655,8 +846,15 @@ class CreateTestCaseRequest(proto.Message):
             Required. The test case to create.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    test_case = proto.Field(proto.MESSAGE, number=2, message="TestCase",)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    test_case = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="TestCase",
+    )
 
 
 class UpdateTestCaseRequest(proto.Message):
@@ -675,9 +873,15 @@ class UpdateTestCaseRequest(proto.Message):
             cannot be updated.
     """
 
-    test_case = proto.Field(proto.MESSAGE, number=1, message="TestCase",)
+    test_case = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="TestCase",
+    )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -691,7 +895,10 @@ class GetTestCaseRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/testCases/<TestCase ID>``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class RunTestCaseRequest(proto.Message):
@@ -708,8 +915,14 @@ class RunTestCaseRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    environment = proto.Field(proto.STRING, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    environment = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class RunTestCaseResponse(proto.Message):
@@ -721,7 +934,11 @@ class RunTestCaseResponse(proto.Message):
             The result.
     """
 
-    result = proto.Field(proto.MESSAGE, number=2, message="TestCaseResult",)
+    result = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="TestCaseResult",
+    )
 
 
 class RunTestCaseMetadata(proto.Message):
@@ -748,9 +965,18 @@ class BatchRunTestCasesRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/testCases/<TestCase ID>``.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    environment = proto.Field(proto.STRING, number=2,)
-    test_cases = proto.RepeatedField(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    environment = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    test_cases = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 class BatchRunTestCasesResponse(proto.Message):
@@ -764,7 +990,11 @@ class BatchRunTestCasesResponse(proto.Message):
             are empty in this response.
     """
 
-    results = proto.RepeatedField(proto.MESSAGE, number=1, message="TestCaseResult",)
+    results = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="TestCaseResult",
+    )
 
 
 class BatchRunTestCasesMetadata(proto.Message):
@@ -777,7 +1007,11 @@ class BatchRunTestCasesMetadata(proto.Message):
             The test errors.
     """
 
-    errors = proto.RepeatedField(proto.MESSAGE, number=1, message="TestError",)
+    errors = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="TestError",
+    )
 
 
 class TestError(proto.Message):
@@ -792,9 +1026,20 @@ class TestError(proto.Message):
             The timestamp when the test was completed.
     """
 
-    test_case = proto.Field(proto.STRING, number=1,)
-    status = proto.Field(proto.MESSAGE, number=2, message=status_pb2.Status,)
-    test_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
+    test_case = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    status = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=status_pb2.Status,
+    )
+    test_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 class ImportTestCasesRequest(proto.Message):
@@ -831,9 +1076,20 @@ class ImportTestCasesRequest(proto.Message):
             This field is a member of `oneof`_ ``source``.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    gcs_uri = proto.Field(proto.STRING, number=2, oneof="source",)
-    content = proto.Field(proto.BYTES, number=3, oneof="source",)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    gcs_uri = proto.Field(
+        proto.STRING,
+        number=2,
+        oneof="source",
+    )
+    content = proto.Field(
+        proto.BYTES,
+        number=3,
+        oneof="source",
+    )
 
 
 class ImportTestCasesResponse(proto.Message):
@@ -846,7 +1102,10 @@ class ImportTestCasesResponse(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/testCases/<TestCase ID>``.
     """
 
-    names = proto.RepeatedField(proto.STRING, number=1,)
+    names = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ImportTestCasesMetadata(proto.Message):
@@ -859,7 +1118,11 @@ class ImportTestCasesMetadata(proto.Message):
             Errors for failed test cases.
     """
 
-    errors = proto.RepeatedField(proto.MESSAGE, number=1, message="TestCaseError",)
+    errors = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="TestCaseError",
+    )
 
 
 class TestCaseError(proto.Message):
@@ -872,8 +1135,16 @@ class TestCaseError(proto.Message):
             The status associated with the test case.
     """
 
-    test_case = proto.Field(proto.MESSAGE, number=1, message="TestCase",)
-    status = proto.Field(proto.MESSAGE, number=2, message=status_pb2.Status,)
+    test_case = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="TestCase",
+    )
+    status = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=status_pb2.Status,
+    )
 
 
 class ExportTestCasesRequest(proto.Message):
@@ -923,10 +1194,24 @@ class ExportTestCasesRequest(proto.Message):
         BLOB = 1
         JSON = 2
 
-    parent = proto.Field(proto.STRING, number=1,)
-    gcs_uri = proto.Field(proto.STRING, number=2, oneof="destination",)
-    data_format = proto.Field(proto.ENUM, number=3, enum=DataFormat,)
-    filter = proto.Field(proto.STRING, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    gcs_uri = proto.Field(
+        proto.STRING,
+        number=2,
+        oneof="destination",
+    )
+    data_format = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=DataFormat,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class ExportTestCasesResponse(proto.Message):
@@ -953,8 +1238,16 @@ class ExportTestCasesResponse(proto.Message):
             This field is a member of `oneof`_ ``destination``.
     """
 
-    gcs_uri = proto.Field(proto.STRING, number=1, oneof="destination",)
-    content = proto.Field(proto.BYTES, number=2, oneof="destination",)
+    gcs_uri = proto.Field(
+        proto.STRING,
+        number=1,
+        oneof="destination",
+    )
+    content = proto.Field(
+        proto.BYTES,
+        number=2,
+        oneof="destination",
+    )
 
 
 class ExportTestCasesMetadata(proto.Message):
@@ -1009,10 +1302,22 @@ class ListTestCaseResultsRequest(proto.Message):
                1602540713.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    filter = proto.Field(proto.STRING, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class ListTestCaseResultsResponse(proto.Message):
@@ -1033,9 +1338,14 @@ class ListTestCaseResultsResponse(proto.Message):
         return self
 
     test_case_results = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="TestCaseResult",
+        proto.MESSAGE,
+        number=1,
+        message="TestCaseResult",
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetTestCaseResultRequest(proto.Message):
@@ -1048,7 +1358,10 @@ class GetTestCaseResultRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/testCases/<TestCase ID>/results/<TestCaseResult ID>``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

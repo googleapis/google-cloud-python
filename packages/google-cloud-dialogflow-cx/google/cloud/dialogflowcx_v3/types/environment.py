@@ -91,7 +91,10 @@ class Environment(proto.Message):
                 ID>/flows/<Flow ID>/versions/<Version ID>.
         """
 
-        version = proto.Field(proto.STRING, number=1,)
+        version = proto.Field(
+            proto.STRING,
+            number=1,
+        )
 
     class TestCasesConfig(proto.Message):
         r"""The configuration for continuous tests.
@@ -112,18 +115,46 @@ class Environment(proto.Message):
                 false.
         """
 
-        test_cases = proto.RepeatedField(proto.STRING, number=1,)
-        enable_continuous_run = proto.Field(proto.BOOL, number=2,)
-        enable_predeployment_run = proto.Field(proto.BOOL, number=3,)
+        test_cases = proto.RepeatedField(
+            proto.STRING,
+            number=1,
+        )
+        enable_continuous_run = proto.Field(
+            proto.BOOL,
+            number=2,
+        )
+        enable_predeployment_run = proto.Field(
+            proto.BOOL,
+            number=3,
+        )
 
-    name = proto.Field(proto.STRING, number=1,)
-    display_name = proto.Field(proto.STRING, number=2,)
-    description = proto.Field(proto.STRING, number=3,)
-    version_configs = proto.RepeatedField(
-        proto.MESSAGE, number=6, message=VersionConfig,
+    name = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    update_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
-    test_cases_config = proto.Field(proto.MESSAGE, number=7, message=TestCasesConfig,)
+    display_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    version_configs = proto.RepeatedField(
+        proto.MESSAGE,
+        number=6,
+        message=VersionConfig,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+    test_cases_config = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=TestCasesConfig,
+    )
 
 
 class ListEnvironmentsRequest(proto.Message):
@@ -143,9 +174,18 @@ class ListEnvironmentsRequest(proto.Message):
             request.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListEnvironmentsResponse(proto.Message):
@@ -168,8 +208,15 @@ class ListEnvironmentsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    environments = proto.RepeatedField(proto.MESSAGE, number=1, message="Environment",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    environments = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Environment",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetEnvironmentRequest(proto.Message):
@@ -184,7 +231,10 @@ class GetEnvironmentRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CreateEnvironmentRequest(proto.Message):
@@ -202,8 +252,15 @@ class CreateEnvironmentRequest(proto.Message):
             Required. The environment to create.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    environment = proto.Field(proto.MESSAGE, number=2, message="Environment",)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    environment = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="Environment",
+    )
 
 
 class UpdateEnvironmentRequest(proto.Message):
@@ -218,9 +275,15 @@ class UpdateEnvironmentRequest(proto.Message):
             get updated.
     """
 
-    environment = proto.Field(proto.MESSAGE, number=1, message="Environment",)
+    environment = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="Environment",
+    )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -236,7 +299,10 @@ class DeleteEnvironmentRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class LookupEnvironmentHistoryRequest(proto.Message):
@@ -256,9 +322,18 @@ class LookupEnvironmentHistoryRequest(proto.Message):
             request.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class LookupEnvironmentHistoryResponse(proto.Message):
@@ -280,8 +355,15 @@ class LookupEnvironmentHistoryResponse(proto.Message):
     def raw_page(self):
         return self
 
-    environments = proto.RepeatedField(proto.MESSAGE, number=1, message="Environment",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    environments = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Environment",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class ContinuousTestResult(proto.Message):
@@ -311,10 +393,24 @@ class ContinuousTestResult(proto.Message):
         PASSED = 1
         FAILED = 2
 
-    name = proto.Field(proto.STRING, number=1,)
-    result = proto.Field(proto.ENUM, number=2, enum=AggregatedTestResult,)
-    test_case_results = proto.RepeatedField(proto.STRING, number=3,)
-    run_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    result = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=AggregatedTestResult,
+    )
+    test_case_results = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+    run_time = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 class RunContinuousTestRequest(proto.Message):
@@ -327,7 +423,10 @@ class RunContinuousTestRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>``.
     """
 
-    environment = proto.Field(proto.STRING, number=1,)
+    environment = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class RunContinuousTestResponse(proto.Message):
@@ -340,7 +439,9 @@ class RunContinuousTestResponse(proto.Message):
     """
 
     continuous_test_result = proto.Field(
-        proto.MESSAGE, number=1, message="ContinuousTestResult",
+        proto.MESSAGE,
+        number=1,
+        message="ContinuousTestResult",
     )
 
 
@@ -354,7 +455,11 @@ class RunContinuousTestMetadata(proto.Message):
             The test errors.
     """
 
-    errors = proto.RepeatedField(proto.MESSAGE, number=1, message=test_case.TestError,)
+    errors = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=test_case.TestError,
+    )
 
 
 class ListContinuousTestResultsRequest(proto.Message):
@@ -373,9 +478,18 @@ class ListContinuousTestResultsRequest(proto.Message):
             request.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListContinuousTestResultsResponse(proto.Message):
@@ -395,9 +509,14 @@ class ListContinuousTestResultsResponse(proto.Message):
         return self
 
     continuous_test_results = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="ContinuousTestResult",
+        proto.MESSAGE,
+        number=1,
+        message="ContinuousTestResult",
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class DeployFlowRequest(proto.Message):
@@ -413,8 +532,14 @@ class DeployFlowRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/ flows/<Flow ID>/versions/<Version ID>``.
     """
 
-    environment = proto.Field(proto.STRING, number=1,)
-    flow_version = proto.Field(proto.STRING, number=2,)
+    environment = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    flow_version = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class DeployFlowResponse(proto.Message):
@@ -432,8 +557,15 @@ class DeployFlowResponse(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/ environments/<Environment ID>/deployments/<Deployment ID>``.
     """
 
-    environment = proto.Field(proto.MESSAGE, number=1, message="Environment",)
-    deployment = proto.Field(proto.STRING, number=2,)
+    environment = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="Environment",
+    )
+    deployment = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class DeployFlowMetadata(proto.Message):
@@ -447,7 +579,9 @@ class DeployFlowMetadata(proto.Message):
     """
 
     test_errors = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=test_case.TestError,
+        proto.MESSAGE,
+        number=1,
+        message=test_case.TestError,
     )
 
 

@@ -91,7 +91,13 @@ def test__get_default_mtls_endpoint():
     assert FlowsClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
 
 
-@pytest.mark.parametrize("client_class", [FlowsClient, FlowsAsyncClient,])
+@pytest.mark.parametrize(
+    "client_class",
+    [
+        FlowsClient,
+        FlowsAsyncClient,
+    ],
+)
 def test_flows_client_from_service_account_info(client_class):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
@@ -129,7 +135,13 @@ def test_flows_client_service_account_always_use_jwt(transport_class, transport_
         use_jwt.assert_not_called()
 
 
-@pytest.mark.parametrize("client_class", [FlowsClient, FlowsAsyncClient,])
+@pytest.mark.parametrize(
+    "client_class",
+    [
+        FlowsClient,
+        FlowsAsyncClient,
+    ],
+)
 def test_flows_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
@@ -468,7 +480,9 @@ def test_flows_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -599,10 +613,17 @@ def test_flows_client_create_channel_credentials_file(
         )
 
 
-@pytest.mark.parametrize("request_type", [gcdc_flow.CreateFlowRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcdc_flow.CreateFlowRequest,
+        dict,
+    ],
+)
 def test_create_flow(request_type, transport: str = "grpc"):
     client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -637,7 +658,8 @@ def test_create_flow_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -653,7 +675,8 @@ async def test_create_flow_async(
     transport: str = "grpc_asyncio", request_type=gcdc_flow.CreateFlowRequest
 ):
     client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -692,7 +715,9 @@ async def test_create_flow_async_from_dict():
 
 
 def test_create_flow_field_headers():
-    client = FlowsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -712,12 +737,17 @@ def test_create_flow_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_create_flow_field_headers_async():
-    client = FlowsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FlowsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -737,11 +767,16 @@ async def test_create_flow_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_flow_flattened():
-    client = FlowsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_flow), "__call__") as call:
@@ -750,7 +785,8 @@ def test_create_flow_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.create_flow(
-            parent="parent_value", flow=gcdc_flow.Flow(name="name_value"),
+            parent="parent_value",
+            flow=gcdc_flow.Flow(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -766,7 +802,9 @@ def test_create_flow_flattened():
 
 
 def test_create_flow_flattened_error():
-    client = FlowsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -780,7 +818,9 @@ def test_create_flow_flattened_error():
 
 @pytest.mark.asyncio
 async def test_create_flow_flattened_async():
-    client = FlowsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FlowsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_flow), "__call__") as call:
@@ -791,7 +831,8 @@ async def test_create_flow_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.create_flow(
-            parent="parent_value", flow=gcdc_flow.Flow(name="name_value"),
+            parent="parent_value",
+            flow=gcdc_flow.Flow(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -808,7 +849,9 @@ async def test_create_flow_flattened_async():
 
 @pytest.mark.asyncio
 async def test_create_flow_flattened_error_async():
-    client = FlowsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FlowsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -820,10 +863,17 @@ async def test_create_flow_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [flow.DeleteFlowRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        flow.DeleteFlowRequest,
+        dict,
+    ],
+)
 def test_delete_flow(request_type, transport: str = "grpc"):
     client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -849,7 +899,8 @@ def test_delete_flow_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -865,7 +916,8 @@ async def test_delete_flow_async(
     transport: str = "grpc_asyncio", request_type=flow.DeleteFlowRequest
 ):
     client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -893,7 +945,9 @@ async def test_delete_flow_async_from_dict():
 
 
 def test_delete_flow_field_headers():
-    client = FlowsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -913,12 +967,17 @@ def test_delete_flow_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_delete_flow_field_headers_async():
-    client = FlowsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FlowsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -938,11 +997,16 @@ async def test_delete_flow_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_flow_flattened():
-    client = FlowsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_flow), "__call__") as call:
@@ -950,7 +1014,9 @@ def test_delete_flow_flattened():
         call.return_value = None
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_flow(name="name_value",)
+        client.delete_flow(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -962,19 +1028,24 @@ def test_delete_flow_flattened():
 
 
 def test_delete_flow_flattened_error():
-    client = FlowsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_flow(
-            flow.DeleteFlowRequest(), name="name_value",
+            flow.DeleteFlowRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_delete_flow_flattened_async():
-    client = FlowsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FlowsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_flow), "__call__") as call:
@@ -984,7 +1055,9 @@ async def test_delete_flow_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_flow(name="name_value",)
+        response = await client.delete_flow(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -997,20 +1070,30 @@ async def test_delete_flow_flattened_async():
 
 @pytest.mark.asyncio
 async def test_delete_flow_flattened_error_async():
-    client = FlowsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FlowsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_flow(
-            flow.DeleteFlowRequest(), name="name_value",
+            flow.DeleteFlowRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [flow.ListFlowsRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        flow.ListFlowsRequest,
+        dict,
+    ],
+)
 def test_list_flows(request_type, transport: str = "grpc"):
     client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1039,7 +1122,8 @@ def test_list_flows_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1055,7 +1139,8 @@ async def test_list_flows_async(
     transport: str = "grpc_asyncio", request_type=flow.ListFlowsRequest
 ):
     client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1066,7 +1151,9 @@ async def test_list_flows_async(
     with mock.patch.object(type(client.transport.list_flows), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            flow.ListFlowsResponse(next_page_token="next_page_token_value",)
+            flow.ListFlowsResponse(
+                next_page_token="next_page_token_value",
+            )
         )
         response = await client.list_flows(request)
 
@@ -1086,7 +1173,9 @@ async def test_list_flows_async_from_dict():
 
 
 def test_list_flows_field_headers():
-    client = FlowsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1106,12 +1195,17 @@ def test_list_flows_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_list_flows_field_headers_async():
-    client = FlowsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FlowsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1133,11 +1227,16 @@ async def test_list_flows_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_flows_flattened():
-    client = FlowsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_flows), "__call__") as call:
@@ -1145,7 +1244,9 @@ def test_list_flows_flattened():
         call.return_value = flow.ListFlowsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_flows(parent="parent_value",)
+        client.list_flows(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1157,19 +1258,24 @@ def test_list_flows_flattened():
 
 
 def test_list_flows_flattened_error():
-    client = FlowsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_flows(
-            flow.ListFlowsRequest(), parent="parent_value",
+            flow.ListFlowsRequest(),
+            parent="parent_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_list_flows_flattened_async():
-    client = FlowsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FlowsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_flows), "__call__") as call:
@@ -1181,7 +1287,9 @@ async def test_list_flows_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_flows(parent="parent_value",)
+        response = await client.list_flows(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1194,19 +1302,23 @@ async def test_list_flows_flattened_async():
 
 @pytest.mark.asyncio
 async def test_list_flows_flattened_error_async():
-    client = FlowsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FlowsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_flows(
-            flow.ListFlowsRequest(), parent="parent_value",
+            flow.ListFlowsRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_flows_pager(transport_name: str = "grpc"):
     client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1214,11 +1326,29 @@ def test_list_flows_pager(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             flow.ListFlowsResponse(
-                flows=[flow.Flow(), flow.Flow(), flow.Flow(),], next_page_token="abc",
+                flows=[
+                    flow.Flow(),
+                    flow.Flow(),
+                    flow.Flow(),
+                ],
+                next_page_token="abc",
             ),
-            flow.ListFlowsResponse(flows=[], next_page_token="def",),
-            flow.ListFlowsResponse(flows=[flow.Flow(),], next_page_token="ghi",),
-            flow.ListFlowsResponse(flows=[flow.Flow(), flow.Flow(),],),
+            flow.ListFlowsResponse(
+                flows=[],
+                next_page_token="def",
+            ),
+            flow.ListFlowsResponse(
+                flows=[
+                    flow.Flow(),
+                ],
+                next_page_token="ghi",
+            ),
+            flow.ListFlowsResponse(
+                flows=[
+                    flow.Flow(),
+                    flow.Flow(),
+                ],
+            ),
             RuntimeError,
         )
 
@@ -1237,7 +1367,8 @@ def test_list_flows_pager(transport_name: str = "grpc"):
 
 def test_list_flows_pages(transport_name: str = "grpc"):
     client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1245,11 +1376,29 @@ def test_list_flows_pages(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             flow.ListFlowsResponse(
-                flows=[flow.Flow(), flow.Flow(), flow.Flow(),], next_page_token="abc",
+                flows=[
+                    flow.Flow(),
+                    flow.Flow(),
+                    flow.Flow(),
+                ],
+                next_page_token="abc",
             ),
-            flow.ListFlowsResponse(flows=[], next_page_token="def",),
-            flow.ListFlowsResponse(flows=[flow.Flow(),], next_page_token="ghi",),
-            flow.ListFlowsResponse(flows=[flow.Flow(), flow.Flow(),],),
+            flow.ListFlowsResponse(
+                flows=[],
+                next_page_token="def",
+            ),
+            flow.ListFlowsResponse(
+                flows=[
+                    flow.Flow(),
+                ],
+                next_page_token="ghi",
+            ),
+            flow.ListFlowsResponse(
+                flows=[
+                    flow.Flow(),
+                    flow.Flow(),
+                ],
+            ),
             RuntimeError,
         )
         pages = list(client.list_flows(request={}).pages)
@@ -1259,7 +1408,9 @@ def test_list_flows_pages(transport_name: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_list_flows_async_pager():
-    client = FlowsAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = FlowsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1268,14 +1419,34 @@ async def test_list_flows_async_pager():
         # Set the response to a series of pages.
         call.side_effect = (
             flow.ListFlowsResponse(
-                flows=[flow.Flow(), flow.Flow(), flow.Flow(),], next_page_token="abc",
+                flows=[
+                    flow.Flow(),
+                    flow.Flow(),
+                    flow.Flow(),
+                ],
+                next_page_token="abc",
             ),
-            flow.ListFlowsResponse(flows=[], next_page_token="def",),
-            flow.ListFlowsResponse(flows=[flow.Flow(),], next_page_token="ghi",),
-            flow.ListFlowsResponse(flows=[flow.Flow(), flow.Flow(),],),
+            flow.ListFlowsResponse(
+                flows=[],
+                next_page_token="def",
+            ),
+            flow.ListFlowsResponse(
+                flows=[
+                    flow.Flow(),
+                ],
+                next_page_token="ghi",
+            ),
+            flow.ListFlowsResponse(
+                flows=[
+                    flow.Flow(),
+                    flow.Flow(),
+                ],
+            ),
             RuntimeError,
         )
-        async_pager = await client.list_flows(request={},)
+        async_pager = await client.list_flows(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -1287,7 +1458,9 @@ async def test_list_flows_async_pager():
 
 @pytest.mark.asyncio
 async def test_list_flows_async_pages():
-    client = FlowsAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = FlowsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1296,11 +1469,29 @@ async def test_list_flows_async_pages():
         # Set the response to a series of pages.
         call.side_effect = (
             flow.ListFlowsResponse(
-                flows=[flow.Flow(), flow.Flow(), flow.Flow(),], next_page_token="abc",
+                flows=[
+                    flow.Flow(),
+                    flow.Flow(),
+                    flow.Flow(),
+                ],
+                next_page_token="abc",
             ),
-            flow.ListFlowsResponse(flows=[], next_page_token="def",),
-            flow.ListFlowsResponse(flows=[flow.Flow(),], next_page_token="ghi",),
-            flow.ListFlowsResponse(flows=[flow.Flow(), flow.Flow(),],),
+            flow.ListFlowsResponse(
+                flows=[],
+                next_page_token="def",
+            ),
+            flow.ListFlowsResponse(
+                flows=[
+                    flow.Flow(),
+                ],
+                next_page_token="ghi",
+            ),
+            flow.ListFlowsResponse(
+                flows=[
+                    flow.Flow(),
+                    flow.Flow(),
+                ],
+            ),
             RuntimeError,
         )
         pages = []
@@ -1310,10 +1501,17 @@ async def test_list_flows_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [flow.GetFlowRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        flow.GetFlowRequest,
+        dict,
+    ],
+)
 def test_get_flow(request_type, transport: str = "grpc"):
     client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1348,7 +1546,8 @@ def test_get_flow_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1364,7 +1563,8 @@ async def test_get_flow_async(
     transport: str = "grpc_asyncio", request_type=flow.GetFlowRequest
 ):
     client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1403,7 +1603,9 @@ async def test_get_flow_async_from_dict():
 
 
 def test_get_flow_field_headers():
-    client = FlowsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1423,12 +1625,17 @@ def test_get_flow_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_get_flow_field_headers_async():
-    client = FlowsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FlowsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1448,11 +1655,16 @@ async def test_get_flow_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_flow_flattened():
-    client = FlowsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_flow), "__call__") as call:
@@ -1460,7 +1672,9 @@ def test_get_flow_flattened():
         call.return_value = flow.Flow()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_flow(name="name_value",)
+        client.get_flow(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1472,19 +1686,24 @@ def test_get_flow_flattened():
 
 
 def test_get_flow_flattened_error():
-    client = FlowsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_flow(
-            flow.GetFlowRequest(), name="name_value",
+            flow.GetFlowRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_get_flow_flattened_async():
-    client = FlowsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FlowsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_flow), "__call__") as call:
@@ -1494,7 +1713,9 @@ async def test_get_flow_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(flow.Flow())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_flow(name="name_value",)
+        response = await client.get_flow(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1507,20 +1728,30 @@ async def test_get_flow_flattened_async():
 
 @pytest.mark.asyncio
 async def test_get_flow_flattened_error_async():
-    client = FlowsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FlowsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_flow(
-            flow.GetFlowRequest(), name="name_value",
+            flow.GetFlowRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [gcdc_flow.UpdateFlowRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcdc_flow.UpdateFlowRequest,
+        dict,
+    ],
+)
 def test_update_flow(request_type, transport: str = "grpc"):
     client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1555,7 +1786,8 @@ def test_update_flow_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1571,7 +1803,8 @@ async def test_update_flow_async(
     transport: str = "grpc_asyncio", request_type=gcdc_flow.UpdateFlowRequest
 ):
     client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1610,7 +1843,9 @@ async def test_update_flow_async_from_dict():
 
 
 def test_update_flow_field_headers():
-    client = FlowsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1630,12 +1865,17 @@ def test_update_flow_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "flow.name=flow.name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "flow.name=flow.name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_update_flow_field_headers_async():
-    client = FlowsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FlowsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1655,11 +1895,16 @@ async def test_update_flow_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "flow.name=flow.name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "flow.name=flow.name/value",
+    ) in kw["metadata"]
 
 
 def test_update_flow_flattened():
-    client = FlowsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_flow), "__call__") as call:
@@ -1685,7 +1930,9 @@ def test_update_flow_flattened():
 
 
 def test_update_flow_flattened_error():
-    client = FlowsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1699,7 +1946,9 @@ def test_update_flow_flattened_error():
 
 @pytest.mark.asyncio
 async def test_update_flow_flattened_async():
-    client = FlowsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FlowsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_flow), "__call__") as call:
@@ -1728,7 +1977,9 @@ async def test_update_flow_flattened_async():
 
 @pytest.mark.asyncio
 async def test_update_flow_flattened_error_async():
-    client = FlowsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FlowsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1740,10 +1991,17 @@ async def test_update_flow_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [flow.TrainFlowRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        flow.TrainFlowRequest,
+        dict,
+    ],
+)
 def test_train_flow(request_type, transport: str = "grpc"):
     client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1769,7 +2027,8 @@ def test_train_flow_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1785,7 +2044,8 @@ async def test_train_flow_async(
     transport: str = "grpc_asyncio", request_type=flow.TrainFlowRequest
 ):
     client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1815,7 +2075,9 @@ async def test_train_flow_async_from_dict():
 
 
 def test_train_flow_field_headers():
-    client = FlowsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1835,12 +2097,17 @@ def test_train_flow_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_train_flow_field_headers_async():
-    client = FlowsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FlowsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1862,11 +2129,16 @@ async def test_train_flow_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_train_flow_flattened():
-    client = FlowsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.train_flow), "__call__") as call:
@@ -1874,7 +2146,9 @@ def test_train_flow_flattened():
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.train_flow(name="name_value",)
+        client.train_flow(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1886,19 +2160,24 @@ def test_train_flow_flattened():
 
 
 def test_train_flow_flattened_error():
-    client = FlowsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.train_flow(
-            flow.TrainFlowRequest(), name="name_value",
+            flow.TrainFlowRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_train_flow_flattened_async():
-    client = FlowsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FlowsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.train_flow), "__call__") as call:
@@ -1910,7 +2189,9 @@ async def test_train_flow_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.train_flow(name="name_value",)
+        response = await client.train_flow(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1923,20 +2204,30 @@ async def test_train_flow_flattened_async():
 
 @pytest.mark.asyncio
 async def test_train_flow_flattened_error_async():
-    client = FlowsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FlowsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.train_flow(
-            flow.TrainFlowRequest(), name="name_value",
+            flow.TrainFlowRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [flow.ValidateFlowRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        flow.ValidateFlowRequest,
+        dict,
+    ],
+)
 def test_validate_flow(request_type, transport: str = "grpc"):
     client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1946,7 +2237,9 @@ def test_validate_flow(request_type, transport: str = "grpc"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.validate_flow), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = flow.FlowValidationResult(name="name_value",)
+        call.return_value = flow.FlowValidationResult(
+            name="name_value",
+        )
         response = client.validate_flow(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1963,7 +2256,8 @@ def test_validate_flow_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1979,7 +2273,8 @@ async def test_validate_flow_async(
     transport: str = "grpc_asyncio", request_type=flow.ValidateFlowRequest
 ):
     client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1990,7 +2285,9 @@ async def test_validate_flow_async(
     with mock.patch.object(type(client.transport.validate_flow), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            flow.FlowValidationResult(name="name_value",)
+            flow.FlowValidationResult(
+                name="name_value",
+            )
         )
         response = await client.validate_flow(request)
 
@@ -2010,7 +2307,9 @@ async def test_validate_flow_async_from_dict():
 
 
 def test_validate_flow_field_headers():
-    client = FlowsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2030,12 +2329,17 @@ def test_validate_flow_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_validate_flow_field_headers_async():
-    client = FlowsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FlowsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2057,13 +2361,23 @@ async def test_validate_flow_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
-@pytest.mark.parametrize("request_type", [flow.GetFlowValidationResultRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        flow.GetFlowValidationResultRequest,
+        dict,
+    ],
+)
 def test_get_flow_validation_result(request_type, transport: str = "grpc"):
     client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2075,7 +2389,9 @@ def test_get_flow_validation_result(request_type, transport: str = "grpc"):
         type(client.transport.get_flow_validation_result), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = flow.FlowValidationResult(name="name_value",)
+        call.return_value = flow.FlowValidationResult(
+            name="name_value",
+        )
         response = client.get_flow_validation_result(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2092,7 +2408,8 @@ def test_get_flow_validation_result_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2110,7 +2427,8 @@ async def test_get_flow_validation_result_async(
     transport: str = "grpc_asyncio", request_type=flow.GetFlowValidationResultRequest
 ):
     client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2123,7 +2441,9 @@ async def test_get_flow_validation_result_async(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            flow.FlowValidationResult(name="name_value",)
+            flow.FlowValidationResult(
+                name="name_value",
+            )
         )
         response = await client.get_flow_validation_result(request)
 
@@ -2143,7 +2463,9 @@ async def test_get_flow_validation_result_async_from_dict():
 
 
 def test_get_flow_validation_result_field_headers():
-    client = FlowsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2165,12 +2487,17 @@ def test_get_flow_validation_result_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_get_flow_validation_result_field_headers_async():
-    client = FlowsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FlowsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2194,11 +2521,16 @@ async def test_get_flow_validation_result_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_flow_validation_result_flattened():
-    client = FlowsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2208,7 +2540,9 @@ def test_get_flow_validation_result_flattened():
         call.return_value = flow.FlowValidationResult()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_flow_validation_result(name="name_value",)
+        client.get_flow_validation_result(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2220,19 +2554,24 @@ def test_get_flow_validation_result_flattened():
 
 
 def test_get_flow_validation_result_flattened_error():
-    client = FlowsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_flow_validation_result(
-            flow.GetFlowValidationResultRequest(), name="name_value",
+            flow.GetFlowValidationResultRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_get_flow_validation_result_flattened_async():
-    client = FlowsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FlowsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2246,7 +2585,9 @@ async def test_get_flow_validation_result_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_flow_validation_result(name="name_value",)
+        response = await client.get_flow_validation_result(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2259,20 +2600,30 @@ async def test_get_flow_validation_result_flattened_async():
 
 @pytest.mark.asyncio
 async def test_get_flow_validation_result_flattened_error_async():
-    client = FlowsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FlowsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_flow_validation_result(
-            flow.GetFlowValidationResultRequest(), name="name_value",
+            flow.GetFlowValidationResultRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [flow.ImportFlowRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        flow.ImportFlowRequest,
+        dict,
+    ],
+)
 def test_import_flow(request_type, transport: str = "grpc"):
     client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2298,7 +2649,8 @@ def test_import_flow_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2314,7 +2666,8 @@ async def test_import_flow_async(
     transport: str = "grpc_asyncio", request_type=flow.ImportFlowRequest
 ):
     client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2344,7 +2697,9 @@ async def test_import_flow_async_from_dict():
 
 
 def test_import_flow_field_headers():
-    client = FlowsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2364,12 +2719,17 @@ def test_import_flow_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_import_flow_field_headers_async():
-    client = FlowsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FlowsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2391,13 +2751,23 @@ async def test_import_flow_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
-@pytest.mark.parametrize("request_type", [flow.ExportFlowRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        flow.ExportFlowRequest,
+        dict,
+    ],
+)
 def test_export_flow(request_type, transport: str = "grpc"):
     client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2423,7 +2793,8 @@ def test_export_flow_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2439,7 +2810,8 @@ async def test_export_flow_async(
     transport: str = "grpc_asyncio", request_type=flow.ExportFlowRequest
 ):
     client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2469,7 +2841,9 @@ async def test_export_flow_async_from_dict():
 
 
 def test_export_flow_field_headers():
-    client = FlowsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2489,12 +2863,17 @@ def test_export_flow_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_export_flow_field_headers_async():
-    client = FlowsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FlowsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2516,7 +2895,10 @@ async def test_export_flow_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_credentials_transport_error():
@@ -2526,7 +2908,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = FlowsClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -2546,7 +2929,10 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = FlowsClient(client_options=options, transport=transport,)
+        client = FlowsClient(
+            client_options=options,
+            transport=transport,
+        )
 
     # It is an error to provide an api_key and a credential.
     options = mock.Mock()
@@ -2562,7 +2948,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = FlowsClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -2592,7 +2979,10 @@ def test_transport_get_channel():
 
 @pytest.mark.parametrize(
     "transport_class",
-    [transports.FlowsGrpcTransport, transports.FlowsGrpcAsyncIOTransport,],
+    [
+        transports.FlowsGrpcTransport,
+        transports.FlowsGrpcAsyncIOTransport,
+    ],
 )
 def test_transport_adc(transport_class):
     # Test default credentials are used if not provided.
@@ -2604,8 +2994,13 @@ def test_transport_adc(transport_class):
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
-    client = FlowsClient(credentials=ga_credentials.AnonymousCredentials(),)
-    assert isinstance(client.transport, transports.FlowsGrpcTransport,)
+    client = FlowsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    assert isinstance(
+        client.transport,
+        transports.FlowsGrpcTransport,
+    )
 
 
 def test_flows_base_transport_error():
@@ -2664,7 +3059,8 @@ def test_flows_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.FlowsTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -2705,7 +3101,10 @@ def test_flows_auth_adc():
 
 @pytest.mark.parametrize(
     "transport_class",
-    [transports.FlowsGrpcTransport, transports.FlowsGrpcAsyncIOTransport,],
+    [
+        transports.FlowsGrpcTransport,
+        transports.FlowsGrpcAsyncIOTransport,
+    ],
 )
 def test_flows_transport_auth_adc(transport_class):
     # If credentials and host are not provided, the transport class should use
@@ -2827,7 +3226,10 @@ def test_flows_grpc_transport_channel():
     channel = grpc.secure_channel("http://localhost/", grpc.local_channel_credentials())
 
     # Check that channel is used if provided.
-    transport = transports.FlowsGrpcTransport(host="squid.clam.whelk", channel=channel,)
+    transport = transports.FlowsGrpcTransport(
+        host="squid.clam.whelk",
+        channel=channel,
+    )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
     assert transport._ssl_channel_credentials == None
@@ -2838,7 +3240,8 @@ def test_flows_grpc_asyncio_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.FlowsGrpcAsyncIOTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -2939,12 +3342,16 @@ def test_flows_transport_channel_mtls_with_adc(transport_class):
 
 def test_flows_grpc_lro_client():
     client = FlowsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
     transport = client.transport
 
     # Ensure that we have a api-core operations client.
-    assert isinstance(transport.operations_client, operations_v1.OperationsClient,)
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsClient,
+    )
 
     # Ensure that subsequent calls to the property send the exact same object.
     assert transport.operations_client is transport.operations_client
@@ -2952,12 +3359,16 @@ def test_flows_grpc_lro_client():
 
 def test_flows_grpc_lro_async_client():
     client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     transport = client.transport
 
     # Ensure that we have a api-core operations client.
-    assert isinstance(transport.operations_client, operations_v1.OperationsAsyncClient,)
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsAsyncClient,
+    )
 
     # Ensure that subsequent calls to the property send the exact same object.
     assert transport.operations_client is transport.operations_client
@@ -2968,8 +3379,13 @@ def test_flow_path():
     location = "clam"
     agent = "whelk"
     flow = "octopus"
-    expected = "projects/{project}/locations/{location}/agents/{agent}/flows/{flow}".format(
-        project=project, location=location, agent=agent, flow=flow,
+    expected = (
+        "projects/{project}/locations/{location}/agents/{agent}/flows/{flow}".format(
+            project=project,
+            location=location,
+            agent=agent,
+            flow=flow,
+        )
     )
     actual = FlowsClient.flow_path(project, location, agent, flow)
     assert expected == actual
@@ -2995,7 +3411,10 @@ def test_flow_validation_result_path():
     agent = "scallop"
     flow = "abalone"
     expected = "projects/{project}/locations/{location}/agents/{agent}/flows/{flow}/validationResult".format(
-        project=project, location=location, agent=agent, flow=flow,
+        project=project,
+        location=location,
+        agent=agent,
+        flow=flow,
     )
     actual = FlowsClient.flow_validation_result_path(project, location, agent, flow)
     assert expected == actual
@@ -3021,7 +3440,10 @@ def test_intent_path():
     agent = "cuttlefish"
     intent = "mussel"
     expected = "projects/{project}/locations/{location}/agents/{agent}/intents/{intent}".format(
-        project=project, location=location, agent=agent, intent=intent,
+        project=project,
+        location=location,
+        agent=agent,
+        intent=intent,
     )
     actual = FlowsClient.intent_path(project, location, agent, intent)
     assert expected == actual
@@ -3048,7 +3470,11 @@ def test_page_path():
     flow = "octopus"
     page = "oyster"
     expected = "projects/{project}/locations/{location}/agents/{agent}/flows/{flow}/pages/{page}".format(
-        project=project, location=location, agent=agent, flow=flow, page=page,
+        project=project,
+        location=location,
+        agent=agent,
+        flow=flow,
+        page=page,
     )
     actual = FlowsClient.page_path(project, location, agent, flow, page)
     assert expected == actual
@@ -3109,7 +3535,10 @@ def test_webhook_path():
     agent = "scallop"
     webhook = "abalone"
     expected = "projects/{project}/locations/{location}/agents/{agent}/webhooks/{webhook}".format(
-        project=project, location=location, agent=agent, webhook=webhook,
+        project=project,
+        location=location,
+        agent=agent,
+        webhook=webhook,
     )
     actual = FlowsClient.webhook_path(project, location, agent, webhook)
     assert expected == actual
@@ -3151,7 +3580,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "cuttlefish"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = FlowsClient.common_folder_path(folder)
     assert expected == actual
 
@@ -3169,7 +3600,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "winkle"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = FlowsClient.common_organization_path(organization)
     assert expected == actual
 
@@ -3187,7 +3620,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "scallop"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = FlowsClient.common_project_path(project)
     assert expected == actual
 
@@ -3207,7 +3642,8 @@ def test_common_location_path():
     project = "squid"
     location = "clam"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = FlowsClient.common_location_path(project, location)
     assert expected == actual
@@ -3230,14 +3666,16 @@ def test_client_with_default_client_info():
 
     with mock.patch.object(transports.FlowsTransport, "_prep_wrapped_messages") as prep:
         client = FlowsClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
     with mock.patch.object(transports.FlowsTransport, "_prep_wrapped_messages") as prep:
         transport_class = FlowsClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -3245,7 +3683,8 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = FlowsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     with mock.patch.object(
         type(getattr(client.transport, "grpc_channel")), "close"

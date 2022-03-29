@@ -19,7 +19,10 @@ from google.protobuf import struct_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.dialogflow.cx.v3", manifest={"ResponseMessage",},
+    package="google.cloud.dialogflow.cx.v3",
+    manifest={
+        "ResponseMessage",
+    },
 )
 
 
@@ -126,8 +129,14 @@ class ResponseMessage(proto.Message):
                 Dialogflow request.
         """
 
-        text = proto.RepeatedField(proto.STRING, number=1,)
-        allow_playback_interruption = proto.Field(proto.BOOL, number=2,)
+        text = proto.RepeatedField(
+            proto.STRING,
+            number=1,
+        )
+        allow_playback_interruption = proto.Field(
+            proto.BOOL,
+            number=2,
+        )
 
     class LiveAgentHandoff(proto.Message):
         r"""Indicates that the conversation should be handed off to a live
@@ -153,7 +162,11 @@ class ResponseMessage(proto.Message):
                 Dialogflow doesn't impose any structure on this.
         """
 
-        metadata = proto.Field(proto.MESSAGE, number=1, message=struct_pb2.Struct,)
+        metadata = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=struct_pb2.Struct,
+        )
 
     class ConversationSuccess(proto.Message):
         r"""Indicates that the conversation succeeded, i.e., the bot handled the
@@ -181,7 +194,11 @@ class ResponseMessage(proto.Message):
                 any structure on this.
         """
 
-        metadata = proto.Field(proto.MESSAGE, number=1, message=struct_pb2.Struct,)
+        metadata = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=struct_pb2.Struct,
+        )
 
     class OutputAudioText(proto.Message):
         r"""A text or ssml response that is preferentially used for TTS
@@ -212,9 +229,20 @@ class ResponseMessage(proto.Message):
                 Dialogflow request.
         """
 
-        text = proto.Field(proto.STRING, number=1, oneof="source",)
-        ssml = proto.Field(proto.STRING, number=2, oneof="source",)
-        allow_playback_interruption = proto.Field(proto.BOOL, number=3,)
+        text = proto.Field(
+            proto.STRING,
+            number=1,
+            oneof="source",
+        )
+        ssml = proto.Field(
+            proto.STRING,
+            number=2,
+            oneof="source",
+        )
+        allow_playback_interruption = proto.Field(
+            proto.BOOL,
+            number=3,
+        )
 
     class EndInteraction(proto.Message):
         r"""Indicates that interaction with the Dialogflow agent has
@@ -239,8 +267,14 @@ class ResponseMessage(proto.Message):
                 Dialogflow request.
         """
 
-        audio_uri = proto.Field(proto.STRING, number=1,)
-        allow_playback_interruption = proto.Field(proto.BOOL, number=2,)
+        audio_uri = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        allow_playback_interruption = proto.Field(
+            proto.BOOL,
+            number=2,
+        )
 
     class MixedAudio(proto.Message):
         r"""Represents an audio message that is composed of both segments
@@ -286,12 +320,25 @@ class ResponseMessage(proto.Message):
                     Dialogflow request.
             """
 
-            audio = proto.Field(proto.BYTES, number=1, oneof="content",)
-            uri = proto.Field(proto.STRING, number=2, oneof="content",)
-            allow_playback_interruption = proto.Field(proto.BOOL, number=3,)
+            audio = proto.Field(
+                proto.BYTES,
+                number=1,
+                oneof="content",
+            )
+            uri = proto.Field(
+                proto.STRING,
+                number=2,
+                oneof="content",
+            )
+            allow_playback_interruption = proto.Field(
+                proto.BOOL,
+                number=3,
+            )
 
         segments = proto.RepeatedField(
-            proto.MESSAGE, number=1, message="ResponseMessage.MixedAudio.Segment",
+            proto.MESSAGE,
+            number=1,
+            message="ResponseMessage.MixedAudio.Segment",
         )
 
     class TelephonyTransferCall(proto.Message):
@@ -309,32 +356,65 @@ class ResponseMessage(proto.Message):
                 This field is a member of `oneof`_ ``endpoint``.
         """
 
-        phone_number = proto.Field(proto.STRING, number=1, oneof="endpoint",)
+        phone_number = proto.Field(
+            proto.STRING,
+            number=1,
+            oneof="endpoint",
+        )
 
-    text = proto.Field(proto.MESSAGE, number=1, oneof="message", message=Text,)
+    text = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="message",
+        message=Text,
+    )
     payload = proto.Field(
-        proto.MESSAGE, number=2, oneof="message", message=struct_pb2.Struct,
+        proto.MESSAGE,
+        number=2,
+        oneof="message",
+        message=struct_pb2.Struct,
     )
     conversation_success = proto.Field(
-        proto.MESSAGE, number=9, oneof="message", message=ConversationSuccess,
+        proto.MESSAGE,
+        number=9,
+        oneof="message",
+        message=ConversationSuccess,
     )
     output_audio_text = proto.Field(
-        proto.MESSAGE, number=8, oneof="message", message=OutputAudioText,
+        proto.MESSAGE,
+        number=8,
+        oneof="message",
+        message=OutputAudioText,
     )
     live_agent_handoff = proto.Field(
-        proto.MESSAGE, number=10, oneof="message", message=LiveAgentHandoff,
+        proto.MESSAGE,
+        number=10,
+        oneof="message",
+        message=LiveAgentHandoff,
     )
     end_interaction = proto.Field(
-        proto.MESSAGE, number=11, oneof="message", message=EndInteraction,
+        proto.MESSAGE,
+        number=11,
+        oneof="message",
+        message=EndInteraction,
     )
     play_audio = proto.Field(
-        proto.MESSAGE, number=12, oneof="message", message=PlayAudio,
+        proto.MESSAGE,
+        number=12,
+        oneof="message",
+        message=PlayAudio,
     )
     mixed_audio = proto.Field(
-        proto.MESSAGE, number=13, oneof="message", message=MixedAudio,
+        proto.MESSAGE,
+        number=13,
+        oneof="message",
+        message=MixedAudio,
     )
     telephony_transfer_call = proto.Field(
-        proto.MESSAGE, number=18, oneof="message", message=TelephonyTransferCall,
+        proto.MESSAGE,
+        number=18,
+        oneof="message",
+        message=TelephonyTransferCall,
     )
 
 

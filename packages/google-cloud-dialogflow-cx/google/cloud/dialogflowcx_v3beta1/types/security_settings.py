@@ -42,7 +42,10 @@ class GetSecuritySettingsRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/securitySettings/<security settings ID>``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class UpdateSecuritySettingsRequest(proto.Message):
@@ -60,10 +63,14 @@ class UpdateSecuritySettingsRequest(proto.Message):
     """
 
     security_settings = proto.Field(
-        proto.MESSAGE, number=1, message="SecuritySettings",
+        proto.MESSAGE,
+        number=1,
+        message="SecuritySettings",
     )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -82,9 +89,18 @@ class ListSecuritySettingsRequest(proto.Message):
             request.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListSecuritySettingsResponse(proto.Message):
@@ -104,9 +120,14 @@ class ListSecuritySettingsResponse(proto.Message):
         return self
 
     security_settings = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="SecuritySettings",
+        proto.MESSAGE,
+        number=1,
+        message="SecuritySettings",
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class CreateSecuritySettingsRequest(proto.Message):
@@ -122,9 +143,14 @@ class CreateSecuritySettingsRequest(proto.Message):
             Required. The security settings to create.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     security_settings = proto.Field(
-        proto.MESSAGE, number=2, message="SecuritySettings",
+        proto.MESSAGE,
+        number=2,
+        message="SecuritySettings",
     )
 
 
@@ -139,7 +165,10 @@ class DeleteSecuritySettingsRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/securitySettings/<Security Settings ID>``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class SecuritySettings(proto.Message):
@@ -264,18 +293,51 @@ class SecuritySettings(proto.Message):
                 analyzers.
         """
 
-        enable_insights_export = proto.Field(proto.BOOL, number=1,)
+        enable_insights_export = proto.Field(
+            proto.BOOL,
+            number=1,
+        )
 
-    name = proto.Field(proto.STRING, number=1,)
-    display_name = proto.Field(proto.STRING, number=2,)
-    redaction_strategy = proto.Field(proto.ENUM, number=3, enum=RedactionStrategy,)
-    redaction_scope = proto.Field(proto.ENUM, number=4, enum=RedactionScope,)
-    inspect_template = proto.Field(proto.STRING, number=9,)
-    deidentify_template = proto.Field(proto.STRING, number=17,)
-    retention_window_days = proto.Field(proto.INT32, number=6, oneof="data_retention",)
-    purge_data_types = proto.RepeatedField(proto.ENUM, number=8, enum=PurgeDataType,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    redaction_strategy = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=RedactionStrategy,
+    )
+    redaction_scope = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=RedactionScope,
+    )
+    inspect_template = proto.Field(
+        proto.STRING,
+        number=9,
+    )
+    deidentify_template = proto.Field(
+        proto.STRING,
+        number=17,
+    )
+    retention_window_days = proto.Field(
+        proto.INT32,
+        number=6,
+        oneof="data_retention",
+    )
+    purge_data_types = proto.RepeatedField(
+        proto.ENUM,
+        number=8,
+        enum=PurgeDataType,
+    )
     insights_export_settings = proto.Field(
-        proto.MESSAGE, number=13, message=InsightsExportSettings,
+        proto.MESSAGE,
+        number=13,
+        message=InsightsExportSettings,
     )
 
 

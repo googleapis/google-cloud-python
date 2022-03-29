@@ -56,7 +56,10 @@ class WebhooksClientMeta(type):
     _transport_registry["grpc"] = WebhooksGrpcTransport
     _transport_registry["grpc_asyncio"] = WebhooksGrpcAsyncIOTransport
 
-    def get_transport_class(cls, label: str = None,) -> Type[WebhooksTransport]:
+    def get_transport_class(
+        cls,
+        label: str = None,
+    ) -> Type[WebhooksTransport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -163,10 +166,18 @@ class WebhooksClient(metaclass=WebhooksClientMeta):
         return self._transport
 
     @staticmethod
-    def service_path(project: str, location: str, namespace: str, service: str,) -> str:
+    def service_path(
+        project: str,
+        location: str,
+        namespace: str,
+        service: str,
+    ) -> str:
         """Returns a fully-qualified service string."""
         return "projects/{project}/locations/{location}/namespaces/{namespace}/services/{service}".format(
-            project=project, location=location, namespace=namespace, service=service,
+            project=project,
+            location=location,
+            namespace=namespace,
+            service=service,
         )
 
     @staticmethod
@@ -179,10 +190,18 @@ class WebhooksClient(metaclass=WebhooksClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def webhook_path(project: str, location: str, agent: str, webhook: str,) -> str:
+    def webhook_path(
+        project: str,
+        location: str,
+        agent: str,
+        webhook: str,
+    ) -> str:
         """Returns a fully-qualified webhook string."""
         return "projects/{project}/locations/{location}/agents/{agent}/webhooks/{webhook}".format(
-            project=project, location=location, agent=agent, webhook=webhook,
+            project=project,
+            location=location,
+            agent=agent,
+            webhook=webhook,
         )
 
     @staticmethod
@@ -195,7 +214,9 @@ class WebhooksClient(metaclass=WebhooksClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_billing_account_path(billing_account: str,) -> str:
+    def common_billing_account_path(
+        billing_account: str,
+    ) -> str:
         """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
@@ -208,9 +229,13 @@ class WebhooksClient(metaclass=WebhooksClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(folder: str,) -> str:
+    def common_folder_path(
+        folder: str,
+    ) -> str:
         """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(folder=folder,)
+        return "folders/{folder}".format(
+            folder=folder,
+        )
 
     @staticmethod
     def parse_common_folder_path(path: str) -> Dict[str, str]:
@@ -219,9 +244,13 @@ class WebhooksClient(metaclass=WebhooksClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(organization: str,) -> str:
+    def common_organization_path(
+        organization: str,
+    ) -> str:
         """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(organization=organization,)
+        return "organizations/{organization}".format(
+            organization=organization,
+        )
 
     @staticmethod
     def parse_common_organization_path(path: str) -> Dict[str, str]:
@@ -230,9 +259,13 @@ class WebhooksClient(metaclass=WebhooksClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(project: str,) -> str:
+    def common_project_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified project string."""
-        return "projects/{project}".format(project=project,)
+        return "projects/{project}".format(
+            project=project,
+        )
 
     @staticmethod
     def parse_common_project_path(path: str) -> Dict[str, str]:
@@ -241,10 +274,14 @@ class WebhooksClient(metaclass=WebhooksClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(project: str, location: str,) -> str:
+    def common_location_path(
+        project: str,
+        location: str,
+    ) -> str:
         """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
-            project=project, location=location,
+            project=project,
+            location=location,
         )
 
     @staticmethod
@@ -509,12 +546,20 @@ class WebhooksClient(metaclass=WebhooksClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListWebhooksPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -610,7 +655,12 @@ class WebhooksClient(metaclass=WebhooksClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -718,7 +768,12 @@ class WebhooksClient(metaclass=WebhooksClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -828,7 +883,12 @@ class WebhooksClient(metaclass=WebhooksClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -910,7 +970,10 @@ class WebhooksClient(metaclass=WebhooksClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def __enter__(self):

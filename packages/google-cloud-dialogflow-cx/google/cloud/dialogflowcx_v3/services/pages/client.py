@@ -56,7 +56,10 @@ class PagesClientMeta(type):
     _transport_registry["grpc"] = PagesGrpcTransport
     _transport_registry["grpc_asyncio"] = PagesGrpcAsyncIOTransport
 
-    def get_transport_class(cls, label: str = None,) -> Type[PagesTransport]:
+    def get_transport_class(
+        cls,
+        label: str = None,
+    ) -> Type[PagesTransport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -162,11 +165,17 @@ class PagesClient(metaclass=PagesClientMeta):
 
     @staticmethod
     def entity_type_path(
-        project: str, location: str, agent: str, entity_type: str,
+        project: str,
+        location: str,
+        agent: str,
+        entity_type: str,
     ) -> str:
         """Returns a fully-qualified entity_type string."""
         return "projects/{project}/locations/{location}/agents/{agent}/entityTypes/{entity_type}".format(
-            project=project, location=location, agent=agent, entity_type=entity_type,
+            project=project,
+            location=location,
+            agent=agent,
+            entity_type=entity_type,
         )
 
     @staticmethod
@@ -179,10 +188,18 @@ class PagesClient(metaclass=PagesClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def flow_path(project: str, location: str, agent: str, flow: str,) -> str:
+    def flow_path(
+        project: str,
+        location: str,
+        agent: str,
+        flow: str,
+    ) -> str:
         """Returns a fully-qualified flow string."""
         return "projects/{project}/locations/{location}/agents/{agent}/flows/{flow}".format(
-            project=project, location=location, agent=agent, flow=flow,
+            project=project,
+            location=location,
+            agent=agent,
+            flow=flow,
         )
 
     @staticmethod
@@ -195,10 +212,18 @@ class PagesClient(metaclass=PagesClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def intent_path(project: str, location: str, agent: str, intent: str,) -> str:
+    def intent_path(
+        project: str,
+        location: str,
+        agent: str,
+        intent: str,
+    ) -> str:
         """Returns a fully-qualified intent string."""
         return "projects/{project}/locations/{location}/agents/{agent}/intents/{intent}".format(
-            project=project, location=location, agent=agent, intent=intent,
+            project=project,
+            location=location,
+            agent=agent,
+            intent=intent,
         )
 
     @staticmethod
@@ -212,11 +237,19 @@ class PagesClient(metaclass=PagesClientMeta):
 
     @staticmethod
     def page_path(
-        project: str, location: str, agent: str, flow: str, page: str,
+        project: str,
+        location: str,
+        agent: str,
+        flow: str,
+        page: str,
     ) -> str:
         """Returns a fully-qualified page string."""
         return "projects/{project}/locations/{location}/agents/{agent}/flows/{flow}/pages/{page}".format(
-            project=project, location=location, agent=agent, flow=flow, page=page,
+            project=project,
+            location=location,
+            agent=agent,
+            flow=flow,
+            page=page,
         )
 
     @staticmethod
@@ -230,7 +263,11 @@ class PagesClient(metaclass=PagesClientMeta):
 
     @staticmethod
     def transition_route_group_path(
-        project: str, location: str, agent: str, flow: str, transition_route_group: str,
+        project: str,
+        location: str,
+        agent: str,
+        flow: str,
+        transition_route_group: str,
     ) -> str:
         """Returns a fully-qualified transition_route_group string."""
         return "projects/{project}/locations/{location}/agents/{agent}/flows/{flow}/transitionRouteGroups/{transition_route_group}".format(
@@ -251,10 +288,18 @@ class PagesClient(metaclass=PagesClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def webhook_path(project: str, location: str, agent: str, webhook: str,) -> str:
+    def webhook_path(
+        project: str,
+        location: str,
+        agent: str,
+        webhook: str,
+    ) -> str:
         """Returns a fully-qualified webhook string."""
         return "projects/{project}/locations/{location}/agents/{agent}/webhooks/{webhook}".format(
-            project=project, location=location, agent=agent, webhook=webhook,
+            project=project,
+            location=location,
+            agent=agent,
+            webhook=webhook,
         )
 
     @staticmethod
@@ -267,7 +312,9 @@ class PagesClient(metaclass=PagesClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_billing_account_path(billing_account: str,) -> str:
+    def common_billing_account_path(
+        billing_account: str,
+    ) -> str:
         """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
@@ -280,9 +327,13 @@ class PagesClient(metaclass=PagesClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(folder: str,) -> str:
+    def common_folder_path(
+        folder: str,
+    ) -> str:
         """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(folder=folder,)
+        return "folders/{folder}".format(
+            folder=folder,
+        )
 
     @staticmethod
     def parse_common_folder_path(path: str) -> Dict[str, str]:
@@ -291,9 +342,13 @@ class PagesClient(metaclass=PagesClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(organization: str,) -> str:
+    def common_organization_path(
+        organization: str,
+    ) -> str:
         """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(organization=organization,)
+        return "organizations/{organization}".format(
+            organization=organization,
+        )
 
     @staticmethod
     def parse_common_organization_path(path: str) -> Dict[str, str]:
@@ -302,9 +357,13 @@ class PagesClient(metaclass=PagesClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(project: str,) -> str:
+    def common_project_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified project string."""
-        return "projects/{project}".format(project=project,)
+        return "projects/{project}".format(
+            project=project,
+        )
 
     @staticmethod
     def parse_common_project_path(path: str) -> Dict[str, str]:
@@ -313,10 +372,14 @@ class PagesClient(metaclass=PagesClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(project: str, location: str,) -> str:
+    def common_location_path(
+        project: str,
+        location: str,
+    ) -> str:
         """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
-            project=project, location=location,
+            project=project,
+            location=location,
         )
 
     @staticmethod
@@ -579,12 +642,20 @@ class PagesClient(metaclass=PagesClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListPagesPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -695,7 +766,12 @@ class PagesClient(metaclass=PagesClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -822,7 +898,12 @@ class PagesClient(metaclass=PagesClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -951,7 +1032,12 @@ class PagesClient(metaclass=PagesClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1038,7 +1124,10 @@ class PagesClient(metaclass=PagesClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def __enter__(self):

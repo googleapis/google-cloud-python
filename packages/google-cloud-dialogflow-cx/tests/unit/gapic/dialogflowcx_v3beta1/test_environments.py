@@ -92,7 +92,13 @@ def test__get_default_mtls_endpoint():
     assert EnvironmentsClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
 
 
-@pytest.mark.parametrize("client_class", [EnvironmentsClient, EnvironmentsAsyncClient,])
+@pytest.mark.parametrize(
+    "client_class",
+    [
+        EnvironmentsClient,
+        EnvironmentsAsyncClient,
+    ],
+)
 def test_environments_client_from_service_account_info(client_class):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
@@ -132,7 +138,13 @@ def test_environments_client_service_account_always_use_jwt(
         use_jwt.assert_not_called()
 
 
-@pytest.mark.parametrize("client_class", [EnvironmentsClient, EnvironmentsAsyncClient,])
+@pytest.mark.parametrize(
+    "client_class",
+    [
+        EnvironmentsClient,
+        EnvironmentsAsyncClient,
+    ],
+)
 def test_environments_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
@@ -487,7 +499,9 @@ def test_environments_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -628,10 +642,17 @@ def test_environments_client_create_channel_credentials_file(
         )
 
 
-@pytest.mark.parametrize("request_type", [environment.ListEnvironmentsRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        environment.ListEnvironmentsRequest,
+        dict,
+    ],
+)
 def test_list_environments(request_type, transport: str = "grpc"):
     client = EnvironmentsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -662,7 +683,8 @@ def test_list_environments_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = EnvironmentsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -680,7 +702,8 @@ async def test_list_environments_async(
     transport: str = "grpc_asyncio", request_type=environment.ListEnvironmentsRequest
 ):
     client = EnvironmentsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -715,7 +738,9 @@ async def test_list_environments_async_from_dict():
 
 
 def test_list_environments_field_headers():
-    client = EnvironmentsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -737,12 +762,17 @@ def test_list_environments_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_list_environments_field_headers_async():
-    client = EnvironmentsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EnvironmentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -766,11 +796,16 @@ async def test_list_environments_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_environments_flattened():
-    client = EnvironmentsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -780,7 +815,9 @@ def test_list_environments_flattened():
         call.return_value = environment.ListEnvironmentsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_environments(parent="parent_value",)
+        client.list_environments(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -792,19 +829,24 @@ def test_list_environments_flattened():
 
 
 def test_list_environments_flattened_error():
-    client = EnvironmentsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_environments(
-            environment.ListEnvironmentsRequest(), parent="parent_value",
+            environment.ListEnvironmentsRequest(),
+            parent="parent_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_list_environments_flattened_async():
-    client = EnvironmentsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EnvironmentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -818,7 +860,9 @@ async def test_list_environments_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_environments(parent="parent_value",)
+        response = await client.list_environments(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -831,19 +875,23 @@ async def test_list_environments_flattened_async():
 
 @pytest.mark.asyncio
 async def test_list_environments_flattened_error_async():
-    client = EnvironmentsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EnvironmentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_environments(
-            environment.ListEnvironmentsRequest(), parent="parent_value",
+            environment.ListEnvironmentsRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_environments_pager(transport_name: str = "grpc"):
     client = EnvironmentsClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -861,13 +909,20 @@ def test_list_environments_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             environment.ListEnvironmentsResponse(
-                environments=[], next_page_token="def",
+                environments=[],
+                next_page_token="def",
             ),
             environment.ListEnvironmentsResponse(
-                environments=[environment.Environment(),], next_page_token="ghi",
+                environments=[
+                    environment.Environment(),
+                ],
+                next_page_token="ghi",
             ),
             environment.ListEnvironmentsResponse(
-                environments=[environment.Environment(), environment.Environment(),],
+                environments=[
+                    environment.Environment(),
+                    environment.Environment(),
+                ],
             ),
             RuntimeError,
         )
@@ -887,7 +942,8 @@ def test_list_environments_pager(transport_name: str = "grpc"):
 
 def test_list_environments_pages(transport_name: str = "grpc"):
     client = EnvironmentsClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -905,13 +961,20 @@ def test_list_environments_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             environment.ListEnvironmentsResponse(
-                environments=[], next_page_token="def",
+                environments=[],
+                next_page_token="def",
             ),
             environment.ListEnvironmentsResponse(
-                environments=[environment.Environment(),], next_page_token="ghi",
+                environments=[
+                    environment.Environment(),
+                ],
+                next_page_token="ghi",
             ),
             environment.ListEnvironmentsResponse(
-                environments=[environment.Environment(), environment.Environment(),],
+                environments=[
+                    environment.Environment(),
+                    environment.Environment(),
+                ],
             ),
             RuntimeError,
         )
@@ -922,7 +985,9 @@ def test_list_environments_pages(transport_name: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_list_environments_async_pager():
-    client = EnvironmentsAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = EnvironmentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -941,17 +1006,26 @@ async def test_list_environments_async_pager():
                 next_page_token="abc",
             ),
             environment.ListEnvironmentsResponse(
-                environments=[], next_page_token="def",
+                environments=[],
+                next_page_token="def",
             ),
             environment.ListEnvironmentsResponse(
-                environments=[environment.Environment(),], next_page_token="ghi",
+                environments=[
+                    environment.Environment(),
+                ],
+                next_page_token="ghi",
             ),
             environment.ListEnvironmentsResponse(
-                environments=[environment.Environment(), environment.Environment(),],
+                environments=[
+                    environment.Environment(),
+                    environment.Environment(),
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.list_environments(request={},)
+        async_pager = await client.list_environments(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -963,7 +1037,9 @@ async def test_list_environments_async_pager():
 
 @pytest.mark.asyncio
 async def test_list_environments_async_pages():
-    client = EnvironmentsAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = EnvironmentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -982,13 +1058,20 @@ async def test_list_environments_async_pages():
                 next_page_token="abc",
             ),
             environment.ListEnvironmentsResponse(
-                environments=[], next_page_token="def",
+                environments=[],
+                next_page_token="def",
             ),
             environment.ListEnvironmentsResponse(
-                environments=[environment.Environment(),], next_page_token="ghi",
+                environments=[
+                    environment.Environment(),
+                ],
+                next_page_token="ghi",
             ),
             environment.ListEnvironmentsResponse(
-                environments=[environment.Environment(), environment.Environment(),],
+                environments=[
+                    environment.Environment(),
+                    environment.Environment(),
+                ],
             ),
             RuntimeError,
         )
@@ -999,10 +1082,17 @@ async def test_list_environments_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [environment.GetEnvironmentRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        environment.GetEnvironmentRequest,
+        dict,
+    ],
+)
 def test_get_environment(request_type, transport: str = "grpc"):
     client = EnvironmentsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1035,7 +1125,8 @@ def test_get_environment_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = EnvironmentsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1051,7 +1142,8 @@ async def test_get_environment_async(
     transport: str = "grpc_asyncio", request_type=environment.GetEnvironmentRequest
 ):
     client = EnvironmentsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1088,7 +1180,9 @@ async def test_get_environment_async_from_dict():
 
 
 def test_get_environment_field_headers():
-    client = EnvironmentsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1108,12 +1202,17 @@ def test_get_environment_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_get_environment_field_headers_async():
-    client = EnvironmentsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EnvironmentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1135,11 +1234,16 @@ async def test_get_environment_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_environment_flattened():
-    client = EnvironmentsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_environment), "__call__") as call:
@@ -1147,7 +1251,9 @@ def test_get_environment_flattened():
         call.return_value = environment.Environment()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_environment(name="name_value",)
+        client.get_environment(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1159,19 +1265,24 @@ def test_get_environment_flattened():
 
 
 def test_get_environment_flattened_error():
-    client = EnvironmentsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_environment(
-            environment.GetEnvironmentRequest(), name="name_value",
+            environment.GetEnvironmentRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_get_environment_flattened_async():
-    client = EnvironmentsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EnvironmentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_environment), "__call__") as call:
@@ -1183,7 +1294,9 @@ async def test_get_environment_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_environment(name="name_value",)
+        response = await client.get_environment(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1196,22 +1309,30 @@ async def test_get_environment_flattened_async():
 
 @pytest.mark.asyncio
 async def test_get_environment_flattened_error_async():
-    client = EnvironmentsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EnvironmentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_environment(
-            environment.GetEnvironmentRequest(), name="name_value",
+            environment.GetEnvironmentRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [gcdc_environment.CreateEnvironmentRequest, dict,]
+    "request_type",
+    [
+        gcdc_environment.CreateEnvironmentRequest,
+        dict,
+    ],
 )
 def test_create_environment(request_type, transport: str = "grpc"):
     client = EnvironmentsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1239,7 +1360,8 @@ def test_create_environment_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = EnvironmentsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1258,7 +1380,8 @@ async def test_create_environment_async(
     request_type=gcdc_environment.CreateEnvironmentRequest,
 ):
     client = EnvironmentsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1290,7 +1413,9 @@ async def test_create_environment_async_from_dict():
 
 
 def test_create_environment_field_headers():
-    client = EnvironmentsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1312,12 +1437,17 @@ def test_create_environment_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_create_environment_field_headers_async():
-    client = EnvironmentsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EnvironmentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1341,11 +1471,16 @@ async def test_create_environment_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_environment_flattened():
-    client = EnvironmentsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1373,7 +1508,9 @@ def test_create_environment_flattened():
 
 
 def test_create_environment_flattened_error():
-    client = EnvironmentsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1387,7 +1524,9 @@ def test_create_environment_flattened_error():
 
 @pytest.mark.asyncio
 async def test_create_environment_flattened_async():
-    client = EnvironmentsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EnvironmentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1420,7 +1559,9 @@ async def test_create_environment_flattened_async():
 
 @pytest.mark.asyncio
 async def test_create_environment_flattened_error_async():
-    client = EnvironmentsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EnvironmentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1433,11 +1574,16 @@ async def test_create_environment_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [gcdc_environment.UpdateEnvironmentRequest, dict,]
+    "request_type",
+    [
+        gcdc_environment.UpdateEnvironmentRequest,
+        dict,
+    ],
 )
 def test_update_environment(request_type, transport: str = "grpc"):
     client = EnvironmentsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1465,7 +1611,8 @@ def test_update_environment_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = EnvironmentsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1484,7 +1631,8 @@ async def test_update_environment_async(
     request_type=gcdc_environment.UpdateEnvironmentRequest,
 ):
     client = EnvironmentsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1516,7 +1664,9 @@ async def test_update_environment_async_from_dict():
 
 
 def test_update_environment_field_headers():
-    client = EnvironmentsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1538,14 +1688,17 @@ def test_update_environment_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "environment.name=environment.name/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "environment.name=environment.name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_update_environment_field_headers_async():
-    client = EnvironmentsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EnvironmentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1569,13 +1722,16 @@ async def test_update_environment_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "environment.name=environment.name/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "environment.name=environment.name/value",
+    ) in kw["metadata"]
 
 
 def test_update_environment_flattened():
-    client = EnvironmentsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1603,7 +1759,9 @@ def test_update_environment_flattened():
 
 
 def test_update_environment_flattened_error():
-    client = EnvironmentsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1617,7 +1775,9 @@ def test_update_environment_flattened_error():
 
 @pytest.mark.asyncio
 async def test_update_environment_flattened_async():
-    client = EnvironmentsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EnvironmentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1650,7 +1810,9 @@ async def test_update_environment_flattened_async():
 
 @pytest.mark.asyncio
 async def test_update_environment_flattened_error_async():
-    client = EnvironmentsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EnvironmentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1662,10 +1824,17 @@ async def test_update_environment_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [environment.DeleteEnvironmentRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        environment.DeleteEnvironmentRequest,
+        dict,
+    ],
+)
 def test_delete_environment(request_type, transport: str = "grpc"):
     client = EnvironmentsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1693,7 +1862,8 @@ def test_delete_environment_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = EnvironmentsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1711,7 +1881,8 @@ async def test_delete_environment_async(
     transport: str = "grpc_asyncio", request_type=environment.DeleteEnvironmentRequest
 ):
     client = EnvironmentsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1741,7 +1912,9 @@ async def test_delete_environment_async_from_dict():
 
 
 def test_delete_environment_field_headers():
-    client = EnvironmentsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1763,12 +1936,17 @@ def test_delete_environment_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_delete_environment_field_headers_async():
-    client = EnvironmentsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EnvironmentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1790,11 +1968,16 @@ async def test_delete_environment_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_environment_flattened():
-    client = EnvironmentsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1804,7 +1987,9 @@ def test_delete_environment_flattened():
         call.return_value = None
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_environment(name="name_value",)
+        client.delete_environment(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1816,19 +2001,24 @@ def test_delete_environment_flattened():
 
 
 def test_delete_environment_flattened_error():
-    client = EnvironmentsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_environment(
-            environment.DeleteEnvironmentRequest(), name="name_value",
+            environment.DeleteEnvironmentRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_delete_environment_flattened_async():
-    client = EnvironmentsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EnvironmentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1840,7 +2030,9 @@ async def test_delete_environment_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_environment(name="name_value",)
+        response = await client.delete_environment(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1853,22 +2045,30 @@ async def test_delete_environment_flattened_async():
 
 @pytest.mark.asyncio
 async def test_delete_environment_flattened_error_async():
-    client = EnvironmentsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EnvironmentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_environment(
-            environment.DeleteEnvironmentRequest(), name="name_value",
+            environment.DeleteEnvironmentRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [environment.LookupEnvironmentHistoryRequest, dict,]
+    "request_type",
+    [
+        environment.LookupEnvironmentHistoryRequest,
+        dict,
+    ],
 )
 def test_lookup_environment_history(request_type, transport: str = "grpc"):
     client = EnvironmentsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1899,7 +2099,8 @@ def test_lookup_environment_history_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = EnvironmentsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1918,7 +2119,8 @@ async def test_lookup_environment_history_async(
     request_type=environment.LookupEnvironmentHistoryRequest,
 ):
     client = EnvironmentsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1953,7 +2155,9 @@ async def test_lookup_environment_history_async_from_dict():
 
 
 def test_lookup_environment_history_field_headers():
-    client = EnvironmentsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1975,12 +2179,17 @@ def test_lookup_environment_history_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_lookup_environment_history_field_headers_async():
-    client = EnvironmentsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EnvironmentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2004,11 +2213,16 @@ async def test_lookup_environment_history_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_lookup_environment_history_flattened():
-    client = EnvironmentsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2018,7 +2232,9 @@ def test_lookup_environment_history_flattened():
         call.return_value = environment.LookupEnvironmentHistoryResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.lookup_environment_history(name="name_value",)
+        client.lookup_environment_history(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2030,19 +2246,24 @@ def test_lookup_environment_history_flattened():
 
 
 def test_lookup_environment_history_flattened_error():
-    client = EnvironmentsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.lookup_environment_history(
-            environment.LookupEnvironmentHistoryRequest(), name="name_value",
+            environment.LookupEnvironmentHistoryRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_lookup_environment_history_flattened_async():
-    client = EnvironmentsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EnvironmentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2056,7 +2277,9 @@ async def test_lookup_environment_history_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.lookup_environment_history(name="name_value",)
+        response = await client.lookup_environment_history(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2069,19 +2292,23 @@ async def test_lookup_environment_history_flattened_async():
 
 @pytest.mark.asyncio
 async def test_lookup_environment_history_flattened_error_async():
-    client = EnvironmentsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EnvironmentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.lookup_environment_history(
-            environment.LookupEnvironmentHistoryRequest(), name="name_value",
+            environment.LookupEnvironmentHistoryRequest(),
+            name="name_value",
         )
 
 
 def test_lookup_environment_history_pager(transport_name: str = "grpc"):
     client = EnvironmentsClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2099,13 +2326,20 @@ def test_lookup_environment_history_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             environment.LookupEnvironmentHistoryResponse(
-                environments=[], next_page_token="def",
+                environments=[],
+                next_page_token="def",
             ),
             environment.LookupEnvironmentHistoryResponse(
-                environments=[environment.Environment(),], next_page_token="ghi",
+                environments=[
+                    environment.Environment(),
+                ],
+                next_page_token="ghi",
             ),
             environment.LookupEnvironmentHistoryResponse(
-                environments=[environment.Environment(), environment.Environment(),],
+                environments=[
+                    environment.Environment(),
+                    environment.Environment(),
+                ],
             ),
             RuntimeError,
         )
@@ -2125,7 +2359,8 @@ def test_lookup_environment_history_pager(transport_name: str = "grpc"):
 
 def test_lookup_environment_history_pages(transport_name: str = "grpc"):
     client = EnvironmentsClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2143,13 +2378,20 @@ def test_lookup_environment_history_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             environment.LookupEnvironmentHistoryResponse(
-                environments=[], next_page_token="def",
+                environments=[],
+                next_page_token="def",
             ),
             environment.LookupEnvironmentHistoryResponse(
-                environments=[environment.Environment(),], next_page_token="ghi",
+                environments=[
+                    environment.Environment(),
+                ],
+                next_page_token="ghi",
             ),
             environment.LookupEnvironmentHistoryResponse(
-                environments=[environment.Environment(), environment.Environment(),],
+                environments=[
+                    environment.Environment(),
+                    environment.Environment(),
+                ],
             ),
             RuntimeError,
         )
@@ -2160,7 +2402,9 @@ def test_lookup_environment_history_pages(transport_name: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_lookup_environment_history_async_pager():
-    client = EnvironmentsAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = EnvironmentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2179,17 +2423,26 @@ async def test_lookup_environment_history_async_pager():
                 next_page_token="abc",
             ),
             environment.LookupEnvironmentHistoryResponse(
-                environments=[], next_page_token="def",
+                environments=[],
+                next_page_token="def",
             ),
             environment.LookupEnvironmentHistoryResponse(
-                environments=[environment.Environment(),], next_page_token="ghi",
+                environments=[
+                    environment.Environment(),
+                ],
+                next_page_token="ghi",
             ),
             environment.LookupEnvironmentHistoryResponse(
-                environments=[environment.Environment(), environment.Environment(),],
+                environments=[
+                    environment.Environment(),
+                    environment.Environment(),
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.lookup_environment_history(request={},)
+        async_pager = await client.lookup_environment_history(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -2201,7 +2454,9 @@ async def test_lookup_environment_history_async_pager():
 
 @pytest.mark.asyncio
 async def test_lookup_environment_history_async_pages():
-    client = EnvironmentsAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = EnvironmentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2220,13 +2475,20 @@ async def test_lookup_environment_history_async_pages():
                 next_page_token="abc",
             ),
             environment.LookupEnvironmentHistoryResponse(
-                environments=[], next_page_token="def",
+                environments=[],
+                next_page_token="def",
             ),
             environment.LookupEnvironmentHistoryResponse(
-                environments=[environment.Environment(),], next_page_token="ghi",
+                environments=[
+                    environment.Environment(),
+                ],
+                next_page_token="ghi",
             ),
             environment.LookupEnvironmentHistoryResponse(
-                environments=[environment.Environment(), environment.Environment(),],
+                environments=[
+                    environment.Environment(),
+                    environment.Environment(),
+                ],
             ),
             RuntimeError,
         )
@@ -2237,10 +2499,17 @@ async def test_lookup_environment_history_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [environment.RunContinuousTestRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        environment.RunContinuousTestRequest,
+        dict,
+    ],
+)
 def test_run_continuous_test(request_type, transport: str = "grpc"):
     client = EnvironmentsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2268,7 +2537,8 @@ def test_run_continuous_test_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = EnvironmentsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2286,7 +2556,8 @@ async def test_run_continuous_test_async(
     transport: str = "grpc_asyncio", request_type=environment.RunContinuousTestRequest
 ):
     client = EnvironmentsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2318,7 +2589,9 @@ async def test_run_continuous_test_async_from_dict():
 
 
 def test_run_continuous_test_field_headers():
-    client = EnvironmentsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2340,12 +2613,17 @@ def test_run_continuous_test_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "environment=environment/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "environment=environment/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_run_continuous_test_field_headers_async():
-    client = EnvironmentsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EnvironmentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2369,15 +2647,23 @@ async def test_run_continuous_test_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "environment=environment/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "environment=environment/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.parametrize(
-    "request_type", [environment.ListContinuousTestResultsRequest, dict,]
+    "request_type",
+    [
+        environment.ListContinuousTestResultsRequest,
+        dict,
+    ],
 )
 def test_list_continuous_test_results(request_type, transport: str = "grpc"):
     client = EnvironmentsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2408,7 +2694,8 @@ def test_list_continuous_test_results_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = EnvironmentsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2427,7 +2714,8 @@ async def test_list_continuous_test_results_async(
     request_type=environment.ListContinuousTestResultsRequest,
 ):
     client = EnvironmentsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2462,7 +2750,9 @@ async def test_list_continuous_test_results_async_from_dict():
 
 
 def test_list_continuous_test_results_field_headers():
-    client = EnvironmentsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2484,12 +2774,17 @@ def test_list_continuous_test_results_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_list_continuous_test_results_field_headers_async():
-    client = EnvironmentsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EnvironmentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2513,11 +2808,16 @@ async def test_list_continuous_test_results_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_continuous_test_results_flattened():
-    client = EnvironmentsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2527,7 +2827,9 @@ def test_list_continuous_test_results_flattened():
         call.return_value = environment.ListContinuousTestResultsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_continuous_test_results(parent="parent_value",)
+        client.list_continuous_test_results(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2539,19 +2841,24 @@ def test_list_continuous_test_results_flattened():
 
 
 def test_list_continuous_test_results_flattened_error():
-    client = EnvironmentsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_continuous_test_results(
-            environment.ListContinuousTestResultsRequest(), parent="parent_value",
+            environment.ListContinuousTestResultsRequest(),
+            parent="parent_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_list_continuous_test_results_flattened_async():
-    client = EnvironmentsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EnvironmentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2565,7 +2872,9 @@ async def test_list_continuous_test_results_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_continuous_test_results(parent="parent_value",)
+        response = await client.list_continuous_test_results(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2578,19 +2887,23 @@ async def test_list_continuous_test_results_flattened_async():
 
 @pytest.mark.asyncio
 async def test_list_continuous_test_results_flattened_error_async():
-    client = EnvironmentsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EnvironmentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_continuous_test_results(
-            environment.ListContinuousTestResultsRequest(), parent="parent_value",
+            environment.ListContinuousTestResultsRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_continuous_test_results_pager(transport_name: str = "grpc"):
     client = EnvironmentsClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2608,10 +2921,13 @@ def test_list_continuous_test_results_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             environment.ListContinuousTestResultsResponse(
-                continuous_test_results=[], next_page_token="def",
+                continuous_test_results=[],
+                next_page_token="def",
             ),
             environment.ListContinuousTestResultsResponse(
-                continuous_test_results=[environment.ContinuousTestResult(),],
+                continuous_test_results=[
+                    environment.ContinuousTestResult(),
+                ],
                 next_page_token="ghi",
             ),
             environment.ListContinuousTestResultsResponse(
@@ -2638,7 +2954,8 @@ def test_list_continuous_test_results_pager(transport_name: str = "grpc"):
 
 def test_list_continuous_test_results_pages(transport_name: str = "grpc"):
     client = EnvironmentsClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2656,10 +2973,13 @@ def test_list_continuous_test_results_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             environment.ListContinuousTestResultsResponse(
-                continuous_test_results=[], next_page_token="def",
+                continuous_test_results=[],
+                next_page_token="def",
             ),
             environment.ListContinuousTestResultsResponse(
-                continuous_test_results=[environment.ContinuousTestResult(),],
+                continuous_test_results=[
+                    environment.ContinuousTestResult(),
+                ],
                 next_page_token="ghi",
             ),
             environment.ListContinuousTestResultsResponse(
@@ -2677,7 +2997,9 @@ def test_list_continuous_test_results_pages(transport_name: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_list_continuous_test_results_async_pager():
-    client = EnvironmentsAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = EnvironmentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2696,10 +3018,13 @@ async def test_list_continuous_test_results_async_pager():
                 next_page_token="abc",
             ),
             environment.ListContinuousTestResultsResponse(
-                continuous_test_results=[], next_page_token="def",
+                continuous_test_results=[],
+                next_page_token="def",
             ),
             environment.ListContinuousTestResultsResponse(
-                continuous_test_results=[environment.ContinuousTestResult(),],
+                continuous_test_results=[
+                    environment.ContinuousTestResult(),
+                ],
                 next_page_token="ghi",
             ),
             environment.ListContinuousTestResultsResponse(
@@ -2710,7 +3035,9 @@ async def test_list_continuous_test_results_async_pager():
             ),
             RuntimeError,
         )
-        async_pager = await client.list_continuous_test_results(request={},)
+        async_pager = await client.list_continuous_test_results(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -2722,7 +3049,9 @@ async def test_list_continuous_test_results_async_pager():
 
 @pytest.mark.asyncio
 async def test_list_continuous_test_results_async_pages():
-    client = EnvironmentsAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = EnvironmentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2741,10 +3070,13 @@ async def test_list_continuous_test_results_async_pages():
                 next_page_token="abc",
             ),
             environment.ListContinuousTestResultsResponse(
-                continuous_test_results=[], next_page_token="def",
+                continuous_test_results=[],
+                next_page_token="def",
             ),
             environment.ListContinuousTestResultsResponse(
-                continuous_test_results=[environment.ContinuousTestResult(),],
+                continuous_test_results=[
+                    environment.ContinuousTestResult(),
+                ],
                 next_page_token="ghi",
             ),
             environment.ListContinuousTestResultsResponse(
@@ -2764,10 +3096,17 @@ async def test_list_continuous_test_results_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [environment.DeployFlowRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        environment.DeployFlowRequest,
+        dict,
+    ],
+)
 def test_deploy_flow(request_type, transport: str = "grpc"):
     client = EnvironmentsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2793,7 +3132,8 @@ def test_deploy_flow_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = EnvironmentsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2809,7 +3149,8 @@ async def test_deploy_flow_async(
     transport: str = "grpc_asyncio", request_type=environment.DeployFlowRequest
 ):
     client = EnvironmentsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2839,7 +3180,9 @@ async def test_deploy_flow_async_from_dict():
 
 
 def test_deploy_flow_field_headers():
-    client = EnvironmentsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2859,12 +3202,17 @@ def test_deploy_flow_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "environment=environment/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "environment=environment/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_deploy_flow_field_headers_async():
-    client = EnvironmentsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = EnvironmentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2886,7 +3234,10 @@ async def test_deploy_flow_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "environment=environment/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "environment=environment/value",
+    ) in kw["metadata"]
 
 
 def test_credentials_transport_error():
@@ -2896,7 +3247,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = EnvironmentsClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -2916,7 +3268,10 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = EnvironmentsClient(client_options=options, transport=transport,)
+        client = EnvironmentsClient(
+            client_options=options,
+            transport=transport,
+        )
 
     # It is an error to provide an api_key and a credential.
     options = mock.Mock()
@@ -2932,7 +3287,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = EnvironmentsClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -2977,8 +3333,13 @@ def test_transport_adc(transport_class):
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
-    client = EnvironmentsClient(credentials=ga_credentials.AnonymousCredentials(),)
-    assert isinstance(client.transport, transports.EnvironmentsGrpcTransport,)
+    client = EnvironmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    assert isinstance(
+        client.transport,
+        transports.EnvironmentsGrpcTransport,
+    )
 
 
 def test_environments_base_transport_error():
@@ -3036,7 +3397,8 @@ def test_environments_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.EnvironmentsTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -3203,7 +3565,8 @@ def test_environments_grpc_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.EnvironmentsGrpcTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -3215,7 +3578,8 @@ def test_environments_grpc_asyncio_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.EnvironmentsGrpcAsyncIOTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -3316,12 +3680,16 @@ def test_environments_transport_channel_mtls_with_adc(transport_class):
 
 def test_environments_grpc_lro_client():
     client = EnvironmentsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
     transport = client.transport
 
     # Ensure that we have a api-core operations client.
-    assert isinstance(transport.operations_client, operations_v1.OperationsClient,)
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsClient,
+    )
 
     # Ensure that subsequent calls to the property send the exact same object.
     assert transport.operations_client is transport.operations_client
@@ -3329,12 +3697,16 @@ def test_environments_grpc_lro_client():
 
 def test_environments_grpc_lro_async_client():
     client = EnvironmentsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     transport = client.transport
 
     # Ensure that we have a api-core operations client.
-    assert isinstance(transport.operations_client, operations_v1.OperationsAsyncClient,)
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsAsyncClient,
+    )
 
     # Ensure that subsequent calls to the property send the exact same object.
     assert transport.operations_client is transport.operations_client
@@ -3380,7 +3752,10 @@ def test_environment_path():
     agent = "squid"
     environment = "clam"
     expected = "projects/{project}/locations/{location}/agents/{agent}/environments/{environment}".format(
-        project=project, location=location, agent=agent, environment=environment,
+        project=project,
+        location=location,
+        agent=agent,
+        environment=environment,
     )
     actual = EnvironmentsClient.environment_path(project, location, agent, environment)
     assert expected == actual
@@ -3406,7 +3781,10 @@ def test_test_case_path():
     agent = "winkle"
     test_case = "nautilus"
     expected = "projects/{project}/locations/{location}/agents/{agent}/testCases/{test_case}".format(
-        project=project, location=location, agent=agent, test_case=test_case,
+        project=project,
+        location=location,
+        agent=agent,
+        test_case=test_case,
     )
     actual = EnvironmentsClient.test_case_path(project, location, agent, test_case)
     assert expected == actual
@@ -3467,7 +3845,11 @@ def test_version_path():
     flow = "octopus"
     version = "oyster"
     expected = "projects/{project}/locations/{location}/agents/{agent}/flows/{flow}/versions/{version}".format(
-        project=project, location=location, agent=agent, flow=flow, version=version,
+        project=project,
+        location=location,
+        agent=agent,
+        flow=flow,
+        version=version,
     )
     actual = EnvironmentsClient.version_path(project, location, agent, flow, version)
     assert expected == actual
@@ -3510,7 +3892,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "squid"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = EnvironmentsClient.common_folder_path(folder)
     assert expected == actual
 
@@ -3528,7 +3912,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "whelk"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = EnvironmentsClient.common_organization_path(organization)
     assert expected == actual
 
@@ -3546,7 +3932,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "oyster"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = EnvironmentsClient.common_project_path(project)
     assert expected == actual
 
@@ -3566,7 +3954,8 @@ def test_common_location_path():
     project = "cuttlefish"
     location = "mussel"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = EnvironmentsClient.common_location_path(project, location)
     assert expected == actual
@@ -3591,7 +3980,8 @@ def test_client_with_default_client_info():
         transports.EnvironmentsTransport, "_prep_wrapped_messages"
     ) as prep:
         client = EnvironmentsClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -3600,7 +3990,8 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = EnvironmentsClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -3608,7 +3999,8 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = EnvironmentsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     with mock.patch.object(
         type(getattr(client.transport, "grpc_channel")), "close"

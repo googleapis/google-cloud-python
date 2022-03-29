@@ -124,19 +124,23 @@ class ChangelogsTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.list_changelogs: gapic_v1.method.wrap_method(
-                self.list_changelogs, default_timeout=None, client_info=client_info,
+                self.list_changelogs,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_changelog: gapic_v1.method.wrap_method(
-                self.get_changelog, default_timeout=None, client_info=client_info,
+                self.get_changelog,
+                default_timeout=None,
+                client_info=client_info,
             ),
         }
 
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

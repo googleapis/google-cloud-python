@@ -54,7 +54,10 @@ class SessionsClientMeta(type):
     _transport_registry["grpc"] = SessionsGrpcTransport
     _transport_registry["grpc_asyncio"] = SessionsGrpcAsyncIOTransport
 
-    def get_transport_class(cls, label: str = None,) -> Type[SessionsTransport]:
+    def get_transport_class(
+        cls,
+        label: str = None,
+    ) -> Type[SessionsTransport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -164,11 +167,17 @@ class SessionsClient(metaclass=SessionsClientMeta):
 
     @staticmethod
     def entity_type_path(
-        project: str, location: str, agent: str, entity_type: str,
+        project: str,
+        location: str,
+        agent: str,
+        entity_type: str,
     ) -> str:
         """Returns a fully-qualified entity_type string."""
         return "projects/{project}/locations/{location}/agents/{agent}/entityTypes/{entity_type}".format(
-            project=project, location=location, agent=agent, entity_type=entity_type,
+            project=project,
+            location=location,
+            agent=agent,
+            entity_type=entity_type,
         )
 
     @staticmethod
@@ -181,10 +190,18 @@ class SessionsClient(metaclass=SessionsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def flow_path(project: str, location: str, agent: str, flow: str,) -> str:
+    def flow_path(
+        project: str,
+        location: str,
+        agent: str,
+        flow: str,
+    ) -> str:
         """Returns a fully-qualified flow string."""
         return "projects/{project}/locations/{location}/agents/{agent}/flows/{flow}".format(
-            project=project, location=location, agent=agent, flow=flow,
+            project=project,
+            location=location,
+            agent=agent,
+            flow=flow,
         )
 
     @staticmethod
@@ -197,10 +214,18 @@ class SessionsClient(metaclass=SessionsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def intent_path(project: str, location: str, agent: str, intent: str,) -> str:
+    def intent_path(
+        project: str,
+        location: str,
+        agent: str,
+        intent: str,
+    ) -> str:
         """Returns a fully-qualified intent string."""
         return "projects/{project}/locations/{location}/agents/{agent}/intents/{intent}".format(
-            project=project, location=location, agent=agent, intent=intent,
+            project=project,
+            location=location,
+            agent=agent,
+            intent=intent,
         )
 
     @staticmethod
@@ -214,11 +239,19 @@ class SessionsClient(metaclass=SessionsClientMeta):
 
     @staticmethod
     def page_path(
-        project: str, location: str, agent: str, flow: str, page: str,
+        project: str,
+        location: str,
+        agent: str,
+        flow: str,
+        page: str,
     ) -> str:
         """Returns a fully-qualified page string."""
         return "projects/{project}/locations/{location}/agents/{agent}/flows/{flow}/pages/{page}".format(
-            project=project, location=location, agent=agent, flow=flow, page=page,
+            project=project,
+            location=location,
+            agent=agent,
+            flow=flow,
+            page=page,
         )
 
     @staticmethod
@@ -231,10 +264,18 @@ class SessionsClient(metaclass=SessionsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def session_path(project: str, location: str, agent: str, session: str,) -> str:
+    def session_path(
+        project: str,
+        location: str,
+        agent: str,
+        session: str,
+    ) -> str:
         """Returns a fully-qualified session string."""
         return "projects/{project}/locations/{location}/agents/{agent}/sessions/{session}".format(
-            project=project, location=location, agent=agent, session=session,
+            project=project,
+            location=location,
+            agent=agent,
+            session=session,
         )
 
     @staticmethod
@@ -248,7 +289,11 @@ class SessionsClient(metaclass=SessionsClientMeta):
 
     @staticmethod
     def session_entity_type_path(
-        project: str, location: str, agent: str, session: str, entity_type: str,
+        project: str,
+        location: str,
+        agent: str,
+        session: str,
+        entity_type: str,
     ) -> str:
         """Returns a fully-qualified session_entity_type string."""
         return "projects/{project}/locations/{location}/agents/{agent}/sessions/{session}/entityTypes/{entity_type}".format(
@@ -270,7 +315,11 @@ class SessionsClient(metaclass=SessionsClientMeta):
 
     @staticmethod
     def transition_route_group_path(
-        project: str, location: str, agent: str, flow: str, transition_route_group: str,
+        project: str,
+        location: str,
+        agent: str,
+        flow: str,
+        transition_route_group: str,
     ) -> str:
         """Returns a fully-qualified transition_route_group string."""
         return "projects/{project}/locations/{location}/agents/{agent}/flows/{flow}/transitionRouteGroups/{transition_route_group}".format(
@@ -292,11 +341,19 @@ class SessionsClient(metaclass=SessionsClientMeta):
 
     @staticmethod
     def version_path(
-        project: str, location: str, agent: str, flow: str, version: str,
+        project: str,
+        location: str,
+        agent: str,
+        flow: str,
+        version: str,
     ) -> str:
         """Returns a fully-qualified version string."""
         return "projects/{project}/locations/{location}/agents/{agent}/flows/{flow}/versions/{version}".format(
-            project=project, location=location, agent=agent, flow=flow, version=version,
+            project=project,
+            location=location,
+            agent=agent,
+            flow=flow,
+            version=version,
         )
 
     @staticmethod
@@ -309,10 +366,18 @@ class SessionsClient(metaclass=SessionsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def webhook_path(project: str, location: str, agent: str, webhook: str,) -> str:
+    def webhook_path(
+        project: str,
+        location: str,
+        agent: str,
+        webhook: str,
+    ) -> str:
         """Returns a fully-qualified webhook string."""
         return "projects/{project}/locations/{location}/agents/{agent}/webhooks/{webhook}".format(
-            project=project, location=location, agent=agent, webhook=webhook,
+            project=project,
+            location=location,
+            agent=agent,
+            webhook=webhook,
         )
 
     @staticmethod
@@ -325,7 +390,9 @@ class SessionsClient(metaclass=SessionsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_billing_account_path(billing_account: str,) -> str:
+    def common_billing_account_path(
+        billing_account: str,
+    ) -> str:
         """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
@@ -338,9 +405,13 @@ class SessionsClient(metaclass=SessionsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(folder: str,) -> str:
+    def common_folder_path(
+        folder: str,
+    ) -> str:
         """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(folder=folder,)
+        return "folders/{folder}".format(
+            folder=folder,
+        )
 
     @staticmethod
     def parse_common_folder_path(path: str) -> Dict[str, str]:
@@ -349,9 +420,13 @@ class SessionsClient(metaclass=SessionsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(organization: str,) -> str:
+    def common_organization_path(
+        organization: str,
+    ) -> str:
         """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(organization=organization,)
+        return "organizations/{organization}".format(
+            organization=organization,
+        )
 
     @staticmethod
     def parse_common_organization_path(path: str) -> Dict[str, str]:
@@ -360,9 +435,13 @@ class SessionsClient(metaclass=SessionsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(project: str,) -> str:
+    def common_project_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified project string."""
-        return "projects/{project}".format(project=project,)
+        return "projects/{project}".format(
+            project=project,
+        )
 
     @staticmethod
     def parse_common_project_path(path: str) -> Dict[str, str]:
@@ -371,10 +450,14 @@ class SessionsClient(metaclass=SessionsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(project: str, location: str,) -> str:
+    def common_location_path(
+        project: str,
+        location: str,
+    ) -> str:
         """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
-            project=project, location=location,
+            project=project,
+            location=location,
         )
 
     @staticmethod
@@ -624,7 +707,12 @@ class SessionsClient(metaclass=SessionsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -765,7 +853,12 @@ class SessionsClient(metaclass=SessionsClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.streaming_detect_intent]
 
         # Send the request.
-        response = rpc(requests, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            requests,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -838,7 +931,12 @@ class SessionsClient(metaclass=SessionsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -917,7 +1015,12 @@ class SessionsClient(metaclass=SessionsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
