@@ -54,9 +54,19 @@ class CreateWorkloadRequest(proto.Message):
             projects with the identifier as the value.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    workload = proto.Field(proto.MESSAGE, number=2, message="Workload",)
-    external_id = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    workload = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="Workload",
+    )
+    external_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class UpdateWorkloadRequest(proto.Message):
@@ -72,9 +82,15 @@ class UpdateWorkloadRequest(proto.Message):
             Required. The list of fields to be updated.
     """
 
-    workload = proto.Field(proto.MESSAGE, number=1, message="Workload",)
+    workload = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="Workload",
+    )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -92,8 +108,14 @@ class DeleteWorkloadRequest(proto.Message):
             etag.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    etag = proto.Field(proto.STRING, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    etag = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetWorkloadRequest(proto.Message):
@@ -108,7 +130,10 @@ class GetWorkloadRequest(proto.Message):
             "organizations/123/locations/us-east1/workloads/assured-workload-1".
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListWorkloadsRequest(proto.Message):
@@ -131,10 +156,22 @@ class ListWorkloadsRequest(proto.Message):
             labels is supported.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    filter = proto.Field(proto.STRING, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class ListWorkloadsResponse(proto.Message):
@@ -152,8 +189,15 @@ class ListWorkloadsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    workloads = proto.RepeatedField(proto.MESSAGE, number=1, message="Workload",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    workloads = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Workload",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class Workload(proto.Message):
@@ -271,9 +315,14 @@ class Workload(proto.Message):
             ENCRYPTION_KEYS_PROJECT = 2
             KEYRING = 3
 
-        resource_id = proto.Field(proto.INT64, number=1,)
+        resource_id = proto.Field(
+            proto.INT64,
+            number=1,
+        )
         resource_type = proto.Field(
-            proto.ENUM, number=2, enum="Workload.ResourceInfo.ResourceType",
+            proto.ENUM,
+            number=2,
+            enum="Workload.ResourceInfo.ResourceType",
         )
 
     class KMSSettings(proto.Message):
@@ -293,10 +342,14 @@ class Workload(proto.Message):
         """
 
         next_rotation_time = proto.Field(
-            proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,
+            proto.MESSAGE,
+            number=1,
+            message=timestamp_pb2.Timestamp,
         )
         rotation_period = proto.Field(
-            proto.MESSAGE, number=2, message=duration_pb2.Duration,
+            proto.MESSAGE,
+            number=2,
+            message=duration_pb2.Duration,
         )
 
     class ResourceSettings(proto.Message):
@@ -318,11 +371,19 @@ class Workload(proto.Message):
                 resource with the specified name.
         """
 
-        resource_id = proto.Field(proto.STRING, number=1,)
-        resource_type = proto.Field(
-            proto.ENUM, number=2, enum="Workload.ResourceInfo.ResourceType",
+        resource_id = proto.Field(
+            proto.STRING,
+            number=1,
         )
-        display_name = proto.Field(proto.STRING, number=3,)
+        resource_type = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum="Workload.ResourceInfo.ResourceType",
+        )
+        display_name = proto.Field(
+            proto.STRING,
+            number=3,
+        )
 
     class SaaEnrollmentResponse(proto.Message):
         r"""Signed Access Approvals (SAA) enrollment response.
@@ -360,26 +421,74 @@ class Workload(proto.Message):
             enum="Workload.SaaEnrollmentResponse.SetupState",
         )
         setup_errors = proto.RepeatedField(
-            proto.ENUM, number=2, enum="Workload.SaaEnrollmentResponse.SetupError",
+            proto.ENUM,
+            number=2,
+            enum="Workload.SaaEnrollmentResponse.SetupError",
         )
 
-    name = proto.Field(proto.STRING, number=1,)
-    display_name = proto.Field(proto.STRING, number=2,)
-    resources = proto.RepeatedField(proto.MESSAGE, number=3, message=ResourceInfo,)
-    compliance_regime = proto.Field(proto.ENUM, number=4, enum=ComplianceRegime,)
-    create_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
-    billing_account = proto.Field(proto.STRING, number=6,)
-    etag = proto.Field(proto.STRING, number=9,)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=10,)
-    provisioned_resources_parent = proto.Field(proto.STRING, number=13,)
-    kms_settings = proto.Field(proto.MESSAGE, number=14, message=KMSSettings,)
-    resource_settings = proto.RepeatedField(
-        proto.MESSAGE, number=15, message=ResourceSettings,
+    name = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    kaj_enrollment_state = proto.Field(proto.ENUM, number=17, enum=KajEnrollmentState,)
-    enable_sovereign_controls = proto.Field(proto.BOOL, number=18,)
+    display_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    resources = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=ResourceInfo,
+    )
+    compliance_regime = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=ComplianceRegime,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+    billing_account = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    etag = proto.Field(
+        proto.STRING,
+        number=9,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=10,
+    )
+    provisioned_resources_parent = proto.Field(
+        proto.STRING,
+        number=13,
+    )
+    kms_settings = proto.Field(
+        proto.MESSAGE,
+        number=14,
+        message=KMSSettings,
+    )
+    resource_settings = proto.RepeatedField(
+        proto.MESSAGE,
+        number=15,
+        message=ResourceSettings,
+    )
+    kaj_enrollment_state = proto.Field(
+        proto.ENUM,
+        number=17,
+        enum=KajEnrollmentState,
+    )
+    enable_sovereign_controls = proto.Field(
+        proto.BOOL,
+        number=18,
+    )
     saa_enrollment_response = proto.Field(
-        proto.MESSAGE, number=20, message=SaaEnrollmentResponse,
+        proto.MESSAGE,
+        number=20,
+        message=SaaEnrollmentResponse,
     )
 
 
@@ -400,11 +509,23 @@ class CreateWorkloadOperationMetadata(proto.Message):
             workload.
     """
 
-    create_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
-    display_name = proto.Field(proto.STRING, number=2,)
-    parent = proto.Field(proto.STRING, number=3,)
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    parent = proto.Field(
+        proto.STRING,
+        number=3,
+    )
     compliance_regime = proto.Field(
-        proto.ENUM, number=4, enum="Workload.ComplianceRegime",
+        proto.ENUM,
+        number=4,
+        enum="Workload.ComplianceRegime",
     )
 
 

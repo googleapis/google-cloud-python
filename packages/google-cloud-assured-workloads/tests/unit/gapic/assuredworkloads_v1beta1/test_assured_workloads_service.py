@@ -102,7 +102,11 @@ def test__get_default_mtls_endpoint():
 
 
 @pytest.mark.parametrize(
-    "client_class", [AssuredWorkloadsServiceClient, AssuredWorkloadsServiceAsyncClient,]
+    "client_class",
+    [
+        AssuredWorkloadsServiceClient,
+        AssuredWorkloadsServiceAsyncClient,
+    ],
 )
 def test_assured_workloads_service_client_from_service_account_info(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -144,7 +148,11 @@ def test_assured_workloads_service_client_service_account_always_use_jwt(
 
 
 @pytest.mark.parametrize(
-    "client_class", [AssuredWorkloadsServiceClient, AssuredWorkloadsServiceAsyncClient,]
+    "client_class",
+    [
+        AssuredWorkloadsServiceClient,
+        AssuredWorkloadsServiceAsyncClient,
+    ],
 )
 def test_assured_workloads_service_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -528,7 +536,9 @@ def test_assured_workloads_service_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -669,11 +679,16 @@ def test_assured_workloads_service_client_create_channel_credentials_file(
 
 
 @pytest.mark.parametrize(
-    "request_type", [assuredworkloads_v1beta1.CreateWorkloadRequest, dict,]
+    "request_type",
+    [
+        assuredworkloads_v1beta1.CreateWorkloadRequest,
+        dict,
+    ],
 )
 def test_create_workload(request_type, transport: str = "grpc"):
     client = AssuredWorkloadsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -699,7 +714,8 @@ def test_create_workload_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AssuredWorkloadsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -716,7 +732,8 @@ async def test_create_workload_async(
     request_type=assuredworkloads_v1beta1.CreateWorkloadRequest,
 ):
     client = AssuredWorkloadsServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -768,7 +785,10 @@ def test_create_workload_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -797,7 +817,10 @@ async def test_create_workload_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_workload_flattened():
@@ -893,11 +916,16 @@ async def test_create_workload_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [assuredworkloads_v1beta1.UpdateWorkloadRequest, dict,]
+    "request_type",
+    [
+        assuredworkloads_v1beta1.UpdateWorkloadRequest,
+        dict,
+    ],
 )
 def test_update_workload(request_type, transport: str = "grpc"):
     client = AssuredWorkloadsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -951,7 +979,8 @@ def test_update_workload_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AssuredWorkloadsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -968,7 +997,8 @@ async def test_update_workload_async(
     request_type=assuredworkloads_v1beta1.UpdateWorkloadRequest,
 ):
     client = AssuredWorkloadsServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1043,9 +1073,10 @@ def test_update_workload_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "workload.name=workload.name/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "workload.name=workload.name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1074,9 +1105,10 @@ async def test_update_workload_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "workload.name=workload.name/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "workload.name=workload.name/value",
+    ) in kw["metadata"]
 
 
 def test_update_workload_flattened():
@@ -1172,11 +1204,16 @@ async def test_update_workload_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [assuredworkloads_v1beta1.DeleteWorkloadRequest, dict,]
+    "request_type",
+    [
+        assuredworkloads_v1beta1.DeleteWorkloadRequest,
+        dict,
+    ],
 )
 def test_delete_workload(request_type, transport: str = "grpc"):
     client = AssuredWorkloadsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1202,7 +1239,8 @@ def test_delete_workload_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AssuredWorkloadsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1219,7 +1257,8 @@ async def test_delete_workload_async(
     request_type=assuredworkloads_v1beta1.DeleteWorkloadRequest,
 ):
     client = AssuredWorkloadsServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1269,7 +1308,10 @@ def test_delete_workload_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1296,7 +1338,10 @@ async def test_delete_workload_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_workload_flattened():
@@ -1310,7 +1355,9 @@ def test_delete_workload_flattened():
         call.return_value = None
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_workload(name="name_value",)
+        client.delete_workload(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1330,7 +1377,8 @@ def test_delete_workload_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_workload(
-            assuredworkloads_v1beta1.DeleteWorkloadRequest(), name="name_value",
+            assuredworkloads_v1beta1.DeleteWorkloadRequest(),
+            name="name_value",
         )
 
 
@@ -1348,7 +1396,9 @@ async def test_delete_workload_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_workload(name="name_value",)
+        response = await client.delete_workload(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1369,16 +1419,22 @@ async def test_delete_workload_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_workload(
-            assuredworkloads_v1beta1.DeleteWorkloadRequest(), name="name_value",
+            assuredworkloads_v1beta1.DeleteWorkloadRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [assuredworkloads_v1beta1.GetWorkloadRequest, dict,]
+    "request_type",
+    [
+        assuredworkloads_v1beta1.GetWorkloadRequest,
+        dict,
+    ],
 )
 def test_get_workload(request_type, transport: str = "grpc"):
     client = AssuredWorkloadsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1432,7 +1488,8 @@ def test_get_workload_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AssuredWorkloadsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1449,7 +1506,8 @@ async def test_get_workload_async(
     request_type=assuredworkloads_v1beta1.GetWorkloadRequest,
 ):
     client = AssuredWorkloadsServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1524,7 +1582,10 @@ def test_get_workload_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1553,7 +1614,10 @@ async def test_get_workload_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_workload_flattened():
@@ -1567,7 +1631,9 @@ def test_get_workload_flattened():
         call.return_value = assuredworkloads_v1beta1.Workload()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_workload(name="name_value",)
+        client.get_workload(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1587,7 +1653,8 @@ def test_get_workload_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_workload(
-            assuredworkloads_v1beta1.GetWorkloadRequest(), name="name_value",
+            assuredworkloads_v1beta1.GetWorkloadRequest(),
+            name="name_value",
         )
 
 
@@ -1607,7 +1674,9 @@ async def test_get_workload_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_workload(name="name_value",)
+        response = await client.get_workload(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1628,16 +1697,22 @@ async def test_get_workload_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_workload(
-            assuredworkloads_v1beta1.GetWorkloadRequest(), name="name_value",
+            assuredworkloads_v1beta1.GetWorkloadRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [assuredworkloads_v1beta1.ListWorkloadsRequest, dict,]
+    "request_type",
+    [
+        assuredworkloads_v1beta1.ListWorkloadsRequest,
+        dict,
+    ],
 )
 def test_list_workloads(request_type, transport: str = "grpc"):
     client = AssuredWorkloadsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1666,7 +1741,8 @@ def test_list_workloads_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AssuredWorkloadsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1683,7 +1759,8 @@ async def test_list_workloads_async(
     request_type=assuredworkloads_v1beta1.ListWorkloadsRequest,
 ):
     client = AssuredWorkloadsServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1738,7 +1815,10 @@ def test_list_workloads_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1767,7 +1847,10 @@ async def test_list_workloads_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_workloads_flattened():
@@ -1781,7 +1864,9 @@ def test_list_workloads_flattened():
         call.return_value = assuredworkloads_v1beta1.ListWorkloadsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_workloads(parent="parent_value",)
+        client.list_workloads(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1801,7 +1886,8 @@ def test_list_workloads_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_workloads(
-            assuredworkloads_v1beta1.ListWorkloadsRequest(), parent="parent_value",
+            assuredworkloads_v1beta1.ListWorkloadsRequest(),
+            parent="parent_value",
         )
 
 
@@ -1821,7 +1907,9 @@ async def test_list_workloads_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_workloads(parent="parent_value",)
+        response = await client.list_workloads(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1842,13 +1930,15 @@ async def test_list_workloads_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_workloads(
-            assuredworkloads_v1beta1.ListWorkloadsRequest(), parent="parent_value",
+            assuredworkloads_v1beta1.ListWorkloadsRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_workloads_pager(transport_name: str = "grpc"):
     client = AssuredWorkloadsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1864,10 +1954,14 @@ def test_list_workloads_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             assuredworkloads_v1beta1.ListWorkloadsResponse(
-                workloads=[], next_page_token="def",
+                workloads=[],
+                next_page_token="def",
             ),
             assuredworkloads_v1beta1.ListWorkloadsResponse(
-                workloads=[assuredworkloads_v1beta1.Workload(),], next_page_token="ghi",
+                workloads=[
+                    assuredworkloads_v1beta1.Workload(),
+                ],
+                next_page_token="ghi",
             ),
             assuredworkloads_v1beta1.ListWorkloadsResponse(
                 workloads=[
@@ -1893,7 +1987,8 @@ def test_list_workloads_pager(transport_name: str = "grpc"):
 
 def test_list_workloads_pages(transport_name: str = "grpc"):
     client = AssuredWorkloadsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1909,10 +2004,14 @@ def test_list_workloads_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             assuredworkloads_v1beta1.ListWorkloadsResponse(
-                workloads=[], next_page_token="def",
+                workloads=[],
+                next_page_token="def",
             ),
             assuredworkloads_v1beta1.ListWorkloadsResponse(
-                workloads=[assuredworkloads_v1beta1.Workload(),], next_page_token="ghi",
+                workloads=[
+                    assuredworkloads_v1beta1.Workload(),
+                ],
+                next_page_token="ghi",
             ),
             assuredworkloads_v1beta1.ListWorkloadsResponse(
                 workloads=[
@@ -1948,10 +2047,14 @@ async def test_list_workloads_async_pager():
                 next_page_token="abc",
             ),
             assuredworkloads_v1beta1.ListWorkloadsResponse(
-                workloads=[], next_page_token="def",
+                workloads=[],
+                next_page_token="def",
             ),
             assuredworkloads_v1beta1.ListWorkloadsResponse(
-                workloads=[assuredworkloads_v1beta1.Workload(),], next_page_token="ghi",
+                workloads=[
+                    assuredworkloads_v1beta1.Workload(),
+                ],
+                next_page_token="ghi",
             ),
             assuredworkloads_v1beta1.ListWorkloadsResponse(
                 workloads=[
@@ -1961,7 +2064,9 @@ async def test_list_workloads_async_pager():
             ),
             RuntimeError,
         )
-        async_pager = await client.list_workloads(request={},)
+        async_pager = await client.list_workloads(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -1992,10 +2097,14 @@ async def test_list_workloads_async_pages():
                 next_page_token="abc",
             ),
             assuredworkloads_v1beta1.ListWorkloadsResponse(
-                workloads=[], next_page_token="def",
+                workloads=[],
+                next_page_token="def",
             ),
             assuredworkloads_v1beta1.ListWorkloadsResponse(
-                workloads=[assuredworkloads_v1beta1.Workload(),], next_page_token="ghi",
+                workloads=[
+                    assuredworkloads_v1beta1.Workload(),
+                ],
+                next_page_token="ghi",
             ),
             assuredworkloads_v1beta1.ListWorkloadsResponse(
                 workloads=[
@@ -2019,7 +2128,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = AssuredWorkloadsServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -2040,7 +2150,8 @@ def test_credentials_transport_error():
     options.api_key = "api_key"
     with pytest.raises(ValueError):
         client = AssuredWorkloadsServiceClient(
-            client_options=options, transport=transport,
+            client_options=options,
+            transport=transport,
         )
 
     # It is an error to provide an api_key and a credential.
@@ -2057,7 +2168,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = AssuredWorkloadsServiceClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -2106,7 +2218,8 @@ def test_transport_grpc_default():
         credentials=ga_credentials.AnonymousCredentials(),
     )
     assert isinstance(
-        client.transport, transports.AssuredWorkloadsServiceGrpcTransport,
+        client.transport,
+        transports.AssuredWorkloadsServiceGrpcTransport,
     )
 
 
@@ -2161,7 +2274,8 @@ def test_assured_workloads_service_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.AssuredWorkloadsServiceTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -2323,7 +2437,8 @@ def test_assured_workloads_service_grpc_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.AssuredWorkloadsServiceGrpcTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -2335,7 +2450,8 @@ def test_assured_workloads_service_grpc_asyncio_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.AssuredWorkloadsServiceGrpcAsyncIOTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -2444,12 +2560,16 @@ def test_assured_workloads_service_transport_channel_mtls_with_adc(transport_cla
 
 def test_assured_workloads_service_grpc_lro_client():
     client = AssuredWorkloadsServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
     transport = client.transport
 
     # Ensure that we have a api-core operations client.
-    assert isinstance(transport.operations_client, operations_v1.OperationsClient,)
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsClient,
+    )
 
     # Ensure that subsequent calls to the property send the exact same object.
     assert transport.operations_client is transport.operations_client
@@ -2457,12 +2577,16 @@ def test_assured_workloads_service_grpc_lro_client():
 
 def test_assured_workloads_service_grpc_lro_async_client():
     client = AssuredWorkloadsServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     transport = client.transport
 
     # Ensure that we have a api-core operations client.
-    assert isinstance(transport.operations_client, operations_v1.OperationsAsyncClient,)
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsAsyncClient,
+    )
 
     # Ensure that subsequent calls to the property send the exact same object.
     assert transport.operations_client is transport.operations_client
@@ -2472,8 +2596,12 @@ def test_workload_path():
     organization = "squid"
     location = "clam"
     workload = "whelk"
-    expected = "organizations/{organization}/locations/{location}/workloads/{workload}".format(
-        organization=organization, location=location, workload=workload,
+    expected = (
+        "organizations/{organization}/locations/{location}/workloads/{workload}".format(
+            organization=organization,
+            location=location,
+            workload=workload,
+        )
     )
     actual = AssuredWorkloadsServiceClient.workload_path(
         organization, location, workload
@@ -2516,7 +2644,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "winkle"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = AssuredWorkloadsServiceClient.common_folder_path(folder)
     assert expected == actual
 
@@ -2534,7 +2664,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "scallop"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = AssuredWorkloadsServiceClient.common_organization_path(organization)
     assert expected == actual
 
@@ -2552,7 +2684,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "squid"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = AssuredWorkloadsServiceClient.common_project_path(project)
     assert expected == actual
 
@@ -2572,7 +2706,8 @@ def test_common_location_path():
     project = "whelk"
     location = "octopus"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = AssuredWorkloadsServiceClient.common_location_path(project, location)
     assert expected == actual
@@ -2597,7 +2732,8 @@ def test_client_with_default_client_info():
         transports.AssuredWorkloadsServiceTransport, "_prep_wrapped_messages"
     ) as prep:
         client = AssuredWorkloadsServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -2606,7 +2742,8 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = AssuredWorkloadsServiceClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -2614,7 +2751,8 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = AssuredWorkloadsServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     with mock.patch.object(
         type(getattr(client.transport, "grpc_channel")), "close"

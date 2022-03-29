@@ -124,28 +124,38 @@ class AssuredWorkloadsServiceTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.create_workload: gapic_v1.method.wrap_method(
-                self.create_workload, default_timeout=None, client_info=client_info,
+                self.create_workload,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.update_workload: gapic_v1.method.wrap_method(
-                self.update_workload, default_timeout=None, client_info=client_info,
+                self.update_workload,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.delete_workload: gapic_v1.method.wrap_method(
-                self.delete_workload, default_timeout=None, client_info=client_info,
+                self.delete_workload,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_workload: gapic_v1.method.wrap_method(
-                self.get_workload, default_timeout=None, client_info=client_info,
+                self.get_workload,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_workloads: gapic_v1.method.wrap_method(
-                self.list_workloads, default_timeout=None, client_info=client_info,
+                self.list_workloads,
+                default_timeout=None,
+                client_info=client_info,
             ),
         }
 
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 
