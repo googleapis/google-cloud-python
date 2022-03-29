@@ -55,7 +55,10 @@ class DlpServiceClientMeta(type):
     _transport_registry["grpc"] = DlpServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = DlpServiceGrpcAsyncIOTransport
 
-    def get_transport_class(cls, label: str = None,) -> Type[DlpServiceTransport]:
+    def get_transport_class(
+        cls,
+        label: str = None,
+    ) -> Type[DlpServiceTransport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -170,10 +173,14 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         return self._transport
 
     @staticmethod
-    def deidentify_template_path(organization: str, deidentify_template: str,) -> str:
+    def deidentify_template_path(
+        organization: str,
+        deidentify_template: str,
+    ) -> str:
         """Returns a fully-qualified deidentify_template string."""
         return "organizations/{organization}/deidentifyTemplates/{deidentify_template}".format(
-            organization=organization, deidentify_template=deidentify_template,
+            organization=organization,
+            deidentify_template=deidentify_template,
         )
 
     @staticmethod
@@ -186,9 +193,13 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def dlp_content_path(project: str,) -> str:
+    def dlp_content_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified dlp_content string."""
-        return "projects/{project}/dlpContent".format(project=project,)
+        return "projects/{project}/dlpContent".format(
+            project=project,
+        )
 
     @staticmethod
     def parse_dlp_content_path(path: str) -> Dict[str, str]:
@@ -197,10 +208,14 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def dlp_job_path(project: str, dlp_job: str,) -> str:
+    def dlp_job_path(
+        project: str,
+        dlp_job: str,
+    ) -> str:
         """Returns a fully-qualified dlp_job string."""
         return "projects/{project}/dlpJobs/{dlp_job}".format(
-            project=project, dlp_job=dlp_job,
+            project=project,
+            dlp_job=dlp_job,
         )
 
     @staticmethod
@@ -210,10 +225,16 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def finding_path(project: str, location: str, finding: str,) -> str:
+    def finding_path(
+        project: str,
+        location: str,
+        finding: str,
+    ) -> str:
         """Returns a fully-qualified finding string."""
         return "projects/{project}/locations/{location}/findings/{finding}".format(
-            project=project, location=location, finding=finding,
+            project=project,
+            location=location,
+            finding=finding,
         )
 
     @staticmethod
@@ -226,10 +247,16 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def inspect_template_path(organization: str, inspect_template: str,) -> str:
+    def inspect_template_path(
+        organization: str,
+        inspect_template: str,
+    ) -> str:
         """Returns a fully-qualified inspect_template string."""
-        return "organizations/{organization}/inspectTemplates/{inspect_template}".format(
-            organization=organization, inspect_template=inspect_template,
+        return (
+            "organizations/{organization}/inspectTemplates/{inspect_template}".format(
+                organization=organization,
+                inspect_template=inspect_template,
+            )
         )
 
     @staticmethod
@@ -242,10 +269,14 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def job_trigger_path(project: str, job_trigger: str,) -> str:
+    def job_trigger_path(
+        project: str,
+        job_trigger: str,
+    ) -> str:
         """Returns a fully-qualified job_trigger string."""
         return "projects/{project}/jobTriggers/{job_trigger}".format(
-            project=project, job_trigger=job_trigger,
+            project=project,
+            job_trigger=job_trigger,
         )
 
     @staticmethod
@@ -257,10 +288,14 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def stored_info_type_path(organization: str, stored_info_type: str,) -> str:
+    def stored_info_type_path(
+        organization: str,
+        stored_info_type: str,
+    ) -> str:
         """Returns a fully-qualified stored_info_type string."""
         return "organizations/{organization}/storedInfoTypes/{stored_info_type}".format(
-            organization=organization, stored_info_type=stored_info_type,
+            organization=organization,
+            stored_info_type=stored_info_type,
         )
 
     @staticmethod
@@ -273,7 +308,9 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_billing_account_path(billing_account: str,) -> str:
+    def common_billing_account_path(
+        billing_account: str,
+    ) -> str:
         """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
@@ -286,9 +323,13 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(folder: str,) -> str:
+    def common_folder_path(
+        folder: str,
+    ) -> str:
         """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(folder=folder,)
+        return "folders/{folder}".format(
+            folder=folder,
+        )
 
     @staticmethod
     def parse_common_folder_path(path: str) -> Dict[str, str]:
@@ -297,9 +338,13 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(organization: str,) -> str:
+    def common_organization_path(
+        organization: str,
+    ) -> str:
         """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(organization=organization,)
+        return "organizations/{organization}".format(
+            organization=organization,
+        )
 
     @staticmethod
     def parse_common_organization_path(path: str) -> Dict[str, str]:
@@ -308,9 +353,13 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(project: str,) -> str:
+    def common_project_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified project string."""
-        return "projects/{project}".format(project=project,)
+        return "projects/{project}".format(
+            project=project,
+        )
 
     @staticmethod
     def parse_common_project_path(path: str) -> Dict[str, str]:
@@ -319,10 +368,14 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(project: str, location: str,) -> str:
+    def common_location_path(
+        project: str,
+        location: str,
+    ) -> str:
         """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
-            project=project, location=location,
+            project=project,
+            location=location,
         )
 
     @staticmethod
@@ -567,7 +620,12 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -644,7 +702,12 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -722,7 +785,12 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -791,7 +859,12 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -882,7 +955,12 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.list_info_types]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1014,7 +1092,12 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1132,7 +1215,12 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1232,7 +1320,12 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1351,12 +1444,20 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListInspectTemplatesPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1444,7 +1545,10 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def create_deidentify_template(
@@ -1574,7 +1678,12 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1693,7 +1802,12 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1792,7 +1906,12 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1914,12 +2033,20 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListDeidentifyTemplatesPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -2010,7 +2137,10 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def create_job_trigger(
@@ -2134,7 +2264,12 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2249,7 +2384,12 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2346,7 +2486,12 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2442,7 +2587,12 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2555,12 +2705,20 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListJobTriggersPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -2648,7 +2806,10 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def activate_job_trigger(
@@ -2718,7 +2879,12 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2857,7 +3023,12 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2973,12 +3144,20 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListDlpJobsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -3074,7 +3253,12 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -3163,7 +3347,10 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def cancel_dlp_job(
@@ -3229,7 +3416,10 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def create_stored_info_type(
@@ -3354,7 +3544,12 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -3474,7 +3669,12 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -3571,7 +3771,12 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -3691,12 +3896,20 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListStoredInfoTypesPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -3785,7 +3998,10 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def hybrid_inspect_dlp_job(
@@ -3877,7 +4093,12 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -3941,7 +4162,10 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def __enter__(self):
@@ -3960,7 +4184,9 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-dlp",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-dlp",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()

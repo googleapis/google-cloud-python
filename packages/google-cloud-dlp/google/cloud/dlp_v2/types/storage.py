@@ -94,8 +94,14 @@ class InfoType(proto.Message):
             Optional version name for this InfoType.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    version = proto.Field(proto.STRING, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    version = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class StoredType(proto.Message):
@@ -113,8 +119,15 @@ class StoredType(proto.Message):
             Output-only field, populated by the system.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    create_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 class CustomInfoType(proto.Message):
@@ -236,7 +249,10 @@ class CustomInfoType(proto.Message):
                     [required]
             """
 
-            words = proto.RepeatedField(proto.STRING, number=1,)
+            words = proto.RepeatedField(
+                proto.STRING,
+                number=1,
+            )
 
         word_list = proto.Field(
             proto.MESSAGE,
@@ -245,7 +261,10 @@ class CustomInfoType(proto.Message):
             message="CustomInfoType.Dictionary.WordList",
         )
         cloud_storage_path = proto.Field(
-            proto.MESSAGE, number=3, oneof="source", message="CloudStoragePath",
+            proto.MESSAGE,
+            number=3,
+            oneof="source",
+            message="CloudStoragePath",
         )
 
     class Regex(proto.Message):
@@ -264,8 +283,14 @@ class CustomInfoType(proto.Message):
                 is returned. No more than 3 may be included.
         """
 
-        pattern = proto.Field(proto.STRING, number=1,)
-        group_indexes = proto.RepeatedField(proto.INT32, number=2,)
+        pattern = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        group_indexes = proto.RepeatedField(
+            proto.INT32,
+            number=2,
+        )
 
     class SurrogateType(proto.Message):
         r"""Message for detecting output from deidentification transformations
@@ -308,8 +333,14 @@ class CustomInfoType(proto.Message):
                     consider.
             """
 
-            window_before = proto.Field(proto.INT32, number=1,)
-            window_after = proto.Field(proto.INT32, number=2,)
+            window_before = proto.Field(
+                proto.INT32,
+                number=1,
+            )
+            window_after = proto.Field(
+                proto.INT32,
+                number=2,
+            )
 
         class LikelihoodAdjustment(proto.Message):
             r"""Message for specifying an adjustment to the likelihood of a
@@ -343,10 +374,15 @@ class CustomInfoType(proto.Message):
             """
 
             fixed_likelihood = proto.Field(
-                proto.ENUM, number=1, oneof="adjustment", enum="Likelihood",
+                proto.ENUM,
+                number=1,
+                oneof="adjustment",
+                enum="Likelihood",
             )
             relative_likelihood = proto.Field(
-                proto.INT32, number=2, oneof="adjustment",
+                proto.INT32,
+                number=2,
+                oneof="adjustment",
             )
 
         class HotwordRule(proto.Message):
@@ -376,7 +412,9 @@ class CustomInfoType(proto.Message):
             """
 
             hotword_regex = proto.Field(
-                proto.MESSAGE, number=1, message="CustomInfoType.Regex",
+                proto.MESSAGE,
+                number=1,
+                message="CustomInfoType.Regex",
             )
             proximity = proto.Field(
                 proto.MESSAGE,
@@ -396,20 +434,50 @@ class CustomInfoType(proto.Message):
             message="CustomInfoType.DetectionRule.HotwordRule",
         )
 
-    info_type = proto.Field(proto.MESSAGE, number=1, message="InfoType",)
-    likelihood = proto.Field(proto.ENUM, number=6, enum="Likelihood",)
-    dictionary = proto.Field(proto.MESSAGE, number=2, oneof="type", message=Dictionary,)
-    regex = proto.Field(proto.MESSAGE, number=3, oneof="type", message=Regex,)
+    info_type = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="InfoType",
+    )
+    likelihood = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum="Likelihood",
+    )
+    dictionary = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="type",
+        message=Dictionary,
+    )
+    regex = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="type",
+        message=Regex,
+    )
     surrogate_type = proto.Field(
-        proto.MESSAGE, number=4, oneof="type", message=SurrogateType,
+        proto.MESSAGE,
+        number=4,
+        oneof="type",
+        message=SurrogateType,
     )
     stored_type = proto.Field(
-        proto.MESSAGE, number=5, oneof="type", message="StoredType",
+        proto.MESSAGE,
+        number=5,
+        oneof="type",
+        message="StoredType",
     )
     detection_rules = proto.RepeatedField(
-        proto.MESSAGE, number=7, message=DetectionRule,
+        proto.MESSAGE,
+        number=7,
+        message=DetectionRule,
     )
-    exclusion_type = proto.Field(proto.ENUM, number=8, enum=ExclusionType,)
+    exclusion_type = proto.Field(
+        proto.ENUM,
+        number=8,
+        enum=ExclusionType,
+    )
 
 
 class FieldId(proto.Message):
@@ -420,7 +488,10 @@ class FieldId(proto.Message):
             Name describing the field.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class PartitionId(proto.Message):
@@ -440,8 +511,14 @@ class PartitionId(proto.Message):
             which the entities belong.
     """
 
-    project_id = proto.Field(proto.STRING, number=2,)
-    namespace_id = proto.Field(proto.STRING, number=4,)
+    project_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    namespace_id = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class KindExpression(proto.Message):
@@ -452,7 +529,10 @@ class KindExpression(proto.Message):
             The name of the kind.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class DatastoreOptions(proto.Message):
@@ -468,8 +548,16 @@ class DatastoreOptions(proto.Message):
             The kind to process.
     """
 
-    partition_id = proto.Field(proto.MESSAGE, number=1, message="PartitionId",)
-    kind = proto.Field(proto.MESSAGE, number=2, message="KindExpression",)
+    partition_id = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="PartitionId",
+    )
+    kind = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="KindExpression",
+    )
 
 
 class CloudStorageRegexFileSet(proto.Message):
@@ -534,9 +622,18 @@ class CloudStorageRegexFileSet(proto.Message):
             GitHub.
     """
 
-    bucket_name = proto.Field(proto.STRING, number=1,)
-    include_regex = proto.RepeatedField(proto.STRING, number=2,)
-    exclude_regex = proto.RepeatedField(proto.STRING, number=3,)
+    bucket_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    include_regex = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+    exclude_regex = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 class CloudStorageOptions(proto.Message):
@@ -609,17 +706,43 @@ class CloudStorageOptions(proto.Message):
                 ``url`` or ``regex_file_set`` must be set.
         """
 
-        url = proto.Field(proto.STRING, number=1,)
+        url = proto.Field(
+            proto.STRING,
+            number=1,
+        )
         regex_file_set = proto.Field(
-            proto.MESSAGE, number=2, message="CloudStorageRegexFileSet",
+            proto.MESSAGE,
+            number=2,
+            message="CloudStorageRegexFileSet",
         )
 
-    file_set = proto.Field(proto.MESSAGE, number=1, message=FileSet,)
-    bytes_limit_per_file = proto.Field(proto.INT64, number=4,)
-    bytes_limit_per_file_percent = proto.Field(proto.INT32, number=8,)
-    file_types = proto.RepeatedField(proto.ENUM, number=5, enum="FileType",)
-    sample_method = proto.Field(proto.ENUM, number=6, enum=SampleMethod,)
-    files_limit_percent = proto.Field(proto.INT32, number=7,)
+    file_set = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=FileSet,
+    )
+    bytes_limit_per_file = proto.Field(
+        proto.INT64,
+        number=4,
+    )
+    bytes_limit_per_file_percent = proto.Field(
+        proto.INT32,
+        number=8,
+    )
+    file_types = proto.RepeatedField(
+        proto.ENUM,
+        number=5,
+        enum="FileType",
+    )
+    sample_method = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum=SampleMethod,
+    )
+    files_limit_percent = proto.Field(
+        proto.INT32,
+        number=7,
+    )
 
 
 class CloudStorageFileSet(proto.Message):
@@ -631,7 +754,10 @@ class CloudStorageFileSet(proto.Message):
             wildcard in the path is allowed.
     """
 
-    url = proto.Field(proto.STRING, number=1,)
+    url = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CloudStoragePath(proto.Message):
@@ -643,7 +769,10 @@ class CloudStoragePath(proto.Message):
             Storage. Example: gs://[BUCKET_NAME]/dictionary.txt
     """
 
-    path = proto.Field(proto.STRING, number=1,)
+    path = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class BigQueryOptions(proto.Message):
@@ -691,15 +820,39 @@ class BigQueryOptions(proto.Message):
         TOP = 1
         RANDOM_START = 2
 
-    table_reference = proto.Field(proto.MESSAGE, number=1, message="BigQueryTable",)
-    identifying_fields = proto.RepeatedField(
-        proto.MESSAGE, number=2, message="FieldId",
+    table_reference = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="BigQueryTable",
     )
-    rows_limit = proto.Field(proto.INT64, number=3,)
-    rows_limit_percent = proto.Field(proto.INT32, number=6,)
-    sample_method = proto.Field(proto.ENUM, number=4, enum=SampleMethod,)
-    excluded_fields = proto.RepeatedField(proto.MESSAGE, number=5, message="FieldId",)
-    included_fields = proto.RepeatedField(proto.MESSAGE, number=7, message="FieldId",)
+    identifying_fields = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="FieldId",
+    )
+    rows_limit = proto.Field(
+        proto.INT64,
+        number=3,
+    )
+    rows_limit_percent = proto.Field(
+        proto.INT32,
+        number=6,
+    )
+    sample_method = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=SampleMethod,
+    )
+    excluded_fields = proto.RepeatedField(
+        proto.MESSAGE,
+        number=5,
+        message="FieldId",
+    )
+    included_fields = proto.RepeatedField(
+        proto.MESSAGE,
+        number=7,
+        message="FieldId",
+    )
 
 
 class StorageConfig(proto.Message):
@@ -776,27 +929,54 @@ class StorageConfig(proto.Message):
         """
 
         start_time = proto.Field(
-            proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,
+            proto.MESSAGE,
+            number=1,
+            message=timestamp_pb2.Timestamp,
         )
         end_time = proto.Field(
-            proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,
+            proto.MESSAGE,
+            number=2,
+            message=timestamp_pb2.Timestamp,
         )
-        timestamp_field = proto.Field(proto.MESSAGE, number=3, message="FieldId",)
-        enable_auto_population_of_timespan_config = proto.Field(proto.BOOL, number=4,)
+        timestamp_field = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message="FieldId",
+        )
+        enable_auto_population_of_timespan_config = proto.Field(
+            proto.BOOL,
+            number=4,
+        )
 
     datastore_options = proto.Field(
-        proto.MESSAGE, number=2, oneof="type", message="DatastoreOptions",
+        proto.MESSAGE,
+        number=2,
+        oneof="type",
+        message="DatastoreOptions",
     )
     cloud_storage_options = proto.Field(
-        proto.MESSAGE, number=3, oneof="type", message="CloudStorageOptions",
+        proto.MESSAGE,
+        number=3,
+        oneof="type",
+        message="CloudStorageOptions",
     )
     big_query_options = proto.Field(
-        proto.MESSAGE, number=4, oneof="type", message="BigQueryOptions",
+        proto.MESSAGE,
+        number=4,
+        oneof="type",
+        message="BigQueryOptions",
     )
     hybrid_options = proto.Field(
-        proto.MESSAGE, number=9, oneof="type", message="HybridOptions",
+        proto.MESSAGE,
+        number=9,
+        oneof="type",
+        message="HybridOptions",
     )
-    timespan_config = proto.Field(proto.MESSAGE, number=6, message=TimespanConfig,)
+    timespan_config = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=TimespanConfig,
+    )
 
 
 class HybridOptions(proto.Message):
@@ -843,10 +1023,24 @@ class HybridOptions(proto.Message):
             the columns that are primary keys.
     """
 
-    description = proto.Field(proto.STRING, number=1,)
-    required_finding_label_keys = proto.RepeatedField(proto.STRING, number=2,)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=3,)
-    table_options = proto.Field(proto.MESSAGE, number=4, message="TableOptions",)
+    description = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    required_finding_label_keys = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=3,
+    )
+    table_options = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="TableOptions",
+    )
 
 
 class BigQueryKey(proto.Message):
@@ -864,8 +1058,15 @@ class BigQueryKey(proto.Message):
             in ``CreateDlpJobRequest``.
     """
 
-    table_reference = proto.Field(proto.MESSAGE, number=1, message="BigQueryTable",)
-    row_number = proto.Field(proto.INT64, number=2,)
+    table_reference = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="BigQueryTable",
+    )
+    row_number = proto.Field(
+        proto.INT64,
+        number=2,
+    )
 
 
 class DatastoreKey(proto.Message):
@@ -876,7 +1077,11 @@ class DatastoreKey(proto.Message):
             Datastore entity key.
     """
 
-    entity_key = proto.Field(proto.MESSAGE, number=1, message="Key",)
+    entity_key = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="Key",
+    )
 
 
 class Key(proto.Message):
@@ -938,12 +1143,31 @@ class Key(proto.Message):
                 This field is a member of `oneof`_ ``id_type``.
         """
 
-        kind = proto.Field(proto.STRING, number=1,)
-        id = proto.Field(proto.INT64, number=2, oneof="id_type",)
-        name = proto.Field(proto.STRING, number=3, oneof="id_type",)
+        kind = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        id = proto.Field(
+            proto.INT64,
+            number=2,
+            oneof="id_type",
+        )
+        name = proto.Field(
+            proto.STRING,
+            number=3,
+            oneof="id_type",
+        )
 
-    partition_id = proto.Field(proto.MESSAGE, number=1, message="PartitionId",)
-    path = proto.RepeatedField(proto.MESSAGE, number=2, message=PathElement,)
+    partition_id = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="PartitionId",
+    )
+    path = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=PathElement,
+    )
 
 
 class RecordKey(proto.Message):
@@ -971,12 +1195,21 @@ class RecordKey(proto.Message):
     """
 
     datastore_key = proto.Field(
-        proto.MESSAGE, number=2, oneof="type", message="DatastoreKey",
+        proto.MESSAGE,
+        number=2,
+        oneof="type",
+        message="DatastoreKey",
     )
     big_query_key = proto.Field(
-        proto.MESSAGE, number=3, oneof="type", message="BigQueryKey",
+        proto.MESSAGE,
+        number=3,
+        oneof="type",
+        message="BigQueryKey",
     )
-    id_values = proto.RepeatedField(proto.STRING, number=5,)
+    id_values = proto.RepeatedField(
+        proto.STRING,
+        number=5,
+    )
 
 
 class BigQueryTable(proto.Message):
@@ -997,9 +1230,18 @@ class BigQueryTable(proto.Message):
             Name of the table.
     """
 
-    project_id = proto.Field(proto.STRING, number=1,)
-    dataset_id = proto.Field(proto.STRING, number=2,)
-    table_id = proto.Field(proto.STRING, number=3,)
+    project_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    dataset_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    table_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class BigQueryField(proto.Message):
@@ -1012,8 +1254,16 @@ class BigQueryField(proto.Message):
             Designated field in the BigQuery table.
     """
 
-    table = proto.Field(proto.MESSAGE, number=1, message="BigQueryTable",)
-    field = proto.Field(proto.MESSAGE, number=2, message="FieldId",)
+    table = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="BigQueryTable",
+    )
+    field = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="FieldId",
+    )
 
 
 class EntityId(proto.Message):
@@ -1030,7 +1280,11 @@ class EntityId(proto.Message):
             the entity identifier.
     """
 
-    field = proto.Field(proto.MESSAGE, number=1, message="FieldId",)
+    field = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="FieldId",
+    )
 
 
 class TableOptions(proto.Message):
@@ -1047,7 +1301,9 @@ class TableOptions(proto.Message):
     """
 
     identifying_fields = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="FieldId",
+        proto.MESSAGE,
+        number=1,
+        message="FieldId",
     )
 
 

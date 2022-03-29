@@ -30,7 +30,9 @@ from google.protobuf import empty_pb2  # type: ignore
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-dlp",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-dlp",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
@@ -305,10 +307,14 @@ class DlpServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.create_job_trigger: gapic_v1.method.wrap_method(
-                self.create_job_trigger, default_timeout=300.0, client_info=client_info,
+                self.create_job_trigger,
+                default_timeout=300.0,
+                client_info=client_info,
             ),
             self.update_job_trigger: gapic_v1.method.wrap_method(
-                self.update_job_trigger, default_timeout=300.0, client_info=client_info,
+                self.update_job_trigger,
+                default_timeout=300.0,
+                client_info=client_info,
             ),
             self.hybrid_inspect_job_trigger: gapic_v1.method.wrap_method(
                 self.hybrid_inspect_job_trigger,
@@ -366,7 +372,9 @@ class DlpServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.create_dlp_job: gapic_v1.method.wrap_method(
-                self.create_dlp_job, default_timeout=300.0, client_info=client_info,
+                self.create_dlp_job,
+                default_timeout=300.0,
+                client_info=client_info,
             ),
             self.list_dlp_jobs: gapic_v1.method.wrap_method(
                 self.list_dlp_jobs,
@@ -414,7 +422,9 @@ class DlpServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.cancel_dlp_job: gapic_v1.method.wrap_method(
-                self.cancel_dlp_job, default_timeout=300.0, client_info=client_info,
+                self.cancel_dlp_job,
+                default_timeout=300.0,
+                client_info=client_info,
             ),
             self.create_stored_info_type: gapic_v1.method.wrap_method(
                 self.create_stored_info_type,
@@ -477,16 +487,18 @@ class DlpServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.finish_dlp_job: gapic_v1.method.wrap_method(
-                self.finish_dlp_job, default_timeout=300.0, client_info=client_info,
+                self.finish_dlp_job,
+                default_timeout=300.0,
+                client_info=client_info,
             ),
         }
 
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 
