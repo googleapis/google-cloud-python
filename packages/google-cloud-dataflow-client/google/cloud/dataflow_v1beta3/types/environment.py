@@ -213,27 +213,82 @@ class Environment(proto.Message):
             job.
     """
 
-    temp_storage_prefix = proto.Field(proto.STRING, number=1,)
-    cluster_manager_api_service = proto.Field(proto.STRING, number=2,)
-    experiments = proto.RepeatedField(proto.STRING, number=3,)
-    service_options = proto.RepeatedField(proto.STRING, number=16,)
-    service_kms_key_name = proto.Field(proto.STRING, number=12,)
-    worker_pools = proto.RepeatedField(proto.MESSAGE, number=4, message="WorkerPool",)
-    user_agent = proto.Field(proto.MESSAGE, number=5, message=struct_pb2.Struct,)
-    version = proto.Field(proto.MESSAGE, number=6, message=struct_pb2.Struct,)
-    dataset = proto.Field(proto.STRING, number=7,)
+    temp_storage_prefix = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    cluster_manager_api_service = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    experiments = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+    service_options = proto.RepeatedField(
+        proto.STRING,
+        number=16,
+    )
+    service_kms_key_name = proto.Field(
+        proto.STRING,
+        number=12,
+    )
+    worker_pools = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message="WorkerPool",
+    )
+    user_agent = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=struct_pb2.Struct,
+    )
+    version = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=struct_pb2.Struct,
+    )
+    dataset = proto.Field(
+        proto.STRING,
+        number=7,
+    )
     sdk_pipeline_options = proto.Field(
-        proto.MESSAGE, number=8, message=struct_pb2.Struct,
+        proto.MESSAGE,
+        number=8,
+        message=struct_pb2.Struct,
     )
-    internal_experiments = proto.Field(proto.MESSAGE, number=9, message=any_pb2.Any,)
-    service_account_email = proto.Field(proto.STRING, number=10,)
+    internal_experiments = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message=any_pb2.Any,
+    )
+    service_account_email = proto.Field(
+        proto.STRING,
+        number=10,
+    )
     flex_resource_scheduling_goal = proto.Field(
-        proto.ENUM, number=11, enum="FlexResourceSchedulingGoal",
+        proto.ENUM,
+        number=11,
+        enum="FlexResourceSchedulingGoal",
     )
-    worker_region = proto.Field(proto.STRING, number=13,)
-    worker_zone = proto.Field(proto.STRING, number=14,)
-    shuffle_mode = proto.Field(proto.ENUM, number=15, enum="ShuffleMode",)
-    debug_options = proto.Field(proto.MESSAGE, number=17, message="DebugOptions",)
+    worker_region = proto.Field(
+        proto.STRING,
+        number=13,
+    )
+    worker_zone = proto.Field(
+        proto.STRING,
+        number=14,
+    )
+    shuffle_mode = proto.Field(
+        proto.ENUM,
+        number=15,
+        enum="ShuffleMode",
+    )
+    debug_options = proto.Field(
+        proto.MESSAGE,
+        number=17,
+        message="DebugOptions",
+    )
 
 
 class Package(proto.Message):
@@ -259,8 +314,14 @@ class Package(proto.Message):
               bucket.storage.googleapis.com/
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    location = proto.Field(proto.STRING, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    location = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class Disk(proto.Message):
@@ -299,9 +360,18 @@ class Disk(proto.Message):
             Directory in a VM where disk is mounted.
     """
 
-    size_gb = proto.Field(proto.INT32, number=1,)
-    disk_type = proto.Field(proto.STRING, number=2,)
-    mount_point = proto.Field(proto.STRING, number=3,)
+    size_gb = proto.Field(
+        proto.INT32,
+        number=1,
+    )
+    disk_type = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    mount_point = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class WorkerSettings(proto.Message):
@@ -343,12 +413,30 @@ class WorkerSettings(proto.Message):
               bucket.storage.googleapis.com/{object}
     """
 
-    base_url = proto.Field(proto.STRING, number=1,)
-    reporting_enabled = proto.Field(proto.BOOL, number=2,)
-    service_path = proto.Field(proto.STRING, number=3,)
-    shuffle_service_path = proto.Field(proto.STRING, number=4,)
-    worker_id = proto.Field(proto.STRING, number=5,)
-    temp_storage_prefix = proto.Field(proto.STRING, number=6,)
+    base_url = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    reporting_enabled = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+    service_path = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    shuffle_service_path = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    worker_id = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    temp_storage_prefix = proto.Field(
+        proto.STRING,
+        number=6,
+    )
 
 
 class TaskRunnerSettings(proto.Message):
@@ -428,27 +516,83 @@ class TaskRunnerSettings(proto.Message):
             The streaming worker main class name.
     """
 
-    task_user = proto.Field(proto.STRING, number=1,)
-    task_group = proto.Field(proto.STRING, number=2,)
-    oauth_scopes = proto.RepeatedField(proto.STRING, number=3,)
-    base_url = proto.Field(proto.STRING, number=4,)
-    dataflow_api_version = proto.Field(proto.STRING, number=5,)
-    parallel_worker_settings = proto.Field(
-        proto.MESSAGE, number=6, message="WorkerSettings",
+    task_user = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    base_task_dir = proto.Field(proto.STRING, number=7,)
-    continue_on_exception = proto.Field(proto.BOOL, number=8,)
-    log_to_serialconsole = proto.Field(proto.BOOL, number=9,)
-    alsologtostderr = proto.Field(proto.BOOL, number=10,)
-    log_upload_location = proto.Field(proto.STRING, number=11,)
-    log_dir = proto.Field(proto.STRING, number=12,)
-    temp_storage_prefix = proto.Field(proto.STRING, number=13,)
-    harness_command = proto.Field(proto.STRING, number=14,)
-    workflow_file_name = proto.Field(proto.STRING, number=15,)
-    commandlines_file_name = proto.Field(proto.STRING, number=16,)
-    vm_id = proto.Field(proto.STRING, number=17,)
-    language_hint = proto.Field(proto.STRING, number=18,)
-    streaming_worker_main_class = proto.Field(proto.STRING, number=19,)
+    task_group = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    oauth_scopes = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+    base_url = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    dataflow_api_version = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    parallel_worker_settings = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message="WorkerSettings",
+    )
+    base_task_dir = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    continue_on_exception = proto.Field(
+        proto.BOOL,
+        number=8,
+    )
+    log_to_serialconsole = proto.Field(
+        proto.BOOL,
+        number=9,
+    )
+    alsologtostderr = proto.Field(
+        proto.BOOL,
+        number=10,
+    )
+    log_upload_location = proto.Field(
+        proto.STRING,
+        number=11,
+    )
+    log_dir = proto.Field(
+        proto.STRING,
+        number=12,
+    )
+    temp_storage_prefix = proto.Field(
+        proto.STRING,
+        number=13,
+    )
+    harness_command = proto.Field(
+        proto.STRING,
+        number=14,
+    )
+    workflow_file_name = proto.Field(
+        proto.STRING,
+        number=15,
+    )
+    commandlines_file_name = proto.Field(
+        proto.STRING,
+        number=16,
+    )
+    vm_id = proto.Field(
+        proto.STRING,
+        number=17,
+    )
+    language_hint = proto.Field(
+        proto.STRING,
+        number=18,
+    )
+    streaming_worker_main_class = proto.Field(
+        proto.STRING,
+        number=19,
+    )
 
 
 class AutoscalingSettings(proto.Message):
@@ -462,8 +606,15 @@ class AutoscalingSettings(proto.Message):
             at.
     """
 
-    algorithm = proto.Field(proto.ENUM, number=1, enum="AutoscalingAlgorithm",)
-    max_num_workers = proto.Field(proto.INT32, number=2,)
+    algorithm = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum="AutoscalingAlgorithm",
+    )
+    max_num_workers = proto.Field(
+        proto.INT32,
+        number=2,
+    )
 
 
 class SdkHarnessContainerImage(proto.Message):
@@ -492,10 +643,22 @@ class SdkHarnessContainerImage(proto.Message):
             https://github.com/apache/beam/blob/master/model/pipeline/src/main/proto/beam_runner_api.proto
     """
 
-    container_image = proto.Field(proto.STRING, number=1,)
-    use_single_core_per_container = proto.Field(proto.BOOL, number=2,)
-    environment_id = proto.Field(proto.STRING, number=3,)
-    capabilities = proto.RepeatedField(proto.STRING, number=4,)
+    container_image = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    use_single_core_per_container = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+    environment_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    capabilities = proto.RepeatedField(
+        proto.STRING,
+        number=4,
+    )
 
 
 class WorkerPool(proto.Message):
@@ -607,35 +770,103 @@ class WorkerPool(proto.Message):
             entries.
     """
 
-    kind = proto.Field(proto.STRING, number=1,)
-    num_workers = proto.Field(proto.INT32, number=2,)
-    packages = proto.RepeatedField(proto.MESSAGE, number=3, message="Package",)
-    default_package_set = proto.Field(proto.ENUM, number=4, enum="DefaultPackageSet",)
-    machine_type = proto.Field(proto.STRING, number=5,)
-    teardown_policy = proto.Field(proto.ENUM, number=6, enum="TeardownPolicy",)
-    disk_size_gb = proto.Field(proto.INT32, number=7,)
-    disk_type = proto.Field(proto.STRING, number=16,)
-    disk_source_image = proto.Field(proto.STRING, number=8,)
-    zone = proto.Field(proto.STRING, number=9,)
+    kind = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    num_workers = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    packages = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message="Package",
+    )
+    default_package_set = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum="DefaultPackageSet",
+    )
+    machine_type = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    teardown_policy = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum="TeardownPolicy",
+    )
+    disk_size_gb = proto.Field(
+        proto.INT32,
+        number=7,
+    )
+    disk_type = proto.Field(
+        proto.STRING,
+        number=16,
+    )
+    disk_source_image = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    zone = proto.Field(
+        proto.STRING,
+        number=9,
+    )
     taskrunner_settings = proto.Field(
-        proto.MESSAGE, number=10, message="TaskRunnerSettings",
+        proto.MESSAGE,
+        number=10,
+        message="TaskRunnerSettings",
     )
-    on_host_maintenance = proto.Field(proto.STRING, number=11,)
-    data_disks = proto.RepeatedField(proto.MESSAGE, number=12, message="Disk",)
-    metadata = proto.MapField(proto.STRING, proto.STRING, number=13,)
+    on_host_maintenance = proto.Field(
+        proto.STRING,
+        number=11,
+    )
+    data_disks = proto.RepeatedField(
+        proto.MESSAGE,
+        number=12,
+        message="Disk",
+    )
+    metadata = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=13,
+    )
     autoscaling_settings = proto.Field(
-        proto.MESSAGE, number=14, message="AutoscalingSettings",
+        proto.MESSAGE,
+        number=14,
+        message="AutoscalingSettings",
     )
-    pool_args = proto.Field(proto.MESSAGE, number=15, message=any_pb2.Any,)
-    network = proto.Field(proto.STRING, number=17,)
-    subnetwork = proto.Field(proto.STRING, number=19,)
-    worker_harness_container_image = proto.Field(proto.STRING, number=18,)
-    num_threads_per_worker = proto.Field(proto.INT32, number=20,)
+    pool_args = proto.Field(
+        proto.MESSAGE,
+        number=15,
+        message=any_pb2.Any,
+    )
+    network = proto.Field(
+        proto.STRING,
+        number=17,
+    )
+    subnetwork = proto.Field(
+        proto.STRING,
+        number=19,
+    )
+    worker_harness_container_image = proto.Field(
+        proto.STRING,
+        number=18,
+    )
+    num_threads_per_worker = proto.Field(
+        proto.INT32,
+        number=20,
+    )
     ip_configuration = proto.Field(
-        proto.ENUM, number=21, enum="WorkerIPAddressConfiguration",
+        proto.ENUM,
+        number=21,
+        enum="WorkerIPAddressConfiguration",
     )
     sdk_harness_container_images = proto.RepeatedField(
-        proto.MESSAGE, number=22, message="SdkHarnessContainerImage",
+        proto.MESSAGE,
+        number=22,
+        message="SdkHarnessContainerImage",
     )
 
 
@@ -649,7 +880,10 @@ class DebugOptions(proto.Message):
             hot key to the user's Cloud Logging.
     """
 
-    enable_hot_key_logging = proto.Field(proto.BOOL, number=1,)
+    enable_hot_key_logging = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

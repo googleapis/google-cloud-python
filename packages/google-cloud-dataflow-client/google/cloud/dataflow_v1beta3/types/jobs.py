@@ -252,41 +252,120 @@ class Job(proto.Message):
             if it is set in any requests.
     """
 
-    id = proto.Field(proto.STRING, number=1,)
-    project_id = proto.Field(proto.STRING, number=2,)
-    name = proto.Field(proto.STRING, number=3,)
-    type_ = proto.Field(proto.ENUM, number=4, enum=gd_environment.JobType,)
+    id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    project_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    name = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    type_ = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=gd_environment.JobType,
+    )
     environment = proto.Field(
-        proto.MESSAGE, number=5, message=gd_environment.Environment,
+        proto.MESSAGE,
+        number=5,
+        message=gd_environment.Environment,
     )
-    steps = proto.RepeatedField(proto.MESSAGE, number=6, message="Step",)
-    steps_location = proto.Field(proto.STRING, number=24,)
-    current_state = proto.Field(proto.ENUM, number=7, enum="JobState",)
+    steps = proto.RepeatedField(
+        proto.MESSAGE,
+        number=6,
+        message="Step",
+    )
+    steps_location = proto.Field(
+        proto.STRING,
+        number=24,
+    )
+    current_state = proto.Field(
+        proto.ENUM,
+        number=7,
+        enum="JobState",
+    )
     current_state_time = proto.Field(
-        proto.MESSAGE, number=8, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=8,
+        message=timestamp_pb2.Timestamp,
     )
-    requested_state = proto.Field(proto.ENUM, number=9, enum="JobState",)
-    execution_info = proto.Field(proto.MESSAGE, number=10, message="JobExecutionInfo",)
+    requested_state = proto.Field(
+        proto.ENUM,
+        number=9,
+        enum="JobState",
+    )
+    execution_info = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message="JobExecutionInfo",
+    )
     create_time = proto.Field(
-        proto.MESSAGE, number=11, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=11,
+        message=timestamp_pb2.Timestamp,
     )
-    replace_job_id = proto.Field(proto.STRING, number=12,)
-    transform_name_mapping = proto.MapField(proto.STRING, proto.STRING, number=13,)
-    client_request_id = proto.Field(proto.STRING, number=14,)
-    replaced_by_job_id = proto.Field(proto.STRING, number=15,)
-    temp_files = proto.RepeatedField(proto.STRING, number=16,)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=17,)
-    location = proto.Field(proto.STRING, number=18,)
+    replace_job_id = proto.Field(
+        proto.STRING,
+        number=12,
+    )
+    transform_name_mapping = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=13,
+    )
+    client_request_id = proto.Field(
+        proto.STRING,
+        number=14,
+    )
+    replaced_by_job_id = proto.Field(
+        proto.STRING,
+        number=15,
+    )
+    temp_files = proto.RepeatedField(
+        proto.STRING,
+        number=16,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=17,
+    )
+    location = proto.Field(
+        proto.STRING,
+        number=18,
+    )
     pipeline_description = proto.Field(
-        proto.MESSAGE, number=19, message="PipelineDescription",
+        proto.MESSAGE,
+        number=19,
+        message="PipelineDescription",
     )
     stage_states = proto.RepeatedField(
-        proto.MESSAGE, number=20, message="ExecutionStageState",
+        proto.MESSAGE,
+        number=20,
+        message="ExecutionStageState",
     )
-    job_metadata = proto.Field(proto.MESSAGE, number=21, message="JobMetadata",)
-    start_time = proto.Field(proto.MESSAGE, number=22, message=timestamp_pb2.Timestamp,)
-    created_from_snapshot_id = proto.Field(proto.STRING, number=23,)
-    satisfies_pzs = proto.Field(proto.BOOL, number=25,)
+    job_metadata = proto.Field(
+        proto.MESSAGE,
+        number=21,
+        message="JobMetadata",
+    )
+    start_time = proto.Field(
+        proto.MESSAGE,
+        number=22,
+        message=timestamp_pb2.Timestamp,
+    )
+    created_from_snapshot_id = proto.Field(
+        proto.STRING,
+        number=23,
+    )
+    satisfies_pzs = proto.Field(
+        proto.BOOL,
+        number=25,
+    )
 
 
 class DatastoreIODetails(proto.Message):
@@ -299,8 +378,14 @@ class DatastoreIODetails(proto.Message):
             ProjectId accessed in the connection.
     """
 
-    namespace = proto.Field(proto.STRING, number=1,)
-    project_id = proto.Field(proto.STRING, number=2,)
+    namespace = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    project_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class PubSubIODetails(proto.Message):
@@ -313,8 +398,14 @@ class PubSubIODetails(proto.Message):
             Subscription used in the connection.
     """
 
-    topic = proto.Field(proto.STRING, number=1,)
-    subscription = proto.Field(proto.STRING, number=2,)
+    topic = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    subscription = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class FileIODetails(proto.Message):
@@ -326,7 +417,10 @@ class FileIODetails(proto.Message):
             connector.
     """
 
-    file_pattern = proto.Field(proto.STRING, number=1,)
+    file_pattern = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class BigTableIODetails(proto.Message):
@@ -341,9 +435,18 @@ class BigTableIODetails(proto.Message):
             TableId accessed in the connection.
     """
 
-    project_id = proto.Field(proto.STRING, number=1,)
-    instance_id = proto.Field(proto.STRING, number=2,)
-    table_id = proto.Field(proto.STRING, number=3,)
+    project_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    instance_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    table_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class BigQueryIODetails(proto.Message):
@@ -360,10 +463,22 @@ class BigQueryIODetails(proto.Message):
             Query used to access data in the connection.
     """
 
-    table = proto.Field(proto.STRING, number=1,)
-    dataset = proto.Field(proto.STRING, number=2,)
-    project_id = proto.Field(proto.STRING, number=3,)
-    query = proto.Field(proto.STRING, number=4,)
+    table = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    dataset = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    project_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    query = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class SpannerIODetails(proto.Message):
@@ -378,9 +493,18 @@ class SpannerIODetails(proto.Message):
             DatabaseId accessed in the connection.
     """
 
-    project_id = proto.Field(proto.STRING, number=1,)
-    instance_id = proto.Field(proto.STRING, number=2,)
-    database_id = proto.Field(proto.STRING, number=3,)
+    project_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    instance_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    database_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class SdkVersion(proto.Message):
@@ -404,9 +528,19 @@ class SdkVersion(proto.Message):
         DEPRECATED = 3
         UNSUPPORTED = 4
 
-    version = proto.Field(proto.STRING, number=1,)
-    version_display_name = proto.Field(proto.STRING, number=2,)
-    sdk_support_status = proto.Field(proto.ENUM, number=3, enum=SdkSupportStatus,)
+    version = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    version_display_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    sdk_support_status = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=SdkSupportStatus,
+    )
 
 
 class JobMetadata(proto.Message):
@@ -436,24 +570,40 @@ class JobMetadata(proto.Message):
             the Dataflow job.
     """
 
-    sdk_version = proto.Field(proto.MESSAGE, number=1, message="SdkVersion",)
+    sdk_version = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="SdkVersion",
+    )
     spanner_details = proto.RepeatedField(
-        proto.MESSAGE, number=2, message="SpannerIODetails",
+        proto.MESSAGE,
+        number=2,
+        message="SpannerIODetails",
     )
     bigquery_details = proto.RepeatedField(
-        proto.MESSAGE, number=3, message="BigQueryIODetails",
+        proto.MESSAGE,
+        number=3,
+        message="BigQueryIODetails",
     )
     big_table_details = proto.RepeatedField(
-        proto.MESSAGE, number=4, message="BigTableIODetails",
+        proto.MESSAGE,
+        number=4,
+        message="BigTableIODetails",
     )
     pubsub_details = proto.RepeatedField(
-        proto.MESSAGE, number=5, message="PubSubIODetails",
+        proto.MESSAGE,
+        number=5,
+        message="PubSubIODetails",
     )
     file_details = proto.RepeatedField(
-        proto.MESSAGE, number=6, message="FileIODetails",
+        proto.MESSAGE,
+        number=6,
+        message="FileIODetails",
     )
     datastore_details = proto.RepeatedField(
-        proto.MESSAGE, number=7, message="DatastoreIODetails",
+        proto.MESSAGE,
+        number=7,
+        message="DatastoreIODetails",
     )
 
 
@@ -472,10 +622,19 @@ class ExecutionStageState(proto.Message):
             this state.
     """
 
-    execution_stage_name = proto.Field(proto.STRING, number=1,)
-    execution_stage_state = proto.Field(proto.ENUM, number=2, enum="JobState",)
+    execution_stage_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    execution_stage_state = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum="JobState",
+    )
     current_state_time = proto.Field(
-        proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
     )
 
 
@@ -497,12 +656,20 @@ class PipelineDescription(proto.Message):
     """
 
     original_pipeline_transform = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="TransformSummary",
+        proto.MESSAGE,
+        number=1,
+        message="TransformSummary",
     )
     execution_pipeline_stage = proto.RepeatedField(
-        proto.MESSAGE, number=2, message="ExecutionStageSummary",
+        proto.MESSAGE,
+        number=2,
+        message="ExecutionStageSummary",
     )
-    display_data = proto.RepeatedField(proto.MESSAGE, number=3, message="DisplayData",)
+    display_data = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message="DisplayData",
+    )
 
 
 class TransformSummary(proto.Message):
@@ -527,12 +694,32 @@ class TransformSummary(proto.Message):
             transform.
     """
 
-    kind = proto.Field(proto.ENUM, number=1, enum="KindType",)
-    id = proto.Field(proto.STRING, number=2,)
-    name = proto.Field(proto.STRING, number=3,)
-    display_data = proto.RepeatedField(proto.MESSAGE, number=4, message="DisplayData",)
-    output_collection_name = proto.RepeatedField(proto.STRING, number=5,)
-    input_collection_name = proto.RepeatedField(proto.STRING, number=6,)
+    kind = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum="KindType",
+    )
+    id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    name = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    display_data = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message="DisplayData",
+    )
+    output_collection_name = proto.RepeatedField(
+        proto.STRING,
+        number=5,
+    )
+    input_collection_name = proto.RepeatedField(
+        proto.STRING,
+        number=6,
+    )
 
 
 class ExecutionStageSummary(proto.Message):
@@ -582,10 +769,22 @@ class ExecutionStageSummary(proto.Message):
                 Size of the source, if measurable.
         """
 
-        user_name = proto.Field(proto.STRING, number=1,)
-        name = proto.Field(proto.STRING, number=2,)
-        original_transform_or_collection = proto.Field(proto.STRING, number=3,)
-        size_bytes = proto.Field(proto.INT64, number=4,)
+        user_name = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        name = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        original_transform_or_collection = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+        size_bytes = proto.Field(
+            proto.INT64,
+            number=4,
+        )
 
     class ComponentTransform(proto.Message):
         r"""Description of a transform executed as part of an execution
@@ -604,9 +803,18 @@ class ExecutionStageSummary(proto.Message):
                 associated.
         """
 
-        user_name = proto.Field(proto.STRING, number=1,)
-        name = proto.Field(proto.STRING, number=2,)
-        original_transform = proto.Field(proto.STRING, number=3,)
+        user_name = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        name = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        original_transform = proto.Field(
+            proto.STRING,
+            number=3,
+        )
 
     class ComponentSource(proto.Message):
         r"""Description of an interstitial value between transforms in an
@@ -625,21 +833,55 @@ class ExecutionStageSummary(proto.Message):
                 closely associated.
         """
 
-        user_name = proto.Field(proto.STRING, number=1,)
-        name = proto.Field(proto.STRING, number=2,)
-        original_transform_or_collection = proto.Field(proto.STRING, number=3,)
+        user_name = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        name = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        original_transform_or_collection = proto.Field(
+            proto.STRING,
+            number=3,
+        )
 
-    name = proto.Field(proto.STRING, number=1,)
-    id = proto.Field(proto.STRING, number=2,)
-    kind = proto.Field(proto.ENUM, number=3, enum="KindType",)
-    input_source = proto.RepeatedField(proto.MESSAGE, number=4, message=StageSource,)
-    output_source = proto.RepeatedField(proto.MESSAGE, number=5, message=StageSource,)
-    prerequisite_stage = proto.RepeatedField(proto.STRING, number=8,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    kind = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum="KindType",
+    )
+    input_source = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message=StageSource,
+    )
+    output_source = proto.RepeatedField(
+        proto.MESSAGE,
+        number=5,
+        message=StageSource,
+    )
+    prerequisite_stage = proto.RepeatedField(
+        proto.STRING,
+        number=8,
+    )
     component_transform = proto.RepeatedField(
-        proto.MESSAGE, number=6, message=ComponentTransform,
+        proto.MESSAGE,
+        number=6,
+        message=ComponentTransform,
     )
     component_source = proto.RepeatedField(
-        proto.MESSAGE, number=7, message=ComponentSource,
+        proto.MESSAGE,
+        number=7,
+        message=ComponentSource,
     )
 
 
@@ -713,22 +955,63 @@ class DisplayData(proto.Message):
             the element.
     """
 
-    key = proto.Field(proto.STRING, number=1,)
-    namespace = proto.Field(proto.STRING, number=2,)
-    str_value = proto.Field(proto.STRING, number=4, oneof="Value",)
-    int64_value = proto.Field(proto.INT64, number=5, oneof="Value",)
-    float_value = proto.Field(proto.FLOAT, number=6, oneof="Value",)
-    java_class_value = proto.Field(proto.STRING, number=7, oneof="Value",)
+    key = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    namespace = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    str_value = proto.Field(
+        proto.STRING,
+        number=4,
+        oneof="Value",
+    )
+    int64_value = proto.Field(
+        proto.INT64,
+        number=5,
+        oneof="Value",
+    )
+    float_value = proto.Field(
+        proto.FLOAT,
+        number=6,
+        oneof="Value",
+    )
+    java_class_value = proto.Field(
+        proto.STRING,
+        number=7,
+        oneof="Value",
+    )
     timestamp_value = proto.Field(
-        proto.MESSAGE, number=8, oneof="Value", message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=8,
+        oneof="Value",
+        message=timestamp_pb2.Timestamp,
     )
     duration_value = proto.Field(
-        proto.MESSAGE, number=9, oneof="Value", message=duration_pb2.Duration,
+        proto.MESSAGE,
+        number=9,
+        oneof="Value",
+        message=duration_pb2.Duration,
     )
-    bool_value = proto.Field(proto.BOOL, number=10, oneof="Value",)
-    short_str_value = proto.Field(proto.STRING, number=11,)
-    url = proto.Field(proto.STRING, number=12,)
-    label = proto.Field(proto.STRING, number=13,)
+    bool_value = proto.Field(
+        proto.BOOL,
+        number=10,
+        oneof="Value",
+    )
+    short_str_value = proto.Field(
+        proto.STRING,
+        number=11,
+    )
+    url = proto.Field(
+        proto.STRING,
+        number=12,
+    )
+    label = proto.Field(
+        proto.STRING,
+        number=13,
+    )
 
 
 class Step(proto.Message):
@@ -771,9 +1054,19 @@ class Step(proto.Message):
             be provided on Create. Only retrieved with JOB_VIEW_ALL.
     """
 
-    kind = proto.Field(proto.STRING, number=1,)
-    name = proto.Field(proto.STRING, number=2,)
-    properties = proto.Field(proto.MESSAGE, number=3, message=struct_pb2.Struct,)
+    kind = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    properties = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=struct_pb2.Struct,
+    )
 
 
 class JobExecutionInfo(proto.Message):
@@ -787,7 +1080,10 @@ class JobExecutionInfo(proto.Message):
     """
 
     stages = proto.MapField(
-        proto.STRING, proto.MESSAGE, number=1, message="JobExecutionStageInfo",
+        proto.STRING,
+        proto.MESSAGE,
+        number=1,
+        message="JobExecutionStageInfo",
     )
 
 
@@ -804,7 +1100,10 @@ class JobExecutionStageInfo(proto.Message):
             one stage.
     """
 
-    step_name = proto.RepeatedField(proto.STRING, number=1,)
+    step_name = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CreateJobRequest(proto.Message):
@@ -828,11 +1127,28 @@ class CreateJobRequest(proto.Message):
             that contains this job.
     """
 
-    project_id = proto.Field(proto.STRING, number=1,)
-    job = proto.Field(proto.MESSAGE, number=2, message="Job",)
-    view = proto.Field(proto.ENUM, number=3, enum="JobView",)
-    replace_job_id = proto.Field(proto.STRING, number=4,)
-    location = proto.Field(proto.STRING, number=5,)
+    project_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    job = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="Job",
+    )
+    view = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum="JobView",
+    )
+    replace_job_id = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    location = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class GetJobRequest(proto.Message):
@@ -853,10 +1169,23 @@ class GetJobRequest(proto.Message):
             that contains this job.
     """
 
-    project_id = proto.Field(proto.STRING, number=1,)
-    job_id = proto.Field(proto.STRING, number=2,)
-    view = proto.Field(proto.ENUM, number=3, enum="JobView",)
-    location = proto.Field(proto.STRING, number=4,)
+    project_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    job_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    view = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum="JobView",
+    )
+    location = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class UpdateJobRequest(proto.Message):
@@ -878,10 +1207,23 @@ class UpdateJobRequest(proto.Message):
             that contains this job.
     """
 
-    project_id = proto.Field(proto.STRING, number=1,)
-    job_id = proto.Field(proto.STRING, number=2,)
-    job = proto.Field(proto.MESSAGE, number=3, message="Job",)
-    location = proto.Field(proto.STRING, number=4,)
+    project_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    job_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    job = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="Job",
+    )
+    location = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class ListJobsRequest(proto.Message):
@@ -918,12 +1260,32 @@ class ListJobsRequest(proto.Message):
         TERMINATED = 2
         ACTIVE = 3
 
-    filter = proto.Field(proto.ENUM, number=5, enum=Filter,)
-    project_id = proto.Field(proto.STRING, number=1,)
-    view = proto.Field(proto.ENUM, number=2, enum="JobView",)
-    page_size = proto.Field(proto.INT32, number=3,)
-    page_token = proto.Field(proto.STRING, number=4,)
-    location = proto.Field(proto.STRING, number=17,)
+    filter = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum=Filter,
+    )
+    project_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    view = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum="JobView",
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    location = proto.Field(
+        proto.STRING,
+        number=17,
+    )
 
 
 class FailedLocation(proto.Message):
@@ -938,7 +1300,10 @@ class FailedLocation(proto.Message):
             that failed to respond.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListJobsResponse(proto.Message):
@@ -964,10 +1329,19 @@ class ListJobsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    jobs = proto.RepeatedField(proto.MESSAGE, number=1, message="Job",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    jobs = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Job",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
     failed_location = proto.RepeatedField(
-        proto.MESSAGE, number=3, message="FailedLocation",
+        proto.MESSAGE,
+        number=3,
+        message="FailedLocation",
     )
 
 
@@ -992,12 +1366,31 @@ class SnapshotJobRequest(proto.Message):
             Maybe empty.
     """
 
-    project_id = proto.Field(proto.STRING, number=1,)
-    job_id = proto.Field(proto.STRING, number=2,)
-    ttl = proto.Field(proto.MESSAGE, number=3, message=duration_pb2.Duration,)
-    location = proto.Field(proto.STRING, number=4,)
-    snapshot_sources = proto.Field(proto.BOOL, number=5,)
-    description = proto.Field(proto.STRING, number=6,)
+    project_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    job_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    ttl = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=duration_pb2.Duration,
+    )
+    location = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    snapshot_sources = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=6,
+    )
 
 
 class CheckActiveJobsRequest(proto.Message):
@@ -1008,7 +1401,10 @@ class CheckActiveJobsRequest(proto.Message):
             The project which owns the jobs.
     """
 
-    project_id = proto.Field(proto.STRING, number=1,)
+    project_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CheckActiveJobsResponse(proto.Message):
@@ -1020,7 +1416,10 @@ class CheckActiveJobsResponse(proto.Message):
             False otherwise.
     """
 
-    active_jobs_exist = proto.Field(proto.BOOL, number=1,)
+    active_jobs_exist = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

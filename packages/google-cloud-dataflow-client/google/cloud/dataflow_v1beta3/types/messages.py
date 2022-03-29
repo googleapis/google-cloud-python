@@ -56,10 +56,24 @@ class JobMessage(proto.Message):
             Importance level of the message.
     """
 
-    id = proto.Field(proto.STRING, number=1,)
-    time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    message_text = proto.Field(proto.STRING, number=3,)
-    message_importance = proto.Field(proto.ENUM, number=4, enum="JobMessageImportance",)
+    id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    message_text = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    message_importance = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum="JobMessageImportance",
+    )
 
 
 class StructuredMessage(proto.Message):
@@ -89,12 +103,29 @@ class StructuredMessage(proto.Message):
                 Value for this parameter.
         """
 
-        key = proto.Field(proto.STRING, number=1,)
-        value = proto.Field(proto.MESSAGE, number=2, message=struct_pb2.Value,)
+        key = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        value = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message=struct_pb2.Value,
+        )
 
-    message_text = proto.Field(proto.STRING, number=1,)
-    message_key = proto.Field(proto.STRING, number=2,)
-    parameters = proto.RepeatedField(proto.MESSAGE, number=3, message=Parameter,)
+    message_text = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    message_key = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    parameters = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=Parameter,
+    )
 
 
 class AutoscalingEvent(proto.Message):
@@ -130,12 +161,33 @@ class AutoscalingEvent(proto.Message):
         ACTUATION_FAILURE = 3
         NO_CHANGE = 4
 
-    current_num_workers = proto.Field(proto.INT64, number=1,)
-    target_num_workers = proto.Field(proto.INT64, number=2,)
-    event_type = proto.Field(proto.ENUM, number=3, enum=AutoscalingEventType,)
-    description = proto.Field(proto.MESSAGE, number=4, message="StructuredMessage",)
-    time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
-    worker_pool = proto.Field(proto.STRING, number=7,)
+    current_num_workers = proto.Field(
+        proto.INT64,
+        number=1,
+    )
+    target_num_workers = proto.Field(
+        proto.INT64,
+        number=2,
+    )
+    event_type = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=AutoscalingEventType,
+    )
+    description = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="StructuredMessage",
+    )
+    time = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+    worker_pool = proto.Field(
+        proto.STRING,
+        number=7,
+    )
 
 
 class ListJobMessagesRequest(proto.Message):
@@ -175,14 +227,41 @@ class ListJobMessagesRequest(proto.Message):
             that contains the job specified by job_id.
     """
 
-    project_id = proto.Field(proto.STRING, number=1,)
-    job_id = proto.Field(proto.STRING, number=2,)
-    minimum_importance = proto.Field(proto.ENUM, number=3, enum="JobMessageImportance",)
-    page_size = proto.Field(proto.INT32, number=4,)
-    page_token = proto.Field(proto.STRING, number=5,)
-    start_time = proto.Field(proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,)
-    end_time = proto.Field(proto.MESSAGE, number=7, message=timestamp_pb2.Timestamp,)
-    location = proto.Field(proto.STRING, number=8,)
+    project_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    job_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    minimum_importance = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum="JobMessageImportance",
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=4,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    start_time = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=timestamp_pb2.Timestamp,
+    )
+    location = proto.Field(
+        proto.STRING,
+        number=8,
+    )
 
 
 class ListJobMessagesResponse(proto.Message):
@@ -203,10 +282,19 @@ class ListJobMessagesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    job_messages = proto.RepeatedField(proto.MESSAGE, number=1, message="JobMessage",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    job_messages = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="JobMessage",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
     autoscaling_events = proto.RepeatedField(
-        proto.MESSAGE, number=3, message="AutoscalingEvent",
+        proto.MESSAGE,
+        number=3,
+        message="AutoscalingEvent",
     )
 
 

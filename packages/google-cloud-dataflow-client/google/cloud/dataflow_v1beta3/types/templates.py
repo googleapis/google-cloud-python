@@ -72,7 +72,11 @@ class LaunchFlexTemplateResponse(proto.Message):
             launched.
     """
 
-    job = proto.Field(proto.MESSAGE, number=1, message=jobs.Job,)
+    job = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=jobs.Job,
+    )
 
 
 class ContainerSpec(proto.Message):
@@ -91,11 +95,24 @@ class ContainerSpec(proto.Message):
             Default runtime environment for the job.
     """
 
-    image = proto.Field(proto.STRING, number=1,)
-    metadata = proto.Field(proto.MESSAGE, number=2, message="TemplateMetadata",)
-    sdk_info = proto.Field(proto.MESSAGE, number=3, message="SDKInfo",)
+    image = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    metadata = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="TemplateMetadata",
+    )
+    sdk_info = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="SDKInfo",
+    )
     default_environment = proto.Field(
-        proto.MESSAGE, number=4, message="FlexTemplateRuntimeEnvironment",
+        proto.MESSAGE,
+        number=4,
+        message="FlexTemplateRuntimeEnvironment",
     )
 
 
@@ -142,18 +159,45 @@ class LaunchFlexTemplateParameter(proto.Message):
             update jobs. Ex:{"oldTransformName":"newTransformName",...}'
     """
 
-    job_name = proto.Field(proto.STRING, number=1,)
+    job_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     container_spec = proto.Field(
-        proto.MESSAGE, number=4, oneof="template", message="ContainerSpec",
+        proto.MESSAGE,
+        number=4,
+        oneof="template",
+        message="ContainerSpec",
     )
-    container_spec_gcs_path = proto.Field(proto.STRING, number=5, oneof="template",)
-    parameters = proto.MapField(proto.STRING, proto.STRING, number=2,)
-    launch_options = proto.MapField(proto.STRING, proto.STRING, number=6,)
+    container_spec_gcs_path = proto.Field(
+        proto.STRING,
+        number=5,
+        oneof="template",
+    )
+    parameters = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=2,
+    )
+    launch_options = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=6,
+    )
     environment = proto.Field(
-        proto.MESSAGE, number=7, message="FlexTemplateRuntimeEnvironment",
+        proto.MESSAGE,
+        number=7,
+        message="FlexTemplateRuntimeEnvironment",
     )
-    update = proto.Field(proto.BOOL, number=8,)
-    transform_name_mappings = proto.MapField(proto.STRING, proto.STRING, number=9,)
+    update = proto.Field(
+        proto.BOOL,
+        number=8,
+    )
+    transform_name_mappings = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=9,
+    )
 
 
 class FlexTemplateRuntimeEnvironment(proto.Message):
@@ -259,35 +303,102 @@ class FlexTemplateRuntimeEnvironment(proto.Message):
             job. The default is n1-standard-1.
     """
 
-    num_workers = proto.Field(proto.INT32, number=1,)
-    max_workers = proto.Field(proto.INT32, number=2,)
-    zone = proto.Field(proto.STRING, number=3,)
-    service_account_email = proto.Field(proto.STRING, number=4,)
-    temp_location = proto.Field(proto.STRING, number=5,)
-    machine_type = proto.Field(proto.STRING, number=6,)
-    additional_experiments = proto.RepeatedField(proto.STRING, number=7,)
-    network = proto.Field(proto.STRING, number=8,)
-    subnetwork = proto.Field(proto.STRING, number=9,)
-    additional_user_labels = proto.MapField(proto.STRING, proto.STRING, number=10,)
-    kms_key_name = proto.Field(proto.STRING, number=11,)
+    num_workers = proto.Field(
+        proto.INT32,
+        number=1,
+    )
+    max_workers = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    zone = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    service_account_email = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    temp_location = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    machine_type = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    additional_experiments = proto.RepeatedField(
+        proto.STRING,
+        number=7,
+    )
+    network = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    subnetwork = proto.Field(
+        proto.STRING,
+        number=9,
+    )
+    additional_user_labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=10,
+    )
+    kms_key_name = proto.Field(
+        proto.STRING,
+        number=11,
+    )
     ip_configuration = proto.Field(
-        proto.ENUM, number=12, enum=gd_environment.WorkerIPAddressConfiguration,
+        proto.ENUM,
+        number=12,
+        enum=gd_environment.WorkerIPAddressConfiguration,
     )
-    worker_region = proto.Field(proto.STRING, number=13,)
-    worker_zone = proto.Field(proto.STRING, number=14,)
-    enable_streaming_engine = proto.Field(proto.BOOL, number=15,)
+    worker_region = proto.Field(
+        proto.STRING,
+        number=13,
+    )
+    worker_zone = proto.Field(
+        proto.STRING,
+        number=14,
+    )
+    enable_streaming_engine = proto.Field(
+        proto.BOOL,
+        number=15,
+    )
     flexrs_goal = proto.Field(
-        proto.ENUM, number=16, enum=gd_environment.FlexResourceSchedulingGoal,
+        proto.ENUM,
+        number=16,
+        enum=gd_environment.FlexResourceSchedulingGoal,
     )
-    staging_location = proto.Field(proto.STRING, number=17,)
-    sdk_container_image = proto.Field(proto.STRING, number=18,)
-    disk_size_gb = proto.Field(proto.INT32, number=20,)
+    staging_location = proto.Field(
+        proto.STRING,
+        number=17,
+    )
+    sdk_container_image = proto.Field(
+        proto.STRING,
+        number=18,
+    )
+    disk_size_gb = proto.Field(
+        proto.INT32,
+        number=20,
+    )
     autoscaling_algorithm = proto.Field(
-        proto.ENUM, number=21, enum=gd_environment.AutoscalingAlgorithm,
+        proto.ENUM,
+        number=21,
+        enum=gd_environment.AutoscalingAlgorithm,
     )
-    dump_heap_on_oom = proto.Field(proto.BOOL, number=22,)
-    save_heap_dumps_to_gcs_path = proto.Field(proto.STRING, number=23,)
-    launcher_machine_type = proto.Field(proto.STRING, number=24,)
+    dump_heap_on_oom = proto.Field(
+        proto.BOOL,
+        number=22,
+    )
+    save_heap_dumps_to_gcs_path = proto.Field(
+        proto.STRING,
+        number=23,
+    )
+    launcher_machine_type = proto.Field(
+        proto.STRING,
+        number=24,
+    )
 
 
 class LaunchFlexTemplateRequest(proto.Message):
@@ -309,12 +420,23 @@ class LaunchFlexTemplateRequest(proto.Message):
             actually executed. Defaults to false.
     """
 
-    project_id = proto.Field(proto.STRING, number=1,)
-    launch_parameter = proto.Field(
-        proto.MESSAGE, number=2, message="LaunchFlexTemplateParameter",
+    project_id = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    location = proto.Field(proto.STRING, number=3,)
-    validate_only = proto.Field(proto.BOOL, number=4,)
+    launch_parameter = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="LaunchFlexTemplateParameter",
+    )
+    location = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    validate_only = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
 
 
 class RuntimeEnvironment(proto.Message):
@@ -394,24 +516,72 @@ class RuntimeEnvironment(proto.Message):
             job.
     """
 
-    num_workers = proto.Field(proto.INT32, number=11,)
-    max_workers = proto.Field(proto.INT32, number=1,)
-    zone = proto.Field(proto.STRING, number=2,)
-    service_account_email = proto.Field(proto.STRING, number=3,)
-    temp_location = proto.Field(proto.STRING, number=4,)
-    bypass_temp_dir_validation = proto.Field(proto.BOOL, number=5,)
-    machine_type = proto.Field(proto.STRING, number=6,)
-    additional_experiments = proto.RepeatedField(proto.STRING, number=7,)
-    network = proto.Field(proto.STRING, number=8,)
-    subnetwork = proto.Field(proto.STRING, number=9,)
-    additional_user_labels = proto.MapField(proto.STRING, proto.STRING, number=10,)
-    kms_key_name = proto.Field(proto.STRING, number=12,)
-    ip_configuration = proto.Field(
-        proto.ENUM, number=14, enum=gd_environment.WorkerIPAddressConfiguration,
+    num_workers = proto.Field(
+        proto.INT32,
+        number=11,
     )
-    worker_region = proto.Field(proto.STRING, number=15,)
-    worker_zone = proto.Field(proto.STRING, number=16,)
-    enable_streaming_engine = proto.Field(proto.BOOL, number=17,)
+    max_workers = proto.Field(
+        proto.INT32,
+        number=1,
+    )
+    zone = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    service_account_email = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    temp_location = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    bypass_temp_dir_validation = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
+    machine_type = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    additional_experiments = proto.RepeatedField(
+        proto.STRING,
+        number=7,
+    )
+    network = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    subnetwork = proto.Field(
+        proto.STRING,
+        number=9,
+    )
+    additional_user_labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=10,
+    )
+    kms_key_name = proto.Field(
+        proto.STRING,
+        number=12,
+    )
+    ip_configuration = proto.Field(
+        proto.ENUM,
+        number=14,
+        enum=gd_environment.WorkerIPAddressConfiguration,
+    )
+    worker_region = proto.Field(
+        proto.STRING,
+        number=15,
+    )
+    worker_zone = proto.Field(
+        proto.STRING,
+        number=16,
+    )
+    enable_streaming_engine = proto.Field(
+        proto.BOOL,
+        number=17,
+    )
 
 
 class ParameterMetadata(proto.Message):
@@ -440,13 +610,36 @@ class ParameterMetadata(proto.Message):
             this parameter.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    label = proto.Field(proto.STRING, number=2,)
-    help_text = proto.Field(proto.STRING, number=3,)
-    is_optional = proto.Field(proto.BOOL, number=4,)
-    regexes = proto.RepeatedField(proto.STRING, number=5,)
-    param_type = proto.Field(proto.ENUM, number=6, enum="ParameterType",)
-    custom_metadata = proto.MapField(proto.STRING, proto.STRING, number=7,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    label = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    help_text = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    is_optional = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
+    regexes = proto.RepeatedField(
+        proto.STRING,
+        number=5,
+    )
+    param_type = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum="ParameterType",
+    )
+    custom_metadata = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=7,
+    )
 
 
 class TemplateMetadata(proto.Message):
@@ -461,10 +654,18 @@ class TemplateMetadata(proto.Message):
             The parameters for the template.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    description = proto.Field(proto.STRING, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=2,
+    )
     parameters = proto.RepeatedField(
-        proto.MESSAGE, number=3, message="ParameterMetadata",
+        proto.MESSAGE,
+        number=3,
+        message="ParameterMetadata",
     )
 
 
@@ -484,8 +685,15 @@ class SDKInfo(proto.Message):
         JAVA = 1
         PYTHON = 2
 
-    language = proto.Field(proto.ENUM, number=1, enum=Language,)
-    version = proto.Field(proto.STRING, number=2,)
+    language = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Language,
+    )
+    version = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class RuntimeMetadata(proto.Message):
@@ -498,9 +706,15 @@ class RuntimeMetadata(proto.Message):
             The parameters for the template.
     """
 
-    sdk_info = proto.Field(proto.MESSAGE, number=1, message="SDKInfo",)
+    sdk_info = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="SDKInfo",
+    )
     parameters = proto.RepeatedField(
-        proto.MESSAGE, number=2, message="ParameterMetadata",
+        proto.MESSAGE,
+        number=2,
+        message="ParameterMetadata",
     )
 
 
@@ -532,12 +746,33 @@ class CreateJobFromTemplateRequest(proto.Message):
             to which to direct the request.
     """
 
-    project_id = proto.Field(proto.STRING, number=1,)
-    job_name = proto.Field(proto.STRING, number=4,)
-    gcs_path = proto.Field(proto.STRING, number=2, oneof="template",)
-    parameters = proto.MapField(proto.STRING, proto.STRING, number=3,)
-    environment = proto.Field(proto.MESSAGE, number=5, message="RuntimeEnvironment",)
-    location = proto.Field(proto.STRING, number=6,)
+    project_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    job_name = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    gcs_path = proto.Field(
+        proto.STRING,
+        number=2,
+        oneof="template",
+    )
+    parameters = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=3,
+    )
+    environment = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message="RuntimeEnvironment",
+    )
+    location = proto.Field(
+        proto.STRING,
+        number=6,
+    )
 
 
 class GetTemplateRequest(proto.Message):
@@ -568,10 +803,24 @@ class GetTemplateRequest(proto.Message):
         r"""The various views of a template that may be retrieved."""
         METADATA_ONLY = 0
 
-    project_id = proto.Field(proto.STRING, number=1,)
-    gcs_path = proto.Field(proto.STRING, number=2, oneof="template",)
-    view = proto.Field(proto.ENUM, number=3, enum=TemplateView,)
-    location = proto.Field(proto.STRING, number=4,)
+    project_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    gcs_path = proto.Field(
+        proto.STRING,
+        number=2,
+        oneof="template",
+    )
+    view = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=TemplateView,
+    )
+    location = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class GetTemplateResponse(proto.Message):
@@ -597,10 +846,26 @@ class GetTemplateResponse(proto.Message):
         LEGACY = 1
         FLEX = 2
 
-    status = proto.Field(proto.MESSAGE, number=1, message=status_pb2.Status,)
-    metadata = proto.Field(proto.MESSAGE, number=2, message="TemplateMetadata",)
-    template_type = proto.Field(proto.ENUM, number=3, enum=TemplateType,)
-    runtime_metadata = proto.Field(proto.MESSAGE, number=4, message="RuntimeMetadata",)
+    status = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=status_pb2.Status,
+    )
+    metadata = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="TemplateMetadata",
+    )
+    template_type = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=TemplateType,
+    )
+    runtime_metadata = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="RuntimeMetadata",
+    )
 
 
 class LaunchTemplateParameters(proto.Message):
@@ -625,11 +890,29 @@ class LaunchTemplateParameters(proto.Message):
             the new job.
     """
 
-    job_name = proto.Field(proto.STRING, number=1,)
-    parameters = proto.MapField(proto.STRING, proto.STRING, number=2,)
-    environment = proto.Field(proto.MESSAGE, number=3, message="RuntimeEnvironment",)
-    update = proto.Field(proto.BOOL, number=4,)
-    transform_name_mapping = proto.MapField(proto.STRING, proto.STRING, number=5,)
+    job_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    parameters = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=2,
+    )
+    environment = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="RuntimeEnvironment",
+    )
+    update = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
+    transform_name_mapping = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=5,
+    )
 
 
 class LaunchTemplateRequest(proto.Message):
@@ -670,9 +953,19 @@ class LaunchTemplateRequest(proto.Message):
             to which to direct the request.
     """
 
-    project_id = proto.Field(proto.STRING, number=1,)
-    validate_only = proto.Field(proto.BOOL, number=2,)
-    gcs_path = proto.Field(proto.STRING, number=3, oneof="template",)
+    project_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    validate_only = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+    gcs_path = proto.Field(
+        proto.STRING,
+        number=3,
+        oneof="template",
+    )
     dynamic_template = proto.Field(
         proto.MESSAGE,
         number=6,
@@ -680,9 +973,14 @@ class LaunchTemplateRequest(proto.Message):
         message="DynamicTemplateLaunchParams",
     )
     launch_parameters = proto.Field(
-        proto.MESSAGE, number=4, message="LaunchTemplateParameters",
+        proto.MESSAGE,
+        number=4,
+        message="LaunchTemplateParameters",
     )
-    location = proto.Field(proto.STRING, number=5,)
+    location = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class LaunchTemplateResponse(proto.Message):
@@ -695,7 +993,11 @@ class LaunchTemplateResponse(proto.Message):
             launched.
     """
 
-    job = proto.Field(proto.MESSAGE, number=1, message=jobs.Job,)
+    job = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=jobs.Job,
+    )
 
 
 class InvalidTemplateParameters(proto.Message):
@@ -719,11 +1021,19 @@ class InvalidTemplateParameters(proto.Message):
                 validate.
         """
 
-        parameter = proto.Field(proto.STRING, number=1,)
-        description = proto.Field(proto.STRING, number=2,)
+        parameter = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        description = proto.Field(
+            proto.STRING,
+            number=2,
+        )
 
     parameter_violations = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=ParameterViolation,
+        proto.MESSAGE,
+        number=1,
+        message=ParameterViolation,
     )
 
 
@@ -741,8 +1051,14 @@ class DynamicTemplateLaunchParams(proto.Message):
             Cloud Storage URL, beginning with ``gs://``.
     """
 
-    gcs_path = proto.Field(proto.STRING, number=1,)
-    staging_location = proto.Field(proto.STRING, number=2,)
+    gcs_path = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    staging_location = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

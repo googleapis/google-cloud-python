@@ -59,16 +59,28 @@ class TopologyConfig(proto.Message):
     """
 
     computations = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="ComputationTopology",
+        proto.MESSAGE,
+        number=1,
+        message="ComputationTopology",
     )
     data_disk_assignments = proto.RepeatedField(
-        proto.MESSAGE, number=2, message="DataDiskAssignment",
+        proto.MESSAGE,
+        number=2,
+        message="DataDiskAssignment",
     )
     user_stage_to_computation_name_map = proto.MapField(
-        proto.STRING, proto.STRING, number=3,
+        proto.STRING,
+        proto.STRING,
+        number=3,
     )
-    forwarding_key_bits = proto.Field(proto.INT32, number=4,)
-    persistent_state_version = proto.Field(proto.INT32, number=5,)
+    forwarding_key_bits = proto.Field(
+        proto.INT32,
+        number=4,
+    )
+    persistent_state_version = proto.Field(
+        proto.INT32,
+        number=5,
+    )
 
 
 class PubsubLocation(proto.Message):
@@ -102,13 +114,34 @@ class PubsubLocation(proto.Message):
             pubsub attributes.
     """
 
-    topic = proto.Field(proto.STRING, number=1,)
-    subscription = proto.Field(proto.STRING, number=2,)
-    timestamp_label = proto.Field(proto.STRING, number=3,)
-    id_label = proto.Field(proto.STRING, number=4,)
-    drop_late_data = proto.Field(proto.BOOL, number=5,)
-    tracking_subscription = proto.Field(proto.STRING, number=6,)
-    with_attributes = proto.Field(proto.BOOL, number=7,)
+    topic = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    subscription = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    timestamp_label = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    id_label = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    drop_late_data = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
+    tracking_subscription = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    with_attributes = proto.Field(
+        proto.BOOL,
+        number=7,
+    )
 
 
 class StreamingStageLocation(proto.Message):
@@ -121,7 +154,10 @@ class StreamingStageLocation(proto.Message):
             streaming Dataflow job.
     """
 
-    stream_id = proto.Field(proto.STRING, number=1,)
+    stream_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class StreamingSideInputLocation(proto.Message):
@@ -136,8 +172,14 @@ class StreamingSideInputLocation(proto.Message):
             input is stored.
     """
 
-    tag = proto.Field(proto.STRING, number=1,)
-    state_family = proto.Field(proto.STRING, number=2,)
+    tag = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    state_family = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class CustomSourceLocation(proto.Message):
@@ -148,7 +190,10 @@ class CustomSourceLocation(proto.Message):
             Whether this source is stateful.
     """
 
-    stateful = proto.Field(proto.BOOL, number=1,)
+    stateful = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
 
 
 class StreamLocation(proto.Message):
@@ -183,16 +228,28 @@ class StreamLocation(proto.Message):
     """
 
     streaming_stage_location = proto.Field(
-        proto.MESSAGE, number=1, oneof="location", message="StreamingStageLocation",
+        proto.MESSAGE,
+        number=1,
+        oneof="location",
+        message="StreamingStageLocation",
     )
     pubsub_location = proto.Field(
-        proto.MESSAGE, number=2, oneof="location", message="PubsubLocation",
+        proto.MESSAGE,
+        number=2,
+        oneof="location",
+        message="PubsubLocation",
     )
     side_input_location = proto.Field(
-        proto.MESSAGE, number=3, oneof="location", message="StreamingSideInputLocation",
+        proto.MESSAGE,
+        number=3,
+        oneof="location",
+        message="StreamingSideInputLocation",
     )
     custom_source_location = proto.Field(
-        proto.MESSAGE, number=4, oneof="location", message="CustomSourceLocation",
+        proto.MESSAGE,
+        number=4,
+        oneof="location",
+        message="CustomSourceLocation",
     )
 
 
@@ -207,8 +264,14 @@ class StateFamilyConfig(proto.Message):
             operation.
     """
 
-    state_family = proto.Field(proto.STRING, number=1,)
-    is_read = proto.Field(proto.BOOL, number=2,)
+    state_family = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    is_read = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
 
 
 class ComputationTopology(proto.Message):
@@ -229,15 +292,33 @@ class ComputationTopology(proto.Message):
             The state family values.
     """
 
-    system_stage_name = proto.Field(proto.STRING, number=1,)
-    computation_id = proto.Field(proto.STRING, number=5,)
-    key_ranges = proto.RepeatedField(
-        proto.MESSAGE, number=2, message="KeyRangeLocation",
+    system_stage_name = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    inputs = proto.RepeatedField(proto.MESSAGE, number=3, message="StreamLocation",)
-    outputs = proto.RepeatedField(proto.MESSAGE, number=4, message="StreamLocation",)
+    computation_id = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    key_ranges = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="KeyRangeLocation",
+    )
+    inputs = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message="StreamLocation",
+    )
+    outputs = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message="StreamLocation",
+    )
     state_families = proto.RepeatedField(
-        proto.MESSAGE, number=7, message="StateFamilyConfig",
+        proto.MESSAGE,
+        number=7,
+        message="StateFamilyConfig",
     )
 
 
@@ -268,11 +349,26 @@ class KeyRangeLocation(proto.Message):
             in the worker local filesystem.
     """
 
-    start = proto.Field(proto.STRING, number=1,)
-    end = proto.Field(proto.STRING, number=2,)
-    delivery_endpoint = proto.Field(proto.STRING, number=3,)
-    data_disk = proto.Field(proto.STRING, number=5,)
-    deprecated_persistent_directory = proto.Field(proto.STRING, number=4,)
+    start = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    end = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    delivery_endpoint = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    data_disk = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    deprecated_persistent_directory = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class MountedDataDisk(proto.Message):
@@ -287,7 +383,10 @@ class MountedDataDisk(proto.Message):
             "myproject-1014-104817-4c2-harness-0-disk-1".
     """
 
-    data_disk = proto.Field(proto.STRING, number=1,)
+    data_disk = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class DataDiskAssignment(proto.Message):
@@ -308,8 +407,14 @@ class DataDiskAssignment(proto.Message):
             }.
     """
 
-    vm_instance = proto.Field(proto.STRING, number=1,)
-    data_disks = proto.RepeatedField(proto.STRING, number=2,)
+    vm_instance = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    data_disks = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
 
 
 class KeyRangeDataDiskAssignment(proto.Message):
@@ -332,9 +437,18 @@ class KeyRangeDataDiskAssignment(proto.Message):
             "myproject-1014-104817-4c2-harness-0-disk-1".
     """
 
-    start = proto.Field(proto.STRING, number=1,)
-    end = proto.Field(proto.STRING, number=2,)
-    data_disk = proto.Field(proto.STRING, number=3,)
+    start = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    end = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    data_disk = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class StreamingComputationRanges(proto.Message):
@@ -349,9 +463,14 @@ class StreamingComputationRanges(proto.Message):
             computation.
     """
 
-    computation_id = proto.Field(proto.STRING, number=1,)
+    computation_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     range_assignments = proto.RepeatedField(
-        proto.MESSAGE, number=2, message="KeyRangeDataDiskAssignment",
+        proto.MESSAGE,
+        number=2,
+        message="KeyRangeDataDiskAssignment",
     )
 
 
@@ -367,8 +486,14 @@ class StreamingApplianceSnapshotConfig(proto.Message):
             appliance state.
     """
 
-    snapshot_id = proto.Field(proto.STRING, number=1,)
-    import_state_endpoint = proto.Field(proto.STRING, number=2,)
+    snapshot_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    import_state_endpoint = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

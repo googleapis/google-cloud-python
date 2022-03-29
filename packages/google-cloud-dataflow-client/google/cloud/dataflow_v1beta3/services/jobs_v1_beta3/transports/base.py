@@ -127,16 +127,24 @@ class JobsV1Beta3Transport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.create_job: gapic_v1.method.wrap_method(
-                self.create_job, default_timeout=None, client_info=client_info,
+                self.create_job,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_job: gapic_v1.method.wrap_method(
-                self.get_job, default_timeout=None, client_info=client_info,
+                self.get_job,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.update_job: gapic_v1.method.wrap_method(
-                self.update_job, default_timeout=None, client_info=client_info,
+                self.update_job,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_jobs: gapic_v1.method.wrap_method(
-                self.list_jobs, default_timeout=None, client_info=client_info,
+                self.list_jobs,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.aggregated_list_jobs: gapic_v1.method.wrap_method(
                 self.aggregated_list_jobs,
@@ -144,19 +152,23 @@ class JobsV1Beta3Transport(abc.ABC):
                 client_info=client_info,
             ),
             self.check_active_jobs: gapic_v1.method.wrap_method(
-                self.check_active_jobs, default_timeout=None, client_info=client_info,
+                self.check_active_jobs,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.snapshot_job: gapic_v1.method.wrap_method(
-                self.snapshot_job, default_timeout=None, client_info=client_info,
+                self.snapshot_job,
+                default_timeout=None,
+                client_info=client_info,
             ),
         }
 
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

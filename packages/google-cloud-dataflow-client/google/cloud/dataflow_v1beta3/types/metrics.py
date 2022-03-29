@@ -71,9 +71,19 @@ class MetricStructuredName(proto.Message):
             PCollections in the SDK will have context['pcollection'] = .
     """
 
-    origin = proto.Field(proto.STRING, number=1,)
-    name = proto.Field(proto.STRING, number=2,)
-    context = proto.MapField(proto.STRING, proto.STRING, number=3,)
+    origin = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    context = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=3,
+    )
 
 
 class MetricUpdate(proto.Message):
@@ -138,17 +148,59 @@ class MetricUpdate(proto.Message):
             the metrics API.
     """
 
-    name = proto.Field(proto.MESSAGE, number=1, message="MetricStructuredName",)
-    kind = proto.Field(proto.STRING, number=2,)
-    cumulative = proto.Field(proto.BOOL, number=3,)
-    scalar = proto.Field(proto.MESSAGE, number=4, message=struct_pb2.Value,)
-    mean_sum = proto.Field(proto.MESSAGE, number=5, message=struct_pb2.Value,)
-    mean_count = proto.Field(proto.MESSAGE, number=6, message=struct_pb2.Value,)
-    set_ = proto.Field(proto.MESSAGE, number=7, message=struct_pb2.Value,)
-    distribution = proto.Field(proto.MESSAGE, number=11, message=struct_pb2.Value,)
-    gauge = proto.Field(proto.MESSAGE, number=12, message=struct_pb2.Value,)
-    internal = proto.Field(proto.MESSAGE, number=8, message=struct_pb2.Value,)
-    update_time = proto.Field(proto.MESSAGE, number=9, message=timestamp_pb2.Timestamp,)
+    name = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="MetricStructuredName",
+    )
+    kind = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    cumulative = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+    scalar = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=struct_pb2.Value,
+    )
+    mean_sum = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=struct_pb2.Value,
+    )
+    mean_count = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=struct_pb2.Value,
+    )
+    set_ = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=struct_pb2.Value,
+    )
+    distribution = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message=struct_pb2.Value,
+    )
+    gauge = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        message=struct_pb2.Value,
+    )
+    internal = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=struct_pb2.Value,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 class GetJobMetricsRequest(proto.Message):
@@ -169,10 +221,23 @@ class GetJobMetricsRequest(proto.Message):
             that contains the job specified by job_id.
     """
 
-    project_id = proto.Field(proto.STRING, number=1,)
-    job_id = proto.Field(proto.STRING, number=2,)
-    start_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
-    location = proto.Field(proto.STRING, number=4,)
+    project_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    job_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    start_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    location = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class JobMetrics(proto.Message):
@@ -192,8 +257,16 @@ class JobMetrics(proto.Message):
             All metrics for this job.
     """
 
-    metric_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
-    metrics = proto.RepeatedField(proto.MESSAGE, number=2, message="MetricUpdate",)
+    metric_time = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    metrics = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="MetricUpdate",
+    )
 
 
 class GetJobExecutionDetailsRequest(proto.Message):
@@ -220,11 +293,26 @@ class GetJobExecutionDetailsRequest(proto.Message):
             of results to be returned.
     """
 
-    project_id = proto.Field(proto.STRING, number=1,)
-    job_id = proto.Field(proto.STRING, number=2,)
-    location = proto.Field(proto.STRING, number=3,)
-    page_size = proto.Field(proto.INT32, number=4,)
-    page_token = proto.Field(proto.STRING, number=5,)
+    project_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    job_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    location = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=4,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class ProgressTimeseries(proto.Message):
@@ -249,11 +337,25 @@ class ProgressTimeseries(proto.Message):
                 The value of the point.
         """
 
-        time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
-        value = proto.Field(proto.DOUBLE, number=2,)
+        time = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=timestamp_pb2.Timestamp,
+        )
+        value = proto.Field(
+            proto.DOUBLE,
+            number=2,
+        )
 
-    current_progress = proto.Field(proto.DOUBLE, number=1,)
-    data_points = proto.RepeatedField(proto.MESSAGE, number=2, message=Point,)
+    current_progress = proto.Field(
+        proto.DOUBLE,
+        number=1,
+    )
+    data_points = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=Point,
+    )
 
 
 class StageSummary(proto.Message):
@@ -278,12 +380,35 @@ class StageSummary(proto.Message):
             Metrics for this stage.
     """
 
-    stage_id = proto.Field(proto.STRING, number=1,)
-    state = proto.Field(proto.ENUM, number=2, enum="ExecutionState",)
-    start_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
-    end_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
-    progress = proto.Field(proto.MESSAGE, number=5, message="ProgressTimeseries",)
-    metrics = proto.RepeatedField(proto.MESSAGE, number=6, message="MetricUpdate",)
+    stage_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum="ExecutionState",
+    )
+    start_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    progress = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message="ProgressTimeseries",
+    )
+    metrics = proto.RepeatedField(
+        proto.MESSAGE,
+        number=6,
+        message="MetricUpdate",
+    )
 
 
 class JobExecutionDetails(proto.Message):
@@ -302,8 +427,15 @@ class JobExecutionDetails(proto.Message):
     def raw_page(self):
         return self
 
-    stages = proto.RepeatedField(proto.MESSAGE, number=1, message="StageSummary",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    stages = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="StageSummary",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetStageExecutionDetailsRequest(proto.Message):
@@ -339,14 +471,40 @@ class GetStageExecutionDetailsRequest(proto.Message):
             start time.
     """
 
-    project_id = proto.Field(proto.STRING, number=1,)
-    job_id = proto.Field(proto.STRING, number=2,)
-    location = proto.Field(proto.STRING, number=3,)
-    stage_id = proto.Field(proto.STRING, number=4,)
-    page_size = proto.Field(proto.INT32, number=5,)
-    page_token = proto.Field(proto.STRING, number=6,)
-    start_time = proto.Field(proto.MESSAGE, number=7, message=timestamp_pb2.Timestamp,)
-    end_time = proto.Field(proto.MESSAGE, number=8, message=timestamp_pb2.Timestamp,)
+    project_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    job_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    location = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    stage_id = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=5,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    start_time = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 class WorkItemDetails(proto.Message):
@@ -372,13 +530,39 @@ class WorkItemDetails(proto.Message):
             Metrics for this work item.
     """
 
-    task_id = proto.Field(proto.STRING, number=1,)
-    attempt_id = proto.Field(proto.STRING, number=2,)
-    start_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
-    end_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
-    state = proto.Field(proto.ENUM, number=5, enum="ExecutionState",)
-    progress = proto.Field(proto.MESSAGE, number=6, message="ProgressTimeseries",)
-    metrics = proto.RepeatedField(proto.MESSAGE, number=7, message="MetricUpdate",)
+    task_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    attempt_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    start_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum="ExecutionState",
+    )
+    progress = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message="ProgressTimeseries",
+    )
+    metrics = proto.RepeatedField(
+        proto.MESSAGE,
+        number=7,
+        message="MetricUpdate",
+    )
 
 
 class WorkerDetails(proto.Message):
@@ -392,9 +576,14 @@ class WorkerDetails(proto.Message):
             by time.
     """
 
-    worker_name = proto.Field(proto.STRING, number=1,)
+    worker_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     work_items = proto.RepeatedField(
-        proto.MESSAGE, number=2, message="WorkItemDetails",
+        proto.MESSAGE,
+        number=2,
+        message="WorkItemDetails",
     )
 
 
@@ -414,8 +603,15 @@ class StageExecutionDetails(proto.Message):
     def raw_page(self):
         return self
 
-    workers = proto.RepeatedField(proto.MESSAGE, number=1, message="WorkerDetails",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    workers = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="WorkerDetails",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

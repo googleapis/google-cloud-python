@@ -56,9 +56,19 @@ class PubsubSnapshotMetadata(proto.Message):
             The expire time of the Pubsub snapshot.
     """
 
-    topic_name = proto.Field(proto.STRING, number=1,)
-    snapshot_name = proto.Field(proto.STRING, number=2,)
-    expire_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
+    topic_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    snapshot_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    expire_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 class Snapshot(proto.Message):
@@ -91,20 +101,50 @@ class Snapshot(proto.Message):
             e.g., "us-central1".
     """
 
-    id = proto.Field(proto.STRING, number=1,)
-    project_id = proto.Field(proto.STRING, number=2,)
-    source_job_id = proto.Field(proto.STRING, number=3,)
+    id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    project_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    source_job_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
     creation_time = proto.Field(
-        proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
     )
-    ttl = proto.Field(proto.MESSAGE, number=5, message=duration_pb2.Duration,)
-    state = proto.Field(proto.ENUM, number=6, enum="SnapshotState",)
+    ttl = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=duration_pb2.Duration,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum="SnapshotState",
+    )
     pubsub_metadata = proto.RepeatedField(
-        proto.MESSAGE, number=7, message="PubsubSnapshotMetadata",
+        proto.MESSAGE,
+        number=7,
+        message="PubsubSnapshotMetadata",
     )
-    description = proto.Field(proto.STRING, number=8,)
-    disk_size_bytes = proto.Field(proto.INT64, number=9,)
-    region = proto.Field(proto.STRING, number=10,)
+    description = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    disk_size_bytes = proto.Field(
+        proto.INT64,
+        number=9,
+    )
+    region = proto.Field(
+        proto.STRING,
+        number=10,
+    )
 
 
 class GetSnapshotRequest(proto.Message):
@@ -120,9 +160,18 @@ class GetSnapshotRequest(proto.Message):
             The location that contains this snapshot.
     """
 
-    project_id = proto.Field(proto.STRING, number=1,)
-    snapshot_id = proto.Field(proto.STRING, number=2,)
-    location = proto.Field(proto.STRING, number=3,)
+    project_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    snapshot_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    location = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class DeleteSnapshotRequest(proto.Message):
@@ -138,14 +187,22 @@ class DeleteSnapshotRequest(proto.Message):
             The location that contains this snapshot.
     """
 
-    project_id = proto.Field(proto.STRING, number=1,)
-    snapshot_id = proto.Field(proto.STRING, number=2,)
-    location = proto.Field(proto.STRING, number=3,)
+    project_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    snapshot_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    location = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class DeleteSnapshotResponse(proto.Message):
-    r"""Response from deleting a snapshot.
-    """
+    r"""Response from deleting a snapshot."""
 
 
 class ListSnapshotsRequest(proto.Message):
@@ -161,9 +218,18 @@ class ListSnapshotsRequest(proto.Message):
             The location to list snapshots in.
     """
 
-    project_id = proto.Field(proto.STRING, number=1,)
-    job_id = proto.Field(proto.STRING, number=3,)
-    location = proto.Field(proto.STRING, number=2,)
+    project_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    job_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    location = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class ListSnapshotsResponse(proto.Message):
@@ -174,7 +240,11 @@ class ListSnapshotsResponse(proto.Message):
             Returned snapshots.
     """
 
-    snapshots = proto.RepeatedField(proto.MESSAGE, number=1, message="Snapshot",)
+    snapshots = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Snapshot",
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
