@@ -41,8 +41,15 @@ class PublishChannelConnectionEventsRequest(proto.Message):
             other types are allowed.
     """
 
-    channel_connection = proto.Field(proto.STRING, number=1,)
-    events = proto.RepeatedField(proto.MESSAGE, number=2, message=any_pb2.Any,)
+    channel_connection = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    events = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=any_pb2.Any,
+    )
 
 
 class PublishChannelConnectionEventsResponse(proto.Message):
