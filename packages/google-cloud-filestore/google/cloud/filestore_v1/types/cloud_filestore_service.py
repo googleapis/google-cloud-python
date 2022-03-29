@@ -77,10 +77,23 @@ class NetworkConfig(proto.Message):
         ADDRESS_MODE_UNSPECIFIED = 0
         MODE_IPV4 = 1
 
-    network = proto.Field(proto.STRING, number=1,)
-    modes = proto.RepeatedField(proto.ENUM, number=3, enum=AddressMode,)
-    reserved_ip_range = proto.Field(proto.STRING, number=4,)
-    ip_addresses = proto.RepeatedField(proto.STRING, number=5,)
+    network = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    modes = proto.RepeatedField(
+        proto.ENUM,
+        number=3,
+        enum=AddressMode,
+    )
+    reserved_ip_range = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    ip_addresses = proto.RepeatedField(
+        proto.STRING,
+        number=5,
+    )
 
 
 class FileShareConfig(proto.Message):
@@ -107,11 +120,23 @@ class FileShareConfig(proto.Message):
             share.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    capacity_gb = proto.Field(proto.INT64, number=2,)
-    source_backup = proto.Field(proto.STRING, number=8, oneof="source",)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    capacity_gb = proto.Field(
+        proto.INT64,
+        number=2,
+    )
+    source_backup = proto.Field(
+        proto.STRING,
+        number=8,
+        oneof="source",
+    )
     nfs_export_options = proto.RepeatedField(
-        proto.MESSAGE, number=7, message="NfsExportOptions",
+        proto.MESSAGE,
+        number=7,
+        message="NfsExportOptions",
     )
 
 
@@ -160,11 +185,28 @@ class NfsExportOptions(proto.Message):
         NO_ROOT_SQUASH = 1
         ROOT_SQUASH = 2
 
-    ip_ranges = proto.RepeatedField(proto.STRING, number=1,)
-    access_mode = proto.Field(proto.ENUM, number=2, enum=AccessMode,)
-    squash_mode = proto.Field(proto.ENUM, number=3, enum=SquashMode,)
-    anon_uid = proto.Field(proto.INT64, number=4,)
-    anon_gid = proto.Field(proto.INT64, number=5,)
+    ip_ranges = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
+    access_mode = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=AccessMode,
+    )
+    squash_mode = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=SquashMode,
+    )
+    anon_uid = proto.Field(
+        proto.INT64,
+        number=4,
+    )
+    anon_gid = proto.Field(
+        proto.INT64,
+        number=5,
+    )
 
 
 class Instance(proto.Message):
@@ -226,20 +268,56 @@ class Instance(proto.Message):
         BASIC_SSD = 4
         HIGH_SCALE_SSD = 5
 
-    name = proto.Field(proto.STRING, number=1,)
-    description = proto.Field(proto.STRING, number=2,)
-    state = proto.Field(proto.ENUM, number=5, enum=State,)
-    status_message = proto.Field(proto.STRING, number=6,)
-    create_time = proto.Field(proto.MESSAGE, number=7, message=timestamp_pb2.Timestamp,)
-    tier = proto.Field(proto.ENUM, number=8, enum=Tier,)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=9,)
-    file_shares = proto.RepeatedField(
-        proto.MESSAGE, number=10, message="FileShareConfig",
+    name = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    networks = proto.RepeatedField(proto.MESSAGE, number=11, message="NetworkConfig",)
-    etag = proto.Field(proto.STRING, number=12,)
+    description = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum=State,
+    )
+    status_message = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=timestamp_pb2.Timestamp,
+    )
+    tier = proto.Field(
+        proto.ENUM,
+        number=8,
+        enum=Tier,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=9,
+    )
+    file_shares = proto.RepeatedField(
+        proto.MESSAGE,
+        number=10,
+        message="FileShareConfig",
+    )
+    networks = proto.RepeatedField(
+        proto.MESSAGE,
+        number=11,
+        message="NetworkConfig",
+    )
+    etag = proto.Field(
+        proto.STRING,
+        number=12,
+    )
     satisfies_pzs = proto.Field(
-        proto.MESSAGE, number=13, message=wrappers_pb2.BoolValue,
+        proto.MESSAGE,
+        number=13,
+        message=wrappers_pb2.BoolValue,
     )
 
 
@@ -261,9 +339,19 @@ class CreateInstanceRequest(proto.Message):
             resource][google.cloud.filestore.v1.Instance]
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    instance_id = proto.Field(proto.STRING, number=2,)
-    instance = proto.Field(proto.MESSAGE, number=3, message="Instance",)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    instance_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    instance = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="Instance",
+    )
 
 
 class GetInstanceRequest(proto.Message):
@@ -275,7 +363,10 @@ class GetInstanceRequest(proto.Message):
             ``projects/{project_id}/locations/{location}/instances/{instance_id}``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class UpdateInstanceRequest(proto.Message):
@@ -295,9 +386,15 @@ class UpdateInstanceRequest(proto.Message):
     """
 
     update_mask = proto.Field(
-        proto.MESSAGE, number=1, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=1,
+        message=field_mask_pb2.FieldMask,
     )
-    instance = proto.Field(proto.MESSAGE, number=2, message="Instance",)
+    instance = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="Instance",
+    )
 
 
 class RestoreInstanceRequest(proto.Message):
@@ -322,9 +419,19 @@ class RestoreInstanceRequest(proto.Message):
             This field is a member of `oneof`_ ``source``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    file_share = proto.Field(proto.STRING, number=2,)
-    source_backup = proto.Field(proto.STRING, number=3, oneof="source",)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    file_share = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    source_backup = proto.Field(
+        proto.STRING,
+        number=3,
+        oneof="source",
+    )
 
 
 class DeleteInstanceRequest(proto.Message):
@@ -336,7 +443,10 @@ class DeleteInstanceRequest(proto.Message):
             ``projects/{project_id}/locations/{location}/instances/{instance_id}``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListInstancesRequest(proto.Message):
@@ -362,11 +472,26 @@ class ListInstancesRequest(proto.Message):
             List filter.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    order_by = proto.Field(proto.STRING, number=4,)
-    filter = proto.Field(proto.STRING, number=5,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    order_by = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class ListInstancesResponse(proto.Message):
@@ -394,9 +519,19 @@ class ListInstancesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    instances = proto.RepeatedField(proto.MESSAGE, number=1, message="Instance",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
-    unreachable = proto.RepeatedField(proto.STRING, number=3,)
+    instances = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Instance",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 class Backup(proto.Message):
@@ -457,19 +592,58 @@ class Backup(proto.Message):
         READY = 3
         DELETING = 4
 
-    name = proto.Field(proto.STRING, number=1,)
-    description = proto.Field(proto.STRING, number=2,)
-    state = proto.Field(proto.ENUM, number=3, enum=State,)
-    create_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=5,)
-    capacity_gb = proto.Field(proto.INT64, number=6,)
-    storage_bytes = proto.Field(proto.INT64, number=7,)
-    source_instance = proto.Field(proto.STRING, number=8,)
-    source_file_share = proto.Field(proto.STRING, number=9,)
-    source_instance_tier = proto.Field(proto.ENUM, number=10, enum="Instance.Tier",)
-    download_bytes = proto.Field(proto.INT64, number=11,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=State,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=5,
+    )
+    capacity_gb = proto.Field(
+        proto.INT64,
+        number=6,
+    )
+    storage_bytes = proto.Field(
+        proto.INT64,
+        number=7,
+    )
+    source_instance = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    source_file_share = proto.Field(
+        proto.STRING,
+        number=9,
+    )
+    source_instance_tier = proto.Field(
+        proto.ENUM,
+        number=10,
+        enum="Instance.Tier",
+    )
+    download_bytes = proto.Field(
+        proto.INT64,
+        number=11,
+    )
     satisfies_pzs = proto.Field(
-        proto.MESSAGE, number=12, message=wrappers_pb2.BoolValue,
+        proto.MESSAGE,
+        number=12,
+        message=wrappers_pb2.BoolValue,
     )
 
 
@@ -495,9 +669,19 @@ class CreateBackupRequest(proto.Message):
             trigger an INVALID_ARGUMENT error.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    backup = proto.Field(proto.MESSAGE, number=2, message="Backup",)
-    backup_id = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    backup = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="Backup",
+    )
+    backup_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class DeleteBackupRequest(proto.Message):
@@ -509,7 +693,10 @@ class DeleteBackupRequest(proto.Message):
             ``projects/{project_number}/locations/{location}/backups/{backup_id}``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class UpdateBackupRequest(proto.Message):
@@ -525,9 +712,15 @@ class UpdateBackupRequest(proto.Message):
             one path must be supplied in this field.
     """
 
-    backup = proto.Field(proto.MESSAGE, number=1, message="Backup",)
+    backup = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="Backup",
+    )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -540,7 +733,10 @@ class GetBackupRequest(proto.Message):
             ``projects/{project_number}/locations/{location}/backups/{backup_id}``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListBackupsRequest(proto.Message):
@@ -566,11 +762,26 @@ class ListBackupsRequest(proto.Message):
             List filter.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    order_by = proto.Field(proto.STRING, number=4,)
-    filter = proto.Field(proto.STRING, number=5,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    order_by = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class ListBackupsResponse(proto.Message):
@@ -597,9 +808,19 @@ class ListBackupsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    backups = proto.RepeatedField(proto.MESSAGE, number=1, message="Backup",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
-    unreachable = proto.RepeatedField(proto.STRING, number=3,)
+    backups = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Backup",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

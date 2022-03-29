@@ -31,7 +31,9 @@ from google.longrunning import operations_pb2  # type: ignore
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-filestore",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-filestore",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
@@ -149,16 +151,24 @@ class CloudFilestoreManagerTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.create_instance: gapic_v1.method.wrap_method(
-                self.create_instance, default_timeout=60000.0, client_info=client_info,
+                self.create_instance,
+                default_timeout=60000.0,
+                client_info=client_info,
             ),
             self.update_instance: gapic_v1.method.wrap_method(
-                self.update_instance, default_timeout=14400.0, client_info=client_info,
+                self.update_instance,
+                default_timeout=14400.0,
+                client_info=client_info,
             ),
             self.restore_instance: gapic_v1.method.wrap_method(
-                self.restore_instance, default_timeout=60000.0, client_info=client_info,
+                self.restore_instance,
+                default_timeout=60000.0,
+                client_info=client_info,
             ),
             self.delete_instance: gapic_v1.method.wrap_method(
-                self.delete_instance, default_timeout=600.0, client_info=client_info,
+                self.delete_instance,
+                default_timeout=600.0,
+                client_info=client_info,
             ),
             self.list_backups: gapic_v1.method.wrap_method(
                 self.list_backups,
@@ -189,22 +199,28 @@ class CloudFilestoreManagerTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.create_backup: gapic_v1.method.wrap_method(
-                self.create_backup, default_timeout=60000.0, client_info=client_info,
+                self.create_backup,
+                default_timeout=60000.0,
+                client_info=client_info,
             ),
             self.delete_backup: gapic_v1.method.wrap_method(
-                self.delete_backup, default_timeout=600.0, client_info=client_info,
+                self.delete_backup,
+                default_timeout=600.0,
+                client_info=client_info,
             ),
             self.update_backup: gapic_v1.method.wrap_method(
-                self.update_backup, default_timeout=600.0, client_info=client_info,
+                self.update_backup,
+                default_timeout=600.0,
+                client_info=client_info,
             ),
         }
 
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 
