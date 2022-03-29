@@ -48,9 +48,14 @@ class CreateApplicationRequest(proto.Message):
             Required. The application to be created.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     application = proto.Field(
-        proto.MESSAGE, number=2, message=gct_application.Application,
+        proto.MESSAGE,
+        number=2,
+        message=gct_application.Application,
     )
 
 
@@ -68,7 +73,10 @@ class GetApplicationRequest(proto.Message):
             "projects/foo/tenants/bar/profiles/baz/applications/qux".
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class UpdateApplicationRequest(proto.Message):
@@ -94,10 +102,14 @@ class UpdateApplicationRequest(proto.Message):
     """
 
     application = proto.Field(
-        proto.MESSAGE, number=1, message=gct_application.Application,
+        proto.MESSAGE,
+        number=1,
+        message=gct_application.Application,
     )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -115,7 +127,10 @@ class DeleteApplicationRequest(proto.Message):
             "projects/foo/tenants/bar/profiles/baz/applications/qux".
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListApplicationsRequest(proto.Message):
@@ -138,9 +153,18 @@ class ListApplicationsRequest(proto.Message):
             non-positive number is provided.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_token = proto.Field(proto.STRING, number=2,)
-    page_size = proto.Field(proto.INT32, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=3,
+    )
 
 
 class ListApplicationsResponse(proto.Message):
@@ -161,10 +185,19 @@ class ListApplicationsResponse(proto.Message):
         return self
 
     applications = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=gct_application.Application,
+        proto.MESSAGE,
+        number=1,
+        message=gct_application.Application,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
-    metadata = proto.Field(proto.MESSAGE, number=3, message=common.ResponseMetadata,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    metadata = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=common.ResponseMetadata,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

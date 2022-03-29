@@ -99,7 +99,11 @@ def test__get_default_mtls_endpoint():
 
 
 @pytest.mark.parametrize(
-    "client_class", [ProfileServiceClient, ProfileServiceAsyncClient,]
+    "client_class",
+    [
+        ProfileServiceClient,
+        ProfileServiceAsyncClient,
+    ],
 )
 def test_profile_service_client_from_service_account_info(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -141,7 +145,11 @@ def test_profile_service_client_service_account_always_use_jwt(
 
 
 @pytest.mark.parametrize(
-    "client_class", [ProfileServiceClient, ProfileServiceAsyncClient,]
+    "client_class",
+    [
+        ProfileServiceClient,
+        ProfileServiceAsyncClient,
+    ],
 )
 def test_profile_service_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -505,7 +513,9 @@ def test_profile_service_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -648,10 +658,17 @@ def test_profile_service_client_create_channel_credentials_file(
         )
 
 
-@pytest.mark.parametrize("request_type", [profile_service.ListProfilesRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        profile_service.ListProfilesRequest,
+        dict,
+    ],
+)
 def test_list_profiles(request_type, transport: str = "grpc"):
     client = ProfileServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -680,7 +697,8 @@ def test_list_profiles_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ProfileServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -696,7 +714,8 @@ async def test_list_profiles_async(
     transport: str = "grpc_asyncio", request_type=profile_service.ListProfilesRequest
 ):
     client = ProfileServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -729,7 +748,9 @@ async def test_list_profiles_async_from_dict():
 
 
 def test_list_profiles_field_headers():
-    client = ProfileServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ProfileServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -749,7 +770,10 @@ def test_list_profiles_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -778,11 +802,16 @@ async def test_list_profiles_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_profiles_flattened():
-    client = ProfileServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ProfileServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_profiles), "__call__") as call:
@@ -790,7 +819,9 @@ def test_list_profiles_flattened():
         call.return_value = profile_service.ListProfilesResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_profiles(parent="parent_value",)
+        client.list_profiles(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -802,13 +833,16 @@ def test_list_profiles_flattened():
 
 
 def test_list_profiles_flattened_error():
-    client = ProfileServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ProfileServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_profiles(
-            profile_service.ListProfilesRequest(), parent="parent_value",
+            profile_service.ListProfilesRequest(),
+            parent="parent_value",
         )
 
 
@@ -828,7 +862,9 @@ async def test_list_profiles_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_profiles(parent="parent_value",)
+        response = await client.list_profiles(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -849,13 +885,15 @@ async def test_list_profiles_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_profiles(
-            profile_service.ListProfilesRequest(), parent="parent_value",
+            profile_service.ListProfilesRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_profiles_pager(transport_name: str = "grpc"):
     client = ProfileServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -863,15 +901,28 @@ def test_list_profiles_pager(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             profile_service.ListProfilesResponse(
-                profiles=[profile.Profile(), profile.Profile(), profile.Profile(),],
+                profiles=[
+                    profile.Profile(),
+                    profile.Profile(),
+                    profile.Profile(),
+                ],
                 next_page_token="abc",
             ),
-            profile_service.ListProfilesResponse(profiles=[], next_page_token="def",),
             profile_service.ListProfilesResponse(
-                profiles=[profile.Profile(),], next_page_token="ghi",
+                profiles=[],
+                next_page_token="def",
             ),
             profile_service.ListProfilesResponse(
-                profiles=[profile.Profile(), profile.Profile(),],
+                profiles=[
+                    profile.Profile(),
+                ],
+                next_page_token="ghi",
+            ),
+            profile_service.ListProfilesResponse(
+                profiles=[
+                    profile.Profile(),
+                    profile.Profile(),
+                ],
             ),
             RuntimeError,
         )
@@ -891,7 +942,8 @@ def test_list_profiles_pager(transport_name: str = "grpc"):
 
 def test_list_profiles_pages(transport_name: str = "grpc"):
     client = ProfileServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -899,15 +951,28 @@ def test_list_profiles_pages(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             profile_service.ListProfilesResponse(
-                profiles=[profile.Profile(), profile.Profile(), profile.Profile(),],
+                profiles=[
+                    profile.Profile(),
+                    profile.Profile(),
+                    profile.Profile(),
+                ],
                 next_page_token="abc",
             ),
-            profile_service.ListProfilesResponse(profiles=[], next_page_token="def",),
             profile_service.ListProfilesResponse(
-                profiles=[profile.Profile(),], next_page_token="ghi",
+                profiles=[],
+                next_page_token="def",
             ),
             profile_service.ListProfilesResponse(
-                profiles=[profile.Profile(), profile.Profile(),],
+                profiles=[
+                    profile.Profile(),
+                ],
+                next_page_token="ghi",
+            ),
+            profile_service.ListProfilesResponse(
+                profiles=[
+                    profile.Profile(),
+                    profile.Profile(),
+                ],
             ),
             RuntimeError,
         )
@@ -918,7 +983,9 @@ def test_list_profiles_pages(transport_name: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_list_profiles_async_pager():
-    client = ProfileServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = ProfileServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -927,19 +994,34 @@ async def test_list_profiles_async_pager():
         # Set the response to a series of pages.
         call.side_effect = (
             profile_service.ListProfilesResponse(
-                profiles=[profile.Profile(), profile.Profile(), profile.Profile(),],
+                profiles=[
+                    profile.Profile(),
+                    profile.Profile(),
+                    profile.Profile(),
+                ],
                 next_page_token="abc",
             ),
-            profile_service.ListProfilesResponse(profiles=[], next_page_token="def",),
             profile_service.ListProfilesResponse(
-                profiles=[profile.Profile(),], next_page_token="ghi",
+                profiles=[],
+                next_page_token="def",
             ),
             profile_service.ListProfilesResponse(
-                profiles=[profile.Profile(), profile.Profile(),],
+                profiles=[
+                    profile.Profile(),
+                ],
+                next_page_token="ghi",
+            ),
+            profile_service.ListProfilesResponse(
+                profiles=[
+                    profile.Profile(),
+                    profile.Profile(),
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.list_profiles(request={},)
+        async_pager = await client.list_profiles(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -951,7 +1033,9 @@ async def test_list_profiles_async_pager():
 
 @pytest.mark.asyncio
 async def test_list_profiles_async_pages():
-    client = ProfileServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = ProfileServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -960,15 +1044,28 @@ async def test_list_profiles_async_pages():
         # Set the response to a series of pages.
         call.side_effect = (
             profile_service.ListProfilesResponse(
-                profiles=[profile.Profile(), profile.Profile(), profile.Profile(),],
+                profiles=[
+                    profile.Profile(),
+                    profile.Profile(),
+                    profile.Profile(),
+                ],
                 next_page_token="abc",
             ),
-            profile_service.ListProfilesResponse(profiles=[], next_page_token="def",),
             profile_service.ListProfilesResponse(
-                profiles=[profile.Profile(),], next_page_token="ghi",
+                profiles=[],
+                next_page_token="def",
             ),
             profile_service.ListProfilesResponse(
-                profiles=[profile.Profile(), profile.Profile(),],
+                profiles=[
+                    profile.Profile(),
+                ],
+                next_page_token="ghi",
+            ),
+            profile_service.ListProfilesResponse(
+                profiles=[
+                    profile.Profile(),
+                    profile.Profile(),
+                ],
             ),
             RuntimeError,
         )
@@ -979,10 +1076,17 @@ async def test_list_profiles_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [profile_service.CreateProfileRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        profile_service.CreateProfileRequest,
+        dict,
+    ],
+)
 def test_create_profile(request_type, transport: str = "grpc"):
     client = ProfileServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1027,7 +1131,8 @@ def test_create_profile_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ProfileServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1043,7 +1148,8 @@ async def test_create_profile_async(
     transport: str = "grpc_asyncio", request_type=profile_service.CreateProfileRequest
 ):
     client = ProfileServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1092,7 +1198,9 @@ async def test_create_profile_async_from_dict():
 
 
 def test_create_profile_field_headers():
-    client = ProfileServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ProfileServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1112,7 +1220,10 @@ def test_create_profile_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1139,11 +1250,16 @@ async def test_create_profile_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_profile_flattened():
-    client = ProfileServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ProfileServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_profile), "__call__") as call:
@@ -1152,7 +1268,8 @@ def test_create_profile_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.create_profile(
-            parent="parent_value", profile=gct_profile.Profile(name="name_value"),
+            parent="parent_value",
+            profile=gct_profile.Profile(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -1168,7 +1285,9 @@ def test_create_profile_flattened():
 
 
 def test_create_profile_flattened_error():
-    client = ProfileServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ProfileServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1195,7 +1314,8 @@ async def test_create_profile_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.create_profile(
-            parent="parent_value", profile=gct_profile.Profile(name="name_value"),
+            parent="parent_value",
+            profile=gct_profile.Profile(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -1226,10 +1346,17 @@ async def test_create_profile_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [profile_service.GetProfileRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        profile_service.GetProfileRequest,
+        dict,
+    ],
+)
 def test_get_profile(request_type, transport: str = "grpc"):
     client = ProfileServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1274,7 +1401,8 @@ def test_get_profile_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ProfileServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1290,7 +1418,8 @@ async def test_get_profile_async(
     transport: str = "grpc_asyncio", request_type=profile_service.GetProfileRequest
 ):
     client = ProfileServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1339,7 +1468,9 @@ async def test_get_profile_async_from_dict():
 
 
 def test_get_profile_field_headers():
-    client = ProfileServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ProfileServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1359,7 +1490,10 @@ def test_get_profile_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1386,11 +1520,16 @@ async def test_get_profile_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_profile_flattened():
-    client = ProfileServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ProfileServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_profile), "__call__") as call:
@@ -1398,7 +1537,9 @@ def test_get_profile_flattened():
         call.return_value = profile.Profile()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_profile(name="name_value",)
+        client.get_profile(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1410,13 +1551,16 @@ def test_get_profile_flattened():
 
 
 def test_get_profile_flattened_error():
-    client = ProfileServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ProfileServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_profile(
-            profile_service.GetProfileRequest(), name="name_value",
+            profile_service.GetProfileRequest(),
+            name="name_value",
         )
 
 
@@ -1434,7 +1578,9 @@ async def test_get_profile_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(profile.Profile())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_profile(name="name_value",)
+        response = await client.get_profile(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1455,14 +1601,22 @@ async def test_get_profile_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_profile(
-            profile_service.GetProfileRequest(), name="name_value",
+            profile_service.GetProfileRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [profile_service.UpdateProfileRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        profile_service.UpdateProfileRequest,
+        dict,
+    ],
+)
 def test_update_profile(request_type, transport: str = "grpc"):
     client = ProfileServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1507,7 +1661,8 @@ def test_update_profile_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ProfileServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1523,7 +1678,8 @@ async def test_update_profile_async(
     transport: str = "grpc_asyncio", request_type=profile_service.UpdateProfileRequest
 ):
     client = ProfileServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1572,7 +1728,9 @@ async def test_update_profile_async_from_dict():
 
 
 def test_update_profile_field_headers():
-    client = ProfileServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ProfileServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1592,9 +1750,10 @@ def test_update_profile_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "profile.name=profile.name/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "profile.name=profile.name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1621,13 +1780,16 @@ async def test_update_profile_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "profile.name=profile.name/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "profile.name=profile.name/value",
+    ) in kw["metadata"]
 
 
 def test_update_profile_flattened():
-    client = ProfileServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ProfileServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_profile), "__call__") as call:
@@ -1635,7 +1797,9 @@ def test_update_profile_flattened():
         call.return_value = gct_profile.Profile()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.update_profile(profile=gct_profile.Profile(name="name_value"),)
+        client.update_profile(
+            profile=gct_profile.Profile(name="name_value"),
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1647,7 +1811,9 @@ def test_update_profile_flattened():
 
 
 def test_update_profile_flattened_error():
-    client = ProfileServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ProfileServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1700,10 +1866,17 @@ async def test_update_profile_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [profile_service.DeleteProfileRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        profile_service.DeleteProfileRequest,
+        dict,
+    ],
+)
 def test_delete_profile(request_type, transport: str = "grpc"):
     client = ProfileServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1729,7 +1902,8 @@ def test_delete_profile_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ProfileServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1745,7 +1919,8 @@ async def test_delete_profile_async(
     transport: str = "grpc_asyncio", request_type=profile_service.DeleteProfileRequest
 ):
     client = ProfileServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1773,7 +1948,9 @@ async def test_delete_profile_async_from_dict():
 
 
 def test_delete_profile_field_headers():
-    client = ProfileServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ProfileServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1793,7 +1970,10 @@ def test_delete_profile_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1820,11 +2000,16 @@ async def test_delete_profile_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_profile_flattened():
-    client = ProfileServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ProfileServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_profile), "__call__") as call:
@@ -1832,7 +2017,9 @@ def test_delete_profile_flattened():
         call.return_value = None
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_profile(name="name_value",)
+        client.delete_profile(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1844,13 +2031,16 @@ def test_delete_profile_flattened():
 
 
 def test_delete_profile_flattened_error():
-    client = ProfileServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ProfileServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_profile(
-            profile_service.DeleteProfileRequest(), name="name_value",
+            profile_service.DeleteProfileRequest(),
+            name="name_value",
         )
 
 
@@ -1868,7 +2058,9 @@ async def test_delete_profile_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_profile(name="name_value",)
+        response = await client.delete_profile(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1889,14 +2081,22 @@ async def test_delete_profile_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_profile(
-            profile_service.DeleteProfileRequest(), name="name_value",
+            profile_service.DeleteProfileRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [profile_service.SearchProfilesRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        profile_service.SearchProfilesRequest,
+        dict,
+    ],
+)
 def test_search_profiles(request_type, transport: str = "grpc"):
     client = ProfileServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1929,7 +2129,8 @@ def test_search_profiles_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ProfileServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1945,7 +2146,8 @@ async def test_search_profiles_async(
     transport: str = "grpc_asyncio", request_type=profile_service.SearchProfilesRequest
 ):
     client = ProfileServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1982,7 +2184,9 @@ async def test_search_profiles_async_from_dict():
 
 
 def test_search_profiles_field_headers():
-    client = ProfileServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ProfileServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2002,7 +2206,10 @@ def test_search_profiles_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2031,12 +2238,16 @@ async def test_search_profiles_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_search_profiles_pager(transport_name: str = "grpc"):
     client = ProfileServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2052,10 +2263,13 @@ def test_search_profiles_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             profile_service.SearchProfilesResponse(
-                histogram_query_results=[], next_page_token="def",
+                histogram_query_results=[],
+                next_page_token="def",
             ),
             profile_service.SearchProfilesResponse(
-                histogram_query_results=[histogram.HistogramQueryResult(),],
+                histogram_query_results=[
+                    histogram.HistogramQueryResult(),
+                ],
                 next_page_token="ghi",
             ),
             profile_service.SearchProfilesResponse(
@@ -2082,7 +2296,8 @@ def test_search_profiles_pager(transport_name: str = "grpc"):
 
 def test_search_profiles_pages(transport_name: str = "grpc"):
     client = ProfileServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2098,10 +2313,13 @@ def test_search_profiles_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             profile_service.SearchProfilesResponse(
-                histogram_query_results=[], next_page_token="def",
+                histogram_query_results=[],
+                next_page_token="def",
             ),
             profile_service.SearchProfilesResponse(
-                histogram_query_results=[histogram.HistogramQueryResult(),],
+                histogram_query_results=[
+                    histogram.HistogramQueryResult(),
+                ],
                 next_page_token="ghi",
             ),
             profile_service.SearchProfilesResponse(
@@ -2119,7 +2337,9 @@ def test_search_profiles_pages(transport_name: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_search_profiles_async_pager():
-    client = ProfileServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = ProfileServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2136,10 +2356,13 @@ async def test_search_profiles_async_pager():
                 next_page_token="abc",
             ),
             profile_service.SearchProfilesResponse(
-                histogram_query_results=[], next_page_token="def",
+                histogram_query_results=[],
+                next_page_token="def",
             ),
             profile_service.SearchProfilesResponse(
-                histogram_query_results=[histogram.HistogramQueryResult(),],
+                histogram_query_results=[
+                    histogram.HistogramQueryResult(),
+                ],
                 next_page_token="ghi",
             ),
             profile_service.SearchProfilesResponse(
@@ -2150,7 +2373,9 @@ async def test_search_profiles_async_pager():
             ),
             RuntimeError,
         )
-        async_pager = await client.search_profiles(request={},)
+        async_pager = await client.search_profiles(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -2162,7 +2387,9 @@ async def test_search_profiles_async_pager():
 
 @pytest.mark.asyncio
 async def test_search_profiles_async_pages():
-    client = ProfileServiceAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = ProfileServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2179,10 +2406,13 @@ async def test_search_profiles_async_pages():
                 next_page_token="abc",
             ),
             profile_service.SearchProfilesResponse(
-                histogram_query_results=[], next_page_token="def",
+                histogram_query_results=[],
+                next_page_token="def",
             ),
             profile_service.SearchProfilesResponse(
-                histogram_query_results=[histogram.HistogramQueryResult(),],
+                histogram_query_results=[
+                    histogram.HistogramQueryResult(),
+                ],
                 next_page_token="ghi",
             ),
             profile_service.SearchProfilesResponse(
@@ -2207,7 +2437,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = ProfileServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -2227,7 +2458,10 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = ProfileServiceClient(client_options=options, transport=transport,)
+        client = ProfileServiceClient(
+            client_options=options,
+            transport=transport,
+        )
 
     # It is an error to provide an api_key and a credential.
     options = mock.Mock()
@@ -2243,7 +2477,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = ProfileServiceClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -2288,8 +2523,13 @@ def test_transport_adc(transport_class):
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
-    client = ProfileServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
-    assert isinstance(client.transport, transports.ProfileServiceGrpcTransport,)
+    client = ProfileServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    assert isinstance(
+        client.transport,
+        transports.ProfileServiceGrpcTransport,
+    )
 
 
 def test_profile_service_base_transport_error():
@@ -2339,7 +2579,8 @@ def test_profile_service_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.ProfileServiceTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -2507,7 +2748,8 @@ def test_profile_service_grpc_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.ProfileServiceGrpcTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -2519,7 +2761,8 @@ def test_profile_service_grpc_asyncio_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.ProfileServiceGrpcAsyncIOTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -2631,7 +2874,9 @@ def test_profile_path():
     tenant = "clam"
     profile = "whelk"
     expected = "projects/{project}/tenants/{tenant}/profiles/{profile}".format(
-        project=project, tenant=tenant, profile=profile,
+        project=project,
+        tenant=tenant,
+        profile=profile,
     )
     actual = ProfileServiceClient.profile_path(project, tenant, profile)
     assert expected == actual
@@ -2654,7 +2899,8 @@ def test_tenant_path():
     project = "cuttlefish"
     tenant = "mussel"
     expected = "projects/{project}/tenants/{tenant}".format(
-        project=project, tenant=tenant,
+        project=project,
+        tenant=tenant,
     )
     actual = ProfileServiceClient.tenant_path(project, tenant)
     assert expected == actual
@@ -2694,7 +2940,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "squid"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = ProfileServiceClient.common_folder_path(folder)
     assert expected == actual
 
@@ -2712,7 +2960,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "whelk"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = ProfileServiceClient.common_organization_path(organization)
     assert expected == actual
 
@@ -2730,7 +2980,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "oyster"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = ProfileServiceClient.common_project_path(project)
     assert expected == actual
 
@@ -2750,7 +3002,8 @@ def test_common_location_path():
     project = "cuttlefish"
     location = "mussel"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = ProfileServiceClient.common_location_path(project, location)
     assert expected == actual
@@ -2775,7 +3028,8 @@ def test_client_with_default_client_info():
         transports.ProfileServiceTransport, "_prep_wrapped_messages"
     ) as prep:
         client = ProfileServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -2784,7 +3038,8 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = ProfileServiceClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -2792,7 +3047,8 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = ProfileServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     with mock.patch.object(
         type(getattr(client.transport, "grpc_channel")), "close"

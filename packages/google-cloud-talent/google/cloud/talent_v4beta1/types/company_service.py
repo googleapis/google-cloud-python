@@ -49,8 +49,15 @@ class CreateCompanyRequest(proto.Message):
             Required. The company to be created.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    company = proto.Field(proto.MESSAGE, number=2, message=gct_company.Company,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    company = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=gct_company.Company,
+    )
 
 
 class GetCompanyRequest(proto.Message):
@@ -69,7 +76,10 @@ class GetCompanyRequest(proto.Message):
             example, "projects/api-test-project/companies/bar".
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class UpdateCompanyRequest(proto.Message):
@@ -94,9 +104,15 @@ class UpdateCompanyRequest(proto.Message):
             supported.
     """
 
-    company = proto.Field(proto.MESSAGE, number=1, message=gct_company.Company,)
+    company = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=gct_company.Company,
+    )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -115,7 +131,10 @@ class DeleteCompanyRequest(proto.Message):
             example, "projects/foo/companies/bar".
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListCompaniesRequest(proto.Message):
@@ -149,10 +168,22 @@ class ListCompaniesRequest(proto.Message):
             jobs are returned.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_token = proto.Field(proto.STRING, number=2,)
-    page_size = proto.Field(proto.INT32, number=3,)
-    require_open_jobs = proto.Field(proto.BOOL, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    require_open_jobs = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
 
 
 class ListCompaniesResponse(proto.Message):
@@ -173,10 +204,19 @@ class ListCompaniesResponse(proto.Message):
         return self
 
     companies = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=gct_company.Company,
+        proto.MESSAGE,
+        number=1,
+        message=gct_company.Company,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
-    metadata = proto.Field(proto.MESSAGE, number=3, message=common.ResponseMetadata,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    metadata = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=common.ResponseMetadata,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

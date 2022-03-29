@@ -19,7 +19,10 @@ from google.cloud.talent_v4beta1.types import common
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.talent.v4beta1", manifest={"Company",},
+    package="google.cloud.talent.v4beta1",
+    manifest={
+        "Company",
+    },
 )
 
 
@@ -111,24 +114,65 @@ class Company(proto.Message):
         """
 
         headquarters_location = proto.Field(
-            proto.MESSAGE, number=1, message=common.Location,
+            proto.MESSAGE,
+            number=1,
+            message=common.Location,
         )
 
-    name = proto.Field(proto.STRING, number=1,)
-    display_name = proto.Field(proto.STRING, number=2,)
-    external_id = proto.Field(proto.STRING, number=3,)
-    size = proto.Field(proto.ENUM, number=4, enum=common.CompanySize,)
-    headquarters_address = proto.Field(proto.STRING, number=5,)
-    hiring_agency = proto.Field(proto.BOOL, number=6,)
-    eeo_text = proto.Field(proto.STRING, number=7,)
-    website_uri = proto.Field(proto.STRING, number=8,)
-    career_site_uri = proto.Field(proto.STRING, number=9,)
-    image_uri = proto.Field(proto.STRING, number=10,)
-    keyword_searchable_job_custom_attributes = proto.RepeatedField(
-        proto.STRING, number=11,
+    name = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    derived_info = proto.Field(proto.MESSAGE, number=12, message=DerivedInfo,)
-    suspended = proto.Field(proto.BOOL, number=13,)
+    display_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    external_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    size = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=common.CompanySize,
+    )
+    headquarters_address = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    hiring_agency = proto.Field(
+        proto.BOOL,
+        number=6,
+    )
+    eeo_text = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    website_uri = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    career_site_uri = proto.Field(
+        proto.STRING,
+        number=9,
+    )
+    image_uri = proto.Field(
+        proto.STRING,
+        number=10,
+    )
+    keyword_searchable_job_custom_attributes = proto.RepeatedField(
+        proto.STRING,
+        number=11,
+    )
+    derived_info = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        message=DerivedInfo,
+    )
+    suspended = proto.Field(
+        proto.BOOL,
+        number=13,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

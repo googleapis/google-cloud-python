@@ -19,7 +19,12 @@ from google.cloud.talent_v4.types import common
 from google.protobuf import timestamp_pb2  # type: ignore
 
 
-__protobuf__ = proto.module(package="google.cloud.talent.v4", manifest={"Job",},)
+__protobuf__ = proto.module(
+    package="google.cloud.talent.v4",
+    manifest={
+        "Job",
+    },
+)
 
 
 class Job(proto.Message):
@@ -345,9 +350,18 @@ class Job(proto.Message):
                 each entry is 2,000.
         """
 
-        emails = proto.RepeatedField(proto.STRING, number=1,)
-        instruction = proto.Field(proto.STRING, number=2,)
-        uris = proto.RepeatedField(proto.STRING, number=3,)
+        emails = proto.RepeatedField(
+            proto.STRING,
+            number=1,
+        )
+        instruction = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        uris = proto.RepeatedField(
+            proto.STRING,
+            number=3,
+        )
 
     class DerivedInfo(proto.Message):
         r"""Derived details about the job posting.
@@ -368,10 +382,14 @@ class Job(proto.Message):
         """
 
         locations = proto.RepeatedField(
-            proto.MESSAGE, number=1, message=common.Location,
+            proto.MESSAGE,
+            number=1,
+            message=common.Location,
         )
         job_categories = proto.RepeatedField(
-            proto.ENUM, number=3, enum=common.JobCategory,
+            proto.ENUM,
+            number=3,
+            enum=common.JobCategory,
         )
 
     class ProcessingOptions(proto.Message):
@@ -398,60 +416,153 @@ class Job(proto.Message):
                 [HtmlSanitization.SIMPLE_FORMATTING_ONLY][google.cloud.talent.v4.HtmlSanitization.SIMPLE_FORMATTING_ONLY].
         """
 
-        disable_street_address_resolution = proto.Field(proto.BOOL, number=1,)
+        disable_street_address_resolution = proto.Field(
+            proto.BOOL,
+            number=1,
+        )
         html_sanitization = proto.Field(
-            proto.ENUM, number=2, enum=common.HtmlSanitization,
+            proto.ENUM,
+            number=2,
+            enum=common.HtmlSanitization,
         )
 
-    name = proto.Field(proto.STRING, number=1,)
-    company = proto.Field(proto.STRING, number=2,)
-    requisition_id = proto.Field(proto.STRING, number=3,)
-    title = proto.Field(proto.STRING, number=4,)
-    description = proto.Field(proto.STRING, number=5,)
-    addresses = proto.RepeatedField(proto.STRING, number=6,)
-    application_info = proto.Field(proto.MESSAGE, number=7, message=ApplicationInfo,)
-    job_benefits = proto.RepeatedField(proto.ENUM, number=8, enum=common.JobBenefit,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    company = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    requisition_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    title = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    addresses = proto.RepeatedField(
+        proto.STRING,
+        number=6,
+    )
+    application_info = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=ApplicationInfo,
+    )
+    job_benefits = proto.RepeatedField(
+        proto.ENUM,
+        number=8,
+        enum=common.JobBenefit,
+    )
     compensation_info = proto.Field(
-        proto.MESSAGE, number=9, message=common.CompensationInfo,
+        proto.MESSAGE,
+        number=9,
+        message=common.CompensationInfo,
     )
     custom_attributes = proto.MapField(
-        proto.STRING, proto.MESSAGE, number=10, message=common.CustomAttribute,
+        proto.STRING,
+        proto.MESSAGE,
+        number=10,
+        message=common.CustomAttribute,
     )
-    degree_types = proto.RepeatedField(proto.ENUM, number=11, enum=common.DegreeType,)
-    department = proto.Field(proto.STRING, number=12,)
+    degree_types = proto.RepeatedField(
+        proto.ENUM,
+        number=11,
+        enum=common.DegreeType,
+    )
+    department = proto.Field(
+        proto.STRING,
+        number=12,
+    )
     employment_types = proto.RepeatedField(
-        proto.ENUM, number=13, enum=common.EmploymentType,
+        proto.ENUM,
+        number=13,
+        enum=common.EmploymentType,
     )
-    incentives = proto.Field(proto.STRING, number=14,)
-    language_code = proto.Field(proto.STRING, number=15,)
-    job_level = proto.Field(proto.ENUM, number=16, enum=common.JobLevel,)
-    promotion_value = proto.Field(proto.INT32, number=17,)
-    qualifications = proto.Field(proto.STRING, number=18,)
-    responsibilities = proto.Field(proto.STRING, number=19,)
-    posting_region = proto.Field(proto.ENUM, number=20, enum=common.PostingRegion,)
-    visibility = proto.Field(proto.ENUM, number=21, enum=common.Visibility,)
+    incentives = proto.Field(
+        proto.STRING,
+        number=14,
+    )
+    language_code = proto.Field(
+        proto.STRING,
+        number=15,
+    )
+    job_level = proto.Field(
+        proto.ENUM,
+        number=16,
+        enum=common.JobLevel,
+    )
+    promotion_value = proto.Field(
+        proto.INT32,
+        number=17,
+    )
+    qualifications = proto.Field(
+        proto.STRING,
+        number=18,
+    )
+    responsibilities = proto.Field(
+        proto.STRING,
+        number=19,
+    )
+    posting_region = proto.Field(
+        proto.ENUM,
+        number=20,
+        enum=common.PostingRegion,
+    )
+    visibility = proto.Field(
+        proto.ENUM,
+        number=21,
+        enum=common.Visibility,
+    )
     job_start_time = proto.Field(
-        proto.MESSAGE, number=22, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=22,
+        message=timestamp_pb2.Timestamp,
     )
     job_end_time = proto.Field(
-        proto.MESSAGE, number=23, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=23,
+        message=timestamp_pb2.Timestamp,
     )
     posting_publish_time = proto.Field(
-        proto.MESSAGE, number=24, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=24,
+        message=timestamp_pb2.Timestamp,
     )
     posting_expire_time = proto.Field(
-        proto.MESSAGE, number=25, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=25,
+        message=timestamp_pb2.Timestamp,
     )
     posting_create_time = proto.Field(
-        proto.MESSAGE, number=26, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=26,
+        message=timestamp_pb2.Timestamp,
     )
     posting_update_time = proto.Field(
-        proto.MESSAGE, number=27, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=27,
+        message=timestamp_pb2.Timestamp,
     )
-    company_display_name = proto.Field(proto.STRING, number=28,)
-    derived_info = proto.Field(proto.MESSAGE, number=29, message=DerivedInfo,)
+    company_display_name = proto.Field(
+        proto.STRING,
+        number=28,
+    )
+    derived_info = proto.Field(
+        proto.MESSAGE,
+        number=29,
+        message=DerivedInfo,
+    )
     processing_options = proto.Field(
-        proto.MESSAGE, number=30, message=ProcessingOptions,
+        proto.MESSAGE,
+        number=30,
+        message=ProcessingOptions,
     )
 
 

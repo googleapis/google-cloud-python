@@ -20,7 +20,11 @@ from google.protobuf import timestamp_pb2  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.talent.v4beta1",
-    manifest={"ClientEvent", "JobEvent", "ProfileEvent",},
+    manifest={
+        "ClientEvent",
+        "JobEvent",
+        "ProfileEvent",
+    },
 )
 
 
@@ -69,14 +73,35 @@ class ClientEvent(proto.Message):
             profile was bookmarked.
     """
 
-    request_id = proto.Field(proto.STRING, number=1,)
-    event_id = proto.Field(proto.STRING, number=2,)
-    create_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
-    job_event = proto.Field(proto.MESSAGE, number=5, oneof="event", message="JobEvent",)
-    profile_event = proto.Field(
-        proto.MESSAGE, number=6, oneof="event", message="ProfileEvent",
+    request_id = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    event_notes = proto.Field(proto.STRING, number=9,)
+    event_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    job_event = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="event",
+        message="JobEvent",
+    )
+    profile_event = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        oneof="event",
+        message="ProfileEvent",
+    )
+    event_notes = proto.Field(
+        proto.STRING,
+        number=9,
+    )
 
 
 class JobEvent(proto.Message):
@@ -130,9 +155,19 @@ class JobEvent(proto.Message):
         SENT_CV = 14
         INTERVIEW_GRANTED = 15
 
-    type_ = proto.Field(proto.ENUM, number=1, enum=JobEventType,)
-    jobs = proto.RepeatedField(proto.STRING, number=2,)
-    profile = proto.Field(proto.STRING, number=3,)
+    type_ = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=JobEventType,
+    )
+    jobs = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+    profile = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ProfileEvent(proto.Message):
@@ -169,9 +204,19 @@ class ProfileEvent(proto.Message):
         VIEW = 2
         BOOKMARK = 3
 
-    type_ = proto.Field(proto.ENUM, number=1, enum=ProfileEventType,)
-    profiles = proto.RepeatedField(proto.STRING, number=2,)
-    jobs = proto.RepeatedField(proto.STRING, number=6,)
+    type_ = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=ProfileEventType,
+    )
+    profiles = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+    jobs = proto.RepeatedField(
+        proto.STRING,
+        number=6,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

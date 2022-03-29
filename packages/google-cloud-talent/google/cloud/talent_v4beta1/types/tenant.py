@@ -17,7 +17,10 @@ import proto  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.talent.v4beta1", manifest={"Tenant",},
+    package="google.cloud.talent.v4beta1",
+    manifest={
+        "Tenant",
+    },
 )
 
 
@@ -67,11 +70,22 @@ class Tenant(proto.Message):
         AGGREGATED = 1
         ISOLATED = 2
 
-    name = proto.Field(proto.STRING, number=1,)
-    external_id = proto.Field(proto.STRING, number=2,)
-    usage_type = proto.Field(proto.ENUM, number=3, enum=DataUsageType,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    external_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    usage_type = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=DataUsageType,
+    )
     keyword_searchable_profile_custom_attributes = proto.RepeatedField(
-        proto.STRING, number=4,
+        proto.STRING,
+        number=4,
     )
 
 

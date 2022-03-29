@@ -32,7 +32,9 @@ from google.protobuf import empty_pb2  # type: ignore
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-talent",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-talent",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
@@ -140,7 +142,9 @@ class ProfileServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.create_profile: gapic_v1.method.wrap_method(
-                self.create_profile, default_timeout=30.0, client_info=client_info,
+                self.create_profile,
+                default_timeout=30.0,
+                client_info=client_info,
             ),
             self.get_profile: gapic_v1.method.wrap_method(
                 self.get_profile,
@@ -158,7 +162,9 @@ class ProfileServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.update_profile: gapic_v1.method.wrap_method(
-                self.update_profile, default_timeout=30.0, client_info=client_info,
+                self.update_profile,
+                default_timeout=30.0,
+                client_info=client_info,
             ),
             self.delete_profile: gapic_v1.method.wrap_method(
                 self.delete_profile,
@@ -176,16 +182,18 @@ class ProfileServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.search_profiles: gapic_v1.method.wrap_method(
-                self.search_profiles, default_timeout=30.0, client_info=client_info,
+                self.search_profiles,
+                default_timeout=30.0,
+                client_info=client_info,
             ),
         }
 
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

@@ -34,7 +34,9 @@ from google.protobuf import empty_pb2  # type: ignore
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-talent",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-talent",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
@@ -127,10 +129,14 @@ class JobServiceTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.create_job: gapic_v1.method.wrap_method(
-                self.create_job, default_timeout=30.0, client_info=client_info,
+                self.create_job,
+                default_timeout=30.0,
+                client_info=client_info,
             ),
             self.batch_create_jobs: gapic_v1.method.wrap_method(
-                self.batch_create_jobs, default_timeout=30.0, client_info=client_info,
+                self.batch_create_jobs,
+                default_timeout=30.0,
+                client_info=client_info,
             ),
             self.get_job: gapic_v1.method.wrap_method(
                 self.get_job,
@@ -148,10 +154,14 @@ class JobServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.update_job: gapic_v1.method.wrap_method(
-                self.update_job, default_timeout=30.0, client_info=client_info,
+                self.update_job,
+                default_timeout=30.0,
+                client_info=client_info,
             ),
             self.batch_update_jobs: gapic_v1.method.wrap_method(
-                self.batch_update_jobs, default_timeout=30.0, client_info=client_info,
+                self.batch_update_jobs,
+                default_timeout=30.0,
+                client_info=client_info,
             ),
             self.delete_job: gapic_v1.method.wrap_method(
                 self.delete_job,
@@ -169,7 +179,9 @@ class JobServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.batch_delete_jobs: gapic_v1.method.wrap_method(
-                self.batch_delete_jobs, default_timeout=30.0, client_info=client_info,
+                self.batch_delete_jobs,
+                default_timeout=30.0,
+                client_info=client_info,
             ),
             self.list_jobs: gapic_v1.method.wrap_method(
                 self.list_jobs,
@@ -187,7 +199,9 @@ class JobServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.search_jobs: gapic_v1.method.wrap_method(
-                self.search_jobs, default_timeout=30.0, client_info=client_info,
+                self.search_jobs,
+                default_timeout=30.0,
+                client_info=client_info,
             ),
             self.search_jobs_for_alert: gapic_v1.method.wrap_method(
                 self.search_jobs_for_alert,
@@ -199,9 +213,9 @@ class JobServiceTransport(abc.ABC):
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

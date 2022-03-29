@@ -19,7 +19,11 @@ from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.talent.v4", manifest={"ClientEvent", "JobEvent",},
+    package="google.cloud.talent.v4",
+    manifest={
+        "ClientEvent",
+        "JobEvent",
+    },
 )
 
 
@@ -58,11 +62,29 @@ class ClientEvent(proto.Message):
             job was bookmarked.
     """
 
-    request_id = proto.Field(proto.STRING, number=1,)
-    event_id = proto.Field(proto.STRING, number=2,)
-    create_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
-    job_event = proto.Field(proto.MESSAGE, number=5, oneof="event", message="JobEvent",)
-    event_notes = proto.Field(proto.STRING, number=9,)
+    request_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    event_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    job_event = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        oneof="event",
+        message="JobEvent",
+    )
+    event_notes = proto.Field(
+        proto.STRING,
+        number=9,
+    )
 
 
 class JobEvent(proto.Message):
@@ -108,8 +130,15 @@ class JobEvent(proto.Message):
         SENT_CV = 14
         INTERVIEW_GRANTED = 15
 
-    type_ = proto.Field(proto.ENUM, number=1, enum=JobEventType,)
-    jobs = proto.RepeatedField(proto.STRING, number=2,)
+    type_ = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=JobEventType,
+    )
+    jobs = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

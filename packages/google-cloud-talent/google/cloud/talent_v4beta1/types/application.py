@@ -22,7 +22,10 @@ from google.type import date_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.talent.v4beta1", manifest={"Application",},
+    package="google.cloud.talent.v4beta1",
+    manifest={
+        "Application",
+    },
 )
 
 
@@ -131,28 +134,79 @@ class Application(proto.Message):
         OFFER_ACCEPTED = 6
         STARTED = 7
 
-    name = proto.Field(proto.STRING, number=1,)
-    external_id = proto.Field(proto.STRING, number=31,)
-    profile = proto.Field(proto.STRING, number=2,)
-    job = proto.Field(proto.STRING, number=4,)
-    company = proto.Field(proto.STRING, number=5,)
-    application_date = proto.Field(proto.MESSAGE, number=7, message=date_pb2.Date,)
-    stage = proto.Field(proto.ENUM, number=11, enum=ApplicationStage,)
-    state = proto.Field(proto.ENUM, number=13, enum=ApplicationState,)
-    interviews = proto.RepeatedField(
-        proto.MESSAGE, number=16, message=common.Interview,
+    name = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    referral = proto.Field(proto.MESSAGE, number=18, message=wrappers_pb2.BoolValue,)
+    external_id = proto.Field(
+        proto.STRING,
+        number=31,
+    )
+    profile = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    job = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    company = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    application_date = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=date_pb2.Date,
+    )
+    stage = proto.Field(
+        proto.ENUM,
+        number=11,
+        enum=ApplicationStage,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=13,
+        enum=ApplicationState,
+    )
+    interviews = proto.RepeatedField(
+        proto.MESSAGE,
+        number=16,
+        message=common.Interview,
+    )
+    referral = proto.Field(
+        proto.MESSAGE,
+        number=18,
+        message=wrappers_pb2.BoolValue,
+    )
     create_time = proto.Field(
-        proto.MESSAGE, number=19, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=19,
+        message=timestamp_pb2.Timestamp,
     )
     update_time = proto.Field(
-        proto.MESSAGE, number=20, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=20,
+        message=timestamp_pb2.Timestamp,
     )
-    outcome_notes = proto.Field(proto.STRING, number=21,)
-    outcome = proto.Field(proto.ENUM, number=22, enum=common.Outcome,)
-    is_match = proto.Field(proto.MESSAGE, number=28, message=wrappers_pb2.BoolValue,)
-    job_title_snippet = proto.Field(proto.STRING, number=29,)
+    outcome_notes = proto.Field(
+        proto.STRING,
+        number=21,
+    )
+    outcome = proto.Field(
+        proto.ENUM,
+        number=22,
+        enum=common.Outcome,
+    )
+    is_match = proto.Field(
+        proto.MESSAGE,
+        number=28,
+        message=wrappers_pb2.BoolValue,
+    )
+    job_title_snippet = proto.Field(
+        proto.STRING,
+        number=29,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

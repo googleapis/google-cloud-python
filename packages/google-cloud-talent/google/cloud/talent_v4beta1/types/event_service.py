@@ -19,7 +19,10 @@ from google.cloud.talent_v4beta1.types import event
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.talent.v4beta1", manifest={"CreateClientEventRequest",},
+    package="google.cloud.talent.v4beta1",
+    manifest={
+        "CreateClientEventRequest",
+    },
 )
 
 
@@ -41,8 +44,15 @@ class CreateClientEventRequest(proto.Message):
             Cloud Talent Solution.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    client_event = proto.Field(proto.MESSAGE, number=2, message=event.ClientEvent,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    client_event = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=event.ClientEvent,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

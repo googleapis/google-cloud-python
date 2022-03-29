@@ -75,8 +75,15 @@ class CreateJobRequest(proto.Message):
             Required. The Job to be created.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    job = proto.Field(proto.MESSAGE, number=2, message=gct_job.Job,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    job = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=gct_job.Job,
+    )
 
 
 class GetJobRequest(proto.Message):
@@ -91,7 +98,10 @@ class GetJobRequest(proto.Message):
             For example, "projects/foo/tenants/bar/jobs/baz".
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class UpdateJobRequest(proto.Message):
@@ -114,9 +124,15 @@ class UpdateJobRequest(proto.Message):
             supported.
     """
 
-    job = proto.Field(proto.MESSAGE, number=1, message=gct_job.Job,)
+    job = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=gct_job.Job,
+    )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -132,7 +148,10 @@ class DeleteJobRequest(proto.Message):
             For example, "projects/foo/tenants/bar/jobs/baz".
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListJobsRequest(proto.Message):
@@ -191,11 +210,27 @@ class ListJobsRequest(proto.Message):
             if no value is specified.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    filter = proto.Field(proto.STRING, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    page_size = proto.Field(proto.INT32, number=4,)
-    job_view = proto.Field(proto.ENUM, number=5, enum="JobView",)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=4,
+    )
+    job_view = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum="JobView",
+    )
 
 
 class ListJobsResponse(proto.Message):
@@ -217,9 +252,20 @@ class ListJobsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    jobs = proto.RepeatedField(proto.MESSAGE, number=1, message=gct_job.Job,)
-    next_page_token = proto.Field(proto.STRING, number=2,)
-    metadata = proto.Field(proto.MESSAGE, number=3, message=common.ResponseMetadata,)
+    jobs = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=gct_job.Job,
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    metadata = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=common.ResponseMetadata,
+    )
 
 
 class SearchJobsRequest(proto.Message):
@@ -632,31 +678,79 @@ class SearchJobsRequest(proto.Message):
             number=1,
             enum="SearchJobsRequest.CustomRankingInfo.ImportanceLevel",
         )
-        ranking_expression = proto.Field(proto.STRING, number=2,)
+        ranking_expression = proto.Field(
+            proto.STRING,
+            number=2,
+        )
 
-    parent = proto.Field(proto.STRING, number=1,)
-    search_mode = proto.Field(proto.ENUM, number=2, enum=SearchMode,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    search_mode = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=SearchMode,
+    )
     request_metadata = proto.Field(
-        proto.MESSAGE, number=3, message=common.RequestMetadata,
+        proto.MESSAGE,
+        number=3,
+        message=common.RequestMetadata,
     )
-    job_query = proto.Field(proto.MESSAGE, number=4, message=filters.JobQuery,)
-    enable_broadening = proto.Field(proto.BOOL, number=5,)
+    job_query = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=filters.JobQuery,
+    )
+    enable_broadening = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
     histogram_queries = proto.RepeatedField(
-        proto.MESSAGE, number=7, message=histogram.HistogramQuery,
+        proto.MESSAGE,
+        number=7,
+        message=histogram.HistogramQuery,
     )
-    job_view = proto.Field(proto.ENUM, number=8, enum="JobView",)
-    offset = proto.Field(proto.INT32, number=9,)
-    max_page_size = proto.Field(proto.INT32, number=10,)
-    page_token = proto.Field(proto.STRING, number=11,)
-    order_by = proto.Field(proto.STRING, number=12,)
+    job_view = proto.Field(
+        proto.ENUM,
+        number=8,
+        enum="JobView",
+    )
+    offset = proto.Field(
+        proto.INT32,
+        number=9,
+    )
+    max_page_size = proto.Field(
+        proto.INT32,
+        number=10,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=11,
+    )
+    order_by = proto.Field(
+        proto.STRING,
+        number=12,
+    )
     diversification_level = proto.Field(
-        proto.ENUM, number=13, enum=DiversificationLevel,
+        proto.ENUM,
+        number=13,
+        enum=DiversificationLevel,
     )
     custom_ranking_info = proto.Field(
-        proto.MESSAGE, number=14, message=CustomRankingInfo,
+        proto.MESSAGE,
+        number=14,
+        message=CustomRankingInfo,
     )
-    disable_keyword_match = proto.Field(proto.BOOL, number=16,)
-    keyword_match_mode = proto.Field(proto.ENUM, number=18, enum=KeywordMatchMode,)
+    disable_keyword_match = proto.Field(
+        proto.BOOL,
+        number=16,
+    )
+    keyword_match_mode = proto.Field(
+        proto.ENUM,
+        number=18,
+        enum=KeywordMatchMode,
+    )
 
 
 class SearchJobsResponse(proto.Message):
@@ -732,12 +826,27 @@ class SearchJobsResponse(proto.Message):
                 [CommuteFilter][google.cloud.talent.v4.CommuteFilter].
         """
 
-        job = proto.Field(proto.MESSAGE, number=1, message=gct_job.Job,)
-        job_summary = proto.Field(proto.STRING, number=2,)
-        job_title_snippet = proto.Field(proto.STRING, number=3,)
-        search_text_snippet = proto.Field(proto.STRING, number=4,)
+        job = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=gct_job.Job,
+        )
+        job_summary = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        job_title_snippet = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+        search_text_snippet = proto.Field(
+            proto.STRING,
+            number=4,
+        )
         commute_info = proto.Field(
-            proto.MESSAGE, number=5, message="SearchJobsResponse.CommuteInfo",
+            proto.MESSAGE,
+            number=5,
+            message="SearchJobsResponse.CommuteInfo",
         )
 
     class CommuteInfo(proto.Message):
@@ -755,28 +864,57 @@ class SearchJobsResponse(proto.Message):
                 but was returned as part of an expanded query.
         """
 
-        job_location = proto.Field(proto.MESSAGE, number=1, message=common.Location,)
+        job_location = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=common.Location,
+        )
         travel_duration = proto.Field(
-            proto.MESSAGE, number=2, message=duration_pb2.Duration,
+            proto.MESSAGE,
+            number=2,
+            message=duration_pb2.Duration,
         )
 
     @property
     def raw_page(self):
         return self
 
-    matching_jobs = proto.RepeatedField(proto.MESSAGE, number=1, message=MatchingJob,)
+    matching_jobs = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=MatchingJob,
+    )
     histogram_query_results = proto.RepeatedField(
-        proto.MESSAGE, number=2, message=histogram.HistogramQueryResult,
+        proto.MESSAGE,
+        number=2,
+        message=histogram.HistogramQueryResult,
     )
-    next_page_token = proto.Field(proto.STRING, number=3,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
     location_filters = proto.RepeatedField(
-        proto.MESSAGE, number=4, message=common.Location,
+        proto.MESSAGE,
+        number=4,
+        message=common.Location,
     )
-    total_size = proto.Field(proto.INT32, number=6,)
-    metadata = proto.Field(proto.MESSAGE, number=7, message=common.ResponseMetadata,)
-    broadened_query_jobs_count = proto.Field(proto.INT32, number=8,)
+    total_size = proto.Field(
+        proto.INT32,
+        number=6,
+    )
+    metadata = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=common.ResponseMetadata,
+    )
+    broadened_query_jobs_count = proto.Field(
+        proto.INT32,
+        number=8,
+    )
     spell_correction = proto.Field(
-        proto.MESSAGE, number=9, message=common.SpellingCorrection,
+        proto.MESSAGE,
+        number=9,
+        message=common.SpellingCorrection,
     )
 
 
@@ -795,8 +933,15 @@ class BatchCreateJobsRequest(proto.Message):
             A maximum of 200 jobs can be created in a batch.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    jobs = proto.RepeatedField(proto.MESSAGE, number=2, message=gct_job.Job,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    jobs = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=gct_job.Job,
+    )
 
 
 class BatchUpdateJobsRequest(proto.Message):
@@ -836,10 +981,19 @@ class BatchUpdateJobsRequest(proto.Message):
             which can yield a very large response.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    jobs = proto.RepeatedField(proto.MESSAGE, number=2, message=gct_job.Job,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    jobs = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=gct_job.Job,
+    )
     update_mask = proto.Field(
-        proto.MESSAGE, number=3, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=3,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -866,8 +1020,14 @@ class BatchDeleteJobsRequest(proto.Message):
             A maximum of 200 jobs can be deleted in a batch.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    names = proto.RepeatedField(proto.STRING, number=2,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    names = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
 
 
 class JobResult(proto.Message):
@@ -890,8 +1050,16 @@ class JobResult(proto.Message):
             [job][google.cloud.talent.v4.JobResult.job] fails.
     """
 
-    job = proto.Field(proto.MESSAGE, number=1, message=gct_job.Job,)
-    status = proto.Field(proto.MESSAGE, number=2, message=status_pb2.Status,)
+    job = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=gct_job.Job,
+    )
+    status = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=status_pb2.Status,
+    )
 
 
 class BatchCreateJobsResponse(proto.Message):
@@ -908,7 +1076,11 @@ class BatchCreateJobsResponse(proto.Message):
             status is FINISHED, FAILED or CANCELLED.
     """
 
-    job_results = proto.RepeatedField(proto.MESSAGE, number=1, message="JobResult",)
+    job_results = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="JobResult",
+    )
 
 
 class BatchUpdateJobsResponse(proto.Message):
@@ -925,7 +1097,11 @@ class BatchUpdateJobsResponse(proto.Message):
             status is FINISHED, FAILED or CANCELLED.
     """
 
-    job_results = proto.RepeatedField(proto.MESSAGE, number=1, message="JobResult",)
+    job_results = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="JobResult",
+    )
 
 
 class BatchDeleteJobsResponse(proto.Message):
@@ -942,7 +1118,11 @@ class BatchDeleteJobsResponse(proto.Message):
             status is FINISHED, FAILED or CANCELLED.
     """
 
-    job_results = proto.RepeatedField(proto.MESSAGE, number=1, message="JobResult",)
+    job_results = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="JobResult",
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

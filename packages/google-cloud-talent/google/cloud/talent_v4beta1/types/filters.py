@@ -211,28 +211,68 @@ class JobQuery(proto.Message):
             At most 400 excluded job names are allowed.
     """
 
-    query = proto.Field(proto.STRING, number=1,)
-    query_language_code = proto.Field(proto.STRING, number=14,)
-    companies = proto.RepeatedField(proto.STRING, number=2,)
+    query = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    query_language_code = proto.Field(
+        proto.STRING,
+        number=14,
+    )
+    companies = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
     location_filters = proto.RepeatedField(
-        proto.MESSAGE, number=3, message="LocationFilter",
+        proto.MESSAGE,
+        number=3,
+        message="LocationFilter",
     )
-    job_categories = proto.RepeatedField(proto.ENUM, number=4, enum=common.JobCategory,)
-    commute_filter = proto.Field(proto.MESSAGE, number=5, message="CommuteFilter",)
-    company_display_names = proto.RepeatedField(proto.STRING, number=6,)
+    job_categories = proto.RepeatedField(
+        proto.ENUM,
+        number=4,
+        enum=common.JobCategory,
+    )
+    commute_filter = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message="CommuteFilter",
+    )
+    company_display_names = proto.RepeatedField(
+        proto.STRING,
+        number=6,
+    )
     compensation_filter = proto.Field(
-        proto.MESSAGE, number=7, message="CompensationFilter",
+        proto.MESSAGE,
+        number=7,
+        message="CompensationFilter",
     )
-    custom_attribute_filter = proto.Field(proto.STRING, number=8,)
-    disable_spell_check = proto.Field(proto.BOOL, number=9,)
+    custom_attribute_filter = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    disable_spell_check = proto.Field(
+        proto.BOOL,
+        number=9,
+    )
     employment_types = proto.RepeatedField(
-        proto.ENUM, number=10, enum=common.EmploymentType,
+        proto.ENUM,
+        number=10,
+        enum=common.EmploymentType,
     )
-    language_codes = proto.RepeatedField(proto.STRING, number=11,)
+    language_codes = proto.RepeatedField(
+        proto.STRING,
+        number=11,
+    )
     publish_time_range = proto.Field(
-        proto.MESSAGE, number=12, message=common.TimestampRange,
+        proto.MESSAGE,
+        number=12,
+        message=common.TimestampRange,
     )
-    excluded_jobs = proto.RepeatedField(proto.STRING, number=13,)
+    excluded_jobs = proto.RepeatedField(
+        proto.STRING,
+        number=13,
+    )
 
 
 class ProfileQuery(proto.Message):
@@ -543,45 +583,83 @@ class ProfileQuery(proto.Message):
             with name "John Smith".
     """
 
-    query = proto.Field(proto.STRING, number=1,)
+    query = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     location_filters = proto.RepeatedField(
-        proto.MESSAGE, number=2, message="LocationFilter",
+        proto.MESSAGE,
+        number=2,
+        message="LocationFilter",
     )
     job_title_filters = proto.RepeatedField(
-        proto.MESSAGE, number=3, message="JobTitleFilter",
+        proto.MESSAGE,
+        number=3,
+        message="JobTitleFilter",
     )
     employer_filters = proto.RepeatedField(
-        proto.MESSAGE, number=4, message="EmployerFilter",
+        proto.MESSAGE,
+        number=4,
+        message="EmployerFilter",
     )
     education_filters = proto.RepeatedField(
-        proto.MESSAGE, number=5, message="EducationFilter",
+        proto.MESSAGE,
+        number=5,
+        message="EducationFilter",
     )
-    skill_filters = proto.RepeatedField(proto.MESSAGE, number=6, message="SkillFilter",)
+    skill_filters = proto.RepeatedField(
+        proto.MESSAGE,
+        number=6,
+        message="SkillFilter",
+    )
     work_experience_filter = proto.RepeatedField(
-        proto.MESSAGE, number=7, message="WorkExperienceFilter",
+        proto.MESSAGE,
+        number=7,
+        message="WorkExperienceFilter",
     )
-    time_filters = proto.RepeatedField(proto.MESSAGE, number=8, message="TimeFilter",)
+    time_filters = proto.RepeatedField(
+        proto.MESSAGE,
+        number=8,
+        message="TimeFilter",
+    )
     hirable_filter = proto.Field(
-        proto.MESSAGE, number=9, message=wrappers_pb2.BoolValue,
+        proto.MESSAGE,
+        number=9,
+        message=wrappers_pb2.BoolValue,
     )
     application_date_filters = proto.RepeatedField(
-        proto.MESSAGE, number=10, message="ApplicationDateFilter",
+        proto.MESSAGE,
+        number=10,
+        message="ApplicationDateFilter",
     )
     application_outcome_notes_filters = proto.RepeatedField(
-        proto.MESSAGE, number=11, message="ApplicationOutcomeNotesFilter",
+        proto.MESSAGE,
+        number=11,
+        message="ApplicationOutcomeNotesFilter",
     )
     application_job_filters = proto.RepeatedField(
-        proto.MESSAGE, number=13, message="ApplicationJobFilter",
+        proto.MESSAGE,
+        number=13,
+        message="ApplicationJobFilter",
     )
-    custom_attribute_filter = proto.Field(proto.STRING, number=15,)
+    custom_attribute_filter = proto.Field(
+        proto.STRING,
+        number=15,
+    )
     candidate_availability_filter = proto.Field(
-        proto.MESSAGE, number=16, message="CandidateAvailabilityFilter",
+        proto.MESSAGE,
+        number=16,
+        message="CandidateAvailabilityFilter",
     )
     availability_filters = proto.RepeatedField(
-        proto.MESSAGE, number=18, message="AvailabilityFilter",
+        proto.MESSAGE,
+        number=18,
+        message="AvailabilityFilter",
     )
     person_name_filters = proto.RepeatedField(
-        proto.MESSAGE, number=17, message="PersonNameFilter",
+        proto.MESSAGE,
+        number=17,
+        message="PersonNameFilter",
     )
 
 
@@ -653,14 +731,32 @@ class LocationFilter(proto.Message):
         TELECOMMUTE_EXCLUDED = 1
         TELECOMMUTE_ALLOWED = 2
 
-    address = proto.Field(proto.STRING, number=1,)
-    region_code = proto.Field(proto.STRING, number=2,)
-    lat_lng = proto.Field(proto.MESSAGE, number=3, message=latlng_pb2.LatLng,)
-    distance_in_miles = proto.Field(proto.DOUBLE, number=4,)
-    telecommute_preference = proto.Field(
-        proto.ENUM, number=5, enum=TelecommutePreference,
+    address = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    negated = proto.Field(proto.BOOL, number=6,)
+    region_code = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    lat_lng = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=latlng_pb2.LatLng,
+    )
+    distance_in_miles = proto.Field(
+        proto.DOUBLE,
+        number=4,
+    )
+    telecommute_preference = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum=TelecommutePreference,
+    )
+    negated = proto.Field(
+        proto.BOOL,
+        number=6,
+    )
 
 
 class CompensationFilter(proto.Message):
@@ -687,15 +783,24 @@ class CompensationFilter(proto.Message):
         ANNUALIZED_BASE_AMOUNT = 3
         ANNUALIZED_TOTAL_AMOUNT = 4
 
-    type_ = proto.Field(proto.ENUM, number=1, enum=FilterType,)
+    type_ = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=FilterType,
+    )
     units = proto.RepeatedField(
-        proto.ENUM, number=2, enum=common.CompensationInfo.CompensationUnit,
+        proto.ENUM,
+        number=2,
+        enum=common.CompensationInfo.CompensationUnit,
     )
     range_ = proto.Field(
-        proto.MESSAGE, number=3, message=common.CompensationInfo.CompensationRange,
+        proto.MESSAGE,
+        number=3,
+        message=common.CompensationInfo.CompensationRange,
     )
     include_jobs_with_unspecified_compensation_range = proto.Field(
-        proto.BOOL, number=4,
+        proto.BOOL,
+        number=4,
     )
 
 
@@ -749,14 +854,30 @@ class CommuteFilter(proto.Message):
         TRAFFIC_FREE = 1
         BUSY_HOUR = 2
 
-    commute_method = proto.Field(proto.ENUM, number=1, enum=common.CommuteMethod,)
-    start_coordinates = proto.Field(proto.MESSAGE, number=2, message=latlng_pb2.LatLng,)
-    travel_duration = proto.Field(
-        proto.MESSAGE, number=3, message=duration_pb2.Duration,
+    commute_method = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=common.CommuteMethod,
     )
-    allow_imprecise_addresses = proto.Field(proto.BOOL, number=4,)
+    start_coordinates = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=latlng_pb2.LatLng,
+    )
+    travel_duration = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=duration_pb2.Duration,
+    )
+    allow_imprecise_addresses = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
     road_traffic = proto.Field(
-        proto.ENUM, number=5, oneof="traffic_option", enum=RoadTraffic,
+        proto.ENUM,
+        number=5,
+        oneof="traffic_option",
+        enum=RoadTraffic,
     )
     departure_time = proto.Field(
         proto.MESSAGE,
@@ -778,8 +899,14 @@ class JobTitleFilter(proto.Message):
             profiles matching the filter are excluded.
     """
 
-    job_title = proto.Field(proto.STRING, number=1,)
-    negated = proto.Field(proto.BOOL, number=2,)
+    job_title = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    negated = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
 
 
 class SkillFilter(proto.Message):
@@ -794,8 +921,14 @@ class SkillFilter(proto.Message):
             profiles matching the filter are excluded.
     """
 
-    skill = proto.Field(proto.STRING, number=1,)
-    negated = proto.Field(proto.BOOL, number=2,)
+    skill = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    negated = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
 
 
 class EmployerFilter(proto.Message):
@@ -827,9 +960,19 @@ class EmployerFilter(proto.Message):
         CURRENT_EMPLOYMENT_RECORDS_ONLY = 2
         PAST_EMPLOYMENT_RECORDS_ONLY = 3
 
-    employer = proto.Field(proto.STRING, number=1,)
-    mode = proto.Field(proto.ENUM, number=2, enum=EmployerFilterMode,)
-    negated = proto.Field(proto.BOOL, number=3,)
+    employer = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    mode = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=EmployerFilterMode,
+    )
+    negated = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
 
 
 class EducationFilter(proto.Message):
@@ -854,10 +997,23 @@ class EducationFilter(proto.Message):
             profiles matching the filter is excluded.
     """
 
-    school = proto.Field(proto.STRING, number=1,)
-    field_of_study = proto.Field(proto.STRING, number=2,)
-    degree_type = proto.Field(proto.ENUM, number=3, enum=common.DegreeType,)
-    negated = proto.Field(proto.BOOL, number=6,)
+    school = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    field_of_study = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    degree_type = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=common.DegreeType,
+    )
+    negated = proto.Field(
+        proto.BOOL,
+        number=6,
+    )
 
 
 class WorkExperienceFilter(proto.Message):
@@ -879,10 +1035,14 @@ class WorkExperienceFilter(proto.Message):
     """
 
     min_experience = proto.Field(
-        proto.MESSAGE, number=1, message=duration_pb2.Duration,
+        proto.MESSAGE,
+        number=1,
+        message=duration_pb2.Duration,
     )
     max_experience = proto.Field(
-        proto.MESSAGE, number=2, message=duration_pb2.Duration,
+        proto.MESSAGE,
+        number=2,
+        message=duration_pb2.Duration,
     )
 
 
@@ -909,8 +1069,16 @@ class ApplicationDateFilter(proto.Message):
             start date.
     """
 
-    start_date = proto.Field(proto.MESSAGE, number=1, message=date_pb2.Date,)
-    end_date = proto.Field(proto.MESSAGE, number=2, message=date_pb2.Date,)
+    start_date = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=date_pb2.Date,
+    )
+    end_date = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=date_pb2.Date,
+    )
 
 
 class ApplicationOutcomeNotesFilter(proto.Message):
@@ -928,8 +1096,14 @@ class ApplicationOutcomeNotesFilter(proto.Message):
             matching the outcome reason specified in the filter.
     """
 
-    outcome_notes = proto.Field(proto.STRING, number=1,)
-    negated = proto.Field(proto.BOOL, number=2,)
+    outcome_notes = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    negated = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
 
 
 class ApplicationJobFilter(proto.Message):
@@ -955,9 +1129,18 @@ class ApplicationJobFilter(proto.Message):
             matching the filters.
     """
 
-    job_requisition_id = proto.Field(proto.STRING, number=2,)
-    job_title = proto.Field(proto.STRING, number=3,)
-    negated = proto.Field(proto.BOOL, number=4,)
+    job_requisition_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    job_title = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    negated = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
 
 
 class TimeFilter(proto.Message):
@@ -987,9 +1170,21 @@ class TimeFilter(proto.Message):
         CREATE_TIME = 1
         UPDATE_TIME = 2
 
-    start_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
-    end_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    time_field = proto.Field(proto.ENUM, number=3, enum=TimeField,)
+    start_time = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    time_field = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=TimeField,
+    )
 
 
 class CandidateAvailabilityFilter(proto.Message):
@@ -1002,7 +1197,10 @@ class CandidateAvailabilityFilter(proto.Message):
             all the potential available profiles.
     """
 
-    negated = proto.Field(proto.BOOL, number=1,)
+    negated = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
 
 
 class AvailabilityFilter(proto.Message):
@@ -1024,9 +1222,20 @@ class AvailabilityFilter(proto.Message):
             [AvailabilityFilter][google.cloud.talent.v4beta1.AvailabilityFilter].
     """
 
-    signal_type = proto.Field(proto.ENUM, number=1, enum=common.AvailabilitySignalType,)
-    range_ = proto.Field(proto.MESSAGE, number=2, message=common.TimestampRange,)
-    required = proto.Field(proto.BOOL, number=3,)
+    signal_type = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=common.AvailabilitySignalType,
+    )
+    range_ = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=common.TimestampRange,
+    )
+    required = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
 
 
 class PersonNameFilter(proto.Message):
@@ -1043,7 +1252,10 @@ class PersonNameFilter(proto.Message):
             [PersonName.formatted_name][google.cloud.talent.v4beta1.PersonName.formatted_name].
     """
 
-    person_name = proto.Field(proto.STRING, number=1,)
+    person_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

@@ -18,7 +18,10 @@ import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.talent.v4",
-    manifest={"HistogramQuery", "HistogramQueryResult",},
+    manifest={
+        "HistogramQuery",
+        "HistogramQueryResult",
+    },
 )
 
 
@@ -35,7 +38,10 @@ class HistogramQuery(proto.Message):
             for details about syntax.
     """
 
-    histogram_query = proto.Field(proto.STRING, number=1,)
+    histogram_query = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class HistogramQueryResult(proto.Message):
@@ -62,8 +68,15 @@ class HistogramQueryResult(proto.Message):
                ``0-MAX``.
     """
 
-    histogram_query = proto.Field(proto.STRING, number=1,)
-    histogram = proto.MapField(proto.STRING, proto.INT64, number=2,)
+    histogram_query = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    histogram = proto.MapField(
+        proto.STRING,
+        proto.INT64,
+        number=2,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

@@ -16,7 +16,12 @@
 import proto  # type: ignore
 
 
-__protobuf__ = proto.module(package="google.cloud.talent.v4", manifest={"Tenant",},)
+__protobuf__ = proto.module(
+    package="google.cloud.talent.v4",
+    manifest={
+        "Tenant",
+    },
+)
 
 
 class Tenant(proto.Message):
@@ -40,8 +45,14 @@ class Tenant(proto.Message):
             The maximum number of allowed characters is 255.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    external_id = proto.Field(proto.STRING, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    external_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
