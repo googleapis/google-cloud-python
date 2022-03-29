@@ -154,25 +154,39 @@ class DatastreamTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.list_streams: gapic_v1.method.wrap_method(
-                self.list_streams, default_timeout=None, client_info=client_info,
+                self.list_streams,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_stream: gapic_v1.method.wrap_method(
-                self.get_stream, default_timeout=None, client_info=client_info,
+                self.get_stream,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.create_stream: gapic_v1.method.wrap_method(
-                self.create_stream, default_timeout=60.0, client_info=client_info,
+                self.create_stream,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.update_stream: gapic_v1.method.wrap_method(
-                self.update_stream, default_timeout=60.0, client_info=client_info,
+                self.update_stream,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.delete_stream: gapic_v1.method.wrap_method(
-                self.delete_stream, default_timeout=60.0, client_info=client_info,
+                self.delete_stream,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.fetch_errors: gapic_v1.method.wrap_method(
-                self.fetch_errors, default_timeout=None, client_info=client_info,
+                self.fetch_errors,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.fetch_static_ips: gapic_v1.method.wrap_method(
-                self.fetch_static_ips, default_timeout=None, client_info=client_info,
+                self.fetch_static_ips,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.create_private_connection: gapic_v1.method.wrap_method(
                 self.create_private_connection,
@@ -195,25 +209,33 @@ class DatastreamTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.create_route: gapic_v1.method.wrap_method(
-                self.create_route, default_timeout=60.0, client_info=client_info,
+                self.create_route,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.get_route: gapic_v1.method.wrap_method(
-                self.get_route, default_timeout=None, client_info=client_info,
+                self.get_route,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_routes: gapic_v1.method.wrap_method(
-                self.list_routes, default_timeout=None, client_info=client_info,
+                self.list_routes,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.delete_route: gapic_v1.method.wrap_method(
-                self.delete_route, default_timeout=60.0, client_info=client_info,
+                self.delete_route,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
         }
 
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

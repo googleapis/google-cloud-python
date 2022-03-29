@@ -59,7 +59,10 @@ class DatastreamClientMeta(type):
     _transport_registry["grpc"] = DatastreamGrpcTransport
     _transport_registry["grpc_asyncio"] = DatastreamGrpcAsyncIOTransport
 
-    def get_transport_class(cls, label: str = None,) -> Type[DatastreamTransport]:
+    def get_transport_class(
+        cls,
+        label: str = None,
+    ) -> Type[DatastreamTransport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -165,11 +168,15 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
 
     @staticmethod
     def connection_profile_path(
-        project: str, location: str, connection_profile: str,
+        project: str,
+        location: str,
+        connection_profile: str,
     ) -> str:
         """Returns a fully-qualified connection_profile string."""
         return "projects/{project}/locations/{location}/connectionProfiles/{connection_profile}".format(
-            project=project, location=location, connection_profile=connection_profile,
+            project=project,
+            location=location,
+            connection_profile=connection_profile,
         )
 
     @staticmethod
@@ -182,10 +189,14 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def networks_path(project: str, network: str,) -> str:
+    def networks_path(
+        project: str,
+        network: str,
+    ) -> str:
         """Returns a fully-qualified networks string."""
         return "projects/{project}/global/networks/{network}".format(
-            project=project, network=network,
+            project=project,
+            network=network,
         )
 
     @staticmethod
@@ -198,11 +209,15 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
 
     @staticmethod
     def private_connection_path(
-        project: str, location: str, private_connection: str,
+        project: str,
+        location: str,
+        private_connection: str,
     ) -> str:
         """Returns a fully-qualified private_connection string."""
         return "projects/{project}/locations/{location}/privateConnections/{private_connection}".format(
-            project=project, location=location, private_connection=private_connection,
+            project=project,
+            location=location,
+            private_connection=private_connection,
         )
 
     @staticmethod
@@ -216,7 +231,10 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
 
     @staticmethod
     def route_path(
-        project: str, location: str, private_connection: str, route: str,
+        project: str,
+        location: str,
+        private_connection: str,
+        route: str,
     ) -> str:
         """Returns a fully-qualified route string."""
         return "projects/{project}/locations/{location}/privateConnections/{private_connection}/routes/{route}".format(
@@ -236,10 +254,16 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def stream_path(project: str, location: str, stream: str,) -> str:
+    def stream_path(
+        project: str,
+        location: str,
+        stream: str,
+    ) -> str:
         """Returns a fully-qualified stream string."""
         return "projects/{project}/locations/{location}/streams/{stream}".format(
-            project=project, location=location, stream=stream,
+            project=project,
+            location=location,
+            stream=stream,
         )
 
     @staticmethod
@@ -253,11 +277,17 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
 
     @staticmethod
     def stream_object_path(
-        project: str, location: str, stream: str, object: str,
+        project: str,
+        location: str,
+        stream: str,
+        object: str,
     ) -> str:
         """Returns a fully-qualified stream_object string."""
         return "projects/{project}/locations/{location}/streams/{stream}/objects/{object}".format(
-            project=project, location=location, stream=stream, object=object,
+            project=project,
+            location=location,
+            stream=stream,
+            object=object,
         )
 
     @staticmethod
@@ -270,7 +300,9 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_billing_account_path(billing_account: str,) -> str:
+    def common_billing_account_path(
+        billing_account: str,
+    ) -> str:
         """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
@@ -283,9 +315,13 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(folder: str,) -> str:
+    def common_folder_path(
+        folder: str,
+    ) -> str:
         """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(folder=folder,)
+        return "folders/{folder}".format(
+            folder=folder,
+        )
 
     @staticmethod
     def parse_common_folder_path(path: str) -> Dict[str, str]:
@@ -294,9 +330,13 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(organization: str,) -> str:
+    def common_organization_path(
+        organization: str,
+    ) -> str:
         """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(organization=organization,)
+        return "organizations/{organization}".format(
+            organization=organization,
+        )
 
     @staticmethod
     def parse_common_organization_path(path: str) -> Dict[str, str]:
@@ -305,9 +345,13 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(project: str,) -> str:
+    def common_project_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified project string."""
-        return "projects/{project}".format(project=project,)
+        return "projects/{project}".format(
+            project=project,
+        )
 
     @staticmethod
     def parse_common_project_path(path: str) -> Dict[str, str]:
@@ -316,10 +360,14 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(project: str, location: str,) -> str:
+    def common_location_path(
+        project: str,
+        location: str,
+    ) -> str:
         """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
-            project=project, location=location,
+            project=project,
+            location=location,
         )
 
     @staticmethod
@@ -584,12 +632,20 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListConnectionProfilesPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -683,7 +739,12 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -812,7 +873,12 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -943,7 +1009,12 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1060,7 +1131,12 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1151,7 +1227,12 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1245,12 +1326,20 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListStreamsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1341,7 +1430,12 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1464,7 +1558,12 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1593,7 +1692,12 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1708,7 +1812,12 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1806,7 +1915,12 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1882,7 +1996,12 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1978,12 +2097,20 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListStreamObjectsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -2078,7 +2205,12 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2171,7 +2303,12 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2268,12 +2405,20 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.FetchStaticIpsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -2399,7 +2544,12 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -2501,7 +2651,12 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2598,12 +2753,20 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListPrivateConnectionsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -2715,7 +2878,12 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -2844,7 +3012,12 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -2943,7 +3116,12 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -3037,12 +3215,20 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListRoutesPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -3149,7 +3335,12 @@ class DatastreamClient(metaclass=DatastreamClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(

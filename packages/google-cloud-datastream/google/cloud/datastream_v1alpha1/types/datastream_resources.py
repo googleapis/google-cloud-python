@@ -93,12 +93,31 @@ class OracleProfile(proto.Message):
             Connection string attributes
     """
 
-    hostname = proto.Field(proto.STRING, number=1,)
-    port = proto.Field(proto.INT32, number=2,)
-    username = proto.Field(proto.STRING, number=3,)
-    password = proto.Field(proto.STRING, number=4,)
-    database_service = proto.Field(proto.STRING, number=5,)
-    connection_attributes = proto.MapField(proto.STRING, proto.STRING, number=6,)
+    hostname = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    port = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    username = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    password = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    database_service = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    connection_attributes = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=6,
+    )
 
 
 class MysqlProfile(proto.Message):
@@ -119,11 +138,27 @@ class MysqlProfile(proto.Message):
             SSL configuration for the MySQL connection.
     """
 
-    hostname = proto.Field(proto.STRING, number=1,)
-    port = proto.Field(proto.INT32, number=2,)
-    username = proto.Field(proto.STRING, number=3,)
-    password = proto.Field(proto.STRING, number=4,)
-    ssl_config = proto.Field(proto.MESSAGE, number=5, message="MysqlSslConfig",)
+    hostname = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    port = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    username = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    password = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    ssl_config = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message="MysqlSslConfig",
+    )
 
 
 class GcsProfile(proto.Message):
@@ -138,18 +173,22 @@ class GcsProfile(proto.Message):
             bucket.
     """
 
-    bucket_name = proto.Field(proto.STRING, number=1,)
-    root_path = proto.Field(proto.STRING, number=2,)
+    bucket_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    root_path = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class NoConnectivitySettings(proto.Message):
-    r"""No connectivity settings.
-    """
+    r"""No connectivity settings."""
 
 
 class StaticServiceIpConnectivity(proto.Message):
-    r"""Static IP address connectivity.
-    """
+    r"""Static IP address connectivity."""
 
 
 class ForwardSshTunnelConnectivity(proto.Message):
@@ -179,11 +218,28 @@ class ForwardSshTunnelConnectivity(proto.Message):
             This field is a member of `oneof`_ ``authentication_method``.
     """
 
-    hostname = proto.Field(proto.STRING, number=1,)
-    username = proto.Field(proto.STRING, number=2,)
-    port = proto.Field(proto.INT32, number=3,)
-    password = proto.Field(proto.STRING, number=100, oneof="authentication_method",)
-    private_key = proto.Field(proto.STRING, number=101, oneof="authentication_method",)
+    hostname = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    username = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    port = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    password = proto.Field(
+        proto.STRING,
+        number=100,
+        oneof="authentication_method",
+    )
+    private_key = proto.Field(
+        proto.STRING,
+        number=101,
+        oneof="authentication_method",
+    )
 
 
 class VpcPeeringConfig(proto.Message):
@@ -199,8 +255,14 @@ class VpcPeeringConfig(proto.Message):
             /29)
     """
 
-    vpc_name = proto.Field(proto.STRING, number=1,)
-    subnet = proto.Field(proto.STRING, number=2,)
+    vpc_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    subnet = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class PrivateConnection(proto.Message):
@@ -235,15 +297,43 @@ class PrivateConnection(proto.Message):
         CREATED = 2
         FAILED = 3
 
-    name = proto.Field(proto.STRING, number=1,)
-    create_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=4,)
-    display_name = proto.Field(proto.STRING, number=5,)
-    state = proto.Field(proto.ENUM, number=6, enum=State,)
-    error = proto.Field(proto.MESSAGE, number=7, message="Error",)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=4,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum=State,
+    )
+    error = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message="Error",
+    )
     vpc_peering_config = proto.Field(
-        proto.MESSAGE, number=100, message="VpcPeeringConfig",
+        proto.MESSAGE,
+        number=100,
+        message="VpcPeeringConfig",
     )
 
 
@@ -255,7 +345,10 @@ class PrivateConnectivity(proto.Message):
 
     """
 
-    private_connection_name = proto.Field(proto.STRING, number=1,)
+    private_connection_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class Route(proto.Message):
@@ -280,13 +373,37 @@ class Route(proto.Message):
             Destination port for connection
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    create_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=4,)
-    display_name = proto.Field(proto.STRING, number=5,)
-    destination_address = proto.Field(proto.STRING, number=6,)
-    destination_port = proto.Field(proto.INT32, number=7,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=4,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    destination_address = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    destination_port = proto.Field(
+        proto.INT32,
+        number=7,
+    )
 
 
 class MysqlSslConfig(proto.Message):
@@ -317,12 +434,30 @@ class MysqlSslConfig(proto.Message):
             set.
     """
 
-    client_key = proto.Field(proto.STRING, number=11,)
-    client_key_set = proto.Field(proto.BOOL, number=12,)
-    client_certificate = proto.Field(proto.STRING, number=13,)
-    client_certificate_set = proto.Field(proto.BOOL, number=14,)
-    ca_certificate = proto.Field(proto.STRING, number=15,)
-    ca_certificate_set = proto.Field(proto.BOOL, number=16,)
+    client_key = proto.Field(
+        proto.STRING,
+        number=11,
+    )
+    client_key_set = proto.Field(
+        proto.BOOL,
+        number=12,
+    )
+    client_certificate = proto.Field(
+        proto.STRING,
+        number=13,
+    )
+    client_certificate_set = proto.Field(
+        proto.BOOL,
+        number=14,
+    )
+    ca_certificate = proto.Field(
+        proto.STRING,
+        number=15,
+    )
+    ca_certificate_set = proto.Field(
+        proto.BOOL,
+        number=16,
+    )
 
 
 class ConnectionProfile(proto.Message):
@@ -377,19 +512,46 @@ class ConnectionProfile(proto.Message):
             This field is a member of `oneof`_ ``connectivity``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    create_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=4,)
-    display_name = proto.Field(proto.STRING, number=5,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=4,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=5,
+    )
     oracle_profile = proto.Field(
-        proto.MESSAGE, number=100, oneof="profile", message="OracleProfile",
+        proto.MESSAGE,
+        number=100,
+        oneof="profile",
+        message="OracleProfile",
     )
     gcs_profile = proto.Field(
-        proto.MESSAGE, number=101, oneof="profile", message="GcsProfile",
+        proto.MESSAGE,
+        number=101,
+        oneof="profile",
+        message="GcsProfile",
     )
     mysql_profile = proto.Field(
-        proto.MESSAGE, number=102, oneof="profile", message="MysqlProfile",
+        proto.MESSAGE,
+        number=102,
+        oneof="profile",
+        message="MysqlProfile",
     )
     no_connectivity = proto.Field(
         proto.MESSAGE,
@@ -410,7 +572,10 @@ class ConnectionProfile(proto.Message):
         message="ForwardSshTunnelConnectivity",
     )
     private_connectivity = proto.Field(
-        proto.MESSAGE, number=203, oneof="connectivity", message="PrivateConnectivity",
+        proto.MESSAGE,
+        number=203,
+        oneof="connectivity",
+        message="PrivateConnectivity",
     )
 
 
@@ -441,15 +606,42 @@ class OracleColumn(proto.Message):
             table.
     """
 
-    column_name = proto.Field(proto.STRING, number=1,)
-    data_type = proto.Field(proto.STRING, number=2,)
-    length = proto.Field(proto.INT32, number=3,)
-    precision = proto.Field(proto.INT32, number=4,)
-    scale = proto.Field(proto.INT32, number=5,)
-    encoding = proto.Field(proto.STRING, number=6,)
-    primary_key = proto.Field(proto.BOOL, number=7,)
-    nullable = proto.Field(proto.BOOL, number=8,)
-    ordinal_position = proto.Field(proto.INT32, number=9,)
+    column_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    data_type = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    length = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    precision = proto.Field(
+        proto.INT32,
+        number=4,
+    )
+    scale = proto.Field(
+        proto.INT32,
+        number=5,
+    )
+    encoding = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    primary_key = proto.Field(
+        proto.BOOL,
+        number=7,
+    )
+    nullable = proto.Field(
+        proto.BOOL,
+        number=8,
+    )
+    ordinal_position = proto.Field(
+        proto.INT32,
+        number=9,
+    )
 
 
 class OracleTable(proto.Message):
@@ -464,9 +656,14 @@ class OracleTable(proto.Message):
             lists, includes/excludes everything.
     """
 
-    table_name = proto.Field(proto.STRING, number=1,)
+    table_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     oracle_columns = proto.RepeatedField(
-        proto.MESSAGE, number=2, message="OracleColumn",
+        proto.MESSAGE,
+        number=2,
+        message="OracleColumn",
     )
 
 
@@ -480,8 +677,15 @@ class OracleSchema(proto.Message):
             Tables in the schema.
     """
 
-    schema_name = proto.Field(proto.STRING, number=1,)
-    oracle_tables = proto.RepeatedField(proto.MESSAGE, number=2, message="OracleTable",)
+    schema_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    oracle_tables = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="OracleTable",
+    )
 
 
 class OracleRdbms(proto.Message):
@@ -494,7 +698,9 @@ class OracleRdbms(proto.Message):
     """
 
     oracle_schemas = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="OracleSchema",
+        proto.MESSAGE,
+        number=1,
+        message="OracleSchema",
     )
 
 
@@ -508,8 +714,16 @@ class OracleSourceConfig(proto.Message):
             Oracle objects to exclude from the stream.
     """
 
-    allowlist = proto.Field(proto.MESSAGE, number=1, message="OracleRdbms",)
-    rejectlist = proto.Field(proto.MESSAGE, number=2, message="OracleRdbms",)
+    allowlist = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="OracleRdbms",
+    )
+    rejectlist = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="OracleRdbms",
+    )
 
 
 class MysqlColumn(proto.Message):
@@ -537,13 +751,34 @@ class MysqlColumn(proto.Message):
             table.
     """
 
-    column_name = proto.Field(proto.STRING, number=1,)
-    data_type = proto.Field(proto.STRING, number=2,)
-    length = proto.Field(proto.INT32, number=3,)
-    collation = proto.Field(proto.STRING, number=4,)
-    primary_key = proto.Field(proto.BOOL, number=5,)
-    nullable = proto.Field(proto.BOOL, number=6,)
-    ordinal_position = proto.Field(proto.INT32, number=7,)
+    column_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    data_type = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    length = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    collation = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    primary_key = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
+    nullable = proto.Field(
+        proto.BOOL,
+        number=6,
+    )
+    ordinal_position = proto.Field(
+        proto.INT32,
+        number=7,
+    )
 
 
 class MysqlTable(proto.Message):
@@ -558,8 +793,15 @@ class MysqlTable(proto.Message):
             lists, includes/excludes everything.
     """
 
-    table_name = proto.Field(proto.STRING, number=1,)
-    mysql_columns = proto.RepeatedField(proto.MESSAGE, number=2, message="MysqlColumn",)
+    table_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    mysql_columns = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="MysqlColumn",
+    )
 
 
 class MysqlDatabase(proto.Message):
@@ -572,8 +814,15 @@ class MysqlDatabase(proto.Message):
             Tables in the database.
     """
 
-    database_name = proto.Field(proto.STRING, number=1,)
-    mysql_tables = proto.RepeatedField(proto.MESSAGE, number=2, message="MysqlTable",)
+    database_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    mysql_tables = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="MysqlTable",
+    )
 
 
 class MysqlRdbms(proto.Message):
@@ -585,7 +834,9 @@ class MysqlRdbms(proto.Message):
     """
 
     mysql_databases = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="MysqlDatabase",
+        proto.MESSAGE,
+        number=1,
+        message="MysqlDatabase",
     )
 
 
@@ -599,8 +850,16 @@ class MysqlSourceConfig(proto.Message):
             MySQL objects to exclude from the stream.
     """
 
-    allowlist = proto.Field(proto.MESSAGE, number=1, message="MysqlRdbms",)
-    rejectlist = proto.Field(proto.MESSAGE, number=2, message="MysqlRdbms",)
+    allowlist = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="MysqlRdbms",
+    )
+    rejectlist = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="MysqlRdbms",
+    )
 
 
 class SourceConfig(proto.Message):
@@ -627,7 +886,10 @@ class SourceConfig(proto.Message):
             This field is a member of `oneof`_ ``source_stream_config``.
     """
 
-    source_connection_profile_name = proto.Field(proto.STRING, number=1,)
+    source_connection_profile_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     oracle_source_config = proto.Field(
         proto.MESSAGE,
         number=100,
@@ -643,8 +905,7 @@ class SourceConfig(proto.Message):
 
 
 class AvroFileFormat(proto.Message):
-    r"""AVRO file format configuration.
-    """
+    r"""AVRO file format configuration."""
 
 
 class JsonFileFormat(proto.Message):
@@ -663,8 +924,16 @@ class JsonFileFormat(proto.Message):
         NO_COMPRESSION = 1
         GZIP = 2
 
-    schema_file_format = proto.Field(proto.ENUM, number=1, enum="SchemaFileFormat",)
-    compression = proto.Field(proto.ENUM, number=2, enum=JsonCompression,)
+    schema_file_format = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum="SchemaFileFormat",
+    )
+    compression = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=JsonCompression,
+    )
 
 
 class GcsDestinationConfig(proto.Message):
@@ -701,17 +970,35 @@ class GcsDestinationConfig(proto.Message):
             This field is a member of `oneof`_ ``file_format``.
     """
 
-    path = proto.Field(proto.STRING, number=1,)
-    gcs_file_format = proto.Field(proto.ENUM, number=2, enum="GcsFileFormat",)
-    file_rotation_mb = proto.Field(proto.INT32, number=3,)
+    path = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    gcs_file_format = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum="GcsFileFormat",
+    )
+    file_rotation_mb = proto.Field(
+        proto.INT32,
+        number=3,
+    )
     file_rotation_interval = proto.Field(
-        proto.MESSAGE, number=4, message=duration_pb2.Duration,
+        proto.MESSAGE,
+        number=4,
+        message=duration_pb2.Duration,
     )
     avro_file_format = proto.Field(
-        proto.MESSAGE, number=100, oneof="file_format", message="AvroFileFormat",
+        proto.MESSAGE,
+        number=100,
+        oneof="file_format",
+        message="AvroFileFormat",
     )
     json_file_format = proto.Field(
-        proto.MESSAGE, number=101, oneof="file_format", message="JsonFileFormat",
+        proto.MESSAGE,
+        number=101,
+        oneof="file_format",
+        message="JsonFileFormat",
     )
 
 
@@ -729,7 +1016,10 @@ class DestinationConfig(proto.Message):
             This field is a member of `oneof`_ ``destination_stream_config``.
     """
 
-    destination_connection_profile_name = proto.Field(proto.STRING, number=1,)
+    destination_connection_profile_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     gcs_destination_config = proto.Field(
         proto.MESSAGE,
         number=100,
@@ -819,10 +1109,16 @@ class Stream(proto.Message):
         """
 
         oracle_excluded_objects = proto.Field(
-            proto.MESSAGE, number=1, oneof="excluded_objects", message="OracleRdbms",
+            proto.MESSAGE,
+            number=1,
+            oneof="excluded_objects",
+            message="OracleRdbms",
         )
         mysql_excluded_objects = proto.Field(
-            proto.MESSAGE, number=2, oneof="excluded_objects", message="MysqlRdbms",
+            proto.MESSAGE,
+            number=2,
+            oneof="excluded_objects",
+            message="MysqlRdbms",
         )
 
     class BackfillNoneStrategy(proto.Message):
@@ -831,16 +1127,44 @@ class Stream(proto.Message):
 
         """
 
-    name = proto.Field(proto.STRING, number=1,)
-    create_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=4,)
-    display_name = proto.Field(proto.STRING, number=5,)
-    source_config = proto.Field(proto.MESSAGE, number=6, message="SourceConfig",)
-    destination_config = proto.Field(
-        proto.MESSAGE, number=7, message="DestinationConfig",
+    name = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    state = proto.Field(proto.ENUM, number=8, enum=State,)
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=4,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    source_config = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message="SourceConfig",
+    )
+    destination_config = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message="DestinationConfig",
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=8,
+        enum=State,
+    )
     backfill_all = proto.Field(
         proto.MESSAGE,
         number=101,
@@ -853,7 +1177,11 @@ class Stream(proto.Message):
         oneof="backfill_strategy",
         message=BackfillNoneStrategy,
     )
-    errors = proto.RepeatedField(proto.MESSAGE, number=9, message="Error",)
+    errors = proto.RepeatedField(
+        proto.MESSAGE,
+        number=9,
+        message="Error",
+    )
 
 
 class Error(proto.Message):
@@ -876,11 +1204,28 @@ class Error(proto.Message):
             Additional information about the error.
     """
 
-    reason = proto.Field(proto.STRING, number=1,)
-    error_uuid = proto.Field(proto.STRING, number=2,)
-    message = proto.Field(proto.STRING, number=3,)
-    error_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
-    details = proto.MapField(proto.STRING, proto.STRING, number=5,)
+    reason = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    error_uuid = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    message = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    error_time = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    details = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=5,
+    )
 
 
 class ValidationResult(proto.Message):
@@ -892,7 +1237,11 @@ class ValidationResult(proto.Message):
             as well as not executed validations).
     """
 
-    validations = proto.RepeatedField(proto.MESSAGE, number=1, message="Validation",)
+    validations = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Validation",
+    )
 
 
 class Validation(proto.Message):
@@ -916,10 +1265,24 @@ class Validation(proto.Message):
         FAILED = 2
         PASSED = 3
 
-    description = proto.Field(proto.STRING, number=1,)
-    status = proto.Field(proto.ENUM, number=2, enum=Status,)
-    message = proto.RepeatedField(proto.MESSAGE, number=3, message="ValidationMessage",)
-    code = proto.Field(proto.STRING, number=4,)
+    description = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    status = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=Status,
+    )
+    message = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message="ValidationMessage",
+    )
+    code = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class ValidationMessage(proto.Message):
@@ -943,10 +1306,24 @@ class ValidationMessage(proto.Message):
         WARNING = 1
         ERROR = 2
 
-    message = proto.Field(proto.STRING, number=1,)
-    level = proto.Field(proto.ENUM, number=2, enum=Level,)
-    metadata = proto.MapField(proto.STRING, proto.STRING, number=3,)
-    code = proto.Field(proto.STRING, number=4,)
+    message = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    level = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=Level,
+    )
+    metadata = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=3,
+    )
+    code = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
