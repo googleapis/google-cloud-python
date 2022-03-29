@@ -207,7 +207,9 @@ def test_update_ddl_w_operation_id(shared_instance, databases_to_delete):
 
 
 def test_update_ddl_w_pitr_invalid(
-    not_emulator, shared_instance, databases_to_delete,
+    not_emulator,
+    shared_instance,
+    databases_to_delete,
 ):
     pool = spanner_v1.BurstyPool(labels={"testcase": "update_database_ddl_pitr"})
     temp_db_id = _helpers.unique_id("pitr_upd_ddl_inv", separator="_")
@@ -229,7 +231,9 @@ def test_update_ddl_w_pitr_invalid(
 
 
 def test_update_ddl_w_pitr_success(
-    not_emulator, shared_instance, databases_to_delete,
+    not_emulator,
+    shared_instance,
+    databases_to_delete,
 ):
     pool = spanner_v1.BurstyPool(labels={"testcase": "update_database_ddl_pitr"})
     temp_db_id = _helpers.unique_id("pitr_upd_ddl_inv", separator="_")
@@ -255,7 +259,9 @@ def test_update_ddl_w_pitr_success(
 
 
 def test_update_ddl_w_default_leader_success(
-    not_emulator, multiregion_instance, databases_to_delete,
+    not_emulator,
+    multiregion_instance,
+    databases_to_delete,
 ):
     pool = spanner_v1.BurstyPool(
         labels={"testcase": "update_database_ddl_default_leader"},

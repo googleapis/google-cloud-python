@@ -140,7 +140,9 @@ class TestSession(OpenTelemetryBase):
 
         self.assertEqual(session.session_id, self.SESSION_ID)
 
-        request = CreateSessionRequest(database=database.name,)
+        request = CreateSessionRequest(
+            database=database.name,
+        )
 
         gax_api.create_session.assert_called_once_with(
             request=request, metadata=[("google-cloud-resource-prefix", database.name)]
@@ -167,11 +169,13 @@ class TestSession(OpenTelemetryBase):
         self.assertEqual(session.session_id, self.SESSION_ID)
 
         request = CreateSessionRequest(
-            database=database.name, session=SessionPB(labels=labels),
+            database=database.name,
+            session=SessionPB(labels=labels),
         )
 
         gax_api.create_session.assert_called_once_with(
-            request=request, metadata=[("google-cloud-resource-prefix", database.name)],
+            request=request,
+            metadata=[("google-cloud-resource-prefix", database.name)],
         )
 
         self.assertSpanAttributes(
@@ -334,10 +338,14 @@ class TestSession(OpenTelemetryBase):
 
         session.ping()
 
-        request = ExecuteSqlRequest(session=self.SESSION_NAME, sql="SELECT 1",)
+        request = ExecuteSqlRequest(
+            session=self.SESSION_NAME,
+            sql="SELECT 1",
+        )
 
         gax_api.execute_sql.assert_called_once_with(
-            request=request, metadata=[("google-cloud-resource-prefix", database.name)],
+            request=request,
+            metadata=[("google-cloud-resource-prefix", database.name)],
         )
 
     def test_ping_miss(self):
@@ -354,10 +362,14 @@ class TestSession(OpenTelemetryBase):
         with self.assertRaises(NotFound):
             session.ping()
 
-        request = ExecuteSqlRequest(session=self.SESSION_NAME, sql="SELECT 1",)
+        request = ExecuteSqlRequest(
+            session=self.SESSION_NAME,
+            sql="SELECT 1",
+        )
 
         gax_api.execute_sql.assert_called_once_with(
-            request=request, metadata=[("google-cloud-resource-prefix", database.name)],
+            request=request,
+            metadata=[("google-cloud-resource-prefix", database.name)],
         )
 
     def test_ping_error(self):
@@ -374,10 +386,14 @@ class TestSession(OpenTelemetryBase):
         with self.assertRaises(Unknown):
             session.ping()
 
-        request = ExecuteSqlRequest(session=self.SESSION_NAME, sql="SELECT 1",)
+        request = ExecuteSqlRequest(
+            session=self.SESSION_NAME,
+            sql="SELECT 1",
+        )
 
         gax_api.execute_sql.assert_called_once_with(
-            request=request, metadata=[("google-cloud-resource-prefix", database.name)],
+            request=request,
+            metadata=[("google-cloud-resource-prefix", database.name)],
         )
 
     def test_delete_wo_session_id(self):
@@ -833,7 +849,8 @@ class TestSession(OpenTelemetryBase):
             request_options=RequestOptions(),
         )
         gax_api.commit.assert_called_once_with(
-            request=request, metadata=[("google-cloud-resource-prefix", database.name)],
+            request=request,
+            metadata=[("google-cloud-resource-prefix", database.name)],
         )
 
     def test_run_in_transaction_w_commit_error(self):
@@ -884,7 +901,8 @@ class TestSession(OpenTelemetryBase):
             request_options=RequestOptions(),
         )
         gax_api.commit.assert_called_once_with(
-            request=request, metadata=[("google-cloud-resource-prefix", database.name)],
+            request=request,
+            metadata=[("google-cloud-resource-prefix", database.name)],
         )
 
     def test_run_in_transaction_w_abort_no_retry_metadata(self):
@@ -1141,7 +1159,8 @@ class TestSession(OpenTelemetryBase):
             request_options=RequestOptions(),
         )
         gax_api.commit.assert_called_once_with(
-            request=request, metadata=[("google-cloud-resource-prefix", database.name)],
+            request=request,
+            metadata=[("google-cloud-resource-prefix", database.name)],
         )
 
     def test_run_in_transaction_w_abort_w_retry_metadata_deadline(self):
@@ -1232,7 +1251,8 @@ class TestSession(OpenTelemetryBase):
             request_options=RequestOptions(),
         )
         gax_api.commit.assert_called_once_with(
-            request=request, metadata=[("google-cloud-resource-prefix", database.name)],
+            request=request,
+            metadata=[("google-cloud-resource-prefix", database.name)],
         )
 
     def test_run_in_transaction_w_timeout(self):
@@ -1388,7 +1408,8 @@ class TestSession(OpenTelemetryBase):
             request_options=RequestOptions(),
         )
         gax_api.commit.assert_called_once_with(
-            request=request, metadata=[("google-cloud-resource-prefix", database.name)],
+            request=request,
+            metadata=[("google-cloud-resource-prefix", database.name)],
         )
         database.logger.info.assert_called_once_with(
             "CommitStats: mutation_count: 4\n", extra={"commit_stats": commit_stats}
@@ -1451,7 +1472,8 @@ class TestSession(OpenTelemetryBase):
             request_options=RequestOptions(),
         )
         gax_api.commit.assert_called_once_with(
-            request=request, metadata=[("google-cloud-resource-prefix", database.name)],
+            request=request,
+            metadata=[("google-cloud-resource-prefix", database.name)],
         )
         database.logger.info.assert_not_called()
 
@@ -1520,7 +1542,8 @@ class TestSession(OpenTelemetryBase):
             request_options=RequestOptions(transaction_tag=transaction_tag),
         )
         gax_api.commit.assert_called_once_with(
-            request=request, metadata=[("google-cloud-resource-prefix", database.name)],
+            request=request,
+            metadata=[("google-cloud-resource-prefix", database.name)],
         )
 
     def test_delay_helper_w_no_delay(self):

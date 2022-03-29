@@ -24,7 +24,7 @@ import shutil
 import nox
 
 
-BLACK_VERSION = "black==19.10b0"
+BLACK_VERSION = "black==22.3.0"
 BLACK_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
 
 DEFAULT_PYTHON_VERSION = "3.8"
@@ -57,7 +57,9 @@ def lint(session):
     """
     session.install("flake8", BLACK_VERSION)
     session.run(
-        "black", "--check", *BLACK_PATHS,
+        "black",
+        "--check",
+        *BLACK_PATHS,
     )
     session.run("flake8", "google", "tests")
 
@@ -67,7 +69,8 @@ def blacken(session):
     """Run black. Format code to uniform standard."""
     session.install(BLACK_VERSION)
     session.run(
-        "black", *BLACK_PATHS,
+        "black",
+        *BLACK_PATHS,
     )
 
 

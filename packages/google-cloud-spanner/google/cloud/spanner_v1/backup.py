@@ -295,7 +295,10 @@ class Backup(object):
                 encryption_config=self._encryption_config,
             )
 
-            future = api.copy_backup(request=request, metadata=metadata,)
+            future = api.copy_backup(
+                request=request,
+                metadata=metadata,
+            )
             return future
 
         backup = BackupPB(
@@ -311,7 +314,10 @@ class Backup(object):
             encryption_config=self._encryption_config,
         )
 
-        future = api.create_backup(request=request, metadata=metadata,)
+        future = api.create_backup(
+            request=request,
+            metadata=metadata,
+        )
         return future
 
     def exists(self):
@@ -358,7 +364,10 @@ class Backup(object):
         """
         api = self._instance._client.database_admin_api
         metadata = _metadata_with_prefix(self.name)
-        backup_update = BackupPB(name=self.name, expire_time=new_expire_time,)
+        backup_update = BackupPB(
+            name=self.name,
+            expire_time=new_expire_time,
+        )
         update_mask = {"paths": ["expire_time"]}
         api.update_backup(
             backup=backup_update, update_mask=update_mask, metadata=metadata

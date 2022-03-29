@@ -146,7 +146,9 @@ class DatabaseAdminTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.create_database: gapic_v1.method.wrap_method(
-                self.create_database, default_timeout=3600.0, client_info=client_info,
+                self.create_database,
+                default_timeout=3600.0,
+                client_info=client_info,
             ),
             self.get_database: gapic_v1.method.wrap_method(
                 self.get_database,
@@ -209,7 +211,9 @@ class DatabaseAdminTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.set_iam_policy: gapic_v1.method.wrap_method(
-                self.set_iam_policy, default_timeout=30.0, client_info=client_info,
+                self.set_iam_policy,
+                default_timeout=30.0,
+                client_info=client_info,
             ),
             self.get_iam_policy: gapic_v1.method.wrap_method(
                 self.get_iam_policy,
@@ -232,10 +236,14 @@ class DatabaseAdminTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.create_backup: gapic_v1.method.wrap_method(
-                self.create_backup, default_timeout=3600.0, client_info=client_info,
+                self.create_backup,
+                default_timeout=3600.0,
+                client_info=client_info,
             ),
             self.copy_backup: gapic_v1.method.wrap_method(
-                self.copy_backup, default_timeout=3600.0, client_info=client_info,
+                self.copy_backup,
+                default_timeout=3600.0,
+                client_info=client_info,
             ),
             self.get_backup: gapic_v1.method.wrap_method(
                 self.get_backup,
@@ -298,7 +306,9 @@ class DatabaseAdminTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.restore_database: gapic_v1.method.wrap_method(
-                self.restore_database, default_timeout=3600.0, client_info=client_info,
+                self.restore_database,
+                default_timeout=3600.0,
+                client_info=client_info,
             ),
             self.list_database_operations: gapic_v1.method.wrap_method(
                 self.list_database_operations,
@@ -335,9 +345,9 @@ class DatabaseAdminTransport(abc.ABC):
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

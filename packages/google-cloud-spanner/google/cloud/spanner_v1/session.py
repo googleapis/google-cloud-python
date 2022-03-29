@@ -120,7 +120,10 @@ class Session(object):
             request.session.labels = self._labels
 
         with trace_call("CloudSpanner.CreateSession", self, self._labels):
-            session_pb = api.create_session(request=request, metadata=metadata,)
+            session_pb = api.create_session(
+                request=request,
+                metadata=metadata,
+            )
         self._session_id = session_pb.name.split("/")[-1]
 
     def exists(self):
@@ -438,4 +441,4 @@ def _get_retry_delay(cause, attempts):
         nanos = retry_info.retry_delay.nanos
         return retry_info.retry_delay.seconds + nanos / 1.0e9
 
-    return 2 ** attempts + random.random()
+    return 2**attempts + random.random()

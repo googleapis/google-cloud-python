@@ -420,7 +420,7 @@ class Test_SnapshotBase(OpenTelemetryBase):
         from google.cloud.spanner_v1.keyset import KeySet
         from google.cloud.spanner_v1._helpers import _make_value_pb
 
-        VALUES = [[u"bharney", 31], [u"phred", 32]]
+        VALUES = [["bharney", 31], ["phred", 32]]
         VALUE_PBS = [[_make_value_pb(item) for item in row] for row in VALUES]
         struct_type_pb = StructType(
             fields=[
@@ -541,16 +541,21 @@ class Test_SnapshotBase(OpenTelemetryBase):
         self._read_helper(multi_use=False)
 
     def test_read_w_request_tag_success(self):
-        request_options = RequestOptions(request_tag="tag-1",)
+        request_options = RequestOptions(
+            request_tag="tag-1",
+        )
         self._read_helper(multi_use=False, request_options=request_options)
 
     def test_read_w_transaction_tag_success(self):
-        request_options = RequestOptions(transaction_tag="tag-1-1",)
+        request_options = RequestOptions(
+            transaction_tag="tag-1-1",
+        )
         self._read_helper(multi_use=False, request_options=request_options)
 
     def test_read_w_request_and_transaction_tag_success(self):
         request_options = RequestOptions(
-            request_tag="tag-1", transaction_tag="tag-1-1",
+            request_tag="tag-1",
+            transaction_tag="tag-1-1",
         )
         self._read_helper(multi_use=False, request_options=request_options)
 
@@ -650,7 +655,7 @@ class Test_SnapshotBase(OpenTelemetryBase):
             _merge_query_options,
         )
 
-        VALUES = [[u"bharney", u"rhubbyl", 31], [u"phred", u"phlyntstone", 32]]
+        VALUES = [["bharney", "rhubbyl", 31], ["phred", "phlyntstone", 32]]
         VALUE_PBS = [[_make_value_pb(item) for item in row] for row in VALUES]
         MODE = 2  # PROFILE
         struct_type_pb = StructType(
@@ -807,16 +812,21 @@ class Test_SnapshotBase(OpenTelemetryBase):
         )
 
     def test_execute_sql_w_request_tag_success(self):
-        request_options = RequestOptions(request_tag="tag-1",)
+        request_options = RequestOptions(
+            request_tag="tag-1",
+        )
         self._execute_sql_helper(multi_use=False, request_options=request_options)
 
     def test_execute_sql_w_transaction_tag_success(self):
-        request_options = RequestOptions(transaction_tag="tag-1-1",)
+        request_options = RequestOptions(
+            transaction_tag="tag-1-1",
+        )
         self._execute_sql_helper(multi_use=False, request_options=request_options)
 
     def test_execute_sql_w_request_and_transaction_tag_success(self):
         request_options = RequestOptions(
-            request_tag="tag-1", transaction_tag="tag-1-1",
+            request_tag="tag-1",
+            transaction_tag="tag-1-1",
         )
         self._execute_sql_helper(multi_use=False, request_options=request_options)
 

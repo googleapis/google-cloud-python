@@ -21,7 +21,11 @@ from google.protobuf import timestamp_pb2  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.spanner.v1",
-    manifest={"TransactionOptions", "Transaction", "TransactionSelector",},
+    manifest={
+        "TransactionOptions",
+        "Transaction",
+        "TransactionSelector",
+    },
 )
 
 
@@ -340,8 +344,7 @@ class TransactionOptions(proto.Message):
         """
 
     class PartitionedDml(proto.Message):
-        r"""Message type to initiate a Partitioned DML transaction.
-        """
+        r"""Message type to initiate a Partitioned DML transaction."""
 
     class ReadOnly(proto.Message):
         r"""Message type to initiate a read-only transaction.
@@ -427,7 +430,11 @@ class TransactionOptions(proto.Message):
                 message that describes the transaction.
         """
 
-        strong = proto.Field(proto.BOOL, number=1, oneof="timestamp_bound",)
+        strong = proto.Field(
+            proto.BOOL,
+            number=1,
+            oneof="timestamp_bound",
+        )
         min_read_timestamp = proto.Field(
             proto.MESSAGE,
             number=2,
@@ -452,13 +459,29 @@ class TransactionOptions(proto.Message):
             oneof="timestamp_bound",
             message=duration_pb2.Duration,
         )
-        return_read_timestamp = proto.Field(proto.BOOL, number=6,)
+        return_read_timestamp = proto.Field(
+            proto.BOOL,
+            number=6,
+        )
 
-    read_write = proto.Field(proto.MESSAGE, number=1, oneof="mode", message=ReadWrite,)
-    partitioned_dml = proto.Field(
-        proto.MESSAGE, number=3, oneof="mode", message=PartitionedDml,
+    read_write = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="mode",
+        message=ReadWrite,
     )
-    read_only = proto.Field(proto.MESSAGE, number=2, oneof="mode", message=ReadOnly,)
+    partitioned_dml = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="mode",
+        message=PartitionedDml,
+    )
+    read_only = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="mode",
+        message=ReadOnly,
+    )
 
 
 class Transaction(proto.Message):
@@ -483,9 +506,14 @@ class Transaction(proto.Message):
             nanoseconds. Example: ``"2014-10-02T15:01:23.045123456Z"``.
     """
 
-    id = proto.Field(proto.BYTES, number=1,)
+    id = proto.Field(
+        proto.BYTES,
+        number=1,
+    )
     read_timestamp = proto.Field(
-        proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
     )
 
 
@@ -528,11 +556,21 @@ class TransactionSelector(proto.Message):
     """
 
     single_use = proto.Field(
-        proto.MESSAGE, number=1, oneof="selector", message="TransactionOptions",
+        proto.MESSAGE,
+        number=1,
+        oneof="selector",
+        message="TransactionOptions",
     )
-    id = proto.Field(proto.BYTES, number=2, oneof="selector",)
+    id = proto.Field(
+        proto.BYTES,
+        number=2,
+        oneof="selector",
+    )
     begin = proto.Field(
-        proto.MESSAGE, number=3, oneof="selector", message="TransactionOptions",
+        proto.MESSAGE,
+        number=3,
+        oneof="selector",
+        message="TransactionOptions",
     )
 
 

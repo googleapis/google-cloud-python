@@ -205,7 +205,11 @@ class Unmergeable(ValueError):
     """
 
     def __init__(self, lhs, rhs, type_):
-        message = "Cannot merge %s values: %s %s" % (TypeCode(type_.code), lhs, rhs,)
+        message = "Cannot merge %s values: %s %s" % (
+            TypeCode(type_.code),
+            lhs,
+            rhs,
+        )
         super(Unmergeable, self).__init__(message)
 
 

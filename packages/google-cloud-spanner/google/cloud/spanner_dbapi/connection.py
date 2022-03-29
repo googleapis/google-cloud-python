@@ -446,7 +446,8 @@ class Connection:
                 )
             else:
                 _execute_insert_heterogenous(
-                    transaction, parts.get("sql_params_list"),
+                    transaction,
+                    parts.get("sql_params_list"),
                 )
                 return (
                     iter(()),
@@ -455,7 +456,9 @@ class Connection:
 
         return (
             transaction.execute_sql(
-                statement.sql, statement.params, param_types=statement.param_types,
+                statement.sql,
+                statement.params,
+                param_types=statement.param_types,
             ),
             ResultsChecksum() if retried else statement.checksum,
         )

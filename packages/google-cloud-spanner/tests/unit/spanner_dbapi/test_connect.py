@@ -70,7 +70,12 @@ class Test_connect(unittest.TestCase):
         database = instance.database.return_value
 
         connection = connect(
-            INSTANCE, DATABASE, PROJECT, credentials, pool=pool, user_agent=USER_AGENT,
+            INSTANCE,
+            DATABASE,
+            PROJECT,
+            credentials,
+            pool=pool,
+            user_agent=USER_AGENT,
         )
 
         self.assertIsInstance(connection, Connection)
@@ -107,7 +112,9 @@ class Test_connect(unittest.TestCase):
 
         factory = mock_client.from_service_account_json
         factory.assert_called_once_with(
-            credentials_path, project=PROJECT, client_info=mock.ANY,
+            credentials_path,
+            project=PROJECT,
+            client_info=mock.ANY,
         )
         client_info = factory.call_args_list[0][1]["client_info"]
         self.assertEqual(client_info.user_agent, USER_AGENT)

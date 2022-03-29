@@ -113,7 +113,7 @@ class Test_make_value_pb(unittest.TestCase):
     def test_w_explicit_unicode(self):
         from google.protobuf.struct_pb2 import Value
 
-        TEXT = u"TEXT"
+        TEXT = "TEXT"
         value_pb = self._callFUT(TEXT)
         self.assertIsInstance(value_pb, Value)
         self.assertEqual(value_pb.string_value, TEXT)
@@ -122,21 +122,21 @@ class Test_make_value_pb(unittest.TestCase):
         from google.protobuf.struct_pb2 import Value
         from google.protobuf.struct_pb2 import ListValue
 
-        value_pb = self._callFUT([u"a", u"b", u"c"])
+        value_pb = self._callFUT(["a", "b", "c"])
         self.assertIsInstance(value_pb, Value)
         self.assertIsInstance(value_pb.list_value, ListValue)
         values = value_pb.list_value.values
-        self.assertEqual([value.string_value for value in values], [u"a", u"b", u"c"])
+        self.assertEqual([value.string_value for value in values], ["a", "b", "c"])
 
     def test_w_tuple(self):
         from google.protobuf.struct_pb2 import Value
         from google.protobuf.struct_pb2 import ListValue
 
-        value_pb = self._callFUT((u"a", u"b", u"c"))
+        value_pb = self._callFUT(("a", "b", "c"))
         self.assertIsInstance(value_pb, Value)
         self.assertIsInstance(value_pb.list_value, ListValue)
         values = value_pb.list_value.values
-        self.assertEqual([value.string_value for value in values], [u"a", u"b", u"c"])
+        self.assertEqual([value.string_value for value in values], ["a", "b", "c"])
 
     def test_w_bool(self):
         from google.protobuf.struct_pb2 import Value
@@ -290,7 +290,9 @@ class Test_make_value_pb(unittest.TestCase):
         for value, err_msg in cases:
             with self.subTest(value=value, err_msg=err_msg):
                 self.assertRaisesRegex(
-                    ValueError, err_msg, lambda: self._callFUT(value),
+                    ValueError,
+                    err_msg,
+                    lambda: self._callFUT(value),
                 )
 
     def test_w_json(self):
@@ -321,7 +323,7 @@ class Test_make_list_value_pb(unittest.TestCase):
     def test_w_single_value(self):
         from google.protobuf.struct_pb2 import ListValue
 
-        VALUE = u"value"
+        VALUE = "value"
         result = self._callFUT(values=[VALUE])
         self.assertIsInstance(result, ListValue)
         self.assertEqual(len(result.values), 1)
@@ -330,7 +332,7 @@ class Test_make_list_value_pb(unittest.TestCase):
     def test_w_multiple_values(self):
         from google.protobuf.struct_pb2 import ListValue
 
-        VALUE_1 = u"value"
+        VALUE_1 = "value"
         VALUE_2 = 42
         result = self._callFUT(values=[VALUE_1, VALUE_2])
         self.assertIsInstance(result, ListValue)
@@ -363,7 +365,7 @@ class Test_make_list_value_pbs(unittest.TestCase):
     def test_w_multiple_values(self):
         from google.protobuf.struct_pb2 import ListValue
 
-        values = [[0, u"A"], [1, u"B"]]
+        values = [[0, "A"], [1, "B"]]
         result = self._callFUT(values=values)
         self.assertEqual(len(result), len(values))
         for found, expected in zip(result, values):
@@ -394,7 +396,7 @@ class Test_parse_value_pb(unittest.TestCase):
         from google.cloud.spanner_v1 import Type
         from google.cloud.spanner_v1 import TypeCode
 
-        VALUE = u"Value"
+        VALUE = "Value"
         field_type = Type(code=TypeCode.STRING)
         value_pb = Value(string_value=VALUE)
 
@@ -537,7 +539,7 @@ class Test_parse_value_pb(unittest.TestCase):
         from google.cloud.spanner_v1 import TypeCode
         from google.cloud.spanner_v1._helpers import _make_list_value_pb
 
-        VALUES = [u"phred", 32]
+        VALUES = ["phred", 32]
         struct_type_pb = StructType(
             fields=[
                 StructType.Field(name="name", type_=Type(code=TypeCode.STRING)),
@@ -621,7 +623,7 @@ class Test_parse_list_value_pbs(unittest.TestCase):
         from google.cloud.spanner_v1 import TypeCode
         from google.cloud.spanner_v1._helpers import _make_list_value_pbs
 
-        VALUES = [[u"phred", 32], [u"bharney", 31]]
+        VALUES = [["phred", 32], ["bharney", 31]]
         struct_type_pb = StructType(
             fields=[
                 StructType.Field(name="name", type_=Type(code=TypeCode.STRING)),

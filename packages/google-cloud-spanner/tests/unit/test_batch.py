@@ -20,8 +20,8 @@ from google.cloud.spanner_v1 import RequestOptions
 TABLE_NAME = "citizens"
 COLUMNS = ["email", "first_name", "last_name", "age"]
 VALUES = [
-    [u"phred@exammple.com", u"Phred", u"Phlyntstone", 32],
-    [u"bharney@example.com", u"Bharney", u"Rhubble", 31],
+    ["phred@exammple.com", "Phred", "Phlyntstone", 32],
+    ["bharney@example.com", "Bharney", "Rhubble", 31],
 ]
 BASE_ATTRIBUTES = {
     "db.type": "spanner",
@@ -293,16 +293,21 @@ class TestBatch(_BaseTest, OpenTelemetryBase):
         )
 
     def test_commit_w_request_tag_success(self):
-        request_options = RequestOptions(request_tag="tag-1",)
+        request_options = RequestOptions(
+            request_tag="tag-1",
+        )
         self._test_commit_with_request_options(request_options=request_options)
 
     def test_commit_w_transaction_tag_success(self):
-        request_options = RequestOptions(transaction_tag="tag-1-1",)
+        request_options = RequestOptions(
+            transaction_tag="tag-1-1",
+        )
         self._test_commit_with_request_options(request_options=request_options)
 
     def test_commit_w_request_and_transaction_tag_success(self):
         request_options = RequestOptions(
-            request_tag="tag-1", transaction_tag="tag-1-1",
+            request_tag="tag-1",
+            transaction_tag="tag-1-1",
         )
         self._test_commit_with_request_options(request_options=request_options)
 
@@ -412,7 +417,9 @@ class _FauxSpannerAPI:
         self.__dict__.update(**kwargs)
 
     def commit(
-        self, request=None, metadata=None,
+        self,
+        request=None,
+        metadata=None,
     ):
         from google.api_core.exceptions import Unknown
 

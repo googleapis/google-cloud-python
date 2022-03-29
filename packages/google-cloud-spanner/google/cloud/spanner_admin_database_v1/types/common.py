@@ -52,9 +52,20 @@ class OperationProgress(proto.Message):
             failed or was completed successfully.
     """
 
-    progress_percent = proto.Field(proto.INT32, number=1,)
-    start_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    end_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
+    progress_percent = proto.Field(
+        proto.INT32,
+        number=1,
+    )
+    start_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 class EncryptionConfig(proto.Message):
@@ -67,7 +78,10 @@ class EncryptionConfig(proto.Message):
             ``projects/<project>/locations/<location>/keyRings/<key_ring>/cryptoKeys/<kms_key_name>``.
     """
 
-    kms_key_name = proto.Field(proto.STRING, number=2,)
+    kms_key_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class EncryptionInfo(proto.Message):
@@ -93,9 +107,20 @@ class EncryptionInfo(proto.Message):
         GOOGLE_DEFAULT_ENCRYPTION = 1
         CUSTOMER_MANAGED_ENCRYPTION = 2
 
-    encryption_type = proto.Field(proto.ENUM, number=3, enum=Type,)
-    encryption_status = proto.Field(proto.MESSAGE, number=4, message=status_pb2.Status,)
-    kms_key_version = proto.Field(proto.STRING, number=2,)
+    encryption_type = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=Type,
+    )
+    encryption_status = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=status_pb2.Status,
+    )
+    kms_key_version = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

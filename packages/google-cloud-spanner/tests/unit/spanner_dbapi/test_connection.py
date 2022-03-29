@@ -134,7 +134,11 @@ class TestConnection(unittest.TestCase):
         connection.retry_transaction = mock.Mock()
 
         cursor = connection.cursor()
-        cursor._itr = mock.Mock(__next__=mock.Mock(side_effect=Aborted("Aborted"),))
+        cursor._itr = mock.Mock(
+            __next__=mock.Mock(
+                side_effect=Aborted("Aborted"),
+            )
+        )
 
         cursor.fetchone()
         cursor.fetchall()
@@ -574,7 +578,10 @@ class TestConnection(unittest.TestCase):
         connection.retry_transaction()
 
         run_mock.assert_has_calls(
-            (mock.call(statement, retried=True), mock.call(statement, retried=True),)
+            (
+                mock.call(statement, retried=True),
+                mock.call(statement, retried=True),
+            )
         )
 
     def test_retry_transaction_raise_max_internal_retries(self):
@@ -631,7 +638,10 @@ class TestConnection(unittest.TestCase):
         connection.retry_transaction()
 
         run_mock.assert_has_calls(
-            (mock.call(statement, retried=True), mock.call(statement, retried=True),)
+            (
+                mock.call(statement, retried=True),
+                mock.call(statement, retried=True),
+            )
         )
 
     def test_retry_transaction_w_multiple_statement(self):

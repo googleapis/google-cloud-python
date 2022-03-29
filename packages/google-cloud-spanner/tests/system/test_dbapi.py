@@ -45,7 +45,9 @@ def raw_database(shared_instance, database_operation_timeout):
     databse_id = _helpers.unique_id("dbapi-txn")
     pool = spanner_v1.BurstyPool(labels={"testcase": "database_api"})
     database = shared_instance.database(
-        databse_id, ddl_statements=DDL_STATEMENTS, pool=pool,
+        databse_id,
+        ddl_statements=DDL_STATEMENTS,
+        pool=pool,
     )
     op = database.create()
     op.result(database_operation_timeout)  # raises on failure / timeout.
@@ -285,7 +287,8 @@ VALUES (%s, %s, %s, %s)
     conn.commit()
 
     cursor.executemany(
-        """SELECT * FROM contacts WHERE contact_id = %s""", ((1,), (2,)),
+        """SELECT * FROM contacts WHERE contact_id = %s""",
+        ((1,), (2,)),
     )
     res = cursor.fetchall()
     conn.commit()

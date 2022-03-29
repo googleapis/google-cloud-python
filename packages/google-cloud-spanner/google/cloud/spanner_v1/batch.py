@@ -179,7 +179,10 @@ class Batch(_BatchBase):
             request_options=request_options,
         )
         with trace_call("CloudSpanner.Commit", self._session, trace_attributes):
-            response = api.commit(request=request, metadata=metadata,)
+            response = api.commit(
+                request=request,
+                metadata=metadata,
+            )
         self.committed = response.commit_timestamp
         self.commit_stats = response.commit_stats
         return self.committed

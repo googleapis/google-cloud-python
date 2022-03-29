@@ -425,5 +425,6 @@ WHERE tab_name.data IN (%s, %s)
         ARGS = [5, "data2", "data3"]
 
         self.assertEqual(
-            parse_insert(SQL, ARGS), {"sql_params_list": [(SQL, ARGS)]},
+            parse_insert(SQL, ARGS),
+            {"sql_params_list": [(SQL, ARGS)]},
         )

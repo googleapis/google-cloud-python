@@ -449,7 +449,10 @@ class _SnapshotBase(_SessionWrapper):
             "CloudSpanner.PartitionReadOnlyTransaction", self._session, trace_attributes
         ):
             response = api.partition_read(
-                request=request, metadata=metadata, retry=retry, timeout=timeout,
+                request=request,
+                metadata=metadata,
+                retry=retry,
+                timeout=timeout,
             )
 
         return [partition.partition_token for partition in response.partitions]
@@ -541,7 +544,10 @@ class _SnapshotBase(_SessionWrapper):
             trace_attributes,
         ):
             response = api.partition_query(
-                request=request, metadata=metadata, retry=retry, timeout=timeout,
+                request=request,
+                metadata=metadata,
+                retry=retry,
+                timeout=timeout,
             )
 
         return [partition.partition_token for partition in response.partitions]

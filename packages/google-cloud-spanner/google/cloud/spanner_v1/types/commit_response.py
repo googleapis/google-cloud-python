@@ -18,7 +18,12 @@ import proto  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
 
-__protobuf__ = proto.module(package="google.spanner.v1", manifest={"CommitResponse",},)
+__protobuf__ = proto.module(
+    package="google.spanner.v1",
+    manifest={
+        "CommitResponse",
+    },
+)
 
 
 class CommitResponse(proto.Message):
@@ -50,12 +55,21 @@ class CommitResponse(proto.Message):
                 `INVALID_ARGUMENT <https://cloud.google.com/spanner/docs/reference/rest/v1/Code#ENUM_VALUES.INVALID_ARGUMENT>`__.
         """
 
-        mutation_count = proto.Field(proto.INT64, number=1,)
+        mutation_count = proto.Field(
+            proto.INT64,
+            number=1,
+        )
 
     commit_timestamp = proto.Field(
-        proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
     )
-    commit_stats = proto.Field(proto.MESSAGE, number=2, message=CommitStats,)
+    commit_stats = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=CommitStats,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

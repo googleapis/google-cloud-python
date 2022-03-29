@@ -55,7 +55,8 @@ def spanner_client():
 
         credentials = AnonymousCredentials()
         return spanner_v1.Client(
-            project=_helpers.EMULATOR_PROJECT, credentials=credentials,
+            project=_helpers.EMULATOR_PROJECT,
+            credentials=credentials,
         )
     else:
         return spanner_v1.Client()  # use google.auth.default credentials

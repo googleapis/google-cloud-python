@@ -260,9 +260,10 @@ class Cursor(object):
                     class_ == parse_utils.STMT_INSERT,
                 )
 
-                (self._result_set, self._checksum,) = self.connection.run_statement(
-                    statement
-                )
+                (
+                    self._result_set,
+                    self._checksum,
+                ) = self.connection.run_statement(statement)
                 while True:
                     try:
                         self._itr = PeekIterator(self._result_set)

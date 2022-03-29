@@ -19,7 +19,11 @@ from google.protobuf import struct_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.spanner.v1", manifest={"PlanNode", "QueryPlan",},
+    package="google.spanner.v1",
+    manifest={
+        "PlanNode",
+        "QueryPlan",
+    },
 )
 
 
@@ -101,9 +105,18 @@ class PlanNode(proto.Message):
                 to the variable names assigned to the columns.
         """
 
-        child_index = proto.Field(proto.INT32, number=1,)
-        type_ = proto.Field(proto.STRING, number=2,)
-        variable = proto.Field(proto.STRING, number=3,)
+        child_index = proto.Field(
+            proto.INT32,
+            number=1,
+        )
+        type_ = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        variable = proto.Field(
+            proto.STRING,
+            number=3,
+        )
 
     class ShortRepresentation(proto.Message):
         r"""Condensed representation of a node and its subtree. Only present for
@@ -121,18 +134,49 @@ class PlanNode(proto.Message):
                 subquery may not necessarily be a direct child of this node.
         """
 
-        description = proto.Field(proto.STRING, number=1,)
-        subqueries = proto.MapField(proto.STRING, proto.INT32, number=2,)
+        description = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        subqueries = proto.MapField(
+            proto.STRING,
+            proto.INT32,
+            number=2,
+        )
 
-    index = proto.Field(proto.INT32, number=1,)
-    kind = proto.Field(proto.ENUM, number=2, enum=Kind,)
-    display_name = proto.Field(proto.STRING, number=3,)
-    child_links = proto.RepeatedField(proto.MESSAGE, number=4, message=ChildLink,)
-    short_representation = proto.Field(
-        proto.MESSAGE, number=5, message=ShortRepresentation,
+    index = proto.Field(
+        proto.INT32,
+        number=1,
     )
-    metadata = proto.Field(proto.MESSAGE, number=6, message=struct_pb2.Struct,)
-    execution_stats = proto.Field(proto.MESSAGE, number=7, message=struct_pb2.Struct,)
+    kind = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=Kind,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    child_links = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message=ChildLink,
+    )
+    short_representation = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=ShortRepresentation,
+    )
+    metadata = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=struct_pb2.Struct,
+    )
+    execution_stats = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=struct_pb2.Struct,
+    )
 
 
 class QueryPlan(proto.Message):
@@ -147,7 +191,11 @@ class QueryPlan(proto.Message):
             to its index in ``plan_nodes``.
     """
 
-    plan_nodes = proto.RepeatedField(proto.MESSAGE, number=1, message="PlanNode",)
+    plan_nodes = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="PlanNode",
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

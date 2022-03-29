@@ -29,7 +29,7 @@ import nox
 # WARNING - WARNING - WARNING - WARNING - WARNING
 # WARNING - WARNING - WARNING - WARNING - WARNING
 
-BLACK_VERSION = "black==19.10b0"
+BLACK_VERSION = "black==22.3.0"
 
 # Copy `noxfile_config.py` to your directory and modify it instead.
 
@@ -208,7 +208,9 @@ def _session_tests(
 
     if os.path.exists("requirements-test.txt"):
         if os.path.exists("constraints-test.txt"):
-            session.install("-r", "requirements-test.txt", "-c", "constraints-test.txt")
+            session.install(
+                "-r", "requirements-test.txt", "-c", "constraints-test.txt"
+            )
         else:
             session.install("-r", "requirements-test.txt")
         with open("requirements-test.txt") as rtfile:
@@ -221,9 +223,9 @@ def _session_tests(
         post_install(session)
 
     if "pytest-parallel" in packages:
-        concurrent_args.extend(["--workers", "auto", "--tests-per-worker", "auto"])
+        concurrent_args.extend(['--workers', 'auto', '--tests-per-worker', 'auto'])
     elif "pytest-xdist" in packages:
-        concurrent_args.extend(["-n", "auto"])
+        concurrent_args.extend(['-n', 'auto'])
 
     session.run(
         "pytest",

@@ -23,9 +23,9 @@ from google.cloud import spanner_v1
 TABLE = "contacts"
 COLUMNS = ("contact_id", "first_name", "last_name", "email")
 ROW_DATA = (
-    (1, u"Phred", u"Phlyntstone", u"phred@example.com"),
-    (2, u"Bharney", u"Rhubble", u"bharney@example.com"),
-    (3, u"Wylma", u"Phlyntstone", u"wylma@example.com"),
+    (1, "Phred", "Phlyntstone", "phred@example.com"),
+    (2, "Bharney", "Rhubble", "bharney@example.com"),
+    (3, "Wylma", "Phlyntstone", "wylma@example.com"),
 )
 ALL = spanner_v1.KeySet(all_=True)
 SQL = "SELECT * FROM contacts ORDER BY contact_id"

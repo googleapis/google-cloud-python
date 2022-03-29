@@ -30,7 +30,10 @@ def instances_to_delete():
 
 
 def test_list_instances(
-    no_create_instance, spanner_client, existing_instances, shared_instance,
+    no_create_instance,
+    spanner_client,
+    existing_instances,
+    shared_instance,
 ):
     instances = list(spanner_client.list_instances())
 

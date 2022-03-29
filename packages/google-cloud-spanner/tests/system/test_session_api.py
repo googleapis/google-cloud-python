@@ -53,7 +53,9 @@ JSON_1 = JsonObject(
         "sample_array": [23, 76, 19],
     }
 )
-JSON_2 = JsonObject({"sample_object": {"name": "Anamika", "id": 2635}},)
+JSON_2 = JsonObject(
+    {"sample_object": {"name": "Anamika", "id": 2635}},
+)
 
 COUNTERS_TABLE = "counters"
 COUNTERS_COLUMNS = ("name", "value")
@@ -167,7 +169,9 @@ def sessions_database(shared_instance, database_operation_timeout):
     database_name = _helpers.unique_id("test_sessions", separator="_")
     pool = spanner_v1.BurstyPool(labels={"testcase": "session_api"})
     sessions_database = shared_instance.database(
-        database_name, ddl_statements=_helpers.DDL_STATEMENTS, pool=pool,
+        database_name,
+        ddl_statements=_helpers.DDL_STATEMENTS,
+        pool=pool,
     )
     operation = sessions_database.create()
     operation.result(database_operation_timeout)  # raises on failure / timeout.
@@ -426,7 +430,9 @@ def test_batch_insert_w_commit_timestamp(sessions_database):
 
 @_helpers.retry_mabye_aborted_txn
 def test_transaction_read_and_insert_then_rollback(
-    sessions_database, ot_exporter, sessions_to_delete,
+    sessions_database,
+    ot_exporter,
+    sessions_to_delete,
 ):
     sd = _sample_data
     db_name = sessions_database.name
@@ -486,7 +492,9 @@ def test_transaction_read_and_insert_then_rollback(
             ot_exporter,
             "CloudSpanner.ReadOnlyTransaction",
             attributes=_make_attributes(
-                db_name, table_id=sd.TABLE, columns=sd.COLUMNS,
+                db_name,
+                table_id=sd.TABLE,
+                columns=sd.COLUMNS,
             ),
             span=span_list[4],
         )
@@ -494,7 +502,9 @@ def test_transaction_read_and_insert_then_rollback(
             ot_exporter,
             "CloudSpanner.ReadOnlyTransaction",
             attributes=_make_attributes(
-                db_name, table_id=sd.TABLE, columns=sd.COLUMNS,
+                db_name,
+                table_id=sd.TABLE,
+                columns=sd.COLUMNS,
             ),
             span=span_list[5],
         )
@@ -508,7 +518,9 @@ def test_transaction_read_and_insert_then_rollback(
             ot_exporter,
             "CloudSpanner.ReadOnlyTransaction",
             attributes=_make_attributes(
-                db_name, table_id=sd.TABLE, columns=sd.COLUMNS,
+                db_name,
+                table_id=sd.TABLE,
+                columns=sd.COLUMNS,
             ),
             span=span_list[7],
         )
@@ -543,7 +555,8 @@ def test_transaction_read_and_insert_then_exception(sessions_database):
 
 @_helpers.retry_mabye_conflict
 def test_transaction_read_and_insert_or_update_then_commit(
-    sessions_database, sessions_to_delete,
+    sessions_database,
+    sessions_to_delete,
 ):
     # [START spanner_test_dml_read_your_writes]
     sd = _sample_data
@@ -581,7 +594,8 @@ def _generate_insert_statements():
 
 @_helpers.retry_mabye_conflict
 def test_transaction_execute_sql_w_dml_read_rollback(
-    sessions_database, sessions_to_delete,
+    sessions_database,
+    sessions_to_delete,
 ):
     # [START spanner_test_dml_rollback_txn_not_committed]
     sd = _sample_data
@@ -723,7 +737,8 @@ def test_transaction_batch_update_success(sessions_database, sessions_to_delete)
 
 
 def test_transaction_batch_update_and_execute_dml(
-    sessions_database, sessions_to_delete,
+    sessions_database,
+    sessions_to_delete,
 ):
     sd = _sample_data
     param_types = spanner_v1.param_types
@@ -819,10 +834,13 @@ def test_transaction_batch_update_wo_statements(sessions_database, sessions_to_d
 
 
 @pytest.mark.skipif(
-    not ot_helpers.HAS_OPENTELEMETRY_INSTALLED, reason="trace requires OpenTelemetry",
+    not ot_helpers.HAS_OPENTELEMETRY_INSTALLED,
+    reason="trace requires OpenTelemetry",
 )
 def test_transaction_batch_update_w_parent_span(
-    sessions_database, sessions_to_delete, ot_exporter,
+    sessions_database,
+    sessions_to_delete,
+    ot_exporter,
 ):
     from opentelemetry import trace
 
@@ -1093,7 +1111,10 @@ def test_read_with_multiple_keys_index(sessions_database):
     with sessions_database.snapshot() as snapshot:
         rows = list(
             snapshot.read(
-                sd.TABLE, columns, spanner_v1.KeySet(keys=expected), index="name",
+                sd.TABLE,
+                columns,
+                spanner_v1.KeySet(keys=expected),
+                index="name",
             )
         )
     assert rows == expected
@@ -1291,7 +1312,8 @@ def test_read_w_ranges(sessions_database):
     end = 2000
     committed = _set_up_table(sessions_database, row_count)
     with sessions_database.snapshot(
-        read_timestamp=committed, multi_use=True,
+        read_timestamp=committed,
+        multi_use=True,
     ) as snapshot:
         all_data_rows = list(_row_data(row_count))
 
@@ -1332,7 +1354,8 @@ def test_read_partial_range_until_end(sessions_database):
     start = 1000
     committed = _set_up_table(sessions_database, row_count)
     with sessions_database.snapshot(
-        read_timestamp=committed, multi_use=True,
+        read_timestamp=committed,
+        multi_use=True,
     ) as snapshot:
         all_data_rows = list(_row_data(row_count))
 
@@ -1376,7 +1399,8 @@ def test_read_partial_range_from_beginning(sessions_database):
             keyset = spanner_v1.KeySet(ranges=(spanner_v1.KeyRange(**range_kwargs),))
 
     with sessions_database.snapshot(
-        read_timestamp=committed, multi_use=True,
+        read_timestamp=committed,
+        multi_use=True,
     ) as snapshot:
         rows = list(snapshot.read(sd.TABLE, sd.COLUMNS, keyset))
         expected = expected_map[(start_arg, end_arg)]
@@ -1623,7 +1647,13 @@ def test_execute_sql_w_manual_consume(sessions_database):
 
 
 def _check_sql_results(
-    database, sql, params, param_types, expected, order=True, recurse_into_lists=True,
+    database,
+    sql,
+    params,
+    param_types,
+    expected,
+    order=True,
+    recurse_into_lists=True,
 ):
     if order and "ORDER" not in sql:
         sql += " ORDER BY pkey"
@@ -1886,7 +1916,10 @@ def test_execute_sql_w_numeric_bindings(not_emulator, sessions_database):
 
 def test_execute_sql_w_json_bindings(not_emulator, sessions_database):
     _bind_test_helper(
-        sessions_database, spanner_v1.TypeCode.JSON, JSON_1, [JSON_1, JSON_2],
+        sessions_database,
+        spanner_v1.TypeCode.JSON,
+        JSON_1,
+        [JSON_1, JSON_2],
     )
 
 

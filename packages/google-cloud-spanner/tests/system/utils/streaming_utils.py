@@ -26,7 +26,7 @@ class _TableDesc(
     )
 ):
     def value(self):
-        return u"X" * self.value_size
+        return "X" * self.value_size
 
 
 FOUR_KAY = _TableDesc("four_kay", 1000, 4096, 1)

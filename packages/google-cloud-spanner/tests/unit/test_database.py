@@ -777,7 +777,9 @@ class TestDatabase(_BaseTest):
             database.update_ddl(DDL_STATEMENTS)
 
         expected_request = UpdateDatabaseDdlRequest(
-            database=self.DATABASE_NAME, statements=DDL_STATEMENTS, operation_id="",
+            database=self.DATABASE_NAME,
+            statements=DDL_STATEMENTS,
+            operation_id="",
         )
 
         api.update_database_ddl.assert_called_once_with(
@@ -801,7 +803,9 @@ class TestDatabase(_BaseTest):
             database.update_ddl(DDL_STATEMENTS)
 
         expected_request = UpdateDatabaseDdlRequest(
-            database=self.DATABASE_NAME, statements=DDL_STATEMENTS, operation_id="",
+            database=self.DATABASE_NAME,
+            statements=DDL_STATEMENTS,
+            operation_id="",
         )
 
         api.update_database_ddl.assert_called_once_with(
@@ -826,7 +830,9 @@ class TestDatabase(_BaseTest):
         self.assertIs(future, op_future)
 
         expected_request = UpdateDatabaseDdlRequest(
-            database=self.DATABASE_NAME, statements=DDL_STATEMENTS, operation_id="",
+            database=self.DATABASE_NAME,
+            statements=DDL_STATEMENTS,
+            operation_id="",
         )
 
         api.update_database_ddl.assert_called_once_with(
@@ -1071,12 +1077,14 @@ class TestDatabase(_BaseTest):
 
     def test_execute_partitioned_dml_w_trx_tag_ignored(self):
         self._execute_partitioned_dml_helper(
-            dml=DML_W_PARAM, request_options=RequestOptions(transaction_tag="trx-tag"),
+            dml=DML_W_PARAM,
+            request_options=RequestOptions(transaction_tag="trx-tag"),
         )
 
     def test_execute_partitioned_dml_w_req_tag_used(self):
         self._execute_partitioned_dml_helper(
-            dml=DML_W_PARAM, request_options=RequestOptions(request_tag="req-tag"),
+            dml=DML_W_PARAM,
+            request_options=RequestOptions(request_tag="req-tag"),
         )
 
     def test_execute_partitioned_dml_wo_params_retry_aborted(self):
@@ -1598,7 +1606,8 @@ class TestBatchCheckout(_BaseTest):
             request_options=RequestOptions(transaction_tag=self.TRANSACTION_TAG),
         )
         api.commit.assert_called_once_with(
-            request=request, metadata=[("google-cloud-resource-prefix", database.name)],
+            request=request,
+            metadata=[("google-cloud-resource-prefix", database.name)],
         )
 
     def test_context_mgr_w_commit_stats_success(self):
@@ -1641,7 +1650,8 @@ class TestBatchCheckout(_BaseTest):
             request_options=RequestOptions(),
         )
         api.commit.assert_called_once_with(
-            request=request, metadata=[("google-cloud-resource-prefix", database.name)],
+            request=request,
+            metadata=[("google-cloud-resource-prefix", database.name)],
         )
 
         database.logger.info.assert_called_once_with(
@@ -1681,7 +1691,8 @@ class TestBatchCheckout(_BaseTest):
             request_options=RequestOptions(),
         )
         api.commit.assert_called_once_with(
-            request=request, metadata=[("google-cloud-resource-prefix", database.name)],
+            request=request,
+            metadata=[("google-cloud-resource-prefix", database.name)],
         )
 
         database.logger.info.assert_not_called()

@@ -172,7 +172,7 @@ class TestParser(unittest.TestCase):
         from google.cloud.spanner_dbapi.parser import a_args
         from google.cloud.spanner_dbapi.parser import terminal
 
-        a_obj = a_args([a_args([terminal(10 ** i)]) for i in range(10)])
+        a_obj = a_args([a_args([terminal(10**i)]) for i in range(10)])
         self.assertTrue(a_obj.homogenous())
 
         a_obj = a_args([a_args([[object()]]) for _ in range(10)])
@@ -193,7 +193,7 @@ class TestParser(unittest.TestCase):
         from google.cloud.spanner_dbapi.parser import terminal
         from google.cloud.spanner_dbapi.parser import values
 
-        a_obj = a_args([a_args([terminal(10 ** i)]) for i in range(10)])
+        a_obj = a_args([a_args([terminal(10**i)]) for i in range(10)])
         self.assertEqual(str(values(a_obj)), "VALUES%s" % str(a_obj))
 
     def test_expect(self):
