@@ -98,7 +98,11 @@ def test__get_default_mtls_endpoint():
 
 
 @pytest.mark.parametrize(
-    "client_class", [KeyManagementServiceClient, KeyManagementServiceAsyncClient,]
+    "client_class",
+    [
+        KeyManagementServiceClient,
+        KeyManagementServiceAsyncClient,
+    ],
 )
 def test_key_management_service_client_from_service_account_info(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -140,7 +144,11 @@ def test_key_management_service_client_service_account_always_use_jwt(
 
 
 @pytest.mark.parametrize(
-    "client_class", [KeyManagementServiceClient, KeyManagementServiceAsyncClient,]
+    "client_class",
+    [
+        KeyManagementServiceClient,
+        KeyManagementServiceAsyncClient,
+    ],
 )
 def test_key_management_service_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -522,7 +530,9 @@ def test_key_management_service_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -665,10 +675,17 @@ def test_key_management_service_client_create_channel_credentials_file(
         )
 
 
-@pytest.mark.parametrize("request_type", [service.ListKeyRingsRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListKeyRingsRequest,
+        dict,
+    ],
+)
 def test_list_key_rings(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -679,7 +696,8 @@ def test_list_key_rings(request_type, transport: str = "grpc"):
     with mock.patch.object(type(client.transport.list_key_rings), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = service.ListKeyRingsResponse(
-            next_page_token="next_page_token_value", total_size=1086,
+            next_page_token="next_page_token_value",
+            total_size=1086,
         )
         response = client.list_key_rings(request)
 
@@ -698,7 +716,8 @@ def test_list_key_rings_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -714,7 +733,8 @@ async def test_list_key_rings_async(
     transport: str = "grpc_asyncio", request_type=service.ListKeyRingsRequest
 ):
     client = KeyManagementServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -726,7 +746,8 @@ async def test_list_key_rings_async(
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             service.ListKeyRingsResponse(
-                next_page_token="next_page_token_value", total_size=1086,
+                next_page_token="next_page_token_value",
+                total_size=1086,
             )
         )
         response = await client.list_key_rings(request)
@@ -770,7 +791,10 @@ def test_list_key_rings_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -799,7 +823,10 @@ async def test_list_key_rings_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_key_rings_flattened():
@@ -813,7 +840,9 @@ def test_list_key_rings_flattened():
         call.return_value = service.ListKeyRingsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_key_rings(parent="parent_value",)
+        client.list_key_rings(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -833,7 +862,8 @@ def test_list_key_rings_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_key_rings(
-            service.ListKeyRingsRequest(), parent="parent_value",
+            service.ListKeyRingsRequest(),
+            parent="parent_value",
         )
 
 
@@ -853,7 +883,9 @@ async def test_list_key_rings_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_key_rings(parent="parent_value",)
+        response = await client.list_key_rings(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -874,13 +906,15 @@ async def test_list_key_rings_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_key_rings(
-            service.ListKeyRingsRequest(), parent="parent_value",
+            service.ListKeyRingsRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_key_rings_pager(transport_name: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -895,12 +929,21 @@ def test_list_key_rings_pager(transport_name: str = "grpc"):
                 ],
                 next_page_token="abc",
             ),
-            service.ListKeyRingsResponse(key_rings=[], next_page_token="def",),
             service.ListKeyRingsResponse(
-                key_rings=[resources.KeyRing(),], next_page_token="ghi",
+                key_rings=[],
+                next_page_token="def",
             ),
             service.ListKeyRingsResponse(
-                key_rings=[resources.KeyRing(), resources.KeyRing(),],
+                key_rings=[
+                    resources.KeyRing(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListKeyRingsResponse(
+                key_rings=[
+                    resources.KeyRing(),
+                    resources.KeyRing(),
+                ],
             ),
             RuntimeError,
         )
@@ -920,7 +963,8 @@ def test_list_key_rings_pager(transport_name: str = "grpc"):
 
 def test_list_key_rings_pages(transport_name: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -935,12 +979,21 @@ def test_list_key_rings_pages(transport_name: str = "grpc"):
                 ],
                 next_page_token="abc",
             ),
-            service.ListKeyRingsResponse(key_rings=[], next_page_token="def",),
             service.ListKeyRingsResponse(
-                key_rings=[resources.KeyRing(),], next_page_token="ghi",
+                key_rings=[],
+                next_page_token="def",
             ),
             service.ListKeyRingsResponse(
-                key_rings=[resources.KeyRing(), resources.KeyRing(),],
+                key_rings=[
+                    resources.KeyRing(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListKeyRingsResponse(
+                key_rings=[
+                    resources.KeyRing(),
+                    resources.KeyRing(),
+                ],
             ),
             RuntimeError,
         )
@@ -969,16 +1022,27 @@ async def test_list_key_rings_async_pager():
                 ],
                 next_page_token="abc",
             ),
-            service.ListKeyRingsResponse(key_rings=[], next_page_token="def",),
             service.ListKeyRingsResponse(
-                key_rings=[resources.KeyRing(),], next_page_token="ghi",
+                key_rings=[],
+                next_page_token="def",
             ),
             service.ListKeyRingsResponse(
-                key_rings=[resources.KeyRing(), resources.KeyRing(),],
+                key_rings=[
+                    resources.KeyRing(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListKeyRingsResponse(
+                key_rings=[
+                    resources.KeyRing(),
+                    resources.KeyRing(),
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.list_key_rings(request={},)
+        async_pager = await client.list_key_rings(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -1008,12 +1072,21 @@ async def test_list_key_rings_async_pages():
                 ],
                 next_page_token="abc",
             ),
-            service.ListKeyRingsResponse(key_rings=[], next_page_token="def",),
             service.ListKeyRingsResponse(
-                key_rings=[resources.KeyRing(),], next_page_token="ghi",
+                key_rings=[],
+                next_page_token="def",
             ),
             service.ListKeyRingsResponse(
-                key_rings=[resources.KeyRing(), resources.KeyRing(),],
+                key_rings=[
+                    resources.KeyRing(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListKeyRingsResponse(
+                key_rings=[
+                    resources.KeyRing(),
+                    resources.KeyRing(),
+                ],
             ),
             RuntimeError,
         )
@@ -1024,10 +1097,17 @@ async def test_list_key_rings_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [service.ListCryptoKeysRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListCryptoKeysRequest,
+        dict,
+    ],
+)
 def test_list_crypto_keys(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1038,7 +1118,8 @@ def test_list_crypto_keys(request_type, transport: str = "grpc"):
     with mock.patch.object(type(client.transport.list_crypto_keys), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = service.ListCryptoKeysResponse(
-            next_page_token="next_page_token_value", total_size=1086,
+            next_page_token="next_page_token_value",
+            total_size=1086,
         )
         response = client.list_crypto_keys(request)
 
@@ -1057,7 +1138,8 @@ def test_list_crypto_keys_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1073,7 +1155,8 @@ async def test_list_crypto_keys_async(
     transport: str = "grpc_asyncio", request_type=service.ListCryptoKeysRequest
 ):
     client = KeyManagementServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1085,7 +1168,8 @@ async def test_list_crypto_keys_async(
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             service.ListCryptoKeysResponse(
-                next_page_token="next_page_token_value", total_size=1086,
+                next_page_token="next_page_token_value",
+                total_size=1086,
             )
         )
         response = await client.list_crypto_keys(request)
@@ -1129,7 +1213,10 @@ def test_list_crypto_keys_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1158,7 +1245,10 @@ async def test_list_crypto_keys_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_crypto_keys_flattened():
@@ -1172,7 +1262,9 @@ def test_list_crypto_keys_flattened():
         call.return_value = service.ListCryptoKeysResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_crypto_keys(parent="parent_value",)
+        client.list_crypto_keys(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1192,7 +1284,8 @@ def test_list_crypto_keys_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_crypto_keys(
-            service.ListCryptoKeysRequest(), parent="parent_value",
+            service.ListCryptoKeysRequest(),
+            parent="parent_value",
         )
 
 
@@ -1212,7 +1305,9 @@ async def test_list_crypto_keys_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_crypto_keys(parent="parent_value",)
+        response = await client.list_crypto_keys(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1233,13 +1328,15 @@ async def test_list_crypto_keys_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_crypto_keys(
-            service.ListCryptoKeysRequest(), parent="parent_value",
+            service.ListCryptoKeysRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_crypto_keys_pager(transport_name: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1254,12 +1351,21 @@ def test_list_crypto_keys_pager(transport_name: str = "grpc"):
                 ],
                 next_page_token="abc",
             ),
-            service.ListCryptoKeysResponse(crypto_keys=[], next_page_token="def",),
             service.ListCryptoKeysResponse(
-                crypto_keys=[resources.CryptoKey(),], next_page_token="ghi",
+                crypto_keys=[],
+                next_page_token="def",
             ),
             service.ListCryptoKeysResponse(
-                crypto_keys=[resources.CryptoKey(), resources.CryptoKey(),],
+                crypto_keys=[
+                    resources.CryptoKey(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListCryptoKeysResponse(
+                crypto_keys=[
+                    resources.CryptoKey(),
+                    resources.CryptoKey(),
+                ],
             ),
             RuntimeError,
         )
@@ -1279,7 +1385,8 @@ def test_list_crypto_keys_pager(transport_name: str = "grpc"):
 
 def test_list_crypto_keys_pages(transport_name: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1294,12 +1401,21 @@ def test_list_crypto_keys_pages(transport_name: str = "grpc"):
                 ],
                 next_page_token="abc",
             ),
-            service.ListCryptoKeysResponse(crypto_keys=[], next_page_token="def",),
             service.ListCryptoKeysResponse(
-                crypto_keys=[resources.CryptoKey(),], next_page_token="ghi",
+                crypto_keys=[],
+                next_page_token="def",
             ),
             service.ListCryptoKeysResponse(
-                crypto_keys=[resources.CryptoKey(), resources.CryptoKey(),],
+                crypto_keys=[
+                    resources.CryptoKey(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListCryptoKeysResponse(
+                crypto_keys=[
+                    resources.CryptoKey(),
+                    resources.CryptoKey(),
+                ],
             ),
             RuntimeError,
         )
@@ -1328,16 +1444,27 @@ async def test_list_crypto_keys_async_pager():
                 ],
                 next_page_token="abc",
             ),
-            service.ListCryptoKeysResponse(crypto_keys=[], next_page_token="def",),
             service.ListCryptoKeysResponse(
-                crypto_keys=[resources.CryptoKey(),], next_page_token="ghi",
+                crypto_keys=[],
+                next_page_token="def",
             ),
             service.ListCryptoKeysResponse(
-                crypto_keys=[resources.CryptoKey(), resources.CryptoKey(),],
+                crypto_keys=[
+                    resources.CryptoKey(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListCryptoKeysResponse(
+                crypto_keys=[
+                    resources.CryptoKey(),
+                    resources.CryptoKey(),
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.list_crypto_keys(request={},)
+        async_pager = await client.list_crypto_keys(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -1367,12 +1494,21 @@ async def test_list_crypto_keys_async_pages():
                 ],
                 next_page_token="abc",
             ),
-            service.ListCryptoKeysResponse(crypto_keys=[], next_page_token="def",),
             service.ListCryptoKeysResponse(
-                crypto_keys=[resources.CryptoKey(),], next_page_token="ghi",
+                crypto_keys=[],
+                next_page_token="def",
             ),
             service.ListCryptoKeysResponse(
-                crypto_keys=[resources.CryptoKey(), resources.CryptoKey(),],
+                crypto_keys=[
+                    resources.CryptoKey(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListCryptoKeysResponse(
+                crypto_keys=[
+                    resources.CryptoKey(),
+                    resources.CryptoKey(),
+                ],
             ),
             RuntimeError,
         )
@@ -1383,10 +1519,17 @@ async def test_list_crypto_keys_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [service.ListCryptoKeyVersionsRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListCryptoKeyVersionsRequest,
+        dict,
+    ],
+)
 def test_list_crypto_key_versions(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1399,7 +1542,8 @@ def test_list_crypto_key_versions(request_type, transport: str = "grpc"):
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = service.ListCryptoKeyVersionsResponse(
-            next_page_token="next_page_token_value", total_size=1086,
+            next_page_token="next_page_token_value",
+            total_size=1086,
         )
         response = client.list_crypto_key_versions(request)
 
@@ -1418,7 +1562,8 @@ def test_list_crypto_key_versions_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1436,7 +1581,8 @@ async def test_list_crypto_key_versions_async(
     transport: str = "grpc_asyncio", request_type=service.ListCryptoKeyVersionsRequest
 ):
     client = KeyManagementServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1450,7 +1596,8 @@ async def test_list_crypto_key_versions_async(
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             service.ListCryptoKeyVersionsResponse(
-                next_page_token="next_page_token_value", total_size=1086,
+                next_page_token="next_page_token_value",
+                total_size=1086,
             )
         )
         response = await client.list_crypto_key_versions(request)
@@ -1496,7 +1643,10 @@ def test_list_crypto_key_versions_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1527,7 +1677,10 @@ async def test_list_crypto_key_versions_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_crypto_key_versions_flattened():
@@ -1543,7 +1696,9 @@ def test_list_crypto_key_versions_flattened():
         call.return_value = service.ListCryptoKeyVersionsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_crypto_key_versions(parent="parent_value",)
+        client.list_crypto_key_versions(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1563,7 +1718,8 @@ def test_list_crypto_key_versions_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_crypto_key_versions(
-            service.ListCryptoKeyVersionsRequest(), parent="parent_value",
+            service.ListCryptoKeyVersionsRequest(),
+            parent="parent_value",
         )
 
 
@@ -1585,7 +1741,9 @@ async def test_list_crypto_key_versions_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_crypto_key_versions(parent="parent_value",)
+        response = await client.list_crypto_key_versions(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1606,13 +1764,15 @@ async def test_list_crypto_key_versions_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_crypto_key_versions(
-            service.ListCryptoKeyVersionsRequest(), parent="parent_value",
+            service.ListCryptoKeyVersionsRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_crypto_key_versions_pager(transport_name: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1630,10 +1790,13 @@ def test_list_crypto_key_versions_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             service.ListCryptoKeyVersionsResponse(
-                crypto_key_versions=[], next_page_token="def",
+                crypto_key_versions=[],
+                next_page_token="def",
             ),
             service.ListCryptoKeyVersionsResponse(
-                crypto_key_versions=[resources.CryptoKeyVersion(),],
+                crypto_key_versions=[
+                    resources.CryptoKeyVersion(),
+                ],
                 next_page_token="ghi",
             ),
             service.ListCryptoKeyVersionsResponse(
@@ -1660,7 +1823,8 @@ def test_list_crypto_key_versions_pager(transport_name: str = "grpc"):
 
 def test_list_crypto_key_versions_pages(transport_name: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1678,10 +1842,13 @@ def test_list_crypto_key_versions_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             service.ListCryptoKeyVersionsResponse(
-                crypto_key_versions=[], next_page_token="def",
+                crypto_key_versions=[],
+                next_page_token="def",
             ),
             service.ListCryptoKeyVersionsResponse(
-                crypto_key_versions=[resources.CryptoKeyVersion(),],
+                crypto_key_versions=[
+                    resources.CryptoKeyVersion(),
+                ],
                 next_page_token="ghi",
             ),
             service.ListCryptoKeyVersionsResponse(
@@ -1720,10 +1887,13 @@ async def test_list_crypto_key_versions_async_pager():
                 next_page_token="abc",
             ),
             service.ListCryptoKeyVersionsResponse(
-                crypto_key_versions=[], next_page_token="def",
+                crypto_key_versions=[],
+                next_page_token="def",
             ),
             service.ListCryptoKeyVersionsResponse(
-                crypto_key_versions=[resources.CryptoKeyVersion(),],
+                crypto_key_versions=[
+                    resources.CryptoKeyVersion(),
+                ],
                 next_page_token="ghi",
             ),
             service.ListCryptoKeyVersionsResponse(
@@ -1734,7 +1904,9 @@ async def test_list_crypto_key_versions_async_pager():
             ),
             RuntimeError,
         )
-        async_pager = await client.list_crypto_key_versions(request={},)
+        async_pager = await client.list_crypto_key_versions(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -1767,10 +1939,13 @@ async def test_list_crypto_key_versions_async_pages():
                 next_page_token="abc",
             ),
             service.ListCryptoKeyVersionsResponse(
-                crypto_key_versions=[], next_page_token="def",
+                crypto_key_versions=[],
+                next_page_token="def",
             ),
             service.ListCryptoKeyVersionsResponse(
-                crypto_key_versions=[resources.CryptoKeyVersion(),],
+                crypto_key_versions=[
+                    resources.CryptoKeyVersion(),
+                ],
                 next_page_token="ghi",
             ),
             service.ListCryptoKeyVersionsResponse(
@@ -1788,10 +1963,17 @@ async def test_list_crypto_key_versions_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [service.ListImportJobsRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListImportJobsRequest,
+        dict,
+    ],
+)
 def test_list_import_jobs(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1802,7 +1984,8 @@ def test_list_import_jobs(request_type, transport: str = "grpc"):
     with mock.patch.object(type(client.transport.list_import_jobs), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = service.ListImportJobsResponse(
-            next_page_token="next_page_token_value", total_size=1086,
+            next_page_token="next_page_token_value",
+            total_size=1086,
         )
         response = client.list_import_jobs(request)
 
@@ -1821,7 +2004,8 @@ def test_list_import_jobs_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1837,7 +2021,8 @@ async def test_list_import_jobs_async(
     transport: str = "grpc_asyncio", request_type=service.ListImportJobsRequest
 ):
     client = KeyManagementServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1849,7 +2034,8 @@ async def test_list_import_jobs_async(
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             service.ListImportJobsResponse(
-                next_page_token="next_page_token_value", total_size=1086,
+                next_page_token="next_page_token_value",
+                total_size=1086,
             )
         )
         response = await client.list_import_jobs(request)
@@ -1893,7 +2079,10 @@ def test_list_import_jobs_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1922,7 +2111,10 @@ async def test_list_import_jobs_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_import_jobs_flattened():
@@ -1936,7 +2128,9 @@ def test_list_import_jobs_flattened():
         call.return_value = service.ListImportJobsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_import_jobs(parent="parent_value",)
+        client.list_import_jobs(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1956,7 +2150,8 @@ def test_list_import_jobs_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_import_jobs(
-            service.ListImportJobsRequest(), parent="parent_value",
+            service.ListImportJobsRequest(),
+            parent="parent_value",
         )
 
 
@@ -1976,7 +2171,9 @@ async def test_list_import_jobs_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_import_jobs(parent="parent_value",)
+        response = await client.list_import_jobs(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1997,13 +2194,15 @@ async def test_list_import_jobs_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_import_jobs(
-            service.ListImportJobsRequest(), parent="parent_value",
+            service.ListImportJobsRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_import_jobs_pager(transport_name: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2018,12 +2217,21 @@ def test_list_import_jobs_pager(transport_name: str = "grpc"):
                 ],
                 next_page_token="abc",
             ),
-            service.ListImportJobsResponse(import_jobs=[], next_page_token="def",),
             service.ListImportJobsResponse(
-                import_jobs=[resources.ImportJob(),], next_page_token="ghi",
+                import_jobs=[],
+                next_page_token="def",
             ),
             service.ListImportJobsResponse(
-                import_jobs=[resources.ImportJob(), resources.ImportJob(),],
+                import_jobs=[
+                    resources.ImportJob(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListImportJobsResponse(
+                import_jobs=[
+                    resources.ImportJob(),
+                    resources.ImportJob(),
+                ],
             ),
             RuntimeError,
         )
@@ -2043,7 +2251,8 @@ def test_list_import_jobs_pager(transport_name: str = "grpc"):
 
 def test_list_import_jobs_pages(transport_name: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2058,12 +2267,21 @@ def test_list_import_jobs_pages(transport_name: str = "grpc"):
                 ],
                 next_page_token="abc",
             ),
-            service.ListImportJobsResponse(import_jobs=[], next_page_token="def",),
             service.ListImportJobsResponse(
-                import_jobs=[resources.ImportJob(),], next_page_token="ghi",
+                import_jobs=[],
+                next_page_token="def",
             ),
             service.ListImportJobsResponse(
-                import_jobs=[resources.ImportJob(), resources.ImportJob(),],
+                import_jobs=[
+                    resources.ImportJob(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListImportJobsResponse(
+                import_jobs=[
+                    resources.ImportJob(),
+                    resources.ImportJob(),
+                ],
             ),
             RuntimeError,
         )
@@ -2092,16 +2310,27 @@ async def test_list_import_jobs_async_pager():
                 ],
                 next_page_token="abc",
             ),
-            service.ListImportJobsResponse(import_jobs=[], next_page_token="def",),
             service.ListImportJobsResponse(
-                import_jobs=[resources.ImportJob(),], next_page_token="ghi",
+                import_jobs=[],
+                next_page_token="def",
             ),
             service.ListImportJobsResponse(
-                import_jobs=[resources.ImportJob(), resources.ImportJob(),],
+                import_jobs=[
+                    resources.ImportJob(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListImportJobsResponse(
+                import_jobs=[
+                    resources.ImportJob(),
+                    resources.ImportJob(),
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.list_import_jobs(request={},)
+        async_pager = await client.list_import_jobs(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -2131,12 +2360,21 @@ async def test_list_import_jobs_async_pages():
                 ],
                 next_page_token="abc",
             ),
-            service.ListImportJobsResponse(import_jobs=[], next_page_token="def",),
             service.ListImportJobsResponse(
-                import_jobs=[resources.ImportJob(),], next_page_token="ghi",
+                import_jobs=[],
+                next_page_token="def",
             ),
             service.ListImportJobsResponse(
-                import_jobs=[resources.ImportJob(), resources.ImportJob(),],
+                import_jobs=[
+                    resources.ImportJob(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListImportJobsResponse(
+                import_jobs=[
+                    resources.ImportJob(),
+                    resources.ImportJob(),
+                ],
             ),
             RuntimeError,
         )
@@ -2147,10 +2385,17 @@ async def test_list_import_jobs_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [service.GetKeyRingRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetKeyRingRequest,
+        dict,
+    ],
+)
 def test_get_key_ring(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2160,7 +2405,9 @@ def test_get_key_ring(request_type, transport: str = "grpc"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_key_ring), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = resources.KeyRing(name="name_value",)
+        call.return_value = resources.KeyRing(
+            name="name_value",
+        )
         response = client.get_key_ring(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2177,7 +2424,8 @@ def test_get_key_ring_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2193,7 +2441,8 @@ async def test_get_key_ring_async(
     transport: str = "grpc_asyncio", request_type=service.GetKeyRingRequest
 ):
     client = KeyManagementServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2204,7 +2453,9 @@ async def test_get_key_ring_async(
     with mock.patch.object(type(client.transport.get_key_ring), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            resources.KeyRing(name="name_value",)
+            resources.KeyRing(
+                name="name_value",
+            )
         )
         response = await client.get_key_ring(request)
 
@@ -2246,7 +2497,10 @@ def test_get_key_ring_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2273,7 +2527,10 @@ async def test_get_key_ring_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_key_ring_flattened():
@@ -2287,7 +2544,9 @@ def test_get_key_ring_flattened():
         call.return_value = resources.KeyRing()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_key_ring(name="name_value",)
+        client.get_key_ring(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2307,7 +2566,8 @@ def test_get_key_ring_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_key_ring(
-            service.GetKeyRingRequest(), name="name_value",
+            service.GetKeyRingRequest(),
+            name="name_value",
         )
 
 
@@ -2325,7 +2585,9 @@ async def test_get_key_ring_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(resources.KeyRing())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_key_ring(name="name_value",)
+        response = await client.get_key_ring(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2346,14 +2608,22 @@ async def test_get_key_ring_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_key_ring(
-            service.GetKeyRingRequest(), name="name_value",
+            service.GetKeyRingRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [service.GetCryptoKeyRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetCryptoKeyRequest,
+        dict,
+    ],
+)
 def test_get_crypto_key(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2389,7 +2659,8 @@ def test_get_crypto_key_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2405,7 +2676,8 @@ async def test_get_crypto_key_async(
     transport: str = "grpc_asyncio", request_type=service.GetCryptoKeyRequest
 ):
     client = KeyManagementServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2466,7 +2738,10 @@ def test_get_crypto_key_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2493,7 +2768,10 @@ async def test_get_crypto_key_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_crypto_key_flattened():
@@ -2507,7 +2785,9 @@ def test_get_crypto_key_flattened():
         call.return_value = resources.CryptoKey()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_crypto_key(name="name_value",)
+        client.get_crypto_key(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2527,7 +2807,8 @@ def test_get_crypto_key_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_crypto_key(
-            service.GetCryptoKeyRequest(), name="name_value",
+            service.GetCryptoKeyRequest(),
+            name="name_value",
         )
 
 
@@ -2545,7 +2826,9 @@ async def test_get_crypto_key_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(resources.CryptoKey())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_crypto_key(name="name_value",)
+        response = await client.get_crypto_key(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2566,14 +2849,22 @@ async def test_get_crypto_key_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_crypto_key(
-            service.GetCryptoKeyRequest(), name="name_value",
+            service.GetCryptoKeyRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [service.GetCryptoKeyVersionRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetCryptoKeyVersionRequest,
+        dict,
+    ],
+)
 def test_get_crypto_key_version(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2622,7 +2913,8 @@ def test_get_crypto_key_version_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2640,7 +2932,8 @@ async def test_get_crypto_key_version_async(
     transport: str = "grpc_asyncio", request_type=service.GetCryptoKeyVersionRequest
 ):
     client = KeyManagementServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2717,7 +3010,10 @@ def test_get_crypto_key_version_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2748,7 +3044,10 @@ async def test_get_crypto_key_version_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_crypto_key_version_flattened():
@@ -2764,7 +3063,9 @@ def test_get_crypto_key_version_flattened():
         call.return_value = resources.CryptoKeyVersion()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_crypto_key_version(name="name_value",)
+        client.get_crypto_key_version(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2784,7 +3085,8 @@ def test_get_crypto_key_version_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_crypto_key_version(
-            service.GetCryptoKeyVersionRequest(), name="name_value",
+            service.GetCryptoKeyVersionRequest(),
+            name="name_value",
         )
 
 
@@ -2806,7 +3108,9 @@ async def test_get_crypto_key_version_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_crypto_key_version(name="name_value",)
+        response = await client.get_crypto_key_version(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2827,14 +3131,22 @@ async def test_get_crypto_key_version_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_crypto_key_version(
-            service.GetCryptoKeyVersionRequest(), name="name_value",
+            service.GetCryptoKeyVersionRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [service.GetPublicKeyRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetPublicKeyRequest,
+        dict,
+    ],
+)
 def test_get_public_key(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2872,7 +3184,8 @@ def test_get_public_key_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2888,7 +3201,8 @@ async def test_get_public_key_async(
     transport: str = "grpc_asyncio", request_type=service.GetPublicKeyRequest
 ):
     client = KeyManagementServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2952,7 +3266,10 @@ def test_get_public_key_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2979,7 +3296,10 @@ async def test_get_public_key_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_public_key_flattened():
@@ -2993,7 +3313,9 @@ def test_get_public_key_flattened():
         call.return_value = resources.PublicKey()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_public_key(name="name_value",)
+        client.get_public_key(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3013,7 +3335,8 @@ def test_get_public_key_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_public_key(
-            service.GetPublicKeyRequest(), name="name_value",
+            service.GetPublicKeyRequest(),
+            name="name_value",
         )
 
 
@@ -3031,7 +3354,9 @@ async def test_get_public_key_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(resources.PublicKey())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_public_key(name="name_value",)
+        response = await client.get_public_key(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3052,14 +3377,22 @@ async def test_get_public_key_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_public_key(
-            service.GetPublicKeyRequest(), name="name_value",
+            service.GetPublicKeyRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [service.GetImportJobRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetImportJobRequest,
+        dict,
+    ],
+)
 def test_get_import_job(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3097,7 +3430,8 @@ def test_get_import_job_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3113,7 +3447,8 @@ async def test_get_import_job_async(
     transport: str = "grpc_asyncio", request_type=service.GetImportJobRequest
 ):
     client = KeyManagementServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3177,7 +3512,10 @@ def test_get_import_job_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -3204,7 +3542,10 @@ async def test_get_import_job_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_import_job_flattened():
@@ -3218,7 +3559,9 @@ def test_get_import_job_flattened():
         call.return_value = resources.ImportJob()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_import_job(name="name_value",)
+        client.get_import_job(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3238,7 +3581,8 @@ def test_get_import_job_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_import_job(
-            service.GetImportJobRequest(), name="name_value",
+            service.GetImportJobRequest(),
+            name="name_value",
         )
 
 
@@ -3256,7 +3600,9 @@ async def test_get_import_job_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(resources.ImportJob())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_import_job(name="name_value",)
+        response = await client.get_import_job(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3277,14 +3623,22 @@ async def test_get_import_job_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_import_job(
-            service.GetImportJobRequest(), name="name_value",
+            service.GetImportJobRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [service.CreateKeyRingRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateKeyRingRequest,
+        dict,
+    ],
+)
 def test_create_key_ring(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3294,7 +3648,9 @@ def test_create_key_ring(request_type, transport: str = "grpc"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_key_ring), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = resources.KeyRing(name="name_value",)
+        call.return_value = resources.KeyRing(
+            name="name_value",
+        )
         response = client.create_key_ring(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -3311,7 +3667,8 @@ def test_create_key_ring_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3327,7 +3684,8 @@ async def test_create_key_ring_async(
     transport: str = "grpc_asyncio", request_type=service.CreateKeyRingRequest
 ):
     client = KeyManagementServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3338,7 +3696,9 @@ async def test_create_key_ring_async(
     with mock.patch.object(type(client.transport.create_key_ring), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            resources.KeyRing(name="name_value",)
+            resources.KeyRing(
+                name="name_value",
+            )
         )
         response = await client.create_key_ring(request)
 
@@ -3380,7 +3740,10 @@ def test_create_key_ring_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -3407,7 +3770,10 @@ async def test_create_key_ring_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_key_ring_flattened():
@@ -3510,10 +3876,17 @@ async def test_create_key_ring_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [service.CreateCryptoKeyRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateCryptoKeyRequest,
+        dict,
+    ],
+)
 def test_create_crypto_key(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3551,7 +3924,8 @@ def test_create_crypto_key_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3569,7 +3943,8 @@ async def test_create_crypto_key_async(
     transport: str = "grpc_asyncio", request_type=service.CreateCryptoKeyRequest
 ):
     client = KeyManagementServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3634,7 +4009,10 @@ def test_create_crypto_key_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -3663,7 +4041,10 @@ async def test_create_crypto_key_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_crypto_key_flattened():
@@ -3770,10 +4151,17 @@ async def test_create_crypto_key_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [service.CreateCryptoKeyVersionRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateCryptoKeyVersionRequest,
+        dict,
+    ],
+)
 def test_create_crypto_key_version(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3822,7 +4210,8 @@ def test_create_crypto_key_version_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3840,7 +4229,8 @@ async def test_create_crypto_key_version_async(
     transport: str = "grpc_asyncio", request_type=service.CreateCryptoKeyVersionRequest
 ):
     client = KeyManagementServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3917,7 +4307,10 @@ def test_create_crypto_key_version_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -3948,7 +4341,10 @@ async def test_create_crypto_key_version_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_crypto_key_version_flattened():
@@ -4047,10 +4443,17 @@ async def test_create_crypto_key_version_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [service.ImportCryptoKeyVersionRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ImportCryptoKeyVersionRequest,
+        dict,
+    ],
+)
 def test_import_crypto_key_version(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4099,7 +4502,8 @@ def test_import_crypto_key_version_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4117,7 +4521,8 @@ async def test_import_crypto_key_version_async(
     transport: str = "grpc_asyncio", request_type=service.ImportCryptoKeyVersionRequest
 ):
     client = KeyManagementServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4194,7 +4599,10 @@ def test_import_crypto_key_version_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -4225,13 +4633,23 @@ async def test_import_crypto_key_version_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
-@pytest.mark.parametrize("request_type", [service.CreateImportJobRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateImportJobRequest,
+        dict,
+    ],
+)
 def test_create_import_job(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4271,7 +4689,8 @@ def test_create_import_job_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4289,7 +4708,8 @@ async def test_create_import_job_async(
     transport: str = "grpc_asyncio", request_type=service.CreateImportJobRequest
 ):
     client = KeyManagementServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4357,7 +4777,10 @@ def test_create_import_job_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -4386,7 +4809,10 @@ async def test_create_import_job_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_import_job_flattened():
@@ -4493,10 +4919,17 @@ async def test_create_import_job_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [service.UpdateCryptoKeyRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UpdateCryptoKeyRequest,
+        dict,
+    ],
+)
 def test_update_crypto_key(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4534,7 +4967,8 @@ def test_update_crypto_key_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4552,7 +4986,8 @@ async def test_update_crypto_key_async(
     transport: str = "grpc_asyncio", request_type=service.UpdateCryptoKeyRequest
 ):
     client = KeyManagementServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4617,9 +5052,10 @@ def test_update_crypto_key_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "crypto_key.name=crypto_key.name/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "crypto_key.name=crypto_key.name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -4648,9 +5084,10 @@ async def test_update_crypto_key_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "crypto_key.name=crypto_key.name/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "crypto_key.name=crypto_key.name/value",
+    ) in kw["metadata"]
 
 
 def test_update_crypto_key_flattened():
@@ -4747,10 +5184,17 @@ async def test_update_crypto_key_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [service.UpdateCryptoKeyVersionRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UpdateCryptoKeyVersionRequest,
+        dict,
+    ],
+)
 def test_update_crypto_key_version(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4799,7 +5243,8 @@ def test_update_crypto_key_version_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4817,7 +5262,8 @@ async def test_update_crypto_key_version_async(
     transport: str = "grpc_asyncio", request_type=service.UpdateCryptoKeyVersionRequest
 ):
     client = KeyManagementServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5031,11 +5477,16 @@ async def test_update_crypto_key_version_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [service.UpdateCryptoKeyPrimaryVersionRequest, dict,]
+    "request_type",
+    [
+        service.UpdateCryptoKeyPrimaryVersionRequest,
+        dict,
+    ],
 )
 def test_update_crypto_key_primary_version(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5073,7 +5524,8 @@ def test_update_crypto_key_primary_version_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5092,7 +5544,8 @@ async def test_update_crypto_key_primary_version_async(
     request_type=service.UpdateCryptoKeyPrimaryVersionRequest,
 ):
     client = KeyManagementServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5157,7 +5610,10 @@ def test_update_crypto_key_primary_version_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -5186,7 +5642,10 @@ async def test_update_crypto_key_primary_version_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_update_crypto_key_primary_version_flattened():
@@ -5203,7 +5662,8 @@ def test_update_crypto_key_primary_version_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.update_crypto_key_primary_version(
-            name="name_value", crypto_key_version_id="crypto_key_version_id_value",
+            name="name_value",
+            crypto_key_version_id="crypto_key_version_id_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -5250,7 +5710,8 @@ async def test_update_crypto_key_primary_version_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.update_crypto_key_primary_version(
-            name="name_value", crypto_key_version_id="crypto_key_version_id_value",
+            name="name_value",
+            crypto_key_version_id="crypto_key_version_id_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -5282,11 +5743,16 @@ async def test_update_crypto_key_primary_version_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [service.DestroyCryptoKeyVersionRequest, dict,]
+    "request_type",
+    [
+        service.DestroyCryptoKeyVersionRequest,
+        dict,
+    ],
 )
 def test_destroy_crypto_key_version(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5335,7 +5801,8 @@ def test_destroy_crypto_key_version_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5353,7 +5820,8 @@ async def test_destroy_crypto_key_version_async(
     transport: str = "grpc_asyncio", request_type=service.DestroyCryptoKeyVersionRequest
 ):
     client = KeyManagementServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5430,7 +5898,10 @@ def test_destroy_crypto_key_version_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -5461,7 +5932,10 @@ async def test_destroy_crypto_key_version_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_destroy_crypto_key_version_flattened():
@@ -5477,7 +5951,9 @@ def test_destroy_crypto_key_version_flattened():
         call.return_value = resources.CryptoKeyVersion()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.destroy_crypto_key_version(name="name_value",)
+        client.destroy_crypto_key_version(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -5497,7 +5973,8 @@ def test_destroy_crypto_key_version_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.destroy_crypto_key_version(
-            service.DestroyCryptoKeyVersionRequest(), name="name_value",
+            service.DestroyCryptoKeyVersionRequest(),
+            name="name_value",
         )
 
 
@@ -5519,7 +5996,9 @@ async def test_destroy_crypto_key_version_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.destroy_crypto_key_version(name="name_value",)
+        response = await client.destroy_crypto_key_version(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -5540,16 +6019,22 @@ async def test_destroy_crypto_key_version_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.destroy_crypto_key_version(
-            service.DestroyCryptoKeyVersionRequest(), name="name_value",
+            service.DestroyCryptoKeyVersionRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [service.RestoreCryptoKeyVersionRequest, dict,]
+    "request_type",
+    [
+        service.RestoreCryptoKeyVersionRequest,
+        dict,
+    ],
 )
 def test_restore_crypto_key_version(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5598,7 +6083,8 @@ def test_restore_crypto_key_version_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5616,7 +6102,8 @@ async def test_restore_crypto_key_version_async(
     transport: str = "grpc_asyncio", request_type=service.RestoreCryptoKeyVersionRequest
 ):
     client = KeyManagementServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5693,7 +6180,10 @@ def test_restore_crypto_key_version_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -5724,7 +6214,10 @@ async def test_restore_crypto_key_version_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_restore_crypto_key_version_flattened():
@@ -5740,7 +6233,9 @@ def test_restore_crypto_key_version_flattened():
         call.return_value = resources.CryptoKeyVersion()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.restore_crypto_key_version(name="name_value",)
+        client.restore_crypto_key_version(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -5760,7 +6255,8 @@ def test_restore_crypto_key_version_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.restore_crypto_key_version(
-            service.RestoreCryptoKeyVersionRequest(), name="name_value",
+            service.RestoreCryptoKeyVersionRequest(),
+            name="name_value",
         )
 
 
@@ -5782,7 +6278,9 @@ async def test_restore_crypto_key_version_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.restore_crypto_key_version(name="name_value",)
+        response = await client.restore_crypto_key_version(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -5803,14 +6301,22 @@ async def test_restore_crypto_key_version_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.restore_crypto_key_version(
-            service.RestoreCryptoKeyVersionRequest(), name="name_value",
+            service.RestoreCryptoKeyVersionRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [service.EncryptRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.EncryptRequest,
+        dict,
+    ],
+)
 def test_encrypt(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5847,7 +6353,8 @@ def test_encrypt_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5863,7 +6370,8 @@ async def test_encrypt_async(
     transport: str = "grpc_asyncio", request_type=service.EncryptRequest
 ):
     client = KeyManagementServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5926,7 +6434,10 @@ def test_encrypt_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -5955,7 +6466,10 @@ async def test_encrypt_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_encrypt_flattened():
@@ -5970,7 +6484,8 @@ def test_encrypt_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.encrypt(
-            name="name_value", plaintext=b"plaintext_blob",
+            name="name_value",
+            plaintext=b"plaintext_blob",
         )
 
         # Establish that the underlying call was made with the expected
@@ -5994,7 +6509,9 @@ def test_encrypt_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.encrypt(
-            service.EncryptRequest(), name="name_value", plaintext=b"plaintext_blob",
+            service.EncryptRequest(),
+            name="name_value",
+            plaintext=b"plaintext_blob",
         )
 
 
@@ -6014,7 +6531,10 @@ async def test_encrypt_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.encrypt(name="name_value", plaintext=b"plaintext_blob",)
+        response = await client.encrypt(
+            name="name_value",
+            plaintext=b"plaintext_blob",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -6038,14 +6558,23 @@ async def test_encrypt_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.encrypt(
-            service.EncryptRequest(), name="name_value", plaintext=b"plaintext_blob",
+            service.EncryptRequest(),
+            name="name_value",
+            plaintext=b"plaintext_blob",
         )
 
 
-@pytest.mark.parametrize("request_type", [service.DecryptRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DecryptRequest,
+        dict,
+    ],
+)
 def test_decrypt(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -6078,7 +6607,8 @@ def test_decrypt_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6094,7 +6624,8 @@ async def test_decrypt_async(
     transport: str = "grpc_asyncio", request_type=service.DecryptRequest
 ):
     client = KeyManagementServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -6153,7 +6684,10 @@ def test_decrypt_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -6182,7 +6716,10 @@ async def test_decrypt_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_decrypt_flattened():
@@ -6197,7 +6734,8 @@ def test_decrypt_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.decrypt(
-            name="name_value", ciphertext=b"ciphertext_blob",
+            name="name_value",
+            ciphertext=b"ciphertext_blob",
         )
 
         # Establish that the underlying call was made with the expected
@@ -6221,7 +6759,9 @@ def test_decrypt_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.decrypt(
-            service.DecryptRequest(), name="name_value", ciphertext=b"ciphertext_blob",
+            service.DecryptRequest(),
+            name="name_value",
+            ciphertext=b"ciphertext_blob",
         )
 
 
@@ -6242,7 +6782,8 @@ async def test_decrypt_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.decrypt(
-            name="name_value", ciphertext=b"ciphertext_blob",
+            name="name_value",
+            ciphertext=b"ciphertext_blob",
         )
 
         # Establish that the underlying call was made with the expected
@@ -6267,14 +6808,23 @@ async def test_decrypt_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.decrypt(
-            service.DecryptRequest(), name="name_value", ciphertext=b"ciphertext_blob",
+            service.DecryptRequest(),
+            name="name_value",
+            ciphertext=b"ciphertext_blob",
         )
 
 
-@pytest.mark.parametrize("request_type", [service.AsymmetricSignRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.AsymmetricSignRequest,
+        dict,
+    ],
+)
 def test_asymmetric_sign(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -6311,7 +6861,8 @@ def test_asymmetric_sign_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6327,7 +6878,8 @@ async def test_asymmetric_sign_async(
     transport: str = "grpc_asyncio", request_type=service.AsymmetricSignRequest
 ):
     client = KeyManagementServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -6390,7 +6942,10 @@ def test_asymmetric_sign_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -6419,7 +6974,10 @@ async def test_asymmetric_sign_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_asymmetric_sign_flattened():
@@ -6434,7 +6992,8 @@ def test_asymmetric_sign_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.asymmetric_sign(
-            name="name_value", digest=service.Digest(sha256=b"sha256_blob"),
+            name="name_value",
+            digest=service.Digest(sha256=b"sha256_blob"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -6481,7 +7040,8 @@ async def test_asymmetric_sign_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.asymmetric_sign(
-            name="name_value", digest=service.Digest(sha256=b"sha256_blob"),
+            name="name_value",
+            digest=service.Digest(sha256=b"sha256_blob"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -6512,10 +7072,17 @@ async def test_asymmetric_sign_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [service.AsymmetricDecryptRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.AsymmetricDecryptRequest,
+        dict,
+    ],
+)
 def test_asymmetric_decrypt(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -6550,7 +7117,8 @@ def test_asymmetric_decrypt_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6568,7 +7136,8 @@ async def test_asymmetric_decrypt_async(
     transport: str = "grpc_asyncio", request_type=service.AsymmetricDecryptRequest
 ):
     client = KeyManagementServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -6631,7 +7200,10 @@ def test_asymmetric_decrypt_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -6662,7 +7234,10 @@ async def test_asymmetric_decrypt_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_asymmetric_decrypt_flattened():
@@ -6679,7 +7254,8 @@ def test_asymmetric_decrypt_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.asymmetric_decrypt(
-            name="name_value", ciphertext=b"ciphertext_blob",
+            name="name_value",
+            ciphertext=b"ciphertext_blob",
         )
 
         # Establish that the underlying call was made with the expected
@@ -6728,7 +7304,8 @@ async def test_asymmetric_decrypt_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.asymmetric_decrypt(
-            name="name_value", ciphertext=b"ciphertext_blob",
+            name="name_value",
+            ciphertext=b"ciphertext_blob",
         )
 
         # Establish that the underlying call was made with the expected
@@ -6759,10 +7336,17 @@ async def test_asymmetric_decrypt_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [service.MacSignRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.MacSignRequest,
+        dict,
+    ],
+)
 def test_mac_sign(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -6797,7 +7381,8 @@ def test_mac_sign_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6813,7 +7398,8 @@ async def test_mac_sign_async(
     transport: str = "grpc_asyncio", request_type=service.MacSignRequest
 ):
     client = KeyManagementServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -6874,7 +7460,10 @@ def test_mac_sign_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -6903,7 +7492,10 @@ async def test_mac_sign_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_mac_sign_flattened():
@@ -6918,7 +7510,8 @@ def test_mac_sign_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.mac_sign(
-            name="name_value", data=b"data_blob",
+            name="name_value",
+            data=b"data_blob",
         )
 
         # Establish that the underlying call was made with the expected
@@ -6942,7 +7535,9 @@ def test_mac_sign_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.mac_sign(
-            service.MacSignRequest(), name="name_value", data=b"data_blob",
+            service.MacSignRequest(),
+            name="name_value",
+            data=b"data_blob",
         )
 
 
@@ -6962,7 +7557,10 @@ async def test_mac_sign_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.mac_sign(name="name_value", data=b"data_blob",)
+        response = await client.mac_sign(
+            name="name_value",
+            data=b"data_blob",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -6986,14 +7584,23 @@ async def test_mac_sign_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.mac_sign(
-            service.MacSignRequest(), name="name_value", data=b"data_blob",
+            service.MacSignRequest(),
+            name="name_value",
+            data=b"data_blob",
         )
 
 
-@pytest.mark.parametrize("request_type", [service.MacVerifyRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.MacVerifyRequest,
+        dict,
+    ],
+)
 def test_mac_verify(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -7032,7 +7639,8 @@ def test_mac_verify_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7048,7 +7656,8 @@ async def test_mac_verify_async(
     transport: str = "grpc_asyncio", request_type=service.MacVerifyRequest
 ):
     client = KeyManagementServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -7113,7 +7722,10 @@ def test_mac_verify_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -7142,7 +7754,10 @@ async def test_mac_verify_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_mac_verify_flattened():
@@ -7157,7 +7772,9 @@ def test_mac_verify_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.mac_verify(
-            name="name_value", data=b"data_blob", mac=b"mac_blob",
+            name="name_value",
+            data=b"data_blob",
+            mac=b"mac_blob",
         )
 
         # Establish that the underlying call was made with the expected
@@ -7208,7 +7825,9 @@ async def test_mac_verify_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.mac_verify(
-            name="name_value", data=b"data_blob", mac=b"mac_blob",
+            name="name_value",
+            data=b"data_blob",
+            mac=b"mac_blob",
         )
 
         # Establish that the underlying call was made with the expected
@@ -7243,10 +7862,17 @@ async def test_mac_verify_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [service.GenerateRandomBytesRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GenerateRandomBytesRequest,
+        dict,
+    ],
+)
 def test_generate_random_bytes(request_type, transport: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -7258,7 +7884,9 @@ def test_generate_random_bytes(request_type, transport: str = "grpc"):
         type(client.transport.generate_random_bytes), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = service.GenerateRandomBytesResponse(data=b"data_blob",)
+        call.return_value = service.GenerateRandomBytesResponse(
+            data=b"data_blob",
+        )
         response = client.generate_random_bytes(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -7275,7 +7903,8 @@ def test_generate_random_bytes_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7293,7 +7922,8 @@ async def test_generate_random_bytes_async(
     transport: str = "grpc_asyncio", request_type=service.GenerateRandomBytesRequest
 ):
     client = KeyManagementServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -7306,7 +7936,9 @@ async def test_generate_random_bytes_async(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            service.GenerateRandomBytesResponse(data=b"data_blob",)
+            service.GenerateRandomBytesResponse(
+                data=b"data_blob",
+            )
         )
         response = await client.generate_random_bytes(request)
 
@@ -7350,7 +7982,10 @@ def test_generate_random_bytes_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "location=location/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "location=location/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -7381,7 +8016,10 @@ async def test_generate_random_bytes_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "location=location/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "location=location/value",
+    ) in kw["metadata"]
 
 
 def test_generate_random_bytes_flattened():
@@ -7497,7 +8135,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = KeyManagementServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -7518,7 +8157,8 @@ def test_credentials_transport_error():
     options.api_key = "api_key"
     with pytest.raises(ValueError):
         client = KeyManagementServiceClient(
-            client_options=options, transport=transport,
+            client_options=options,
+            transport=transport,
         )
 
     # It is an error to provide an api_key and a credential.
@@ -7535,7 +8175,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = KeyManagementServiceClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -7583,7 +8224,10 @@ def test_transport_grpc_default():
     client = KeyManagementServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
-    assert isinstance(client.transport, transports.KeyManagementServiceGrpcTransport,)
+    assert isinstance(
+        client.transport,
+        transports.KeyManagementServiceGrpcTransport,
+    )
 
 
 def test_key_management_service_base_transport_error():
@@ -7656,7 +8300,8 @@ def test_key_management_service_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.KeyManagementServiceTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -7828,7 +8473,8 @@ def test_key_management_service_grpc_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.KeyManagementServiceGrpcTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -7840,7 +8486,8 @@ def test_key_management_service_grpc_asyncio_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.KeyManagementServiceGrpcAsyncIOTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -7953,7 +8600,10 @@ def test_crypto_key_path():
     key_ring = "whelk"
     crypto_key = "octopus"
     expected = "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}".format(
-        project=project, location=location, key_ring=key_ring, crypto_key=crypto_key,
+        project=project,
+        location=location,
+        key_ring=key_ring,
+        crypto_key=crypto_key,
     )
     actual = KeyManagementServiceClient.crypto_key_path(
         project, location, key_ring, crypto_key
@@ -8015,7 +8665,10 @@ def test_import_job_path():
     key_ring = "winkle"
     import_job = "nautilus"
     expected = "projects/{project}/locations/{location}/keyRings/{key_ring}/importJobs/{import_job}".format(
-        project=project, location=location, key_ring=key_ring, import_job=import_job,
+        project=project,
+        location=location,
+        key_ring=key_ring,
+        import_job=import_job,
     )
     actual = KeyManagementServiceClient.import_job_path(
         project, location, key_ring, import_job
@@ -8042,7 +8695,9 @@ def test_key_ring_path():
     location = "octopus"
     key_ring = "oyster"
     expected = "projects/{project}/locations/{location}/keyRings/{key_ring}".format(
-        project=project, location=location, key_ring=key_ring,
+        project=project,
+        location=location,
+        key_ring=key_ring,
     )
     actual = KeyManagementServiceClient.key_ring_path(project, location, key_ring)
     assert expected == actual
@@ -8117,7 +8772,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "winkle"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = KeyManagementServiceClient.common_folder_path(folder)
     assert expected == actual
 
@@ -8135,7 +8792,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "scallop"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = KeyManagementServiceClient.common_organization_path(organization)
     assert expected == actual
 
@@ -8153,7 +8812,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "squid"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = KeyManagementServiceClient.common_project_path(project)
     assert expected == actual
 
@@ -8173,7 +8834,8 @@ def test_common_location_path():
     project = "whelk"
     location = "octopus"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = KeyManagementServiceClient.common_location_path(project, location)
     assert expected == actual
@@ -8198,7 +8860,8 @@ def test_client_with_default_client_info():
         transports.KeyManagementServiceTransport, "_prep_wrapped_messages"
     ) as prep:
         client = KeyManagementServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -8207,14 +8870,16 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = KeyManagementServiceClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
 
 def test_set_iam_policy(transport: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -8224,7 +8889,10 @@ def test_set_iam_policy(transport: str = "grpc"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = policy_pb2.Policy(version=774, etag=b"etag_blob",)
+        call.return_value = policy_pb2.Policy(
+            version=774,
+            etag=b"etag_blob",
+        )
 
         response = client.set_iam_policy(request)
 
@@ -8245,7 +8913,8 @@ def test_set_iam_policy(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_set_iam_policy_async(transport: str = "grpc_asyncio"):
     client = KeyManagementServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -8256,7 +8925,10 @@ async def test_set_iam_policy_async(transport: str = "grpc_asyncio"):
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            policy_pb2.Policy(version=774, etag=b"etag_blob",)
+            policy_pb2.Policy(
+                version=774,
+                etag=b"etag_blob",
+            )
         )
 
         response = await client.set_iam_policy(request)
@@ -8298,7 +8970,10 @@ def test_set_iam_policy_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -8325,7 +9000,10 @@ async def test_set_iam_policy_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
 
 
 def test_set_iam_policy_from_dict():
@@ -8367,7 +9045,8 @@ async def test_set_iam_policy_from_dict_async():
 
 def test_get_iam_policy(transport: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -8377,7 +9056,10 @@ def test_get_iam_policy(transport: str = "grpc"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = policy_pb2.Policy(version=774, etag=b"etag_blob",)
+        call.return_value = policy_pb2.Policy(
+            version=774,
+            etag=b"etag_blob",
+        )
 
         response = client.get_iam_policy(request)
 
@@ -8398,7 +9080,8 @@ def test_get_iam_policy(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_get_iam_policy_async(transport: str = "grpc_asyncio"):
     client = KeyManagementServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -8409,7 +9092,10 @@ async def test_get_iam_policy_async(transport: str = "grpc_asyncio"):
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            policy_pb2.Policy(version=774, etag=b"etag_blob",)
+            policy_pb2.Policy(
+                version=774,
+                etag=b"etag_blob",
+            )
         )
 
         response = await client.get_iam_policy(request)
@@ -8451,7 +9137,10 @@ def test_get_iam_policy_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -8478,7 +9167,10 @@ async def test_get_iam_policy_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
 
 
 def test_get_iam_policy_from_dict():
@@ -8520,7 +9212,8 @@ async def test_get_iam_policy_from_dict_async():
 
 def test_test_iam_permissions(transport: str = "grpc"):
     client = KeyManagementServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -8553,7 +9246,8 @@ def test_test_iam_permissions(transport: str = "grpc"):
 @pytest.mark.asyncio
 async def test_test_iam_permissions_async(transport: str = "grpc_asyncio"):
     client = KeyManagementServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -8610,7 +9304,10 @@ def test_test_iam_permissions_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -8641,7 +9338,10 @@ async def test_test_iam_permissions_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
 
 
 def test_test_iam_permissions_from_dict():
@@ -8690,7 +9390,8 @@ async def test_test_iam_permissions_from_dict_async():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = KeyManagementServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     with mock.patch.object(
         type(getattr(client.transport, "grpc_channel")), "close"

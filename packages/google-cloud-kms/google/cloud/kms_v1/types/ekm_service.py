@@ -65,11 +65,26 @@ class ListEkmConnectionsRequest(proto.Message):
             results <https://cloud.google.com/kms/docs/sorting-and-filtering>`__.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    filter = proto.Field(proto.STRING, number=4,)
-    order_by = proto.Field(proto.STRING, number=5,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class ListEkmConnectionsResponse(proto.Message):
@@ -94,10 +109,18 @@ class ListEkmConnectionsResponse(proto.Message):
         return self
 
     ekm_connections = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="EkmConnection",
+        proto.MESSAGE,
+        number=1,
+        message="EkmConnection",
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
-    total_size = proto.Field(proto.INT32, number=3,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    total_size = proto.Field(
+        proto.INT32,
+        number=3,
+    )
 
 
 class GetEkmConnectionRequest(proto.Message):
@@ -110,7 +133,10 @@ class GetEkmConnectionRequest(proto.Message):
             get.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CreateEkmConnectionRequest(proto.Message):
@@ -130,9 +156,19 @@ class CreateEkmConnectionRequest(proto.Message):
             initial field values.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    ekm_connection_id = proto.Field(proto.STRING, number=2,)
-    ekm_connection = proto.Field(proto.MESSAGE, number=3, message="EkmConnection",)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    ekm_connection_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    ekm_connection = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="EkmConnection",
+    )
 
 
 class UpdateEkmConnectionRequest(proto.Message):
@@ -147,9 +183,15 @@ class UpdateEkmConnectionRequest(proto.Message):
             this request.
     """
 
-    ekm_connection = proto.Field(proto.MESSAGE, number=1, message="EkmConnection",)
+    ekm_connection = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="EkmConnection",
+    )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -193,19 +235,44 @@ class Certificate(proto.Message):
             [parsed][google.cloud.kms.v1.Certificate.parsed] is true.
     """
 
-    raw_der = proto.Field(proto.BYTES, number=1,)
-    parsed = proto.Field(proto.BOOL, number=2,)
-    issuer = proto.Field(proto.STRING, number=3,)
-    subject = proto.Field(proto.STRING, number=4,)
-    subject_alternative_dns_names = proto.RepeatedField(proto.STRING, number=5,)
+    raw_der = proto.Field(
+        proto.BYTES,
+        number=1,
+    )
+    parsed = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+    issuer = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    subject = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    subject_alternative_dns_names = proto.RepeatedField(
+        proto.STRING,
+        number=5,
+    )
     not_before_time = proto.Field(
-        proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
     )
     not_after_time = proto.Field(
-        proto.MESSAGE, number=7, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=7,
+        message=timestamp_pb2.Timestamp,
     )
-    serial_number = proto.Field(proto.STRING, number=8,)
-    sha256_fingerprint = proto.Field(proto.STRING, number=9,)
+    serial_number = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    sha256_fingerprint = proto.Field(
+        proto.STRING,
+        number=9,
+    )
 
 
 class EkmConnection(proto.Message):
@@ -269,19 +336,42 @@ class EkmConnection(proto.Message):
                 EKM replica.
         """
 
-        service_directory_service = proto.Field(proto.STRING, number=1,)
-        endpoint_filter = proto.Field(proto.STRING, number=2,)
-        hostname = proto.Field(proto.STRING, number=3,)
+        service_directory_service = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        endpoint_filter = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        hostname = proto.Field(
+            proto.STRING,
+            number=3,
+        )
         server_certificates = proto.RepeatedField(
-            proto.MESSAGE, number=4, message="Certificate",
+            proto.MESSAGE,
+            number=4,
+            message="Certificate",
         )
 
-    name = proto.Field(proto.STRING, number=1,)
-    create_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    service_resolvers = proto.RepeatedField(
-        proto.MESSAGE, number=3, message=ServiceResolver,
+    name = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    etag = proto.Field(proto.STRING, number=5,)
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    service_resolvers = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=ServiceResolver,
+    )
+    etag = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

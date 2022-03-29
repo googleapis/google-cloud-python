@@ -98,11 +98,26 @@ class ListKeyRingsRequest(proto.Message):
             results <https://cloud.google.com/kms/docs/sorting-and-filtering>`__.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    filter = proto.Field(proto.STRING, number=4,)
-    order_by = proto.Field(proto.STRING, number=5,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class ListCryptoKeysRequest(proto.Message):
@@ -141,14 +156,31 @@ class ListCryptoKeysRequest(proto.Message):
             results <https://cloud.google.com/kms/docs/sorting-and-filtering>`__.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    version_view = proto.Field(
-        proto.ENUM, number=4, enum=resources.CryptoKeyVersion.CryptoKeyVersionView,
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    filter = proto.Field(proto.STRING, number=5,)
-    order_by = proto.Field(proto.STRING, number=6,)
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    version_view = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=resources.CryptoKeyVersion.CryptoKeyVersionView,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    order_by = proto.Field(
+        proto.STRING,
+        number=6,
+    )
 
 
 class ListCryptoKeyVersionsRequest(proto.Message):
@@ -186,14 +218,31 @@ class ListCryptoKeyVersionsRequest(proto.Message):
             results <https://cloud.google.com/kms/docs/sorting-and-filtering>`__.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    view = proto.Field(
-        proto.ENUM, number=4, enum=resources.CryptoKeyVersion.CryptoKeyVersionView,
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    filter = proto.Field(proto.STRING, number=5,)
-    order_by = proto.Field(proto.STRING, number=6,)
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    view = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=resources.CryptoKeyVersion.CryptoKeyVersionView,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    order_by = proto.Field(
+        proto.STRING,
+        number=6,
+    )
 
 
 class ListImportJobsRequest(proto.Message):
@@ -229,11 +278,26 @@ class ListImportJobsRequest(proto.Message):
             results <https://cloud.google.com/kms/docs/sorting-and-filtering>`__.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    filter = proto.Field(proto.STRING, number=4,)
-    order_by = proto.Field(proto.STRING, number=5,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class ListKeyRingsResponse(proto.Message):
@@ -256,9 +320,19 @@ class ListKeyRingsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    key_rings = proto.RepeatedField(proto.MESSAGE, number=1, message=resources.KeyRing,)
-    next_page_token = proto.Field(proto.STRING, number=2,)
-    total_size = proto.Field(proto.INT32, number=3,)
+    key_rings = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=resources.KeyRing,
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    total_size = proto.Field(
+        proto.INT32,
+        number=3,
+    )
 
 
 class ListCryptoKeysResponse(proto.Message):
@@ -283,10 +357,18 @@ class ListCryptoKeysResponse(proto.Message):
         return self
 
     crypto_keys = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=resources.CryptoKey,
+        proto.MESSAGE,
+        number=1,
+        message=resources.CryptoKey,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
-    total_size = proto.Field(proto.INT32, number=3,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    total_size = proto.Field(
+        proto.INT32,
+        number=3,
+    )
 
 
 class ListCryptoKeyVersionsResponse(proto.Message):
@@ -312,10 +394,18 @@ class ListCryptoKeyVersionsResponse(proto.Message):
         return self
 
     crypto_key_versions = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=resources.CryptoKeyVersion,
+        proto.MESSAGE,
+        number=1,
+        message=resources.CryptoKeyVersion,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
-    total_size = proto.Field(proto.INT32, number=3,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    total_size = proto.Field(
+        proto.INT32,
+        number=3,
+    )
 
 
 class ListImportJobsResponse(proto.Message):
@@ -340,10 +430,18 @@ class ListImportJobsResponse(proto.Message):
         return self
 
     import_jobs = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=resources.ImportJob,
+        proto.MESSAGE,
+        number=1,
+        message=resources.ImportJob,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
-    total_size = proto.Field(proto.INT32, number=3,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    total_size = proto.Field(
+        proto.INT32,
+        number=3,
+    )
 
 
 class GetKeyRingRequest(proto.Message):
@@ -356,7 +454,10 @@ class GetKeyRingRequest(proto.Message):
             the [KeyRing][google.cloud.kms.v1.KeyRing] to get.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class GetCryptoKeyRequest(proto.Message):
@@ -369,7 +470,10 @@ class GetCryptoKeyRequest(proto.Message):
             the [CryptoKey][google.cloud.kms.v1.CryptoKey] to get.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class GetCryptoKeyVersionRequest(proto.Message):
@@ -384,7 +488,10 @@ class GetCryptoKeyVersionRequest(proto.Message):
             get.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class GetPublicKeyRequest(proto.Message):
@@ -399,7 +506,10 @@ class GetPublicKeyRequest(proto.Message):
             public key to get.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class GetImportJobRequest(proto.Message):
@@ -412,7 +522,10 @@ class GetImportJobRequest(proto.Message):
             the [ImportJob][google.cloud.kms.v1.ImportJob] to get.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CreateKeyRingRequest(proto.Message):
@@ -432,9 +545,19 @@ class CreateKeyRingRequest(proto.Message):
             initial field values.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    key_ring_id = proto.Field(proto.STRING, number=2,)
-    key_ring = proto.Field(proto.MESSAGE, number=3, message=resources.KeyRing,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    key_ring_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    key_ring = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=resources.KeyRing,
+    )
 
 
 class CreateCryptoKeyRequest(proto.Message):
@@ -464,10 +587,23 @@ class CreateCryptoKeyRequest(proto.Message):
             [CryptoKey][google.cloud.kms.v1.CryptoKey].
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    crypto_key_id = proto.Field(proto.STRING, number=2,)
-    crypto_key = proto.Field(proto.MESSAGE, number=3, message=resources.CryptoKey,)
-    skip_initial_version_creation = proto.Field(proto.BOOL, number=5,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    crypto_key_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    crypto_key = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=resources.CryptoKey,
+    )
+    skip_initial_version_creation = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
 
 
 class CreateCryptoKeyVersionRequest(proto.Message):
@@ -486,9 +622,14 @@ class CreateCryptoKeyVersionRequest(proto.Message):
             with initial field values.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     crypto_key_version = proto.Field(
-        proto.MESSAGE, number=2, message=resources.CryptoKeyVersion,
+        proto.MESSAGE,
+        number=2,
+        message=resources.CryptoKeyVersion,
     )
 
 
@@ -581,14 +722,27 @@ class ImportCryptoKeyVersionRequest(proto.Message):
             This field is a member of `oneof`_ ``wrapped_key_material``.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    crypto_key_version = proto.Field(proto.STRING, number=6,)
-    algorithm = proto.Field(
-        proto.ENUM, number=2, enum=resources.CryptoKeyVersion.CryptoKeyVersionAlgorithm,
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    import_job = proto.Field(proto.STRING, number=4,)
+    crypto_key_version = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    algorithm = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=resources.CryptoKeyVersion.CryptoKeyVersionAlgorithm,
+    )
+    import_job = proto.Field(
+        proto.STRING,
+        number=4,
+    )
     rsa_aes_wrapped_key = proto.Field(
-        proto.BYTES, number=5, oneof="wrapped_key_material",
+        proto.BYTES,
+        number=5,
+        oneof="wrapped_key_material",
     )
 
 
@@ -609,9 +763,19 @@ class CreateImportJobRequest(proto.Message):
             initial field values.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    import_job_id = proto.Field(proto.STRING, number=2,)
-    import_job = proto.Field(proto.MESSAGE, number=3, message=resources.ImportJob,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    import_job_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    import_job = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=resources.ImportJob,
+    )
 
 
 class UpdateCryptoKeyRequest(proto.Message):
@@ -627,9 +791,15 @@ class UpdateCryptoKeyRequest(proto.Message):
             this request.
     """
 
-    crypto_key = proto.Field(proto.MESSAGE, number=1, message=resources.CryptoKey,)
+    crypto_key = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=resources.CryptoKey,
+    )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -648,10 +818,14 @@ class UpdateCryptoKeyVersionRequest(proto.Message):
     """
 
     crypto_key_version = proto.Field(
-        proto.MESSAGE, number=1, message=resources.CryptoKeyVersion,
+        proto.MESSAGE,
+        number=1,
+        message=resources.CryptoKeyVersion,
     )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -669,8 +843,14 @@ class UpdateCryptoKeyPrimaryVersionRequest(proto.Message):
             use as primary.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    crypto_key_version_id = proto.Field(proto.STRING, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    crypto_key_version_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class DestroyCryptoKeyVersionRequest(proto.Message):
@@ -684,7 +864,10 @@ class DestroyCryptoKeyVersionRequest(proto.Message):
             destroy.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class RestoreCryptoKeyVersionRequest(proto.Message):
@@ -698,7 +881,10 @@ class RestoreCryptoKeyVersionRequest(proto.Message):
             restore.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class EncryptRequest(proto.Message):
@@ -783,14 +969,27 @@ class EncryptRequest(proto.Message):
             languages that support this type.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    plaintext = proto.Field(proto.BYTES, number=2,)
-    additional_authenticated_data = proto.Field(proto.BYTES, number=3,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    plaintext = proto.Field(
+        proto.BYTES,
+        number=2,
+    )
+    additional_authenticated_data = proto.Field(
+        proto.BYTES,
+        number=3,
+    )
     plaintext_crc32c = proto.Field(
-        proto.MESSAGE, number=7, message=wrappers_pb2.Int64Value,
+        proto.MESSAGE,
+        number=7,
+        message=wrappers_pb2.Int64Value,
     )
     additional_authenticated_data_crc32c = proto.Field(
-        proto.MESSAGE, number=8, message=wrappers_pb2.Int64Value,
+        proto.MESSAGE,
+        number=8,
+        message=wrappers_pb2.Int64Value,
     )
 
 
@@ -854,14 +1053,27 @@ class DecryptRequest(proto.Message):
             languages that support this type.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    ciphertext = proto.Field(proto.BYTES, number=2,)
-    additional_authenticated_data = proto.Field(proto.BYTES, number=3,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    ciphertext = proto.Field(
+        proto.BYTES,
+        number=2,
+    )
+    additional_authenticated_data = proto.Field(
+        proto.BYTES,
+        number=3,
+    )
     ciphertext_crc32c = proto.Field(
-        proto.MESSAGE, number=5, message=wrappers_pb2.Int64Value,
+        proto.MESSAGE,
+        number=5,
+        message=wrappers_pb2.Int64Value,
     )
     additional_authenticated_data_crc32c = proto.Field(
-        proto.MESSAGE, number=6, message=wrappers_pb2.Int64Value,
+        proto.MESSAGE,
+        number=6,
+        message=wrappers_pb2.Int64Value,
     )
 
 
@@ -931,13 +1143,29 @@ class AsymmetricSignRequest(proto.Message):
             languages that support this type.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    digest = proto.Field(proto.MESSAGE, number=3, message="Digest",)
-    digest_crc32c = proto.Field(
-        proto.MESSAGE, number=4, message=wrappers_pb2.Int64Value,
+    name = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    data = proto.Field(proto.BYTES, number=6,)
-    data_crc32c = proto.Field(proto.MESSAGE, number=7, message=wrappers_pb2.Int64Value,)
+    digest = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="Digest",
+    )
+    digest_crc32c = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=wrappers_pb2.Int64Value,
+    )
+    data = proto.Field(
+        proto.BYTES,
+        number=6,
+    )
+    data_crc32c = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=wrappers_pb2.Int64Value,
+    )
 
 
 class AsymmetricDecryptRequest(proto.Message):
@@ -976,10 +1204,18 @@ class AsymmetricDecryptRequest(proto.Message):
             languages that support this type.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    ciphertext = proto.Field(proto.BYTES, number=3,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    ciphertext = proto.Field(
+        proto.BYTES,
+        number=3,
+    )
     ciphertext_crc32c = proto.Field(
-        proto.MESSAGE, number=4, message=wrappers_pb2.Int64Value,
+        proto.MESSAGE,
+        number=4,
+        message=wrappers_pb2.Int64Value,
     )
 
 
@@ -1019,9 +1255,19 @@ class MacSignRequest(proto.Message):
             languages that support this type.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    data = proto.Field(proto.BYTES, number=2,)
-    data_crc32c = proto.Field(proto.MESSAGE, number=3, message=wrappers_pb2.Int64Value,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    data = proto.Field(
+        proto.BYTES,
+        number=2,
+    )
+    data_crc32c = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=wrappers_pb2.Int64Value,
+    )
 
 
 class MacVerifyRequest(proto.Message):
@@ -1082,11 +1328,28 @@ class MacVerifyRequest(proto.Message):
             languages that support this type.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    data = proto.Field(proto.BYTES, number=2,)
-    data_crc32c = proto.Field(proto.MESSAGE, number=3, message=wrappers_pb2.Int64Value,)
-    mac = proto.Field(proto.BYTES, number=4,)
-    mac_crc32c = proto.Field(proto.MESSAGE, number=5, message=wrappers_pb2.Int64Value,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    data = proto.Field(
+        proto.BYTES,
+        number=2,
+    )
+    data_crc32c = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=wrappers_pb2.Int64Value,
+    )
+    mac = proto.Field(
+        proto.BYTES,
+        number=4,
+    )
+    mac_crc32c = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=wrappers_pb2.Int64Value,
+    )
 
 
 class GenerateRandomBytesRequest(proto.Message):
@@ -1109,10 +1372,18 @@ class GenerateRandomBytesRequest(proto.Message):
             level is supported.
     """
 
-    location = proto.Field(proto.STRING, number=1,)
-    length_bytes = proto.Field(proto.INT32, number=2,)
+    location = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    length_bytes = proto.Field(
+        proto.INT32,
+        number=2,
+    )
     protection_level = proto.Field(
-        proto.ENUM, number=3, enum=resources.ProtectionLevel,
+        proto.ENUM,
+        number=3,
+        enum=resources.ProtectionLevel,
     )
 
 
@@ -1182,15 +1453,31 @@ class EncryptResponse(proto.Message):
             used in encryption.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    ciphertext = proto.Field(proto.BYTES, number=2,)
-    ciphertext_crc32c = proto.Field(
-        proto.MESSAGE, number=4, message=wrappers_pb2.Int64Value,
+    name = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    verified_plaintext_crc32c = proto.Field(proto.BOOL, number=5,)
-    verified_additional_authenticated_data_crc32c = proto.Field(proto.BOOL, number=6,)
+    ciphertext = proto.Field(
+        proto.BYTES,
+        number=2,
+    )
+    ciphertext_crc32c = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=wrappers_pb2.Int64Value,
+    )
+    verified_plaintext_crc32c = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
+    verified_additional_authenticated_data_crc32c = proto.Field(
+        proto.BOOL,
+        number=6,
+    )
     protection_level = proto.Field(
-        proto.ENUM, number=7, enum=resources.ProtectionLevel,
+        proto.ENUM,
+        number=7,
+        enum=resources.ProtectionLevel,
     )
 
 
@@ -1234,13 +1521,23 @@ class DecryptResponse(proto.Message):
             used in decryption.
     """
 
-    plaintext = proto.Field(proto.BYTES, number=1,)
-    plaintext_crc32c = proto.Field(
-        proto.MESSAGE, number=2, message=wrappers_pb2.Int64Value,
+    plaintext = proto.Field(
+        proto.BYTES,
+        number=1,
     )
-    used_primary = proto.Field(proto.BOOL, number=3,)
+    plaintext_crc32c = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=wrappers_pb2.Int64Value,
+    )
+    used_primary = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
     protection_level = proto.Field(
-        proto.ENUM, number=4, enum=resources.ProtectionLevel,
+        proto.ENUM,
+        number=4,
+        enum=resources.ProtectionLevel,
     )
 
 
@@ -1310,15 +1607,31 @@ class AsymmetricSignResponse(proto.Message):
             used for signing.
     """
 
-    signature = proto.Field(proto.BYTES, number=1,)
-    signature_crc32c = proto.Field(
-        proto.MESSAGE, number=2, message=wrappers_pb2.Int64Value,
+    signature = proto.Field(
+        proto.BYTES,
+        number=1,
     )
-    verified_digest_crc32c = proto.Field(proto.BOOL, number=3,)
-    name = proto.Field(proto.STRING, number=4,)
-    verified_data_crc32c = proto.Field(proto.BOOL, number=5,)
+    signature_crc32c = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=wrappers_pb2.Int64Value,
+    )
+    verified_digest_crc32c = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+    name = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    verified_data_crc32c = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
     protection_level = proto.Field(
-        proto.ENUM, number=6, enum=resources.ProtectionLevel,
+        proto.ENUM,
+        number=6,
+        enum=resources.ProtectionLevel,
     )
 
 
@@ -1369,13 +1682,23 @@ class AsymmetricDecryptResponse(proto.Message):
             used in decryption.
     """
 
-    plaintext = proto.Field(proto.BYTES, number=1,)
-    plaintext_crc32c = proto.Field(
-        proto.MESSAGE, number=2, message=wrappers_pb2.Int64Value,
+    plaintext = proto.Field(
+        proto.BYTES,
+        number=1,
     )
-    verified_ciphertext_crc32c = proto.Field(proto.BOOL, number=3,)
+    plaintext_crc32c = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=wrappers_pb2.Int64Value,
+    )
+    verified_ciphertext_crc32c = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
     protection_level = proto.Field(
-        proto.ENUM, number=4, enum=resources.ProtectionLevel,
+        proto.ENUM,
+        number=4,
+        enum=resources.ProtectionLevel,
     )
 
 
@@ -1430,12 +1753,27 @@ class MacSignResponse(proto.Message):
             used for signing.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    mac = proto.Field(proto.BYTES, number=2,)
-    mac_crc32c = proto.Field(proto.MESSAGE, number=3, message=wrappers_pb2.Int64Value,)
-    verified_data_crc32c = proto.Field(proto.BOOL, number=4,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    mac = proto.Field(
+        proto.BYTES,
+        number=2,
+    )
+    mac_crc32c = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=wrappers_pb2.Int64Value,
+    )
+    verified_data_crc32c = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
     protection_level = proto.Field(
-        proto.ENUM, number=5, enum=resources.ProtectionLevel,
+        proto.ENUM,
+        number=5,
+        enum=resources.ProtectionLevel,
     )
 
 
@@ -1499,13 +1837,30 @@ class MacVerifyResponse(proto.Message):
             used for verification.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    success = proto.Field(proto.BOOL, number=2,)
-    verified_data_crc32c = proto.Field(proto.BOOL, number=3,)
-    verified_mac_crc32c = proto.Field(proto.BOOL, number=4,)
-    verified_success_integrity = proto.Field(proto.BOOL, number=5,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    success = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+    verified_data_crc32c = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+    verified_mac_crc32c = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
+    verified_success_integrity = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
     protection_level = proto.Field(
-        proto.ENUM, number=6, enum=resources.ProtectionLevel,
+        proto.ENUM,
+        number=6,
+        enum=resources.ProtectionLevel,
     )
 
 
@@ -1535,8 +1890,15 @@ class GenerateRandomBytesResponse(proto.Message):
             support this type.
     """
 
-    data = proto.Field(proto.BYTES, number=1,)
-    data_crc32c = proto.Field(proto.MESSAGE, number=3, message=wrappers_pb2.Int64Value,)
+    data = proto.Field(
+        proto.BYTES,
+        number=1,
+    )
+    data_crc32c = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=wrappers_pb2.Int64Value,
+    )
 
 
 class Digest(proto.Message):
@@ -1568,9 +1930,21 @@ class Digest(proto.Message):
             This field is a member of `oneof`_ ``digest``.
     """
 
-    sha256 = proto.Field(proto.BYTES, number=1, oneof="digest",)
-    sha384 = proto.Field(proto.BYTES, number=2, oneof="digest",)
-    sha512 = proto.Field(proto.BYTES, number=3, oneof="digest",)
+    sha256 = proto.Field(
+        proto.BYTES,
+        number=1,
+        oneof="digest",
+    )
+    sha384 = proto.Field(
+        proto.BYTES,
+        number=2,
+        oneof="digest",
+    )
+    sha512 = proto.Field(
+        proto.BYTES,
+        number=3,
+        oneof="digest",
+    )
 
 
 class LocationMetadata(proto.Message):
@@ -1592,8 +1966,14 @@ class LocationMetadata(proto.Message):
             be created in this location.
     """
 
-    hsm_available = proto.Field(proto.BOOL, number=1,)
-    ekm_available = proto.Field(proto.BOOL, number=2,)
+    hsm_available = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
+    ekm_available = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
