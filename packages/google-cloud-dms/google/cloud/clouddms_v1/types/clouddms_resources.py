@@ -89,10 +89,23 @@ class SslConfig(proto.Message):
         SERVER_ONLY = 1
         SERVER_CLIENT = 2
 
-    type_ = proto.Field(proto.ENUM, number=1, enum=SslType,)
-    client_key = proto.Field(proto.STRING, number=2,)
-    client_certificate = proto.Field(proto.STRING, number=3,)
-    ca_certificate = proto.Field(proto.STRING, number=4,)
+    type_ = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=SslType,
+    )
+    client_key = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    client_certificate = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    ca_certificate = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class MySqlConnectionProfile(proto.Message):
@@ -130,13 +143,35 @@ class MySqlConnectionProfile(proto.Message):
             of the source.
     """
 
-    host = proto.Field(proto.STRING, number=1,)
-    port = proto.Field(proto.INT32, number=2,)
-    username = proto.Field(proto.STRING, number=3,)
-    password = proto.Field(proto.STRING, number=4,)
-    password_set = proto.Field(proto.BOOL, number=5,)
-    ssl = proto.Field(proto.MESSAGE, number=6, message="SslConfig",)
-    cloud_sql_id = proto.Field(proto.STRING, number=7,)
+    host = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    port = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    username = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    password = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    password_set = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
+    ssl = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message="SslConfig",
+    )
+    cloud_sql_id = proto.Field(
+        proto.STRING,
+        number=7,
+    )
 
 
 class PostgreSqlConnectionProfile(proto.Message):
@@ -174,13 +209,35 @@ class PostgreSqlConnectionProfile(proto.Message):
             of the source.
     """
 
-    host = proto.Field(proto.STRING, number=1,)
-    port = proto.Field(proto.INT32, number=2,)
-    username = proto.Field(proto.STRING, number=3,)
-    password = proto.Field(proto.STRING, number=4,)
-    password_set = proto.Field(proto.BOOL, number=5,)
-    ssl = proto.Field(proto.MESSAGE, number=6, message="SslConfig",)
-    cloud_sql_id = proto.Field(proto.STRING, number=7,)
+    host = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    port = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    username = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    password = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    password_set = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
+    ssl = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message="SslConfig",
+    )
+    cloud_sql_id = proto.Field(
+        proto.STRING,
+        number=7,
+    )
 
 
 class CloudSqlConnectionProfile(proto.Message):
@@ -203,10 +260,23 @@ class CloudSqlConnectionProfile(proto.Message):
             instance's public IP.
     """
 
-    cloud_sql_id = proto.Field(proto.STRING, number=1,)
-    settings = proto.Field(proto.MESSAGE, number=2, message="CloudSqlSettings",)
-    private_ip = proto.Field(proto.STRING, number=3,)
-    public_ip = proto.Field(proto.STRING, number=4,)
+    cloud_sql_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    settings = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="CloudSqlSettings",
+    )
+    private_ip = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    public_ip = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class SqlAclEntry(proto.Message):
@@ -238,14 +308,26 @@ class SqlAclEntry(proto.Message):
             A label to identify this entry.
     """
 
-    value = proto.Field(proto.STRING, number=1,)
+    value = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     expire_time = proto.Field(
-        proto.MESSAGE, number=10, oneof="expiration", message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=10,
+        oneof="expiration",
+        message=timestamp_pb2.Timestamp,
     )
     ttl = proto.Field(
-        proto.MESSAGE, number=11, oneof="expiration", message=duration_pb2.Duration,
+        proto.MESSAGE,
+        number=11,
+        oneof="expiration",
+        message=duration_pb2.Duration,
     )
-    label = proto.Field(proto.STRING, number=3,)
+    label = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class SqlIpConfig(proto.Message):
@@ -270,11 +352,24 @@ class SqlIpConfig(proto.Message):
             also known as 'slash' notation (e.g. ``192.168.100.0/24``).
     """
 
-    enable_ipv4 = proto.Field(proto.MESSAGE, number=1, message=wrappers_pb2.BoolValue,)
-    private_network = proto.Field(proto.STRING, number=2,)
-    require_ssl = proto.Field(proto.MESSAGE, number=3, message=wrappers_pb2.BoolValue,)
+    enable_ipv4 = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=wrappers_pb2.BoolValue,
+    )
+    private_network = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    require_ssl = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=wrappers_pb2.BoolValue,
+    )
     authorized_networks = proto.RepeatedField(
-        proto.MESSAGE, number=4, message="SqlAclEntry",
+        proto.MESSAGE,
+        number=4,
+        message="SqlAclEntry",
     )
 
 
@@ -378,27 +473,75 @@ class CloudSqlSettings(proto.Message):
         POSTGRES_12 = 7
         POSTGRES_13 = 8
 
-    database_version = proto.Field(proto.ENUM, number=1, enum=SqlDatabaseVersion,)
-    user_labels = proto.MapField(proto.STRING, proto.STRING, number=2,)
-    tier = proto.Field(proto.STRING, number=3,)
+    database_version = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=SqlDatabaseVersion,
+    )
+    user_labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=2,
+    )
+    tier = proto.Field(
+        proto.STRING,
+        number=3,
+    )
     storage_auto_resize_limit = proto.Field(
-        proto.MESSAGE, number=4, message=wrappers_pb2.Int64Value,
+        proto.MESSAGE,
+        number=4,
+        message=wrappers_pb2.Int64Value,
     )
-    activation_policy = proto.Field(proto.ENUM, number=5, enum=SqlActivationPolicy,)
-    ip_config = proto.Field(proto.MESSAGE, number=6, message="SqlIpConfig",)
+    activation_policy = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum=SqlActivationPolicy,
+    )
+    ip_config = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message="SqlIpConfig",
+    )
     auto_storage_increase = proto.Field(
-        proto.MESSAGE, number=7, message=wrappers_pb2.BoolValue,
+        proto.MESSAGE,
+        number=7,
+        message=wrappers_pb2.BoolValue,
     )
-    database_flags = proto.MapField(proto.STRING, proto.STRING, number=8,)
-    data_disk_type = proto.Field(proto.ENUM, number=9, enum=SqlDataDiskType,)
+    database_flags = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=8,
+    )
+    data_disk_type = proto.Field(
+        proto.ENUM,
+        number=9,
+        enum=SqlDataDiskType,
+    )
     data_disk_size_gb = proto.Field(
-        proto.MESSAGE, number=10, message=wrappers_pb2.Int64Value,
+        proto.MESSAGE,
+        number=10,
+        message=wrappers_pb2.Int64Value,
     )
-    zone = proto.Field(proto.STRING, number=11,)
-    source_id = proto.Field(proto.STRING, number=12,)
-    root_password = proto.Field(proto.STRING, number=13,)
-    root_password_set = proto.Field(proto.BOOL, number=14,)
-    collation = proto.Field(proto.STRING, number=15,)
+    zone = proto.Field(
+        proto.STRING,
+        number=11,
+    )
+    source_id = proto.Field(
+        proto.STRING,
+        number=12,
+    )
+    root_password = proto.Field(
+        proto.STRING,
+        number=13,
+    )
+    root_password_set = proto.Field(
+        proto.BOOL,
+        number=14,
+    )
+    collation = proto.Field(
+        proto.STRING,
+        number=15,
+    )
 
 
 class StaticIpConnectivity(proto.Message):
@@ -437,10 +580,22 @@ class ReverseSshConnectivity(proto.Message):
             SQL private network.
     """
 
-    vm_ip = proto.Field(proto.STRING, number=1,)
-    vm_port = proto.Field(proto.INT32, number=2,)
-    vm = proto.Field(proto.STRING, number=3,)
-    vpc = proto.Field(proto.STRING, number=4,)
+    vm_ip = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    vm_port = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    vm = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    vpc = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class VpcPeeringConnectivity(proto.Message):
@@ -454,7 +609,10 @@ class VpcPeeringConnectivity(proto.Message):
             Cloud SQL private network.
     """
 
-    vpc = proto.Field(proto.STRING, number=1,)
+    vpc = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class DatabaseType(proto.Message):
@@ -467,8 +625,16 @@ class DatabaseType(proto.Message):
             The database engine.
     """
 
-    provider = proto.Field(proto.ENUM, number=1, enum="DatabaseProvider",)
-    engine = proto.Field(proto.ENUM, number=2, enum="DatabaseEngine",)
+    provider = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum="DatabaseProvider",
+    )
+    engine = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum="DatabaseEngine",
+    )
 
 
 class MigrationJob(proto.Message):
@@ -589,17 +755,56 @@ class MigrationJob(proto.Message):
         ONE_TIME = 1
         CONTINUOUS = 2
 
-    name = proto.Field(proto.STRING, number=1,)
-    create_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=4,)
-    display_name = proto.Field(proto.STRING, number=5,)
-    state = proto.Field(proto.ENUM, number=6, enum=State,)
-    phase = proto.Field(proto.ENUM, number=7, enum=Phase,)
-    type_ = proto.Field(proto.ENUM, number=8, enum=Type,)
-    dump_path = proto.Field(proto.STRING, number=9,)
-    source = proto.Field(proto.STRING, number=10,)
-    destination = proto.Field(proto.STRING, number=11,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=4,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum=State,
+    )
+    phase = proto.Field(
+        proto.ENUM,
+        number=7,
+        enum=Phase,
+    )
+    type_ = proto.Field(
+        proto.ENUM,
+        number=8,
+        enum=Type,
+    )
+    dump_path = proto.Field(
+        proto.STRING,
+        number=9,
+    )
+    source = proto.Field(
+        proto.STRING,
+        number=10,
+    )
+    destination = proto.Field(
+        proto.STRING,
+        number=11,
+    )
     reverse_ssh_connectivity = proto.Field(
         proto.MESSAGE,
         number=101,
@@ -613,15 +818,36 @@ class MigrationJob(proto.Message):
         message="VpcPeeringConnectivity",
     )
     static_ip_connectivity = proto.Field(
-        proto.MESSAGE, number=103, oneof="connectivity", message="StaticIpConnectivity",
+        proto.MESSAGE,
+        number=103,
+        oneof="connectivity",
+        message="StaticIpConnectivity",
     )
-    duration = proto.Field(proto.MESSAGE, number=12, message=duration_pb2.Duration,)
-    error = proto.Field(proto.MESSAGE, number=13, message=status_pb2.Status,)
-    source_database = proto.Field(proto.MESSAGE, number=14, message="DatabaseType",)
+    duration = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        message=duration_pb2.Duration,
+    )
+    error = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        message=status_pb2.Status,
+    )
+    source_database = proto.Field(
+        proto.MESSAGE,
+        number=14,
+        message="DatabaseType",
+    )
     destination_database = proto.Field(
-        proto.MESSAGE, number=15, message="DatabaseType",
+        proto.MESSAGE,
+        number=15,
+        message="DatabaseType",
     )
-    end_time = proto.Field(proto.MESSAGE, number=16, message=timestamp_pb2.Timestamp,)
+    end_time = proto.Field(
+        proto.MESSAGE,
+        number=16,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 class ConnectionProfile(proto.Message):
@@ -694,12 +920,34 @@ class ConnectionProfile(proto.Message):
         DELETED = 6
         FAILED = 7
 
-    name = proto.Field(proto.STRING, number=1,)
-    create_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=4,)
-    state = proto.Field(proto.ENUM, number=5, enum=State,)
-    display_name = proto.Field(proto.STRING, number=6,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=4,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum=State,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=6,
+    )
     mysql = proto.Field(
         proto.MESSAGE,
         number=100,
@@ -718,8 +966,16 @@ class ConnectionProfile(proto.Message):
         oneof="connection_profile",
         message="CloudSqlConnectionProfile",
     )
-    error = proto.Field(proto.MESSAGE, number=7, message=status_pb2.Status,)
-    provider = proto.Field(proto.ENUM, number=8, enum="DatabaseProvider",)
+    error = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=status_pb2.Status,
+    )
+    provider = proto.Field(
+        proto.ENUM,
+        number=8,
+        enum="DatabaseProvider",
+    )
 
 
 class MigrationJobVerificationError(proto.Message):
@@ -762,9 +1018,19 @@ class MigrationJobVerificationError(proto.Message):
         UNSUPPORTED_DEFINER = 19
         CANT_RESTART_RUNNING_MIGRATION = 21
 
-    error_code = proto.Field(proto.ENUM, number=1, enum=ErrorCode,)
-    error_message = proto.Field(proto.STRING, number=2,)
-    error_detail_message = proto.Field(proto.STRING, number=3,)
+    error_code = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=ErrorCode,
+    )
+    error_message = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    error_detail_message = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

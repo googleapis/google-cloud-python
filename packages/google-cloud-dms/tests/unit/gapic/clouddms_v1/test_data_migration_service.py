@@ -102,7 +102,11 @@ def test__get_default_mtls_endpoint():
 
 
 @pytest.mark.parametrize(
-    "client_class", [DataMigrationServiceClient, DataMigrationServiceAsyncClient,]
+    "client_class",
+    [
+        DataMigrationServiceClient,
+        DataMigrationServiceAsyncClient,
+    ],
 )
 def test_data_migration_service_client_from_service_account_info(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -144,7 +148,11 @@ def test_data_migration_service_client_service_account_always_use_jwt(
 
 
 @pytest.mark.parametrize(
-    "client_class", [DataMigrationServiceClient, DataMigrationServiceAsyncClient,]
+    "client_class",
+    [
+        DataMigrationServiceClient,
+        DataMigrationServiceAsyncClient,
+    ],
 )
 def test_data_migration_service_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -526,7 +534,9 @@ def test_data_migration_service_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -666,10 +676,17 @@ def test_data_migration_service_client_create_channel_credentials_file(
         )
 
 
-@pytest.mark.parametrize("request_type", [clouddms.ListMigrationJobsRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        clouddms.ListMigrationJobsRequest,
+        dict,
+    ],
+)
 def test_list_migration_jobs(request_type, transport: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -682,7 +699,8 @@ def test_list_migration_jobs(request_type, transport: str = "grpc"):
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = clouddms.ListMigrationJobsResponse(
-            next_page_token="next_page_token_value", unreachable=["unreachable_value"],
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
         )
         response = client.list_migration_jobs(request)
 
@@ -701,7 +719,8 @@ def test_list_migration_jobs_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -719,7 +738,8 @@ async def test_list_migration_jobs_async(
     transport: str = "grpc_asyncio", request_type=clouddms.ListMigrationJobsRequest
 ):
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -780,7 +800,10 @@ def test_list_migration_jobs_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -811,7 +834,10 @@ async def test_list_migration_jobs_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_migration_jobs_flattened():
@@ -827,7 +853,9 @@ def test_list_migration_jobs_flattened():
         call.return_value = clouddms.ListMigrationJobsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_migration_jobs(parent="parent_value",)
+        client.list_migration_jobs(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -847,7 +875,8 @@ def test_list_migration_jobs_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_migration_jobs(
-            clouddms.ListMigrationJobsRequest(), parent="parent_value",
+            clouddms.ListMigrationJobsRequest(),
+            parent="parent_value",
         )
 
 
@@ -869,7 +898,9 @@ async def test_list_migration_jobs_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_migration_jobs(parent="parent_value",)
+        response = await client.list_migration_jobs(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -890,13 +921,15 @@ async def test_list_migration_jobs_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_migration_jobs(
-            clouddms.ListMigrationJobsRequest(), parent="parent_value",
+            clouddms.ListMigrationJobsRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_migration_jobs_pager(transport_name: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -914,10 +947,13 @@ def test_list_migration_jobs_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             clouddms.ListMigrationJobsResponse(
-                migration_jobs=[], next_page_token="def",
+                migration_jobs=[],
+                next_page_token="def",
             ),
             clouddms.ListMigrationJobsResponse(
-                migration_jobs=[clouddms_resources.MigrationJob(),],
+                migration_jobs=[
+                    clouddms_resources.MigrationJob(),
+                ],
                 next_page_token="ghi",
             ),
             clouddms.ListMigrationJobsResponse(
@@ -944,7 +980,8 @@ def test_list_migration_jobs_pager(transport_name: str = "grpc"):
 
 def test_list_migration_jobs_pages(transport_name: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -962,10 +999,13 @@ def test_list_migration_jobs_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             clouddms.ListMigrationJobsResponse(
-                migration_jobs=[], next_page_token="def",
+                migration_jobs=[],
+                next_page_token="def",
             ),
             clouddms.ListMigrationJobsResponse(
-                migration_jobs=[clouddms_resources.MigrationJob(),],
+                migration_jobs=[
+                    clouddms_resources.MigrationJob(),
+                ],
                 next_page_token="ghi",
             ),
             clouddms.ListMigrationJobsResponse(
@@ -1004,10 +1044,13 @@ async def test_list_migration_jobs_async_pager():
                 next_page_token="abc",
             ),
             clouddms.ListMigrationJobsResponse(
-                migration_jobs=[], next_page_token="def",
+                migration_jobs=[],
+                next_page_token="def",
             ),
             clouddms.ListMigrationJobsResponse(
-                migration_jobs=[clouddms_resources.MigrationJob(),],
+                migration_jobs=[
+                    clouddms_resources.MigrationJob(),
+                ],
                 next_page_token="ghi",
             ),
             clouddms.ListMigrationJobsResponse(
@@ -1018,7 +1061,9 @@ async def test_list_migration_jobs_async_pager():
             ),
             RuntimeError,
         )
-        async_pager = await client.list_migration_jobs(request={},)
+        async_pager = await client.list_migration_jobs(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -1051,10 +1096,13 @@ async def test_list_migration_jobs_async_pages():
                 next_page_token="abc",
             ),
             clouddms.ListMigrationJobsResponse(
-                migration_jobs=[], next_page_token="def",
+                migration_jobs=[],
+                next_page_token="def",
             ),
             clouddms.ListMigrationJobsResponse(
-                migration_jobs=[clouddms_resources.MigrationJob(),],
+                migration_jobs=[
+                    clouddms_resources.MigrationJob(),
+                ],
                 next_page_token="ghi",
             ),
             clouddms.ListMigrationJobsResponse(
@@ -1072,10 +1120,17 @@ async def test_list_migration_jobs_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [clouddms.GetMigrationJobRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        clouddms.GetMigrationJobRequest,
+        dict,
+    ],
+)
 def test_get_migration_job(request_type, transport: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1123,7 +1178,8 @@ def test_get_migration_job_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1141,7 +1197,8 @@ async def test_get_migration_job_async(
     transport: str = "grpc_asyncio", request_type=clouddms.GetMigrationJobRequest
 ):
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1214,7 +1271,10 @@ def test_get_migration_job_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1245,7 +1305,10 @@ async def test_get_migration_job_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_migration_job_flattened():
@@ -1261,7 +1324,9 @@ def test_get_migration_job_flattened():
         call.return_value = clouddms_resources.MigrationJob()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_migration_job(name="name_value",)
+        client.get_migration_job(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1281,7 +1346,8 @@ def test_get_migration_job_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_migration_job(
-            clouddms.GetMigrationJobRequest(), name="name_value",
+            clouddms.GetMigrationJobRequest(),
+            name="name_value",
         )
 
 
@@ -1303,7 +1369,9 @@ async def test_get_migration_job_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_migration_job(name="name_value",)
+        response = await client.get_migration_job(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1324,14 +1392,22 @@ async def test_get_migration_job_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_migration_job(
-            clouddms.GetMigrationJobRequest(), name="name_value",
+            clouddms.GetMigrationJobRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [clouddms.CreateMigrationJobRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        clouddms.CreateMigrationJobRequest,
+        dict,
+    ],
+)
 def test_create_migration_job(request_type, transport: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1359,7 +1435,8 @@ def test_create_migration_job_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1377,7 +1454,8 @@ async def test_create_migration_job_async(
     transport: str = "grpc_asyncio", request_type=clouddms.CreateMigrationJobRequest
 ):
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1433,7 +1511,10 @@ def test_create_migration_job_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1464,7 +1545,10 @@ async def test_create_migration_job_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_migration_job_flattened():
@@ -1573,10 +1657,17 @@ async def test_create_migration_job_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [clouddms.UpdateMigrationJobRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        clouddms.UpdateMigrationJobRequest,
+        dict,
+    ],
+)
 def test_update_migration_job(request_type, transport: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1604,7 +1695,8 @@ def test_update_migration_job_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1622,7 +1714,8 @@ async def test_update_migration_job_async(
     transport: str = "grpc_asyncio", request_type=clouddms.UpdateMigrationJobRequest
 ):
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1814,10 +1907,17 @@ async def test_update_migration_job_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [clouddms.DeleteMigrationJobRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        clouddms.DeleteMigrationJobRequest,
+        dict,
+    ],
+)
 def test_delete_migration_job(request_type, transport: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1845,7 +1945,8 @@ def test_delete_migration_job_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1863,7 +1964,8 @@ async def test_delete_migration_job_async(
     transport: str = "grpc_asyncio", request_type=clouddms.DeleteMigrationJobRequest
 ):
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1919,7 +2021,10 @@ def test_delete_migration_job_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1950,7 +2055,10 @@ async def test_delete_migration_job_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_migration_job_flattened():
@@ -1966,7 +2074,9 @@ def test_delete_migration_job_flattened():
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_migration_job(name="name_value",)
+        client.delete_migration_job(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1986,7 +2096,8 @@ def test_delete_migration_job_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_migration_job(
-            clouddms.DeleteMigrationJobRequest(), name="name_value",
+            clouddms.DeleteMigrationJobRequest(),
+            name="name_value",
         )
 
 
@@ -2008,7 +2119,9 @@ async def test_delete_migration_job_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_migration_job(name="name_value",)
+        response = await client.delete_migration_job(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2029,14 +2142,22 @@ async def test_delete_migration_job_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_migration_job(
-            clouddms.DeleteMigrationJobRequest(), name="name_value",
+            clouddms.DeleteMigrationJobRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [clouddms.StartMigrationJobRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        clouddms.StartMigrationJobRequest,
+        dict,
+    ],
+)
 def test_start_migration_job(request_type, transport: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2064,7 +2185,8 @@ def test_start_migration_job_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2082,7 +2204,8 @@ async def test_start_migration_job_async(
     transport: str = "grpc_asyncio", request_type=clouddms.StartMigrationJobRequest
 ):
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2138,7 +2261,10 @@ def test_start_migration_job_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2169,13 +2295,23 @@ async def test_start_migration_job_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
-@pytest.mark.parametrize("request_type", [clouddms.StopMigrationJobRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        clouddms.StopMigrationJobRequest,
+        dict,
+    ],
+)
 def test_stop_migration_job(request_type, transport: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2203,7 +2339,8 @@ def test_stop_migration_job_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2221,7 +2358,8 @@ async def test_stop_migration_job_async(
     transport: str = "grpc_asyncio", request_type=clouddms.StopMigrationJobRequest
 ):
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2277,7 +2415,10 @@ def test_stop_migration_job_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2308,13 +2449,23 @@ async def test_stop_migration_job_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
-@pytest.mark.parametrize("request_type", [clouddms.ResumeMigrationJobRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        clouddms.ResumeMigrationJobRequest,
+        dict,
+    ],
+)
 def test_resume_migration_job(request_type, transport: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2342,7 +2493,8 @@ def test_resume_migration_job_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2360,7 +2512,8 @@ async def test_resume_migration_job_async(
     transport: str = "grpc_asyncio", request_type=clouddms.ResumeMigrationJobRequest
 ):
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2416,7 +2569,10 @@ def test_resume_migration_job_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2447,13 +2603,23 @@ async def test_resume_migration_job_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
-@pytest.mark.parametrize("request_type", [clouddms.PromoteMigrationJobRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        clouddms.PromoteMigrationJobRequest,
+        dict,
+    ],
+)
 def test_promote_migration_job(request_type, transport: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2481,7 +2647,8 @@ def test_promote_migration_job_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2499,7 +2666,8 @@ async def test_promote_migration_job_async(
     transport: str = "grpc_asyncio", request_type=clouddms.PromoteMigrationJobRequest
 ):
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2555,7 +2723,10 @@ def test_promote_migration_job_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2586,13 +2757,23 @@ async def test_promote_migration_job_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
-@pytest.mark.parametrize("request_type", [clouddms.VerifyMigrationJobRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        clouddms.VerifyMigrationJobRequest,
+        dict,
+    ],
+)
 def test_verify_migration_job(request_type, transport: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2620,7 +2801,8 @@ def test_verify_migration_job_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2638,7 +2820,8 @@ async def test_verify_migration_job_async(
     transport: str = "grpc_asyncio", request_type=clouddms.VerifyMigrationJobRequest
 ):
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2694,7 +2877,10 @@ def test_verify_migration_job_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2725,13 +2911,23 @@ async def test_verify_migration_job_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
-@pytest.mark.parametrize("request_type", [clouddms.RestartMigrationJobRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        clouddms.RestartMigrationJobRequest,
+        dict,
+    ],
+)
 def test_restart_migration_job(request_type, transport: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2759,7 +2955,8 @@ def test_restart_migration_job_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2777,7 +2974,8 @@ async def test_restart_migration_job_async(
     transport: str = "grpc_asyncio", request_type=clouddms.RestartMigrationJobRequest
 ):
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2833,7 +3031,10 @@ def test_restart_migration_job_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2864,13 +3065,23 @@ async def test_restart_migration_job_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
-@pytest.mark.parametrize("request_type", [clouddms.GenerateSshScriptRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        clouddms.GenerateSshScriptRequest,
+        dict,
+    ],
+)
 def test_generate_ssh_script(request_type, transport: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2882,7 +3093,9 @@ def test_generate_ssh_script(request_type, transport: str = "grpc"):
         type(client.transport.generate_ssh_script), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = clouddms.SshScript(script="script_value",)
+        call.return_value = clouddms.SshScript(
+            script="script_value",
+        )
         response = client.generate_ssh_script(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2899,7 +3112,8 @@ def test_generate_ssh_script_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2917,7 +3131,8 @@ async def test_generate_ssh_script_async(
     transport: str = "grpc_asyncio", request_type=clouddms.GenerateSshScriptRequest
 ):
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2930,7 +3145,9 @@ async def test_generate_ssh_script_async(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            clouddms.SshScript(script="script_value",)
+            clouddms.SshScript(
+                script="script_value",
+            )
         )
         response = await client.generate_ssh_script(request)
 
@@ -2974,9 +3191,10 @@ def test_generate_ssh_script_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "migration_job=migration_job/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "migration_job=migration_job/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -3005,17 +3223,23 @@ async def test_generate_ssh_script_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "migration_job=migration_job/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "migration_job=migration_job/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.parametrize(
-    "request_type", [clouddms.ListConnectionProfilesRequest, dict,]
+    "request_type",
+    [
+        clouddms.ListConnectionProfilesRequest,
+        dict,
+    ],
 )
 def test_list_connection_profiles(request_type, transport: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3028,7 +3252,8 @@ def test_list_connection_profiles(request_type, transport: str = "grpc"):
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = clouddms.ListConnectionProfilesResponse(
-            next_page_token="next_page_token_value", unreachable=["unreachable_value"],
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
         )
         response = client.list_connection_profiles(request)
 
@@ -3047,7 +3272,8 @@ def test_list_connection_profiles_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3065,7 +3291,8 @@ async def test_list_connection_profiles_async(
     transport: str = "grpc_asyncio", request_type=clouddms.ListConnectionProfilesRequest
 ):
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3126,7 +3353,10 @@ def test_list_connection_profiles_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -3157,7 +3387,10 @@ async def test_list_connection_profiles_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_connection_profiles_flattened():
@@ -3173,7 +3406,9 @@ def test_list_connection_profiles_flattened():
         call.return_value = clouddms.ListConnectionProfilesResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_connection_profiles(parent="parent_value",)
+        client.list_connection_profiles(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3193,7 +3428,8 @@ def test_list_connection_profiles_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_connection_profiles(
-            clouddms.ListConnectionProfilesRequest(), parent="parent_value",
+            clouddms.ListConnectionProfilesRequest(),
+            parent="parent_value",
         )
 
 
@@ -3215,7 +3451,9 @@ async def test_list_connection_profiles_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_connection_profiles(parent="parent_value",)
+        response = await client.list_connection_profiles(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3236,13 +3474,15 @@ async def test_list_connection_profiles_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_connection_profiles(
-            clouddms.ListConnectionProfilesRequest(), parent="parent_value",
+            clouddms.ListConnectionProfilesRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_connection_profiles_pager(transport_name: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3260,10 +3500,13 @@ def test_list_connection_profiles_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             clouddms.ListConnectionProfilesResponse(
-                connection_profiles=[], next_page_token="def",
+                connection_profiles=[],
+                next_page_token="def",
             ),
             clouddms.ListConnectionProfilesResponse(
-                connection_profiles=[clouddms_resources.ConnectionProfile(),],
+                connection_profiles=[
+                    clouddms_resources.ConnectionProfile(),
+                ],
                 next_page_token="ghi",
             ),
             clouddms.ListConnectionProfilesResponse(
@@ -3290,7 +3533,8 @@ def test_list_connection_profiles_pager(transport_name: str = "grpc"):
 
 def test_list_connection_profiles_pages(transport_name: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3308,10 +3552,13 @@ def test_list_connection_profiles_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             clouddms.ListConnectionProfilesResponse(
-                connection_profiles=[], next_page_token="def",
+                connection_profiles=[],
+                next_page_token="def",
             ),
             clouddms.ListConnectionProfilesResponse(
-                connection_profiles=[clouddms_resources.ConnectionProfile(),],
+                connection_profiles=[
+                    clouddms_resources.ConnectionProfile(),
+                ],
                 next_page_token="ghi",
             ),
             clouddms.ListConnectionProfilesResponse(
@@ -3350,10 +3597,13 @@ async def test_list_connection_profiles_async_pager():
                 next_page_token="abc",
             ),
             clouddms.ListConnectionProfilesResponse(
-                connection_profiles=[], next_page_token="def",
+                connection_profiles=[],
+                next_page_token="def",
             ),
             clouddms.ListConnectionProfilesResponse(
-                connection_profiles=[clouddms_resources.ConnectionProfile(),],
+                connection_profiles=[
+                    clouddms_resources.ConnectionProfile(),
+                ],
                 next_page_token="ghi",
             ),
             clouddms.ListConnectionProfilesResponse(
@@ -3364,7 +3614,9 @@ async def test_list_connection_profiles_async_pager():
             ),
             RuntimeError,
         )
-        async_pager = await client.list_connection_profiles(request={},)
+        async_pager = await client.list_connection_profiles(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -3399,10 +3651,13 @@ async def test_list_connection_profiles_async_pages():
                 next_page_token="abc",
             ),
             clouddms.ListConnectionProfilesResponse(
-                connection_profiles=[], next_page_token="def",
+                connection_profiles=[],
+                next_page_token="def",
             ),
             clouddms.ListConnectionProfilesResponse(
-                connection_profiles=[clouddms_resources.ConnectionProfile(),],
+                connection_profiles=[
+                    clouddms_resources.ConnectionProfile(),
+                ],
                 next_page_token="ghi",
             ),
             clouddms.ListConnectionProfilesResponse(
@@ -3420,10 +3675,17 @@ async def test_list_connection_profiles_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [clouddms.GetConnectionProfileRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        clouddms.GetConnectionProfileRequest,
+        dict,
+    ],
+)
 def test_get_connection_profile(request_type, transport: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3461,7 +3723,8 @@ def test_get_connection_profile_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3479,7 +3742,8 @@ async def test_get_connection_profile_async(
     transport: str = "grpc_asyncio", request_type=clouddms.GetConnectionProfileRequest
 ):
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3544,7 +3808,10 @@ def test_get_connection_profile_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -3575,7 +3842,10 @@ async def test_get_connection_profile_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_connection_profile_flattened():
@@ -3591,7 +3861,9 @@ def test_get_connection_profile_flattened():
         call.return_value = clouddms_resources.ConnectionProfile()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_connection_profile(name="name_value",)
+        client.get_connection_profile(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3611,7 +3883,8 @@ def test_get_connection_profile_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_connection_profile(
-            clouddms.GetConnectionProfileRequest(), name="name_value",
+            clouddms.GetConnectionProfileRequest(),
+            name="name_value",
         )
 
 
@@ -3633,7 +3906,9 @@ async def test_get_connection_profile_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_connection_profile(name="name_value",)
+        response = await client.get_connection_profile(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3654,16 +3929,22 @@ async def test_get_connection_profile_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_connection_profile(
-            clouddms.GetConnectionProfileRequest(), name="name_value",
+            clouddms.GetConnectionProfileRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [clouddms.CreateConnectionProfileRequest, dict,]
+    "request_type",
+    [
+        clouddms.CreateConnectionProfileRequest,
+        dict,
+    ],
 )
 def test_create_connection_profile(request_type, transport: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3691,7 +3972,8 @@ def test_create_connection_profile_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3710,7 +3992,8 @@ async def test_create_connection_profile_async(
     request_type=clouddms.CreateConnectionProfileRequest,
 ):
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3766,7 +4049,10 @@ def test_create_connection_profile_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -3797,7 +4083,10 @@ async def test_create_connection_profile_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_connection_profile_flattened():
@@ -3907,11 +4196,16 @@ async def test_create_connection_profile_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [clouddms.UpdateConnectionProfileRequest, dict,]
+    "request_type",
+    [
+        clouddms.UpdateConnectionProfileRequest,
+        dict,
+    ],
 )
 def test_update_connection_profile(request_type, transport: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3939,7 +4233,8 @@ def test_update_connection_profile_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3958,7 +4253,8 @@ async def test_update_connection_profile_async(
     request_type=clouddms.UpdateConnectionProfileRequest,
 ):
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4151,11 +4447,16 @@ async def test_update_connection_profile_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [clouddms.DeleteConnectionProfileRequest, dict,]
+    "request_type",
+    [
+        clouddms.DeleteConnectionProfileRequest,
+        dict,
+    ],
 )
 def test_delete_connection_profile(request_type, transport: str = "grpc"):
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4183,7 +4484,8 @@ def test_delete_connection_profile_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4202,7 +4504,8 @@ async def test_delete_connection_profile_async(
     request_type=clouddms.DeleteConnectionProfileRequest,
 ):
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4258,7 +4561,10 @@ def test_delete_connection_profile_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -4289,7 +4595,10 @@ async def test_delete_connection_profile_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_connection_profile_flattened():
@@ -4305,7 +4614,9 @@ def test_delete_connection_profile_flattened():
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_connection_profile(name="name_value",)
+        client.delete_connection_profile(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -4325,7 +4636,8 @@ def test_delete_connection_profile_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_connection_profile(
-            clouddms.DeleteConnectionProfileRequest(), name="name_value",
+            clouddms.DeleteConnectionProfileRequest(),
+            name="name_value",
         )
 
 
@@ -4347,7 +4659,9 @@ async def test_delete_connection_profile_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_connection_profile(name="name_value",)
+        response = await client.delete_connection_profile(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -4368,7 +4682,8 @@ async def test_delete_connection_profile_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_connection_profile(
-            clouddms.DeleteConnectionProfileRequest(), name="name_value",
+            clouddms.DeleteConnectionProfileRequest(),
+            name="name_value",
         )
 
 
@@ -4379,7 +4694,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = DataMigrationServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -4400,7 +4716,8 @@ def test_credentials_transport_error():
     options.api_key = "api_key"
     with pytest.raises(ValueError):
         client = DataMigrationServiceClient(
-            client_options=options, transport=transport,
+            client_options=options,
+            transport=transport,
         )
 
     # It is an error to provide an api_key and a credential.
@@ -4417,7 +4734,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = DataMigrationServiceClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -4465,7 +4783,10 @@ def test_transport_grpc_default():
     client = DataMigrationServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
-    assert isinstance(client.transport, transports.DataMigrationServiceGrpcTransport,)
+    assert isinstance(
+        client.transport,
+        transports.DataMigrationServiceGrpcTransport,
+    )
 
 
 def test_data_migration_service_base_transport_error():
@@ -4531,7 +4852,8 @@ def test_data_migration_service_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.DataMigrationServiceTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -4691,7 +5013,8 @@ def test_data_migration_service_grpc_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.DataMigrationServiceGrpcTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -4703,7 +5026,8 @@ def test_data_migration_service_grpc_asyncio_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.DataMigrationServiceGrpcAsyncIOTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -4812,12 +5136,16 @@ def test_data_migration_service_transport_channel_mtls_with_adc(transport_class)
 
 def test_data_migration_service_grpc_lro_client():
     client = DataMigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
     transport = client.transport
 
     # Ensure that we have a api-core operations client.
-    assert isinstance(transport.operations_client, operations_v1.OperationsClient,)
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsClient,
+    )
 
     # Ensure that subsequent calls to the property send the exact same object.
     assert transport.operations_client is transport.operations_client
@@ -4825,12 +5153,16 @@ def test_data_migration_service_grpc_lro_client():
 
 def test_data_migration_service_grpc_lro_async_client():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     transport = client.transport
 
     # Ensure that we have a api-core operations client.
-    assert isinstance(transport.operations_client, operations_v1.OperationsAsyncClient,)
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsAsyncClient,
+    )
 
     # Ensure that subsequent calls to the property send the exact same object.
     assert transport.operations_client is transport.operations_client
@@ -4841,7 +5173,9 @@ def test_connection_profile_path():
     location = "clam"
     connection_profile = "whelk"
     expected = "projects/{project}/locations/{location}/connectionProfiles/{connection_profile}".format(
-        project=project, location=location, connection_profile=connection_profile,
+        project=project,
+        location=location,
+        connection_profile=connection_profile,
     )
     actual = DataMigrationServiceClient.connection_profile_path(
         project, location, connection_profile
@@ -4866,8 +5200,12 @@ def test_migration_job_path():
     project = "cuttlefish"
     location = "mussel"
     migration_job = "winkle"
-    expected = "projects/{project}/locations/{location}/migrationJobs/{migration_job}".format(
-        project=project, location=location, migration_job=migration_job,
+    expected = (
+        "projects/{project}/locations/{location}/migrationJobs/{migration_job}".format(
+            project=project,
+            location=location,
+            migration_job=migration_job,
+        )
     )
     actual = DataMigrationServiceClient.migration_job_path(
         project, location, migration_job
@@ -4910,7 +5248,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "whelk"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = DataMigrationServiceClient.common_folder_path(folder)
     assert expected == actual
 
@@ -4928,7 +5268,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "oyster"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = DataMigrationServiceClient.common_organization_path(organization)
     assert expected == actual
 
@@ -4946,7 +5288,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "cuttlefish"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = DataMigrationServiceClient.common_project_path(project)
     assert expected == actual
 
@@ -4966,7 +5310,8 @@ def test_common_location_path():
     project = "winkle"
     location = "nautilus"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = DataMigrationServiceClient.common_location_path(project, location)
     assert expected == actual
@@ -4991,7 +5336,8 @@ def test_client_with_default_client_info():
         transports.DataMigrationServiceTransport, "_prep_wrapped_messages"
     ) as prep:
         client = DataMigrationServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -5000,7 +5346,8 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = DataMigrationServiceClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -5008,7 +5355,8 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = DataMigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     with mock.patch.object(
         type(getattr(client.transport, "grpc_channel")), "close"

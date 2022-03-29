@@ -32,7 +32,9 @@ from google.longrunning import operations_pb2  # type: ignore
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-dms",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-dms",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
@@ -122,10 +124,14 @@ class DataMigrationServiceTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.list_migration_jobs: gapic_v1.method.wrap_method(
-                self.list_migration_jobs, default_timeout=60.0, client_info=client_info,
+                self.list_migration_jobs,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.get_migration_job: gapic_v1.method.wrap_method(
-                self.get_migration_job, default_timeout=60.0, client_info=client_info,
+                self.get_migration_job,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.create_migration_job: gapic_v1.method.wrap_method(
                 self.create_migration_job,
@@ -143,10 +149,14 @@ class DataMigrationServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.start_migration_job: gapic_v1.method.wrap_method(
-                self.start_migration_job, default_timeout=60.0, client_info=client_info,
+                self.start_migration_job,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.stop_migration_job: gapic_v1.method.wrap_method(
-                self.stop_migration_job, default_timeout=60.0, client_info=client_info,
+                self.stop_migration_job,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.resume_migration_job: gapic_v1.method.wrap_method(
                 self.resume_migration_job,
@@ -169,7 +179,9 @@ class DataMigrationServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.generate_ssh_script: gapic_v1.method.wrap_method(
-                self.generate_ssh_script, default_timeout=60.0, client_info=client_info,
+                self.generate_ssh_script,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.list_connection_profiles: gapic_v1.method.wrap_method(
                 self.list_connection_profiles,
@@ -201,9 +213,9 @@ class DataMigrationServiceTransport(abc.ABC):
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 
