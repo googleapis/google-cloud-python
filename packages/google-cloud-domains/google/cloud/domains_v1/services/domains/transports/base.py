@@ -31,7 +31,9 @@ from google.longrunning import operations_pb2  # type: ignore
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-domains",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-domains",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
@@ -121,7 +123,9 @@ class DomainsTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.search_domains: gapic_v1.method.wrap_method(
-                self.search_domains, default_timeout=None, client_info=client_info,
+                self.search_domains,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.retrieve_register_parameters: gapic_v1.method.wrap_method(
                 self.retrieve_register_parameters,
@@ -129,7 +133,9 @@ class DomainsTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.register_domain: gapic_v1.method.wrap_method(
-                self.register_domain, default_timeout=None, client_info=client_info,
+                self.register_domain,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.retrieve_transfer_parameters: gapic_v1.method.wrap_method(
                 self.retrieve_transfer_parameters,
@@ -137,16 +143,24 @@ class DomainsTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.transfer_domain: gapic_v1.method.wrap_method(
-                self.transfer_domain, default_timeout=None, client_info=client_info,
+                self.transfer_domain,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_registrations: gapic_v1.method.wrap_method(
-                self.list_registrations, default_timeout=None, client_info=client_info,
+                self.list_registrations,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_registration: gapic_v1.method.wrap_method(
-                self.get_registration, default_timeout=None, client_info=client_info,
+                self.get_registration,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.update_registration: gapic_v1.method.wrap_method(
-                self.update_registration, default_timeout=None, client_info=client_info,
+                self.update_registration,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.configure_management_settings: gapic_v1.method.wrap_method(
                 self.configure_management_settings,
@@ -164,10 +178,14 @@ class DomainsTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.export_registration: gapic_v1.method.wrap_method(
-                self.export_registration, default_timeout=None, client_info=client_info,
+                self.export_registration,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.delete_registration: gapic_v1.method.wrap_method(
-                self.delete_registration, default_timeout=None, client_info=client_info,
+                self.delete_registration,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.retrieve_authorization_code: gapic_v1.method.wrap_method(
                 self.retrieve_authorization_code,
@@ -184,9 +202,9 @@ class DomainsTransport(abc.ABC):
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

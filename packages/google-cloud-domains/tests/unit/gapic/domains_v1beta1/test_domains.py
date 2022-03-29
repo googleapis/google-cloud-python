@@ -87,7 +87,13 @@ def test__get_default_mtls_endpoint():
     assert DomainsClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
 
 
-@pytest.mark.parametrize("client_class", [DomainsClient, DomainsAsyncClient,])
+@pytest.mark.parametrize(
+    "client_class",
+    [
+        DomainsClient,
+        DomainsAsyncClient,
+    ],
+)
 def test_domains_client_from_service_account_info(client_class):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
@@ -125,7 +131,13 @@ def test_domains_client_service_account_always_use_jwt(transport_class, transpor
         use_jwt.assert_not_called()
 
 
-@pytest.mark.parametrize("client_class", [DomainsClient, DomainsAsyncClient,])
+@pytest.mark.parametrize(
+    "client_class",
+    [
+        DomainsClient,
+        DomainsAsyncClient,
+    ],
+)
 def test_domains_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
@@ -464,7 +476,9 @@ def test_domains_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -592,10 +606,17 @@ def test_domains_client_create_channel_credentials_file(
         )
 
 
-@pytest.mark.parametrize("request_type", [domains.SearchDomainsRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        domains.SearchDomainsRequest,
+        dict,
+    ],
+)
 def test_search_domains(request_type, transport: str = "grpc"):
     client = DomainsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -621,7 +642,8 @@ def test_search_domains_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DomainsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -637,7 +659,8 @@ async def test_search_domains_async(
     transport: str = "grpc_asyncio", request_type=domains.SearchDomainsRequest
 ):
     client = DomainsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -667,7 +690,9 @@ async def test_search_domains_async_from_dict():
 
 
 def test_search_domains_field_headers():
-    client = DomainsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -687,12 +712,17 @@ def test_search_domains_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "location=location/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "location=location/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_search_domains_field_headers_async():
-    client = DomainsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -714,11 +744,16 @@ async def test_search_domains_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "location=location/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "location=location/value",
+    ) in kw["metadata"]
 
 
 def test_search_domains_flattened():
-    client = DomainsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_domains), "__call__") as call:
@@ -727,7 +762,8 @@ def test_search_domains_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.search_domains(
-            location="location_value", query="query_value",
+            location="location_value",
+            query="query_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -743,7 +779,9 @@ def test_search_domains_flattened():
 
 
 def test_search_domains_flattened_error():
-    client = DomainsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -757,7 +795,9 @@ def test_search_domains_flattened_error():
 
 @pytest.mark.asyncio
 async def test_search_domains_flattened_async():
-    client = DomainsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_domains), "__call__") as call:
@@ -770,7 +810,8 @@ async def test_search_domains_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.search_domains(
-            location="location_value", query="query_value",
+            location="location_value",
+            query="query_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -787,7 +828,9 @@ async def test_search_domains_flattened_async():
 
 @pytest.mark.asyncio
 async def test_search_domains_flattened_error_async():
-    client = DomainsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -800,11 +843,16 @@ async def test_search_domains_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [domains.RetrieveRegisterParametersRequest, dict,]
+    "request_type",
+    [
+        domains.RetrieveRegisterParametersRequest,
+        dict,
+    ],
 )
 def test_retrieve_register_parameters(request_type, transport: str = "grpc"):
     client = DomainsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -832,7 +880,8 @@ def test_retrieve_register_parameters_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DomainsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -851,7 +900,8 @@ async def test_retrieve_register_parameters_async(
     request_type=domains.RetrieveRegisterParametersRequest,
 ):
     client = DomainsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -883,7 +933,9 @@ async def test_retrieve_register_parameters_async_from_dict():
 
 
 def test_retrieve_register_parameters_field_headers():
-    client = DomainsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -905,12 +957,17 @@ def test_retrieve_register_parameters_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "location=location/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "location=location/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_retrieve_register_parameters_field_headers_async():
-    client = DomainsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -934,11 +991,16 @@ async def test_retrieve_register_parameters_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "location=location/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "location=location/value",
+    ) in kw["metadata"]
 
 
 def test_retrieve_register_parameters_flattened():
-    client = DomainsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -949,7 +1011,8 @@ def test_retrieve_register_parameters_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.retrieve_register_parameters(
-            location="location_value", domain_name="domain_name_value",
+            location="location_value",
+            domain_name="domain_name_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -965,7 +1028,9 @@ def test_retrieve_register_parameters_flattened():
 
 
 def test_retrieve_register_parameters_flattened_error():
-    client = DomainsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -979,7 +1044,9 @@ def test_retrieve_register_parameters_flattened_error():
 
 @pytest.mark.asyncio
 async def test_retrieve_register_parameters_flattened_async():
-    client = DomainsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -994,7 +1061,8 @@ async def test_retrieve_register_parameters_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.retrieve_register_parameters(
-            location="location_value", domain_name="domain_name_value",
+            location="location_value",
+            domain_name="domain_name_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -1011,7 +1079,9 @@ async def test_retrieve_register_parameters_flattened_async():
 
 @pytest.mark.asyncio
 async def test_retrieve_register_parameters_flattened_error_async():
-    client = DomainsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1023,10 +1093,17 @@ async def test_retrieve_register_parameters_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [domains.RegisterDomainRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        domains.RegisterDomainRequest,
+        dict,
+    ],
+)
 def test_register_domain(request_type, transport: str = "grpc"):
     client = DomainsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1052,7 +1129,8 @@ def test_register_domain_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DomainsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1068,7 +1146,8 @@ async def test_register_domain_async(
     transport: str = "grpc_asyncio", request_type=domains.RegisterDomainRequest
 ):
     client = DomainsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1098,7 +1177,9 @@ async def test_register_domain_async_from_dict():
 
 
 def test_register_domain_field_headers():
-    client = DomainsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1118,12 +1199,17 @@ def test_register_domain_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_register_domain_field_headers_async():
-    client = DomainsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1145,11 +1231,16 @@ async def test_register_domain_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_register_domain_flattened():
-    client = DomainsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.register_domain), "__call__") as call:
@@ -1179,7 +1270,9 @@ def test_register_domain_flattened():
 
 
 def test_register_domain_flattened_error():
-    client = DomainsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1194,7 +1287,9 @@ def test_register_domain_flattened_error():
 
 @pytest.mark.asyncio
 async def test_register_domain_flattened_async():
-    client = DomainsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.register_domain), "__call__") as call:
@@ -1229,7 +1324,9 @@ async def test_register_domain_flattened_async():
 
 @pytest.mark.asyncio
 async def test_register_domain_flattened_error_async():
-    client = DomainsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1243,11 +1340,16 @@ async def test_register_domain_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [domains.RetrieveTransferParametersRequest, dict,]
+    "request_type",
+    [
+        domains.RetrieveTransferParametersRequest,
+        dict,
+    ],
 )
 def test_retrieve_transfer_parameters(request_type, transport: str = "grpc"):
     client = DomainsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1275,7 +1377,8 @@ def test_retrieve_transfer_parameters_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DomainsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1294,7 +1397,8 @@ async def test_retrieve_transfer_parameters_async(
     request_type=domains.RetrieveTransferParametersRequest,
 ):
     client = DomainsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1326,7 +1430,9 @@ async def test_retrieve_transfer_parameters_async_from_dict():
 
 
 def test_retrieve_transfer_parameters_field_headers():
-    client = DomainsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1348,12 +1454,17 @@ def test_retrieve_transfer_parameters_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "location=location/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "location=location/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_retrieve_transfer_parameters_field_headers_async():
-    client = DomainsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1377,11 +1488,16 @@ async def test_retrieve_transfer_parameters_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "location=location/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "location=location/value",
+    ) in kw["metadata"]
 
 
 def test_retrieve_transfer_parameters_flattened():
-    client = DomainsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1392,7 +1508,8 @@ def test_retrieve_transfer_parameters_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.retrieve_transfer_parameters(
-            location="location_value", domain_name="domain_name_value",
+            location="location_value",
+            domain_name="domain_name_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -1408,7 +1525,9 @@ def test_retrieve_transfer_parameters_flattened():
 
 
 def test_retrieve_transfer_parameters_flattened_error():
-    client = DomainsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1422,7 +1541,9 @@ def test_retrieve_transfer_parameters_flattened_error():
 
 @pytest.mark.asyncio
 async def test_retrieve_transfer_parameters_flattened_async():
-    client = DomainsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1437,7 +1558,8 @@ async def test_retrieve_transfer_parameters_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.retrieve_transfer_parameters(
-            location="location_value", domain_name="domain_name_value",
+            location="location_value",
+            domain_name="domain_name_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -1454,7 +1576,9 @@ async def test_retrieve_transfer_parameters_flattened_async():
 
 @pytest.mark.asyncio
 async def test_retrieve_transfer_parameters_flattened_error_async():
-    client = DomainsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1466,10 +1590,17 @@ async def test_retrieve_transfer_parameters_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [domains.TransferDomainRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        domains.TransferDomainRequest,
+        dict,
+    ],
+)
 def test_transfer_domain(request_type, transport: str = "grpc"):
     client = DomainsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1495,7 +1626,8 @@ def test_transfer_domain_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DomainsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1511,7 +1643,8 @@ async def test_transfer_domain_async(
     transport: str = "grpc_asyncio", request_type=domains.TransferDomainRequest
 ):
     client = DomainsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1541,7 +1674,9 @@ async def test_transfer_domain_async_from_dict():
 
 
 def test_transfer_domain_field_headers():
-    client = DomainsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1561,12 +1696,17 @@ def test_transfer_domain_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_transfer_domain_field_headers_async():
-    client = DomainsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1588,11 +1728,16 @@ async def test_transfer_domain_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_transfer_domain_flattened():
-    client = DomainsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.transfer_domain), "__call__") as call:
@@ -1626,7 +1771,9 @@ def test_transfer_domain_flattened():
 
 
 def test_transfer_domain_flattened_error():
-    client = DomainsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1642,7 +1789,9 @@ def test_transfer_domain_flattened_error():
 
 @pytest.mark.asyncio
 async def test_transfer_domain_flattened_async():
-    client = DomainsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.transfer_domain), "__call__") as call:
@@ -1681,7 +1830,9 @@ async def test_transfer_domain_flattened_async():
 
 @pytest.mark.asyncio
 async def test_transfer_domain_flattened_error_async():
-    client = DomainsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1695,10 +1846,17 @@ async def test_transfer_domain_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [domains.ListRegistrationsRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        domains.ListRegistrationsRequest,
+        dict,
+    ],
+)
 def test_list_registrations(request_type, transport: str = "grpc"):
     client = DomainsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1729,7 +1887,8 @@ def test_list_registrations_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DomainsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1747,7 +1906,8 @@ async def test_list_registrations_async(
     transport: str = "grpc_asyncio", request_type=domains.ListRegistrationsRequest
 ):
     client = DomainsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1760,7 +1920,9 @@ async def test_list_registrations_async(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            domains.ListRegistrationsResponse(next_page_token="next_page_token_value",)
+            domains.ListRegistrationsResponse(
+                next_page_token="next_page_token_value",
+            )
         )
         response = await client.list_registrations(request)
 
@@ -1780,7 +1942,9 @@ async def test_list_registrations_async_from_dict():
 
 
 def test_list_registrations_field_headers():
-    client = DomainsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1802,12 +1966,17 @@ def test_list_registrations_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_list_registrations_field_headers_async():
-    client = DomainsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1831,11 +2000,16 @@ async def test_list_registrations_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_registrations_flattened():
-    client = DomainsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1845,7 +2019,9 @@ def test_list_registrations_flattened():
         call.return_value = domains.ListRegistrationsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_registrations(parent="parent_value",)
+        client.list_registrations(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1857,19 +2033,24 @@ def test_list_registrations_flattened():
 
 
 def test_list_registrations_flattened_error():
-    client = DomainsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_registrations(
-            domains.ListRegistrationsRequest(), parent="parent_value",
+            domains.ListRegistrationsRequest(),
+            parent="parent_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_list_registrations_flattened_async():
-    client = DomainsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1883,7 +2064,9 @@ async def test_list_registrations_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_registrations(parent="parent_value",)
+        response = await client.list_registrations(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1896,19 +2079,23 @@ async def test_list_registrations_flattened_async():
 
 @pytest.mark.asyncio
 async def test_list_registrations_flattened_error_async():
-    client = DomainsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_registrations(
-            domains.ListRegistrationsRequest(), parent="parent_value",
+            domains.ListRegistrationsRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_registrations_pager(transport_name: str = "grpc"):
     client = DomainsClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1925,12 +2112,21 @@ def test_list_registrations_pager(transport_name: str = "grpc"):
                 ],
                 next_page_token="abc",
             ),
-            domains.ListRegistrationsResponse(registrations=[], next_page_token="def",),
             domains.ListRegistrationsResponse(
-                registrations=[domains.Registration(),], next_page_token="ghi",
+                registrations=[],
+                next_page_token="def",
             ),
             domains.ListRegistrationsResponse(
-                registrations=[domains.Registration(), domains.Registration(),],
+                registrations=[
+                    domains.Registration(),
+                ],
+                next_page_token="ghi",
+            ),
+            domains.ListRegistrationsResponse(
+                registrations=[
+                    domains.Registration(),
+                    domains.Registration(),
+                ],
             ),
             RuntimeError,
         )
@@ -1950,7 +2146,8 @@ def test_list_registrations_pager(transport_name: str = "grpc"):
 
 def test_list_registrations_pages(transport_name: str = "grpc"):
     client = DomainsClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1967,12 +2164,21 @@ def test_list_registrations_pages(transport_name: str = "grpc"):
                 ],
                 next_page_token="abc",
             ),
-            domains.ListRegistrationsResponse(registrations=[], next_page_token="def",),
             domains.ListRegistrationsResponse(
-                registrations=[domains.Registration(),], next_page_token="ghi",
+                registrations=[],
+                next_page_token="def",
             ),
             domains.ListRegistrationsResponse(
-                registrations=[domains.Registration(), domains.Registration(),],
+                registrations=[
+                    domains.Registration(),
+                ],
+                next_page_token="ghi",
+            ),
+            domains.ListRegistrationsResponse(
+                registrations=[
+                    domains.Registration(),
+                    domains.Registration(),
+                ],
             ),
             RuntimeError,
         )
@@ -1983,7 +2189,9 @@ def test_list_registrations_pages(transport_name: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_list_registrations_async_pager():
-    client = DomainsAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = DomainsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2001,16 +2209,27 @@ async def test_list_registrations_async_pager():
                 ],
                 next_page_token="abc",
             ),
-            domains.ListRegistrationsResponse(registrations=[], next_page_token="def",),
             domains.ListRegistrationsResponse(
-                registrations=[domains.Registration(),], next_page_token="ghi",
+                registrations=[],
+                next_page_token="def",
             ),
             domains.ListRegistrationsResponse(
-                registrations=[domains.Registration(), domains.Registration(),],
+                registrations=[
+                    domains.Registration(),
+                ],
+                next_page_token="ghi",
+            ),
+            domains.ListRegistrationsResponse(
+                registrations=[
+                    domains.Registration(),
+                    domains.Registration(),
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.list_registrations(request={},)
+        async_pager = await client.list_registrations(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -2022,7 +2241,9 @@ async def test_list_registrations_async_pager():
 
 @pytest.mark.asyncio
 async def test_list_registrations_async_pages():
-    client = DomainsAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = DomainsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2040,12 +2261,21 @@ async def test_list_registrations_async_pages():
                 ],
                 next_page_token="abc",
             ),
-            domains.ListRegistrationsResponse(registrations=[], next_page_token="def",),
             domains.ListRegistrationsResponse(
-                registrations=[domains.Registration(),], next_page_token="ghi",
+                registrations=[],
+                next_page_token="def",
             ),
             domains.ListRegistrationsResponse(
-                registrations=[domains.Registration(), domains.Registration(),],
+                registrations=[
+                    domains.Registration(),
+                ],
+                next_page_token="ghi",
+            ),
+            domains.ListRegistrationsResponse(
+                registrations=[
+                    domains.Registration(),
+                    domains.Registration(),
+                ],
             ),
             RuntimeError,
         )
@@ -2056,10 +2286,17 @@ async def test_list_registrations_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [domains.GetRegistrationRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        domains.GetRegistrationRequest,
+        dict,
+    ],
+)
 def test_get_registration(request_type, transport: str = "grpc"):
     client = DomainsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2096,7 +2333,8 @@ def test_get_registration_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DomainsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2112,7 +2350,8 @@ async def test_get_registration_async(
     transport: str = "grpc_asyncio", request_type=domains.GetRegistrationRequest
 ):
     client = DomainsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2153,7 +2392,9 @@ async def test_get_registration_async_from_dict():
 
 
 def test_get_registration_field_headers():
-    client = DomainsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2173,12 +2414,17 @@ def test_get_registration_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_get_registration_field_headers_async():
-    client = DomainsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2200,11 +2446,16 @@ async def test_get_registration_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_registration_flattened():
-    client = DomainsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_registration), "__call__") as call:
@@ -2212,7 +2463,9 @@ def test_get_registration_flattened():
         call.return_value = domains.Registration()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_registration(name="name_value",)
+        client.get_registration(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2224,19 +2477,24 @@ def test_get_registration_flattened():
 
 
 def test_get_registration_flattened_error():
-    client = DomainsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_registration(
-            domains.GetRegistrationRequest(), name="name_value",
+            domains.GetRegistrationRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_get_registration_flattened_async():
-    client = DomainsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_registration), "__call__") as call:
@@ -2248,7 +2506,9 @@ async def test_get_registration_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_registration(name="name_value",)
+        response = await client.get_registration(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2261,20 +2521,30 @@ async def test_get_registration_flattened_async():
 
 @pytest.mark.asyncio
 async def test_get_registration_flattened_error_async():
-    client = DomainsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_registration(
-            domains.GetRegistrationRequest(), name="name_value",
+            domains.GetRegistrationRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [domains.UpdateRegistrationRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        domains.UpdateRegistrationRequest,
+        dict,
+    ],
+)
 def test_update_registration(request_type, transport: str = "grpc"):
     client = DomainsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2302,7 +2572,8 @@ def test_update_registration_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DomainsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2320,7 +2591,8 @@ async def test_update_registration_async(
     transport: str = "grpc_asyncio", request_type=domains.UpdateRegistrationRequest
 ):
     client = DomainsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2352,7 +2624,9 @@ async def test_update_registration_async_from_dict():
 
 
 def test_update_registration_field_headers():
-    client = DomainsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2382,7 +2656,9 @@ def test_update_registration_field_headers():
 
 @pytest.mark.asyncio
 async def test_update_registration_field_headers_async():
-    client = DomainsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2413,7 +2689,9 @@ async def test_update_registration_field_headers_async():
 
 
 def test_update_registration_flattened():
-    client = DomainsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2441,7 +2719,9 @@ def test_update_registration_flattened():
 
 
 def test_update_registration_flattened_error():
-    client = DomainsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2455,7 +2735,9 @@ def test_update_registration_flattened_error():
 
 @pytest.mark.asyncio
 async def test_update_registration_flattened_async():
-    client = DomainsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2488,7 +2770,9 @@ async def test_update_registration_flattened_async():
 
 @pytest.mark.asyncio
 async def test_update_registration_flattened_error_async():
-    client = DomainsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2501,11 +2785,16 @@ async def test_update_registration_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [domains.ConfigureManagementSettingsRequest, dict,]
+    "request_type",
+    [
+        domains.ConfigureManagementSettingsRequest,
+        dict,
+    ],
 )
 def test_configure_management_settings(request_type, transport: str = "grpc"):
     client = DomainsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2533,7 +2822,8 @@ def test_configure_management_settings_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DomainsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2552,7 +2842,8 @@ async def test_configure_management_settings_async(
     request_type=domains.ConfigureManagementSettingsRequest,
 ):
     client = DomainsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2584,7 +2875,9 @@ async def test_configure_management_settings_async_from_dict():
 
 
 def test_configure_management_settings_field_headers():
-    client = DomainsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2606,14 +2899,17 @@ def test_configure_management_settings_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "registration=registration/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "registration=registration/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_configure_management_settings_field_headers_async():
-    client = DomainsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2637,13 +2933,16 @@ async def test_configure_management_settings_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "registration=registration/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "registration=registration/value",
+    ) in kw["metadata"]
 
 
 def test_configure_management_settings_flattened():
-    client = DomainsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2679,7 +2978,9 @@ def test_configure_management_settings_flattened():
 
 
 def test_configure_management_settings_flattened_error():
-    client = DomainsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2696,7 +2997,9 @@ def test_configure_management_settings_flattened_error():
 
 @pytest.mark.asyncio
 async def test_configure_management_settings_flattened_async():
-    client = DomainsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2737,7 +3040,9 @@ async def test_configure_management_settings_flattened_async():
 
 @pytest.mark.asyncio
 async def test_configure_management_settings_flattened_error_async():
-    client = DomainsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2752,10 +3057,17 @@ async def test_configure_management_settings_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [domains.ConfigureDnsSettingsRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        domains.ConfigureDnsSettingsRequest,
+        dict,
+    ],
+)
 def test_configure_dns_settings(request_type, transport: str = "grpc"):
     client = DomainsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2783,7 +3095,8 @@ def test_configure_dns_settings_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DomainsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2801,7 +3114,8 @@ async def test_configure_dns_settings_async(
     transport: str = "grpc_asyncio", request_type=domains.ConfigureDnsSettingsRequest
 ):
     client = DomainsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2833,7 +3147,9 @@ async def test_configure_dns_settings_async_from_dict():
 
 
 def test_configure_dns_settings_field_headers():
-    client = DomainsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2855,14 +3171,17 @@ def test_configure_dns_settings_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "registration=registration/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "registration=registration/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_configure_dns_settings_field_headers_async():
-    client = DomainsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2886,13 +3205,16 @@ async def test_configure_dns_settings_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "registration=registration/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "registration=registration/value",
+    ) in kw["metadata"]
 
 
 def test_configure_dns_settings_flattened():
-    client = DomainsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2932,7 +3254,9 @@ def test_configure_dns_settings_flattened():
 
 
 def test_configure_dns_settings_flattened_error():
-    client = DomainsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2951,7 +3275,9 @@ def test_configure_dns_settings_flattened_error():
 
 @pytest.mark.asyncio
 async def test_configure_dns_settings_flattened_async():
-    client = DomainsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2996,7 +3322,9 @@ async def test_configure_dns_settings_flattened_async():
 
 @pytest.mark.asyncio
 async def test_configure_dns_settings_flattened_error_async():
-    client = DomainsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -3014,11 +3342,16 @@ async def test_configure_dns_settings_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [domains.ConfigureContactSettingsRequest, dict,]
+    "request_type",
+    [
+        domains.ConfigureContactSettingsRequest,
+        dict,
+    ],
 )
 def test_configure_contact_settings(request_type, transport: str = "grpc"):
     client = DomainsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3046,7 +3379,8 @@ def test_configure_contact_settings_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DomainsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3065,7 +3399,8 @@ async def test_configure_contact_settings_async(
     request_type=domains.ConfigureContactSettingsRequest,
 ):
     client = DomainsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3097,7 +3432,9 @@ async def test_configure_contact_settings_async_from_dict():
 
 
 def test_configure_contact_settings_field_headers():
-    client = DomainsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3119,14 +3456,17 @@ def test_configure_contact_settings_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "registration=registration/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "registration=registration/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_configure_contact_settings_field_headers_async():
-    client = DomainsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3150,13 +3490,16 @@ async def test_configure_contact_settings_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "registration=registration/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "registration=registration/value",
+    ) in kw["metadata"]
 
 
 def test_configure_contact_settings_flattened():
-    client = DomainsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3192,7 +3535,9 @@ def test_configure_contact_settings_flattened():
 
 
 def test_configure_contact_settings_flattened_error():
-    client = DomainsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -3209,7 +3554,9 @@ def test_configure_contact_settings_flattened_error():
 
 @pytest.mark.asyncio
 async def test_configure_contact_settings_flattened_async():
-    client = DomainsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3250,7 +3597,9 @@ async def test_configure_contact_settings_flattened_async():
 
 @pytest.mark.asyncio
 async def test_configure_contact_settings_flattened_error_async():
-    client = DomainsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -3265,10 +3614,17 @@ async def test_configure_contact_settings_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [domains.ExportRegistrationRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        domains.ExportRegistrationRequest,
+        dict,
+    ],
+)
 def test_export_registration(request_type, transport: str = "grpc"):
     client = DomainsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3296,7 +3652,8 @@ def test_export_registration_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DomainsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3314,7 +3671,8 @@ async def test_export_registration_async(
     transport: str = "grpc_asyncio", request_type=domains.ExportRegistrationRequest
 ):
     client = DomainsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3346,7 +3704,9 @@ async def test_export_registration_async_from_dict():
 
 
 def test_export_registration_field_headers():
-    client = DomainsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3368,12 +3728,17 @@ def test_export_registration_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_export_registration_field_headers_async():
-    client = DomainsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3397,11 +3762,16 @@ async def test_export_registration_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_export_registration_flattened():
-    client = DomainsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3411,7 +3781,9 @@ def test_export_registration_flattened():
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.export_registration(name="name_value",)
+        client.export_registration(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3423,19 +3795,24 @@ def test_export_registration_flattened():
 
 
 def test_export_registration_flattened_error():
-    client = DomainsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.export_registration(
-            domains.ExportRegistrationRequest(), name="name_value",
+            domains.ExportRegistrationRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_export_registration_flattened_async():
-    client = DomainsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3449,7 +3826,9 @@ async def test_export_registration_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.export_registration(name="name_value",)
+        response = await client.export_registration(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3462,20 +3841,30 @@ async def test_export_registration_flattened_async():
 
 @pytest.mark.asyncio
 async def test_export_registration_flattened_error_async():
-    client = DomainsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.export_registration(
-            domains.ExportRegistrationRequest(), name="name_value",
+            domains.ExportRegistrationRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [domains.DeleteRegistrationRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        domains.DeleteRegistrationRequest,
+        dict,
+    ],
+)
 def test_delete_registration(request_type, transport: str = "grpc"):
     client = DomainsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3503,7 +3892,8 @@ def test_delete_registration_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DomainsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3521,7 +3911,8 @@ async def test_delete_registration_async(
     transport: str = "grpc_asyncio", request_type=domains.DeleteRegistrationRequest
 ):
     client = DomainsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3553,7 +3944,9 @@ async def test_delete_registration_async_from_dict():
 
 
 def test_delete_registration_field_headers():
-    client = DomainsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3575,12 +3968,17 @@ def test_delete_registration_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_delete_registration_field_headers_async():
-    client = DomainsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3604,11 +4002,16 @@ async def test_delete_registration_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_registration_flattened():
-    client = DomainsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3618,7 +4021,9 @@ def test_delete_registration_flattened():
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_registration(name="name_value",)
+        client.delete_registration(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3630,19 +4035,24 @@ def test_delete_registration_flattened():
 
 
 def test_delete_registration_flattened_error():
-    client = DomainsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_registration(
-            domains.DeleteRegistrationRequest(), name="name_value",
+            domains.DeleteRegistrationRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_delete_registration_flattened_async():
-    client = DomainsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3656,7 +4066,9 @@ async def test_delete_registration_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_registration(name="name_value",)
+        response = await client.delete_registration(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3669,22 +4081,30 @@ async def test_delete_registration_flattened_async():
 
 @pytest.mark.asyncio
 async def test_delete_registration_flattened_error_async():
-    client = DomainsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_registration(
-            domains.DeleteRegistrationRequest(), name="name_value",
+            domains.DeleteRegistrationRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [domains.RetrieveAuthorizationCodeRequest, dict,]
+    "request_type",
+    [
+        domains.RetrieveAuthorizationCodeRequest,
+        dict,
+    ],
 )
 def test_retrieve_authorization_code(request_type, transport: str = "grpc"):
     client = DomainsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3696,7 +4116,9 @@ def test_retrieve_authorization_code(request_type, transport: str = "grpc"):
         type(client.transport.retrieve_authorization_code), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = domains.AuthorizationCode(code="code_value",)
+        call.return_value = domains.AuthorizationCode(
+            code="code_value",
+        )
         response = client.retrieve_authorization_code(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -3713,7 +4135,8 @@ def test_retrieve_authorization_code_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DomainsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3732,7 +4155,8 @@ async def test_retrieve_authorization_code_async(
     request_type=domains.RetrieveAuthorizationCodeRequest,
 ):
     client = DomainsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3745,7 +4169,9 @@ async def test_retrieve_authorization_code_async(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            domains.AuthorizationCode(code="code_value",)
+            domains.AuthorizationCode(
+                code="code_value",
+            )
         )
         response = await client.retrieve_authorization_code(request)
 
@@ -3765,7 +4191,9 @@ async def test_retrieve_authorization_code_async_from_dict():
 
 
 def test_retrieve_authorization_code_field_headers():
-    client = DomainsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3787,14 +4215,17 @@ def test_retrieve_authorization_code_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "registration=registration/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "registration=registration/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_retrieve_authorization_code_field_headers_async():
-    client = DomainsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3818,13 +4249,16 @@ async def test_retrieve_authorization_code_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "registration=registration/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "registration=registration/value",
+    ) in kw["metadata"]
 
 
 def test_retrieve_authorization_code_flattened():
-    client = DomainsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3834,7 +4268,9 @@ def test_retrieve_authorization_code_flattened():
         call.return_value = domains.AuthorizationCode()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.retrieve_authorization_code(registration="registration_value",)
+        client.retrieve_authorization_code(
+            registration="registration_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3846,7 +4282,9 @@ def test_retrieve_authorization_code_flattened():
 
 
 def test_retrieve_authorization_code_flattened_error():
-    client = DomainsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -3859,7 +4297,9 @@ def test_retrieve_authorization_code_flattened_error():
 
 @pytest.mark.asyncio
 async def test_retrieve_authorization_code_flattened_async():
-    client = DomainsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3888,7 +4328,9 @@ async def test_retrieve_authorization_code_flattened_async():
 
 @pytest.mark.asyncio
 async def test_retrieve_authorization_code_flattened_error_async():
-    client = DomainsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -3899,10 +4341,17 @@ async def test_retrieve_authorization_code_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [domains.ResetAuthorizationCodeRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        domains.ResetAuthorizationCodeRequest,
+        dict,
+    ],
+)
 def test_reset_authorization_code(request_type, transport: str = "grpc"):
     client = DomainsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3914,7 +4363,9 @@ def test_reset_authorization_code(request_type, transport: str = "grpc"):
         type(client.transport.reset_authorization_code), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = domains.AuthorizationCode(code="code_value",)
+        call.return_value = domains.AuthorizationCode(
+            code="code_value",
+        )
         response = client.reset_authorization_code(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -3931,7 +4382,8 @@ def test_reset_authorization_code_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = DomainsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3949,7 +4401,8 @@ async def test_reset_authorization_code_async(
     transport: str = "grpc_asyncio", request_type=domains.ResetAuthorizationCodeRequest
 ):
     client = DomainsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3962,7 +4415,9 @@ async def test_reset_authorization_code_async(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            domains.AuthorizationCode(code="code_value",)
+            domains.AuthorizationCode(
+                code="code_value",
+            )
         )
         response = await client.reset_authorization_code(request)
 
@@ -3982,7 +4437,9 @@ async def test_reset_authorization_code_async_from_dict():
 
 
 def test_reset_authorization_code_field_headers():
-    client = DomainsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -4004,14 +4461,17 @@ def test_reset_authorization_code_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "registration=registration/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "registration=registration/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_reset_authorization_code_field_headers_async():
-    client = DomainsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -4035,13 +4495,16 @@ async def test_reset_authorization_code_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "registration=registration/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "registration=registration/value",
+    ) in kw["metadata"]
 
 
 def test_reset_authorization_code_flattened():
-    client = DomainsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4051,7 +4514,9 @@ def test_reset_authorization_code_flattened():
         call.return_value = domains.AuthorizationCode()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.reset_authorization_code(registration="registration_value",)
+        client.reset_authorization_code(
+            registration="registration_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -4063,19 +4528,24 @@ def test_reset_authorization_code_flattened():
 
 
 def test_reset_authorization_code_flattened_error():
-    client = DomainsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.reset_authorization_code(
-            domains.ResetAuthorizationCodeRequest(), registration="registration_value",
+            domains.ResetAuthorizationCodeRequest(),
+            registration="registration_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_reset_authorization_code_flattened_async():
-    client = DomainsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4104,13 +4574,16 @@ async def test_reset_authorization_code_flattened_async():
 
 @pytest.mark.asyncio
 async def test_reset_authorization_code_flattened_error_async():
-    client = DomainsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = DomainsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.reset_authorization_code(
-            domains.ResetAuthorizationCodeRequest(), registration="registration_value",
+            domains.ResetAuthorizationCodeRequest(),
+            registration="registration_value",
         )
 
 
@@ -4121,7 +4594,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = DomainsClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -4141,7 +4615,10 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = DomainsClient(client_options=options, transport=transport,)
+        client = DomainsClient(
+            client_options=options,
+            transport=transport,
+        )
 
     # It is an error to provide an api_key and a credential.
     options = mock.Mock()
@@ -4157,7 +4634,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = DomainsClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -4187,7 +4665,10 @@ def test_transport_get_channel():
 
 @pytest.mark.parametrize(
     "transport_class",
-    [transports.DomainsGrpcTransport, transports.DomainsGrpcAsyncIOTransport,],
+    [
+        transports.DomainsGrpcTransport,
+        transports.DomainsGrpcAsyncIOTransport,
+    ],
 )
 def test_transport_adc(transport_class):
     # Test default credentials are used if not provided.
@@ -4199,8 +4680,13 @@ def test_transport_adc(transport_class):
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
-    client = DomainsClient(credentials=ga_credentials.AnonymousCredentials(),)
-    assert isinstance(client.transport, transports.DomainsGrpcTransport,)
+    client = DomainsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    assert isinstance(
+        client.transport,
+        transports.DomainsGrpcTransport,
+    )
 
 
 def test_domains_base_transport_error():
@@ -4264,7 +4750,8 @@ def test_domains_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.DomainsTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -4299,7 +4786,10 @@ def test_domains_auth_adc():
 
 @pytest.mark.parametrize(
     "transport_class",
-    [transports.DomainsGrpcTransport, transports.DomainsGrpcAsyncIOTransport,],
+    [
+        transports.DomainsGrpcTransport,
+        transports.DomainsGrpcAsyncIOTransport,
+    ],
 )
 def test_domains_transport_auth_adc(transport_class):
     # If credentials and host are not provided, the transport class should use
@@ -4416,7 +4906,8 @@ def test_domains_grpc_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.DomainsGrpcTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -4428,7 +4919,8 @@ def test_domains_grpc_asyncio_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.DomainsGrpcAsyncIOTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -4529,12 +5021,16 @@ def test_domains_transport_channel_mtls_with_adc(transport_class):
 
 def test_domains_grpc_lro_client():
     client = DomainsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
     transport = client.transport
 
     # Ensure that we have a api-core operations client.
-    assert isinstance(transport.operations_client, operations_v1.OperationsClient,)
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsClient,
+    )
 
     # Ensure that subsequent calls to the property send the exact same object.
     assert transport.operations_client is transport.operations_client
@@ -4542,12 +5038,16 @@ def test_domains_grpc_lro_client():
 
 def test_domains_grpc_lro_async_client():
     client = DomainsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     transport = client.transport
 
     # Ensure that we have a api-core operations client.
-    assert isinstance(transport.operations_client, operations_v1.OperationsAsyncClient,)
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsAsyncClient,
+    )
 
     # Ensure that subsequent calls to the property send the exact same object.
     assert transport.operations_client is transport.operations_client
@@ -4557,8 +5057,12 @@ def test_registration_path():
     project = "squid"
     location = "clam"
     registration = "whelk"
-    expected = "projects/{project}/locations/{location}/registrations/{registration}".format(
-        project=project, location=location, registration=registration,
+    expected = (
+        "projects/{project}/locations/{location}/registrations/{registration}".format(
+            project=project,
+            location=location,
+            registration=registration,
+        )
     )
     actual = DomainsClient.registration_path(project, location, registration)
     assert expected == actual
@@ -4599,7 +5103,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "winkle"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = DomainsClient.common_folder_path(folder)
     assert expected == actual
 
@@ -4617,7 +5123,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "scallop"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = DomainsClient.common_organization_path(organization)
     assert expected == actual
 
@@ -4635,7 +5143,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "squid"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = DomainsClient.common_project_path(project)
     assert expected == actual
 
@@ -4655,7 +5165,8 @@ def test_common_location_path():
     project = "whelk"
     location = "octopus"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = DomainsClient.common_location_path(project, location)
     assert expected == actual
@@ -4680,7 +5191,8 @@ def test_client_with_default_client_info():
         transports.DomainsTransport, "_prep_wrapped_messages"
     ) as prep:
         client = DomainsClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -4689,7 +5201,8 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = DomainsClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -4697,7 +5210,8 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = DomainsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     with mock.patch.object(
         type(getattr(client.transport, "grpc_channel")), "close"
