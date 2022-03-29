@@ -73,9 +73,19 @@ class CreateReadSessionRequest(proto.Message):
             Streams must be read starting from offset 0.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    read_session = proto.Field(proto.MESSAGE, number=2, message=stream.ReadSession,)
-    max_stream_count = proto.Field(proto.INT32, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    read_session = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=stream.ReadSession,
+    )
+    max_stream_count = proto.Field(
+        proto.INT32,
+        number=3,
+    )
 
 
 class ReadRowsRequest(proto.Message):
@@ -91,8 +101,14 @@ class ReadRowsRequest(proto.Message):
             reading from offset zero.
     """
 
-    read_stream = proto.Field(proto.STRING, number=1,)
-    offset = proto.Field(proto.INT64, number=2,)
+    read_stream = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    offset = proto.Field(
+        proto.INT64,
+        number=2,
+    )
 
 
 class ThrottleState(proto.Message):
@@ -105,7 +121,10 @@ class ThrottleState(proto.Message):
             throttled.
     """
 
-    throttle_percent = proto.Field(proto.INT32, number=1,)
+    throttle_percent = proto.Field(
+        proto.INT32,
+        number=1,
+    )
 
 
 class StreamStats(proto.Message):
@@ -139,10 +158,20 @@ class StreamStats(proto.Message):
                 includes the rows in the current response.
         """
 
-        at_response_start = proto.Field(proto.DOUBLE, number=1,)
-        at_response_end = proto.Field(proto.DOUBLE, number=2,)
+        at_response_start = proto.Field(
+            proto.DOUBLE,
+            number=1,
+        )
+        at_response_end = proto.Field(
+            proto.DOUBLE,
+            number=2,
+        )
 
-    progress = proto.Field(proto.MESSAGE, number=2, message=Progress,)
+    progress = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=Progress,
+    )
 
 
 class ReadRowsResponse(proto.Message):
@@ -185,19 +214,42 @@ class ReadRowsResponse(proto.Message):
     """
 
     avro_rows = proto.Field(
-        proto.MESSAGE, number=3, oneof="rows", message=avro.AvroRows,
+        proto.MESSAGE,
+        number=3,
+        oneof="rows",
+        message=avro.AvroRows,
     )
     arrow_record_batch = proto.Field(
-        proto.MESSAGE, number=4, oneof="rows", message=arrow.ArrowRecordBatch,
+        proto.MESSAGE,
+        number=4,
+        oneof="rows",
+        message=arrow.ArrowRecordBatch,
     )
-    row_count = proto.Field(proto.INT64, number=6,)
-    stats = proto.Field(proto.MESSAGE, number=2, message="StreamStats",)
-    throttle_state = proto.Field(proto.MESSAGE, number=5, message="ThrottleState",)
+    row_count = proto.Field(
+        proto.INT64,
+        number=6,
+    )
+    stats = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="StreamStats",
+    )
+    throttle_state = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message="ThrottleState",
+    )
     avro_schema = proto.Field(
-        proto.MESSAGE, number=7, oneof="schema", message=avro.AvroSchema,
+        proto.MESSAGE,
+        number=7,
+        oneof="schema",
+        message=avro.AvroSchema,
     )
     arrow_schema = proto.Field(
-        proto.MESSAGE, number=8, oneof="schema", message=arrow.ArrowSchema,
+        proto.MESSAGE,
+        number=8,
+        oneof="schema",
+        message=arrow.ArrowSchema,
     )
 
 
@@ -222,8 +274,14 @@ class SplitReadStreamRequest(proto.Message):
             side.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    fraction = proto.Field(proto.DOUBLE, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    fraction = proto.Field(
+        proto.DOUBLE,
+        number=2,
+    )
 
 
 class SplitReadStreamResponse(proto.Message):
@@ -240,8 +298,16 @@ class SplitReadStreamResponse(proto.Message):
             original stream can no longer be split.
     """
 
-    primary_stream = proto.Field(proto.MESSAGE, number=1, message=stream.ReadStream,)
-    remainder_stream = proto.Field(proto.MESSAGE, number=2, message=stream.ReadStream,)
+    primary_stream = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=stream.ReadStream,
+    )
+    remainder_stream = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=stream.ReadStream,
+    )
 
 
 class CreateWriteStreamRequest(proto.Message):
@@ -256,8 +322,15 @@ class CreateWriteStreamRequest(proto.Message):
             Required. Stream to be created.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    write_stream = proto.Field(proto.MESSAGE, number=2, message=stream.WriteStream,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    write_stream = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=stream.WriteStream,
+    )
 
 
 class AppendRowsRequest(proto.Message):
@@ -321,14 +394,35 @@ class AppendRowsRequest(proto.Message):
         """
 
         writer_schema = proto.Field(
-            proto.MESSAGE, number=1, message=protobuf.ProtoSchema,
+            proto.MESSAGE,
+            number=1,
+            message=protobuf.ProtoSchema,
         )
-        rows = proto.Field(proto.MESSAGE, number=2, message=protobuf.ProtoRows,)
+        rows = proto.Field(
+            proto.MESSAGE,
+            number=2,
+            message=protobuf.ProtoRows,
+        )
 
-    write_stream = proto.Field(proto.STRING, number=1,)
-    offset = proto.Field(proto.MESSAGE, number=2, message=wrappers_pb2.Int64Value,)
-    proto_rows = proto.Field(proto.MESSAGE, number=4, oneof="rows", message=ProtoData,)
-    trace_id = proto.Field(proto.STRING, number=6,)
+    write_stream = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    offset = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=wrappers_pb2.Int64Value,
+    )
+    proto_rows = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="rows",
+        message=ProtoData,
+    )
+    trace_id = proto.Field(
+        proto.STRING,
+        number=6,
+    )
 
 
 class AppendRowsResponse(proto.Message):
@@ -389,15 +483,29 @@ class AppendRowsResponse(proto.Message):
                 appending using default streams.
         """
 
-        offset = proto.Field(proto.MESSAGE, number=1, message=wrappers_pb2.Int64Value,)
+        offset = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=wrappers_pb2.Int64Value,
+        )
 
     append_result = proto.Field(
-        proto.MESSAGE, number=1, oneof="response", message=AppendResult,
+        proto.MESSAGE,
+        number=1,
+        oneof="response",
+        message=AppendResult,
     )
     error = proto.Field(
-        proto.MESSAGE, number=2, oneof="response", message=status_pb2.Status,
+        proto.MESSAGE,
+        number=2,
+        oneof="response",
+        message=status_pb2.Status,
     )
-    updated_schema = proto.Field(proto.MESSAGE, number=3, message=table.TableSchema,)
+    updated_schema = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=table.TableSchema,
+    )
 
 
 class GetWriteStreamRequest(proto.Message):
@@ -409,7 +517,10 @@ class GetWriteStreamRequest(proto.Message):
             ``projects/{project}/datasets/{dataset}/tables/{table}/streams/{stream}``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class BatchCommitWriteStreamsRequest(proto.Message):
@@ -425,8 +536,14 @@ class BatchCommitWriteStreamsRequest(proto.Message):
             committed atomically.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    write_streams = proto.RepeatedField(proto.STRING, number=2,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    write_streams = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
 
 
 class BatchCommitWriteStreamsResponse(proto.Message):
@@ -447,9 +564,15 @@ class BatchCommitWriteStreamsResponse(proto.Message):
             due to atomicity guarantee.
     """
 
-    commit_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
+    commit_time = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
     stream_errors = proto.RepeatedField(
-        proto.MESSAGE, number=2, message="StorageError",
+        proto.MESSAGE,
+        number=2,
+        message="StorageError",
     )
 
 
@@ -462,7 +585,10 @@ class FinalizeWriteStreamRequest(proto.Message):
             ``projects/{project}/datasets/{dataset}/tables/{table}/streams/{stream}``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class FinalizeWriteStreamResponse(proto.Message):
@@ -473,7 +599,10 @@ class FinalizeWriteStreamResponse(proto.Message):
             Number of rows in the finalized stream.
     """
 
-    row_count = proto.Field(proto.INT64, number=1,)
+    row_count = proto.Field(
+        proto.INT64,
+        number=1,
+    )
 
 
 class FlushRowsRequest(proto.Message):
@@ -489,8 +618,15 @@ class FlushRowsRequest(proto.Message):
             be flushed.
     """
 
-    write_stream = proto.Field(proto.STRING, number=1,)
-    offset = proto.Field(proto.MESSAGE, number=2, message=wrappers_pb2.Int64Value,)
+    write_stream = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    offset = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=wrappers_pb2.Int64Value,
+    )
 
 
 class FlushRowsResponse(proto.Message):
@@ -502,7 +638,10 @@ class FlushRowsResponse(proto.Message):
             offset) are flushed.
     """
 
-    offset = proto.Field(proto.INT64, number=1,)
+    offset = proto.Field(
+        proto.INT64,
+        number=1,
+    )
 
 
 class StorageError(proto.Message):
@@ -534,9 +673,19 @@ class StorageError(proto.Message):
         OFFSET_ALREADY_EXISTS = 8
         OFFSET_OUT_OF_RANGE = 9
 
-    code = proto.Field(proto.ENUM, number=1, enum=StorageErrorCode,)
-    entity = proto.Field(proto.STRING, number=2,)
-    error_message = proto.Field(proto.STRING, number=3,)
+    code = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=StorageErrorCode,
+    )
+    entity = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    error_message = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

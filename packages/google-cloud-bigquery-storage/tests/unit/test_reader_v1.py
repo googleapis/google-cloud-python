@@ -231,7 +231,10 @@ def test_rows_w_timeout(class_under_test, mock_gapic_client):
     )
 
     reader = class_under_test(
-        mock_gapic_client, "teststream", 0, {"metadata": {"test-key": "test-value"}},
+        mock_gapic_client,
+        "teststream",
+        0,
+        {"metadata": {"test-key": "test-value"}},
     )
 
     with pytest.raises(google.api_core.exceptions.DeadlineExceeded):
@@ -382,7 +385,10 @@ def test_rows_w_reconnect_by_page(class_under_test, mock_gapic_client):
     )
 
     reader = class_under_test(
-        mock_gapic_client, "teststream", 0, {"metadata": {"test-key": "test-value"}},
+        mock_gapic_client,
+        "teststream",
+        0,
+        {"metadata": {"test-key": "test-value"}},
     )
     got = reader.rows()
     pages = iter(got.pages)
@@ -579,7 +585,10 @@ def test_to_dataframe_by_page(class_under_test, mock_gapic_client):
     )
 
     reader = class_under_test(
-        mock_gapic_client, "teststream", 0, {"metadata": {"test-key": "test-value"}},
+        mock_gapic_client,
+        "teststream",
+        0,
+        {"metadata": {"test-key": "test-value"}},
     )
     got = reader.rows()
     pages = iter(got.pages)

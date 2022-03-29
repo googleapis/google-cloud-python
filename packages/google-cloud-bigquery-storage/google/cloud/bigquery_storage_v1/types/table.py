@@ -18,7 +18,10 @@ import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.bigquery.storage.v1",
-    manifest={"TableSchema", "TableFieldSchema",},
+    manifest={
+        "TableSchema",
+        "TableFieldSchema",
+    },
 )
 
 
@@ -30,7 +33,11 @@ class TableSchema(proto.Message):
             Describes the fields in a table.
     """
 
-    fields = proto.RepeatedField(proto.MESSAGE, number=1, message="TableFieldSchema",)
+    fields = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="TableFieldSchema",
+    )
 
 
 class TableFieldSchema(proto.Message):
@@ -137,14 +144,41 @@ class TableFieldSchema(proto.Message):
         REQUIRED = 2
         REPEATED = 3
 
-    name = proto.Field(proto.STRING, number=1,)
-    type_ = proto.Field(proto.ENUM, number=2, enum=Type,)
-    mode = proto.Field(proto.ENUM, number=3, enum=Mode,)
-    fields = proto.RepeatedField(proto.MESSAGE, number=4, message="TableFieldSchema",)
-    description = proto.Field(proto.STRING, number=6,)
-    max_length = proto.Field(proto.INT64, number=7,)
-    precision = proto.Field(proto.INT64, number=8,)
-    scale = proto.Field(proto.INT64, number=9,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    type_ = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=Type,
+    )
+    mode = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=Mode,
+    )
+    fields = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message="TableFieldSchema",
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    max_length = proto.Field(
+        proto.INT64,
+        number=7,
+    )
+    precision = proto.Field(
+        proto.INT64,
+        number=8,
+    )
+    scale = proto.Field(
+        proto.INT64,
+        number=9,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

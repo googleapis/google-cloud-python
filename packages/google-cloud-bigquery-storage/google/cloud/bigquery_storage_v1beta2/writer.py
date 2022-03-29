@@ -354,11 +354,11 @@ class AppendRowsFuture(polling_future.PollingFuture):
 
     def cancel(self):
         """Stops pulling messages and shutdowns the background thread consuming
-        messages.
+         messages.
 
-       The method does not block, it just triggers the shutdown and returns
-       immediately. To block until the background stream is terminated, call
-       :meth:`result()` after cancelling the future.
+        The method does not block, it just triggers the shutdown and returns
+        immediately. To block until the background stream is terminated, call
+        :meth:`result()` after cancelling the future.
         """
         # NOTE: We circumvent the base future's self._state to track the cancellation
         # state, as this state has different meaning with streaming pull futures.

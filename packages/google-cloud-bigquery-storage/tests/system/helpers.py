@@ -32,5 +32,6 @@ def _rate_limit_exceeded(forbidden):
 # they return instead of the more appropriate 429.
 # See https://cloud.google.com/bigquery/quota-policy
 retry_403 = test_utils.retry.RetryErrors(
-    google.api_core.exceptions.Forbidden, error_predicate=_rate_limit_exceeded,
+    google.api_core.exceptions.Forbidden,
+    error_predicate=_rate_limit_exceeded,
 )

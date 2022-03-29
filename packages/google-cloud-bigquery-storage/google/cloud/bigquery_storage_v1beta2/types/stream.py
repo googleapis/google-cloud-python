@@ -23,7 +23,12 @@ from google.protobuf import timestamp_pb2  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.bigquery.storage.v1beta2",
-    manifest={"DataFormat", "ReadSession", "ReadStream", "WriteStream",},
+    manifest={
+        "DataFormat",
+        "ReadSession",
+        "ReadStream",
+        "WriteStream",
+    },
 )
 
 
@@ -93,7 +98,9 @@ class ReadSession(proto.Message):
         """
 
         snapshot_time = proto.Field(
-            proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,
+            proto.MESSAGE,
+            number=1,
+            message=timestamp_pb2.Timestamp,
         )
 
     class TableReadOptions(proto.Message):
@@ -121,25 +128,65 @@ class ReadSession(proto.Message):
                 Arrow output format.
         """
 
-        selected_fields = proto.RepeatedField(proto.STRING, number=1,)
-        row_restriction = proto.Field(proto.STRING, number=2,)
+        selected_fields = proto.RepeatedField(
+            proto.STRING,
+            number=1,
+        )
+        row_restriction = proto.Field(
+            proto.STRING,
+            number=2,
+        )
         arrow_serialization_options = proto.Field(
-            proto.MESSAGE, number=3, message=arrow.ArrowSerializationOptions,
+            proto.MESSAGE,
+            number=3,
+            message=arrow.ArrowSerializationOptions,
         )
 
-    name = proto.Field(proto.STRING, number=1,)
-    expire_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    data_format = proto.Field(proto.ENUM, number=3, enum="DataFormat",)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    expire_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    data_format = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum="DataFormat",
+    )
     avro_schema = proto.Field(
-        proto.MESSAGE, number=4, oneof="schema", message=avro.AvroSchema,
+        proto.MESSAGE,
+        number=4,
+        oneof="schema",
+        message=avro.AvroSchema,
     )
     arrow_schema = proto.Field(
-        proto.MESSAGE, number=5, oneof="schema", message=arrow.ArrowSchema,
+        proto.MESSAGE,
+        number=5,
+        oneof="schema",
+        message=arrow.ArrowSchema,
     )
-    table = proto.Field(proto.STRING, number=6,)
-    table_modifiers = proto.Field(proto.MESSAGE, number=7, message=TableModifiers,)
-    read_options = proto.Field(proto.MESSAGE, number=8, message=TableReadOptions,)
-    streams = proto.RepeatedField(proto.MESSAGE, number=10, message="ReadStream",)
+    table = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    table_modifiers = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=TableModifiers,
+    )
+    read_options = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=TableReadOptions,
+    )
+    streams = proto.RepeatedField(
+        proto.MESSAGE,
+        number=10,
+        message="ReadStream",
+    )
 
 
 class ReadStream(proto.Message):
@@ -153,7 +200,10 @@ class ReadStream(proto.Message):
             ``projects/{project_id}/locations/{location}/sessions/{session_id}/streams/{stream_id}``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class WriteStream(proto.Message):
@@ -189,11 +239,30 @@ class WriteStream(proto.Message):
         PENDING = 2
         BUFFERED = 3
 
-    name = proto.Field(proto.STRING, number=1,)
-    type_ = proto.Field(proto.ENUM, number=2, enum=Type,)
-    create_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
-    commit_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
-    table_schema = proto.Field(proto.MESSAGE, number=5, message=gcbs_table.TableSchema,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    type_ = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=Type,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    commit_time = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    table_schema = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=gcbs_table.TableSchema,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

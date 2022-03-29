@@ -18,7 +18,11 @@ import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.bigquery.storage.v1",
-    manifest={"ArrowSchema", "ArrowRecordBatch", "ArrowSerializationOptions",},
+    manifest={
+        "ArrowSchema",
+        "ArrowRecordBatch",
+        "ArrowSerializationOptions",
+    },
 )
 
 
@@ -34,7 +38,10 @@ class ArrowSchema(proto.Message):
             IPC serialized Arrow schema.
     """
 
-    serialized_schema = proto.Field(proto.BYTES, number=1,)
+    serialized_schema = proto.Field(
+        proto.BYTES,
+        number=1,
+    )
 
 
 class ArrowRecordBatch(proto.Message):
@@ -47,8 +54,14 @@ class ArrowRecordBatch(proto.Message):
             The count of rows in ``serialized_record_batch``.
     """
 
-    serialized_record_batch = proto.Field(proto.BYTES, number=1,)
-    row_count = proto.Field(proto.INT64, number=2,)
+    serialized_record_batch = proto.Field(
+        proto.BYTES,
+        number=1,
+    )
+    row_count = proto.Field(
+        proto.INT64,
+        number=2,
+    )
 
 
 class ArrowSerializationOptions(proto.Message):
@@ -66,7 +79,11 @@ class ArrowSerializationOptions(proto.Message):
         LZ4_FRAME = 1
         ZSTD = 2
 
-    buffer_compression = proto.Field(proto.ENUM, number=2, enum=CompressionCodec,)
+    buffer_compression = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=CompressionCodec,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

@@ -20,7 +20,10 @@ from google.protobuf import descriptor_pb2  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.bigquery.storage.v1beta2",
-    manifest={"ProtoSchema", "ProtoRows",},
+    manifest={
+        "ProtoSchema",
+        "ProtoRows",
+    },
 )
 
 
@@ -38,7 +41,9 @@ class ProtoSchema(proto.Message):
     """
 
     proto_descriptor = proto.Field(
-        proto.MESSAGE, number=1, message=descriptor_pb2.DescriptorProto,
+        proto.MESSAGE,
+        number=1,
+        message=descriptor_pb2.DescriptorProto,
     )
 
 
@@ -55,7 +60,10 @@ class ProtoRows(proto.Message):
             field.
     """
 
-    serialized_rows = proto.RepeatedField(proto.BYTES, number=1,)
+    serialized_rows = proto.RepeatedField(
+        proto.BYTES,
+        number=1,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

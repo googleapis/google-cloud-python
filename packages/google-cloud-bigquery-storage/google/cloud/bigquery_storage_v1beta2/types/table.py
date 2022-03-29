@@ -18,7 +18,10 @@ import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.bigquery.storage.v1beta2",
-    manifest={"TableSchema", "TableFieldSchema",},
+    manifest={
+        "TableSchema",
+        "TableFieldSchema",
+    },
 )
 
 
@@ -30,7 +33,11 @@ class TableSchema(proto.Message):
             Describes the fields in a table.
     """
 
-    fields = proto.RepeatedField(proto.MESSAGE, number=1, message="TableFieldSchema",)
+    fields = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="TableFieldSchema",
+    )
 
 
 class TableFieldSchema(proto.Message):
@@ -81,11 +88,29 @@ class TableFieldSchema(proto.Message):
         REQUIRED = 2
         REPEATED = 3
 
-    name = proto.Field(proto.STRING, number=1,)
-    type_ = proto.Field(proto.ENUM, number=2, enum=Type,)
-    mode = proto.Field(proto.ENUM, number=3, enum=Mode,)
-    fields = proto.RepeatedField(proto.MESSAGE, number=4, message="TableFieldSchema",)
-    description = proto.Field(proto.STRING, number=6,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    type_ = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=Type,
+    )
+    mode = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=Mode,
+    )
+    fields = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message="TableFieldSchema",
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=6,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

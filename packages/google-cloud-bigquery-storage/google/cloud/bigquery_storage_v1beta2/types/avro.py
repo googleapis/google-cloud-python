@@ -18,7 +18,10 @@ import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.bigquery.storage.v1beta2",
-    manifest={"AvroSchema", "AvroRows",},
+    manifest={
+        "AvroSchema",
+        "AvroRows",
+    },
 )
 
 
@@ -31,7 +34,10 @@ class AvroSchema(proto.Message):
             https://avro.apache.org/docs/1.8.1/spec.html.
     """
 
-    schema = proto.Field(proto.STRING, number=1,)
+    schema = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class AvroRows(proto.Message):
@@ -42,7 +48,10 @@ class AvroRows(proto.Message):
             Binary serialized rows in a block.
     """
 
-    serialized_binary_rows = proto.Field(proto.BYTES, number=1,)
+    serialized_binary_rows = proto.Field(
+        proto.BYTES,
+        number=1,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

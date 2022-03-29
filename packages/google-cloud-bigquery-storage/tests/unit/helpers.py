@@ -63,7 +63,7 @@ SCALAR_BLOCKS = [
             "float_col": 1.23,
             "num_col": decimal.Decimal("5.67"),
             "bool_col": True,
-            "str_col": u"こんにちは世界",
+            "str_col": "こんにちは世界",
             "bytes_col": b"\x54\x69\x6d",
             "date_col": datetime.date(1970, 1, 1),
             "time_col": datetime.time(16, 20),

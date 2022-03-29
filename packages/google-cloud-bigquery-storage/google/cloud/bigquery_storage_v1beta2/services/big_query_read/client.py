@@ -56,7 +56,10 @@ class BigQueryReadClientMeta(type):
     _transport_registry["grpc"] = BigQueryReadGrpcTransport
     _transport_registry["grpc_asyncio"] = BigQueryReadGrpcAsyncIOTransport
 
-    def get_transport_class(cls, label: str = None,) -> Type[BigQueryReadTransport]:
+    def get_transport_class(
+        cls,
+        label: str = None,
+    ) -> Type[BigQueryReadTransport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -165,10 +168,16 @@ class BigQueryReadClient(metaclass=BigQueryReadClientMeta):
         return self._transport
 
     @staticmethod
-    def read_session_path(project: str, location: str, session: str,) -> str:
+    def read_session_path(
+        project: str,
+        location: str,
+        session: str,
+    ) -> str:
         """Returns a fully-qualified read_session string."""
         return "projects/{project}/locations/{location}/sessions/{session}".format(
-            project=project, location=location, session=session,
+            project=project,
+            location=location,
+            session=session,
         )
 
     @staticmethod
@@ -182,11 +191,17 @@ class BigQueryReadClient(metaclass=BigQueryReadClientMeta):
 
     @staticmethod
     def read_stream_path(
-        project: str, location: str, session: str, stream: str,
+        project: str,
+        location: str,
+        session: str,
+        stream: str,
     ) -> str:
         """Returns a fully-qualified read_stream string."""
         return "projects/{project}/locations/{location}/sessions/{session}/streams/{stream}".format(
-            project=project, location=location, session=session, stream=stream,
+            project=project,
+            location=location,
+            session=session,
+            stream=stream,
         )
 
     @staticmethod
@@ -199,10 +214,16 @@ class BigQueryReadClient(metaclass=BigQueryReadClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def table_path(project: str, dataset: str, table: str,) -> str:
+    def table_path(
+        project: str,
+        dataset: str,
+        table: str,
+    ) -> str:
         """Returns a fully-qualified table string."""
         return "projects/{project}/datasets/{dataset}/tables/{table}".format(
-            project=project, dataset=dataset, table=table,
+            project=project,
+            dataset=dataset,
+            table=table,
         )
 
     @staticmethod
@@ -215,7 +236,9 @@ class BigQueryReadClient(metaclass=BigQueryReadClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_billing_account_path(billing_account: str,) -> str:
+    def common_billing_account_path(
+        billing_account: str,
+    ) -> str:
         """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
@@ -228,9 +251,13 @@ class BigQueryReadClient(metaclass=BigQueryReadClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(folder: str,) -> str:
+    def common_folder_path(
+        folder: str,
+    ) -> str:
         """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(folder=folder,)
+        return "folders/{folder}".format(
+            folder=folder,
+        )
 
     @staticmethod
     def parse_common_folder_path(path: str) -> Dict[str, str]:
@@ -239,9 +266,13 @@ class BigQueryReadClient(metaclass=BigQueryReadClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(organization: str,) -> str:
+    def common_organization_path(
+        organization: str,
+    ) -> str:
         """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(organization=organization,)
+        return "organizations/{organization}".format(
+            organization=organization,
+        )
 
     @staticmethod
     def parse_common_organization_path(path: str) -> Dict[str, str]:
@@ -250,9 +281,13 @@ class BigQueryReadClient(metaclass=BigQueryReadClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(project: str,) -> str:
+    def common_project_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified project string."""
-        return "projects/{project}".format(project=project,)
+        return "projects/{project}".format(
+            project=project,
+        )
 
     @staticmethod
     def parse_common_project_path(path: str) -> Dict[str, str]:
@@ -261,10 +296,14 @@ class BigQueryReadClient(metaclass=BigQueryReadClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(project: str, location: str,) -> str:
+    def common_location_path(
+        project: str,
+        location: str,
+    ) -> str:
         """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
-            project=project, location=location,
+            project=project,
+            location=location,
         )
 
     @staticmethod
@@ -576,7 +615,12 @@ class BigQueryReadClient(metaclass=BigQueryReadClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -687,7 +731,12 @@ class BigQueryReadClient(metaclass=BigQueryReadClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -767,7 +816,12 @@ class BigQueryReadClient(metaclass=BigQueryReadClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
