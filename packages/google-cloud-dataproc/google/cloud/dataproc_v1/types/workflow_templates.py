@@ -123,20 +123,53 @@ class WorkflowTemplate(proto.Message):
             the cluster is deleted.
     """
 
-    id = proto.Field(proto.STRING, number=2,)
-    name = proto.Field(proto.STRING, number=1,)
-    version = proto.Field(proto.INT32, number=3,)
-    create_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=6,)
+    id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    version = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=6,
+    )
     placement = proto.Field(
-        proto.MESSAGE, number=7, message="WorkflowTemplatePlacement",
+        proto.MESSAGE,
+        number=7,
+        message="WorkflowTemplatePlacement",
     )
-    jobs = proto.RepeatedField(proto.MESSAGE, number=8, message="OrderedJob",)
+    jobs = proto.RepeatedField(
+        proto.MESSAGE,
+        number=8,
+        message="OrderedJob",
+    )
     parameters = proto.RepeatedField(
-        proto.MESSAGE, number=9, message="TemplateParameter",
+        proto.MESSAGE,
+        number=9,
+        message="TemplateParameter",
     )
-    dag_timeout = proto.Field(proto.MESSAGE, number=10, message=duration_pb2.Duration,)
+    dag_timeout = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message=duration_pb2.Duration,
+    )
 
 
 class WorkflowTemplatePlacement(proto.Message):
@@ -167,10 +200,16 @@ class WorkflowTemplatePlacement(proto.Message):
     """
 
     managed_cluster = proto.Field(
-        proto.MESSAGE, number=1, oneof="placement", message="ManagedCluster",
+        proto.MESSAGE,
+        number=1,
+        oneof="placement",
+        message="ManagedCluster",
     )
     cluster_selector = proto.Field(
-        proto.MESSAGE, number=2, oneof="placement", message="ClusterSelector",
+        proto.MESSAGE,
+        number=2,
+        oneof="placement",
+        message="ClusterSelector",
     )
 
 
@@ -204,9 +243,20 @@ class ManagedCluster(proto.Message):
             cluster.
     """
 
-    cluster_name = proto.Field(proto.STRING, number=2,)
-    config = proto.Field(proto.MESSAGE, number=3, message=clusters.ClusterConfig,)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=4,)
+    cluster_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    config = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=clusters.ClusterConfig,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=4,
+    )
 
 
 class ClusterSelector(proto.Message):
@@ -225,8 +275,15 @@ class ClusterSelector(proto.Message):
             have all labels to match.
     """
 
-    zone = proto.Field(proto.STRING, number=1,)
-    cluster_labels = proto.MapField(proto.STRING, proto.STRING, number=2,)
+    zone = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    cluster_labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=2,
+    )
 
 
 class OrderedJob(proto.Message):
@@ -305,34 +362,72 @@ class OrderedJob(proto.Message):
             workflow.
     """
 
-    step_id = proto.Field(proto.STRING, number=1,)
+    step_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     hadoop_job = proto.Field(
-        proto.MESSAGE, number=2, oneof="job_type", message=gcd_jobs.HadoopJob,
+        proto.MESSAGE,
+        number=2,
+        oneof="job_type",
+        message=gcd_jobs.HadoopJob,
     )
     spark_job = proto.Field(
-        proto.MESSAGE, number=3, oneof="job_type", message=gcd_jobs.SparkJob,
+        proto.MESSAGE,
+        number=3,
+        oneof="job_type",
+        message=gcd_jobs.SparkJob,
     )
     pyspark_job = proto.Field(
-        proto.MESSAGE, number=4, oneof="job_type", message=gcd_jobs.PySparkJob,
+        proto.MESSAGE,
+        number=4,
+        oneof="job_type",
+        message=gcd_jobs.PySparkJob,
     )
     hive_job = proto.Field(
-        proto.MESSAGE, number=5, oneof="job_type", message=gcd_jobs.HiveJob,
+        proto.MESSAGE,
+        number=5,
+        oneof="job_type",
+        message=gcd_jobs.HiveJob,
     )
     pig_job = proto.Field(
-        proto.MESSAGE, number=6, oneof="job_type", message=gcd_jobs.PigJob,
+        proto.MESSAGE,
+        number=6,
+        oneof="job_type",
+        message=gcd_jobs.PigJob,
     )
     spark_r_job = proto.Field(
-        proto.MESSAGE, number=11, oneof="job_type", message=gcd_jobs.SparkRJob,
+        proto.MESSAGE,
+        number=11,
+        oneof="job_type",
+        message=gcd_jobs.SparkRJob,
     )
     spark_sql_job = proto.Field(
-        proto.MESSAGE, number=7, oneof="job_type", message=gcd_jobs.SparkSqlJob,
+        proto.MESSAGE,
+        number=7,
+        oneof="job_type",
+        message=gcd_jobs.SparkSqlJob,
     )
     presto_job = proto.Field(
-        proto.MESSAGE, number=12, oneof="job_type", message=gcd_jobs.PrestoJob,
+        proto.MESSAGE,
+        number=12,
+        oneof="job_type",
+        message=gcd_jobs.PrestoJob,
     )
-    labels = proto.MapField(proto.STRING, proto.STRING, number=8,)
-    scheduling = proto.Field(proto.MESSAGE, number=9, message=gcd_jobs.JobScheduling,)
-    prerequisite_step_ids = proto.RepeatedField(proto.STRING, number=10,)
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=8,
+    )
+    scheduling = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message=gcd_jobs.JobScheduling,
+    )
+    prerequisite_step_ids = proto.RepeatedField(
+        proto.STRING,
+        number=10,
+    )
 
 
 class TemplateParameter(proto.Message):
@@ -414,10 +509,23 @@ class TemplateParameter(proto.Message):
             this parameter's value.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    fields = proto.RepeatedField(proto.STRING, number=2,)
-    description = proto.Field(proto.STRING, number=3,)
-    validation = proto.Field(proto.MESSAGE, number=4, message="ParameterValidation",)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    fields = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    validation = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="ParameterValidation",
+    )
 
 
 class ParameterValidation(proto.Message):
@@ -442,10 +550,16 @@ class ParameterValidation(proto.Message):
     """
 
     regex = proto.Field(
-        proto.MESSAGE, number=1, oneof="validation_type", message="RegexValidation",
+        proto.MESSAGE,
+        number=1,
+        oneof="validation_type",
+        message="RegexValidation",
     )
     values = proto.Field(
-        proto.MESSAGE, number=2, oneof="validation_type", message="ValueValidation",
+        proto.MESSAGE,
+        number=2,
+        oneof="validation_type",
+        message="ValueValidation",
     )
 
 
@@ -460,7 +574,10 @@ class RegexValidation(proto.Message):
             matches are not sufficient).
     """
 
-    regexes = proto.RepeatedField(proto.STRING, number=1,)
+    regexes = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ValueValidation(proto.Message):
@@ -472,7 +589,10 @@ class ValueValidation(proto.Message):
             parameter.
     """
 
-    values = proto.RepeatedField(proto.STRING, number=1,)
+    values = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
 
 
 class WorkflowMetadata(proto.Message):
@@ -536,23 +656,71 @@ class WorkflowMetadata(proto.Message):
         RUNNING = 2
         DONE = 3
 
-    template = proto.Field(proto.STRING, number=1,)
-    version = proto.Field(proto.INT32, number=2,)
-    create_cluster = proto.Field(proto.MESSAGE, number=3, message="ClusterOperation",)
-    graph = proto.Field(proto.MESSAGE, number=4, message="WorkflowGraph",)
-    delete_cluster = proto.Field(proto.MESSAGE, number=5, message="ClusterOperation",)
-    state = proto.Field(proto.ENUM, number=6, enum=State,)
-    cluster_name = proto.Field(proto.STRING, number=7,)
-    parameters = proto.MapField(proto.STRING, proto.STRING, number=8,)
-    start_time = proto.Field(proto.MESSAGE, number=9, message=timestamp_pb2.Timestamp,)
-    end_time = proto.Field(proto.MESSAGE, number=10, message=timestamp_pb2.Timestamp,)
-    cluster_uuid = proto.Field(proto.STRING, number=11,)
-    dag_timeout = proto.Field(proto.MESSAGE, number=12, message=duration_pb2.Duration,)
+    template = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    version = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    create_cluster = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="ClusterOperation",
+    )
+    graph = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="WorkflowGraph",
+    )
+    delete_cluster = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message="ClusterOperation",
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum=State,
+    )
+    cluster_name = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    parameters = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=8,
+    )
+    start_time = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message=timestamp_pb2.Timestamp,
+    )
+    cluster_uuid = proto.Field(
+        proto.STRING,
+        number=11,
+    )
+    dag_timeout = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        message=duration_pb2.Duration,
+    )
     dag_start_time = proto.Field(
-        proto.MESSAGE, number=13, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=13,
+        message=timestamp_pb2.Timestamp,
     )
     dag_end_time = proto.Field(
-        proto.MESSAGE, number=14, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=14,
+        message=timestamp_pb2.Timestamp,
     )
 
 
@@ -568,9 +736,18 @@ class ClusterOperation(proto.Message):
             Output only. Indicates the operation is done.
     """
 
-    operation_id = proto.Field(proto.STRING, number=1,)
-    error = proto.Field(proto.STRING, number=2,)
-    done = proto.Field(proto.BOOL, number=3,)
+    operation_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    error = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    done = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
 
 
 class WorkflowGraph(proto.Message):
@@ -581,7 +758,11 @@ class WorkflowGraph(proto.Message):
             Output only. The workflow nodes.
     """
 
-    nodes = proto.RepeatedField(proto.MESSAGE, number=1, message="WorkflowNode",)
+    nodes = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="WorkflowNode",
+    )
 
 
 class WorkflowNode(proto.Message):
@@ -610,11 +791,27 @@ class WorkflowNode(proto.Message):
         COMPLETED = 4
         FAILED = 5
 
-    step_id = proto.Field(proto.STRING, number=1,)
-    prerequisite_step_ids = proto.RepeatedField(proto.STRING, number=2,)
-    job_id = proto.Field(proto.STRING, number=3,)
-    state = proto.Field(proto.ENUM, number=5, enum=NodeState,)
-    error = proto.Field(proto.STRING, number=6,)
+    step_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    prerequisite_step_ids = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+    job_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum=NodeState,
+    )
+    error = proto.Field(
+        proto.STRING,
+        number=6,
+    )
 
 
 class CreateWorkflowTemplateRequest(proto.Message):
@@ -638,8 +835,15 @@ class CreateWorkflowTemplateRequest(proto.Message):
             create.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    template = proto.Field(proto.MESSAGE, number=2, message="WorkflowTemplate",)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    template = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="WorkflowTemplate",
+    )
 
 
 class GetWorkflowTemplateRequest(proto.Message):
@@ -665,8 +869,14 @@ class GetWorkflowTemplateRequest(proto.Message):
             If unspecified, retrieves the current version.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    version = proto.Field(proto.INT32, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    version = proto.Field(
+        proto.INT32,
+        number=2,
+    )
 
 
 class InstantiateWorkflowTemplateRequest(proto.Message):
@@ -711,10 +921,23 @@ class InstantiateWorkflowTemplateRequest(proto.Message):
             may not exceed 1000 characters.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    version = proto.Field(proto.INT32, number=2,)
-    request_id = proto.Field(proto.STRING, number=5,)
-    parameters = proto.MapField(proto.STRING, proto.STRING, number=6,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    version = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    request_id = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    parameters = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=6,
+    )
 
 
 class InstantiateInlineWorkflowTemplateRequest(proto.Message):
@@ -751,9 +974,19 @@ class InstantiateInlineWorkflowTemplateRequest(proto.Message):
             characters.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    template = proto.Field(proto.MESSAGE, number=2, message="WorkflowTemplate",)
-    request_id = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    template = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="WorkflowTemplate",
+    )
+    request_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class UpdateWorkflowTemplateRequest(proto.Message):
@@ -767,7 +1000,11 @@ class UpdateWorkflowTemplateRequest(proto.Message):
             version.
     """
 
-    template = proto.Field(proto.MESSAGE, number=1, message="WorkflowTemplate",)
+    template = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="WorkflowTemplate",
+    )
 
 
 class ListWorkflowTemplatesRequest(proto.Message):
@@ -795,9 +1032,18 @@ class ListWorkflowTemplatesRequest(proto.Message):
             results.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListWorkflowTemplatesResponse(proto.Message):
@@ -819,9 +1065,14 @@ class ListWorkflowTemplatesResponse(proto.Message):
         return self
 
     templates = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="WorkflowTemplate",
+        proto.MESSAGE,
+        number=1,
+        message="WorkflowTemplate",
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class DeleteWorkflowTemplateRequest(proto.Message):
@@ -849,8 +1100,14 @@ class DeleteWorkflowTemplateRequest(proto.Message):
             specified version.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    version = proto.Field(proto.INT32, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    version = proto.Field(
+        proto.INT32,
+        number=2,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

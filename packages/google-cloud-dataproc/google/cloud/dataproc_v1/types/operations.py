@@ -56,14 +56,42 @@ class BatchOperationMetadata(proto.Message):
         BATCH_OPERATION_TYPE_UNSPECIFIED = 0
         BATCH = 1
 
-    batch = proto.Field(proto.STRING, number=1,)
-    batch_uuid = proto.Field(proto.STRING, number=2,)
-    create_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
-    done_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
-    operation_type = proto.Field(proto.ENUM, number=6, enum=BatchOperationType,)
-    description = proto.Field(proto.STRING, number=7,)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=8,)
-    warnings = proto.RepeatedField(proto.STRING, number=9,)
+    batch = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    batch_uuid = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    done_time = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    operation_type = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum=BatchOperationType,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=8,
+    )
+    warnings = proto.RepeatedField(
+        proto.STRING,
+        number=9,
+    )
 
 
 class ClusterOperationStatus(proto.Message):
@@ -90,11 +118,23 @@ class ClusterOperationStatus(proto.Message):
         RUNNING = 2
         DONE = 3
 
-    state = proto.Field(proto.ENUM, number=1, enum=State,)
-    inner_state = proto.Field(proto.STRING, number=2,)
-    details = proto.Field(proto.STRING, number=3,)
+    state = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=State,
+    )
+    inner_state = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    details = proto.Field(
+        proto.STRING,
+        number=3,
+    )
     state_start_time = proto.Field(
-        proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
     )
 
 
@@ -123,16 +163,41 @@ class ClusterOperationMetadata(proto.Message):
             operation execution.
     """
 
-    cluster_name = proto.Field(proto.STRING, number=7,)
-    cluster_uuid = proto.Field(proto.STRING, number=8,)
-    status = proto.Field(proto.MESSAGE, number=9, message="ClusterOperationStatus",)
-    status_history = proto.RepeatedField(
-        proto.MESSAGE, number=10, message="ClusterOperationStatus",
+    cluster_name = proto.Field(
+        proto.STRING,
+        number=7,
     )
-    operation_type = proto.Field(proto.STRING, number=11,)
-    description = proto.Field(proto.STRING, number=12,)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=13,)
-    warnings = proto.RepeatedField(proto.STRING, number=14,)
+    cluster_uuid = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    status = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message="ClusterOperationStatus",
+    )
+    status_history = proto.RepeatedField(
+        proto.MESSAGE,
+        number=10,
+        message="ClusterOperationStatus",
+    )
+    operation_type = proto.Field(
+        proto.STRING,
+        number=11,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=12,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=13,
+    )
+    warnings = proto.RepeatedField(
+        proto.STRING,
+        number=14,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

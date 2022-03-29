@@ -78,9 +78,19 @@ class RuntimeConfig(proto.Message):
             execution.
     """
 
-    version = proto.Field(proto.STRING, number=1,)
-    container_image = proto.Field(proto.STRING, number=2,)
-    properties = proto.MapField(proto.STRING, proto.STRING, number=3,)
+    version = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    container_image = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    properties = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=3,
+    )
 
 
 class EnvironmentConfig(proto.Message):
@@ -95,9 +105,15 @@ class EnvironmentConfig(proto.Message):
             workload has access to.
     """
 
-    execution_config = proto.Field(proto.MESSAGE, number=1, message="ExecutionConfig",)
+    execution_config = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="ExecutionConfig",
+    )
     peripherals_config = proto.Field(
-        proto.MESSAGE, number=2, message="PeripheralsConfig",
+        proto.MESSAGE,
+        number=2,
+        message="PeripheralsConfig",
     )
 
 
@@ -132,11 +148,28 @@ class ExecutionConfig(proto.Message):
             encryption.
     """
 
-    service_account = proto.Field(proto.STRING, number=2,)
-    network_uri = proto.Field(proto.STRING, number=4, oneof="network",)
-    subnetwork_uri = proto.Field(proto.STRING, number=5, oneof="network",)
-    network_tags = proto.RepeatedField(proto.STRING, number=6,)
-    kms_key = proto.Field(proto.STRING, number=7,)
+    service_account = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    network_uri = proto.Field(
+        proto.STRING,
+        number=4,
+        oneof="network",
+    )
+    subnetwork_uri = proto.Field(
+        proto.STRING,
+        number=5,
+        oneof="network",
+    )
+    network_tags = proto.RepeatedField(
+        proto.STRING,
+        number=6,
+    )
+    kms_key = proto.Field(
+        proto.STRING,
+        number=7,
+    )
 
 
 class SparkHistoryServerConfig(proto.Message):
@@ -152,7 +185,10 @@ class SparkHistoryServerConfig(proto.Message):
             -  ``projects/[project_id]/regions/[region]/clusters/[cluster_name]``
     """
 
-    dataproc_cluster = proto.Field(proto.STRING, number=1,)
+    dataproc_cluster = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class PeripheralsConfig(proto.Message):
@@ -171,9 +207,14 @@ class PeripheralsConfig(proto.Message):
             configuration for the workload.
     """
 
-    metastore_service = proto.Field(proto.STRING, number=1,)
+    metastore_service = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     spark_history_server_config = proto.Field(
-        proto.MESSAGE, number=2, message="SparkHistoryServerConfig",
+        proto.MESSAGE,
+        number=2,
+        message="SparkHistoryServerConfig",
     )
 
 
@@ -192,9 +233,19 @@ class RuntimeInfo(proto.Message):
             of the diagnostics tarball.
     """
 
-    endpoints = proto.MapField(proto.STRING, proto.STRING, number=1,)
-    output_uri = proto.Field(proto.STRING, number=2,)
-    diagnostic_output_uri = proto.Field(proto.STRING, number=3,)
+    endpoints = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=1,
+    )
+    output_uri = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    diagnostic_output_uri = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class GkeClusterConfig(proto.Message):
@@ -216,9 +267,14 @@ class GkeClusterConfig(proto.Message):
             constructs a default nodePoolTarget.
     """
 
-    gke_cluster_target = proto.Field(proto.STRING, number=2,)
+    gke_cluster_target = proto.Field(
+        proto.STRING,
+        number=2,
+    )
     node_pool_target = proto.RepeatedField(
-        proto.MESSAGE, number=3, message="GkeNodePoolTarget",
+        proto.MESSAGE,
+        number=3,
+        message="GkeNodePoolTarget",
     )
 
 
@@ -247,12 +303,20 @@ class KubernetesClusterConfig(proto.Message):
             Dataproc cluster running on Kubernetes.
     """
 
-    kubernetes_namespace = proto.Field(proto.STRING, number=1,)
+    kubernetes_namespace = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     gke_cluster_config = proto.Field(
-        proto.MESSAGE, number=2, oneof="config", message="GkeClusterConfig",
+        proto.MESSAGE,
+        number=2,
+        oneof="config",
+        message="GkeClusterConfig",
     )
     kubernetes_software_config = proto.Field(
-        proto.MESSAGE, number=3, message="KubernetesSoftwareConfig",
+        proto.MESSAGE,
+        number=3,
+        message="KubernetesSoftwareConfig",
     )
 
 
@@ -281,8 +345,16 @@ class KubernetesSoftwareConfig(proto.Message):
             properties <https://cloud.google.com/dataproc/docs/concepts/cluster-properties>`__.
     """
 
-    component_version = proto.MapField(proto.STRING, proto.STRING, number=1,)
-    properties = proto.MapField(proto.STRING, proto.STRING, number=2,)
+    component_version = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=1,
+    )
+    properties = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=2,
+    )
 
 
 class GkeNodePoolTarget(proto.Message):
@@ -322,10 +394,19 @@ class GkeNodePoolTarget(proto.Message):
         SPARK_DRIVER = 3
         SPARK_EXECUTOR = 4
 
-    node_pool = proto.Field(proto.STRING, number=1,)
-    roles = proto.RepeatedField(proto.ENUM, number=2, enum=Role,)
+    node_pool = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    roles = proto.RepeatedField(
+        proto.ENUM,
+        number=2,
+        enum=Role,
+    )
     node_pool_config = proto.Field(
-        proto.MESSAGE, number=3, message="GkeNodePoolConfig",
+        proto.MESSAGE,
+        number=3,
+        message="GkeNodePoolConfig",
     )
 
 
@@ -379,15 +460,27 @@ class GkeNodePoolConfig(proto.Message):
                 or Intel Sandy Bridge".
         """
 
-        machine_type = proto.Field(proto.STRING, number=1,)
-        preemptible = proto.Field(proto.BOOL, number=10,)
-        local_ssd_count = proto.Field(proto.INT32, number=7,)
+        machine_type = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        preemptible = proto.Field(
+            proto.BOOL,
+            number=10,
+        )
+        local_ssd_count = proto.Field(
+            proto.INT32,
+            number=7,
+        )
         accelerators = proto.RepeatedField(
             proto.MESSAGE,
             number=11,
             message="GkeNodePoolConfig.GkeNodePoolAcceleratorConfig",
         )
-        min_cpu_platform = proto.Field(proto.STRING, number=13,)
+        min_cpu_platform = proto.Field(
+            proto.STRING,
+            number=13,
+        )
 
     class GkeNodePoolAcceleratorConfig(proto.Message):
         r"""A GkeNodeConfigAcceleratorConfig represents a Hardware
@@ -402,8 +495,14 @@ class GkeNodePoolConfig(proto.Message):
                 GPUs on Compute Engine).
         """
 
-        accelerator_count = proto.Field(proto.INT64, number=1,)
-        accelerator_type = proto.Field(proto.STRING, number=2,)
+        accelerator_count = proto.Field(
+            proto.INT64,
+            number=1,
+        )
+        accelerator_type = proto.Field(
+            proto.STRING,
+            number=2,
+        )
 
     class GkeNodePoolAutoscalingConfig(proto.Message):
         r"""GkeNodePoolAutoscaling contains information the cluster
@@ -420,13 +519,28 @@ class GkeNodePoolConfig(proto.Message):
                 up the cluster.
         """
 
-        min_node_count = proto.Field(proto.INT32, number=2,)
-        max_node_count = proto.Field(proto.INT32, number=3,)
+        min_node_count = proto.Field(
+            proto.INT32,
+            number=2,
+        )
+        max_node_count = proto.Field(
+            proto.INT32,
+            number=3,
+        )
 
-    config = proto.Field(proto.MESSAGE, number=2, message=GkeNodeConfig,)
-    locations = proto.RepeatedField(proto.STRING, number=13,)
+    config = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=GkeNodeConfig,
+    )
+    locations = proto.RepeatedField(
+        proto.STRING,
+        number=13,
+    )
     autoscaling = proto.Field(
-        proto.MESSAGE, number=4, message=GkeNodePoolAutoscalingConfig,
+        proto.MESSAGE,
+        number=4,
+        message=GkeNodePoolAutoscalingConfig,
     )
 
 

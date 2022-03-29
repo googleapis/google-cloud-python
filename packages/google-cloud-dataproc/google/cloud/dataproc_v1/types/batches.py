@@ -67,10 +67,23 @@ class CreateBatchRequest(proto.Message):
             is 40 characters.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    batch = proto.Field(proto.MESSAGE, number=2, message="Batch",)
-    batch_id = proto.Field(proto.STRING, number=3,)
-    request_id = proto.Field(proto.STRING, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    batch = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="Batch",
+    )
+    batch_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    request_id = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class GetBatchRequest(proto.Message):
@@ -82,7 +95,10 @@ class GetBatchRequest(proto.Message):
             Required. The name of the batch to retrieve.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListBatchesRequest(proto.Message):
@@ -103,9 +119,18 @@ class ListBatchesRequest(proto.Message):
             subsequent page.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListBatchesResponse(proto.Message):
@@ -124,8 +149,15 @@ class ListBatchesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    batches = proto.RepeatedField(proto.MESSAGE, number=1, message="Batch",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    batches = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Batch",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class DeleteBatchRequest(proto.Message):
@@ -137,7 +169,10 @@ class DeleteBatchRequest(proto.Message):
             delete.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class Batch(proto.Message):
@@ -237,41 +272,105 @@ class Batch(proto.Message):
                 the historical state.
         """
 
-        state = proto.Field(proto.ENUM, number=1, enum="Batch.State",)
-        state_message = proto.Field(proto.STRING, number=2,)
+        state = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="Batch.State",
+        )
+        state_message = proto.Field(
+            proto.STRING,
+            number=2,
+        )
         state_start_time = proto.Field(
-            proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,
+            proto.MESSAGE,
+            number=3,
+            message=timestamp_pb2.Timestamp,
         )
 
-    name = proto.Field(proto.STRING, number=1,)
-    uuid = proto.Field(proto.STRING, number=2,)
-    create_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    uuid = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
     pyspark_batch = proto.Field(
-        proto.MESSAGE, number=4, oneof="batch_config", message="PySparkBatch",
+        proto.MESSAGE,
+        number=4,
+        oneof="batch_config",
+        message="PySparkBatch",
     )
     spark_batch = proto.Field(
-        proto.MESSAGE, number=5, oneof="batch_config", message="SparkBatch",
+        proto.MESSAGE,
+        number=5,
+        oneof="batch_config",
+        message="SparkBatch",
     )
     spark_r_batch = proto.Field(
-        proto.MESSAGE, number=6, oneof="batch_config", message="SparkRBatch",
+        proto.MESSAGE,
+        number=6,
+        oneof="batch_config",
+        message="SparkRBatch",
     )
     spark_sql_batch = proto.Field(
-        proto.MESSAGE, number=7, oneof="batch_config", message="SparkSqlBatch",
+        proto.MESSAGE,
+        number=7,
+        oneof="batch_config",
+        message="SparkSqlBatch",
     )
-    runtime_info = proto.Field(proto.MESSAGE, number=8, message=shared.RuntimeInfo,)
-    state = proto.Field(proto.ENUM, number=9, enum=State,)
-    state_message = proto.Field(proto.STRING, number=10,)
-    state_time = proto.Field(proto.MESSAGE, number=11, message=timestamp_pb2.Timestamp,)
-    creator = proto.Field(proto.STRING, number=12,)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=13,)
+    runtime_info = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=shared.RuntimeInfo,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=9,
+        enum=State,
+    )
+    state_message = proto.Field(
+        proto.STRING,
+        number=10,
+    )
+    state_time = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message=timestamp_pb2.Timestamp,
+    )
+    creator = proto.Field(
+        proto.STRING,
+        number=12,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=13,
+    )
     runtime_config = proto.Field(
-        proto.MESSAGE, number=14, message=shared.RuntimeConfig,
+        proto.MESSAGE,
+        number=14,
+        message=shared.RuntimeConfig,
     )
     environment_config = proto.Field(
-        proto.MESSAGE, number=15, message=shared.EnvironmentConfig,
+        proto.MESSAGE,
+        number=15,
+        message=shared.EnvironmentConfig,
     )
-    operation = proto.Field(proto.STRING, number=16,)
-    state_history = proto.RepeatedField(proto.MESSAGE, number=17, message=StateHistory,)
+    operation = proto.Field(
+        proto.STRING,
+        number=16,
+    )
+    state_history = proto.RepeatedField(
+        proto.MESSAGE,
+        number=17,
+        message=StateHistory,
+    )
 
 
 class PySparkBatch(proto.Message):
@@ -305,12 +404,30 @@ class PySparkBatch(proto.Message):
             ``.jar``, ``.tar``, ``.tar.gz``, ``.tgz``, and ``.zip``.
     """
 
-    main_python_file_uri = proto.Field(proto.STRING, number=1,)
-    args = proto.RepeatedField(proto.STRING, number=2,)
-    python_file_uris = proto.RepeatedField(proto.STRING, number=3,)
-    jar_file_uris = proto.RepeatedField(proto.STRING, number=4,)
-    file_uris = proto.RepeatedField(proto.STRING, number=5,)
-    archive_uris = proto.RepeatedField(proto.STRING, number=6,)
+    main_python_file_uri = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    args = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+    python_file_uris = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+    jar_file_uris = proto.RepeatedField(
+        proto.STRING,
+        number=4,
+    )
+    file_uris = proto.RepeatedField(
+        proto.STRING,
+        number=5,
+    )
+    archive_uris = proto.RepeatedField(
+        proto.STRING,
+        number=6,
+    )
 
 
 class SparkBatch(proto.Message):
@@ -353,12 +470,32 @@ class SparkBatch(proto.Message):
             ``.jar``, ``.tar``, ``.tar.gz``, ``.tgz``, and ``.zip``.
     """
 
-    main_jar_file_uri = proto.Field(proto.STRING, number=1, oneof="driver",)
-    main_class = proto.Field(proto.STRING, number=2, oneof="driver",)
-    args = proto.RepeatedField(proto.STRING, number=3,)
-    jar_file_uris = proto.RepeatedField(proto.STRING, number=4,)
-    file_uris = proto.RepeatedField(proto.STRING, number=5,)
-    archive_uris = proto.RepeatedField(proto.STRING, number=6,)
+    main_jar_file_uri = proto.Field(
+        proto.STRING,
+        number=1,
+        oneof="driver",
+    )
+    main_class = proto.Field(
+        proto.STRING,
+        number=2,
+        oneof="driver",
+    )
+    args = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+    jar_file_uris = proto.RepeatedField(
+        proto.STRING,
+        number=4,
+    )
+    file_uris = proto.RepeatedField(
+        proto.STRING,
+        number=5,
+    )
+    archive_uris = proto.RepeatedField(
+        proto.STRING,
+        number=6,
+    )
 
 
 class SparkRBatch(proto.Message):
@@ -384,10 +521,22 @@ class SparkRBatch(proto.Message):
             ``.jar``, ``.tar``, ``.tar.gz``, ``.tgz``, and ``.zip``.
     """
 
-    main_r_file_uri = proto.Field(proto.STRING, number=1,)
-    args = proto.RepeatedField(proto.STRING, number=2,)
-    file_uris = proto.RepeatedField(proto.STRING, number=3,)
-    archive_uris = proto.RepeatedField(proto.STRING, number=4,)
+    main_r_file_uri = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    args = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+    file_uris = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+    archive_uris = proto.RepeatedField(
+        proto.STRING,
+        number=4,
+    )
 
 
 class SparkSqlBatch(proto.Message):
@@ -407,9 +556,19 @@ class SparkSqlBatch(proto.Message):
             to the Spark CLASSPATH.
     """
 
-    query_file_uri = proto.Field(proto.STRING, number=1,)
-    query_variables = proto.MapField(proto.STRING, proto.STRING, number=2,)
-    jar_file_uris = proto.RepeatedField(proto.STRING, number=3,)
+    query_file_uri = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    query_variables = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=2,
+    )
+    jar_file_uris = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
