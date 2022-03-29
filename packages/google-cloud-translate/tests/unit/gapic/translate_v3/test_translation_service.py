@@ -96,7 +96,11 @@ def test__get_default_mtls_endpoint():
 
 
 @pytest.mark.parametrize(
-    "client_class", [TranslationServiceClient, TranslationServiceAsyncClient,]
+    "client_class",
+    [
+        TranslationServiceClient,
+        TranslationServiceAsyncClient,
+    ],
 )
 def test_translation_service_client_from_service_account_info(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -138,7 +142,11 @@ def test_translation_service_client_service_account_always_use_jwt(
 
 
 @pytest.mark.parametrize(
-    "client_class", [TranslationServiceClient, TranslationServiceAsyncClient,]
+    "client_class",
+    [
+        TranslationServiceClient,
+        TranslationServiceAsyncClient,
+    ],
 )
 def test_translation_service_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -512,7 +520,9 @@ def test_translation_service_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -656,11 +666,16 @@ def test_translation_service_client_create_channel_credentials_file(
 
 
 @pytest.mark.parametrize(
-    "request_type", [translation_service.TranslateTextRequest, dict,]
+    "request_type",
+    [
+        translation_service.TranslateTextRequest,
+        dict,
+    ],
 )
 def test_translate_text(request_type, transport: str = "grpc"):
     client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -686,7 +701,8 @@ def test_translate_text_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -703,7 +719,8 @@ async def test_translate_text_async(
     request_type=translation_service.TranslateTextRequest,
 ):
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -755,7 +772,10 @@ def test_translate_text_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -784,7 +804,10 @@ async def test_translate_text_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_translate_text_flattened():
@@ -920,11 +943,16 @@ async def test_translate_text_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [translation_service.DetectLanguageRequest, dict,]
+    "request_type",
+    [
+        translation_service.DetectLanguageRequest,
+        dict,
+    ],
 )
 def test_detect_language(request_type, transport: str = "grpc"):
     client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -950,7 +978,8 @@ def test_detect_language_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -967,7 +996,8 @@ async def test_detect_language_async(
     request_type=translation_service.DetectLanguageRequest,
 ):
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1019,7 +1049,10 @@ def test_detect_language_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1048,7 +1081,10 @@ async def test_detect_language_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_detect_language_flattened():
@@ -1160,11 +1196,16 @@ async def test_detect_language_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [translation_service.GetSupportedLanguagesRequest, dict,]
+    "request_type",
+    [
+        translation_service.GetSupportedLanguagesRequest,
+        dict,
+    ],
 )
 def test_get_supported_languages(request_type, transport: str = "grpc"):
     client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1192,7 +1233,8 @@ def test_get_supported_languages_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1211,7 +1253,8 @@ async def test_get_supported_languages_async(
     request_type=translation_service.GetSupportedLanguagesRequest,
 ):
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1267,7 +1310,10 @@ def test_get_supported_languages_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1298,7 +1344,10 @@ async def test_get_supported_languages_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_get_supported_languages_flattened():
@@ -1408,11 +1457,16 @@ async def test_get_supported_languages_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [translation_service.TranslateDocumentRequest, dict,]
+    "request_type",
+    [
+        translation_service.TranslateDocumentRequest,
+        dict,
+    ],
 )
 def test_translate_document(request_type, transport: str = "grpc"):
     client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1443,7 +1497,8 @@ def test_translate_document_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1462,7 +1517,8 @@ async def test_translate_document_async(
     request_type=translation_service.TranslateDocumentRequest,
 ):
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1475,7 +1531,9 @@ async def test_translate_document_async(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            translation_service.TranslateDocumentResponse(model="model_value",)
+            translation_service.TranslateDocumentResponse(
+                model="model_value",
+            )
         )
         response = await client.translate_document(request)
 
@@ -1519,7 +1577,10 @@ def test_translate_document_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1550,15 +1611,23 @@ async def test_translate_document_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.parametrize(
-    "request_type", [translation_service.BatchTranslateTextRequest, dict,]
+    "request_type",
+    [
+        translation_service.BatchTranslateTextRequest,
+        dict,
+    ],
 )
 def test_batch_translate_text(request_type, transport: str = "grpc"):
     client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1586,7 +1655,8 @@ def test_batch_translate_text_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1605,7 +1675,8 @@ async def test_batch_translate_text_async(
     request_type=translation_service.BatchTranslateTextRequest,
 ):
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1661,7 +1732,10 @@ def test_batch_translate_text_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1692,15 +1766,23 @@ async def test_batch_translate_text_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.parametrize(
-    "request_type", [translation_service.BatchTranslateDocumentRequest, dict,]
+    "request_type",
+    [
+        translation_service.BatchTranslateDocumentRequest,
+        dict,
+    ],
 )
 def test_batch_translate_document(request_type, transport: str = "grpc"):
     client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1728,7 +1810,8 @@ def test_batch_translate_document_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1747,7 +1830,8 @@ async def test_batch_translate_document_async(
     request_type=translation_service.BatchTranslateDocumentRequest,
 ):
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1803,7 +1887,10 @@ def test_batch_translate_document_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1834,7 +1921,10 @@ async def test_batch_translate_document_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_batch_translate_document_flattened():
@@ -2020,11 +2110,16 @@ async def test_batch_translate_document_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [translation_service.CreateGlossaryRequest, dict,]
+    "request_type",
+    [
+        translation_service.CreateGlossaryRequest,
+        dict,
+    ],
 )
 def test_create_glossary(request_type, transport: str = "grpc"):
     client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2050,7 +2145,8 @@ def test_create_glossary_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2067,7 +2163,8 @@ async def test_create_glossary_async(
     request_type=translation_service.CreateGlossaryRequest,
 ):
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2119,7 +2216,10 @@ def test_create_glossary_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2148,7 +2248,10 @@ async def test_create_glossary_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_glossary_flattened():
@@ -2244,11 +2347,16 @@ async def test_create_glossary_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [translation_service.ListGlossariesRequest, dict,]
+    "request_type",
+    [
+        translation_service.ListGlossariesRequest,
+        dict,
+    ],
 )
 def test_list_glossaries(request_type, transport: str = "grpc"):
     client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2277,7 +2385,8 @@ def test_list_glossaries_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2294,7 +2403,8 @@ async def test_list_glossaries_async(
     request_type=translation_service.ListGlossariesRequest,
 ):
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2349,7 +2459,10 @@ def test_list_glossaries_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2378,7 +2491,10 @@ async def test_list_glossaries_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_glossaries_flattened():
@@ -2392,7 +2508,9 @@ def test_list_glossaries_flattened():
         call.return_value = translation_service.ListGlossariesResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_glossaries(parent="parent_value",)
+        client.list_glossaries(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2412,7 +2530,8 @@ def test_list_glossaries_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_glossaries(
-            translation_service.ListGlossariesRequest(), parent="parent_value",
+            translation_service.ListGlossariesRequest(),
+            parent="parent_value",
         )
 
 
@@ -2432,7 +2551,9 @@ async def test_list_glossaries_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_glossaries(parent="parent_value",)
+        response = await client.list_glossaries(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2453,13 +2574,15 @@ async def test_list_glossaries_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_glossaries(
-            translation_service.ListGlossariesRequest(), parent="parent_value",
+            translation_service.ListGlossariesRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_glossaries_pager(transport_name: str = "grpc"):
     client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2475,10 +2598,14 @@ def test_list_glossaries_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             translation_service.ListGlossariesResponse(
-                glossaries=[], next_page_token="def",
+                glossaries=[],
+                next_page_token="def",
             ),
             translation_service.ListGlossariesResponse(
-                glossaries=[translation_service.Glossary(),], next_page_token="ghi",
+                glossaries=[
+                    translation_service.Glossary(),
+                ],
+                next_page_token="ghi",
             ),
             translation_service.ListGlossariesResponse(
                 glossaries=[
@@ -2504,7 +2631,8 @@ def test_list_glossaries_pager(transport_name: str = "grpc"):
 
 def test_list_glossaries_pages(transport_name: str = "grpc"):
     client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2520,10 +2648,14 @@ def test_list_glossaries_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             translation_service.ListGlossariesResponse(
-                glossaries=[], next_page_token="def",
+                glossaries=[],
+                next_page_token="def",
             ),
             translation_service.ListGlossariesResponse(
-                glossaries=[translation_service.Glossary(),], next_page_token="ghi",
+                glossaries=[
+                    translation_service.Glossary(),
+                ],
+                next_page_token="ghi",
             ),
             translation_service.ListGlossariesResponse(
                 glossaries=[
@@ -2559,10 +2691,14 @@ async def test_list_glossaries_async_pager():
                 next_page_token="abc",
             ),
             translation_service.ListGlossariesResponse(
-                glossaries=[], next_page_token="def",
+                glossaries=[],
+                next_page_token="def",
             ),
             translation_service.ListGlossariesResponse(
-                glossaries=[translation_service.Glossary(),], next_page_token="ghi",
+                glossaries=[
+                    translation_service.Glossary(),
+                ],
+                next_page_token="ghi",
             ),
             translation_service.ListGlossariesResponse(
                 glossaries=[
@@ -2572,7 +2708,9 @@ async def test_list_glossaries_async_pager():
             ),
             RuntimeError,
         )
-        async_pager = await client.list_glossaries(request={},)
+        async_pager = await client.list_glossaries(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -2603,10 +2741,14 @@ async def test_list_glossaries_async_pages():
                 next_page_token="abc",
             ),
             translation_service.ListGlossariesResponse(
-                glossaries=[], next_page_token="def",
+                glossaries=[],
+                next_page_token="def",
             ),
             translation_service.ListGlossariesResponse(
-                glossaries=[translation_service.Glossary(),], next_page_token="ghi",
+                glossaries=[
+                    translation_service.Glossary(),
+                ],
+                next_page_token="ghi",
             ),
             translation_service.ListGlossariesResponse(
                 glossaries=[
@@ -2624,11 +2766,16 @@ async def test_list_glossaries_async_pages():
 
 
 @pytest.mark.parametrize(
-    "request_type", [translation_service.GetGlossaryRequest, dict,]
+    "request_type",
+    [
+        translation_service.GetGlossaryRequest,
+        dict,
+    ],
 )
 def test_get_glossary(request_type, transport: str = "grpc"):
     client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2662,7 +2809,8 @@ def test_get_glossary_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2678,7 +2826,8 @@ async def test_get_glossary_async(
     transport: str = "grpc_asyncio", request_type=translation_service.GetGlossaryRequest
 ):
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2689,7 +2838,10 @@ async def test_get_glossary_async(
     with mock.patch.object(type(client.transport.get_glossary), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            translation_service.Glossary(name="name_value", entry_count=1210,)
+            translation_service.Glossary(
+                name="name_value",
+                entry_count=1210,
+            )
         )
         response = await client.get_glossary(request)
 
@@ -2732,7 +2884,10 @@ def test_get_glossary_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2761,7 +2916,10 @@ async def test_get_glossary_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_glossary_flattened():
@@ -2775,7 +2933,9 @@ def test_get_glossary_flattened():
         call.return_value = translation_service.Glossary()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_glossary(name="name_value",)
+        client.get_glossary(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2795,7 +2955,8 @@ def test_get_glossary_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_glossary(
-            translation_service.GetGlossaryRequest(), name="name_value",
+            translation_service.GetGlossaryRequest(),
+            name="name_value",
         )
 
 
@@ -2815,7 +2976,9 @@ async def test_get_glossary_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_glossary(name="name_value",)
+        response = await client.get_glossary(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2836,16 +2999,22 @@ async def test_get_glossary_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_glossary(
-            translation_service.GetGlossaryRequest(), name="name_value",
+            translation_service.GetGlossaryRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [translation_service.DeleteGlossaryRequest, dict,]
+    "request_type",
+    [
+        translation_service.DeleteGlossaryRequest,
+        dict,
+    ],
 )
 def test_delete_glossary(request_type, transport: str = "grpc"):
     client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2871,7 +3040,8 @@ def test_delete_glossary_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2888,7 +3058,8 @@ async def test_delete_glossary_async(
     request_type=translation_service.DeleteGlossaryRequest,
 ):
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2940,7 +3111,10 @@ def test_delete_glossary_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2969,7 +3143,10 @@ async def test_delete_glossary_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_glossary_flattened():
@@ -2983,7 +3160,9 @@ def test_delete_glossary_flattened():
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_glossary(name="name_value",)
+        client.delete_glossary(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3003,7 +3182,8 @@ def test_delete_glossary_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_glossary(
-            translation_service.DeleteGlossaryRequest(), name="name_value",
+            translation_service.DeleteGlossaryRequest(),
+            name="name_value",
         )
 
 
@@ -3023,7 +3203,9 @@ async def test_delete_glossary_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_glossary(name="name_value",)
+        response = await client.delete_glossary(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3044,7 +3226,8 @@ async def test_delete_glossary_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_glossary(
-            translation_service.DeleteGlossaryRequest(), name="name_value",
+            translation_service.DeleteGlossaryRequest(),
+            name="name_value",
         )
 
 
@@ -3055,7 +3238,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = TranslationServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -3075,7 +3259,10 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = TranslationServiceClient(client_options=options, transport=transport,)
+        client = TranslationServiceClient(
+            client_options=options,
+            transport=transport,
+        )
 
     # It is an error to provide an api_key and a credential.
     options = mock.Mock()
@@ -3091,7 +3278,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = TranslationServiceClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -3139,7 +3327,10 @@ def test_transport_grpc_default():
     client = TranslationServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
-    assert isinstance(client.transport, transports.TranslationServiceGrpcTransport,)
+    assert isinstance(
+        client.transport,
+        transports.TranslationServiceGrpcTransport,
+    )
 
 
 def test_translation_service_base_transport_error():
@@ -3198,7 +3389,8 @@ def test_translation_service_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.TranslationServiceTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -3370,7 +3562,8 @@ def test_translation_service_grpc_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.TranslationServiceGrpcTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -3382,7 +3575,8 @@ def test_translation_service_grpc_asyncio_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.TranslationServiceGrpcAsyncIOTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -3491,12 +3685,16 @@ def test_translation_service_transport_channel_mtls_with_adc(transport_class):
 
 def test_translation_service_grpc_lro_client():
     client = TranslationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
     transport = client.transport
 
     # Ensure that we have a api-core operations client.
-    assert isinstance(transport.operations_client, operations_v1.OperationsClient,)
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsClient,
+    )
 
     # Ensure that subsequent calls to the property send the exact same object.
     assert transport.operations_client is transport.operations_client
@@ -3504,12 +3702,16 @@ def test_translation_service_grpc_lro_client():
 
 def test_translation_service_grpc_lro_async_client():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     transport = client.transport
 
     # Ensure that we have a api-core operations client.
-    assert isinstance(transport.operations_client, operations_v1.OperationsAsyncClient,)
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsAsyncClient,
+    )
 
     # Ensure that subsequent calls to the property send the exact same object.
     assert transport.operations_client is transport.operations_client
@@ -3520,7 +3722,9 @@ def test_glossary_path():
     location = "clam"
     glossary = "whelk"
     expected = "projects/{project}/locations/{location}/glossaries/{glossary}".format(
-        project=project, location=location, glossary=glossary,
+        project=project,
+        location=location,
+        glossary=glossary,
     )
     actual = TranslationServiceClient.glossary_path(project, location, glossary)
     assert expected == actual
@@ -3561,7 +3765,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "winkle"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = TranslationServiceClient.common_folder_path(folder)
     assert expected == actual
 
@@ -3579,7 +3785,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "scallop"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = TranslationServiceClient.common_organization_path(organization)
     assert expected == actual
 
@@ -3597,7 +3805,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "squid"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = TranslationServiceClient.common_project_path(project)
     assert expected == actual
 
@@ -3617,7 +3827,8 @@ def test_common_location_path():
     project = "whelk"
     location = "octopus"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = TranslationServiceClient.common_location_path(project, location)
     assert expected == actual
@@ -3642,7 +3853,8 @@ def test_client_with_default_client_info():
         transports.TranslationServiceTransport, "_prep_wrapped_messages"
     ) as prep:
         client = TranslationServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -3651,7 +3863,8 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = TranslationServiceClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -3659,7 +3872,8 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = TranslationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     with mock.patch.object(
         type(getattr(client.transport, "grpc_channel")), "close"

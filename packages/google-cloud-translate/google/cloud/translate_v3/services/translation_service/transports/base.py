@@ -31,7 +31,9 @@ from google.longrunning import operations_pb2  # type: ignore
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-translate",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-translate",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
@@ -124,10 +126,14 @@ class TranslationServiceTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.translate_text: gapic_v1.method.wrap_method(
-                self.translate_text, default_timeout=600.0, client_info=client_info,
+                self.translate_text,
+                default_timeout=600.0,
+                client_info=client_info,
             ),
             self.detect_language: gapic_v1.method.wrap_method(
-                self.detect_language, default_timeout=600.0, client_info=client_info,
+                self.detect_language,
+                default_timeout=600.0,
+                client_info=client_info,
             ),
             self.get_supported_languages: gapic_v1.method.wrap_method(
                 self.get_supported_languages,
@@ -145,7 +151,9 @@ class TranslationServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.translate_document: gapic_v1.method.wrap_method(
-                self.translate_document, default_timeout=600.0, client_info=client_info,
+                self.translate_document,
+                default_timeout=600.0,
+                client_info=client_info,
             ),
             self.batch_translate_text: gapic_v1.method.wrap_method(
                 self.batch_translate_text,
@@ -158,7 +166,9 @@ class TranslationServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.create_glossary: gapic_v1.method.wrap_method(
-                self.create_glossary, default_timeout=600.0, client_info=client_info,
+                self.create_glossary,
+                default_timeout=600.0,
+                client_info=client_info,
             ),
             self.list_glossaries: gapic_v1.method.wrap_method(
                 self.list_glossaries,
@@ -210,9 +220,9 @@ class TranslationServiceTransport(abc.ABC):
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

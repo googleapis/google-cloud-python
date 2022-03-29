@@ -199,7 +199,7 @@ class TestClient(unittest.TestCase):
 
     def test_detect_language_multiple_values(self):
         client = self._make_one(_http=object())
-        value1 = u"fa\xe7ade"  # facade (with a cedilla)
+        value1 = "fa\xe7ade"  # facade (with a cedilla)
         detection1 = {
             "confidence": 0.6166008,
             "input": value1,
