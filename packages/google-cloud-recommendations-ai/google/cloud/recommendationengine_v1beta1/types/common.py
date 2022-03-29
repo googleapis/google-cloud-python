@@ -17,7 +17,10 @@ import proto  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.recommendationengine.v1beta1", manifest={"FeatureMap",},
+    package="google.cloud.recommendationengine.v1beta1",
+    manifest={
+        "FeatureMap",
+    },
 )
 
 
@@ -55,7 +58,10 @@ class FeatureMap(proto.Message):
                 128 bytes.
         """
 
-        value = proto.RepeatedField(proto.STRING, number=1,)
+        value = proto.RepeatedField(
+            proto.STRING,
+            number=1,
+        )
 
     class FloatList(proto.Message):
         r"""A list of float features.
@@ -65,13 +71,22 @@ class FeatureMap(proto.Message):
                 Float feature value.
         """
 
-        value = proto.RepeatedField(proto.FLOAT, number=1,)
+        value = proto.RepeatedField(
+            proto.FLOAT,
+            number=1,
+        )
 
     categorical_features = proto.MapField(
-        proto.STRING, proto.MESSAGE, number=1, message=StringList,
+        proto.STRING,
+        proto.MESSAGE,
+        number=1,
+        message=StringList,
     )
     numerical_features = proto.MapField(
-        proto.STRING, proto.MESSAGE, number=2, message=FloatList,
+        proto.STRING,
+        proto.MESSAGE,
+        number=2,
+        message=FloatList,
     )
 
 

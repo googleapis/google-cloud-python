@@ -43,8 +43,15 @@ class CreateCatalogItemRequest(proto.Message):
             Required. The catalog item to create.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    catalog_item = proto.Field(proto.MESSAGE, number=2, message=catalog.CatalogItem,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    catalog_item = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=catalog.CatalogItem,
+    )
 
 
 class GetCatalogItemRequest(proto.Message):
@@ -56,7 +63,10 @@ class GetCatalogItemRequest(proto.Message):
             ``projects/*/locations/global/catalogs/default_catalog/catalogitems/some_catalog_item_id``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListCatalogItemsRequest(proto.Message):
@@ -78,10 +88,22 @@ class ListCatalogItemsRequest(proto.Message):
             results.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    filter = proto.Field(proto.STRING, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class ListCatalogItemsResponse(proto.Message):
@@ -101,9 +123,14 @@ class ListCatalogItemsResponse(proto.Message):
         return self
 
     catalog_items = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=catalog.CatalogItem,
+        proto.MESSAGE,
+        number=1,
+        message=catalog.CatalogItem,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class UpdateCatalogItemRequest(proto.Message):
@@ -122,10 +149,19 @@ class UpdateCatalogItemRequest(proto.Message):
             default update all fields.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    catalog_item = proto.Field(proto.MESSAGE, number=2, message=catalog.CatalogItem,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    catalog_item = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=catalog.CatalogItem,
+    )
     update_mask = proto.Field(
-        proto.MESSAGE, number=3, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=3,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -138,7 +174,10 @@ class DeleteCatalogItemRequest(proto.Message):
             ``projects/*/locations/global/catalogs/default_catalog/catalogItems/some_catalog_item_id``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

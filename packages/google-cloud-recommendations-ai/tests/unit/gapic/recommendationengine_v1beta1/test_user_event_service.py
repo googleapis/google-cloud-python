@@ -105,7 +105,11 @@ def test__get_default_mtls_endpoint():
 
 
 @pytest.mark.parametrize(
-    "client_class", [UserEventServiceClient, UserEventServiceAsyncClient,]
+    "client_class",
+    [
+        UserEventServiceClient,
+        UserEventServiceAsyncClient,
+    ],
 )
 def test_user_event_service_client_from_service_account_info(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -147,7 +151,11 @@ def test_user_event_service_client_service_account_always_use_jwt(
 
 
 @pytest.mark.parametrize(
-    "client_class", [UserEventServiceClient, UserEventServiceAsyncClient,]
+    "client_class",
+    [
+        UserEventServiceClient,
+        UserEventServiceAsyncClient,
+    ],
 )
 def test_user_event_service_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -521,7 +529,9 @@ def test_user_event_service_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -662,11 +672,16 @@ def test_user_event_service_client_create_channel_credentials_file(
 
 
 @pytest.mark.parametrize(
-    "request_type", [user_event_service.WriteUserEventRequest, dict,]
+    "request_type",
+    [
+        user_event_service.WriteUserEventRequest,
+        dict,
+    ],
 )
 def test_write_user_event(request_type, transport: str = "grpc"):
     client = UserEventServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -697,7 +712,8 @@ def test_write_user_event_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = UserEventServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -714,7 +730,8 @@ async def test_write_user_event_async(
     request_type=user_event_service.WriteUserEventRequest,
 ):
     client = UserEventServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -749,7 +766,9 @@ async def test_write_user_event_async_from_dict():
 
 
 def test_write_user_event_field_headers():
-    client = UserEventServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = UserEventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -769,7 +788,10 @@ def test_write_user_event_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -798,11 +820,16 @@ async def test_write_user_event_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_write_user_event_flattened():
-    client = UserEventServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = UserEventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.write_user_event), "__call__") as call:
@@ -828,7 +855,9 @@ def test_write_user_event_flattened():
 
 
 def test_write_user_event_flattened_error():
-    client = UserEventServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = UserEventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -890,11 +919,16 @@ async def test_write_user_event_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [user_event_service.CollectUserEventRequest, dict,]
+    "request_type",
+    [
+        user_event_service.CollectUserEventRequest,
+        dict,
+    ],
 )
 def test_collect_user_event(request_type, transport: str = "grpc"):
     client = UserEventServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -907,7 +941,8 @@ def test_collect_user_event(request_type, transport: str = "grpc"):
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = httpbody_pb2.HttpBody(
-            content_type="content_type_value", data=b"data_blob",
+            content_type="content_type_value",
+            data=b"data_blob",
         )
         response = client.collect_user_event(request)
 
@@ -926,7 +961,8 @@ def test_collect_user_event_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = UserEventServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -945,7 +981,8 @@ async def test_collect_user_event_async(
     request_type=user_event_service.CollectUserEventRequest,
 ):
     client = UserEventServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -958,7 +995,10 @@ async def test_collect_user_event_async(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            httpbody_pb2.HttpBody(content_type="content_type_value", data=b"data_blob",)
+            httpbody_pb2.HttpBody(
+                content_type="content_type_value",
+                data=b"data_blob",
+            )
         )
         response = await client.collect_user_event(request)
 
@@ -979,7 +1019,9 @@ async def test_collect_user_event_async_from_dict():
 
 
 def test_collect_user_event_field_headers():
-    client = UserEventServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = UserEventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1001,7 +1043,10 @@ def test_collect_user_event_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1032,11 +1077,16 @@ async def test_collect_user_event_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_collect_user_event_flattened():
-    client = UserEventServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = UserEventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1072,7 +1122,9 @@ def test_collect_user_event_flattened():
 
 
 def test_collect_user_event_flattened_error():
-    client = UserEventServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = UserEventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1148,11 +1200,16 @@ async def test_collect_user_event_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [user_event_service.ListUserEventsRequest, dict,]
+    "request_type",
+    [
+        user_event_service.ListUserEventsRequest,
+        dict,
+    ],
 )
 def test_list_user_events(request_type, transport: str = "grpc"):
     client = UserEventServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1181,7 +1238,8 @@ def test_list_user_events_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = UserEventServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1198,7 +1256,8 @@ async def test_list_user_events_async(
     request_type=user_event_service.ListUserEventsRequest,
 ):
     client = UserEventServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1231,7 +1290,9 @@ async def test_list_user_events_async_from_dict():
 
 
 def test_list_user_events_field_headers():
-    client = UserEventServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = UserEventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1251,7 +1312,10 @@ def test_list_user_events_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1280,11 +1344,16 @@ async def test_list_user_events_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_user_events_flattened():
-    client = UserEventServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = UserEventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_user_events), "__call__") as call:
@@ -1293,7 +1362,8 @@ def test_list_user_events_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.list_user_events(
-            parent="parent_value", filter="filter_value",
+            parent="parent_value",
+            filter="filter_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -1309,7 +1379,9 @@ def test_list_user_events_flattened():
 
 
 def test_list_user_events_flattened_error():
-    client = UserEventServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = UserEventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1338,7 +1410,8 @@ async def test_list_user_events_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.list_user_events(
-            parent="parent_value", filter="filter_value",
+            parent="parent_value",
+            filter="filter_value",
         )
 
         # Establish that the underlying call was made with the expected
@@ -1371,7 +1444,8 @@ async def test_list_user_events_flattened_error_async():
 
 def test_list_user_events_pager(transport_name: str = "grpc"):
     client = UserEventServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1387,13 +1461,20 @@ def test_list_user_events_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             user_event_service.ListUserEventsResponse(
-                user_events=[], next_page_token="def",
+                user_events=[],
+                next_page_token="def",
             ),
             user_event_service.ListUserEventsResponse(
-                user_events=[user_event.UserEvent(),], next_page_token="ghi",
+                user_events=[
+                    user_event.UserEvent(),
+                ],
+                next_page_token="ghi",
             ),
             user_event_service.ListUserEventsResponse(
-                user_events=[user_event.UserEvent(), user_event.UserEvent(),],
+                user_events=[
+                    user_event.UserEvent(),
+                    user_event.UserEvent(),
+                ],
             ),
             RuntimeError,
         )
@@ -1413,7 +1494,8 @@ def test_list_user_events_pager(transport_name: str = "grpc"):
 
 def test_list_user_events_pages(transport_name: str = "grpc"):
     client = UserEventServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1429,13 +1511,20 @@ def test_list_user_events_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             user_event_service.ListUserEventsResponse(
-                user_events=[], next_page_token="def",
+                user_events=[],
+                next_page_token="def",
             ),
             user_event_service.ListUserEventsResponse(
-                user_events=[user_event.UserEvent(),], next_page_token="ghi",
+                user_events=[
+                    user_event.UserEvent(),
+                ],
+                next_page_token="ghi",
             ),
             user_event_service.ListUserEventsResponse(
-                user_events=[user_event.UserEvent(), user_event.UserEvent(),],
+                user_events=[
+                    user_event.UserEvent(),
+                    user_event.UserEvent(),
+                ],
             ),
             RuntimeError,
         )
@@ -1465,17 +1554,26 @@ async def test_list_user_events_async_pager():
                 next_page_token="abc",
             ),
             user_event_service.ListUserEventsResponse(
-                user_events=[], next_page_token="def",
+                user_events=[],
+                next_page_token="def",
             ),
             user_event_service.ListUserEventsResponse(
-                user_events=[user_event.UserEvent(),], next_page_token="ghi",
+                user_events=[
+                    user_event.UserEvent(),
+                ],
+                next_page_token="ghi",
             ),
             user_event_service.ListUserEventsResponse(
-                user_events=[user_event.UserEvent(), user_event.UserEvent(),],
+                user_events=[
+                    user_event.UserEvent(),
+                    user_event.UserEvent(),
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.list_user_events(request={},)
+        async_pager = await client.list_user_events(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -1506,13 +1604,20 @@ async def test_list_user_events_async_pages():
                 next_page_token="abc",
             ),
             user_event_service.ListUserEventsResponse(
-                user_events=[], next_page_token="def",
+                user_events=[],
+                next_page_token="def",
             ),
             user_event_service.ListUserEventsResponse(
-                user_events=[user_event.UserEvent(),], next_page_token="ghi",
+                user_events=[
+                    user_event.UserEvent(),
+                ],
+                next_page_token="ghi",
             ),
             user_event_service.ListUserEventsResponse(
-                user_events=[user_event.UserEvent(), user_event.UserEvent(),],
+                user_events=[
+                    user_event.UserEvent(),
+                    user_event.UserEvent(),
+                ],
             ),
             RuntimeError,
         )
@@ -1524,11 +1629,16 @@ async def test_list_user_events_async_pages():
 
 
 @pytest.mark.parametrize(
-    "request_type", [user_event_service.PurgeUserEventsRequest, dict,]
+    "request_type",
+    [
+        user_event_service.PurgeUserEventsRequest,
+        dict,
+    ],
 )
 def test_purge_user_events(request_type, transport: str = "grpc"):
     client = UserEventServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1556,7 +1666,8 @@ def test_purge_user_events_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = UserEventServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1575,7 +1686,8 @@ async def test_purge_user_events_async(
     request_type=user_event_service.PurgeUserEventsRequest,
 ):
     client = UserEventServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1607,7 +1719,9 @@ async def test_purge_user_events_async_from_dict():
 
 
 def test_purge_user_events_field_headers():
-    client = UserEventServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = UserEventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1629,7 +1743,10 @@ def test_purge_user_events_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1660,11 +1777,16 @@ async def test_purge_user_events_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_purge_user_events_flattened():
-    client = UserEventServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = UserEventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1675,7 +1797,9 @@ def test_purge_user_events_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.purge_user_events(
-            parent="parent_value", filter="filter_value", force=True,
+            parent="parent_value",
+            filter="filter_value",
+            force=True,
         )
 
         # Establish that the underlying call was made with the expected
@@ -1694,7 +1818,9 @@ def test_purge_user_events_flattened():
 
 
 def test_purge_user_events_flattened_error():
-    client = UserEventServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = UserEventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1726,7 +1852,9 @@ async def test_purge_user_events_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.purge_user_events(
-            parent="parent_value", filter="filter_value", force=True,
+            parent="parent_value",
+            filter="filter_value",
+            force=True,
         )
 
         # Establish that the underlying call was made with the expected
@@ -1761,10 +1889,17 @@ async def test_purge_user_events_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [import_.ImportUserEventsRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        import_.ImportUserEventsRequest,
+        dict,
+    ],
+)
 def test_import_user_events(request_type, transport: str = "grpc"):
     client = UserEventServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1792,7 +1927,8 @@ def test_import_user_events_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = UserEventServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1810,7 +1946,8 @@ async def test_import_user_events_async(
     transport: str = "grpc_asyncio", request_type=import_.ImportUserEventsRequest
 ):
     client = UserEventServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1842,7 +1979,9 @@ async def test_import_user_events_async_from_dict():
 
 
 def test_import_user_events_field_headers():
-    client = UserEventServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = UserEventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1864,7 +2003,10 @@ def test_import_user_events_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1895,11 +2037,16 @@ async def test_import_user_events_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_import_user_events_flattened():
-    client = UserEventServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = UserEventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1943,7 +2090,9 @@ def test_import_user_events_flattened():
 
 
 def test_import_user_events_flattened_error():
-    client = UserEventServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = UserEventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2041,7 +2190,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = UserEventServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -2061,7 +2211,10 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = UserEventServiceClient(client_options=options, transport=transport,)
+        client = UserEventServiceClient(
+            client_options=options,
+            transport=transport,
+        )
 
     # It is an error to provide an api_key and a credential.
     options = mock.Mock()
@@ -2077,7 +2230,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = UserEventServiceClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -2122,8 +2276,13 @@ def test_transport_adc(transport_class):
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
-    client = UserEventServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
-    assert isinstance(client.transport, transports.UserEventServiceGrpcTransport,)
+    client = UserEventServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    assert isinstance(
+        client.transport,
+        transports.UserEventServiceGrpcTransport,
+    )
 
 
 def test_user_event_service_base_transport_error():
@@ -2177,7 +2336,8 @@ def test_user_event_service_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.UserEventServiceTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -2335,7 +2495,8 @@ def test_user_event_service_grpc_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.UserEventServiceGrpcTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -2347,7 +2508,8 @@ def test_user_event_service_grpc_asyncio_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.UserEventServiceGrpcAsyncIOTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -2456,12 +2618,16 @@ def test_user_event_service_transport_channel_mtls_with_adc(transport_class):
 
 def test_user_event_service_grpc_lro_client():
     client = UserEventServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
     transport = client.transport
 
     # Ensure that we have a api-core operations client.
-    assert isinstance(transport.operations_client, operations_v1.OperationsClient,)
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsClient,
+    )
 
     # Ensure that subsequent calls to the property send the exact same object.
     assert transport.operations_client is transport.operations_client
@@ -2469,12 +2635,16 @@ def test_user_event_service_grpc_lro_client():
 
 def test_user_event_service_grpc_lro_async_client():
     client = UserEventServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     transport = client.transport
 
     # Ensure that we have a api-core operations client.
-    assert isinstance(transport.operations_client, operations_v1.OperationsAsyncClient,)
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsAsyncClient,
+    )
 
     # Ensure that subsequent calls to the property send the exact same object.
     assert transport.operations_client is transport.operations_client
@@ -2486,7 +2656,10 @@ def test_event_store_path():
     catalog = "whelk"
     event_store = "octopus"
     expected = "projects/{project}/locations/{location}/catalogs/{catalog}/eventStores/{event_store}".format(
-        project=project, location=location, catalog=catalog, event_store=event_store,
+        project=project,
+        location=location,
+        catalog=catalog,
+        event_store=event_store,
     )
     actual = UserEventServiceClient.event_store_path(
         project, location, catalog, event_store
@@ -2530,7 +2703,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "scallop"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = UserEventServiceClient.common_folder_path(folder)
     assert expected == actual
 
@@ -2548,7 +2723,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "squid"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = UserEventServiceClient.common_organization_path(organization)
     assert expected == actual
 
@@ -2566,7 +2743,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "whelk"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = UserEventServiceClient.common_project_path(project)
     assert expected == actual
 
@@ -2586,7 +2765,8 @@ def test_common_location_path():
     project = "oyster"
     location = "nudibranch"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = UserEventServiceClient.common_location_path(project, location)
     assert expected == actual
@@ -2611,7 +2791,8 @@ def test_client_with_default_client_info():
         transports.UserEventServiceTransport, "_prep_wrapped_messages"
     ) as prep:
         client = UserEventServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -2620,7 +2801,8 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = UserEventServiceClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -2628,7 +2810,8 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = UserEventServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     with mock.patch.object(
         type(getattr(client.transport, "grpc_channel")), "close"

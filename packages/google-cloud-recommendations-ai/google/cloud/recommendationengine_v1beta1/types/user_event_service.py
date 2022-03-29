@@ -68,9 +68,18 @@ class PurgeUserEventsRequest(proto.Message):
             returned.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    filter = proto.Field(proto.STRING, number=2,)
-    force = proto.Field(proto.BOOL, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    force = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
 
 
 class PurgeUserEventsMetadata(proto.Message):
@@ -85,8 +94,15 @@ class PurgeUserEventsMetadata(proto.Message):
             Operation create time.
     """
 
-    operation_name = proto.Field(proto.STRING, number=1,)
-    create_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
+    operation_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 class PurgeUserEventsResponse(proto.Message):
@@ -104,9 +120,14 @@ class PurgeUserEventsResponse(proto.Message):
             will be returned.
     """
 
-    purged_events_count = proto.Field(proto.INT64, number=1,)
+    purged_events_count = proto.Field(
+        proto.INT64,
+        number=1,
+    )
     user_events_sample = proto.RepeatedField(
-        proto.MESSAGE, number=2, message=gcr_user_event.UserEvent,
+        proto.MESSAGE,
+        number=2,
+        message=gcr_user_event.UserEvent,
     )
 
 
@@ -121,8 +142,15 @@ class WriteUserEventRequest(proto.Message):
             Required. User event to write.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    user_event = proto.Field(proto.MESSAGE, number=2, message=gcr_user_event.UserEvent,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    user_event = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=gcr_user_event.UserEvent,
+    )
 
 
 class CollectUserEventRequest(proto.Message):
@@ -148,10 +176,22 @@ class CollectUserEventRequest(proto.Message):
             abbreviated to reduce the payload bytes.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    user_event = proto.Field(proto.STRING, number=2,)
-    uri = proto.Field(proto.STRING, number=3,)
-    ets = proto.Field(proto.INT64, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    user_event = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    uri = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    ets = proto.Field(
+        proto.INT64,
+        number=4,
+    )
 
 
 class ListUserEventsRequest(proto.Message):
@@ -207,10 +247,22 @@ class ListUserEventsRequest(proto.Message):
             -  Example 6: eventsMissingCatalogItems
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    filter = proto.Field(proto.STRING, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class ListUserEventsResponse(proto.Message):
@@ -229,9 +281,14 @@ class ListUserEventsResponse(proto.Message):
         return self
 
     user_events = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=gcr_user_event.UserEvent,
+        proto.MESSAGE,
+        number=1,
+        message=gcr_user_event.UserEvent,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

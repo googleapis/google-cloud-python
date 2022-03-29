@@ -21,7 +21,10 @@ from google.protobuf import struct_pb2  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.recommendationengine.v1beta1",
-    manifest={"PredictRequest", "PredictResponse",},
+    manifest={
+        "PredictRequest",
+        "PredictResponse",
+    },
 )
 
 
@@ -138,16 +141,42 @@ class PredictRequest(proto.Message):
             examples of labels.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    user_event = proto.Field(proto.MESSAGE, number=2, message=gcr_user_event.UserEvent,)
-    page_size = proto.Field(proto.INT32, number=7,)
-    page_token = proto.Field(proto.STRING, number=8,)
-    filter = proto.Field(proto.STRING, number=3,)
-    dry_run = proto.Field(proto.BOOL, number=4,)
-    params = proto.MapField(
-        proto.STRING, proto.MESSAGE, number=6, message=struct_pb2.Value,
+    name = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    labels = proto.MapField(proto.STRING, proto.STRING, number=9,)
+    user_event = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=gcr_user_event.UserEvent,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=7,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    dry_run = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
+    params = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=6,
+        message=struct_pb2.Value,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=9,
+    )
 
 
 class PredictResponse(proto.Message):
@@ -197,23 +226,48 @@ class PredictResponse(proto.Message):
                    ``PredictRequest.params``.
         """
 
-        id = proto.Field(proto.STRING, number=1,)
+        id = proto.Field(
+            proto.STRING,
+            number=1,
+        )
         item_metadata = proto.MapField(
-            proto.STRING, proto.MESSAGE, number=2, message=struct_pb2.Value,
+            proto.STRING,
+            proto.MESSAGE,
+            number=2,
+            message=struct_pb2.Value,
         )
 
     @property
     def raw_page(self):
         return self
 
-    results = proto.RepeatedField(proto.MESSAGE, number=1, message=PredictionResult,)
-    recommendation_token = proto.Field(proto.STRING, number=2,)
-    items_missing_in_catalog = proto.RepeatedField(proto.STRING, number=3,)
-    dry_run = proto.Field(proto.BOOL, number=4,)
-    metadata = proto.MapField(
-        proto.STRING, proto.MESSAGE, number=5, message=struct_pb2.Value,
+    results = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=PredictionResult,
     )
-    next_page_token = proto.Field(proto.STRING, number=6,)
+    recommendation_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    items_missing_in_catalog = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+    dry_run = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
+    metadata = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=5,
+        message=struct_pb2.Value,
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=6,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

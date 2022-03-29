@@ -56,7 +56,10 @@ class GcsSource(proto.Message):
             the expected file format and setup instructions.
     """
 
-    input_uris = proto.RepeatedField(proto.STRING, number=1,)
+    input_uris = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CatalogInlineSource(proto.Message):
@@ -70,7 +73,9 @@ class CatalogInlineSource(proto.Message):
     """
 
     catalog_items = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=catalog.CatalogItem,
+        proto.MESSAGE,
+        number=1,
+        message=catalog.CatalogItem,
     )
 
 
@@ -85,7 +90,9 @@ class UserEventInlineSource(proto.Message):
     """
 
     user_events = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=user_event.UserEvent,
+        proto.MESSAGE,
+        number=1,
+        message=user_event.UserEvent,
     )
 
 
@@ -104,7 +111,11 @@ class ImportErrorsConfig(proto.Message):
             This field is a member of `oneof`_ ``destination``.
     """
 
-    gcs_prefix = proto.Field(proto.STRING, number=1, oneof="destination",)
+    gcs_prefix = proto.Field(
+        proto.STRING,
+        number=1,
+        oneof="destination",
+    )
 
 
 class ImportCatalogItemsRequest(proto.Message):
@@ -130,10 +141,24 @@ class ImportCatalogItemsRequest(proto.Message):
             incurred during the Import.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    request_id = proto.Field(proto.STRING, number=2,)
-    input_config = proto.Field(proto.MESSAGE, number=3, message="InputConfig",)
-    errors_config = proto.Field(proto.MESSAGE, number=4, message="ImportErrorsConfig",)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    request_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    input_config = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="InputConfig",
+    )
+    errors_config = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="ImportErrorsConfig",
+    )
 
 
 class ImportUserEventsRequest(proto.Message):
@@ -159,10 +184,24 @@ class ImportUserEventsRequest(proto.Message):
             incurred during the Import.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    request_id = proto.Field(proto.STRING, number=2,)
-    input_config = proto.Field(proto.MESSAGE, number=3, message="InputConfig",)
-    errors_config = proto.Field(proto.MESSAGE, number=4, message="ImportErrorsConfig",)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    request_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    input_config = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="InputConfig",
+    )
+    errors_config = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="ImportErrorsConfig",
+    )
 
 
 class InputConfig(proto.Message):
@@ -194,13 +233,22 @@ class InputConfig(proto.Message):
     """
 
     catalog_inline_source = proto.Field(
-        proto.MESSAGE, number=1, oneof="source", message="CatalogInlineSource",
+        proto.MESSAGE,
+        number=1,
+        oneof="source",
+        message="CatalogInlineSource",
     )
     gcs_source = proto.Field(
-        proto.MESSAGE, number=2, oneof="source", message="GcsSource",
+        proto.MESSAGE,
+        number=2,
+        oneof="source",
+        message="GcsSource",
     )
     user_event_inline_source = proto.Field(
-        proto.MESSAGE, number=3, oneof="source", message="UserEventInlineSource",
+        proto.MESSAGE,
+        number=3,
+        oneof="source",
+        message="UserEventInlineSource",
     )
 
 
@@ -229,12 +277,32 @@ class ImportMetadata(proto.Message):
             is done, this is also the finish time.
     """
 
-    operation_name = proto.Field(proto.STRING, number=5,)
-    request_id = proto.Field(proto.STRING, number=3,)
-    create_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
-    success_count = proto.Field(proto.INT64, number=1,)
-    failure_count = proto.Field(proto.INT64, number=2,)
-    update_time = proto.Field(proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,)
+    operation_name = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    request_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    success_count = proto.Field(
+        proto.INT64,
+        number=1,
+    )
+    failure_count = proto.Field(
+        proto.INT64,
+        number=2,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 class ImportCatalogItemsResponse(proto.Message):
@@ -253,9 +321,15 @@ class ImportCatalogItemsResponse(proto.Message):
     """
 
     error_samples = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=status_pb2.Status,
+        proto.MESSAGE,
+        number=1,
+        message=status_pb2.Status,
     )
-    errors_config = proto.Field(proto.MESSAGE, number=2, message="ImportErrorsConfig",)
+    errors_config = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="ImportErrorsConfig",
+    )
 
 
 class ImportUserEventsResponse(proto.Message):
@@ -277,11 +351,19 @@ class ImportUserEventsResponse(proto.Message):
     """
 
     error_samples = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=status_pb2.Status,
+        proto.MESSAGE,
+        number=1,
+        message=status_pb2.Status,
     )
-    errors_config = proto.Field(proto.MESSAGE, number=2, message="ImportErrorsConfig",)
+    errors_config = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="ImportErrorsConfig",
+    )
     import_summary = proto.Field(
-        proto.MESSAGE, number=3, message="UserEventImportSummary",
+        proto.MESSAGE,
+        number=3,
+        message="UserEventImportSummary",
     )
 
 
@@ -299,8 +381,14 @@ class UserEventImportSummary(proto.Message):
             catalog.
     """
 
-    joined_events_count = proto.Field(proto.INT64, number=1,)
-    unjoined_events_count = proto.Field(proto.INT64, number=2,)
+    joined_events_count = proto.Field(
+        proto.INT64,
+        number=1,
+    )
+    unjoined_events_count = proto.Field(
+        proto.INT64,
+        number=2,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

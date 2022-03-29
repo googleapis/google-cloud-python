@@ -71,8 +71,10 @@ class ListPredictionApiKeyRegistrationsPager:
                 sent along with the request as metadata.
         """
         self._method = method
-        self._request = prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest(
-            request
+        self._request = (
+            prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest(
+                request
+            )
         )
         self._response = response
         self._metadata = metadata
@@ -146,8 +148,10 @@ class ListPredictionApiKeyRegistrationsAsyncPager:
                 sent along with the request as metadata.
         """
         self._method = method
-        self._request = prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest(
-            request
+        self._request = (
+            prediction_apikey_registry_service.ListPredictionApiKeyRegistrationsRequest(
+                request
+            )
         )
         self._response = response
         self._metadata = metadata
