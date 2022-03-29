@@ -59,7 +59,10 @@ class CloudBuildClientMeta(type):
     _transport_registry["grpc"] = CloudBuildGrpcTransport
     _transport_registry["grpc_asyncio"] = CloudBuildGrpcAsyncIOTransport
 
-    def get_transport_class(cls, label: str = None,) -> Type[CloudBuildTransport]:
+    def get_transport_class(
+        cls,
+        label: str = None,
+    ) -> Type[CloudBuildTransport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -172,9 +175,15 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         return self._transport
 
     @staticmethod
-    def build_path(project: str, build: str,) -> str:
+    def build_path(
+        project: str,
+        build: str,
+    ) -> str:
         """Returns a fully-qualified build string."""
-        return "projects/{project}/builds/{build}".format(project=project, build=build,)
+        return "projects/{project}/builds/{build}".format(
+            project=project,
+            build=build,
+        )
 
     @staticmethod
     def parse_build_path(path: str) -> Dict[str, str]:
@@ -183,10 +192,14 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def build_trigger_path(project: str, trigger: str,) -> str:
+    def build_trigger_path(
+        project: str,
+        trigger: str,
+    ) -> str:
         """Returns a fully-qualified build_trigger string."""
         return "projects/{project}/triggers/{trigger}".format(
-            project=project, trigger=trigger,
+            project=project,
+            trigger=trigger,
         )
 
     @staticmethod
@@ -196,10 +209,18 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def crypto_key_path(project: str, location: str, keyring: str, key: str,) -> str:
+    def crypto_key_path(
+        project: str,
+        location: str,
+        keyring: str,
+        key: str,
+    ) -> str:
         """Returns a fully-qualified crypto_key string."""
         return "projects/{project}/locations/{location}/keyRings/{keyring}/cryptoKeys/{key}".format(
-            project=project, location=location, keyring=keyring, key=key,
+            project=project,
+            location=location,
+            keyring=keyring,
+            key=key,
         )
 
     @staticmethod
@@ -212,10 +233,14 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def network_path(project: str, network: str,) -> str:
+    def network_path(
+        project: str,
+        network: str,
+    ) -> str:
         """Returns a fully-qualified network string."""
         return "projects/{project}/global/networks/{network}".format(
-            project=project, network=network,
+            project=project,
+            network=network,
         )
 
     @staticmethod
@@ -227,10 +252,16 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def secret_version_path(project: str, secret: str, version: str,) -> str:
+    def secret_version_path(
+        project: str,
+        secret: str,
+        version: str,
+    ) -> str:
         """Returns a fully-qualified secret_version string."""
         return "projects/{project}/secrets/{secret}/versions/{version}".format(
-            project=project, secret=secret, version=version,
+            project=project,
+            secret=secret,
+            version=version,
         )
 
     @staticmethod
@@ -243,10 +274,14 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def service_account_path(project: str, service_account: str,) -> str:
+    def service_account_path(
+        project: str,
+        service_account: str,
+    ) -> str:
         """Returns a fully-qualified service_account string."""
         return "projects/{project}/serviceAccounts/{service_account}".format(
-            project=project, service_account=service_account,
+            project=project,
+            service_account=service_account,
         )
 
     @staticmethod
@@ -259,10 +294,14 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def subscription_path(project: str, subscription: str,) -> str:
+    def subscription_path(
+        project: str,
+        subscription: str,
+    ) -> str:
         """Returns a fully-qualified subscription string."""
         return "projects/{project}/subscriptions/{subscription}".format(
-            project=project, subscription=subscription,
+            project=project,
+            subscription=subscription,
         )
 
     @staticmethod
@@ -274,9 +313,15 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def topic_path(project: str, topic: str,) -> str:
+    def topic_path(
+        project: str,
+        topic: str,
+    ) -> str:
         """Returns a fully-qualified topic string."""
-        return "projects/{project}/topics/{topic}".format(project=project, topic=topic,)
+        return "projects/{project}/topics/{topic}".format(
+            project=project,
+            topic=topic,
+        )
 
     @staticmethod
     def parse_topic_path(path: str) -> Dict[str, str]:
@@ -285,10 +330,18 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def worker_pool_path(project: str, location: str, worker_pool: str,) -> str:
+    def worker_pool_path(
+        project: str,
+        location: str,
+        worker_pool: str,
+    ) -> str:
         """Returns a fully-qualified worker_pool string."""
-        return "projects/{project}/locations/{location}/workerPools/{worker_pool}".format(
-            project=project, location=location, worker_pool=worker_pool,
+        return (
+            "projects/{project}/locations/{location}/workerPools/{worker_pool}".format(
+                project=project,
+                location=location,
+                worker_pool=worker_pool,
+            )
         )
 
     @staticmethod
@@ -301,7 +354,9 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_billing_account_path(billing_account: str,) -> str:
+    def common_billing_account_path(
+        billing_account: str,
+    ) -> str:
         """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
@@ -314,9 +369,13 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(folder: str,) -> str:
+    def common_folder_path(
+        folder: str,
+    ) -> str:
         """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(folder=folder,)
+        return "folders/{folder}".format(
+            folder=folder,
+        )
 
     @staticmethod
     def parse_common_folder_path(path: str) -> Dict[str, str]:
@@ -325,9 +384,13 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(organization: str,) -> str:
+    def common_organization_path(
+        organization: str,
+    ) -> str:
         """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(organization=organization,)
+        return "organizations/{organization}".format(
+            organization=organization,
+        )
 
     @staticmethod
     def parse_common_organization_path(path: str) -> Dict[str, str]:
@@ -336,9 +399,13 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(project: str,) -> str:
+    def common_project_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified project string."""
-        return "projects/{project}".format(project=project,)
+        return "projects/{project}".format(
+            project=project,
+        )
 
     @staticmethod
     def parse_common_project_path(path: str) -> Dict[str, str]:
@@ -347,10 +414,14 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(project: str, location: str,) -> str:
+    def common_location_path(
+        project: str,
+        location: str,
+    ) -> str:
         """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
-            project=project, location=location,
+            project=project,
+            location=location,
         )
 
     @staticmethod
@@ -642,7 +713,12 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.create_build]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -766,7 +842,12 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.get_build]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -863,12 +944,20 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.list_builds]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListBuildsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -980,7 +1069,12 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.cancel_build]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1131,7 +1225,12 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.retry_build]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1271,7 +1370,12 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1379,7 +1483,12 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.create_build_trigger]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1478,7 +1587,12 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.get_build_trigger]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1568,12 +1682,20 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.list_build_triggers]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListBuildTriggersPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1661,7 +1783,10 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def update_build_trigger(
@@ -1768,7 +1893,12 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.update_build_trigger]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1896,7 +2026,12 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.run_build_trigger]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1969,7 +2104,12 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.receive_trigger_webhook]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2104,7 +2244,12 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -2216,7 +2361,12 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2323,7 +2473,12 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -2455,7 +2610,12 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -2556,12 +2716,20 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListWorkerPoolsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -2583,7 +2751,9 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-build",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-build",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()

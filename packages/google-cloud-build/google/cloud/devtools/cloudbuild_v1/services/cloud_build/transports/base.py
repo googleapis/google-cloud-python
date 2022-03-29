@@ -32,7 +32,9 @@ from google.protobuf import empty_pb2  # type: ignore
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-build",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-build",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
@@ -122,7 +124,9 @@ class CloudBuildTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.create_build: gapic_v1.method.wrap_method(
-                self.create_build, default_timeout=600.0, client_info=client_info,
+                self.create_build,
+                default_timeout=600.0,
+                client_info=client_info,
             ),
             self.get_build: gapic_v1.method.wrap_method(
                 self.get_build,
@@ -155,13 +159,19 @@ class CloudBuildTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.cancel_build: gapic_v1.method.wrap_method(
-                self.cancel_build, default_timeout=600.0, client_info=client_info,
+                self.cancel_build,
+                default_timeout=600.0,
+                client_info=client_info,
             ),
             self.retry_build: gapic_v1.method.wrap_method(
-                self.retry_build, default_timeout=600.0, client_info=client_info,
+                self.retry_build,
+                default_timeout=600.0,
+                client_info=client_info,
             ),
             self.approve_build: gapic_v1.method.wrap_method(
-                self.approve_build, default_timeout=None, client_info=client_info,
+                self.approve_build,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.create_build_trigger: gapic_v1.method.wrap_method(
                 self.create_build_trigger,
@@ -219,7 +229,9 @@ class CloudBuildTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.run_build_trigger: gapic_v1.method.wrap_method(
-                self.run_build_trigger, default_timeout=600.0, client_info=client_info,
+                self.run_build_trigger,
+                default_timeout=600.0,
+                client_info=client_info,
             ),
             self.receive_trigger_webhook: gapic_v1.method.wrap_method(
                 self.receive_trigger_webhook,
@@ -227,7 +239,9 @@ class CloudBuildTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.create_worker_pool: gapic_v1.method.wrap_method(
-                self.create_worker_pool, default_timeout=600.0, client_info=client_info,
+                self.create_worker_pool,
+                default_timeout=600.0,
+                client_info=client_info,
             ),
             self.get_worker_pool: gapic_v1.method.wrap_method(
                 self.get_worker_pool,
@@ -245,10 +259,14 @@ class CloudBuildTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.delete_worker_pool: gapic_v1.method.wrap_method(
-                self.delete_worker_pool, default_timeout=600.0, client_info=client_info,
+                self.delete_worker_pool,
+                default_timeout=600.0,
+                client_info=client_info,
             ),
             self.update_worker_pool: gapic_v1.method.wrap_method(
-                self.update_worker_pool, default_timeout=600.0, client_info=client_info,
+                self.update_worker_pool,
+                default_timeout=600.0,
+                client_info=client_info,
             ),
             self.list_worker_pools: gapic_v1.method.wrap_method(
                 self.list_worker_pools,
@@ -270,9 +288,9 @@ class CloudBuildTransport(abc.ABC):
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 
