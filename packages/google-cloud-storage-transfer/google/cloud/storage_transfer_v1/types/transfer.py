@@ -45,7 +45,10 @@ class GetGoogleServiceAccountRequest(proto.Message):
             is associated with.
     """
 
-    project_id = proto.Field(proto.STRING, number=1,)
+    project_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CreateTransferJobRequest(proto.Message):
@@ -57,7 +60,9 @@ class CreateTransferJobRequest(proto.Message):
     """
 
     transfer_job = proto.Field(
-        proto.MESSAGE, number=1, message=transfer_types.TransferJob,
+        proto.MESSAGE,
+        number=1,
+        message=transfer_types.TransferJob,
     )
 
 
@@ -98,13 +103,23 @@ class UpdateTransferJobRequest(proto.Message):
             [INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT].
     """
 
-    job_name = proto.Field(proto.STRING, number=1,)
-    project_id = proto.Field(proto.STRING, number=2,)
+    job_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    project_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
     transfer_job = proto.Field(
-        proto.MESSAGE, number=3, message=transfer_types.TransferJob,
+        proto.MESSAGE,
+        number=3,
+        message=transfer_types.TransferJob,
     )
     update_transfer_job_field_mask = proto.Field(
-        proto.MESSAGE, number=4, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=4,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -120,8 +135,14 @@ class GetTransferJobRequest(proto.Message):
             Console project that owns the job.
     """
 
-    job_name = proto.Field(proto.STRING, number=1,)
-    project_id = proto.Field(proto.STRING, number=2,)
+    job_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    project_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class ListTransferJobsRequest(proto.Message):
@@ -150,9 +171,18 @@ class ListTransferJobsRequest(proto.Message):
             The list page token.
     """
 
-    filter = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=4,)
-    page_token = proto.Field(proto.STRING, number=5,)
+    filter = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=4,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class ListTransferJobsResponse(proto.Message):
@@ -170,9 +200,14 @@ class ListTransferJobsResponse(proto.Message):
         return self
 
     transfer_jobs = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=transfer_types.TransferJob,
+        proto.MESSAGE,
+        number=1,
+        message=transfer_types.TransferJob,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class PauseTransferOperationRequest(proto.Message):
@@ -183,7 +218,10 @@ class PauseTransferOperationRequest(proto.Message):
             Required. The name of the transfer operation.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ResumeTransferOperationRequest(proto.Message):
@@ -194,7 +232,10 @@ class ResumeTransferOperationRequest(proto.Message):
             Required. The name of the transfer operation.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class RunTransferJobRequest(proto.Message):
@@ -208,8 +249,14 @@ class RunTransferJobRequest(proto.Message):
             Console project that owns the transfer job.
     """
 
-    job_name = proto.Field(proto.STRING, number=1,)
-    project_id = proto.Field(proto.STRING, number=2,)
+    job_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    project_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

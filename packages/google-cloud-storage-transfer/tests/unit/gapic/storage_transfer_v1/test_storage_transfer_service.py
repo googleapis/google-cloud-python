@@ -103,7 +103,11 @@ def test__get_default_mtls_endpoint():
 
 
 @pytest.mark.parametrize(
-    "client_class", [StorageTransferServiceClient, StorageTransferServiceAsyncClient,]
+    "client_class",
+    [
+        StorageTransferServiceClient,
+        StorageTransferServiceAsyncClient,
+    ],
 )
 def test_storage_transfer_service_client_from_service_account_info(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -145,7 +149,11 @@ def test_storage_transfer_service_client_service_account_always_use_jwt(
 
 
 @pytest.mark.parametrize(
-    "client_class", [StorageTransferServiceClient, StorageTransferServiceAsyncClient,]
+    "client_class",
+    [
+        StorageTransferServiceClient,
+        StorageTransferServiceAsyncClient,
+    ],
 )
 def test_storage_transfer_service_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -529,7 +537,9 @@ def test_storage_transfer_service_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -670,11 +680,16 @@ def test_storage_transfer_service_client_create_channel_credentials_file(
 
 
 @pytest.mark.parametrize(
-    "request_type", [transfer.GetGoogleServiceAccountRequest, dict,]
+    "request_type",
+    [
+        transfer.GetGoogleServiceAccountRequest,
+        dict,
+    ],
 )
 def test_get_google_service_account(request_type, transport: str = "grpc"):
     client = StorageTransferServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -687,7 +702,8 @@ def test_get_google_service_account(request_type, transport: str = "grpc"):
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = transfer_types.GoogleServiceAccount(
-            account_email="account_email_value", subject_id="subject_id_value",
+            account_email="account_email_value",
+            subject_id="subject_id_value",
         )
         response = client.get_google_service_account(request)
 
@@ -706,7 +722,8 @@ def test_get_google_service_account_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = StorageTransferServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -725,7 +742,8 @@ async def test_get_google_service_account_async(
     request_type=transfer.GetGoogleServiceAccountRequest,
 ):
     client = StorageTransferServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -739,7 +757,8 @@ async def test_get_google_service_account_async(
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             transfer_types.GoogleServiceAccount(
-                account_email="account_email_value", subject_id="subject_id_value",
+                account_email="account_email_value",
+                subject_id="subject_id_value",
             )
         )
         response = await client.get_google_service_account(request)
@@ -760,10 +779,17 @@ async def test_get_google_service_account_async_from_dict():
     await test_get_google_service_account_async(request_type=dict)
 
 
-@pytest.mark.parametrize("request_type", [transfer.CreateTransferJobRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        transfer.CreateTransferJobRequest,
+        dict,
+    ],
+)
 def test_create_transfer_job(request_type, transport: str = "grpc"):
     client = StorageTransferServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -802,7 +828,8 @@ def test_create_transfer_job_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = StorageTransferServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -820,7 +847,8 @@ async def test_create_transfer_job_async(
     transport: str = "grpc_asyncio", request_type=transfer.CreateTransferJobRequest
 ):
     client = StorageTransferServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -862,10 +890,17 @@ async def test_create_transfer_job_async_from_dict():
     await test_create_transfer_job_async(request_type=dict)
 
 
-@pytest.mark.parametrize("request_type", [transfer.UpdateTransferJobRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        transfer.UpdateTransferJobRequest,
+        dict,
+    ],
+)
 def test_update_transfer_job(request_type, transport: str = "grpc"):
     client = StorageTransferServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -904,7 +939,8 @@ def test_update_transfer_job_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = StorageTransferServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -922,7 +958,8 @@ async def test_update_transfer_job_async(
     transport: str = "grpc_asyncio", request_type=transfer.UpdateTransferJobRequest
 ):
     client = StorageTransferServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -989,7 +1026,10 @@ def test_update_transfer_job_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "job_name=job_name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "job_name=job_name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1020,13 +1060,23 @@ async def test_update_transfer_job_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "job_name=job_name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "job_name=job_name/value",
+    ) in kw["metadata"]
 
 
-@pytest.mark.parametrize("request_type", [transfer.GetTransferJobRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        transfer.GetTransferJobRequest,
+        dict,
+    ],
+)
 def test_get_transfer_job(request_type, transport: str = "grpc"):
     client = StorageTransferServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1063,7 +1113,8 @@ def test_get_transfer_job_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = StorageTransferServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1079,7 +1130,8 @@ async def test_get_transfer_job_async(
     transport: str = "grpc_asyncio", request_type=transfer.GetTransferJobRequest
 ):
     client = StorageTransferServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1142,7 +1194,10 @@ def test_get_transfer_job_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "job_name=job_name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "job_name=job_name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1171,13 +1226,23 @@ async def test_get_transfer_job_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "job_name=job_name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "job_name=job_name/value",
+    ) in kw["metadata"]
 
 
-@pytest.mark.parametrize("request_type", [transfer.ListTransferJobsRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        transfer.ListTransferJobsRequest,
+        dict,
+    ],
+)
 def test_list_transfer_jobs(request_type, transport: str = "grpc"):
     client = StorageTransferServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1208,7 +1273,8 @@ def test_list_transfer_jobs_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = StorageTransferServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1226,7 +1292,8 @@ async def test_list_transfer_jobs_async(
     transport: str = "grpc_asyncio", request_type=transfer.ListTransferJobsRequest
 ):
     client = StorageTransferServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1239,7 +1306,9 @@ async def test_list_transfer_jobs_async(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            transfer.ListTransferJobsResponse(next_page_token="next_page_token_value",)
+            transfer.ListTransferJobsResponse(
+                next_page_token="next_page_token_value",
+            )
         )
         response = await client.list_transfer_jobs(request)
 
@@ -1260,7 +1329,8 @@ async def test_list_transfer_jobs_async_from_dict():
 
 def test_list_transfer_jobs_pager(transport_name: str = "grpc"):
     client = StorageTransferServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1277,9 +1347,15 @@ def test_list_transfer_jobs_pager(transport_name: str = "grpc"):
                 ],
                 next_page_token="abc",
             ),
-            transfer.ListTransferJobsResponse(transfer_jobs=[], next_page_token="def",),
             transfer.ListTransferJobsResponse(
-                transfer_jobs=[transfer_types.TransferJob(),], next_page_token="ghi",
+                transfer_jobs=[],
+                next_page_token="def",
+            ),
+            transfer.ListTransferJobsResponse(
+                transfer_jobs=[
+                    transfer_types.TransferJob(),
+                ],
+                next_page_token="ghi",
             ),
             transfer.ListTransferJobsResponse(
                 transfer_jobs=[
@@ -1302,7 +1378,8 @@ def test_list_transfer_jobs_pager(transport_name: str = "grpc"):
 
 def test_list_transfer_jobs_pages(transport_name: str = "grpc"):
     client = StorageTransferServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1319,9 +1396,15 @@ def test_list_transfer_jobs_pages(transport_name: str = "grpc"):
                 ],
                 next_page_token="abc",
             ),
-            transfer.ListTransferJobsResponse(transfer_jobs=[], next_page_token="def",),
             transfer.ListTransferJobsResponse(
-                transfer_jobs=[transfer_types.TransferJob(),], next_page_token="ghi",
+                transfer_jobs=[],
+                next_page_token="def",
+            ),
+            transfer.ListTransferJobsResponse(
+                transfer_jobs=[
+                    transfer_types.TransferJob(),
+                ],
+                next_page_token="ghi",
             ),
             transfer.ListTransferJobsResponse(
                 transfer_jobs=[
@@ -1358,9 +1441,15 @@ async def test_list_transfer_jobs_async_pager():
                 ],
                 next_page_token="abc",
             ),
-            transfer.ListTransferJobsResponse(transfer_jobs=[], next_page_token="def",),
             transfer.ListTransferJobsResponse(
-                transfer_jobs=[transfer_types.TransferJob(),], next_page_token="ghi",
+                transfer_jobs=[],
+                next_page_token="def",
+            ),
+            transfer.ListTransferJobsResponse(
+                transfer_jobs=[
+                    transfer_types.TransferJob(),
+                ],
+                next_page_token="ghi",
             ),
             transfer.ListTransferJobsResponse(
                 transfer_jobs=[
@@ -1370,7 +1459,9 @@ async def test_list_transfer_jobs_async_pager():
             ),
             RuntimeError,
         )
-        async_pager = await client.list_transfer_jobs(request={},)
+        async_pager = await client.list_transfer_jobs(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -1402,9 +1493,15 @@ async def test_list_transfer_jobs_async_pages():
                 ],
                 next_page_token="abc",
             ),
-            transfer.ListTransferJobsResponse(transfer_jobs=[], next_page_token="def",),
             transfer.ListTransferJobsResponse(
-                transfer_jobs=[transfer_types.TransferJob(),], next_page_token="ghi",
+                transfer_jobs=[],
+                next_page_token="def",
+            ),
+            transfer.ListTransferJobsResponse(
+                transfer_jobs=[
+                    transfer_types.TransferJob(),
+                ],
+                next_page_token="ghi",
             ),
             transfer.ListTransferJobsResponse(
                 transfer_jobs=[
@@ -1422,11 +1519,16 @@ async def test_list_transfer_jobs_async_pages():
 
 
 @pytest.mark.parametrize(
-    "request_type", [transfer.PauseTransferOperationRequest, dict,]
+    "request_type",
+    [
+        transfer.PauseTransferOperationRequest,
+        dict,
+    ],
 )
 def test_pause_transfer_operation(request_type, transport: str = "grpc"):
     client = StorageTransferServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1454,7 +1556,8 @@ def test_pause_transfer_operation_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = StorageTransferServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1472,7 +1575,8 @@ async def test_pause_transfer_operation_async(
     transport: str = "grpc_asyncio", request_type=transfer.PauseTransferOperationRequest
 ):
     client = StorageTransferServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1526,7 +1630,10 @@ def test_pause_transfer_operation_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1555,15 +1662,23 @@ async def test_pause_transfer_operation_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.parametrize(
-    "request_type", [transfer.ResumeTransferOperationRequest, dict,]
+    "request_type",
+    [
+        transfer.ResumeTransferOperationRequest,
+        dict,
+    ],
 )
 def test_resume_transfer_operation(request_type, transport: str = "grpc"):
     client = StorageTransferServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1591,7 +1706,8 @@ def test_resume_transfer_operation_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = StorageTransferServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1610,7 +1726,8 @@ async def test_resume_transfer_operation_async(
     request_type=transfer.ResumeTransferOperationRequest,
 ):
     client = StorageTransferServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1664,7 +1781,10 @@ def test_resume_transfer_operation_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1693,13 +1813,23 @@ async def test_resume_transfer_operation_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
-@pytest.mark.parametrize("request_type", [transfer.RunTransferJobRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        transfer.RunTransferJobRequest,
+        dict,
+    ],
+)
 def test_run_transfer_job(request_type, transport: str = "grpc"):
     client = StorageTransferServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1725,7 +1855,8 @@ def test_run_transfer_job_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = StorageTransferServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1741,7 +1872,8 @@ async def test_run_transfer_job_async(
     transport: str = "grpc_asyncio", request_type=transfer.RunTransferJobRequest
 ):
     client = StorageTransferServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1793,7 +1925,10 @@ def test_run_transfer_job_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "job_name=job_name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "job_name=job_name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1822,7 +1957,10 @@ async def test_run_transfer_job_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "job_name=job_name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "job_name=job_name/value",
+    ) in kw["metadata"]
 
 
 def test_credentials_transport_error():
@@ -1832,7 +1970,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = StorageTransferServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -1853,7 +1992,8 @@ def test_credentials_transport_error():
     options.api_key = "api_key"
     with pytest.raises(ValueError):
         client = StorageTransferServiceClient(
-            client_options=options, transport=transport,
+            client_options=options,
+            transport=transport,
         )
 
     # It is an error to provide an api_key and a credential.
@@ -1870,7 +2010,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = StorageTransferServiceClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -1918,7 +2059,10 @@ def test_transport_grpc_default():
     client = StorageTransferServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
-    assert isinstance(client.transport, transports.StorageTransferServiceGrpcTransport,)
+    assert isinstance(
+        client.transport,
+        transports.StorageTransferServiceGrpcTransport,
+    )
 
 
 def test_storage_transfer_service_base_transport_error():
@@ -1975,7 +2119,8 @@ def test_storage_transfer_service_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.StorageTransferServiceTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -2137,7 +2282,8 @@ def test_storage_transfer_service_grpc_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.StorageTransferServiceGrpcTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -2149,7 +2295,8 @@ def test_storage_transfer_service_grpc_asyncio_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.StorageTransferServiceGrpcAsyncIOTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -2258,12 +2405,16 @@ def test_storage_transfer_service_transport_channel_mtls_with_adc(transport_clas
 
 def test_storage_transfer_service_grpc_lro_client():
     client = StorageTransferServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
     transport = client.transport
 
     # Ensure that we have a api-core operations client.
-    assert isinstance(transport.operations_client, operations_v1.OperationsClient,)
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsClient,
+    )
 
     # Ensure that subsequent calls to the property send the exact same object.
     assert transport.operations_client is transport.operations_client
@@ -2271,12 +2422,16 @@ def test_storage_transfer_service_grpc_lro_client():
 
 def test_storage_transfer_service_grpc_lro_async_client():
     client = StorageTransferServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     transport = client.transport
 
     # Ensure that we have a api-core operations client.
-    assert isinstance(transport.operations_client, operations_v1.OperationsAsyncClient,)
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsAsyncClient,
+    )
 
     # Ensure that subsequent calls to the property send the exact same object.
     assert transport.operations_client is transport.operations_client
@@ -2304,7 +2459,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "whelk"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = StorageTransferServiceClient.common_folder_path(folder)
     assert expected == actual
 
@@ -2322,7 +2479,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "oyster"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = StorageTransferServiceClient.common_organization_path(organization)
     assert expected == actual
 
@@ -2340,7 +2499,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "cuttlefish"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = StorageTransferServiceClient.common_project_path(project)
     assert expected == actual
 
@@ -2360,7 +2521,8 @@ def test_common_location_path():
     project = "winkle"
     location = "nautilus"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = StorageTransferServiceClient.common_location_path(project, location)
     assert expected == actual
@@ -2385,7 +2547,8 @@ def test_client_with_default_client_info():
         transports.StorageTransferServiceTransport, "_prep_wrapped_messages"
     ) as prep:
         client = StorageTransferServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -2394,7 +2557,8 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = StorageTransferServiceClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -2402,7 +2566,8 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = StorageTransferServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     with mock.patch.object(
         type(getattr(client.transport, "grpc_channel")), "close"
