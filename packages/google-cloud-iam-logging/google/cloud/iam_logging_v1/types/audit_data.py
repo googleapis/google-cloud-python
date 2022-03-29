@@ -18,7 +18,12 @@ import proto  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 
 
-__protobuf__ = proto.module(package="google.iam.v1.logging", manifest={"AuditData",},)
+__protobuf__ = proto.module(
+    package="google.iam.v1.logging",
+    manifest={
+        "AuditData",
+    },
+)
 
 
 class AuditData(proto.Message):
@@ -32,7 +37,11 @@ class AuditData(proto.Message):
             the newly set policy.
     """
 
-    policy_delta = proto.Field(proto.MESSAGE, number=2, message=policy_pb2.PolicyDelta,)
+    policy_delta = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=policy_pb2.PolicyDelta,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
