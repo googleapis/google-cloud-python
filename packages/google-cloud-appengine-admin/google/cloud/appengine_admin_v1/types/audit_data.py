@@ -20,7 +20,11 @@ from google.cloud.appengine_admin_v1.types import appengine
 
 __protobuf__ = proto.module(
     package="google.appengine.v1",
-    manifest={"AuditData", "UpdateServiceMethod", "CreateVersionMethod",},
+    manifest={
+        "AuditData",
+        "UpdateServiceMethod",
+        "CreateVersionMethod",
+    },
 )
 
 
@@ -48,10 +52,16 @@ class AuditData(proto.Message):
     """
 
     update_service = proto.Field(
-        proto.MESSAGE, number=1, oneof="method", message="UpdateServiceMethod",
+        proto.MESSAGE,
+        number=1,
+        oneof="method",
+        message="UpdateServiceMethod",
     )
     create_version = proto.Field(
-        proto.MESSAGE, number=2, oneof="method", message="CreateVersionMethod",
+        proto.MESSAGE,
+        number=2,
+        oneof="method",
+        message="CreateVersionMethod",
     )
 
 
@@ -64,7 +74,9 @@ class UpdateServiceMethod(proto.Message):
     """
 
     request = proto.Field(
-        proto.MESSAGE, number=1, message=appengine.UpdateServiceRequest,
+        proto.MESSAGE,
+        number=1,
+        message=appengine.UpdateServiceRequest,
     )
 
 
@@ -77,7 +89,9 @@ class CreateVersionMethod(proto.Message):
     """
 
     request = proto.Field(
-        proto.MESSAGE, number=1, message=appengine.CreateVersionRequest,
+        proto.MESSAGE,
+        number=1,
+        message=appengine.CreateVersionRequest,
     )
 
 

@@ -18,7 +18,12 @@ import proto  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
 
-__protobuf__ = proto.module(package="google.appengine.v1", manifest={"Instance",},)
+__protobuf__ = proto.module(
+    package="google.appengine.v1",
+    manifest={
+        "Instance",
+    },
+)
 
 
 class Instance(proto.Message):
@@ -93,8 +98,7 @@ class Instance(proto.Message):
         DYNAMIC = 2
 
     class Liveness(proto.Message):
-        r"""Wrapper for LivenessState enum.
-        """
+        r"""Wrapper for LivenessState enum."""
 
         class LivenessState(proto.Enum):
             r"""Liveness health check status for Flex instances."""
@@ -105,23 +109,77 @@ class Instance(proto.Message):
             DRAINING = 4
             TIMEOUT = 5
 
-    name = proto.Field(proto.STRING, number=1,)
-    id = proto.Field(proto.STRING, number=2,)
-    app_engine_release = proto.Field(proto.STRING, number=3,)
-    availability = proto.Field(proto.ENUM, number=4, enum=Availability,)
-    vm_name = proto.Field(proto.STRING, number=5,)
-    vm_zone_name = proto.Field(proto.STRING, number=6,)
-    vm_id = proto.Field(proto.STRING, number=7,)
-    start_time = proto.Field(proto.MESSAGE, number=8, message=timestamp_pb2.Timestamp,)
-    requests = proto.Field(proto.INT32, number=9,)
-    errors = proto.Field(proto.INT32, number=10,)
-    qps = proto.Field(proto.FLOAT, number=11,)
-    average_latency = proto.Field(proto.INT32, number=12,)
-    memory_usage = proto.Field(proto.INT64, number=13,)
-    vm_status = proto.Field(proto.STRING, number=14,)
-    vm_debug_enabled = proto.Field(proto.BOOL, number=15,)
-    vm_ip = proto.Field(proto.STRING, number=16,)
-    vm_liveness = proto.Field(proto.ENUM, number=17, enum=Liveness.LivenessState,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    app_engine_release = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    availability = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=Availability,
+    )
+    vm_name = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    vm_zone_name = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    vm_id = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    start_time = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=timestamp_pb2.Timestamp,
+    )
+    requests = proto.Field(
+        proto.INT32,
+        number=9,
+    )
+    errors = proto.Field(
+        proto.INT32,
+        number=10,
+    )
+    qps = proto.Field(
+        proto.FLOAT,
+        number=11,
+    )
+    average_latency = proto.Field(
+        proto.INT32,
+        number=12,
+    )
+    memory_usage = proto.Field(
+        proto.INT64,
+        number=13,
+    )
+    vm_status = proto.Field(
+        proto.STRING,
+        number=14,
+    )
+    vm_debug_enabled = proto.Field(
+        proto.BOOL,
+        number=15,
+    )
+    vm_ip = proto.Field(
+        proto.STRING,
+        number=16,
+    )
+    vm_liveness = proto.Field(
+        proto.ENUM,
+        number=17,
+        enum=Liveness.LivenessState,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

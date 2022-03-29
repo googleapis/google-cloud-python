@@ -265,70 +265,187 @@ class Version(proto.Message):
             Enables VPC connectivity for standard apps.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    id = proto.Field(proto.STRING, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
     automatic_scaling = proto.Field(
-        proto.MESSAGE, number=3, oneof="scaling", message="AutomaticScaling",
+        proto.MESSAGE,
+        number=3,
+        oneof="scaling",
+        message="AutomaticScaling",
     )
     basic_scaling = proto.Field(
-        proto.MESSAGE, number=4, oneof="scaling", message="BasicScaling",
+        proto.MESSAGE,
+        number=4,
+        oneof="scaling",
+        message="BasicScaling",
     )
     manual_scaling = proto.Field(
-        proto.MESSAGE, number=5, oneof="scaling", message="ManualScaling",
+        proto.MESSAGE,
+        number=5,
+        oneof="scaling",
+        message="ManualScaling",
     )
     inbound_services = proto.RepeatedField(
-        proto.ENUM, number=6, enum="InboundServiceType",
+        proto.ENUM,
+        number=6,
+        enum="InboundServiceType",
     )
-    instance_class = proto.Field(proto.STRING, number=7,)
-    network = proto.Field(proto.MESSAGE, number=8, message="Network",)
-    zones = proto.RepeatedField(proto.STRING, number=118,)
-    resources = proto.Field(proto.MESSAGE, number=9, message="Resources",)
-    runtime = proto.Field(proto.STRING, number=10,)
-    runtime_channel = proto.Field(proto.STRING, number=117,)
-    threadsafe = proto.Field(proto.BOOL, number=11,)
-    vm = proto.Field(proto.BOOL, number=12,)
-    beta_settings = proto.MapField(proto.STRING, proto.STRING, number=13,)
-    env = proto.Field(proto.STRING, number=14,)
-    serving_status = proto.Field(proto.ENUM, number=15, enum="ServingStatus",)
-    created_by = proto.Field(proto.STRING, number=16,)
+    instance_class = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    network = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message="Network",
+    )
+    zones = proto.RepeatedField(
+        proto.STRING,
+        number=118,
+    )
+    resources = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message="Resources",
+    )
+    runtime = proto.Field(
+        proto.STRING,
+        number=10,
+    )
+    runtime_channel = proto.Field(
+        proto.STRING,
+        number=117,
+    )
+    threadsafe = proto.Field(
+        proto.BOOL,
+        number=11,
+    )
+    vm = proto.Field(
+        proto.BOOL,
+        number=12,
+    )
+    beta_settings = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=13,
+    )
+    env = proto.Field(
+        proto.STRING,
+        number=14,
+    )
+    serving_status = proto.Field(
+        proto.ENUM,
+        number=15,
+        enum="ServingStatus",
+    )
+    created_by = proto.Field(
+        proto.STRING,
+        number=16,
+    )
     create_time = proto.Field(
-        proto.MESSAGE, number=17, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=17,
+        message=timestamp_pb2.Timestamp,
     )
-    disk_usage_bytes = proto.Field(proto.INT64, number=18,)
-    runtime_api_version = proto.Field(proto.STRING, number=21,)
-    runtime_main_executable_path = proto.Field(proto.STRING, number=22,)
-    service_account = proto.Field(proto.STRING, number=127,)
-    handlers = proto.RepeatedField(proto.MESSAGE, number=100, message=app_yaml.UrlMap,)
+    disk_usage_bytes = proto.Field(
+        proto.INT64,
+        number=18,
+    )
+    runtime_api_version = proto.Field(
+        proto.STRING,
+        number=21,
+    )
+    runtime_main_executable_path = proto.Field(
+        proto.STRING,
+        number=22,
+    )
+    service_account = proto.Field(
+        proto.STRING,
+        number=127,
+    )
+    handlers = proto.RepeatedField(
+        proto.MESSAGE,
+        number=100,
+        message=app_yaml.UrlMap,
+    )
     error_handlers = proto.RepeatedField(
-        proto.MESSAGE, number=101, message=app_yaml.ErrorHandler,
+        proto.MESSAGE,
+        number=101,
+        message=app_yaml.ErrorHandler,
     )
     libraries = proto.RepeatedField(
-        proto.MESSAGE, number=102, message=app_yaml.Library,
+        proto.MESSAGE,
+        number=102,
+        message=app_yaml.Library,
     )
     api_config = proto.Field(
-        proto.MESSAGE, number=103, message=app_yaml.ApiConfigHandler,
+        proto.MESSAGE,
+        number=103,
+        message=app_yaml.ApiConfigHandler,
     )
-    env_variables = proto.MapField(proto.STRING, proto.STRING, number=104,)
-    build_env_variables = proto.MapField(proto.STRING, proto.STRING, number=125,)
+    env_variables = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=104,
+    )
+    build_env_variables = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=125,
+    )
     default_expiration = proto.Field(
-        proto.MESSAGE, number=105, message=duration_pb2.Duration,
+        proto.MESSAGE,
+        number=105,
+        message=duration_pb2.Duration,
     )
-    health_check = proto.Field(proto.MESSAGE, number=106, message=app_yaml.HealthCheck,)
+    health_check = proto.Field(
+        proto.MESSAGE,
+        number=106,
+        message=app_yaml.HealthCheck,
+    )
     readiness_check = proto.Field(
-        proto.MESSAGE, number=112, message=app_yaml.ReadinessCheck,
+        proto.MESSAGE,
+        number=112,
+        message=app_yaml.ReadinessCheck,
     )
     liveness_check = proto.Field(
-        proto.MESSAGE, number=113, message=app_yaml.LivenessCheck,
+        proto.MESSAGE,
+        number=113,
+        message=app_yaml.LivenessCheck,
     )
-    nobuild_files_regex = proto.Field(proto.STRING, number=107,)
-    deployment = proto.Field(proto.MESSAGE, number=108, message=deploy.Deployment,)
-    version_url = proto.Field(proto.STRING, number=109,)
+    nobuild_files_regex = proto.Field(
+        proto.STRING,
+        number=107,
+    )
+    deployment = proto.Field(
+        proto.MESSAGE,
+        number=108,
+        message=deploy.Deployment,
+    )
+    version_url = proto.Field(
+        proto.STRING,
+        number=109,
+    )
     endpoints_api_service = proto.Field(
-        proto.MESSAGE, number=110, message="EndpointsApiService",
+        proto.MESSAGE,
+        number=110,
+        message="EndpointsApiService",
     )
-    entrypoint = proto.Field(proto.MESSAGE, number=122, message="Entrypoint",)
+    entrypoint = proto.Field(
+        proto.MESSAGE,
+        number=122,
+        message="Entrypoint",
+    )
     vpc_access_connector = proto.Field(
-        proto.MESSAGE, number=121, message="VpcAccessConnector",
+        proto.MESSAGE,
+        number=121,
+        message="VpcAccessConnector",
     )
 
 
@@ -378,10 +495,23 @@ class EndpointsApiService(proto.Message):
         FIXED = 1
         MANAGED = 2
 
-    name = proto.Field(proto.STRING, number=1,)
-    config_id = proto.Field(proto.STRING, number=2,)
-    rollout_strategy = proto.Field(proto.ENUM, number=3, enum=RolloutStrategy,)
-    disable_trace_sampling = proto.Field(proto.BOOL, number=4,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    config_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    rollout_strategy = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=RolloutStrategy,
+    )
+    disable_trace_sampling = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
 
 
 class AutomaticScaling(proto.Message):
@@ -436,29 +566,64 @@ class AutomaticScaling(proto.Message):
     """
 
     cool_down_period = proto.Field(
-        proto.MESSAGE, number=1, message=duration_pb2.Duration,
+        proto.MESSAGE,
+        number=1,
+        message=duration_pb2.Duration,
     )
-    cpu_utilization = proto.Field(proto.MESSAGE, number=2, message="CpuUtilization",)
-    max_concurrent_requests = proto.Field(proto.INT32, number=3,)
-    max_idle_instances = proto.Field(proto.INT32, number=4,)
-    max_total_instances = proto.Field(proto.INT32, number=5,)
+    cpu_utilization = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="CpuUtilization",
+    )
+    max_concurrent_requests = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    max_idle_instances = proto.Field(
+        proto.INT32,
+        number=4,
+    )
+    max_total_instances = proto.Field(
+        proto.INT32,
+        number=5,
+    )
     max_pending_latency = proto.Field(
-        proto.MESSAGE, number=6, message=duration_pb2.Duration,
+        proto.MESSAGE,
+        number=6,
+        message=duration_pb2.Duration,
     )
-    min_idle_instances = proto.Field(proto.INT32, number=7,)
-    min_total_instances = proto.Field(proto.INT32, number=8,)
+    min_idle_instances = proto.Field(
+        proto.INT32,
+        number=7,
+    )
+    min_total_instances = proto.Field(
+        proto.INT32,
+        number=8,
+    )
     min_pending_latency = proto.Field(
-        proto.MESSAGE, number=9, message=duration_pb2.Duration,
+        proto.MESSAGE,
+        number=9,
+        message=duration_pb2.Duration,
     )
     request_utilization = proto.Field(
-        proto.MESSAGE, number=10, message="RequestUtilization",
+        proto.MESSAGE,
+        number=10,
+        message="RequestUtilization",
     )
-    disk_utilization = proto.Field(proto.MESSAGE, number=11, message="DiskUtilization",)
+    disk_utilization = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message="DiskUtilization",
+    )
     network_utilization = proto.Field(
-        proto.MESSAGE, number=12, message="NetworkUtilization",
+        proto.MESSAGE,
+        number=12,
+        message="NetworkUtilization",
     )
     standard_scheduler_settings = proto.Field(
-        proto.MESSAGE, number=20, message="StandardSchedulerSettings",
+        proto.MESSAGE,
+        number=20,
+        message="StandardSchedulerSettings",
     )
 
 
@@ -478,8 +643,15 @@ class BasicScaling(proto.Message):
             this version.
     """
 
-    idle_timeout = proto.Field(proto.MESSAGE, number=1, message=duration_pb2.Duration,)
-    max_instances = proto.Field(proto.INT32, number=2,)
+    idle_timeout = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=duration_pb2.Duration,
+    )
+    max_instances = proto.Field(
+        proto.INT32,
+        number=2,
+    )
 
 
 class ManualScaling(proto.Message):
@@ -495,7 +667,10 @@ class ManualScaling(proto.Message):
             ``set_num_instances()`` function.
     """
 
-    instances = proto.Field(proto.INT32, number=1,)
+    instances = proto.Field(
+        proto.INT32,
+        number=1,
+    )
 
 
 class CpuUtilization(proto.Message):
@@ -511,9 +686,14 @@ class CpuUtilization(proto.Message):
     """
 
     aggregation_window_length = proto.Field(
-        proto.MESSAGE, number=1, message=duration_pb2.Duration,
+        proto.MESSAGE,
+        number=1,
+        message=duration_pb2.Duration,
     )
-    target_utilization = proto.Field(proto.DOUBLE, number=2,)
+    target_utilization = proto.Field(
+        proto.DOUBLE,
+        number=2,
+    )
 
 
 class RequestUtilization(proto.Message):
@@ -527,8 +707,14 @@ class RequestUtilization(proto.Message):
             Target number of concurrent requests.
     """
 
-    target_request_count_per_second = proto.Field(proto.INT32, number=1,)
-    target_concurrent_requests = proto.Field(proto.INT32, number=2,)
+    target_request_count_per_second = proto.Field(
+        proto.INT32,
+        number=1,
+    )
+    target_concurrent_requests = proto.Field(
+        proto.INT32,
+        number=2,
+    )
 
 
 class DiskUtilization(proto.Message):
@@ -546,10 +732,22 @@ class DiskUtilization(proto.Message):
             Target ops read per seconds.
     """
 
-    target_write_bytes_per_second = proto.Field(proto.INT32, number=14,)
-    target_write_ops_per_second = proto.Field(proto.INT32, number=15,)
-    target_read_bytes_per_second = proto.Field(proto.INT32, number=16,)
-    target_read_ops_per_second = proto.Field(proto.INT32, number=17,)
+    target_write_bytes_per_second = proto.Field(
+        proto.INT32,
+        number=14,
+    )
+    target_write_ops_per_second = proto.Field(
+        proto.INT32,
+        number=15,
+    )
+    target_read_bytes_per_second = proto.Field(
+        proto.INT32,
+        number=16,
+    )
+    target_read_ops_per_second = proto.Field(
+        proto.INT32,
+        number=17,
+    )
 
 
 class NetworkUtilization(proto.Message):
@@ -567,10 +765,22 @@ class NetworkUtilization(proto.Message):
             Target packets received per second.
     """
 
-    target_sent_bytes_per_second = proto.Field(proto.INT32, number=1,)
-    target_sent_packets_per_second = proto.Field(proto.INT32, number=11,)
-    target_received_bytes_per_second = proto.Field(proto.INT32, number=12,)
-    target_received_packets_per_second = proto.Field(proto.INT32, number=13,)
+    target_sent_bytes_per_second = proto.Field(
+        proto.INT32,
+        number=1,
+    )
+    target_sent_packets_per_second = proto.Field(
+        proto.INT32,
+        number=11,
+    )
+    target_received_bytes_per_second = proto.Field(
+        proto.INT32,
+        number=12,
+    )
+    target_received_packets_per_second = proto.Field(
+        proto.INT32,
+        number=13,
+    )
 
 
 class StandardSchedulerSettings(proto.Message):
@@ -591,10 +801,22 @@ class StandardSchedulerSettings(proto.Message):
             zero to disable ``max_instances`` configuration.
     """
 
-    target_cpu_utilization = proto.Field(proto.DOUBLE, number=1,)
-    target_throughput_utilization = proto.Field(proto.DOUBLE, number=2,)
-    min_instances = proto.Field(proto.INT32, number=3,)
-    max_instances = proto.Field(proto.INT32, number=4,)
+    target_cpu_utilization = proto.Field(
+        proto.DOUBLE,
+        number=1,
+    )
+    target_throughput_utilization = proto.Field(
+        proto.DOUBLE,
+        number=2,
+    )
+    min_instances = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    max_instances = proto.Field(
+        proto.INT32,
+        number=4,
+    )
 
 
 class Network(proto.Message):
@@ -644,11 +866,26 @@ class Network(proto.Message):
             environment.
     """
 
-    forwarded_ports = proto.RepeatedField(proto.STRING, number=1,)
-    instance_tag = proto.Field(proto.STRING, number=2,)
-    name = proto.Field(proto.STRING, number=3,)
-    subnetwork_name = proto.Field(proto.STRING, number=4,)
-    session_affinity = proto.Field(proto.BOOL, number=5,)
+    forwarded_ports = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
+    instance_tag = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    name = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    subnetwork_name = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    session_affinity = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
 
 
 class Volume(proto.Message):
@@ -664,9 +901,18 @@ class Volume(proto.Message):
             Volume size in gigabytes.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    volume_type = proto.Field(proto.STRING, number=2,)
-    size_gb = proto.Field(proto.DOUBLE, number=3,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    volume_type = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    size_gb = proto.Field(
+        proto.DOUBLE,
+        number=3,
+    )
 
 
 class Resources(proto.Message):
@@ -687,11 +933,27 @@ class Resources(proto.Message):
             Cloud Composer to encrypt the vm disk
     """
 
-    cpu = proto.Field(proto.DOUBLE, number=1,)
-    disk_gb = proto.Field(proto.DOUBLE, number=2,)
-    memory_gb = proto.Field(proto.DOUBLE, number=3,)
-    volumes = proto.RepeatedField(proto.MESSAGE, number=4, message="Volume",)
-    kms_key_reference = proto.Field(proto.STRING, number=5,)
+    cpu = proto.Field(
+        proto.DOUBLE,
+        number=1,
+    )
+    disk_gb = proto.Field(
+        proto.DOUBLE,
+        number=2,
+    )
+    memory_gb = proto.Field(
+        proto.DOUBLE,
+        number=3,
+    )
+    volumes = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message="Volume",
+    )
+    kms_key_reference = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class VpcAccessConnector(proto.Message):
@@ -704,7 +966,10 @@ class VpcAccessConnector(proto.Message):
             /projects/my-project/locations/us-central1/connectors/c1.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class Entrypoint(proto.Message):
@@ -720,7 +985,11 @@ class Entrypoint(proto.Message):
             This field is a member of `oneof`_ ``command``.
     """
 
-    shell = proto.Field(proto.STRING, number=1, oneof="command",)
+    shell = proto.Field(
+        proto.STRING,
+        number=1,
+        oneof="command",
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

@@ -87,7 +87,13 @@ def test__get_default_mtls_endpoint():
     assert InstancesClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
 
 
-@pytest.mark.parametrize("client_class", [InstancesClient, InstancesAsyncClient,])
+@pytest.mark.parametrize(
+    "client_class",
+    [
+        InstancesClient,
+        InstancesAsyncClient,
+    ],
+)
 def test_instances_client_from_service_account_info(client_class):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
@@ -127,7 +133,13 @@ def test_instances_client_service_account_always_use_jwt(
         use_jwt.assert_not_called()
 
 
-@pytest.mark.parametrize("client_class", [InstancesClient, InstancesAsyncClient,])
+@pytest.mark.parametrize(
+    "client_class",
+    [
+        InstancesClient,
+        InstancesAsyncClient,
+    ],
+)
 def test_instances_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
@@ -480,7 +492,9 @@ def test_instances_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -612,10 +626,17 @@ def test_instances_client_create_channel_credentials_file(
         )
 
 
-@pytest.mark.parametrize("request_type", [appengine.ListInstancesRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        appengine.ListInstancesRequest,
+        dict,
+    ],
+)
 def test_list_instances(request_type, transport: str = "grpc"):
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -644,7 +665,8 @@ def test_list_instances_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -660,7 +682,8 @@ async def test_list_instances_async(
     transport: str = "grpc_asyncio", request_type=appengine.ListInstancesRequest
 ):
     client = InstancesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -671,7 +694,9 @@ async def test_list_instances_async(
     with mock.patch.object(type(client.transport.list_instances), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            appengine.ListInstancesResponse(next_page_token="next_page_token_value",)
+            appengine.ListInstancesResponse(
+                next_page_token="next_page_token_value",
+            )
         )
         response = await client.list_instances(request)
 
@@ -691,7 +716,9 @@ async def test_list_instances_async_from_dict():
 
 
 def test_list_instances_field_headers():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -711,12 +738,17 @@ def test_list_instances_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_list_instances_field_headers_async():
-    client = InstancesAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = InstancesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -738,12 +770,16 @@ async def test_list_instances_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_instances_pager(transport_name: str = "grpc"):
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -758,12 +794,21 @@ def test_list_instances_pager(transport_name: str = "grpc"):
                 ],
                 next_page_token="abc",
             ),
-            appengine.ListInstancesResponse(instances=[], next_page_token="def",),
             appengine.ListInstancesResponse(
-                instances=[instance.Instance(),], next_page_token="ghi",
+                instances=[],
+                next_page_token="def",
             ),
             appengine.ListInstancesResponse(
-                instances=[instance.Instance(), instance.Instance(),],
+                instances=[
+                    instance.Instance(),
+                ],
+                next_page_token="ghi",
+            ),
+            appengine.ListInstancesResponse(
+                instances=[
+                    instance.Instance(),
+                    instance.Instance(),
+                ],
             ),
             RuntimeError,
         )
@@ -783,7 +828,8 @@ def test_list_instances_pager(transport_name: str = "grpc"):
 
 def test_list_instances_pages(transport_name: str = "grpc"):
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -798,12 +844,21 @@ def test_list_instances_pages(transport_name: str = "grpc"):
                 ],
                 next_page_token="abc",
             ),
-            appengine.ListInstancesResponse(instances=[], next_page_token="def",),
             appengine.ListInstancesResponse(
-                instances=[instance.Instance(),], next_page_token="ghi",
+                instances=[],
+                next_page_token="def",
             ),
             appengine.ListInstancesResponse(
-                instances=[instance.Instance(), instance.Instance(),],
+                instances=[
+                    instance.Instance(),
+                ],
+                next_page_token="ghi",
+            ),
+            appengine.ListInstancesResponse(
+                instances=[
+                    instance.Instance(),
+                    instance.Instance(),
+                ],
             ),
             RuntimeError,
         )
@@ -814,7 +869,9 @@ def test_list_instances_pages(transport_name: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_list_instances_async_pager():
-    client = InstancesAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = InstancesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -830,16 +887,27 @@ async def test_list_instances_async_pager():
                 ],
                 next_page_token="abc",
             ),
-            appengine.ListInstancesResponse(instances=[], next_page_token="def",),
             appengine.ListInstancesResponse(
-                instances=[instance.Instance(),], next_page_token="ghi",
+                instances=[],
+                next_page_token="def",
             ),
             appengine.ListInstancesResponse(
-                instances=[instance.Instance(), instance.Instance(),],
+                instances=[
+                    instance.Instance(),
+                ],
+                next_page_token="ghi",
+            ),
+            appengine.ListInstancesResponse(
+                instances=[
+                    instance.Instance(),
+                    instance.Instance(),
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.list_instances(request={},)
+        async_pager = await client.list_instances(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -851,7 +919,9 @@ async def test_list_instances_async_pager():
 
 @pytest.mark.asyncio
 async def test_list_instances_async_pages():
-    client = InstancesAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = InstancesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -867,12 +937,21 @@ async def test_list_instances_async_pages():
                 ],
                 next_page_token="abc",
             ),
-            appengine.ListInstancesResponse(instances=[], next_page_token="def",),
             appengine.ListInstancesResponse(
-                instances=[instance.Instance(),], next_page_token="ghi",
+                instances=[],
+                next_page_token="def",
             ),
             appengine.ListInstancesResponse(
-                instances=[instance.Instance(), instance.Instance(),],
+                instances=[
+                    instance.Instance(),
+                ],
+                next_page_token="ghi",
+            ),
+            appengine.ListInstancesResponse(
+                instances=[
+                    instance.Instance(),
+                    instance.Instance(),
+                ],
             ),
             RuntimeError,
         )
@@ -883,10 +962,17 @@ async def test_list_instances_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [appengine.GetInstanceRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        appengine.GetInstanceRequest,
+        dict,
+    ],
+)
 def test_get_instance(request_type, transport: str = "grpc"):
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -945,7 +1031,8 @@ def test_get_instance_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -961,7 +1048,8 @@ async def test_get_instance_async(
     transport: str = "grpc_asyncio", request_type=appengine.GetInstanceRequest
 ):
     client = InstancesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1024,7 +1112,9 @@ async def test_get_instance_async_from_dict():
 
 
 def test_get_instance_field_headers():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1044,12 +1134,17 @@ def test_get_instance_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_get_instance_field_headers_async():
-    client = InstancesAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = InstancesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1069,13 +1164,23 @@ async def test_get_instance_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
-@pytest.mark.parametrize("request_type", [appengine.DeleteInstanceRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        appengine.DeleteInstanceRequest,
+        dict,
+    ],
+)
 def test_delete_instance(request_type, transport: str = "grpc"):
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1101,7 +1206,8 @@ def test_delete_instance_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1117,7 +1223,8 @@ async def test_delete_instance_async(
     transport: str = "grpc_asyncio", request_type=appengine.DeleteInstanceRequest
 ):
     client = InstancesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1147,7 +1254,9 @@ async def test_delete_instance_async_from_dict():
 
 
 def test_delete_instance_field_headers():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1167,12 +1276,17 @@ def test_delete_instance_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_delete_instance_field_headers_async():
-    client = InstancesAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = InstancesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1194,13 +1308,23 @@ async def test_delete_instance_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
-@pytest.mark.parametrize("request_type", [appengine.DebugInstanceRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        appengine.DebugInstanceRequest,
+        dict,
+    ],
+)
 def test_debug_instance(request_type, transport: str = "grpc"):
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1226,7 +1350,8 @@ def test_debug_instance_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1242,7 +1367,8 @@ async def test_debug_instance_async(
     transport: str = "grpc_asyncio", request_type=appengine.DebugInstanceRequest
 ):
     client = InstancesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1272,7 +1398,9 @@ async def test_debug_instance_async_from_dict():
 
 
 def test_debug_instance_field_headers():
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1292,12 +1420,17 @@ def test_debug_instance_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_debug_instance_field_headers_async():
-    client = InstancesAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = InstancesAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1319,7 +1452,10 @@ async def test_debug_instance_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_credentials_transport_error():
@@ -1329,7 +1465,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = InstancesClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -1349,7 +1486,10 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = InstancesClient(client_options=options, transport=transport,)
+        client = InstancesClient(
+            client_options=options,
+            transport=transport,
+        )
 
     # It is an error to provide an api_key and a credential.
     options = mock.Mock()
@@ -1365,7 +1505,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = InstancesClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -1395,7 +1536,10 @@ def test_transport_get_channel():
 
 @pytest.mark.parametrize(
     "transport_class",
-    [transports.InstancesGrpcTransport, transports.InstancesGrpcAsyncIOTransport,],
+    [
+        transports.InstancesGrpcTransport,
+        transports.InstancesGrpcAsyncIOTransport,
+    ],
 )
 def test_transport_adc(transport_class):
     # Test default credentials are used if not provided.
@@ -1407,8 +1551,13 @@ def test_transport_adc(transport_class):
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
-    client = InstancesClient(credentials=ga_credentials.AnonymousCredentials(),)
-    assert isinstance(client.transport, transports.InstancesGrpcTransport,)
+    client = InstancesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    assert isinstance(
+        client.transport,
+        transports.InstancesGrpcTransport,
+    )
 
 
 def test_instances_base_transport_error():
@@ -1461,7 +1610,8 @@ def test_instances_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.InstancesTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -1504,7 +1654,10 @@ def test_instances_auth_adc():
 
 @pytest.mark.parametrize(
     "transport_class",
-    [transports.InstancesGrpcTransport, transports.InstancesGrpcAsyncIOTransport,],
+    [
+        transports.InstancesGrpcTransport,
+        transports.InstancesGrpcAsyncIOTransport,
+    ],
 )
 def test_instances_transport_auth_adc(transport_class):
     # If credentials and host are not provided, the transport class should use
@@ -1629,7 +1782,8 @@ def test_instances_grpc_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.InstancesGrpcTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -1641,7 +1795,8 @@ def test_instances_grpc_asyncio_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.InstancesGrpcAsyncIOTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -1742,12 +1897,16 @@ def test_instances_transport_channel_mtls_with_adc(transport_class):
 
 def test_instances_grpc_lro_client():
     client = InstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
     transport = client.transport
 
     # Ensure that we have a api-core operations client.
-    assert isinstance(transport.operations_client, operations_v1.OperationsClient,)
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsClient,
+    )
 
     # Ensure that subsequent calls to the property send the exact same object.
     assert transport.operations_client is transport.operations_client
@@ -1755,12 +1914,16 @@ def test_instances_grpc_lro_client():
 
 def test_instances_grpc_lro_async_client():
     client = InstancesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     transport = client.transport
 
     # Ensure that we have a api-core operations client.
-    assert isinstance(transport.operations_client, operations_v1.OperationsAsyncClient,)
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsAsyncClient,
+    )
 
     # Ensure that subsequent calls to the property send the exact same object.
     assert transport.operations_client is transport.operations_client
@@ -1771,8 +1934,13 @@ def test_instance_path():
     service = "clam"
     version = "whelk"
     instance = "octopus"
-    expected = "apps/{app}/services/{service}/versions/{version}/instances/{instance}".format(
-        app=app, service=service, version=version, instance=instance,
+    expected = (
+        "apps/{app}/services/{service}/versions/{version}/instances/{instance}".format(
+            app=app,
+            service=service,
+            version=version,
+            instance=instance,
+        )
     )
     actual = InstancesClient.instance_path(app, service, version, instance)
     assert expected == actual
@@ -1814,7 +1982,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "scallop"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = InstancesClient.common_folder_path(folder)
     assert expected == actual
 
@@ -1832,7 +2002,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "squid"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = InstancesClient.common_organization_path(organization)
     assert expected == actual
 
@@ -1850,7 +2022,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "whelk"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = InstancesClient.common_project_path(project)
     assert expected == actual
 
@@ -1870,7 +2044,8 @@ def test_common_location_path():
     project = "oyster"
     location = "nudibranch"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = InstancesClient.common_location_path(project, location)
     assert expected == actual
@@ -1895,7 +2070,8 @@ def test_client_with_default_client_info():
         transports.InstancesTransport, "_prep_wrapped_messages"
     ) as prep:
         client = InstancesClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -1904,7 +2080,8 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = InstancesClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -1912,7 +2089,8 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = InstancesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     with mock.patch.object(
         type(getattr(client.transport, "grpc_channel")), "close"

@@ -20,7 +20,10 @@ from google.protobuf import timestamp_pb2  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.appengine.v1",
-    manifest={"OperationMetadataV1", "CreateVersionMetadataV1",},
+    manifest={
+        "OperationMetadataV1",
+        "CreateVersionMetadataV1",
+    },
 )
 
 
@@ -62,13 +65,36 @@ class OperationMetadataV1(proto.Message):
             This field is a member of `oneof`_ ``method_metadata``.
     """
 
-    method = proto.Field(proto.STRING, number=1,)
-    insert_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    end_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
-    user = proto.Field(proto.STRING, number=4,)
-    target = proto.Field(proto.STRING, number=5,)
-    ephemeral_message = proto.Field(proto.STRING, number=6,)
-    warning = proto.RepeatedField(proto.STRING, number=7,)
+    method = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    insert_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    user = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    target = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    ephemeral_message = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    warning = proto.RepeatedField(
+        proto.STRING,
+        number=7,
+    )
     create_version_metadata = proto.Field(
         proto.MESSAGE,
         number=8,
@@ -89,7 +115,10 @@ class CreateVersionMetadataV1(proto.Message):
             of the version create. @OutputOnly
     """
 
-    cloud_build_id = proto.Field(proto.STRING, number=1,)
+    cloud_build_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

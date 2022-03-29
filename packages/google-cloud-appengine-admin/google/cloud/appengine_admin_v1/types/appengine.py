@@ -110,7 +110,10 @@ class GetApplicationRequest(proto.Message):
             ``apps/myapp``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CreateApplicationRequest(proto.Message):
@@ -122,7 +125,9 @@ class CreateApplicationRequest(proto.Message):
     """
 
     application = proto.Field(
-        proto.MESSAGE, number=2, message=ga_application.Application,
+        proto.MESSAGE,
+        number=2,
+        message=ga_application.Application,
     )
 
 
@@ -141,12 +146,19 @@ class UpdateApplicationRequest(proto.Message):
             be updated.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     application = proto.Field(
-        proto.MESSAGE, number=2, message=ga_application.Application,
+        proto.MESSAGE,
+        number=2,
+        message=ga_application.Application,
     )
     update_mask = proto.Field(
-        proto.MESSAGE, number=3, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=3,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -158,7 +170,10 @@ class RepairApplicationRequest(proto.Message):
             Name of the application to repair. Example: ``apps/myapp``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListServicesRequest(proto.Message):
@@ -175,9 +190,18 @@ class ListServicesRequest(proto.Message):
             of results.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListServicesResponse(proto.Message):
@@ -196,8 +220,15 @@ class ListServicesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    services = proto.RepeatedField(proto.MESSAGE, number=1, message=ga_service.Service,)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    services = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=ga_service.Service,
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetServiceRequest(proto.Message):
@@ -209,7 +240,10 @@ class GetServiceRequest(proto.Message):
             ``apps/myapp/services/default``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class UpdateServiceRequest(proto.Message):
@@ -243,12 +277,24 @@ class UpdateServiceRequest(proto.Message):
             Traffic <https://cloud.google.com/appengine/docs/admin-api/migrating-splitting-traffic>`__.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    service = proto.Field(proto.MESSAGE, number=2, message=ga_service.Service,)
-    update_mask = proto.Field(
-        proto.MESSAGE, number=3, message=field_mask_pb2.FieldMask,
+    name = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    migrate_traffic = proto.Field(proto.BOOL, number=4,)
+    service = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=ga_service.Service,
+    )
+    update_mask = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=field_mask_pb2.FieldMask,
+    )
+    migrate_traffic = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
 
 
 class DeleteServiceRequest(proto.Message):
@@ -260,7 +306,10 @@ class DeleteServiceRequest(proto.Message):
             ``apps/myapp/services/default``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListVersionsRequest(proto.Message):
@@ -280,10 +329,23 @@ class ListVersionsRequest(proto.Message):
             of results.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    view = proto.Field(proto.ENUM, number=2, enum="VersionView",)
-    page_size = proto.Field(proto.INT32, number=3,)
-    page_token = proto.Field(proto.STRING, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    view = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum="VersionView",
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class ListVersionsResponse(proto.Message):
@@ -302,8 +364,15 @@ class ListVersionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    versions = proto.RepeatedField(proto.MESSAGE, number=1, message=ga_version.Version,)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    versions = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=ga_version.Version,
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetVersionRequest(proto.Message):
@@ -317,8 +386,15 @@ class GetVersionRequest(proto.Message):
             Controls the set of fields returned in the ``Get`` response.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    view = proto.Field(proto.ENUM, number=2, enum="VersionView",)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    view = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum="VersionView",
+    )
 
 
 class CreateVersionRequest(proto.Message):
@@ -332,8 +408,15 @@ class CreateVersionRequest(proto.Message):
             Application deployment configuration.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    version = proto.Field(proto.MESSAGE, number=2, message=ga_version.Version,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    version = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=ga_version.Version,
+    )
 
 
 class UpdateVersionRequest(proto.Message):
@@ -352,10 +435,19 @@ class UpdateVersionRequest(proto.Message):
             be updated.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    version = proto.Field(proto.MESSAGE, number=2, message=ga_version.Version,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    version = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=ga_version.Version,
+    )
     update_mask = proto.Field(
-        proto.MESSAGE, number=3, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=3,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -368,7 +460,10 @@ class DeleteVersionRequest(proto.Message):
             ``apps/myapp/services/default/versions/v1``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListInstancesRequest(proto.Message):
@@ -385,9 +480,18 @@ class ListInstancesRequest(proto.Message):
             of results.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListInstancesResponse(proto.Message):
@@ -406,8 +510,15 @@ class ListInstancesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    instances = proto.RepeatedField(proto.MESSAGE, number=1, message=instance.Instance,)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    instances = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=instance.Instance,
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetInstanceRequest(proto.Message):
@@ -419,7 +530,10 @@ class GetInstanceRequest(proto.Message):
             ``apps/myapp/services/default/versions/v1/instances/instance-1``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class DeleteInstanceRequest(proto.Message):
@@ -431,7 +545,10 @@ class DeleteInstanceRequest(proto.Message):
             ``apps/myapp/services/default/versions/v1/instances/instance-1``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class DebugInstanceRequest(proto.Message):
@@ -451,8 +568,14 @@ class DebugInstanceRequest(proto.Message):
             Keys <https://cloud.google.com/compute/docs/instances/adding-removing-ssh-keys>`__.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    ssh_key = proto.Field(proto.STRING, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    ssh_key = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class ListIngressRulesRequest(proto.Message):
@@ -474,10 +597,22 @@ class ListIngressRulesRequest(proto.Message):
             on requests from this IP.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    matching_address = proto.Field(proto.STRING, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    matching_address = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class ListIngressRulesResponse(proto.Message):
@@ -497,9 +632,14 @@ class ListIngressRulesResponse(proto.Message):
         return self
 
     ingress_rules = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=firewall.FirewallRule,
+        proto.MESSAGE,
+        number=1,
+        message=firewall.FirewallRule,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class BatchUpdateIngressRulesRequest(proto.Message):
@@ -514,9 +654,14 @@ class BatchUpdateIngressRulesRequest(proto.Message):
             existing set.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     ingress_rules = proto.RepeatedField(
-        proto.MESSAGE, number=2, message=firewall.FirewallRule,
+        proto.MESSAGE,
+        number=2,
+        message=firewall.FirewallRule,
     )
 
 
@@ -530,7 +675,9 @@ class BatchUpdateIngressRulesResponse(proto.Message):
     """
 
     ingress_rules = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=firewall.FirewallRule,
+        proto.MESSAGE,
+        number=1,
+        message=firewall.FirewallRule,
     )
 
 
@@ -556,8 +703,15 @@ class CreateIngressRuleRequest(proto.Message):
             or deny-all rule.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    rule = proto.Field(proto.MESSAGE, number=2, message=firewall.FirewallRule,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    rule = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=firewall.FirewallRule,
+    )
 
 
 class GetIngressRuleRequest(proto.Message):
@@ -569,7 +723,10 @@ class GetIngressRuleRequest(proto.Message):
             ``apps/myapp/firewall/ingressRules/100``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class UpdateIngressRuleRequest(proto.Message):
@@ -587,10 +744,19 @@ class UpdateIngressRuleRequest(proto.Message):
             be updated.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    rule = proto.Field(proto.MESSAGE, number=2, message=firewall.FirewallRule,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    rule = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=firewall.FirewallRule,
+    )
     update_mask = proto.Field(
-        proto.MESSAGE, number=3, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=3,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -603,7 +769,10 @@ class DeleteIngressRuleRequest(proto.Message):
             ``apps/myapp/firewall/ingressRules/100``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListAuthorizedDomainsRequest(proto.Message):
@@ -620,9 +789,18 @@ class ListAuthorizedDomainsRequest(proto.Message):
             of results.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListAuthorizedDomainsResponse(proto.Message):
@@ -641,9 +819,14 @@ class ListAuthorizedDomainsResponse(proto.Message):
         return self
 
     domains = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=domain.AuthorizedDomain,
+        proto.MESSAGE,
+        number=1,
+        message=domain.AuthorizedDomain,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class ListAuthorizedCertificatesRequest(proto.Message):
@@ -664,10 +847,23 @@ class ListAuthorizedCertificatesRequest(proto.Message):
             of results.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    view = proto.Field(proto.ENUM, number=4, enum="AuthorizedCertificateView",)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    view = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum="AuthorizedCertificateView",
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListAuthorizedCertificatesResponse(proto.Message):
@@ -688,9 +884,14 @@ class ListAuthorizedCertificatesResponse(proto.Message):
         return self
 
     certificates = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=ga_certificate.AuthorizedCertificate,
+        proto.MESSAGE,
+        number=1,
+        message=ga_certificate.AuthorizedCertificate,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetAuthorizedCertificateRequest(proto.Message):
@@ -705,8 +906,15 @@ class GetAuthorizedCertificateRequest(proto.Message):
             Controls the set of fields returned in the ``GET`` response.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    view = proto.Field(proto.ENUM, number=2, enum="AuthorizedCertificateView",)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    view = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum="AuthorizedCertificateView",
+    )
 
 
 class CreateAuthorizedCertificateRequest(proto.Message):
@@ -721,9 +929,14 @@ class CreateAuthorizedCertificateRequest(proto.Message):
             SSL certificate data.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     certificate = proto.Field(
-        proto.MESSAGE, number=2, message=ga_certificate.AuthorizedCertificate,
+        proto.MESSAGE,
+        number=2,
+        message=ga_certificate.AuthorizedCertificate,
     )
 
 
@@ -744,12 +957,19 @@ class UpdateAuthorizedCertificateRequest(proto.Message):
             and ``display_name`` fields.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     certificate = proto.Field(
-        proto.MESSAGE, number=2, message=ga_certificate.AuthorizedCertificate,
+        proto.MESSAGE,
+        number=2,
+        message=ga_certificate.AuthorizedCertificate,
     )
     update_mask = proto.Field(
-        proto.MESSAGE, number=3, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=3,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -763,7 +983,10 @@ class DeleteAuthorizedCertificateRequest(proto.Message):
             ``apps/myapp/authorizedCertificates/12345``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListDomainMappingsRequest(proto.Message):
@@ -780,9 +1003,18 @@ class ListDomainMappingsRequest(proto.Message):
             of results.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListDomainMappingsResponse(proto.Message):
@@ -801,9 +1033,14 @@ class ListDomainMappingsResponse(proto.Message):
         return self
 
     domain_mappings = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=ga_domain_mapping.DomainMapping,
+        proto.MESSAGE,
+        number=1,
+        message=ga_domain_mapping.DomainMapping,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetDomainMappingRequest(proto.Message):
@@ -815,7 +1052,10 @@ class GetDomainMappingRequest(proto.Message):
             ``apps/myapp/domainMappings/example.com``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CreateDomainMappingRequest(proto.Message):
@@ -833,12 +1073,19 @@ class CreateDomainMappingRequest(proto.Message):
             default, overrides are rejected.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     domain_mapping = proto.Field(
-        proto.MESSAGE, number=2, message=ga_domain_mapping.DomainMapping,
+        proto.MESSAGE,
+        number=2,
+        message=ga_domain_mapping.DomainMapping,
     )
     override_strategy = proto.Field(
-        proto.ENUM, number=4, enum="DomainOverrideStrategy",
+        proto.ENUM,
+        number=4,
+        enum="DomainOverrideStrategy",
     )
 
 
@@ -858,12 +1105,19 @@ class UpdateDomainMappingRequest(proto.Message):
             be updated.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     domain_mapping = proto.Field(
-        proto.MESSAGE, number=2, message=ga_domain_mapping.DomainMapping,
+        proto.MESSAGE,
+        number=2,
+        message=ga_domain_mapping.DomainMapping,
     )
     update_mask = proto.Field(
-        proto.MESSAGE, number=3, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=3,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -876,7 +1130,10 @@ class DeleteDomainMappingRequest(proto.Message):
             ``apps/myapp/domainMappings/example.com``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

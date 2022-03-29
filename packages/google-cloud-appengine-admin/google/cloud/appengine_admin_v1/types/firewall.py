@@ -16,7 +16,12 @@
 import proto  # type: ignore
 
 
-__protobuf__ = proto.module(package="google.appengine.v1", manifest={"FirewallRule",},)
+__protobuf__ = proto.module(
+    package="google.appengine.v1",
+    manifest={
+        "FirewallRule",
+    },
+)
 
 
 class FirewallRule(proto.Message):
@@ -60,10 +65,23 @@ class FirewallRule(proto.Message):
         ALLOW = 1
         DENY = 2
 
-    priority = proto.Field(proto.INT32, number=1,)
-    action = proto.Field(proto.ENUM, number=2, enum=Action,)
-    source_range = proto.Field(proto.STRING, number=3,)
-    description = proto.Field(proto.STRING, number=4,)
+    priority = proto.Field(
+        proto.INT32,
+        number=1,
+    )
+    action = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=Action,
+    )
+    source_range = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

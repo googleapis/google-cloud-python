@@ -114,19 +114,45 @@ class AuthorizedCertificate(proto.Message):
             @OutputOnly
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    id = proto.Field(proto.STRING, number=2,)
-    display_name = proto.Field(proto.STRING, number=3,)
-    domain_names = proto.RepeatedField(proto.STRING, number=4,)
-    expire_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    domain_names = proto.RepeatedField(
+        proto.STRING,
+        number=4,
+    )
+    expire_time = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
     certificate_raw_data = proto.Field(
-        proto.MESSAGE, number=6, message="CertificateRawData",
+        proto.MESSAGE,
+        number=6,
+        message="CertificateRawData",
     )
     managed_certificate = proto.Field(
-        proto.MESSAGE, number=7, message="ManagedCertificate",
+        proto.MESSAGE,
+        number=7,
+        message="ManagedCertificate",
     )
-    visible_domain_mappings = proto.RepeatedField(proto.STRING, number=8,)
-    domain_mappings_count = proto.Field(proto.INT32, number=9,)
+    visible_domain_mappings = proto.RepeatedField(
+        proto.STRING,
+        number=8,
+    )
+    domain_mappings_count = proto.Field(
+        proto.INT32,
+        number=9,
+    )
 
 
 class CertificateRawData(proto.Message):
@@ -162,8 +188,14 @@ class CertificateRawData(proto.Message):
             @InputOnly
     """
 
-    public_certificate = proto.Field(proto.STRING, number=1,)
-    private_key = proto.Field(proto.STRING, number=2,)
+    public_certificate = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    private_key = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class ManagedCertificate(proto.Message):
@@ -185,9 +217,15 @@ class ManagedCertificate(proto.Message):
     """
 
     last_renewal_time = proto.Field(
-        proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
     )
-    status = proto.Field(proto.ENUM, number=2, enum="ManagementStatus",)
+    status = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum="ManagementStatus",
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

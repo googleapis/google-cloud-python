@@ -17,7 +17,10 @@ import proto  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.appengine.v1", manifest={"AuthorizedDomain",},
+    package="google.appengine.v1",
+    manifest={
+        "AuthorizedDomain",
+    },
 )
 
 
@@ -37,8 +40,14 @@ class AuthorizedDomain(proto.Message):
             use. Example: ``example.com``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    id = proto.Field(proto.STRING, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

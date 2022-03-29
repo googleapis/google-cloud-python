@@ -56,11 +56,26 @@ class Deployment(proto.Message):
             Engine flexible environment using files or zip.
     """
 
-    files = proto.MapField(proto.STRING, proto.MESSAGE, number=1, message="FileInfo",)
-    container = proto.Field(proto.MESSAGE, number=2, message="ContainerInfo",)
-    zip_ = proto.Field(proto.MESSAGE, number=3, message="ZipInfo",)
+    files = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=1,
+        message="FileInfo",
+    )
+    container = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="ContainerInfo",
+    )
+    zip_ = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="ZipInfo",
+    )
     cloud_build_options = proto.Field(
-        proto.MESSAGE, number=6, message="CloudBuildOptions",
+        proto.MESSAGE,
+        number=6,
+        message="CloudBuildOptions",
     )
 
 
@@ -82,9 +97,18 @@ class FileInfo(proto.Message):
             Defaults to the value from Google Cloud Storage.
     """
 
-    source_url = proto.Field(proto.STRING, number=1,)
-    sha1_sum = proto.Field(proto.STRING, number=2,)
-    mime_type = proto.Field(proto.STRING, number=3,)
+    source_url = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    sha1_sum = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    mime_type = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ContainerInfo(proto.Message):
@@ -101,7 +125,10 @@ class ContainerInfo(proto.Message):
             "gcr.io/my-project/image@digest".
     """
 
-    image = proto.Field(proto.STRING, number=1,)
+    image = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CloudBuildOptions(proto.Message):
@@ -124,9 +151,14 @@ class CloudBuildOptions(proto.Message):
             Defaults to 10 minutes.
     """
 
-    app_yaml_path = proto.Field(proto.STRING, number=1,)
+    app_yaml_path = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     cloud_build_timeout = proto.Field(
-        proto.MESSAGE, number=2, message=duration_pb2.Duration,
+        proto.MESSAGE,
+        number=2,
+        message=duration_pb2.Duration,
     )
 
 
@@ -147,8 +179,14 @@ class ZipInfo(proto.Message):
             provided, deployment may be slow.
     """
 
-    source_url = proto.Field(proto.STRING, number=3,)
-    files_count = proto.Field(proto.INT32, number=4,)
+    source_url = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    files_count = proto.Field(
+        proto.INT32,
+        number=4,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

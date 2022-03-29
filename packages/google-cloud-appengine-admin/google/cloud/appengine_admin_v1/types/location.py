@@ -17,7 +17,10 @@ import proto  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.appengine.v1", manifest={"LocationMetadata",},
+    package="google.appengine.v1",
+    manifest={
+        "LocationMetadata",
+    },
 )
 
 
@@ -40,9 +43,18 @@ class LocationMetadata(proto.Message):
             is available in the given location.
     """
 
-    standard_environment_available = proto.Field(proto.BOOL, number=2,)
-    flexible_environment_available = proto.Field(proto.BOOL, number=4,)
-    search_api_available = proto.Field(proto.BOOL, number=6,)
+    standard_environment_available = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+    flexible_environment_available = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
+    search_api_available = proto.Field(
+        proto.BOOL,
+        number=6,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

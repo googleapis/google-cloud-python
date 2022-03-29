@@ -127,7 +127,9 @@ class FirewallTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.list_ingress_rules: gapic_v1.method.wrap_method(
-                self.list_ingress_rules, default_timeout=None, client_info=client_info,
+                self.list_ingress_rules,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.batch_update_ingress_rules: gapic_v1.method.wrap_method(
                 self.batch_update_ingress_rules,
@@ -135,25 +137,33 @@ class FirewallTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.create_ingress_rule: gapic_v1.method.wrap_method(
-                self.create_ingress_rule, default_timeout=None, client_info=client_info,
+                self.create_ingress_rule,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_ingress_rule: gapic_v1.method.wrap_method(
-                self.get_ingress_rule, default_timeout=None, client_info=client_info,
+                self.get_ingress_rule,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.update_ingress_rule: gapic_v1.method.wrap_method(
-                self.update_ingress_rule, default_timeout=None, client_info=client_info,
+                self.update_ingress_rule,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.delete_ingress_rule: gapic_v1.method.wrap_method(
-                self.delete_ingress_rule, default_timeout=None, client_info=client_info,
+                self.delete_ingress_rule,
+                default_timeout=None,
+                client_info=client_info,
             ),
         }
 
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

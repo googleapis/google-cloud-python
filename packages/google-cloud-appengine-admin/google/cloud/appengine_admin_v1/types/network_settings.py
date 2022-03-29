@@ -17,7 +17,10 @@ import proto  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.appengine.v1", manifest={"NetworkSettings",},
+    package="google.appengine.v1",
+    manifest={
+        "NetworkSettings",
+    },
 )
 
 
@@ -38,7 +41,9 @@ class NetworkSettings(proto.Message):
         INGRESS_TRAFFIC_ALLOWED_INTERNAL_AND_LB = 3
 
     ingress_traffic_allowed = proto.Field(
-        proto.ENUM, number=1, enum=IngressTrafficAllowed,
+        proto.ENUM,
+        number=1,
+        enum=IngressTrafficAllowed,
     )
 
 

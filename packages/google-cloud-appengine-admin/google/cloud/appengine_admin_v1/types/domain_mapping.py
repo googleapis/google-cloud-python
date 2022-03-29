@@ -18,7 +18,11 @@ import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.appengine.v1",
-    manifest={"DomainMapping", "SslSettings", "ResourceRecord",},
+    manifest={
+        "DomainMapping",
+        "SslSettings",
+        "ResourceRecord",
+    },
 )
 
 
@@ -46,11 +50,23 @@ class DomainMapping(proto.Message):
             @OutputOnly
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    id = proto.Field(proto.STRING, number=2,)
-    ssl_settings = proto.Field(proto.MESSAGE, number=3, message="SslSettings",)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    ssl_settings = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="SslSettings",
+    )
     resource_records = proto.RepeatedField(
-        proto.MESSAGE, number=4, message="ResourceRecord",
+        proto.MESSAGE,
+        number=4,
+        message="ResourceRecord",
     )
 
 
@@ -95,9 +111,19 @@ class SslSettings(proto.Message):
         AUTOMATIC = 1
         MANUAL = 2
 
-    certificate_id = proto.Field(proto.STRING, number=1,)
-    ssl_management_type = proto.Field(proto.ENUM, number=3, enum=SslManagementType,)
-    pending_managed_certificate_id = proto.Field(proto.STRING, number=4,)
+    certificate_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    ssl_management_type = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=SslManagementType,
+    )
+    pending_managed_certificate_id = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class ResourceRecord(proto.Message):
@@ -122,9 +148,19 @@ class ResourceRecord(proto.Message):
         AAAA = 2
         CNAME = 3
 
-    name = proto.Field(proto.STRING, number=1,)
-    rrdata = proto.Field(proto.STRING, number=2,)
-    type_ = proto.Field(proto.ENUM, number=3, enum=RecordType,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    rrdata = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    type_ = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=RecordType,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
