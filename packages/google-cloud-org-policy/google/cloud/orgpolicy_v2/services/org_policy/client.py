@@ -54,7 +54,10 @@ class OrgPolicyClientMeta(type):
     _transport_registry["grpc"] = OrgPolicyGrpcTransport
     _transport_registry["grpc_asyncio"] = OrgPolicyGrpcAsyncIOTransport
 
-    def get_transport_class(cls, label: str = None,) -> Type[OrgPolicyTransport]:
+    def get_transport_class(
+        cls,
+        label: str = None,
+    ) -> Type[OrgPolicyTransport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -181,10 +184,14 @@ class OrgPolicyClient(metaclass=OrgPolicyClientMeta):
         return self._transport
 
     @staticmethod
-    def constraint_path(project: str, constraint: str,) -> str:
+    def constraint_path(
+        project: str,
+        constraint: str,
+    ) -> str:
         """Returns a fully-qualified constraint string."""
         return "projects/{project}/constraints/{constraint}".format(
-            project=project, constraint=constraint,
+            project=project,
+            constraint=constraint,
         )
 
     @staticmethod
@@ -196,10 +203,14 @@ class OrgPolicyClient(metaclass=OrgPolicyClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def policy_path(project: str, policy: str,) -> str:
+    def policy_path(
+        project: str,
+        policy: str,
+    ) -> str:
         """Returns a fully-qualified policy string."""
         return "projects/{project}/policies/{policy}".format(
-            project=project, policy=policy,
+            project=project,
+            policy=policy,
         )
 
     @staticmethod
@@ -209,7 +220,9 @@ class OrgPolicyClient(metaclass=OrgPolicyClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_billing_account_path(billing_account: str,) -> str:
+    def common_billing_account_path(
+        billing_account: str,
+    ) -> str:
         """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
@@ -222,9 +235,13 @@ class OrgPolicyClient(metaclass=OrgPolicyClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(folder: str,) -> str:
+    def common_folder_path(
+        folder: str,
+    ) -> str:
         """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(folder=folder,)
+        return "folders/{folder}".format(
+            folder=folder,
+        )
 
     @staticmethod
     def parse_common_folder_path(path: str) -> Dict[str, str]:
@@ -233,9 +250,13 @@ class OrgPolicyClient(metaclass=OrgPolicyClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(organization: str,) -> str:
+    def common_organization_path(
+        organization: str,
+    ) -> str:
         """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(organization=organization,)
+        return "organizations/{organization}".format(
+            organization=organization,
+        )
 
     @staticmethod
     def parse_common_organization_path(path: str) -> Dict[str, str]:
@@ -244,9 +265,13 @@ class OrgPolicyClient(metaclass=OrgPolicyClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(project: str,) -> str:
+    def common_project_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified project string."""
-        return "projects/{project}".format(project=project,)
+        return "projects/{project}".format(
+            project=project,
+        )
 
     @staticmethod
     def parse_common_project_path(path: str) -> Dict[str, str]:
@@ -255,10 +280,14 @@ class OrgPolicyClient(metaclass=OrgPolicyClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(project: str, location: str,) -> str:
+    def common_location_path(
+        project: str,
+        location: str,
+    ) -> str:
         """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
-            project=project, location=location,
+            project=project,
+            location=location,
         )
 
     @staticmethod
@@ -531,12 +560,20 @@ class OrgPolicyClient(metaclass=OrgPolicyClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListConstraintsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -643,12 +680,20 @@ class OrgPolicyClient(metaclass=OrgPolicyClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListPoliciesPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -744,7 +789,12 @@ class OrgPolicyClient(metaclass=OrgPolicyClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -842,7 +892,12 @@ class OrgPolicyClient(metaclass=OrgPolicyClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -954,7 +1009,12 @@ class OrgPolicyClient(metaclass=OrgPolicyClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1055,7 +1115,12 @@ class OrgPolicyClient(metaclass=OrgPolicyClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1144,7 +1209,10 @@ class OrgPolicyClient(metaclass=OrgPolicyClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def __enter__(self):

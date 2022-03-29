@@ -17,7 +17,10 @@ import proto  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.orgpolicy.v2", manifest={"Constraint",},
+    package="google.cloud.orgpolicy.v2",
+    manifest={
+        "Constraint",
+    },
 )
 
 
@@ -111,8 +114,14 @@ class Constraint(proto.Message):
                 'folders/123' folder.
         """
 
-        supports_in = proto.Field(proto.BOOL, number=1,)
-        supports_under = proto.Field(proto.BOOL, number=2,)
+        supports_in = proto.Field(
+            proto.BOOL,
+            number=1,
+        )
+        supports_under = proto.Field(
+            proto.BOOL,
+            number=2,
+        )
 
     class BooleanConstraint(proto.Message):
         r"""A ``Constraint`` that is either enforced or not.
@@ -124,15 +133,34 @@ class Constraint(proto.Message):
 
         """
 
-    name = proto.Field(proto.STRING, number=1,)
-    display_name = proto.Field(proto.STRING, number=2,)
-    description = proto.Field(proto.STRING, number=3,)
-    constraint_default = proto.Field(proto.ENUM, number=4, enum=ConstraintDefault,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    constraint_default = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=ConstraintDefault,
+    )
     list_constraint = proto.Field(
-        proto.MESSAGE, number=5, oneof="constraint_type", message=ListConstraint,
+        proto.MESSAGE,
+        number=5,
+        oneof="constraint_type",
+        message=ListConstraint,
     )
     boolean_constraint = proto.Field(
-        proto.MESSAGE, number=6, oneof="constraint_type", message=BooleanConstraint,
+        proto.MESSAGE,
+        number=6,
+        oneof="constraint_type",
+        message=BooleanConstraint,
     )
 
 
