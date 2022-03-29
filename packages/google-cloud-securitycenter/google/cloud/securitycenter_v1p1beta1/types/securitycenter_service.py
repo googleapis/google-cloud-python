@@ -85,9 +85,19 @@ class CreateFindingRequest(proto.Message):
             fields on this resource.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    finding_id = proto.Field(proto.STRING, number=2,)
-    finding = proto.Field(proto.MESSAGE, number=3, message=gcs_finding.Finding,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    finding_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    finding = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=gcs_finding.Finding,
+    )
 
 
 class CreateNotificationConfigRequest(proto.Message):
@@ -110,10 +120,18 @@ class CreateNotificationConfigRequest(proto.Message):
             on this resource.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    config_id = proto.Field(proto.STRING, number=2,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    config_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
     notification_config = proto.Field(
-        proto.MESSAGE, number=3, message=gcs_notification_config.NotificationConfig,
+        proto.MESSAGE,
+        number=3,
+        message=gcs_notification_config.NotificationConfig,
     )
 
 
@@ -130,8 +148,15 @@ class CreateSourceRequest(proto.Message):
             ignored.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    source = proto.Field(proto.MESSAGE, number=2, message=gcs_source.Source,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    source = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=gcs_source.Source,
+    )
 
 
 class DeleteNotificationConfigRequest(proto.Message):
@@ -144,7 +169,10 @@ class DeleteNotificationConfigRequest(proto.Message):
             "organizations/[organization_id]/notificationConfigs/[config_id]".
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class GetNotificationConfigRequest(proto.Message):
@@ -157,7 +185,10 @@ class GetNotificationConfigRequest(proto.Message):
             "organizations/[organization_id]/notificationConfigs/[config_id]".
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class GetOrganizationSettingsRequest(proto.Message):
@@ -170,7 +201,10 @@ class GetOrganizationSettingsRequest(proto.Message):
             "organizations/[organization_id]/organizationSettings".
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class GetSourceRequest(proto.Message):
@@ -182,7 +216,10 @@ class GetSourceRequest(proto.Message):
             is "organizations/[organization_id]/source/[source_id]".
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class GroupAssetsRequest(proto.Message):
@@ -345,15 +382,36 @@ class GroupAssetsRequest(proto.Message):
             maximum is 1000.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    filter = proto.Field(proto.STRING, number=2,)
-    group_by = proto.Field(proto.STRING, number=3,)
-    compare_duration = proto.Field(
-        proto.MESSAGE, number=4, message=duration_pb2.Duration,
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    read_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
-    page_token = proto.Field(proto.STRING, number=7,)
-    page_size = proto.Field(proto.INT32, number=8,)
+    filter = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    group_by = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    compare_duration = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=duration_pb2.Duration,
+    )
+    read_time = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=8,
+    )
 
 
 class GroupAssetsResponse(proto.Message):
@@ -381,11 +439,23 @@ class GroupAssetsResponse(proto.Message):
         return self
 
     group_by_results = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="GroupResult",
+        proto.MESSAGE,
+        number=1,
+        message="GroupResult",
     )
-    read_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    next_page_token = proto.Field(proto.STRING, number=3,)
-    total_size = proto.Field(proto.INT32, number=4,)
+    read_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    total_size = proto.Field(
+        proto.INT32,
+        number=4,
+    )
 
 
 class GroupFindingsRequest(proto.Message):
@@ -537,15 +607,36 @@ class GroupFindingsRequest(proto.Message):
             maximum is 1000.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    filter = proto.Field(proto.STRING, number=2,)
-    group_by = proto.Field(proto.STRING, number=3,)
-    read_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
-    compare_duration = proto.Field(
-        proto.MESSAGE, number=5, message=duration_pb2.Duration,
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    page_token = proto.Field(proto.STRING, number=7,)
-    page_size = proto.Field(proto.INT32, number=8,)
+    filter = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    group_by = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    read_time = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    compare_duration = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=duration_pb2.Duration,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=8,
+    )
 
 
 class GroupFindingsResponse(proto.Message):
@@ -573,11 +664,23 @@ class GroupFindingsResponse(proto.Message):
         return self
 
     group_by_results = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="GroupResult",
+        proto.MESSAGE,
+        number=1,
+        message="GroupResult",
     )
-    read_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    next_page_token = proto.Field(proto.STRING, number=3,)
-    total_size = proto.Field(proto.INT32, number=4,)
+    read_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    total_size = proto.Field(
+        proto.INT32,
+        number=4,
+    )
 
 
 class GroupResult(proto.Message):
@@ -594,9 +697,15 @@ class GroupResult(proto.Message):
     """
 
     properties = proto.MapField(
-        proto.STRING, proto.MESSAGE, number=1, message=struct_pb2.Value,
+        proto.STRING,
+        proto.MESSAGE,
+        number=1,
+        message=struct_pb2.Value,
     )
-    count = proto.Field(proto.INT64, number=2,)
+    count = proto.Field(
+        proto.INT64,
+        number=2,
+    )
 
 
 class ListNotificationConfigsRequest(proto.Message):
@@ -617,9 +726,18 @@ class ListNotificationConfigsRequest(proto.Message):
             maximum is 1000.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_token = proto.Field(proto.STRING, number=2,)
-    page_size = proto.Field(proto.INT32, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=3,
+    )
 
 
 class ListNotificationConfigsResponse(proto.Message):
@@ -639,9 +757,14 @@ class ListNotificationConfigsResponse(proto.Message):
         return self
 
     notification_configs = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=gcs_notification_config.NotificationConfig,
+        proto.MESSAGE,
+        number=1,
+        message=gcs_notification_config.NotificationConfig,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class ListSourcesRequest(proto.Message):
@@ -663,9 +786,18 @@ class ListSourcesRequest(proto.Message):
             maximum is 1000.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_token = proto.Field(proto.STRING, number=2,)
-    page_size = proto.Field(proto.INT32, number=7,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=7,
+    )
 
 
 class ListSourcesResponse(proto.Message):
@@ -683,8 +815,15 @@ class ListSourcesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    sources = proto.RepeatedField(proto.MESSAGE, number=1, message=gcs_source.Source,)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    sources = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=gcs_source.Source,
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class ListAssetsRequest(proto.Message):
@@ -848,16 +987,41 @@ class ListAssetsRequest(proto.Message):
             maximum is 1000.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    filter = proto.Field(proto.STRING, number=2,)
-    order_by = proto.Field(proto.STRING, number=3,)
-    read_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
-    compare_duration = proto.Field(
-        proto.MESSAGE, number=5, message=duration_pb2.Duration,
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    field_mask = proto.Field(proto.MESSAGE, number=7, message=field_mask_pb2.FieldMask,)
-    page_token = proto.Field(proto.STRING, number=8,)
-    page_size = proto.Field(proto.INT32, number=9,)
+    filter = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    order_by = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    read_time = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    compare_duration = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=duration_pb2.Duration,
+    )
+    field_mask = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=field_mask_pb2.FieldMask,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=9,
+    )
 
 
 class ListAssetsResponse(proto.Message):
@@ -900,7 +1064,11 @@ class ListAssetsResponse(proto.Message):
             REMOVED = 2
             ACTIVE = 3
 
-        asset = proto.Field(proto.MESSAGE, number=1, message=gcs_asset.Asset,)
+        asset = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=gcs_asset.Asset,
+        )
         state_change = proto.Field(
             proto.ENUM,
             number=2,
@@ -912,11 +1080,23 @@ class ListAssetsResponse(proto.Message):
         return self
 
     list_assets_results = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=ListAssetsResult,
+        proto.MESSAGE,
+        number=1,
+        message=ListAssetsResult,
     )
-    read_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    next_page_token = proto.Field(proto.STRING, number=3,)
-    total_size = proto.Field(proto.INT32, number=4,)
+    read_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    total_size = proto.Field(
+        proto.INT32,
+        number=4,
+    )
 
 
 class ListFindingsRequest(proto.Message):
@@ -1065,16 +1245,41 @@ class ListFindingsRequest(proto.Message):
             maximum is 1000.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    filter = proto.Field(proto.STRING, number=2,)
-    order_by = proto.Field(proto.STRING, number=3,)
-    read_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
-    compare_duration = proto.Field(
-        proto.MESSAGE, number=5, message=duration_pb2.Duration,
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    field_mask = proto.Field(proto.MESSAGE, number=7, message=field_mask_pb2.FieldMask,)
-    page_token = proto.Field(proto.STRING, number=8,)
-    page_size = proto.Field(proto.INT32, number=9,)
+    filter = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    order_by = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    read_time = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    compare_duration = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=duration_pb2.Duration,
+    )
+    field_mask = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=field_mask_pb2.FieldMask,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=9,
+    )
 
 
 class ListFindingsResponse(proto.Message):
@@ -1148,16 +1353,37 @@ class ListFindingsResponse(proto.Message):
                     the folder directly under the Organization.
             """
 
-            name = proto.Field(proto.STRING, number=1,)
-            project_name = proto.Field(proto.STRING, number=2,)
-            project_display_name = proto.Field(proto.STRING, number=3,)
-            parent_name = proto.Field(proto.STRING, number=4,)
-            parent_display_name = proto.Field(proto.STRING, number=5,)
+            name = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            project_name = proto.Field(
+                proto.STRING,
+                number=2,
+            )
+            project_display_name = proto.Field(
+                proto.STRING,
+                number=3,
+            )
+            parent_name = proto.Field(
+                proto.STRING,
+                number=4,
+            )
+            parent_display_name = proto.Field(
+                proto.STRING,
+                number=5,
+            )
             folders = proto.RepeatedField(
-                proto.MESSAGE, number=10, message=folder.Folder,
+                proto.MESSAGE,
+                number=10,
+                message=folder.Folder,
             )
 
-        finding = proto.Field(proto.MESSAGE, number=1, message=gcs_finding.Finding,)
+        finding = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=gcs_finding.Finding,
+        )
         state_change = proto.Field(
             proto.ENUM,
             number=2,
@@ -1174,11 +1400,23 @@ class ListFindingsResponse(proto.Message):
         return self
 
     list_findings_results = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=ListFindingsResult,
+        proto.MESSAGE,
+        number=1,
+        message=ListFindingsResult,
     )
-    read_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    next_page_token = proto.Field(proto.STRING, number=3,)
-    total_size = proto.Field(proto.INT32, number=4,)
+    read_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    total_size = proto.Field(
+        proto.INT32,
+        number=4,
+    )
 
 
 class SetFindingStateRequest(proto.Message):
@@ -1197,9 +1435,20 @@ class SetFindingStateRequest(proto.Message):
             takes effect.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    state = proto.Field(proto.ENUM, number=2, enum=gcs_finding.Finding.State,)
-    start_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=gcs_finding.Finding.State,
+    )
+    start_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 class RunAssetDiscoveryRequest(proto.Message):
@@ -1212,7 +1461,10 @@ class RunAssetDiscoveryRequest(proto.Message):
             for. Its format is "organizations/[organization_id]".
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class UpdateFindingRequest(proto.Message):
@@ -1237,9 +1489,15 @@ class UpdateFindingRequest(proto.Message):
             "source_properties." in the field mask.
     """
 
-    finding = proto.Field(proto.MESSAGE, number=1, message=gcs_finding.Finding,)
+    finding = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=gcs_finding.Finding,
+    )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -1256,10 +1514,14 @@ class UpdateNotificationConfigRequest(proto.Message):
     """
 
     notification_config = proto.Field(
-        proto.MESSAGE, number=1, message=gcs_notification_config.NotificationConfig,
+        proto.MESSAGE,
+        number=1,
+        message=gcs_notification_config.NotificationConfig,
     )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -1277,10 +1539,14 @@ class UpdateOrganizationSettingsRequest(proto.Message):
     """
 
     organization_settings = proto.Field(
-        proto.MESSAGE, number=1, message=gcs_organization_settings.OrganizationSettings,
+        proto.MESSAGE,
+        number=1,
+        message=gcs_organization_settings.OrganizationSettings,
     )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -1296,9 +1562,15 @@ class UpdateSourceRequest(proto.Message):
             If empty all mutable fields will be updated.
     """
 
-    source = proto.Field(proto.MESSAGE, number=1, message=gcs_source.Source,)
+    source = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=gcs_source.Source,
+    )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -1325,12 +1597,20 @@ class UpdateSecurityMarksRequest(proto.Message):
     """
 
     security_marks = proto.Field(
-        proto.MESSAGE, number=1, message=gcs_security_marks.SecurityMarks,
+        proto.MESSAGE,
+        number=1,
+        message=gcs_security_marks.SecurityMarks,
     )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
-    start_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
+    start_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

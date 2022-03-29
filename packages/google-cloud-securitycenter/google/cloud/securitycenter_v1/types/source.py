@@ -17,7 +17,10 @@ import proto  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.securitycenter.v1", manifest={"Source",},
+    package="google.cloud.securitycenter.v1",
+    manifest={
+        "Source",
+    },
 )
 
 
@@ -59,10 +62,22 @@ class Source(proto.Message):
             the finding.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    display_name = proto.Field(proto.STRING, number=2,)
-    description = proto.Field(proto.STRING, number=3,)
-    canonical_name = proto.Field(proto.STRING, number=14,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    canonical_name = proto.Field(
+        proto.STRING,
+        number=14,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

@@ -17,7 +17,10 @@ import proto  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.securitycenter.v1", manifest={"Indicator",},
+    package="google.cloud.securitycenter.v1",
+    manifest={
+        "Indicator",
+    },
 )
 
 
@@ -36,8 +39,14 @@ class Indicator(proto.Message):
             List of domains associated to the Finding.
     """
 
-    ip_addresses = proto.RepeatedField(proto.STRING, number=1,)
-    domains = proto.RepeatedField(proto.STRING, number=2,)
+    ip_addresses = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
+    domains = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

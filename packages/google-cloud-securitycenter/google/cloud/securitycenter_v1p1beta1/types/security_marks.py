@@ -17,7 +17,10 @@ import proto  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.securitycenter.v1p1beta1", manifest={"SecurityMarks",},
+    package="google.cloud.securitycenter.v1p1beta1",
+    manifest={
+        "SecurityMarks",
+    },
 )
 
 
@@ -55,9 +58,19 @@ class SecurityMarks(proto.Message):
             "projects/{project_number}/sources/{source_id}/findings/{finding_id}/securityMarks".
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    marks = proto.MapField(proto.STRING, proto.STRING, number=2,)
-    canonical_name = proto.Field(proto.STRING, number=3,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    marks = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=2,
+    )
+    canonical_name = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

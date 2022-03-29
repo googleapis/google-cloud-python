@@ -19,7 +19,10 @@ from google.protobuf import duration_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.securitycenter.v1", manifest={"RunAssetDiscoveryResponse",},
+    package="google.cloud.securitycenter.v1",
+    manifest={
+        "RunAssetDiscoveryResponse",
+    },
 )
 
 
@@ -41,8 +44,16 @@ class RunAssetDiscoveryResponse(proto.Message):
         SUPERSEDED = 2
         TERMINATED = 3
 
-    state = proto.Field(proto.ENUM, number=1, enum=State,)
-    duration = proto.Field(proto.MESSAGE, number=2, message=duration_pb2.Duration,)
+    state = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=State,
+    )
+    duration = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=duration_pb2.Duration,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

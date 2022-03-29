@@ -17,7 +17,10 @@ import proto  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.securitycenter.v1beta1", manifest={"SecurityMarks",},
+    package="google.cloud.securitycenter.v1beta1",
+    manifest={
+        "SecurityMarks",
+    },
 )
 
 
@@ -47,8 +50,15 @@ class SecurityMarks(proto.Message):
                (inclusive)
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    marks = proto.MapField(proto.STRING, proto.STRING, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    marks = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=2,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

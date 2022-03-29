@@ -17,7 +17,11 @@ import proto  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.securitycenter.v1", manifest={"Access", "Geolocation",},
+    package="google.cloud.securitycenter.v1",
+    manifest={
+        "Access",
+        "Geolocation",
+    },
 )
 
 
@@ -45,12 +49,31 @@ class Access(proto.Message):
             e.g. "SetIamPolicy".
     """
 
-    principal_email = proto.Field(proto.STRING, number=1,)
-    caller_ip = proto.Field(proto.STRING, number=2,)
-    caller_ip_geo = proto.Field(proto.MESSAGE, number=3, message="Geolocation",)
-    user_agent_family = proto.Field(proto.STRING, number=4,)
-    service_name = proto.Field(proto.STRING, number=5,)
-    method_name = proto.Field(proto.STRING, number=6,)
+    principal_email = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    caller_ip = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    caller_ip_geo = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="Geolocation",
+    )
+    user_agent_family = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    service_name = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    method_name = proto.Field(
+        proto.STRING,
+        number=6,
+    )
 
 
 class Geolocation(proto.Message):
@@ -61,7 +84,10 @@ class Geolocation(proto.Message):
             A CLDR.
     """
 
-    region_code = proto.Field(proto.STRING, number=1,)
+    region_code = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

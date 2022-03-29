@@ -17,7 +17,10 @@ import proto  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.securitycenter.v1", manifest={"MitreAttack",},
+    package="google.cloud.securitycenter.v1",
+    manifest={
+        "MitreAttack",
+    },
 )
 
 
@@ -104,11 +107,30 @@ class MitreAttack(proto.Message):
         EXPLOIT_PUBLIC_FACING_APPLICATION = 27
         MODIFY_AUTHENTICATION_PROCESS = 28
 
-    primary_tactic = proto.Field(proto.ENUM, number=1, enum=Tactic,)
-    primary_techniques = proto.RepeatedField(proto.ENUM, number=2, enum=Technique,)
-    additional_tactics = proto.RepeatedField(proto.ENUM, number=3, enum=Tactic,)
-    additional_techniques = proto.RepeatedField(proto.ENUM, number=4, enum=Technique,)
-    version = proto.Field(proto.STRING, number=5,)
+    primary_tactic = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Tactic,
+    )
+    primary_techniques = proto.RepeatedField(
+        proto.ENUM,
+        number=2,
+        enum=Technique,
+    )
+    additional_tactics = proto.RepeatedField(
+        proto.ENUM,
+        number=3,
+        enum=Tactic,
+    )
+    additional_techniques = proto.RepeatedField(
+        proto.ENUM,
+        number=4,
+        enum=Technique,
+    )
+    version = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

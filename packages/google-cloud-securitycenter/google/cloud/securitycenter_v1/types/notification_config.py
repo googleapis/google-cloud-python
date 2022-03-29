@@ -17,7 +17,10 @@ import proto  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.securitycenter.v1", manifest={"NotificationConfig",},
+    package="google.cloud.securitycenter.v1",
+    manifest={
+        "NotificationConfig",
+    },
 )
 
 
@@ -85,14 +88,32 @@ class NotificationConfig(proto.Message):
                 -  boolean literals ``true`` and ``false`` without quotes.
         """
 
-        filter = proto.Field(proto.STRING, number=1,)
+        filter = proto.Field(
+            proto.STRING,
+            number=1,
+        )
 
-    name = proto.Field(proto.STRING, number=1,)
-    description = proto.Field(proto.STRING, number=2,)
-    pubsub_topic = proto.Field(proto.STRING, number=3,)
-    service_account = proto.Field(proto.STRING, number=4,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    pubsub_topic = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    service_account = proto.Field(
+        proto.STRING,
+        number=4,
+    )
     streaming_config = proto.Field(
-        proto.MESSAGE, number=5, oneof="notify_config", message=StreamingConfig,
+        proto.MESSAGE,
+        number=5,
+        oneof="notify_config",
+        message=StreamingConfig,
     )
 
 

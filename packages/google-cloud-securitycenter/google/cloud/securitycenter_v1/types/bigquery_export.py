@@ -19,7 +19,10 @@ from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.securitycenter.v1", manifest={"BigQueryExport",},
+    package="google.cloud.securitycenter.v1",
+    manifest={
+        "BigQueryExport",
+    },
 )
 
 
@@ -89,14 +92,40 @@ class BigQueryExport(proto.Message):
             big query dataset.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    description = proto.Field(proto.STRING, number=2,)
-    filter = proto.Field(proto.STRING, number=3,)
-    dataset = proto.Field(proto.STRING, number=4,)
-    create_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,)
-    most_recent_editor = proto.Field(proto.STRING, number=7,)
-    principal = proto.Field(proto.STRING, number=8,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    dataset = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
+    )
+    most_recent_editor = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    principal = proto.Field(
+        proto.STRING,
+        number=8,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

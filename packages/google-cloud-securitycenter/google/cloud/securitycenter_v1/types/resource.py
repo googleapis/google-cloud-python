@@ -19,7 +19,10 @@ from google.cloud.securitycenter_v1.types import folder
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.securitycenter.v1", manifest={"Resource",},
+    package="google.cloud.securitycenter.v1",
+    manifest={
+        "Resource",
+    },
 )
 
 
@@ -51,14 +54,39 @@ class Resource(proto.Message):
             The human readable name of the resource.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    project = proto.Field(proto.STRING, number=2,)
-    project_display_name = proto.Field(proto.STRING, number=3,)
-    parent = proto.Field(proto.STRING, number=4,)
-    parent_display_name = proto.Field(proto.STRING, number=5,)
-    type_ = proto.Field(proto.STRING, number=6,)
-    folders = proto.RepeatedField(proto.MESSAGE, number=7, message=folder.Folder,)
-    display_name = proto.Field(proto.STRING, number=8,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    project = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    project_display_name = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    parent = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    parent_display_name = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    type_ = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    folders = proto.RepeatedField(
+        proto.MESSAGE,
+        number=7,
+        message=folder.Folder,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=8,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

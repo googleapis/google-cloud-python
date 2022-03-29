@@ -17,7 +17,10 @@ import proto  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.securitycenter.v1beta1", manifest={"OrganizationSettings",},
+    package="google.cloud.securitycenter.v1beta1",
+    manifest={
+        "OrganizationSettings",
+    },
 )
 
 
@@ -67,17 +70,28 @@ class OrganizationSettings(proto.Message):
             INCLUDE_ONLY = 1
             EXCLUDE = 2
 
-        project_ids = proto.RepeatedField(proto.STRING, number=1,)
+        project_ids = proto.RepeatedField(
+            proto.STRING,
+            number=1,
+        )
         inclusion_mode = proto.Field(
             proto.ENUM,
             number=2,
             enum="OrganizationSettings.AssetDiscoveryConfig.InclusionMode",
         )
 
-    name = proto.Field(proto.STRING, number=1,)
-    enable_asset_discovery = proto.Field(proto.BOOL, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    enable_asset_discovery = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
     asset_discovery_config = proto.Field(
-        proto.MESSAGE, number=3, message=AssetDiscoveryConfig,
+        proto.MESSAGE,
+        number=3,
+        message=AssetDiscoveryConfig,
     )
 
 

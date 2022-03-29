@@ -73,7 +73,10 @@ class SecurityCenterClientMeta(type):
     _transport_registry["grpc"] = SecurityCenterGrpcTransport
     _transport_registry["grpc_asyncio"] = SecurityCenterGrpcAsyncIOTransport
 
-    def get_transport_class(cls, label: str = None,) -> Type[SecurityCenterTransport]:
+    def get_transport_class(
+        cls,
+        label: str = None,
+    ) -> Type[SecurityCenterTransport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -178,10 +181,14 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         return self._transport
 
     @staticmethod
-    def asset_path(organization: str, asset: str,) -> str:
+    def asset_path(
+        organization: str,
+        asset: str,
+    ) -> str:
         """Returns a fully-qualified asset string."""
         return "organizations/{organization}/assets/{asset}".format(
-            organization=organization, asset=asset,
+            organization=organization,
+            asset=asset,
         )
 
     @staticmethod
@@ -193,10 +200,18 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def finding_path(organization: str, source: str, finding: str,) -> str:
+    def finding_path(
+        organization: str,
+        source: str,
+        finding: str,
+    ) -> str:
         """Returns a fully-qualified finding string."""
-        return "organizations/{organization}/sources/{source}/findings/{finding}".format(
-            organization=organization, source=source, finding=finding,
+        return (
+            "organizations/{organization}/sources/{source}/findings/{finding}".format(
+                organization=organization,
+                source=source,
+                finding=finding,
+            )
         )
 
     @staticmethod
@@ -209,7 +224,9 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def organization_settings_path(organization: str,) -> str:
+    def organization_settings_path(
+        organization: str,
+    ) -> str:
         """Returns a fully-qualified organization_settings string."""
         return "organizations/{organization}/organizationSettings".format(
             organization=organization,
@@ -224,10 +241,14 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def security_marks_path(organization: str, asset: str,) -> str:
+    def security_marks_path(
+        organization: str,
+        asset: str,
+    ) -> str:
         """Returns a fully-qualified security_marks string."""
         return "organizations/{organization}/assets/{asset}/securityMarks".format(
-            organization=organization, asset=asset,
+            organization=organization,
+            asset=asset,
         )
 
     @staticmethod
@@ -240,10 +261,14 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def source_path(organization: str, source: str,) -> str:
+    def source_path(
+        organization: str,
+        source: str,
+    ) -> str:
         """Returns a fully-qualified source string."""
         return "organizations/{organization}/sources/{source}".format(
-            organization=organization, source=source,
+            organization=organization,
+            source=source,
         )
 
     @staticmethod
@@ -255,7 +280,9 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_billing_account_path(billing_account: str,) -> str:
+    def common_billing_account_path(
+        billing_account: str,
+    ) -> str:
         """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
@@ -268,9 +295,13 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(folder: str,) -> str:
+    def common_folder_path(
+        folder: str,
+    ) -> str:
         """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(folder=folder,)
+        return "folders/{folder}".format(
+            folder=folder,
+        )
 
     @staticmethod
     def parse_common_folder_path(path: str) -> Dict[str, str]:
@@ -279,9 +310,13 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(organization: str,) -> str:
+    def common_organization_path(
+        organization: str,
+    ) -> str:
         """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(organization=organization,)
+        return "organizations/{organization}".format(
+            organization=organization,
+        )
 
     @staticmethod
     def parse_common_organization_path(path: str) -> Dict[str, str]:
@@ -290,9 +325,13 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(project: str,) -> str:
+    def common_project_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified project string."""
-        return "projects/{project}".format(project=project,)
+        return "projects/{project}".format(
+            project=project,
+        )
 
     @staticmethod
     def parse_common_project_path(path: str) -> Dict[str, str]:
@@ -301,10 +340,14 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(project: str, location: str,) -> str:
+    def common_location_path(
+        project: str,
+        location: str,
+    ) -> str:
         """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
-            project=project, location=location,
+            project=project,
+            location=location,
         )
 
     @staticmethod
@@ -578,7 +621,12 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -703,7 +751,12 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -849,7 +902,12 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -947,7 +1005,12 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1042,7 +1105,12 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1118,12 +1186,20 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.GroupAssetsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1247,12 +1323,20 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.GroupFindingsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1324,12 +1408,20 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListAssetsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1408,12 +1500,20 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListFindingsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1507,12 +1607,20 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListSourcesPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1627,7 +1735,12 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1756,7 +1869,12 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1902,7 +2020,12 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2006,7 +2129,12 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2111,7 +2239,12 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2209,7 +2342,12 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2304,7 +2442,12 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2401,7 +2544,12 @@ class SecurityCenterClient(metaclass=SecurityCenterClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response

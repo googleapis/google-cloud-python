@@ -20,7 +20,10 @@ from google.cloud.securitycenter_v1.types import resource as gcs_resource
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.securitycenter.v1", manifest={"NotificationMessage",},
+    package="google.cloud.securitycenter.v1",
+    manifest={
+        "NotificationMessage",
+    },
 )
 
 
@@ -43,11 +46,21 @@ class NotificationMessage(proto.Message):
             notification's Finding.
     """
 
-    notification_config_name = proto.Field(proto.STRING, number=1,)
-    finding = proto.Field(
-        proto.MESSAGE, number=2, oneof="event", message=gcs_finding.Finding,
+    notification_config_name = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    resource = proto.Field(proto.MESSAGE, number=3, message=gcs_resource.Resource,)
+    finding = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="event",
+        message=gcs_finding.Finding,
+    )
+    resource = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=gcs_resource.Resource,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

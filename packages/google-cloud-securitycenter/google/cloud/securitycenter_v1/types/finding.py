@@ -26,7 +26,10 @@ from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.securitycenter.v1", manifest={"Finding",},
+    package="google.cloud.securitycenter.v1",
+    manifest={
+        "Finding",
+    },
 )
 
 
@@ -175,41 +178,106 @@ class Finding(proto.Message):
         OBSERVATION = 4
         SCC_ERROR = 5
 
-    name = proto.Field(proto.STRING, number=1,)
-    parent = proto.Field(proto.STRING, number=2,)
-    resource_name = proto.Field(proto.STRING, number=3,)
-    state = proto.Field(proto.ENUM, number=4, enum=State,)
-    category = proto.Field(proto.STRING, number=5,)
-    external_uri = proto.Field(proto.STRING, number=6,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    parent = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    resource_name = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=State,
+    )
+    category = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    external_uri = proto.Field(
+        proto.STRING,
+        number=6,
+    )
     source_properties = proto.MapField(
-        proto.STRING, proto.MESSAGE, number=7, message=struct_pb2.Value,
+        proto.STRING,
+        proto.MESSAGE,
+        number=7,
+        message=struct_pb2.Value,
     )
     security_marks = proto.Field(
-        proto.MESSAGE, number=8, message=gcs_security_marks.SecurityMarks,
+        proto.MESSAGE,
+        number=8,
+        message=gcs_security_marks.SecurityMarks,
     )
-    event_time = proto.Field(proto.MESSAGE, number=9, message=timestamp_pb2.Timestamp,)
+    event_time = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message=timestamp_pb2.Timestamp,
+    )
     create_time = proto.Field(
-        proto.MESSAGE, number=10, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=10,
+        message=timestamp_pb2.Timestamp,
     )
-    severity = proto.Field(proto.ENUM, number=12, enum=Severity,)
-    canonical_name = proto.Field(proto.STRING, number=14,)
-    mute = proto.Field(proto.ENUM, number=15, enum=Mute,)
-    finding_class = proto.Field(proto.ENUM, number=17, enum=FindingClass,)
-    indicator = proto.Field(proto.MESSAGE, number=18, message=gcs_indicator.Indicator,)
+    severity = proto.Field(
+        proto.ENUM,
+        number=12,
+        enum=Severity,
+    )
+    canonical_name = proto.Field(
+        proto.STRING,
+        number=14,
+    )
+    mute = proto.Field(
+        proto.ENUM,
+        number=15,
+        enum=Mute,
+    )
+    finding_class = proto.Field(
+        proto.ENUM,
+        number=17,
+        enum=FindingClass,
+    )
+    indicator = proto.Field(
+        proto.MESSAGE,
+        number=18,
+        message=gcs_indicator.Indicator,
+    )
     vulnerability = proto.Field(
-        proto.MESSAGE, number=20, message=gcs_vulnerability.Vulnerability,
+        proto.MESSAGE,
+        number=20,
+        message=gcs_vulnerability.Vulnerability,
     )
     mute_update_time = proto.Field(
-        proto.MESSAGE, number=21, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=21,
+        message=timestamp_pb2.Timestamp,
     )
     external_systems = proto.MapField(
-        proto.STRING, proto.MESSAGE, number=22, message=external_system.ExternalSystem,
+        proto.STRING,
+        proto.MESSAGE,
+        number=22,
+        message=external_system.ExternalSystem,
     )
     mitre_attack = proto.Field(
-        proto.MESSAGE, number=25, message=gcs_mitre_attack.MitreAttack,
+        proto.MESSAGE,
+        number=25,
+        message=gcs_mitre_attack.MitreAttack,
     )
-    access = proto.Field(proto.MESSAGE, number=26, message=gcs_access.Access,)
-    mute_initiator = proto.Field(proto.STRING, number=28,)
+    access = proto.Field(
+        proto.MESSAGE,
+        number=26,
+        message=gcs_access.Access,
+    )
+    mute_initiator = proto.Field(
+        proto.STRING,
+        number=28,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

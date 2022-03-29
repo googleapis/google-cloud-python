@@ -23,7 +23,10 @@ from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.securitycenter.v1p1beta1", manifest={"Finding",},
+    package="google.cloud.securitycenter.v1p1beta1",
+    manifest={
+        "Finding",
+    },
 )
 
 
@@ -120,24 +123,61 @@ class Finding(proto.Message):
         MEDIUM = 3
         LOW = 4
 
-    name = proto.Field(proto.STRING, number=1,)
-    parent = proto.Field(proto.STRING, number=2,)
-    resource_name = proto.Field(proto.STRING, number=3,)
-    state = proto.Field(proto.ENUM, number=4, enum=State,)
-    category = proto.Field(proto.STRING, number=5,)
-    external_uri = proto.Field(proto.STRING, number=6,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    parent = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    resource_name = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=State,
+    )
+    category = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    external_uri = proto.Field(
+        proto.STRING,
+        number=6,
+    )
     source_properties = proto.MapField(
-        proto.STRING, proto.MESSAGE, number=7, message=struct_pb2.Value,
+        proto.STRING,
+        proto.MESSAGE,
+        number=7,
+        message=struct_pb2.Value,
     )
     security_marks = proto.Field(
-        proto.MESSAGE, number=8, message=gcs_security_marks.SecurityMarks,
+        proto.MESSAGE,
+        number=8,
+        message=gcs_security_marks.SecurityMarks,
     )
-    event_time = proto.Field(proto.MESSAGE, number=9, message=timestamp_pb2.Timestamp,)
+    event_time = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message=timestamp_pb2.Timestamp,
+    )
     create_time = proto.Field(
-        proto.MESSAGE, number=10, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=10,
+        message=timestamp_pb2.Timestamp,
     )
-    severity = proto.Field(proto.ENUM, number=13, enum=Severity,)
-    canonical_name = proto.Field(proto.STRING, number=14,)
+    severity = proto.Field(
+        proto.ENUM,
+        number=13,
+        enum=Severity,
+    )
+    canonical_name = proto.Field(
+        proto.STRING,
+        number=14,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

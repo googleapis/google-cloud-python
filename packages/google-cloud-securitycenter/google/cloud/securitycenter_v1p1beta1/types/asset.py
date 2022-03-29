@@ -24,7 +24,10 @@ from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.securitycenter.v1p1beta1", manifest={"Asset",},
+    package="google.cloud.securitycenter.v1p1beta1",
+    manifest={
+        "Asset",
+    },
 )
 
 
@@ -121,15 +124,43 @@ class Asset(proto.Message):
                 the folder directly under the Organization.
         """
 
-        resource_name = proto.Field(proto.STRING, number=1,)
-        resource_type = proto.Field(proto.STRING, number=2,)
-        resource_parent = proto.Field(proto.STRING, number=3,)
-        resource_project = proto.Field(proto.STRING, number=4,)
-        resource_owners = proto.RepeatedField(proto.STRING, number=5,)
-        resource_display_name = proto.Field(proto.STRING, number=6,)
-        resource_parent_display_name = proto.Field(proto.STRING, number=7,)
-        resource_project_display_name = proto.Field(proto.STRING, number=8,)
-        folders = proto.RepeatedField(proto.MESSAGE, number=10, message=folder.Folder,)
+        resource_name = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        resource_type = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        resource_parent = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+        resource_project = proto.Field(
+            proto.STRING,
+            number=4,
+        )
+        resource_owners = proto.RepeatedField(
+            proto.STRING,
+            number=5,
+        )
+        resource_display_name = proto.Field(
+            proto.STRING,
+            number=6,
+        )
+        resource_parent_display_name = proto.Field(
+            proto.STRING,
+            number=7,
+        )
+        resource_project_display_name = proto.Field(
+            proto.STRING,
+            number=8,
+        )
+        folders = proto.RepeatedField(
+            proto.MESSAGE,
+            number=10,
+            message=folder.Folder,
+        )
 
     class IamPolicy(proto.Message):
         r"""Cloud IAM Policy information associated with the Google Cloud
@@ -145,24 +176,50 @@ class Asset(proto.Message):
                 for format details.
         """
 
-        policy_blob = proto.Field(proto.STRING, number=1,)
+        policy_blob = proto.Field(
+            proto.STRING,
+            number=1,
+        )
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     security_center_properties = proto.Field(
-        proto.MESSAGE, number=2, message=SecurityCenterProperties,
+        proto.MESSAGE,
+        number=2,
+        message=SecurityCenterProperties,
     )
     resource_properties = proto.MapField(
-        proto.STRING, proto.MESSAGE, number=7, message=struct_pb2.Value,
+        proto.STRING,
+        proto.MESSAGE,
+        number=7,
+        message=struct_pb2.Value,
     )
     security_marks = proto.Field(
-        proto.MESSAGE, number=8, message=gcs_security_marks.SecurityMarks,
+        proto.MESSAGE,
+        number=8,
+        message=gcs_security_marks.SecurityMarks,
     )
-    create_time = proto.Field(proto.MESSAGE, number=9, message=timestamp_pb2.Timestamp,)
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message=timestamp_pb2.Timestamp,
+    )
     update_time = proto.Field(
-        proto.MESSAGE, number=10, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=10,
+        message=timestamp_pb2.Timestamp,
     )
-    iam_policy = proto.Field(proto.MESSAGE, number=11, message=IamPolicy,)
-    canonical_name = proto.Field(proto.STRING, number=13,)
+    iam_policy = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message=IamPolicy,
+    )
+    canonical_name = proto.Field(
+        proto.STRING,
+        number=13,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

@@ -143,16 +143,24 @@ class SecurityCenterTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.bulk_mute_findings: gapic_v1.method.wrap_method(
-                self.bulk_mute_findings, default_timeout=None, client_info=client_info,
+                self.bulk_mute_findings,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.create_source: gapic_v1.method.wrap_method(
-                self.create_source, default_timeout=60.0, client_info=client_info,
+                self.create_source,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.create_finding: gapic_v1.method.wrap_method(
-                self.create_finding, default_timeout=60.0, client_info=client_info,
+                self.create_finding,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.create_mute_config: gapic_v1.method.wrap_method(
-                self.create_mute_config, default_timeout=None, client_info=client_info,
+                self.create_mute_config,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.create_notification_config: gapic_v1.method.wrap_method(
                 self.create_notification_config,
@@ -160,7 +168,9 @@ class SecurityCenterTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.delete_mute_config: gapic_v1.method.wrap_method(
-                self.delete_mute_config, default_timeout=None, client_info=client_info,
+                self.delete_mute_config,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.delete_notification_config: gapic_v1.method.wrap_method(
                 self.delete_notification_config,
@@ -188,7 +198,9 @@ class SecurityCenterTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.get_mute_config: gapic_v1.method.wrap_method(
-                self.get_mute_config, default_timeout=None, client_info=client_info,
+                self.get_mute_config,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_notification_config: gapic_v1.method.wrap_method(
                 self.get_notification_config,
@@ -296,7 +308,9 @@ class SecurityCenterTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.list_mute_configs: gapic_v1.method.wrap_method(
-                self.list_mute_configs, default_timeout=None, client_info=client_info,
+                self.list_mute_configs,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_notification_configs: gapic_v1.method.wrap_method(
                 self.list_notification_configs,
@@ -329,16 +343,24 @@ class SecurityCenterTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.run_asset_discovery: gapic_v1.method.wrap_method(
-                self.run_asset_discovery, default_timeout=60.0, client_info=client_info,
+                self.run_asset_discovery,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.set_finding_state: gapic_v1.method.wrap_method(
-                self.set_finding_state, default_timeout=60.0, client_info=client_info,
+                self.set_finding_state,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.set_mute: gapic_v1.method.wrap_method(
-                self.set_mute, default_timeout=None, client_info=client_info,
+                self.set_mute,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.set_iam_policy: gapic_v1.method.wrap_method(
-                self.set_iam_policy, default_timeout=60.0, client_info=client_info,
+                self.set_iam_policy,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.test_iam_permissions: gapic_v1.method.wrap_method(
                 self.test_iam_permissions,
@@ -361,10 +383,14 @@ class SecurityCenterTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.update_finding: gapic_v1.method.wrap_method(
-                self.update_finding, default_timeout=60.0, client_info=client_info,
+                self.update_finding,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.update_mute_config: gapic_v1.method.wrap_method(
-                self.update_mute_config, default_timeout=None, client_info=client_info,
+                self.update_mute_config,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.update_notification_config: gapic_v1.method.wrap_method(
                 self.update_notification_config,
@@ -377,7 +403,9 @@ class SecurityCenterTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.update_source: gapic_v1.method.wrap_method(
-                self.update_source, default_timeout=60.0, client_info=client_info,
+                self.update_source,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.update_security_marks: gapic_v1.method.wrap_method(
                 self.update_security_marks,
@@ -409,9 +437,9 @@ class SecurityCenterTransport(abc.ABC):
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

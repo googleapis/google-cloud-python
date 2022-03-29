@@ -19,7 +19,10 @@ from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.securitycenter.v1", manifest={"ExternalSystem",},
+    package="google.cloud.securitycenter.v1",
+    manifest={
+        "ExternalSystem",
+    },
 )
 
 
@@ -47,12 +50,26 @@ class ExternalSystem(proto.Message):
             external system.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    assignees = proto.RepeatedField(proto.STRING, number=2,)
-    external_uid = proto.Field(proto.STRING, number=3,)
-    status = proto.Field(proto.STRING, number=4,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    assignees = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+    external_uid = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    status = proto.Field(
+        proto.STRING,
+        number=4,
+    )
     external_system_update_time = proto.Field(
-        proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
     )
 
 
