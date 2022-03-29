@@ -86,10 +86,20 @@ class AnswerRecord(proto.Message):
             This field is a member of `oneof`_ ``record``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    answer_feedback = proto.Field(proto.MESSAGE, number=3, message="AnswerFeedback",)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    answer_feedback = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="AnswerFeedback",
+    )
     agent_assistant_record = proto.Field(
-        proto.MESSAGE, number=4, oneof="record", message="AgentAssistantRecord",
+        proto.MESSAGE,
+        number=4,
+        oneof="record",
+        message="AgentAssistantRecord",
     )
 
 
@@ -115,10 +125,16 @@ class AgentAssistantRecord(proto.Message):
     """
 
     article_suggestion_answer = proto.Field(
-        proto.MESSAGE, number=5, oneof="answer", message=participant.ArticleAnswer,
+        proto.MESSAGE,
+        number=5,
+        oneof="answer",
+        message=participant.ArticleAnswer,
     )
     faq_answer = proto.Field(
-        proto.MESSAGE, number=6, oneof="answer", message=participant.FaqAnswer,
+        proto.MESSAGE,
+        number=6,
+        oneof="answer",
+        message=participant.FaqAnswer,
     )
 
 
@@ -157,18 +173,34 @@ class AnswerFeedback(proto.Message):
         PARTIALLY_CORRECT = 2
         FULLY_CORRECT = 3
 
-    correctness_level = proto.Field(proto.ENUM, number=1, enum=CorrectnessLevel,)
+    correctness_level = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=CorrectnessLevel,
+    )
     agent_assistant_detail_feedback = proto.Field(
         proto.MESSAGE,
         number=2,
         oneof="detail_feedback",
         message="AgentAssistantFeedback",
     )
-    clicked = proto.Field(proto.BOOL, number=3,)
-    click_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
-    displayed = proto.Field(proto.BOOL, number=4,)
+    clicked = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+    click_time = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+    displayed = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
     display_time = proto.Field(
-        proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
     )
 
 
@@ -242,18 +274,39 @@ class AgentAssistantFeedback(proto.Message):
         """
 
         start_timestamp = proto.Field(
-            proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,
+            proto.MESSAGE,
+            number=1,
+            message=timestamp_pb2.Timestamp,
         )
         submit_timestamp = proto.Field(
-            proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,
+            proto.MESSAGE,
+            number=2,
+            message=timestamp_pb2.Timestamp,
         )
-        summary_text = proto.Field(proto.STRING, number=3,)
+        summary_text = proto.Field(
+            proto.STRING,
+            number=3,
+        )
 
-    answer_relevance = proto.Field(proto.ENUM, number=1, enum=AnswerRelevance,)
-    document_correctness = proto.Field(proto.ENUM, number=2, enum=DocumentCorrectness,)
-    document_efficiency = proto.Field(proto.ENUM, number=3, enum=DocumentEfficiency,)
+    answer_relevance = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=AnswerRelevance,
+    )
+    document_correctness = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=DocumentCorrectness,
+    )
+    document_efficiency = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=DocumentEfficiency,
+    )
     summarization_feedback = proto.Field(
-        proto.MESSAGE, number=4, message=SummarizationFeedback,
+        proto.MESSAGE,
+        number=4,
+        message=SummarizationFeedback,
     )
 
 
@@ -267,7 +320,10 @@ class GetAnswerRecordRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/answerRecords/<Answer Record Id>``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListAnswerRecordsRequest(proto.Message):
@@ -291,9 +347,18 @@ class ListAnswerRecordsRequest(proto.Message):
             listing on the next page.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=3,)
-    page_token = proto.Field(proto.STRING, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class ListAnswerRecordsResponse(proto.Message):
@@ -316,9 +381,14 @@ class ListAnswerRecordsResponse(proto.Message):
         return self
 
     answer_records = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="AnswerRecord",
+        proto.MESSAGE,
+        number=1,
+        message="AnswerRecord",
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class UpdateAnswerRecordRequest(proto.Message):
@@ -333,9 +403,15 @@ class UpdateAnswerRecordRequest(proto.Message):
             get updated.
     """
 
-    answer_record = proto.Field(proto.MESSAGE, number=1, message="AnswerRecord",)
+    answer_record = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="AnswerRecord",
+    )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 

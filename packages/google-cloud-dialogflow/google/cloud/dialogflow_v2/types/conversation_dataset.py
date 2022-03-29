@@ -51,7 +51,10 @@ class ConversationInfo(proto.Message):
             more information. Supports all UTF-8 languages.
     """
 
-    language_code = proto.Field(proto.STRING, number=1,)
+    language_code = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class InputConfig(proto.Message):
@@ -71,7 +74,10 @@ class InputConfig(proto.Message):
     """
 
     gcs_source = proto.Field(
-        proto.MESSAGE, number=1, oneof="source", message=gcs.GcsSources,
+        proto.MESSAGE,
+        number=1,
+        oneof="source",
+        message=gcs.GcsSources,
     )
 
 
@@ -105,15 +111,37 @@ class ConversationDataset(proto.Message):
             conversation dataset contains.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    display_name = proto.Field(proto.STRING, number=2,)
-    description = proto.Field(proto.STRING, number=3,)
-    create_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
-    input_config = proto.Field(proto.MESSAGE, number=5, message="InputConfig",)
-    conversation_info = proto.Field(
-        proto.MESSAGE, number=6, message="ConversationInfo",
+    name = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    conversation_count = proto.Field(proto.INT64, number=7,)
+    display_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    input_config = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message="InputConfig",
+    )
+    conversation_info = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message="ConversationInfo",
+    )
+    conversation_count = proto.Field(
+        proto.INT64,
+        number=7,
+    )
 
 
 class CreateConversationDatasetRequest(proto.Message):
@@ -128,9 +156,14 @@ class CreateConversationDatasetRequest(proto.Message):
             Required. The conversation dataset to create.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     conversation_dataset = proto.Field(
-        proto.MESSAGE, number=2, message="ConversationDataset",
+        proto.MESSAGE,
+        number=2,
+        message="ConversationDataset",
     )
 
 
@@ -144,7 +177,10 @@ class GetConversationDatasetRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/conversationDatasets/<Conversation Dataset ID>``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListConversationDatasetsRequest(proto.Message):
@@ -165,9 +201,18 @@ class ListConversationDatasetsRequest(proto.Message):
             list request.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListConversationDatasetsResponse(proto.Message):
@@ -188,9 +233,14 @@ class ListConversationDatasetsResponse(proto.Message):
         return self
 
     conversation_datasets = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="ConversationDataset",
+        proto.MESSAGE,
+        number=1,
+        message="ConversationDataset",
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class DeleteConversationDatasetRequest(proto.Message):
@@ -203,7 +253,10 @@ class DeleteConversationDatasetRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/conversationDatasets/<Conversation Dataset ID>``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ImportConversationDataRequest(proto.Message):
@@ -219,8 +272,15 @@ class ImportConversationDataRequest(proto.Message):
             import data from.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    input_config = proto.Field(proto.MESSAGE, number=2, message="InputConfig",)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    input_config = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="InputConfig",
+    )
 
 
 class ImportConversationDataOperationMetadata(proto.Message):
@@ -243,11 +303,20 @@ class ImportConversationDataOperationMetadata(proto.Message):
             server side.
     """
 
-    conversation_dataset = proto.Field(proto.STRING, number=1,)
-    partial_failures = proto.RepeatedField(
-        proto.MESSAGE, number=2, message=status_pb2.Status,
+    conversation_dataset = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    create_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
+    partial_failures = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=status_pb2.Status,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 class ImportConversationDataOperationResponse(proto.Message):
@@ -265,18 +334,22 @@ class ImportConversationDataOperationResponse(proto.Message):
             successfully.
     """
 
-    conversation_dataset = proto.Field(proto.STRING, number=1,)
-    import_count = proto.Field(proto.INT32, number=3,)
+    conversation_dataset = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    import_count = proto.Field(
+        proto.INT32,
+        number=3,
+    )
 
 
 class CreateConversationDatasetOperationMetadata(proto.Message):
-    r"""Metadata for [ConversationDatasets][CreateConversationDataset].
-    """
+    r"""Metadata for [ConversationDatasets][CreateConversationDataset]."""
 
 
 class DeleteConversationDatasetOperationMetadata(proto.Message):
-    r"""Metadata for [ConversationDatasets][DeleteConversationDataset].
-    """
+    r"""Metadata for [ConversationDatasets][DeleteConversationDataset]."""
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

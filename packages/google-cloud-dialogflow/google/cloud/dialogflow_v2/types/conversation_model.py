@@ -107,12 +107,33 @@ class ConversationModel(proto.Message):
         SMART_REPLY_DUAL_ENCODER_MODEL = 2
         SMART_REPLY_BERT_MODEL = 6
 
-    name = proto.Field(proto.STRING, number=1,)
-    display_name = proto.Field(proto.STRING, number=2,)
-    create_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
-    datasets = proto.RepeatedField(proto.MESSAGE, number=4, message="InputDataset",)
-    state = proto.Field(proto.ENUM, number=7, enum=State,)
-    language_code = proto.Field(proto.STRING, number=19,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    datasets = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message="InputDataset",
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=7,
+        enum=State,
+    )
+    language_code = proto.Field(
+        proto.STRING,
+        number=19,
+    )
     article_suggestion_model_metadata = proto.Field(
         proto.MESSAGE,
         number=8,
@@ -151,14 +172,29 @@ class ConversationModelEvaluation(proto.Message):
             This field is a member of `oneof`_ ``metrics``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    display_name = proto.Field(proto.STRING, number=2,)
-    evaluation_config = proto.Field(
-        proto.MESSAGE, number=6, message="EvaluationConfig",
+    name = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    create_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
+    display_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    evaluation_config = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message="EvaluationConfig",
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
     smart_reply_metrics = proto.Field(
-        proto.MESSAGE, number=5, oneof="metrics", message="SmartReplyMetrics",
+        proto.MESSAGE,
+        number=5,
+        oneof="metrics",
+        message="SmartReplyMetrics",
     )
 
 
@@ -203,8 +239,14 @@ class EvaluationConfig(proto.Message):
                 results to evaluate.
         """
 
-        allowlist_document = proto.Field(proto.STRING, number=1,)
-        max_result_count = proto.Field(proto.INT32, number=2,)
+        allowlist_document = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        max_result_count = proto.Field(
+            proto.INT32,
+            number=2,
+        )
 
     class SmartComposeConfig(proto.Message):
         r"""Smart compose specific configuration for evaluation job.
@@ -222,10 +264,20 @@ class EvaluationConfig(proto.Message):
                 results to evaluate.
         """
 
-        allowlist_document = proto.Field(proto.STRING, number=1,)
-        max_result_count = proto.Field(proto.INT32, number=2,)
+        allowlist_document = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        max_result_count = proto.Field(
+            proto.INT32,
+            number=2,
+        )
 
-    datasets = proto.RepeatedField(proto.MESSAGE, number=3, message="InputDataset",)
+    datasets = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message="InputDataset",
+    )
     smart_reply_config = proto.Field(
         proto.MESSAGE,
         number=2,
@@ -250,7 +302,10 @@ class InputDataset(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/conversationDatasets/<Conversation Dataset ID>``
     """
 
-    dataset = proto.Field(proto.STRING, number=1,)
+    dataset = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ArticleSuggestionModelMetadata(proto.Message):
@@ -263,7 +318,9 @@ class ArticleSuggestionModelMetadata(proto.Message):
     """
 
     training_model_type = proto.Field(
-        proto.ENUM, number=3, enum="ConversationModel.ModelType",
+        proto.ENUM,
+        number=3,
+        enum="ConversationModel.ModelType",
     )
 
 
@@ -277,7 +334,9 @@ class SmartReplyModelMetadata(proto.Message):
     """
 
     training_model_type = proto.Field(
-        proto.ENUM, number=6, enum="ConversationModel.ModelType",
+        proto.ENUM,
+        number=6,
+        enum="ConversationModel.ModelType",
     )
 
 
@@ -313,12 +372,28 @@ class SmartReplyMetrics(proto.Message):
                 ranges from 0.0 to 1.0 inclusive.
         """
 
-        n = proto.Field(proto.INT32, number=1,)
-        recall = proto.Field(proto.FLOAT, number=2,)
+        n = proto.Field(
+            proto.INT32,
+            number=1,
+        )
+        recall = proto.Field(
+            proto.FLOAT,
+            number=2,
+        )
 
-    allowlist_coverage = proto.Field(proto.FLOAT, number=1,)
-    top_n_metrics = proto.RepeatedField(proto.MESSAGE, number=2, message=TopNMetrics,)
-    conversation_count = proto.Field(proto.INT64, number=3,)
+    allowlist_coverage = proto.Field(
+        proto.FLOAT,
+        number=1,
+    )
+    top_n_metrics = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=TopNMetrics,
+    )
+    conversation_count = proto.Field(
+        proto.INT64,
+        number=3,
+    )
 
 
 class CreateConversationModelRequest(proto.Message):
@@ -333,9 +408,14 @@ class CreateConversationModelRequest(proto.Message):
             Required. The conversation model to create.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     conversation_model = proto.Field(
-        proto.MESSAGE, number=2, message="ConversationModel",
+        proto.MESSAGE,
+        number=2,
+        message="ConversationModel",
     )
 
 
@@ -349,7 +429,10 @@ class GetConversationModelRequest(proto.Message):
             ``projects/<Project ID>/conversationModels/<Conversation Model ID>``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListConversationModelsRequest(proto.Message):
@@ -369,9 +452,18 @@ class ListConversationModelsRequest(proto.Message):
             list request.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListConversationModelsResponse(proto.Message):
@@ -392,9 +484,14 @@ class ListConversationModelsResponse(proto.Message):
         return self
 
     conversation_models = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="ConversationModel",
+        proto.MESSAGE,
+        number=1,
+        message="ConversationModel",
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class DeleteConversationModelRequest(proto.Message):
@@ -407,7 +504,10 @@ class DeleteConversationModelRequest(proto.Message):
             ``projects/<Project ID>/conversationModels/<Conversation Model ID>``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class DeployConversationModelRequest(proto.Message):
@@ -420,7 +520,10 @@ class DeployConversationModelRequest(proto.Message):
             ``projects/<Project ID>/conversationModels/<Conversation Model ID>``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class UndeployConversationModelRequest(proto.Message):
@@ -433,7 +536,10 @@ class UndeployConversationModelRequest(proto.Message):
             ``projects/<Project ID>/conversationModels/<Conversation Model ID>``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class GetConversationModelEvaluationRequest(proto.Message):
@@ -447,7 +553,10 @@ class GetConversationModelEvaluationRequest(proto.Message):
             ``projects/<Project ID>/conversationModels/<Conversation Model ID>/evaluations/<Evaluation ID>``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListConversationModelEvaluationsRequest(proto.Message):
@@ -467,9 +576,18 @@ class ListConversationModelEvaluationsRequest(proto.Message):
             list request.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListConversationModelEvaluationsResponse(proto.Message):
@@ -490,9 +608,14 @@ class ListConversationModelEvaluationsResponse(proto.Message):
         return self
 
     conversation_model_evaluations = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="ConversationModelEvaluation",
+        proto.MESSAGE,
+        number=1,
+        message="ConversationModelEvaluation",
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class CreateConversationModelEvaluationRequest(proto.Message):
@@ -508,9 +631,14 @@ class CreateConversationModelEvaluationRequest(proto.Message):
             to be created.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     conversation_model_evaluation = proto.Field(
-        proto.MESSAGE, number=2, message="ConversationModelEvaluation",
+        proto.MESSAGE,
+        number=2,
+        message="ConversationModelEvaluation",
     )
 
 
@@ -541,9 +669,20 @@ class CreateConversationModelOperationMetadata(proto.Message):
         CANCELLING = 5
         TRAINING = 6
 
-    conversation_model = proto.Field(proto.STRING, number=1,)
-    state = proto.Field(proto.ENUM, number=2, enum=State,)
-    create_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
+    conversation_model = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=State,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 class DeployConversationModelOperationMetadata(proto.Message):
@@ -561,8 +700,15 @@ class DeployConversationModelOperationMetadata(proto.Message):
             server side.
     """
 
-    conversation_model = proto.Field(proto.STRING, number=1,)
-    create_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
+    conversation_model = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 class UndeployConversationModelOperationMetadata(proto.Message):
@@ -580,8 +726,15 @@ class UndeployConversationModelOperationMetadata(proto.Message):
             measured on server side.
     """
 
-    conversation_model = proto.Field(proto.STRING, number=1,)
-    create_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
+    conversation_model = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 class DeleteConversationModelOperationMetadata(proto.Message):
@@ -599,8 +752,15 @@ class DeleteConversationModelOperationMetadata(proto.Message):
             server side.
     """
 
-    conversation_model = proto.Field(proto.STRING, number=1,)
-    create_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
+    conversation_model = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 class CreateConversationModelEvaluationOperationMetadata(proto.Message):
@@ -632,10 +792,24 @@ class CreateConversationModelEvaluationOperationMetadata(proto.Message):
         SUCCEEDED = 4
         FAILED = 5
 
-    conversation_model_evaluation = proto.Field(proto.STRING, number=1,)
-    conversation_model = proto.Field(proto.STRING, number=4,)
-    state = proto.Field(proto.ENUM, number=2, enum=State,)
-    create_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
+    conversation_model_evaluation = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    conversation_model = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=State,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

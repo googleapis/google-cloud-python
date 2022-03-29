@@ -85,11 +85,28 @@ class Version(proto.Message):
         READY = 2
         FAILED = 3
 
-    name = proto.Field(proto.STRING, number=1,)
-    description = proto.Field(proto.STRING, number=2,)
-    version_number = proto.Field(proto.INT32, number=3,)
-    create_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
-    status = proto.Field(proto.ENUM, number=6, enum=VersionStatus,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    version_number = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    status = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum=VersionStatus,
+    )
 
 
 class ListVersionsRequest(proto.Message):
@@ -112,9 +129,18 @@ class ListVersionsRequest(proto.Message):
             list request.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListVersionsResponse(proto.Message):
@@ -136,8 +162,15 @@ class ListVersionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    versions = proto.RepeatedField(proto.MESSAGE, number=1, message="Version",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    versions = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Version",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetVersionRequest(proto.Message):
@@ -152,7 +185,10 @@ class GetVersionRequest(proto.Message):
             -  ``projects/<Project ID>/locations/<Location ID>/agent/versions/<Version ID>``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CreateVersionRequest(proto.Message):
@@ -170,8 +206,15 @@ class CreateVersionRequest(proto.Message):
             Required. The version to create.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    version = proto.Field(proto.MESSAGE, number=2, message="Version",)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    version = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="Version",
+    )
 
 
 class UpdateVersionRequest(proto.Message):
@@ -189,9 +232,15 @@ class UpdateVersionRequest(proto.Message):
             get updated.
     """
 
-    version = proto.Field(proto.MESSAGE, number=1, message="Version",)
+    version = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="Version",
+    )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -208,7 +257,10 @@ class DeleteVersionRequest(proto.Message):
             -  ``projects/<Project ID>/locations/<Location ID>/agent/versions/<Version ID>``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

@@ -61,7 +61,8 @@ class SessionEntityTypesClientMeta(type):
     _transport_registry["grpc_asyncio"] = SessionEntityTypesGrpcAsyncIOTransport
 
     def get_transport_class(
-        cls, label: str = None,
+        cls,
+        label: str = None,
     ) -> Type[SessionEntityTypesTransport]:
         """Returns an appropriate transport class.
 
@@ -169,10 +170,16 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
         return self._transport
 
     @staticmethod
-    def session_entity_type_path(project: str, session: str, entity_type: str,) -> str:
+    def session_entity_type_path(
+        project: str,
+        session: str,
+        entity_type: str,
+    ) -> str:
         """Returns a fully-qualified session_entity_type string."""
         return "projects/{project}/agent/sessions/{session}/entityTypes/{entity_type}".format(
-            project=project, session=session, entity_type=entity_type,
+            project=project,
+            session=session,
+            entity_type=entity_type,
         )
 
     @staticmethod
@@ -185,7 +192,9 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_billing_account_path(billing_account: str,) -> str:
+    def common_billing_account_path(
+        billing_account: str,
+    ) -> str:
         """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
@@ -198,9 +207,13 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(folder: str,) -> str:
+    def common_folder_path(
+        folder: str,
+    ) -> str:
         """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(folder=folder,)
+        return "folders/{folder}".format(
+            folder=folder,
+        )
 
     @staticmethod
     def parse_common_folder_path(path: str) -> Dict[str, str]:
@@ -209,9 +222,13 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(organization: str,) -> str:
+    def common_organization_path(
+        organization: str,
+    ) -> str:
         """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(organization=organization,)
+        return "organizations/{organization}".format(
+            organization=organization,
+        )
 
     @staticmethod
     def parse_common_organization_path(path: str) -> Dict[str, str]:
@@ -220,9 +237,13 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(project: str,) -> str:
+    def common_project_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified project string."""
-        return "projects/{project}".format(project=project,)
+        return "projects/{project}".format(
+            project=project,
+        )
 
     @staticmethod
     def parse_common_project_path(path: str) -> Dict[str, str]:
@@ -231,10 +252,14 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(project: str, location: str,) -> str:
+    def common_location_path(
+        project: str,
+        location: str,
+    ) -> str:
         """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
-            project=project, location=location,
+            project=project,
+            location=location,
         )
 
     @staticmethod
@@ -514,12 +539,20 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListSessionEntityTypesPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -632,7 +665,12 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -763,7 +801,12 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -882,7 +925,12 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -980,7 +1028,10 @@ class SessionEntityTypesClient(metaclass=SessionEntityTypesClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def __enter__(self):

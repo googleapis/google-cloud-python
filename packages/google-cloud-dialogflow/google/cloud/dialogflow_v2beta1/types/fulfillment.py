@@ -20,7 +20,11 @@ from google.protobuf import field_mask_pb2  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.dialogflow.v2beta1",
-    manifest={"Fulfillment", "GetFulfillmentRequest", "UpdateFulfillmentRequest",},
+    manifest={
+        "Fulfillment",
+        "GetFulfillmentRequest",
+        "UpdateFulfillmentRequest",
+    },
 )
 
 
@@ -91,11 +95,27 @@ class Fulfillment(proto.Message):
                 configured by its uri as a regular web service now.
         """
 
-        uri = proto.Field(proto.STRING, number=1,)
-        username = proto.Field(proto.STRING, number=2,)
-        password = proto.Field(proto.STRING, number=3,)
-        request_headers = proto.MapField(proto.STRING, proto.STRING, number=4,)
-        is_cloud_function = proto.Field(proto.BOOL, number=5,)
+        uri = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        username = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        password = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+        request_headers = proto.MapField(
+            proto.STRING,
+            proto.STRING,
+            number=4,
+        )
+        is_cloud_function = proto.Field(
+            proto.BOOL,
+            number=5,
+        )
 
     class Feature(proto.Message):
         r"""Whether fulfillment is enabled for the specific feature.
@@ -111,15 +131,35 @@ class Fulfillment(proto.Message):
             TYPE_UNSPECIFIED = 0
             SMALLTALK = 1
 
-        type_ = proto.Field(proto.ENUM, number=1, enum="Fulfillment.Feature.Type",)
+        type_ = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="Fulfillment.Feature.Type",
+        )
 
-    name = proto.Field(proto.STRING, number=1,)
-    display_name = proto.Field(proto.STRING, number=2,)
-    generic_web_service = proto.Field(
-        proto.MESSAGE, number=3, oneof="fulfillment", message=GenericWebService,
+    name = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    enabled = proto.Field(proto.BOOL, number=4,)
-    features = proto.RepeatedField(proto.MESSAGE, number=5, message=Feature,)
+    display_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    generic_web_service = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="fulfillment",
+        message=GenericWebService,
+    )
+    enabled = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
+    features = proto.RepeatedField(
+        proto.MESSAGE,
+        number=5,
+        message=Feature,
+    )
 
 
 class GetFulfillmentRequest(proto.Message):
@@ -134,7 +174,10 @@ class GetFulfillmentRequest(proto.Message):
             -  ``projects/<Project ID>/locations/<Location ID>/agent/fulfillment``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class UpdateFulfillmentRequest(proto.Message):
@@ -150,9 +193,15 @@ class UpdateFulfillmentRequest(proto.Message):
             fields will be updated.
     """
 
-    fulfillment = proto.Field(proto.MESSAGE, number=1, message="Fulfillment",)
+    fulfillment = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="Fulfillment",
+    )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 

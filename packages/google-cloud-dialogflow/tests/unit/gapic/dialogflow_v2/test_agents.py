@@ -87,7 +87,13 @@ def test__get_default_mtls_endpoint():
     assert AgentsClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
 
 
-@pytest.mark.parametrize("client_class", [AgentsClient, AgentsAsyncClient,])
+@pytest.mark.parametrize(
+    "client_class",
+    [
+        AgentsClient,
+        AgentsAsyncClient,
+    ],
+)
 def test_agents_client_from_service_account_info(client_class):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
@@ -125,7 +131,13 @@ def test_agents_client_service_account_always_use_jwt(transport_class, transport
         use_jwt.assert_not_called()
 
 
-@pytest.mark.parametrize("client_class", [AgentsClient, AgentsAsyncClient,])
+@pytest.mark.parametrize(
+    "client_class",
+    [
+        AgentsClient,
+        AgentsAsyncClient,
+    ],
+)
 def test_agents_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
@@ -464,7 +476,9 @@ def test_agents_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -595,10 +609,17 @@ def test_agents_client_create_channel_credentials_file(
         )
 
 
-@pytest.mark.parametrize("request_type", [agent.GetAgentRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        agent.GetAgentRequest,
+        dict,
+    ],
+)
 def test_get_agent(request_type, transport: str = "grpc"):
     client = AgentsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -651,7 +672,8 @@ def test_get_agent_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AgentsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -667,7 +689,8 @@ async def test_get_agent_async(
     transport: str = "grpc_asyncio", request_type=agent.GetAgentRequest
 ):
     client = AgentsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -724,7 +747,9 @@ async def test_get_agent_async_from_dict():
 
 
 def test_get_agent_field_headers():
-    client = AgentsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AgentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -744,12 +769,17 @@ def test_get_agent_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_get_agent_field_headers_async():
-    client = AgentsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AgentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -769,11 +799,16 @@ async def test_get_agent_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_get_agent_flattened():
-    client = AgentsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AgentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_agent), "__call__") as call:
@@ -781,7 +816,9 @@ def test_get_agent_flattened():
         call.return_value = agent.Agent()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_agent(parent="parent_value",)
+        client.get_agent(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -793,19 +830,24 @@ def test_get_agent_flattened():
 
 
 def test_get_agent_flattened_error():
-    client = AgentsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AgentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_agent(
-            agent.GetAgentRequest(), parent="parent_value",
+            agent.GetAgentRequest(),
+            parent="parent_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_get_agent_flattened_async():
-    client = AgentsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AgentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_agent), "__call__") as call:
@@ -815,7 +857,9 @@ async def test_get_agent_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(agent.Agent())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_agent(parent="parent_value",)
+        response = await client.get_agent(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -828,20 +872,30 @@ async def test_get_agent_flattened_async():
 
 @pytest.mark.asyncio
 async def test_get_agent_flattened_error_async():
-    client = AgentsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AgentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_agent(
-            agent.GetAgentRequest(), parent="parent_value",
+            agent.GetAgentRequest(),
+            parent="parent_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [gcd_agent.SetAgentRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcd_agent.SetAgentRequest,
+        dict,
+    ],
+)
 def test_set_agent(request_type, transport: str = "grpc"):
     client = AgentsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -894,7 +948,8 @@ def test_set_agent_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AgentsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -910,7 +965,8 @@ async def test_set_agent_async(
     transport: str = "grpc_asyncio", request_type=gcd_agent.SetAgentRequest
 ):
     client = AgentsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -967,7 +1023,9 @@ async def test_set_agent_async_from_dict():
 
 
 def test_set_agent_field_headers():
-    client = AgentsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AgentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -987,14 +1045,17 @@ def test_set_agent_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "agent.parent=agent.parent/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "agent.parent=agent.parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_set_agent_field_headers_async():
-    client = AgentsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AgentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1014,13 +1075,16 @@ async def test_set_agent_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "agent.parent=agent.parent/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "agent.parent=agent.parent/value",
+    ) in kw["metadata"]
 
 
 def test_set_agent_flattened():
-    client = AgentsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AgentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_agent), "__call__") as call:
@@ -1028,7 +1092,9 @@ def test_set_agent_flattened():
         call.return_value = gcd_agent.Agent()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.set_agent(agent=gcd_agent.Agent(parent="parent_value"),)
+        client.set_agent(
+            agent=gcd_agent.Agent(parent="parent_value"),
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1040,19 +1106,24 @@ def test_set_agent_flattened():
 
 
 def test_set_agent_flattened_error():
-    client = AgentsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AgentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.set_agent(
-            gcd_agent.SetAgentRequest(), agent=gcd_agent.Agent(parent="parent_value"),
+            gcd_agent.SetAgentRequest(),
+            agent=gcd_agent.Agent(parent="parent_value"),
         )
 
 
 @pytest.mark.asyncio
 async def test_set_agent_flattened_async():
-    client = AgentsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AgentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_agent), "__call__") as call:
@@ -1062,7 +1133,9 @@ async def test_set_agent_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(gcd_agent.Agent())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.set_agent(agent=gcd_agent.Agent(parent="parent_value"),)
+        response = await client.set_agent(
+            agent=gcd_agent.Agent(parent="parent_value"),
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1075,20 +1148,30 @@ async def test_set_agent_flattened_async():
 
 @pytest.mark.asyncio
 async def test_set_agent_flattened_error_async():
-    client = AgentsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AgentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.set_agent(
-            gcd_agent.SetAgentRequest(), agent=gcd_agent.Agent(parent="parent_value"),
+            gcd_agent.SetAgentRequest(),
+            agent=gcd_agent.Agent(parent="parent_value"),
         )
 
 
-@pytest.mark.parametrize("request_type", [agent.DeleteAgentRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        agent.DeleteAgentRequest,
+        dict,
+    ],
+)
 def test_delete_agent(request_type, transport: str = "grpc"):
     client = AgentsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1114,7 +1197,8 @@ def test_delete_agent_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AgentsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1130,7 +1214,8 @@ async def test_delete_agent_async(
     transport: str = "grpc_asyncio", request_type=agent.DeleteAgentRequest
 ):
     client = AgentsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1158,7 +1243,9 @@ async def test_delete_agent_async_from_dict():
 
 
 def test_delete_agent_field_headers():
-    client = AgentsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AgentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1178,12 +1265,17 @@ def test_delete_agent_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_delete_agent_field_headers_async():
-    client = AgentsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AgentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1203,11 +1295,16 @@ async def test_delete_agent_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_delete_agent_flattened():
-    client = AgentsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AgentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_agent), "__call__") as call:
@@ -1215,7 +1312,9 @@ def test_delete_agent_flattened():
         call.return_value = None
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_agent(parent="parent_value",)
+        client.delete_agent(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1227,19 +1326,24 @@ def test_delete_agent_flattened():
 
 
 def test_delete_agent_flattened_error():
-    client = AgentsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AgentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_agent(
-            agent.DeleteAgentRequest(), parent="parent_value",
+            agent.DeleteAgentRequest(),
+            parent="parent_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_delete_agent_flattened_async():
-    client = AgentsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AgentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_agent), "__call__") as call:
@@ -1249,7 +1353,9 @@ async def test_delete_agent_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_agent(parent="parent_value",)
+        response = await client.delete_agent(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1262,20 +1368,30 @@ async def test_delete_agent_flattened_async():
 
 @pytest.mark.asyncio
 async def test_delete_agent_flattened_error_async():
-    client = AgentsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AgentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_agent(
-            agent.DeleteAgentRequest(), parent="parent_value",
+            agent.DeleteAgentRequest(),
+            parent="parent_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [agent.SearchAgentsRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        agent.SearchAgentsRequest,
+        dict,
+    ],
+)
 def test_search_agents(request_type, transport: str = "grpc"):
     client = AgentsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1304,7 +1420,8 @@ def test_search_agents_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AgentsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1320,7 +1437,8 @@ async def test_search_agents_async(
     transport: str = "grpc_asyncio", request_type=agent.SearchAgentsRequest
 ):
     client = AgentsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1331,7 +1449,9 @@ async def test_search_agents_async(
     with mock.patch.object(type(client.transport.search_agents), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            agent.SearchAgentsResponse(next_page_token="next_page_token_value",)
+            agent.SearchAgentsResponse(
+                next_page_token="next_page_token_value",
+            )
         )
         response = await client.search_agents(request)
 
@@ -1351,7 +1471,9 @@ async def test_search_agents_async_from_dict():
 
 
 def test_search_agents_field_headers():
-    client = AgentsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AgentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1371,12 +1493,17 @@ def test_search_agents_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_search_agents_field_headers_async():
-    client = AgentsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AgentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1398,11 +1525,16 @@ async def test_search_agents_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_search_agents_flattened():
-    client = AgentsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AgentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_agents), "__call__") as call:
@@ -1410,7 +1542,9 @@ def test_search_agents_flattened():
         call.return_value = agent.SearchAgentsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.search_agents(parent="parent_value",)
+        client.search_agents(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1422,19 +1556,24 @@ def test_search_agents_flattened():
 
 
 def test_search_agents_flattened_error():
-    client = AgentsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AgentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.search_agents(
-            agent.SearchAgentsRequest(), parent="parent_value",
+            agent.SearchAgentsRequest(),
+            parent="parent_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_search_agents_flattened_async():
-    client = AgentsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AgentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.search_agents), "__call__") as call:
@@ -1446,7 +1585,9 @@ async def test_search_agents_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.search_agents(parent="parent_value",)
+        response = await client.search_agents(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1459,19 +1600,23 @@ async def test_search_agents_flattened_async():
 
 @pytest.mark.asyncio
 async def test_search_agents_flattened_error_async():
-    client = AgentsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AgentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.search_agents(
-            agent.SearchAgentsRequest(), parent="parent_value",
+            agent.SearchAgentsRequest(),
+            parent="parent_value",
         )
 
 
 def test_search_agents_pager(transport_name: str = "grpc"):
     client = AgentsClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1479,12 +1624,29 @@ def test_search_agents_pager(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             agent.SearchAgentsResponse(
-                agents=[agent.Agent(), agent.Agent(), agent.Agent(),],
+                agents=[
+                    agent.Agent(),
+                    agent.Agent(),
+                    agent.Agent(),
+                ],
                 next_page_token="abc",
             ),
-            agent.SearchAgentsResponse(agents=[], next_page_token="def",),
-            agent.SearchAgentsResponse(agents=[agent.Agent(),], next_page_token="ghi",),
-            agent.SearchAgentsResponse(agents=[agent.Agent(), agent.Agent(),],),
+            agent.SearchAgentsResponse(
+                agents=[],
+                next_page_token="def",
+            ),
+            agent.SearchAgentsResponse(
+                agents=[
+                    agent.Agent(),
+                ],
+                next_page_token="ghi",
+            ),
+            agent.SearchAgentsResponse(
+                agents=[
+                    agent.Agent(),
+                    agent.Agent(),
+                ],
+            ),
             RuntimeError,
         )
 
@@ -1503,7 +1665,8 @@ def test_search_agents_pager(transport_name: str = "grpc"):
 
 def test_search_agents_pages(transport_name: str = "grpc"):
     client = AgentsClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1511,12 +1674,29 @@ def test_search_agents_pages(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             agent.SearchAgentsResponse(
-                agents=[agent.Agent(), agent.Agent(), agent.Agent(),],
+                agents=[
+                    agent.Agent(),
+                    agent.Agent(),
+                    agent.Agent(),
+                ],
                 next_page_token="abc",
             ),
-            agent.SearchAgentsResponse(agents=[], next_page_token="def",),
-            agent.SearchAgentsResponse(agents=[agent.Agent(),], next_page_token="ghi",),
-            agent.SearchAgentsResponse(agents=[agent.Agent(), agent.Agent(),],),
+            agent.SearchAgentsResponse(
+                agents=[],
+                next_page_token="def",
+            ),
+            agent.SearchAgentsResponse(
+                agents=[
+                    agent.Agent(),
+                ],
+                next_page_token="ghi",
+            ),
+            agent.SearchAgentsResponse(
+                agents=[
+                    agent.Agent(),
+                    agent.Agent(),
+                ],
+            ),
             RuntimeError,
         )
         pages = list(client.search_agents(request={}).pages)
@@ -1526,7 +1706,9 @@ def test_search_agents_pages(transport_name: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_search_agents_async_pager():
-    client = AgentsAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = AgentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1535,15 +1717,34 @@ async def test_search_agents_async_pager():
         # Set the response to a series of pages.
         call.side_effect = (
             agent.SearchAgentsResponse(
-                agents=[agent.Agent(), agent.Agent(), agent.Agent(),],
+                agents=[
+                    agent.Agent(),
+                    agent.Agent(),
+                    agent.Agent(),
+                ],
                 next_page_token="abc",
             ),
-            agent.SearchAgentsResponse(agents=[], next_page_token="def",),
-            agent.SearchAgentsResponse(agents=[agent.Agent(),], next_page_token="ghi",),
-            agent.SearchAgentsResponse(agents=[agent.Agent(), agent.Agent(),],),
+            agent.SearchAgentsResponse(
+                agents=[],
+                next_page_token="def",
+            ),
+            agent.SearchAgentsResponse(
+                agents=[
+                    agent.Agent(),
+                ],
+                next_page_token="ghi",
+            ),
+            agent.SearchAgentsResponse(
+                agents=[
+                    agent.Agent(),
+                    agent.Agent(),
+                ],
+            ),
             RuntimeError,
         )
-        async_pager = await client.search_agents(request={},)
+        async_pager = await client.search_agents(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -1555,7 +1756,9 @@ async def test_search_agents_async_pager():
 
 @pytest.mark.asyncio
 async def test_search_agents_async_pages():
-    client = AgentsAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = AgentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1564,12 +1767,29 @@ async def test_search_agents_async_pages():
         # Set the response to a series of pages.
         call.side_effect = (
             agent.SearchAgentsResponse(
-                agents=[agent.Agent(), agent.Agent(), agent.Agent(),],
+                agents=[
+                    agent.Agent(),
+                    agent.Agent(),
+                    agent.Agent(),
+                ],
                 next_page_token="abc",
             ),
-            agent.SearchAgentsResponse(agents=[], next_page_token="def",),
-            agent.SearchAgentsResponse(agents=[agent.Agent(),], next_page_token="ghi",),
-            agent.SearchAgentsResponse(agents=[agent.Agent(), agent.Agent(),],),
+            agent.SearchAgentsResponse(
+                agents=[],
+                next_page_token="def",
+            ),
+            agent.SearchAgentsResponse(
+                agents=[
+                    agent.Agent(),
+                ],
+                next_page_token="ghi",
+            ),
+            agent.SearchAgentsResponse(
+                agents=[
+                    agent.Agent(),
+                    agent.Agent(),
+                ],
+            ),
             RuntimeError,
         )
         pages = []
@@ -1579,10 +1799,17 @@ async def test_search_agents_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [agent.TrainAgentRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        agent.TrainAgentRequest,
+        dict,
+    ],
+)
 def test_train_agent(request_type, transport: str = "grpc"):
     client = AgentsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1608,7 +1835,8 @@ def test_train_agent_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AgentsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1624,7 +1852,8 @@ async def test_train_agent_async(
     transport: str = "grpc_asyncio", request_type=agent.TrainAgentRequest
 ):
     client = AgentsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1654,7 +1883,9 @@ async def test_train_agent_async_from_dict():
 
 
 def test_train_agent_field_headers():
-    client = AgentsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AgentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1674,12 +1905,17 @@ def test_train_agent_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_train_agent_field_headers_async():
-    client = AgentsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AgentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1701,11 +1937,16 @@ async def test_train_agent_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_train_agent_flattened():
-    client = AgentsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AgentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.train_agent), "__call__") as call:
@@ -1713,7 +1954,9 @@ def test_train_agent_flattened():
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.train_agent(parent="parent_value",)
+        client.train_agent(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1725,19 +1968,24 @@ def test_train_agent_flattened():
 
 
 def test_train_agent_flattened_error():
-    client = AgentsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AgentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.train_agent(
-            agent.TrainAgentRequest(), parent="parent_value",
+            agent.TrainAgentRequest(),
+            parent="parent_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_train_agent_flattened_async():
-    client = AgentsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AgentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.train_agent), "__call__") as call:
@@ -1749,7 +1997,9 @@ async def test_train_agent_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.train_agent(parent="parent_value",)
+        response = await client.train_agent(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1762,20 +2012,30 @@ async def test_train_agent_flattened_async():
 
 @pytest.mark.asyncio
 async def test_train_agent_flattened_error_async():
-    client = AgentsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AgentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.train_agent(
-            agent.TrainAgentRequest(), parent="parent_value",
+            agent.TrainAgentRequest(),
+            parent="parent_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [agent.ExportAgentRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        agent.ExportAgentRequest,
+        dict,
+    ],
+)
 def test_export_agent(request_type, transport: str = "grpc"):
     client = AgentsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1801,7 +2061,8 @@ def test_export_agent_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AgentsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1817,7 +2078,8 @@ async def test_export_agent_async(
     transport: str = "grpc_asyncio", request_type=agent.ExportAgentRequest
 ):
     client = AgentsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1847,7 +2109,9 @@ async def test_export_agent_async_from_dict():
 
 
 def test_export_agent_field_headers():
-    client = AgentsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AgentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1867,12 +2131,17 @@ def test_export_agent_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_export_agent_field_headers_async():
-    client = AgentsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AgentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1894,11 +2163,16 @@ async def test_export_agent_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_export_agent_flattened():
-    client = AgentsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AgentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.export_agent), "__call__") as call:
@@ -1906,7 +2180,9 @@ def test_export_agent_flattened():
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.export_agent(parent="parent_value",)
+        client.export_agent(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1918,19 +2194,24 @@ def test_export_agent_flattened():
 
 
 def test_export_agent_flattened_error():
-    client = AgentsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AgentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.export_agent(
-            agent.ExportAgentRequest(), parent="parent_value",
+            agent.ExportAgentRequest(),
+            parent="parent_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_export_agent_flattened_async():
-    client = AgentsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AgentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.export_agent), "__call__") as call:
@@ -1942,7 +2223,9 @@ async def test_export_agent_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.export_agent(parent="parent_value",)
+        response = await client.export_agent(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1955,20 +2238,30 @@ async def test_export_agent_flattened_async():
 
 @pytest.mark.asyncio
 async def test_export_agent_flattened_error_async():
-    client = AgentsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AgentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.export_agent(
-            agent.ExportAgentRequest(), parent="parent_value",
+            agent.ExportAgentRequest(),
+            parent="parent_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [agent.ImportAgentRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        agent.ImportAgentRequest,
+        dict,
+    ],
+)
 def test_import_agent(request_type, transport: str = "grpc"):
     client = AgentsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1994,7 +2287,8 @@ def test_import_agent_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AgentsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2010,7 +2304,8 @@ async def test_import_agent_async(
     transport: str = "grpc_asyncio", request_type=agent.ImportAgentRequest
 ):
     client = AgentsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2040,7 +2335,9 @@ async def test_import_agent_async_from_dict():
 
 
 def test_import_agent_field_headers():
-    client = AgentsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AgentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2060,12 +2357,17 @@ def test_import_agent_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_import_agent_field_headers_async():
-    client = AgentsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AgentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2087,13 +2389,23 @@ async def test_import_agent_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
-@pytest.mark.parametrize("request_type", [agent.RestoreAgentRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        agent.RestoreAgentRequest,
+        dict,
+    ],
+)
 def test_restore_agent(request_type, transport: str = "grpc"):
     client = AgentsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2119,7 +2431,8 @@ def test_restore_agent_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AgentsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2135,7 +2448,8 @@ async def test_restore_agent_async(
     transport: str = "grpc_asyncio", request_type=agent.RestoreAgentRequest
 ):
     client = AgentsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2165,7 +2479,9 @@ async def test_restore_agent_async_from_dict():
 
 
 def test_restore_agent_field_headers():
-    client = AgentsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AgentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2185,12 +2501,17 @@ def test_restore_agent_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_restore_agent_field_headers_async():
-    client = AgentsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AgentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2212,13 +2533,23 @@ async def test_restore_agent_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
-@pytest.mark.parametrize("request_type", [agent.GetValidationResultRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        agent.GetValidationResultRequest,
+        dict,
+    ],
+)
 def test_get_validation_result(request_type, transport: str = "grpc"):
     client = AgentsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2246,7 +2577,8 @@ def test_get_validation_result_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = AgentsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2264,7 +2596,8 @@ async def test_get_validation_result_async(
     transport: str = "grpc_asyncio", request_type=agent.GetValidationResultRequest
 ):
     client = AgentsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2296,7 +2629,9 @@ async def test_get_validation_result_async_from_dict():
 
 
 def test_get_validation_result_field_headers():
-    client = AgentsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AgentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2318,12 +2653,17 @@ def test_get_validation_result_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_get_validation_result_field_headers_async():
-    client = AgentsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = AgentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2347,7 +2687,10 @@ async def test_get_validation_result_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_credentials_transport_error():
@@ -2357,7 +2700,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = AgentsClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -2377,7 +2721,10 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = AgentsClient(client_options=options, transport=transport,)
+        client = AgentsClient(
+            client_options=options,
+            transport=transport,
+        )
 
     # It is an error to provide an api_key and a credential.
     options = mock.Mock()
@@ -2393,7 +2740,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = AgentsClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -2423,7 +2771,10 @@ def test_transport_get_channel():
 
 @pytest.mark.parametrize(
     "transport_class",
-    [transports.AgentsGrpcTransport, transports.AgentsGrpcAsyncIOTransport,],
+    [
+        transports.AgentsGrpcTransport,
+        transports.AgentsGrpcAsyncIOTransport,
+    ],
 )
 def test_transport_adc(transport_class):
     # Test default credentials are used if not provided.
@@ -2435,8 +2786,13 @@ def test_transport_adc(transport_class):
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
-    client = AgentsClient(credentials=ga_credentials.AnonymousCredentials(),)
-    assert isinstance(client.transport, transports.AgentsGrpcTransport,)
+    client = AgentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    assert isinstance(
+        client.transport,
+        transports.AgentsGrpcTransport,
+    )
 
 
 def test_agents_base_transport_error():
@@ -2494,7 +2850,8 @@ def test_agents_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.AgentsTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -2535,7 +2892,10 @@ def test_agents_auth_adc():
 
 @pytest.mark.parametrize(
     "transport_class",
-    [transports.AgentsGrpcTransport, transports.AgentsGrpcAsyncIOTransport,],
+    [
+        transports.AgentsGrpcTransport,
+        transports.AgentsGrpcAsyncIOTransport,
+    ],
 )
 def test_agents_transport_auth_adc(transport_class):
     # If credentials and host are not provided, the transport class should use
@@ -2658,7 +3018,8 @@ def test_agents_grpc_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.AgentsGrpcTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -2670,7 +3031,8 @@ def test_agents_grpc_asyncio_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.AgentsGrpcAsyncIOTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -2771,12 +3133,16 @@ def test_agents_transport_channel_mtls_with_adc(transport_class):
 
 def test_agents_grpc_lro_client():
     client = AgentsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
     transport = client.transport
 
     # Ensure that we have a api-core operations client.
-    assert isinstance(transport.operations_client, operations_v1.OperationsClient,)
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsClient,
+    )
 
     # Ensure that subsequent calls to the property send the exact same object.
     assert transport.operations_client is transport.operations_client
@@ -2784,12 +3150,16 @@ def test_agents_grpc_lro_client():
 
 def test_agents_grpc_lro_async_client():
     client = AgentsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     transport = client.transport
 
     # Ensure that we have a api-core operations client.
-    assert isinstance(transport.operations_client, operations_v1.OperationsAsyncClient,)
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsAsyncClient,
+    )
 
     # Ensure that subsequent calls to the property send the exact same object.
     assert transport.operations_client is transport.operations_client
@@ -2797,7 +3167,9 @@ def test_agents_grpc_lro_async_client():
 
 def test_agent_path():
     project = "squid"
-    expected = "projects/{project}/agent".format(project=project,)
+    expected = "projects/{project}/agent".format(
+        project=project,
+    )
     actual = AgentsClient.agent_path(project)
     assert expected == actual
 
@@ -2835,7 +3207,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "oyster"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = AgentsClient.common_folder_path(folder)
     assert expected == actual
 
@@ -2853,7 +3227,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "cuttlefish"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = AgentsClient.common_organization_path(organization)
     assert expected == actual
 
@@ -2871,7 +3247,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "winkle"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = AgentsClient.common_project_path(project)
     assert expected == actual
 
@@ -2891,7 +3269,8 @@ def test_common_location_path():
     project = "scallop"
     location = "abalone"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = AgentsClient.common_location_path(project, location)
     assert expected == actual
@@ -2916,7 +3295,8 @@ def test_client_with_default_client_info():
         transports.AgentsTransport, "_prep_wrapped_messages"
     ) as prep:
         client = AgentsClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -2925,7 +3305,8 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = AgentsClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -2933,7 +3314,8 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = AgentsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     with mock.patch.object(
         type(getattr(client.transport, "grpc_channel")), "close"

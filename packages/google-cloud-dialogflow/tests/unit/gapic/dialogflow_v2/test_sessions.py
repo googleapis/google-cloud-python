@@ -87,7 +87,13 @@ def test__get_default_mtls_endpoint():
     assert SessionsClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
 
 
-@pytest.mark.parametrize("client_class", [SessionsClient, SessionsAsyncClient,])
+@pytest.mark.parametrize(
+    "client_class",
+    [
+        SessionsClient,
+        SessionsAsyncClient,
+    ],
+)
 def test_sessions_client_from_service_account_info(client_class):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
@@ -127,7 +133,13 @@ def test_sessions_client_service_account_always_use_jwt(
         use_jwt.assert_not_called()
 
 
-@pytest.mark.parametrize("client_class", [SessionsClient, SessionsAsyncClient,])
+@pytest.mark.parametrize(
+    "client_class",
+    [
+        SessionsClient,
+        SessionsAsyncClient,
+    ],
+)
 def test_sessions_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
@@ -472,7 +484,9 @@ def test_sessions_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -603,10 +617,17 @@ def test_sessions_client_create_channel_credentials_file(
         )
 
 
-@pytest.mark.parametrize("request_type", [gcd_session.DetectIntentRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gcd_session.DetectIntentRequest,
+        dict,
+    ],
+)
 def test_detect_intent(request_type, transport: str = "grpc"):
     client = SessionsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -617,7 +638,8 @@ def test_detect_intent(request_type, transport: str = "grpc"):
     with mock.patch.object(type(client.transport.detect_intent), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = gcd_session.DetectIntentResponse(
-            response_id="response_id_value", output_audio=b"output_audio_blob",
+            response_id="response_id_value",
+            output_audio=b"output_audio_blob",
         )
         response = client.detect_intent(request)
 
@@ -636,7 +658,8 @@ def test_detect_intent_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = SessionsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -652,7 +675,8 @@ async def test_detect_intent_async(
     transport: str = "grpc_asyncio", request_type=gcd_session.DetectIntentRequest
 ):
     client = SessionsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -664,7 +688,8 @@ async def test_detect_intent_async(
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             gcd_session.DetectIntentResponse(
-                response_id="response_id_value", output_audio=b"output_audio_blob",
+                response_id="response_id_value",
+                output_audio=b"output_audio_blob",
             )
         )
         response = await client.detect_intent(request)
@@ -686,7 +711,9 @@ async def test_detect_intent_async_from_dict():
 
 
 def test_detect_intent_field_headers():
-    client = SessionsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SessionsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -706,12 +733,17 @@ def test_detect_intent_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "session=session/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "session=session/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_detect_intent_field_headers_async():
-    client = SessionsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SessionsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -733,11 +765,16 @@ async def test_detect_intent_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "session=session/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "session=session/value",
+    ) in kw["metadata"]
 
 
 def test_detect_intent_flattened():
-    client = SessionsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SessionsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.detect_intent), "__call__") as call:
@@ -771,7 +808,9 @@ def test_detect_intent_flattened():
 
 
 def test_detect_intent_flattened_error():
-    client = SessionsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SessionsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -789,7 +828,9 @@ def test_detect_intent_flattened_error():
 
 @pytest.mark.asyncio
 async def test_detect_intent_flattened_async():
-    client = SessionsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SessionsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.detect_intent), "__call__") as call:
@@ -828,7 +869,9 @@ async def test_detect_intent_flattened_async():
 
 @pytest.mark.asyncio
 async def test_detect_intent_flattened_error_async():
-    client = SessionsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = SessionsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -844,10 +887,17 @@ async def test_detect_intent_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [session.StreamingDetectIntentRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        session.StreamingDetectIntentRequest,
+        dict,
+    ],
+)
 def test_streaming_detect_intent(request_type, transport: str = "grpc"):
     client = SessionsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -878,7 +928,8 @@ async def test_streaming_detect_intent_async(
     transport: str = "grpc_asyncio", request_type=session.StreamingDetectIntentRequest
 ):
     client = SessionsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -919,7 +970,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = SessionsClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -939,7 +991,10 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = SessionsClient(client_options=options, transport=transport,)
+        client = SessionsClient(
+            client_options=options,
+            transport=transport,
+        )
 
     # It is an error to provide an api_key and a credential.
     options = mock.Mock()
@@ -955,7 +1010,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = SessionsClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -985,7 +1041,10 @@ def test_transport_get_channel():
 
 @pytest.mark.parametrize(
     "transport_class",
-    [transports.SessionsGrpcTransport, transports.SessionsGrpcAsyncIOTransport,],
+    [
+        transports.SessionsGrpcTransport,
+        transports.SessionsGrpcAsyncIOTransport,
+    ],
 )
 def test_transport_adc(transport_class):
     # Test default credentials are used if not provided.
@@ -997,8 +1056,13 @@ def test_transport_adc(transport_class):
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
-    client = SessionsClient(credentials=ga_credentials.AnonymousCredentials(),)
-    assert isinstance(client.transport, transports.SessionsGrpcTransport,)
+    client = SessionsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    assert isinstance(
+        client.transport,
+        transports.SessionsGrpcTransport,
+    )
 
 
 def test_sessions_base_transport_error():
@@ -1044,7 +1108,8 @@ def test_sessions_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.SessionsTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -1085,7 +1150,10 @@ def test_sessions_auth_adc():
 
 @pytest.mark.parametrize(
     "transport_class",
-    [transports.SessionsGrpcTransport, transports.SessionsGrpcAsyncIOTransport,],
+    [
+        transports.SessionsGrpcTransport,
+        transports.SessionsGrpcAsyncIOTransport,
+    ],
 )
 def test_sessions_transport_auth_adc(transport_class):
     # If credentials and host are not provided, the transport class should use
@@ -1208,7 +1276,8 @@ def test_sessions_grpc_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.SessionsGrpcTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -1220,7 +1289,8 @@ def test_sessions_grpc_asyncio_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.SessionsGrpcAsyncIOTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -1324,7 +1394,9 @@ def test_context_path():
     session = "clam"
     context = "whelk"
     expected = "projects/{project}/agent/sessions/{session}/contexts/{context}".format(
-        project=project, session=session, context=context,
+        project=project,
+        session=session,
+        context=context,
     )
     actual = SessionsClient.context_path(project, session, context)
     assert expected == actual
@@ -1347,7 +1419,8 @@ def test_intent_path():
     project = "cuttlefish"
     intent = "mussel"
     expected = "projects/{project}/agent/intents/{intent}".format(
-        project=project, intent=intent,
+        project=project,
+        intent=intent,
     )
     actual = SessionsClient.intent_path(project, intent)
     assert expected == actual
@@ -1369,7 +1442,8 @@ def test_session_path():
     project = "scallop"
     session = "abalone"
     expected = "projects/{project}/agent/sessions/{session}".format(
-        project=project, session=session,
+        project=project,
+        session=session,
     )
     actual = SessionsClient.session_path(project, session)
     assert expected == actual
@@ -1391,8 +1465,12 @@ def test_session_entity_type_path():
     project = "whelk"
     session = "octopus"
     entity_type = "oyster"
-    expected = "projects/{project}/agent/sessions/{session}/entityTypes/{entity_type}".format(
-        project=project, session=session, entity_type=entity_type,
+    expected = (
+        "projects/{project}/agent/sessions/{session}/entityTypes/{entity_type}".format(
+            project=project,
+            session=session,
+            entity_type=entity_type,
+        )
     )
     actual = SessionsClient.session_entity_type_path(project, session, entity_type)
     assert expected == actual
@@ -1433,7 +1511,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "scallop"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = SessionsClient.common_folder_path(folder)
     assert expected == actual
 
@@ -1451,7 +1531,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "squid"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = SessionsClient.common_organization_path(organization)
     assert expected == actual
 
@@ -1469,7 +1551,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "whelk"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = SessionsClient.common_project_path(project)
     assert expected == actual
 
@@ -1489,7 +1573,8 @@ def test_common_location_path():
     project = "oyster"
     location = "nudibranch"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = SessionsClient.common_location_path(project, location)
     assert expected == actual
@@ -1514,7 +1599,8 @@ def test_client_with_default_client_info():
         transports.SessionsTransport, "_prep_wrapped_messages"
     ) as prep:
         client = SessionsClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -1523,7 +1609,8 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = SessionsClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -1531,7 +1618,8 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = SessionsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     with mock.patch.object(
         type(getattr(client.transport, "grpc_channel")), "close"

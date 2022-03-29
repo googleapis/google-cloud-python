@@ -95,7 +95,11 @@ def test__get_default_mtls_endpoint():
 
 
 @pytest.mark.parametrize(
-    "client_class", [SessionEntityTypesClient, SessionEntityTypesAsyncClient,]
+    "client_class",
+    [
+        SessionEntityTypesClient,
+        SessionEntityTypesAsyncClient,
+    ],
 )
 def test_session_entity_types_client_from_service_account_info(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -137,7 +141,11 @@ def test_session_entity_types_client_service_account_always_use_jwt(
 
 
 @pytest.mark.parametrize(
-    "client_class", [SessionEntityTypesClient, SessionEntityTypesAsyncClient,]
+    "client_class",
+    [
+        SessionEntityTypesClient,
+        SessionEntityTypesAsyncClient,
+    ],
 )
 def test_session_entity_types_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -511,7 +519,9 @@ def test_session_entity_types_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -655,11 +665,16 @@ def test_session_entity_types_client_create_channel_credentials_file(
 
 
 @pytest.mark.parametrize(
-    "request_type", [session_entity_type.ListSessionEntityTypesRequest, dict,]
+    "request_type",
+    [
+        session_entity_type.ListSessionEntityTypesRequest,
+        dict,
+    ],
 )
 def test_list_session_entity_types(request_type, transport: str = "grpc"):
     client = SessionEntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -690,7 +705,8 @@ def test_list_session_entity_types_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = SessionEntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -709,7 +725,8 @@ async def test_list_session_entity_types_async(
     request_type=session_entity_type.ListSessionEntityTypesRequest,
 ):
     client = SessionEntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -768,7 +785,10 @@ def test_list_session_entity_types_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -799,7 +819,10 @@ async def test_list_session_entity_types_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_session_entity_types_flattened():
@@ -815,7 +838,9 @@ def test_list_session_entity_types_flattened():
         call.return_value = session_entity_type.ListSessionEntityTypesResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_session_entity_types(parent="parent_value",)
+        client.list_session_entity_types(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -835,7 +860,8 @@ def test_list_session_entity_types_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_session_entity_types(
-            session_entity_type.ListSessionEntityTypesRequest(), parent="parent_value",
+            session_entity_type.ListSessionEntityTypesRequest(),
+            parent="parent_value",
         )
 
 
@@ -857,7 +883,9 @@ async def test_list_session_entity_types_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_session_entity_types(parent="parent_value",)
+        response = await client.list_session_entity_types(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -878,13 +906,15 @@ async def test_list_session_entity_types_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_session_entity_types(
-            session_entity_type.ListSessionEntityTypesRequest(), parent="parent_value",
+            session_entity_type.ListSessionEntityTypesRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_session_entity_types_pager(transport_name: str = "grpc"):
     client = SessionEntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -902,10 +932,13 @@ def test_list_session_entity_types_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             session_entity_type.ListSessionEntityTypesResponse(
-                session_entity_types=[], next_page_token="def",
+                session_entity_types=[],
+                next_page_token="def",
             ),
             session_entity_type.ListSessionEntityTypesResponse(
-                session_entity_types=[session_entity_type.SessionEntityType(),],
+                session_entity_types=[
+                    session_entity_type.SessionEntityType(),
+                ],
                 next_page_token="ghi",
             ),
             session_entity_type.ListSessionEntityTypesResponse(
@@ -934,7 +967,8 @@ def test_list_session_entity_types_pager(transport_name: str = "grpc"):
 
 def test_list_session_entity_types_pages(transport_name: str = "grpc"):
     client = SessionEntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -952,10 +986,13 @@ def test_list_session_entity_types_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             session_entity_type.ListSessionEntityTypesResponse(
-                session_entity_types=[], next_page_token="def",
+                session_entity_types=[],
+                next_page_token="def",
             ),
             session_entity_type.ListSessionEntityTypesResponse(
-                session_entity_types=[session_entity_type.SessionEntityType(),],
+                session_entity_types=[
+                    session_entity_type.SessionEntityType(),
+                ],
                 next_page_token="ghi",
             ),
             session_entity_type.ListSessionEntityTypesResponse(
@@ -994,10 +1031,13 @@ async def test_list_session_entity_types_async_pager():
                 next_page_token="abc",
             ),
             session_entity_type.ListSessionEntityTypesResponse(
-                session_entity_types=[], next_page_token="def",
+                session_entity_types=[],
+                next_page_token="def",
             ),
             session_entity_type.ListSessionEntityTypesResponse(
-                session_entity_types=[session_entity_type.SessionEntityType(),],
+                session_entity_types=[
+                    session_entity_type.SessionEntityType(),
+                ],
                 next_page_token="ghi",
             ),
             session_entity_type.ListSessionEntityTypesResponse(
@@ -1008,7 +1048,9 @@ async def test_list_session_entity_types_async_pager():
             ),
             RuntimeError,
         )
-        async_pager = await client.list_session_entity_types(request={},)
+        async_pager = await client.list_session_entity_types(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -1043,10 +1085,13 @@ async def test_list_session_entity_types_async_pages():
                 next_page_token="abc",
             ),
             session_entity_type.ListSessionEntityTypesResponse(
-                session_entity_types=[], next_page_token="def",
+                session_entity_types=[],
+                next_page_token="def",
             ),
             session_entity_type.ListSessionEntityTypesResponse(
-                session_entity_types=[session_entity_type.SessionEntityType(),],
+                session_entity_types=[
+                    session_entity_type.SessionEntityType(),
+                ],
                 next_page_token="ghi",
             ),
             session_entity_type.ListSessionEntityTypesResponse(
@@ -1065,11 +1110,16 @@ async def test_list_session_entity_types_async_pages():
 
 
 @pytest.mark.parametrize(
-    "request_type", [session_entity_type.GetSessionEntityTypeRequest, dict,]
+    "request_type",
+    [
+        session_entity_type.GetSessionEntityTypeRequest,
+        dict,
+    ],
 )
 def test_get_session_entity_type(request_type, transport: str = "grpc"):
     client = SessionEntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1105,7 +1155,8 @@ def test_get_session_entity_type_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = SessionEntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1124,7 +1175,8 @@ async def test_get_session_entity_type_async(
     request_type=session_entity_type.GetSessionEntityTypeRequest,
 ):
     client = SessionEntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1188,7 +1240,10 @@ def test_get_session_entity_type_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1219,7 +1274,10 @@ async def test_get_session_entity_type_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_session_entity_type_flattened():
@@ -1235,7 +1293,9 @@ def test_get_session_entity_type_flattened():
         call.return_value = session_entity_type.SessionEntityType()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_session_entity_type(name="name_value",)
+        client.get_session_entity_type(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1255,7 +1315,8 @@ def test_get_session_entity_type_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_session_entity_type(
-            session_entity_type.GetSessionEntityTypeRequest(), name="name_value",
+            session_entity_type.GetSessionEntityTypeRequest(),
+            name="name_value",
         )
 
 
@@ -1277,7 +1338,9 @@ async def test_get_session_entity_type_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_session_entity_type(name="name_value",)
+        response = await client.get_session_entity_type(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1298,16 +1361,22 @@ async def test_get_session_entity_type_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_session_entity_type(
-            session_entity_type.GetSessionEntityTypeRequest(), name="name_value",
+            session_entity_type.GetSessionEntityTypeRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [gcd_session_entity_type.CreateSessionEntityTypeRequest, dict,]
+    "request_type",
+    [
+        gcd_session_entity_type.CreateSessionEntityTypeRequest,
+        dict,
+    ],
 )
 def test_create_session_entity_type(request_type, transport: str = "grpc"):
     client = SessionEntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1343,7 +1412,8 @@ def test_create_session_entity_type_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = SessionEntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1362,7 +1432,8 @@ async def test_create_session_entity_type_async(
     request_type=gcd_session_entity_type.CreateSessionEntityTypeRequest,
 ):
     client = SessionEntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1426,7 +1497,10 @@ def test_create_session_entity_type_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1457,7 +1531,10 @@ async def test_create_session_entity_type_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_session_entity_type_flattened():
@@ -1565,11 +1642,16 @@ async def test_create_session_entity_type_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [gcd_session_entity_type.UpdateSessionEntityTypeRequest, dict,]
+    "request_type",
+    [
+        gcd_session_entity_type.UpdateSessionEntityTypeRequest,
+        dict,
+    ],
 )
 def test_update_session_entity_type(request_type, transport: str = "grpc"):
     client = SessionEntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1605,7 +1687,8 @@ def test_update_session_entity_type_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = SessionEntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1624,7 +1707,8 @@ async def test_update_session_entity_type_async(
     request_type=gcd_session_entity_type.UpdateSessionEntityTypeRequest,
 ):
     client = SessionEntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1833,11 +1917,16 @@ async def test_update_session_entity_type_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [session_entity_type.DeleteSessionEntityTypeRequest, dict,]
+    "request_type",
+    [
+        session_entity_type.DeleteSessionEntityTypeRequest,
+        dict,
+    ],
 )
 def test_delete_session_entity_type(request_type, transport: str = "grpc"):
     client = SessionEntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1865,7 +1954,8 @@ def test_delete_session_entity_type_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = SessionEntityTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1884,7 +1974,8 @@ async def test_delete_session_entity_type_async(
     request_type=session_entity_type.DeleteSessionEntityTypeRequest,
 ):
     client = SessionEntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1938,7 +2029,10 @@ def test_delete_session_entity_type_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1967,7 +2061,10 @@ async def test_delete_session_entity_type_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_session_entity_type_flattened():
@@ -1983,7 +2080,9 @@ def test_delete_session_entity_type_flattened():
         call.return_value = None
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_session_entity_type(name="name_value",)
+        client.delete_session_entity_type(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2003,7 +2102,8 @@ def test_delete_session_entity_type_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_session_entity_type(
-            session_entity_type.DeleteSessionEntityTypeRequest(), name="name_value",
+            session_entity_type.DeleteSessionEntityTypeRequest(),
+            name="name_value",
         )
 
 
@@ -2023,7 +2123,9 @@ async def test_delete_session_entity_type_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_session_entity_type(name="name_value",)
+        response = await client.delete_session_entity_type(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2044,7 +2146,8 @@ async def test_delete_session_entity_type_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_session_entity_type(
-            session_entity_type.DeleteSessionEntityTypeRequest(), name="name_value",
+            session_entity_type.DeleteSessionEntityTypeRequest(),
+            name="name_value",
         )
 
 
@@ -2055,7 +2158,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = SessionEntityTypesClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -2075,7 +2179,10 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = SessionEntityTypesClient(client_options=options, transport=transport,)
+        client = SessionEntityTypesClient(
+            client_options=options,
+            transport=transport,
+        )
 
     # It is an error to provide an api_key and a credential.
     options = mock.Mock()
@@ -2091,7 +2198,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = SessionEntityTypesClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -2139,7 +2247,10 @@ def test_transport_grpc_default():
     client = SessionEntityTypesClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
-    assert isinstance(client.transport, transports.SessionEntityTypesGrpcTransport,)
+    assert isinstance(
+        client.transport,
+        transports.SessionEntityTypesGrpcTransport,
+    )
 
 
 def test_session_entity_types_base_transport_error():
@@ -2188,7 +2299,8 @@ def test_session_entity_types_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.SessionEntityTypesTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -2360,7 +2472,8 @@ def test_session_entity_types_grpc_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.SessionEntityTypesGrpcTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -2372,7 +2485,8 @@ def test_session_entity_types_grpc_asyncio_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.SessionEntityTypesGrpcAsyncIOTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -2483,8 +2597,12 @@ def test_session_entity_type_path():
     project = "squid"
     session = "clam"
     entity_type = "whelk"
-    expected = "projects/{project}/agent/sessions/{session}/entityTypes/{entity_type}".format(
-        project=project, session=session, entity_type=entity_type,
+    expected = (
+        "projects/{project}/agent/sessions/{session}/entityTypes/{entity_type}".format(
+            project=project,
+            session=session,
+            entity_type=entity_type,
+        )
     )
     actual = SessionEntityTypesClient.session_entity_type_path(
         project, session, entity_type
@@ -2527,7 +2645,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "winkle"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = SessionEntityTypesClient.common_folder_path(folder)
     assert expected == actual
 
@@ -2545,7 +2665,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "scallop"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = SessionEntityTypesClient.common_organization_path(organization)
     assert expected == actual
 
@@ -2563,7 +2685,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "squid"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = SessionEntityTypesClient.common_project_path(project)
     assert expected == actual
 
@@ -2583,7 +2707,8 @@ def test_common_location_path():
     project = "whelk"
     location = "octopus"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = SessionEntityTypesClient.common_location_path(project, location)
     assert expected == actual
@@ -2608,7 +2733,8 @@ def test_client_with_default_client_info():
         transports.SessionEntityTypesTransport, "_prep_wrapped_messages"
     ) as prep:
         client = SessionEntityTypesClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -2617,7 +2743,8 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = SessionEntityTypesClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -2625,7 +2752,8 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = SessionEntityTypesAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     with mock.patch.object(
         type(getattr(client.transport, "grpc_channel")), "close"

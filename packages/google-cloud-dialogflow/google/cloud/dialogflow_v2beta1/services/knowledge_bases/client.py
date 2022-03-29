@@ -57,7 +57,10 @@ class KnowledgeBasesClientMeta(type):
     _transport_registry["grpc"] = KnowledgeBasesGrpcTransport
     _transport_registry["grpc_asyncio"] = KnowledgeBasesGrpcAsyncIOTransport
 
-    def get_transport_class(cls, label: str = None,) -> Type[KnowledgeBasesTransport]:
+    def get_transport_class(
+        cls,
+        label: str = None,
+    ) -> Type[KnowledgeBasesTransport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -164,10 +167,14 @@ class KnowledgeBasesClient(metaclass=KnowledgeBasesClientMeta):
         return self._transport
 
     @staticmethod
-    def knowledge_base_path(project: str, knowledge_base: str,) -> str:
+    def knowledge_base_path(
+        project: str,
+        knowledge_base: str,
+    ) -> str:
         """Returns a fully-qualified knowledge_base string."""
         return "projects/{project}/knowledgeBases/{knowledge_base}".format(
-            project=project, knowledge_base=knowledge_base,
+            project=project,
+            knowledge_base=knowledge_base,
         )
 
     @staticmethod
@@ -179,7 +186,9 @@ class KnowledgeBasesClient(metaclass=KnowledgeBasesClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_billing_account_path(billing_account: str,) -> str:
+    def common_billing_account_path(
+        billing_account: str,
+    ) -> str:
         """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
@@ -192,9 +201,13 @@ class KnowledgeBasesClient(metaclass=KnowledgeBasesClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(folder: str,) -> str:
+    def common_folder_path(
+        folder: str,
+    ) -> str:
         """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(folder=folder,)
+        return "folders/{folder}".format(
+            folder=folder,
+        )
 
     @staticmethod
     def parse_common_folder_path(path: str) -> Dict[str, str]:
@@ -203,9 +216,13 @@ class KnowledgeBasesClient(metaclass=KnowledgeBasesClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(organization: str,) -> str:
+    def common_organization_path(
+        organization: str,
+    ) -> str:
         """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(organization=organization,)
+        return "organizations/{organization}".format(
+            organization=organization,
+        )
 
     @staticmethod
     def parse_common_organization_path(path: str) -> Dict[str, str]:
@@ -214,9 +231,13 @@ class KnowledgeBasesClient(metaclass=KnowledgeBasesClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(project: str,) -> str:
+    def common_project_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified project string."""
-        return "projects/{project}".format(project=project,)
+        return "projects/{project}".format(
+            project=project,
+        )
 
     @staticmethod
     def parse_common_project_path(path: str) -> Dict[str, str]:
@@ -225,10 +246,14 @@ class KnowledgeBasesClient(metaclass=KnowledgeBasesClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(project: str, location: str,) -> str:
+    def common_location_path(
+        project: str,
+        location: str,
+    ) -> str:
         """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
-            project=project, location=location,
+            project=project,
+            location=location,
         )
 
     @staticmethod
@@ -496,12 +521,20 @@ class KnowledgeBasesClient(metaclass=KnowledgeBasesClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListKnowledgeBasesPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -607,7 +640,12 @@ class KnowledgeBasesClient(metaclass=KnowledgeBasesClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -726,7 +764,12 @@ class KnowledgeBasesClient(metaclass=KnowledgeBasesClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -813,7 +856,10 @@ class KnowledgeBasesClient(metaclass=KnowledgeBasesClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def update_knowledge_base(
@@ -931,7 +977,12 @@ class KnowledgeBasesClient(metaclass=KnowledgeBasesClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response

@@ -99,7 +99,11 @@ def test__get_default_mtls_endpoint():
 
 
 @pytest.mark.parametrize(
-    "client_class", [ConversationModelsClient, ConversationModelsAsyncClient,]
+    "client_class",
+    [
+        ConversationModelsClient,
+        ConversationModelsAsyncClient,
+    ],
 )
 def test_conversation_models_client_from_service_account_info(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -141,7 +145,11 @@ def test_conversation_models_client_service_account_always_use_jwt(
 
 
 @pytest.mark.parametrize(
-    "client_class", [ConversationModelsClient, ConversationModelsAsyncClient,]
+    "client_class",
+    [
+        ConversationModelsClient,
+        ConversationModelsAsyncClient,
+    ],
 )
 def test_conversation_models_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -515,7 +523,9 @@ def test_conversation_models_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -659,11 +669,16 @@ def test_conversation_models_client_create_channel_credentials_file(
 
 
 @pytest.mark.parametrize(
-    "request_type", [gcd_conversation_model.CreateConversationModelRequest, dict,]
+    "request_type",
+    [
+        gcd_conversation_model.CreateConversationModelRequest,
+        dict,
+    ],
 )
 def test_create_conversation_model(request_type, transport: str = "grpc"):
     client = ConversationModelsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -691,7 +706,8 @@ def test_create_conversation_model_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ConversationModelsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -710,7 +726,8 @@ async def test_create_conversation_model_async(
     request_type=gcd_conversation_model.CreateConversationModelRequest,
 ):
     client = ConversationModelsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -766,7 +783,10 @@ def test_create_conversation_model_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -797,7 +817,10 @@ async def test_create_conversation_model_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_conversation_model_flattened():
@@ -905,11 +928,16 @@ async def test_create_conversation_model_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [conversation_model.GetConversationModelRequest, dict,]
+    "request_type",
+    [
+        conversation_model.GetConversationModelRequest,
+        dict,
+    ],
 )
 def test_get_conversation_model(request_type, transport: str = "grpc"):
     client = ConversationModelsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -949,7 +977,8 @@ def test_get_conversation_model_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ConversationModelsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -968,7 +997,8 @@ async def test_get_conversation_model_async(
     request_type=conversation_model.GetConversationModelRequest,
 ):
     client = ConversationModelsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1033,7 +1063,10 @@ def test_get_conversation_model_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1064,7 +1097,10 @@ async def test_get_conversation_model_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_conversation_model_flattened():
@@ -1080,7 +1116,9 @@ def test_get_conversation_model_flattened():
         call.return_value = conversation_model.ConversationModel()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_conversation_model(name="name_value",)
+        client.get_conversation_model(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1100,7 +1138,8 @@ def test_get_conversation_model_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_conversation_model(
-            conversation_model.GetConversationModelRequest(), name="name_value",
+            conversation_model.GetConversationModelRequest(),
+            name="name_value",
         )
 
 
@@ -1122,7 +1161,9 @@ async def test_get_conversation_model_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_conversation_model(name="name_value",)
+        response = await client.get_conversation_model(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1143,16 +1184,22 @@ async def test_get_conversation_model_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_conversation_model(
-            conversation_model.GetConversationModelRequest(), name="name_value",
+            conversation_model.GetConversationModelRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [conversation_model.ListConversationModelsRequest, dict,]
+    "request_type",
+    [
+        conversation_model.ListConversationModelsRequest,
+        dict,
+    ],
 )
 def test_list_conversation_models(request_type, transport: str = "grpc"):
     client = ConversationModelsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1183,7 +1230,8 @@ def test_list_conversation_models_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ConversationModelsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1202,7 +1250,8 @@ async def test_list_conversation_models_async(
     request_type=conversation_model.ListConversationModelsRequest,
 ):
     client = ConversationModelsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1261,7 +1310,10 @@ def test_list_conversation_models_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1292,7 +1344,10 @@ async def test_list_conversation_models_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_conversation_models_flattened():
@@ -1308,7 +1363,9 @@ def test_list_conversation_models_flattened():
         call.return_value = conversation_model.ListConversationModelsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_conversation_models(parent="parent_value",)
+        client.list_conversation_models(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1328,7 +1385,8 @@ def test_list_conversation_models_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_conversation_models(
-            conversation_model.ListConversationModelsRequest(), parent="parent_value",
+            conversation_model.ListConversationModelsRequest(),
+            parent="parent_value",
         )
 
 
@@ -1350,7 +1408,9 @@ async def test_list_conversation_models_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_conversation_models(parent="parent_value",)
+        response = await client.list_conversation_models(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1371,13 +1431,15 @@ async def test_list_conversation_models_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_conversation_models(
-            conversation_model.ListConversationModelsRequest(), parent="parent_value",
+            conversation_model.ListConversationModelsRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_conversation_models_pager(transport_name: str = "grpc"):
     client = ConversationModelsClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1395,10 +1457,13 @@ def test_list_conversation_models_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             conversation_model.ListConversationModelsResponse(
-                conversation_models=[], next_page_token="def",
+                conversation_models=[],
+                next_page_token="def",
             ),
             conversation_model.ListConversationModelsResponse(
-                conversation_models=[conversation_model.ConversationModel(),],
+                conversation_models=[
+                    conversation_model.ConversationModel(),
+                ],
                 next_page_token="ghi",
             ),
             conversation_model.ListConversationModelsResponse(
@@ -1425,7 +1490,8 @@ def test_list_conversation_models_pager(transport_name: str = "grpc"):
 
 def test_list_conversation_models_pages(transport_name: str = "grpc"):
     client = ConversationModelsClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1443,10 +1509,13 @@ def test_list_conversation_models_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             conversation_model.ListConversationModelsResponse(
-                conversation_models=[], next_page_token="def",
+                conversation_models=[],
+                next_page_token="def",
             ),
             conversation_model.ListConversationModelsResponse(
-                conversation_models=[conversation_model.ConversationModel(),],
+                conversation_models=[
+                    conversation_model.ConversationModel(),
+                ],
                 next_page_token="ghi",
             ),
             conversation_model.ListConversationModelsResponse(
@@ -1485,10 +1554,13 @@ async def test_list_conversation_models_async_pager():
                 next_page_token="abc",
             ),
             conversation_model.ListConversationModelsResponse(
-                conversation_models=[], next_page_token="def",
+                conversation_models=[],
+                next_page_token="def",
             ),
             conversation_model.ListConversationModelsResponse(
-                conversation_models=[conversation_model.ConversationModel(),],
+                conversation_models=[
+                    conversation_model.ConversationModel(),
+                ],
                 next_page_token="ghi",
             ),
             conversation_model.ListConversationModelsResponse(
@@ -1499,7 +1571,9 @@ async def test_list_conversation_models_async_pager():
             ),
             RuntimeError,
         )
-        async_pager = await client.list_conversation_models(request={},)
+        async_pager = await client.list_conversation_models(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -1534,10 +1608,13 @@ async def test_list_conversation_models_async_pages():
                 next_page_token="abc",
             ),
             conversation_model.ListConversationModelsResponse(
-                conversation_models=[], next_page_token="def",
+                conversation_models=[],
+                next_page_token="def",
             ),
             conversation_model.ListConversationModelsResponse(
-                conversation_models=[conversation_model.ConversationModel(),],
+                conversation_models=[
+                    conversation_model.ConversationModel(),
+                ],
                 next_page_token="ghi",
             ),
             conversation_model.ListConversationModelsResponse(
@@ -1556,11 +1633,16 @@ async def test_list_conversation_models_async_pages():
 
 
 @pytest.mark.parametrize(
-    "request_type", [conversation_model.DeleteConversationModelRequest, dict,]
+    "request_type",
+    [
+        conversation_model.DeleteConversationModelRequest,
+        dict,
+    ],
 )
 def test_delete_conversation_model(request_type, transport: str = "grpc"):
     client = ConversationModelsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1588,7 +1670,8 @@ def test_delete_conversation_model_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ConversationModelsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1607,7 +1690,8 @@ async def test_delete_conversation_model_async(
     request_type=conversation_model.DeleteConversationModelRequest,
 ):
     client = ConversationModelsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1663,7 +1747,10 @@ def test_delete_conversation_model_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1694,7 +1781,10 @@ async def test_delete_conversation_model_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_conversation_model_flattened():
@@ -1710,7 +1800,9 @@ def test_delete_conversation_model_flattened():
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_conversation_model(name="name_value",)
+        client.delete_conversation_model(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1730,7 +1822,8 @@ def test_delete_conversation_model_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_conversation_model(
-            conversation_model.DeleteConversationModelRequest(), name="name_value",
+            conversation_model.DeleteConversationModelRequest(),
+            name="name_value",
         )
 
 
@@ -1752,7 +1845,9 @@ async def test_delete_conversation_model_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_conversation_model(name="name_value",)
+        response = await client.delete_conversation_model(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1773,16 +1868,22 @@ async def test_delete_conversation_model_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_conversation_model(
-            conversation_model.DeleteConversationModelRequest(), name="name_value",
+            conversation_model.DeleteConversationModelRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [conversation_model.DeployConversationModelRequest, dict,]
+    "request_type",
+    [
+        conversation_model.DeployConversationModelRequest,
+        dict,
+    ],
 )
 def test_deploy_conversation_model(request_type, transport: str = "grpc"):
     client = ConversationModelsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1810,7 +1911,8 @@ def test_deploy_conversation_model_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ConversationModelsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1829,7 +1931,8 @@ async def test_deploy_conversation_model_async(
     request_type=conversation_model.DeployConversationModelRequest,
 ):
     client = ConversationModelsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1885,7 +1988,10 @@ def test_deploy_conversation_model_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1916,15 +2022,23 @@ async def test_deploy_conversation_model_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.parametrize(
-    "request_type", [conversation_model.UndeployConversationModelRequest, dict,]
+    "request_type",
+    [
+        conversation_model.UndeployConversationModelRequest,
+        dict,
+    ],
 )
 def test_undeploy_conversation_model(request_type, transport: str = "grpc"):
     client = ConversationModelsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1952,7 +2066,8 @@ def test_undeploy_conversation_model_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ConversationModelsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1971,7 +2086,8 @@ async def test_undeploy_conversation_model_async(
     request_type=conversation_model.UndeployConversationModelRequest,
 ):
     client = ConversationModelsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2027,7 +2143,10 @@ def test_undeploy_conversation_model_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2058,15 +2177,23 @@ async def test_undeploy_conversation_model_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.parametrize(
-    "request_type", [conversation_model.GetConversationModelEvaluationRequest, dict,]
+    "request_type",
+    [
+        conversation_model.GetConversationModelEvaluationRequest,
+        dict,
+    ],
 )
 def test_get_conversation_model_evaluation(request_type, transport: str = "grpc"):
     client = ConversationModelsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2102,7 +2229,8 @@ def test_get_conversation_model_evaluation_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ConversationModelsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2121,7 +2249,8 @@ async def test_get_conversation_model_evaluation_async(
     request_type=conversation_model.GetConversationModelEvaluationRequest,
 ):
     client = ConversationModelsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2135,7 +2264,8 @@ async def test_get_conversation_model_evaluation_async(
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             conversation_model.ConversationModelEvaluation(
-                name="name_value", display_name="display_name_value",
+                name="name_value",
+                display_name="display_name_value",
             )
         )
         response = await client.get_conversation_model_evaluation(request)
@@ -2181,7 +2311,10 @@ def test_get_conversation_model_evaluation_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2212,7 +2345,10 @@ async def test_get_conversation_model_evaluation_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_conversation_model_evaluation_flattened():
@@ -2228,7 +2364,9 @@ def test_get_conversation_model_evaluation_flattened():
         call.return_value = conversation_model.ConversationModelEvaluation()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_conversation_model_evaluation(name="name_value",)
+        client.get_conversation_model_evaluation(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2271,7 +2409,9 @@ async def test_get_conversation_model_evaluation_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_conversation_model_evaluation(name="name_value",)
+        response = await client.get_conversation_model_evaluation(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2298,11 +2438,16 @@ async def test_get_conversation_model_evaluation_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [conversation_model.ListConversationModelEvaluationsRequest, dict,]
+    "request_type",
+    [
+        conversation_model.ListConversationModelEvaluationsRequest,
+        dict,
+    ],
 )
 def test_list_conversation_model_evaluations(request_type, transport: str = "grpc"):
     client = ConversationModelsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2333,7 +2478,8 @@ def test_list_conversation_model_evaluations_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ConversationModelsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2352,7 +2498,8 @@ async def test_list_conversation_model_evaluations_async(
     request_type=conversation_model.ListConversationModelEvaluationsRequest,
 ):
     client = ConversationModelsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2413,7 +2560,10 @@ def test_list_conversation_model_evaluations_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2444,7 +2594,10 @@ async def test_list_conversation_model_evaluations_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_conversation_model_evaluations_flattened():
@@ -2462,7 +2615,9 @@ def test_list_conversation_model_evaluations_flattened():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_conversation_model_evaluations(parent="parent_value",)
+        client.list_conversation_model_evaluations(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2537,7 +2692,8 @@ async def test_list_conversation_model_evaluations_flattened_error_async():
 
 def test_list_conversation_model_evaluations_pager(transport_name: str = "grpc"):
     client = ConversationModelsClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2555,7 +2711,8 @@ def test_list_conversation_model_evaluations_pager(transport_name: str = "grpc")
                 next_page_token="abc",
             ),
             conversation_model.ListConversationModelEvaluationsResponse(
-                conversation_model_evaluations=[], next_page_token="def",
+                conversation_model_evaluations=[],
+                next_page_token="def",
             ),
             conversation_model.ListConversationModelEvaluationsResponse(
                 conversation_model_evaluations=[
@@ -2590,7 +2747,8 @@ def test_list_conversation_model_evaluations_pager(transport_name: str = "grpc")
 
 def test_list_conversation_model_evaluations_pages(transport_name: str = "grpc"):
     client = ConversationModelsClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2608,7 +2766,8 @@ def test_list_conversation_model_evaluations_pages(transport_name: str = "grpc")
                 next_page_token="abc",
             ),
             conversation_model.ListConversationModelEvaluationsResponse(
-                conversation_model_evaluations=[], next_page_token="def",
+                conversation_model_evaluations=[],
+                next_page_token="def",
             ),
             conversation_model.ListConversationModelEvaluationsResponse(
                 conversation_model_evaluations=[
@@ -2652,7 +2811,8 @@ async def test_list_conversation_model_evaluations_async_pager():
                 next_page_token="abc",
             ),
             conversation_model.ListConversationModelEvaluationsResponse(
-                conversation_model_evaluations=[], next_page_token="def",
+                conversation_model_evaluations=[],
+                next_page_token="def",
             ),
             conversation_model.ListConversationModelEvaluationsResponse(
                 conversation_model_evaluations=[
@@ -2668,7 +2828,9 @@ async def test_list_conversation_model_evaluations_async_pager():
             ),
             RuntimeError,
         )
-        async_pager = await client.list_conversation_model_evaluations(request={},)
+        async_pager = await client.list_conversation_model_evaluations(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -2704,7 +2866,8 @@ async def test_list_conversation_model_evaluations_async_pages():
                 next_page_token="abc",
             ),
             conversation_model.ListConversationModelEvaluationsResponse(
-                conversation_model_evaluations=[], next_page_token="def",
+                conversation_model_evaluations=[],
+                next_page_token="def",
             ),
             conversation_model.ListConversationModelEvaluationsResponse(
                 conversation_model_evaluations=[
@@ -2730,11 +2893,16 @@ async def test_list_conversation_model_evaluations_async_pages():
 
 
 @pytest.mark.parametrize(
-    "request_type", [conversation_model.CreateConversationModelEvaluationRequest, dict,]
+    "request_type",
+    [
+        conversation_model.CreateConversationModelEvaluationRequest,
+        dict,
+    ],
 )
 def test_create_conversation_model_evaluation(request_type, transport: str = "grpc"):
     client = ConversationModelsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2762,7 +2930,8 @@ def test_create_conversation_model_evaluation_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ConversationModelsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2781,7 +2950,8 @@ async def test_create_conversation_model_evaluation_async(
     request_type=conversation_model.CreateConversationModelEvaluationRequest,
 ):
     client = ConversationModelsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2837,7 +3007,10 @@ def test_create_conversation_model_evaluation_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2868,7 +3041,10 @@ async def test_create_conversation_model_evaluation_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_conversation_model_evaluation_flattened():
@@ -2982,7 +3158,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = ConversationModelsClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -3002,7 +3179,10 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = ConversationModelsClient(client_options=options, transport=transport,)
+        client = ConversationModelsClient(
+            client_options=options,
+            transport=transport,
+        )
 
     # It is an error to provide an api_key and a credential.
     options = mock.Mock()
@@ -3018,7 +3198,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = ConversationModelsClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -3066,7 +3247,10 @@ def test_transport_grpc_default():
     client = ConversationModelsClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
-    assert isinstance(client.transport, transports.ConversationModelsGrpcTransport,)
+    assert isinstance(
+        client.transport,
+        transports.ConversationModelsGrpcTransport,
+    )
 
 
 def test_conversation_models_base_transport_error():
@@ -3124,7 +3308,8 @@ def test_conversation_models_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.ConversationModelsTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -3296,7 +3481,8 @@ def test_conversation_models_grpc_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.ConversationModelsGrpcTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -3308,7 +3494,8 @@ def test_conversation_models_grpc_asyncio_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.ConversationModelsGrpcAsyncIOTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -3417,12 +3604,16 @@ def test_conversation_models_transport_channel_mtls_with_adc(transport_class):
 
 def test_conversation_models_grpc_lro_client():
     client = ConversationModelsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
     transport = client.transport
 
     # Ensure that we have a api-core operations client.
-    assert isinstance(transport.operations_client, operations_v1.OperationsClient,)
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsClient,
+    )
 
     # Ensure that subsequent calls to the property send the exact same object.
     assert transport.operations_client is transport.operations_client
@@ -3430,12 +3621,16 @@ def test_conversation_models_grpc_lro_client():
 
 def test_conversation_models_grpc_lro_async_client():
     client = ConversationModelsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     transport = client.transport
 
     # Ensure that we have a api-core operations client.
-    assert isinstance(transport.operations_client, operations_v1.OperationsAsyncClient,)
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsAsyncClient,
+    )
 
     # Ensure that subsequent calls to the property send the exact same object.
     assert transport.operations_client is transport.operations_client
@@ -3446,7 +3641,9 @@ def test_conversation_dataset_path():
     location = "clam"
     conversation_dataset = "whelk"
     expected = "projects/{project}/locations/{location}/conversationDatasets/{conversation_dataset}".format(
-        project=project, location=location, conversation_dataset=conversation_dataset,
+        project=project,
+        location=location,
+        conversation_dataset=conversation_dataset,
     )
     actual = ConversationModelsClient.conversation_dataset_path(
         project, location, conversation_dataset
@@ -3472,7 +3669,9 @@ def test_conversation_model_path():
     location = "mussel"
     conversation_model = "winkle"
     expected = "projects/{project}/locations/{location}/conversationModels/{conversation_model}".format(
-        project=project, location=location, conversation_model=conversation_model,
+        project=project,
+        location=location,
+        conversation_model=conversation_model,
     )
     actual = ConversationModelsClient.conversation_model_path(
         project, location, conversation_model
@@ -3497,7 +3696,8 @@ def test_conversation_model_evaluation_path():
     project = "squid"
     conversation_model = "clam"
     expected = "projects/{project}/conversationModels/{conversation_model}/evaluations/evaluation".format(
-        project=project, conversation_model=conversation_model,
+        project=project,
+        conversation_model=conversation_model,
     )
     actual = ConversationModelsClient.conversation_model_evaluation_path(
         project, conversation_model
@@ -3522,7 +3722,9 @@ def test_document_path():
     knowledge_base = "nudibranch"
     document = "cuttlefish"
     expected = "projects/{project}/knowledgeBases/{knowledge_base}/documents/{document}".format(
-        project=project, knowledge_base=knowledge_base, document=document,
+        project=project,
+        knowledge_base=knowledge_base,
+        document=document,
     )
     actual = ConversationModelsClient.document_path(project, knowledge_base, document)
     assert expected == actual
@@ -3563,7 +3765,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "squid"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = ConversationModelsClient.common_folder_path(folder)
     assert expected == actual
 
@@ -3581,7 +3785,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "whelk"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = ConversationModelsClient.common_organization_path(organization)
     assert expected == actual
 
@@ -3599,7 +3805,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "oyster"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = ConversationModelsClient.common_project_path(project)
     assert expected == actual
 
@@ -3619,7 +3827,8 @@ def test_common_location_path():
     project = "cuttlefish"
     location = "mussel"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = ConversationModelsClient.common_location_path(project, location)
     assert expected == actual
@@ -3644,7 +3853,8 @@ def test_client_with_default_client_info():
         transports.ConversationModelsTransport, "_prep_wrapped_messages"
     ) as prep:
         client = ConversationModelsClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -3653,7 +3863,8 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = ConversationModelsClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -3661,7 +3872,8 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = ConversationModelsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     with mock.patch.object(
         type(getattr(client.transport, "grpc_channel")), "close"

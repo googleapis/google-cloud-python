@@ -128,19 +128,29 @@ class IntentsTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.list_intents: gapic_v1.method.wrap_method(
-                self.list_intents, default_timeout=None, client_info=client_info,
+                self.list_intents,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_intent: gapic_v1.method.wrap_method(
-                self.get_intent, default_timeout=None, client_info=client_info,
+                self.get_intent,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.create_intent: gapic_v1.method.wrap_method(
-                self.create_intent, default_timeout=None, client_info=client_info,
+                self.create_intent,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.update_intent: gapic_v1.method.wrap_method(
-                self.update_intent, default_timeout=None, client_info=client_info,
+                self.update_intent,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.delete_intent: gapic_v1.method.wrap_method(
-                self.delete_intent, default_timeout=None, client_info=client_info,
+                self.delete_intent,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.batch_update_intents: gapic_v1.method.wrap_method(
                 self.batch_update_intents,
@@ -157,9 +167,9 @@ class IntentsTransport(abc.ABC):
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

@@ -124,8 +124,14 @@ class SpeechContext(proto.Message):
             binary search.
     """
 
-    phrases = proto.RepeatedField(proto.STRING, number=1,)
-    boost = proto.Field(proto.FLOAT, number=2,)
+    phrases = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
+    boost = proto.Field(
+        proto.FLOAT,
+        number=2,
+    )
 
 
 class SpeechWordInfo(proto.Message):
@@ -157,10 +163,24 @@ class SpeechWordInfo(proto.Message):
             also not rely on it to always be provided.
     """
 
-    word = proto.Field(proto.STRING, number=3,)
-    start_offset = proto.Field(proto.MESSAGE, number=1, message=duration_pb2.Duration,)
-    end_offset = proto.Field(proto.MESSAGE, number=2, message=duration_pb2.Duration,)
-    confidence = proto.Field(proto.FLOAT, number=4,)
+    word = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    start_offset = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=duration_pb2.Duration,
+    )
+    end_offset = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=duration_pb2.Duration,
+    )
+    confidence = proto.Field(
+        proto.FLOAT,
+        number=4,
+    )
 
 
 class InputAudioConfig(proto.Message):
@@ -246,18 +266,49 @@ class InputAudioConfig(proto.Message):
             trigger ``NO_SPEECH_RECOGNIZED`` event to Dialogflow agent.
     """
 
-    audio_encoding = proto.Field(proto.ENUM, number=1, enum="AudioEncoding",)
-    sample_rate_hertz = proto.Field(proto.INT32, number=2,)
-    language_code = proto.Field(proto.STRING, number=3,)
-    enable_word_info = proto.Field(proto.BOOL, number=13,)
-    phrase_hints = proto.RepeatedField(proto.STRING, number=4,)
-    speech_contexts = proto.RepeatedField(
-        proto.MESSAGE, number=11, message="SpeechContext",
+    audio_encoding = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum="AudioEncoding",
     )
-    model = proto.Field(proto.STRING, number=7,)
-    model_variant = proto.Field(proto.ENUM, number=10, enum="SpeechModelVariant",)
-    single_utterance = proto.Field(proto.BOOL, number=8,)
-    disable_no_speech_recognized_event = proto.Field(proto.BOOL, number=14,)
+    sample_rate_hertz = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    language_code = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    enable_word_info = proto.Field(
+        proto.BOOL,
+        number=13,
+    )
+    phrase_hints = proto.RepeatedField(
+        proto.STRING,
+        number=4,
+    )
+    speech_contexts = proto.RepeatedField(
+        proto.MESSAGE,
+        number=11,
+        message="SpeechContext",
+    )
+    model = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    model_variant = proto.Field(
+        proto.ENUM,
+        number=10,
+        enum="SpeechModelVariant",
+    )
+    single_utterance = proto.Field(
+        proto.BOOL,
+        number=8,
+    )
+    disable_no_speech_recognized_event = proto.Field(
+        proto.BOOL,
+        number=14,
+    )
 
 
 class VoiceSelectionParams(proto.Message):
@@ -280,8 +331,15 @@ class VoiceSelectionParams(proto.Message):
             gender rather than failing the request.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    ssml_gender = proto.Field(proto.ENUM, number=2, enum="SsmlVoiceGender",)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    ssml_gender = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum="SsmlVoiceGender",
+    )
 
 
 class SynthesizeSpeechConfig(proto.Message):
@@ -320,11 +378,27 @@ class SynthesizeSpeechConfig(proto.Message):
             synthesized audio.
     """
 
-    speaking_rate = proto.Field(proto.DOUBLE, number=1,)
-    pitch = proto.Field(proto.DOUBLE, number=2,)
-    volume_gain_db = proto.Field(proto.DOUBLE, number=3,)
-    effects_profile_id = proto.RepeatedField(proto.STRING, number=5,)
-    voice = proto.Field(proto.MESSAGE, number=4, message="VoiceSelectionParams",)
+    speaking_rate = proto.Field(
+        proto.DOUBLE,
+        number=1,
+    )
+    pitch = proto.Field(
+        proto.DOUBLE,
+        number=2,
+    )
+    volume_gain_db = proto.Field(
+        proto.DOUBLE,
+        number=3,
+    )
+    effects_profile_id = proto.RepeatedField(
+        proto.STRING,
+        number=5,
+    )
+    voice = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="VoiceSelectionParams",
+    )
 
 
 class OutputAudioConfig(proto.Message):
@@ -351,10 +425,19 @@ class OutputAudioConfig(proto.Message):
             synthesized.
     """
 
-    audio_encoding = proto.Field(proto.ENUM, number=1, enum="OutputAudioEncoding",)
-    sample_rate_hertz = proto.Field(proto.INT32, number=2,)
+    audio_encoding = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum="OutputAudioEncoding",
+    )
+    sample_rate_hertz = proto.Field(
+        proto.INT32,
+        number=2,
+    )
     synthesize_speech_config = proto.Field(
-        proto.MESSAGE, number=3, message="SynthesizeSpeechConfig",
+        proto.MESSAGE,
+        number=3,
+        message="SynthesizeSpeechConfig",
     )
 
 
@@ -375,7 +458,11 @@ class SpeechToTextConfig(proto.Message):
             does not exist, then it would emit an error.
     """
 
-    speech_model_variant = proto.Field(proto.ENUM, number=1, enum="SpeechModelVariant",)
+    speech_model_variant = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum="SpeechModelVariant",
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

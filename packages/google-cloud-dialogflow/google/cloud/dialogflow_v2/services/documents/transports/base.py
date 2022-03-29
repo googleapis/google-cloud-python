@@ -127,37 +127,53 @@ class DocumentsTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.list_documents: gapic_v1.method.wrap_method(
-                self.list_documents, default_timeout=None, client_info=client_info,
+                self.list_documents,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_document: gapic_v1.method.wrap_method(
-                self.get_document, default_timeout=None, client_info=client_info,
+                self.get_document,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.create_document: gapic_v1.method.wrap_method(
-                self.create_document, default_timeout=None, client_info=client_info,
+                self.create_document,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.import_documents: gapic_v1.method.wrap_method(
-                self.import_documents, default_timeout=None, client_info=client_info,
+                self.import_documents,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.delete_document: gapic_v1.method.wrap_method(
-                self.delete_document, default_timeout=None, client_info=client_info,
+                self.delete_document,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.update_document: gapic_v1.method.wrap_method(
-                self.update_document, default_timeout=None, client_info=client_info,
+                self.update_document,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.reload_document: gapic_v1.method.wrap_method(
-                self.reload_document, default_timeout=None, client_info=client_info,
+                self.reload_document,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.export_document: gapic_v1.method.wrap_method(
-                self.export_document, default_timeout=None, client_info=client_info,
+                self.export_document,
+                default_timeout=None,
+                client_info=client_info,
             ),
         }
 
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

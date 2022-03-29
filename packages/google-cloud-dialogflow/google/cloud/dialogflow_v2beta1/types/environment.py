@@ -106,16 +106,37 @@ class Environment(proto.Message):
         LOADING = 2
         RUNNING = 3
 
-    name = proto.Field(proto.STRING, number=1,)
-    description = proto.Field(proto.STRING, number=2,)
-    agent_version = proto.Field(proto.STRING, number=3,)
-    state = proto.Field(proto.ENUM, number=4, enum=State,)
-    update_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    agent_version = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=State,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
     text_to_speech_settings = proto.Field(
-        proto.MESSAGE, number=7, message="TextToSpeechSettings",
+        proto.MESSAGE,
+        number=7,
+        message="TextToSpeechSettings",
     )
     fulfillment = proto.Field(
-        proto.MESSAGE, number=8, message=gcd_fulfillment.Fulfillment,
+        proto.MESSAGE,
+        number=8,
+        message=gcd_fulfillment.Fulfillment,
     )
 
 
@@ -147,11 +168,19 @@ class TextToSpeechSettings(proto.Message):
             to SynthesizeSpeechConfig.
     """
 
-    enable_text_to_speech = proto.Field(proto.BOOL, number=1,)
-    output_audio_encoding = proto.Field(
-        proto.ENUM, number=2, enum=audio_config.OutputAudioEncoding,
+    enable_text_to_speech = proto.Field(
+        proto.BOOL,
+        number=1,
     )
-    sample_rate_hertz = proto.Field(proto.INT32, number=3,)
+    output_audio_encoding = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=audio_config.OutputAudioEncoding,
+    )
+    sample_rate_hertz = proto.Field(
+        proto.INT32,
+        number=3,
+    )
     synthesize_speech_configs = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
@@ -179,9 +208,18 @@ class ListEnvironmentsRequest(proto.Message):
             list request.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListEnvironmentsResponse(proto.Message):
@@ -203,8 +241,15 @@ class ListEnvironmentsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    environments = proto.RepeatedField(proto.MESSAGE, number=1, message="Environment",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    environments = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Environment",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetEnvironmentRequest(proto.Message):
@@ -219,7 +264,10 @@ class GetEnvironmentRequest(proto.Message):
             -  ``projects/<Project Number / ID>/locations/<Location ID>/agent/environments/<Environment ID>``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CreateEnvironmentRequest(proto.Message):
@@ -240,9 +288,19 @@ class CreateEnvironmentRequest(proto.Message):
             environment.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    environment = proto.Field(proto.MESSAGE, number=2, message="Environment",)
-    environment_id = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    environment = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="Environment",
+    )
+    environment_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class UpdateEnvironmentRequest(proto.Message):
@@ -263,11 +321,20 @@ class UpdateEnvironmentRequest(proto.Message):
             updating the draft environment (environment ID = ``-``).
     """
 
-    environment = proto.Field(proto.MESSAGE, number=1, message="Environment",)
-    update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+    environment = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="Environment",
     )
-    allow_load_to_draft_and_discard_changes = proto.Field(proto.BOOL, number=3,)
+    update_mask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+    allow_load_to_draft_and_discard_changes = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
 
 
 class DeleteEnvironmentRequest(proto.Message):
@@ -282,7 +349,10 @@ class DeleteEnvironmentRequest(proto.Message):
             -  ``projects/<Project Number / ID>/locations/<Location ID>/agent/environments/<Environment ID>``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class GetEnvironmentHistoryRequest(proto.Message):
@@ -305,9 +375,18 @@ class GetEnvironmentHistoryRequest(proto.Message):
             list request.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class EnvironmentHistory(proto.Message):
@@ -346,19 +425,37 @@ class EnvironmentHistory(proto.Message):
                 entry.
         """
 
-        agent_version = proto.Field(proto.STRING, number=1,)
-        description = proto.Field(proto.STRING, number=2,)
+        agent_version = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        description = proto.Field(
+            proto.STRING,
+            number=2,
+        )
         create_time = proto.Field(
-            proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,
+            proto.MESSAGE,
+            number=3,
+            message=timestamp_pb2.Timestamp,
         )
 
     @property
     def raw_page(self):
         return self
 
-    parent = proto.Field(proto.STRING, number=1,)
-    entries = proto.RepeatedField(proto.MESSAGE, number=2, message=Entry,)
-    next_page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    entries = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=Entry,
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

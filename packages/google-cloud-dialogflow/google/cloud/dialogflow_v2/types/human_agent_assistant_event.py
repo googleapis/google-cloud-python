@@ -19,7 +19,10 @@ from google.cloud.dialogflow_v2.types import participant as gcd_participant
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.dialogflow.v2", manifest={"HumanAgentAssistantEvent",},
+    package="google.cloud.dialogflow.v2",
+    manifest={
+        "HumanAgentAssistantEvent",
+    },
 )
 
 
@@ -40,10 +43,18 @@ class HumanAgentAssistantEvent(proto.Message):
             notification refers to.
     """
 
-    conversation = proto.Field(proto.STRING, number=1,)
-    participant = proto.Field(proto.STRING, number=3,)
+    conversation = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    participant = proto.Field(
+        proto.STRING,
+        number=3,
+    )
     suggestion_results = proto.RepeatedField(
-        proto.MESSAGE, number=5, message=gcd_participant.SuggestionResult,
+        proto.MESSAGE,
+        number=5,
+        message=gcd_participant.SuggestionResult,
     )
 
 

@@ -62,9 +62,18 @@ class KnowledgeBase(proto.Message):
             language code en-us applies.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    display_name = proto.Field(proto.STRING, number=2,)
-    language_code = proto.Field(proto.STRING, number=4,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    language_code = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class ListKnowledgeBasesRequest(proto.Message):
@@ -112,10 +121,22 @@ class ListKnowledgeBasesRequest(proto.Message):
             Filtering <https://aip.dev/160>`__.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    filter = proto.Field(proto.STRING, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class ListKnowledgeBasesResponse(proto.Message):
@@ -136,9 +157,14 @@ class ListKnowledgeBasesResponse(proto.Message):
         return self
 
     knowledge_bases = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="KnowledgeBase",
+        proto.MESSAGE,
+        number=1,
+        message="KnowledgeBase",
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetKnowledgeBaseRequest(proto.Message):
@@ -151,7 +177,10 @@ class GetKnowledgeBaseRequest(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/knowledgeBases/<Knowledge Base ID>``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CreateKnowledgeBaseRequest(proto.Message):
@@ -166,8 +195,15 @@ class CreateKnowledgeBaseRequest(proto.Message):
             Required. The knowledge base to create.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    knowledge_base = proto.Field(proto.MESSAGE, number=2, message="KnowledgeBase",)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    knowledge_base = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="KnowledgeBase",
+    )
 
 
 class DeleteKnowledgeBaseRequest(proto.Message):
@@ -184,8 +220,14 @@ class DeleteKnowledgeBaseRequest(proto.Message):
             base are also deleted.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    force = proto.Field(proto.BOOL, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    force = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
 
 
 class UpdateKnowledgeBaseRequest(proto.Message):
@@ -201,9 +243,15 @@ class UpdateKnowledgeBaseRequest(proto.Message):
             will be returned for attempting to update other fields.
     """
 
-    knowledge_base = proto.Field(proto.MESSAGE, number=1, message="KnowledgeBase",)
+    knowledge_base = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="KnowledgeBase",
+    )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 

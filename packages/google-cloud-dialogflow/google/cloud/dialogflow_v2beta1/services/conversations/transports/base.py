@@ -125,13 +125,19 @@ class ConversationsTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.create_conversation: gapic_v1.method.wrap_method(
-                self.create_conversation, default_timeout=None, client_info=client_info,
+                self.create_conversation,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_conversations: gapic_v1.method.wrap_method(
-                self.list_conversations, default_timeout=None, client_info=client_info,
+                self.list_conversations,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_conversation: gapic_v1.method.wrap_method(
-                self.get_conversation, default_timeout=None, client_info=client_info,
+                self.get_conversation,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.complete_conversation: gapic_v1.method.wrap_method(
                 self.complete_conversation,
@@ -144,16 +150,18 @@ class ConversationsTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.list_messages: gapic_v1.method.wrap_method(
-                self.list_messages, default_timeout=None, client_info=client_info,
+                self.list_messages,
+                default_timeout=None,
+                client_info=client_info,
             ),
         }
 
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

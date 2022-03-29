@@ -56,7 +56,10 @@ class ConversationsClientMeta(type):
     _transport_registry["grpc"] = ConversationsGrpcTransport
     _transport_registry["grpc_asyncio"] = ConversationsGrpcAsyncIOTransport
 
-    def get_transport_class(cls, label: str = None,) -> Type[ConversationsTransport]:
+    def get_transport_class(
+        cls,
+        label: str = None,
+    ) -> Type[ConversationsTransport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -163,10 +166,14 @@ class ConversationsClient(metaclass=ConversationsClientMeta):
         return self._transport
 
     @staticmethod
-    def conversation_path(project: str, conversation: str,) -> str:
+    def conversation_path(
+        project: str,
+        conversation: str,
+    ) -> str:
         """Returns a fully-qualified conversation string."""
         return "projects/{project}/conversations/{conversation}".format(
-            project=project, conversation=conversation,
+            project=project,
+            conversation=conversation,
         )
 
     @staticmethod
@@ -178,10 +185,14 @@ class ConversationsClient(metaclass=ConversationsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def conversation_profile_path(project: str, conversation_profile: str,) -> str:
+    def conversation_profile_path(
+        project: str,
+        conversation_profile: str,
+    ) -> str:
         """Returns a fully-qualified conversation_profile string."""
         return "projects/{project}/conversationProfiles/{conversation_profile}".format(
-            project=project, conversation_profile=conversation_profile,
+            project=project,
+            conversation_profile=conversation_profile,
         )
 
     @staticmethod
@@ -194,10 +205,18 @@ class ConversationsClient(metaclass=ConversationsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def message_path(project: str, conversation: str, message: str,) -> str:
+    def message_path(
+        project: str,
+        conversation: str,
+        message: str,
+    ) -> str:
         """Returns a fully-qualified message string."""
-        return "projects/{project}/conversations/{conversation}/messages/{message}".format(
-            project=project, conversation=conversation, message=message,
+        return (
+            "projects/{project}/conversations/{conversation}/messages/{message}".format(
+                project=project,
+                conversation=conversation,
+                message=message,
+            )
         )
 
     @staticmethod
@@ -210,7 +229,9 @@ class ConversationsClient(metaclass=ConversationsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_billing_account_path(billing_account: str,) -> str:
+    def common_billing_account_path(
+        billing_account: str,
+    ) -> str:
         """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
@@ -223,9 +244,13 @@ class ConversationsClient(metaclass=ConversationsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(folder: str,) -> str:
+    def common_folder_path(
+        folder: str,
+    ) -> str:
         """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(folder=folder,)
+        return "folders/{folder}".format(
+            folder=folder,
+        )
 
     @staticmethod
     def parse_common_folder_path(path: str) -> Dict[str, str]:
@@ -234,9 +259,13 @@ class ConversationsClient(metaclass=ConversationsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(organization: str,) -> str:
+    def common_organization_path(
+        organization: str,
+    ) -> str:
         """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(organization=organization,)
+        return "organizations/{organization}".format(
+            organization=organization,
+        )
 
     @staticmethod
     def parse_common_organization_path(path: str) -> Dict[str, str]:
@@ -245,9 +274,13 @@ class ConversationsClient(metaclass=ConversationsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(project: str,) -> str:
+    def common_project_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified project string."""
-        return "projects/{project}".format(project=project,)
+        return "projects/{project}".format(
+            project=project,
+        )
 
     @staticmethod
     def parse_common_project_path(path: str) -> Dict[str, str]:
@@ -256,10 +289,14 @@ class ConversationsClient(metaclass=ConversationsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(project: str, location: str,) -> str:
+    def common_location_path(
+        project: str,
+        location: str,
+    ) -> str:
         """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
-            project=project, location=location,
+            project=project,
+            location=location,
         )
 
     @staticmethod
@@ -557,7 +594,12 @@ class ConversationsClient(metaclass=ConversationsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -654,12 +696,20 @@ class ConversationsClient(metaclass=ConversationsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListConversationsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -755,7 +805,12 @@ class ConversationsClient(metaclass=ConversationsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -854,7 +909,12 @@ class ConversationsClient(metaclass=ConversationsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -953,7 +1013,12 @@ class ConversationsClient(metaclass=ConversationsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1053,12 +1118,20 @@ class ConversationsClient(metaclass=ConversationsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListMessagesPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.

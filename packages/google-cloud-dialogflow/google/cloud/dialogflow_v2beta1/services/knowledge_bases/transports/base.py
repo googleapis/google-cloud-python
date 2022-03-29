@@ -131,7 +131,9 @@ class KnowledgeBasesTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.get_knowledge_base: gapic_v1.method.wrap_method(
-                self.get_knowledge_base, default_timeout=None, client_info=client_info,
+                self.get_knowledge_base,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.create_knowledge_base: gapic_v1.method.wrap_method(
                 self.create_knowledge_base,
@@ -153,9 +155,9 @@ class KnowledgeBasesTransport(abc.ABC):
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

@@ -84,7 +84,13 @@ def test__get_default_mtls_endpoint():
     assert FulfillmentsClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
 
 
-@pytest.mark.parametrize("client_class", [FulfillmentsClient, FulfillmentsAsyncClient,])
+@pytest.mark.parametrize(
+    "client_class",
+    [
+        FulfillmentsClient,
+        FulfillmentsAsyncClient,
+    ],
+)
 def test_fulfillments_client_from_service_account_info(client_class):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
@@ -124,7 +130,13 @@ def test_fulfillments_client_service_account_always_use_jwt(
         use_jwt.assert_not_called()
 
 
-@pytest.mark.parametrize("client_class", [FulfillmentsClient, FulfillmentsAsyncClient,])
+@pytest.mark.parametrize(
+    "client_class",
+    [
+        FulfillmentsClient,
+        FulfillmentsAsyncClient,
+    ],
+)
 def test_fulfillments_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
@@ -479,7 +491,9 @@ def test_fulfillments_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -620,10 +634,17 @@ def test_fulfillments_client_create_channel_credentials_file(
         )
 
 
-@pytest.mark.parametrize("request_type", [fulfillment.GetFulfillmentRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        fulfillment.GetFulfillmentRequest,
+        dict,
+    ],
+)
 def test_get_fulfillment(request_type, transport: str = "grpc"):
     client = FulfillmentsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -659,7 +680,8 @@ def test_get_fulfillment_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = FulfillmentsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -675,7 +697,8 @@ async def test_get_fulfillment_async(
     transport: str = "grpc_asyncio", request_type=fulfillment.GetFulfillmentRequest
 ):
     client = FulfillmentsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -687,7 +710,9 @@ async def test_get_fulfillment_async(
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             fulfillment.Fulfillment(
-                name="name_value", display_name="display_name_value", enabled=True,
+                name="name_value",
+                display_name="display_name_value",
+                enabled=True,
             )
         )
         response = await client.get_fulfillment(request)
@@ -710,7 +735,9 @@ async def test_get_fulfillment_async_from_dict():
 
 
 def test_get_fulfillment_field_headers():
-    client = FulfillmentsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FulfillmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -730,12 +757,17 @@ def test_get_fulfillment_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_get_fulfillment_field_headers_async():
-    client = FulfillmentsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FulfillmentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -757,11 +789,16 @@ async def test_get_fulfillment_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_fulfillment_flattened():
-    client = FulfillmentsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FulfillmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_fulfillment), "__call__") as call:
@@ -769,7 +806,9 @@ def test_get_fulfillment_flattened():
         call.return_value = fulfillment.Fulfillment()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_fulfillment(name="name_value",)
+        client.get_fulfillment(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -781,19 +820,24 @@ def test_get_fulfillment_flattened():
 
 
 def test_get_fulfillment_flattened_error():
-    client = FulfillmentsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FulfillmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_fulfillment(
-            fulfillment.GetFulfillmentRequest(), name="name_value",
+            fulfillment.GetFulfillmentRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_get_fulfillment_flattened_async():
-    client = FulfillmentsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FulfillmentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_fulfillment), "__call__") as call:
@@ -805,7 +849,9 @@ async def test_get_fulfillment_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_fulfillment(name="name_value",)
+        response = await client.get_fulfillment(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -818,22 +864,30 @@ async def test_get_fulfillment_flattened_async():
 
 @pytest.mark.asyncio
 async def test_get_fulfillment_flattened_error_async():
-    client = FulfillmentsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FulfillmentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_fulfillment(
-            fulfillment.GetFulfillmentRequest(), name="name_value",
+            fulfillment.GetFulfillmentRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [gcd_fulfillment.UpdateFulfillmentRequest, dict,]
+    "request_type",
+    [
+        gcd_fulfillment.UpdateFulfillmentRequest,
+        dict,
+    ],
 )
 def test_update_fulfillment(request_type, transport: str = "grpc"):
     client = FulfillmentsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -871,7 +925,8 @@ def test_update_fulfillment_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = FulfillmentsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -890,7 +945,8 @@ async def test_update_fulfillment_async(
     request_type=gcd_fulfillment.UpdateFulfillmentRequest,
 ):
     client = FulfillmentsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -904,7 +960,9 @@ async def test_update_fulfillment_async(
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             gcd_fulfillment.Fulfillment(
-                name="name_value", display_name="display_name_value", enabled=True,
+                name="name_value",
+                display_name="display_name_value",
+                enabled=True,
             )
         )
         response = await client.update_fulfillment(request)
@@ -927,7 +985,9 @@ async def test_update_fulfillment_async_from_dict():
 
 
 def test_update_fulfillment_field_headers():
-    client = FulfillmentsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FulfillmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -949,14 +1009,17 @@ def test_update_fulfillment_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "fulfillment.name=fulfillment.name/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "fulfillment.name=fulfillment.name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_update_fulfillment_field_headers_async():
-    client = FulfillmentsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FulfillmentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -980,13 +1043,16 @@ async def test_update_fulfillment_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "fulfillment.name=fulfillment.name/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "fulfillment.name=fulfillment.name/value",
+    ) in kw["metadata"]
 
 
 def test_update_fulfillment_flattened():
-    client = FulfillmentsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FulfillmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1014,7 +1080,9 @@ def test_update_fulfillment_flattened():
 
 
 def test_update_fulfillment_flattened_error():
-    client = FulfillmentsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FulfillmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1028,7 +1096,9 @@ def test_update_fulfillment_flattened_error():
 
 @pytest.mark.asyncio
 async def test_update_fulfillment_flattened_async():
-    client = FulfillmentsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FulfillmentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1061,7 +1131,9 @@ async def test_update_fulfillment_flattened_async():
 
 @pytest.mark.asyncio
 async def test_update_fulfillment_flattened_error_async():
-    client = FulfillmentsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FulfillmentsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1080,7 +1152,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = FulfillmentsClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -1100,7 +1173,10 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = FulfillmentsClient(client_options=options, transport=transport,)
+        client = FulfillmentsClient(
+            client_options=options,
+            transport=transport,
+        )
 
     # It is an error to provide an api_key and a credential.
     options = mock.Mock()
@@ -1116,7 +1192,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = FulfillmentsClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -1161,8 +1238,13 @@ def test_transport_adc(transport_class):
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
-    client = FulfillmentsClient(credentials=ga_credentials.AnonymousCredentials(),)
-    assert isinstance(client.transport, transports.FulfillmentsGrpcTransport,)
+    client = FulfillmentsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    assert isinstance(
+        client.transport,
+        transports.FulfillmentsGrpcTransport,
+    )
 
 
 def test_fulfillments_base_transport_error():
@@ -1208,7 +1290,8 @@ def test_fulfillments_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.FulfillmentsTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -1375,7 +1458,8 @@ def test_fulfillments_grpc_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.FulfillmentsGrpcTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -1387,7 +1471,8 @@ def test_fulfillments_grpc_asyncio_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.FulfillmentsGrpcAsyncIOTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -1488,7 +1573,9 @@ def test_fulfillments_transport_channel_mtls_with_adc(transport_class):
 
 def test_fulfillment_path():
     project = "squid"
-    expected = "projects/{project}/agent/fulfillment".format(project=project,)
+    expected = "projects/{project}/agent/fulfillment".format(
+        project=project,
+    )
     actual = FulfillmentsClient.fulfillment_path(project)
     assert expected == actual
 
@@ -1526,7 +1613,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "oyster"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = FulfillmentsClient.common_folder_path(folder)
     assert expected == actual
 
@@ -1544,7 +1633,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "cuttlefish"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = FulfillmentsClient.common_organization_path(organization)
     assert expected == actual
 
@@ -1562,7 +1653,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "winkle"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = FulfillmentsClient.common_project_path(project)
     assert expected == actual
 
@@ -1582,7 +1675,8 @@ def test_common_location_path():
     project = "scallop"
     location = "abalone"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = FulfillmentsClient.common_location_path(project, location)
     assert expected == actual
@@ -1607,7 +1701,8 @@ def test_client_with_default_client_info():
         transports.FulfillmentsTransport, "_prep_wrapped_messages"
     ) as prep:
         client = FulfillmentsClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -1616,7 +1711,8 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = FulfillmentsClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -1624,7 +1720,8 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = FulfillmentsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     with mock.patch.object(
         type(getattr(client.transport, "grpc_channel")), "close"

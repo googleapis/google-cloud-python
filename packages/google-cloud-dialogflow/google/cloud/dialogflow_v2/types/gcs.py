@@ -17,7 +17,11 @@ import proto  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.dialogflow.v2", manifest={"GcsSources", "GcsDestination",},
+    package="google.cloud.dialogflow.v2",
+    manifest={
+        "GcsSources",
+        "GcsDestination",
+    },
 )
 
 
@@ -32,7 +36,10 @@ class GcsSources(proto.Message):
             prefix or name is used depends on the use case.
     """
 
-    uris = proto.RepeatedField(proto.STRING, number=2,)
+    uris = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GcsDestination(proto.Message):
@@ -48,7 +55,10 @@ class GcsDestination(proto.Message):
             "write-permission" to the bucket.
     """
 
-    uri = proto.Field(proto.STRING, number=1,)
+    uri = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

@@ -18,7 +18,10 @@ import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.dialogflow.v2",
-    manifest={"ValidationError", "ValidationResult",},
+    manifest={
+        "ValidationError",
+        "ValidationResult",
+    },
 )
 
 
@@ -60,9 +63,19 @@ class ValidationError(proto.Message):
         ERROR = 3
         CRITICAL = 4
 
-    severity = proto.Field(proto.ENUM, number=1, enum=Severity,)
-    entries = proto.RepeatedField(proto.STRING, number=3,)
-    error_message = proto.Field(proto.STRING, number=4,)
+    severity = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Severity,
+    )
+    entries = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+    error_message = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class ValidationResult(proto.Message):
@@ -74,7 +87,9 @@ class ValidationResult(proto.Message):
     """
 
     validation_errors = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="ValidationError",
+        proto.MESSAGE,
+        number=1,
+        message="ValidationError",
     )
 
 

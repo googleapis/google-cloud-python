@@ -63,7 +63,8 @@ class ConversationModelsClientMeta(type):
     _transport_registry["grpc_asyncio"] = ConversationModelsGrpcAsyncIOTransport
 
     def get_transport_class(
-        cls, label: str = None,
+        cls,
+        label: str = None,
     ) -> Type[ConversationModelsTransport]:
         """Returns an appropriate transport class.
 
@@ -170,7 +171,9 @@ class ConversationModelsClient(metaclass=ConversationModelsClientMeta):
 
     @staticmethod
     def conversation_dataset_path(
-        project: str, location: str, conversation_dataset: str,
+        project: str,
+        location: str,
+        conversation_dataset: str,
     ) -> str:
         """Returns a fully-qualified conversation_dataset string."""
         return "projects/{project}/locations/{location}/conversationDatasets/{conversation_dataset}".format(
@@ -190,11 +193,15 @@ class ConversationModelsClient(metaclass=ConversationModelsClientMeta):
 
     @staticmethod
     def conversation_model_path(
-        project: str, location: str, conversation_model: str,
+        project: str,
+        location: str,
+        conversation_model: str,
     ) -> str:
         """Returns a fully-qualified conversation_model string."""
         return "projects/{project}/locations/{location}/conversationModels/{conversation_model}".format(
-            project=project, location=location, conversation_model=conversation_model,
+            project=project,
+            location=location,
+            conversation_model=conversation_model,
         )
 
     @staticmethod
@@ -208,11 +215,13 @@ class ConversationModelsClient(metaclass=ConversationModelsClientMeta):
 
     @staticmethod
     def conversation_model_evaluation_path(
-        project: str, conversation_model: str,
+        project: str,
+        conversation_model: str,
     ) -> str:
         """Returns a fully-qualified conversation_model_evaluation string."""
         return "projects/{project}/conversationModels/{conversation_model}/evaluations/evaluation".format(
-            project=project, conversation_model=conversation_model,
+            project=project,
+            conversation_model=conversation_model,
         )
 
     @staticmethod
@@ -225,10 +234,16 @@ class ConversationModelsClient(metaclass=ConversationModelsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def document_path(project: str, knowledge_base: str, document: str,) -> str:
+    def document_path(
+        project: str,
+        knowledge_base: str,
+        document: str,
+    ) -> str:
         """Returns a fully-qualified document string."""
         return "projects/{project}/knowledgeBases/{knowledge_base}/documents/{document}".format(
-            project=project, knowledge_base=knowledge_base, document=document,
+            project=project,
+            knowledge_base=knowledge_base,
+            document=document,
         )
 
     @staticmethod
@@ -241,7 +256,9 @@ class ConversationModelsClient(metaclass=ConversationModelsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_billing_account_path(billing_account: str,) -> str:
+    def common_billing_account_path(
+        billing_account: str,
+    ) -> str:
         """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
@@ -254,9 +271,13 @@ class ConversationModelsClient(metaclass=ConversationModelsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(folder: str,) -> str:
+    def common_folder_path(
+        folder: str,
+    ) -> str:
         """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(folder=folder,)
+        return "folders/{folder}".format(
+            folder=folder,
+        )
 
     @staticmethod
     def parse_common_folder_path(path: str) -> Dict[str, str]:
@@ -265,9 +286,13 @@ class ConversationModelsClient(metaclass=ConversationModelsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(organization: str,) -> str:
+    def common_organization_path(
+        organization: str,
+    ) -> str:
         """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(organization=organization,)
+        return "organizations/{organization}".format(
+            organization=organization,
+        )
 
     @staticmethod
     def parse_common_organization_path(path: str) -> Dict[str, str]:
@@ -276,9 +301,13 @@ class ConversationModelsClient(metaclass=ConversationModelsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(project: str,) -> str:
+    def common_project_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified project string."""
-        return "projects/{project}".format(project=project,)
+        return "projects/{project}".format(
+            project=project,
+        )
 
     @staticmethod
     def parse_common_project_path(path: str) -> Dict[str, str]:
@@ -287,10 +316,14 @@ class ConversationModelsClient(metaclass=ConversationModelsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(project: str, location: str,) -> str:
+    def common_location_path(
+        project: str,
+        location: str,
+    ) -> str:
         """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
-            project=project, location=location,
+            project=project,
+            location=location,
         )
 
     @staticmethod
@@ -587,7 +620,12 @@ class ConversationModelsClient(metaclass=ConversationModelsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -683,7 +721,12 @@ class ConversationModelsClient(metaclass=ConversationModelsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -777,12 +820,20 @@ class ConversationModelsClient(metaclass=ConversationModelsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListConversationModelsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -903,7 +954,12 @@ class ConversationModelsClient(metaclass=ConversationModelsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1013,7 +1069,12 @@ class ConversationModelsClient(metaclass=ConversationModelsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1126,7 +1187,12 @@ class ConversationModelsClient(metaclass=ConversationModelsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1231,7 +1297,12 @@ class ConversationModelsClient(metaclass=ConversationModelsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1333,12 +1404,20 @@ class ConversationModelsClient(metaclass=ConversationModelsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListConversationModelEvaluationsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1454,7 +1533,12 @@ class ConversationModelsClient(metaclass=ConversationModelsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(

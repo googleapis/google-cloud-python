@@ -125,16 +125,24 @@ class ParticipantsTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.create_participant: gapic_v1.method.wrap_method(
-                self.create_participant, default_timeout=None, client_info=client_info,
+                self.create_participant,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_participant: gapic_v1.method.wrap_method(
-                self.get_participant, default_timeout=None, client_info=client_info,
+                self.get_participant,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_participants: gapic_v1.method.wrap_method(
-                self.list_participants, default_timeout=None, client_info=client_info,
+                self.list_participants,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.update_participant: gapic_v1.method.wrap_method(
-                self.update_participant, default_timeout=None, client_info=client_info,
+                self.update_participant,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.analyze_content: gapic_v1.method.wrap_method(
                 self.analyze_content,
@@ -151,10 +159,14 @@ class ParticipantsTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.suggest_articles: gapic_v1.method.wrap_method(
-                self.suggest_articles, default_timeout=None, client_info=client_info,
+                self.suggest_articles,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.suggest_faq_answers: gapic_v1.method.wrap_method(
-                self.suggest_faq_answers, default_timeout=None, client_info=client_info,
+                self.suggest_faq_answers,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.suggest_smart_replies: gapic_v1.method.wrap_method(
                 self.suggest_smart_replies,
@@ -166,9 +178,9 @@ class ParticipantsTransport(abc.ABC):
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

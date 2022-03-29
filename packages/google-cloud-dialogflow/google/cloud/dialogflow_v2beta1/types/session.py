@@ -110,16 +110,34 @@ class DetectIntentRequest(proto.Message):
             minute of speech audio data.
     """
 
-    session = proto.Field(proto.STRING, number=1,)
-    query_params = proto.Field(proto.MESSAGE, number=2, message="QueryParameters",)
-    query_input = proto.Field(proto.MESSAGE, number=3, message="QueryInput",)
+    session = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    query_params = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="QueryParameters",
+    )
+    query_input = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="QueryInput",
+    )
     output_audio_config = proto.Field(
-        proto.MESSAGE, number=4, message=gcd_audio_config.OutputAudioConfig,
+        proto.MESSAGE,
+        number=4,
+        message=gcd_audio_config.OutputAudioConfig,
     )
     output_audio_config_mask = proto.Field(
-        proto.MESSAGE, number=7, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=7,
+        message=field_mask_pb2.FieldMask,
     )
-    input_audio = proto.Field(proto.BYTES, number=5,)
+    input_audio = proto.Field(
+        proto.BYTES,
+        number=5,
+    )
 
 
 class DetectIntentResponse(proto.Message):
@@ -163,15 +181,33 @@ class DetectIntentResponse(proto.Message):
             generate the output audio.
     """
 
-    response_id = proto.Field(proto.STRING, number=1,)
-    query_result = proto.Field(proto.MESSAGE, number=2, message="QueryResult",)
-    alternative_query_results = proto.RepeatedField(
-        proto.MESSAGE, number=5, message="QueryResult",
+    response_id = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    webhook_status = proto.Field(proto.MESSAGE, number=3, message=status_pb2.Status,)
-    output_audio = proto.Field(proto.BYTES, number=4,)
+    query_result = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="QueryResult",
+    )
+    alternative_query_results = proto.RepeatedField(
+        proto.MESSAGE,
+        number=5,
+        message="QueryResult",
+    )
+    webhook_status = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=status_pb2.Status,
+    )
+    output_audio = proto.Field(
+        proto.BYTES,
+        number=4,
+    )
     output_audio_config = proto.Field(
-        proto.MESSAGE, number=6, message=gcd_audio_config.OutputAudioConfig,
+        proto.MESSAGE,
+        number=6,
+        message=gcd_audio_config.OutputAudioConfig,
     )
 
 
@@ -239,20 +275,53 @@ class QueryParameters(proto.Message):
             "X-Forwarded-For", etc.
     """
 
-    time_zone = proto.Field(proto.STRING, number=1,)
-    geo_location = proto.Field(proto.MESSAGE, number=2, message=latlng_pb2.LatLng,)
-    contexts = proto.RepeatedField(proto.MESSAGE, number=3, message=context.Context,)
-    reset_contexts = proto.Field(proto.BOOL, number=4,)
+    time_zone = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    geo_location = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=latlng_pb2.LatLng,
+    )
+    contexts = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=context.Context,
+    )
+    reset_contexts = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
     session_entity_types = proto.RepeatedField(
-        proto.MESSAGE, number=5, message=session_entity_type.SessionEntityType,
+        proto.MESSAGE,
+        number=5,
+        message=session_entity_type.SessionEntityType,
     )
-    payload = proto.Field(proto.MESSAGE, number=6, message=struct_pb2.Struct,)
-    knowledge_base_names = proto.RepeatedField(proto.STRING, number=12,)
+    payload = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=struct_pb2.Struct,
+    )
+    knowledge_base_names = proto.RepeatedField(
+        proto.STRING,
+        number=12,
+    )
     sentiment_analysis_request_config = proto.Field(
-        proto.MESSAGE, number=10, message="SentimentAnalysisRequestConfig",
+        proto.MESSAGE,
+        number=10,
+        message="SentimentAnalysisRequestConfig",
     )
-    sub_agents = proto.RepeatedField(proto.MESSAGE, number=13, message=agent.SubAgent,)
-    webhook_headers = proto.MapField(proto.STRING, proto.STRING, number=14,)
+    sub_agents = proto.RepeatedField(
+        proto.MESSAGE,
+        number=13,
+        message=agent.SubAgent,
+    )
+    webhook_headers = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=14,
+    )
 
 
 class QueryInput(proto.Message):
@@ -298,8 +367,18 @@ class QueryInput(proto.Message):
         oneof="input",
         message=gcd_audio_config.InputAudioConfig,
     )
-    text = proto.Field(proto.MESSAGE, number=2, oneof="input", message="TextInput",)
-    event = proto.Field(proto.MESSAGE, number=3, oneof="input", message="EventInput",)
+    text = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="input",
+        message="TextInput",
+    )
+    event = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="input",
+        message="EventInput",
+    )
     dtmf = proto.Field(
         proto.MESSAGE,
         number=4,
@@ -430,30 +509,81 @@ class QueryResult(proto.Message):
             decreasing ``KnowledgeAnswers.match_confidence``.
     """
 
-    query_text = proto.Field(proto.STRING, number=1,)
-    language_code = proto.Field(proto.STRING, number=15,)
-    speech_recognition_confidence = proto.Field(proto.FLOAT, number=2,)
-    action = proto.Field(proto.STRING, number=3,)
-    parameters = proto.Field(proto.MESSAGE, number=4, message=struct_pb2.Struct,)
-    all_required_params_present = proto.Field(proto.BOOL, number=5,)
-    cancels_slot_filling = proto.Field(proto.BOOL, number=21,)
-    fulfillment_text = proto.Field(proto.STRING, number=6,)
+    query_text = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    language_code = proto.Field(
+        proto.STRING,
+        number=15,
+    )
+    speech_recognition_confidence = proto.Field(
+        proto.FLOAT,
+        number=2,
+    )
+    action = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    parameters = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=struct_pb2.Struct,
+    )
+    all_required_params_present = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
+    cancels_slot_filling = proto.Field(
+        proto.BOOL,
+        number=21,
+    )
+    fulfillment_text = proto.Field(
+        proto.STRING,
+        number=6,
+    )
     fulfillment_messages = proto.RepeatedField(
-        proto.MESSAGE, number=7, message=gcd_intent.Intent.Message,
+        proto.MESSAGE,
+        number=7,
+        message=gcd_intent.Intent.Message,
     )
-    webhook_source = proto.Field(proto.STRING, number=8,)
-    webhook_payload = proto.Field(proto.MESSAGE, number=9, message=struct_pb2.Struct,)
+    webhook_source = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    webhook_payload = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message=struct_pb2.Struct,
+    )
     output_contexts = proto.RepeatedField(
-        proto.MESSAGE, number=10, message=context.Context,
+        proto.MESSAGE,
+        number=10,
+        message=context.Context,
     )
-    intent = proto.Field(proto.MESSAGE, number=11, message=gcd_intent.Intent,)
-    intent_detection_confidence = proto.Field(proto.FLOAT, number=12,)
-    diagnostic_info = proto.Field(proto.MESSAGE, number=14, message=struct_pb2.Struct,)
+    intent = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message=gcd_intent.Intent,
+    )
+    intent_detection_confidence = proto.Field(
+        proto.FLOAT,
+        number=12,
+    )
+    diagnostic_info = proto.Field(
+        proto.MESSAGE,
+        number=14,
+        message=struct_pb2.Struct,
+    )
     sentiment_analysis_result = proto.Field(
-        proto.MESSAGE, number=17, message="SentimentAnalysisResult",
+        proto.MESSAGE,
+        number=17,
+        message="SentimentAnalysisResult",
     )
     knowledge_answers = proto.Field(
-        proto.MESSAGE, number=18, message="KnowledgeAnswers",
+        proto.MESSAGE,
+        number=18,
+        message="KnowledgeAnswers",
     )
 
 
@@ -508,15 +638,33 @@ class KnowledgeAnswers(proto.Message):
             MEDIUM = 2
             HIGH = 3
 
-        source = proto.Field(proto.STRING, number=1,)
-        faq_question = proto.Field(proto.STRING, number=2,)
-        answer = proto.Field(proto.STRING, number=3,)
-        match_confidence_level = proto.Field(
-            proto.ENUM, number=4, enum="KnowledgeAnswers.Answer.MatchConfidenceLevel",
+        source = proto.Field(
+            proto.STRING,
+            number=1,
         )
-        match_confidence = proto.Field(proto.FLOAT, number=5,)
+        faq_question = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        answer = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+        match_confidence_level = proto.Field(
+            proto.ENUM,
+            number=4,
+            enum="KnowledgeAnswers.Answer.MatchConfidenceLevel",
+        )
+        match_confidence = proto.Field(
+            proto.FLOAT,
+            number=5,
+        )
 
-    answers = proto.RepeatedField(proto.MESSAGE, number=1, message=Answer,)
+    answers = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=Answer,
+    )
 
 
 class StreamingDetectIntentRequest(proto.Message):
@@ -629,17 +777,38 @@ class StreamingDetectIntentRequest(proto.Message):
             exceed 1 minute.
     """
 
-    session = proto.Field(proto.STRING, number=1,)
-    query_params = proto.Field(proto.MESSAGE, number=2, message="QueryParameters",)
-    query_input = proto.Field(proto.MESSAGE, number=3, message="QueryInput",)
-    single_utterance = proto.Field(proto.BOOL, number=4,)
+    session = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    query_params = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="QueryParameters",
+    )
+    query_input = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="QueryInput",
+    )
+    single_utterance = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
     output_audio_config = proto.Field(
-        proto.MESSAGE, number=5, message=gcd_audio_config.OutputAudioConfig,
+        proto.MESSAGE,
+        number=5,
+        message=gcd_audio_config.OutputAudioConfig,
     )
     output_audio_config_mask = proto.Field(
-        proto.MESSAGE, number=7, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=7,
+        message=field_mask_pb2.FieldMask,
     )
-    input_audio = proto.Field(proto.BYTES, number=6,)
+    input_audio = proto.Field(
+        proto.BYTES,
+        number=6,
+    )
 
 
 class StreamingDetectIntentResponse(proto.Message):
@@ -702,18 +871,38 @@ class StreamingDetectIntentResponse(proto.Message):
             generate the output audio.
     """
 
-    response_id = proto.Field(proto.STRING, number=1,)
+    response_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     recognition_result = proto.Field(
-        proto.MESSAGE, number=2, message="StreamingRecognitionResult",
+        proto.MESSAGE,
+        number=2,
+        message="StreamingRecognitionResult",
     )
-    query_result = proto.Field(proto.MESSAGE, number=3, message="QueryResult",)
+    query_result = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="QueryResult",
+    )
     alternative_query_results = proto.RepeatedField(
-        proto.MESSAGE, number=7, message="QueryResult",
+        proto.MESSAGE,
+        number=7,
+        message="QueryResult",
     )
-    webhook_status = proto.Field(proto.MESSAGE, number=4, message=status_pb2.Status,)
-    output_audio = proto.Field(proto.BYTES, number=5,)
+    webhook_status = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=status_pb2.Status,
+    )
+    output_audio = proto.Field(
+        proto.BYTES,
+        number=5,
+    )
     output_audio_config = proto.Field(
-        proto.MESSAGE, number=6, message=gcd_audio_config.OutputAudioConfig,
+        proto.MESSAGE,
+        number=6,
+        message=gcd_audio_config.OutputAudioConfig,
     )
 
 
@@ -817,20 +1006,45 @@ class StreamingRecognitionResult(proto.Message):
         END_OF_SINGLE_UTTERANCE = 2
         PARTIAL_DTMF_DIGITS = 4
 
-    message_type = proto.Field(proto.ENUM, number=1, enum=MessageType,)
-    transcript = proto.Field(proto.STRING, number=2,)
-    is_final = proto.Field(proto.BOOL, number=3,)
-    confidence = proto.Field(proto.FLOAT, number=4,)
-    stability = proto.Field(proto.FLOAT, number=6,)
+    message_type = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=MessageType,
+    )
+    transcript = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    is_final = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+    confidence = proto.Field(
+        proto.FLOAT,
+        number=4,
+    )
+    stability = proto.Field(
+        proto.FLOAT,
+        number=6,
+    )
     speech_word_info = proto.RepeatedField(
-        proto.MESSAGE, number=7, message=gcd_audio_config.SpeechWordInfo,
+        proto.MESSAGE,
+        number=7,
+        message=gcd_audio_config.SpeechWordInfo,
     )
     speech_end_offset = proto.Field(
-        proto.MESSAGE, number=8, message=duration_pb2.Duration,
+        proto.MESSAGE,
+        number=8,
+        message=duration_pb2.Duration,
     )
-    language_code = proto.Field(proto.STRING, number=10,)
+    language_code = proto.Field(
+        proto.STRING,
+        number=10,
+    )
     dtmf_digits = proto.Field(
-        proto.MESSAGE, number=5, message=gcd_audio_config.TelephonyDtmfEvents,
+        proto.MESSAGE,
+        number=5,
+        message=gcd_audio_config.TelephonyDtmfEvents,
     )
 
 
@@ -851,8 +1065,14 @@ class TextInput(proto.Message):
             specify the same language.
     """
 
-    text = proto.Field(proto.STRING, number=1,)
-    language_code = proto.Field(proto.STRING, number=2,)
+    text = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    language_code = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class EventInput(proto.Message):
@@ -899,9 +1119,19 @@ class EventInput(proto.Message):
             originating detect intent request.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    parameters = proto.Field(proto.MESSAGE, number=2, message=struct_pb2.Struct,)
-    language_code = proto.Field(proto.STRING, number=3,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    parameters = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=struct_pb2.Struct,
+    )
+    language_code = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class SentimentAnalysisRequestConfig(proto.Message):
@@ -914,7 +1144,10 @@ class SentimentAnalysisRequestConfig(proto.Message):
             performed on ``query_text``.
     """
 
-    analyze_query_text_sentiment = proto.Field(proto.BOOL, number=1,)
+    analyze_query_text_sentiment = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
 
 
 class SentimentAnalysisResult(proto.Message):
@@ -938,7 +1171,11 @@ class SentimentAnalysisResult(proto.Message):
             The sentiment analysis result for ``query_text``.
     """
 
-    query_text_sentiment = proto.Field(proto.MESSAGE, number=1, message="Sentiment",)
+    query_text_sentiment = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="Sentiment",
+    )
 
 
 class Sentiment(proto.Message):
@@ -955,8 +1192,14 @@ class Sentiment(proto.Message):
             of score (positive or negative).
     """
 
-    score = proto.Field(proto.FLOAT, number=1,)
-    magnitude = proto.Field(proto.FLOAT, number=2,)
+    score = proto.Field(
+        proto.FLOAT,
+        number=1,
+    )
+    magnitude = proto.Field(
+        proto.FLOAT,
+        number=2,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

@@ -56,7 +56,10 @@ class ParticipantsClientMeta(type):
     _transport_registry["grpc"] = ParticipantsGrpcTransport
     _transport_registry["grpc_asyncio"] = ParticipantsGrpcAsyncIOTransport
 
-    def get_transport_class(cls, label: str = None,) -> Type[ParticipantsTransport]:
+    def get_transport_class(
+        cls,
+        label: str = None,
+    ) -> Type[ParticipantsTransport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -163,10 +166,14 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
         return self._transport
 
     @staticmethod
-    def answer_record_path(project: str, answer_record: str,) -> str:
+    def answer_record_path(
+        project: str,
+        answer_record: str,
+    ) -> str:
         """Returns a fully-qualified answer_record string."""
         return "projects/{project}/answerRecords/{answer_record}".format(
-            project=project, answer_record=answer_record,
+            project=project,
+            answer_record=answer_record,
         )
 
     @staticmethod
@@ -178,10 +185,16 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def context_path(project: str, session: str, context: str,) -> str:
+    def context_path(
+        project: str,
+        session: str,
+        context: str,
+    ) -> str:
         """Returns a fully-qualified context string."""
         return "projects/{project}/agent/sessions/{session}/contexts/{context}".format(
-            project=project, session=session, context=context,
+            project=project,
+            session=session,
+            context=context,
         )
 
     @staticmethod
@@ -194,10 +207,14 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def intent_path(project: str, intent: str,) -> str:
+    def intent_path(
+        project: str,
+        intent: str,
+    ) -> str:
         """Returns a fully-qualified intent string."""
         return "projects/{project}/agent/intents/{intent}".format(
-            project=project, intent=intent,
+            project=project,
+            intent=intent,
         )
 
     @staticmethod
@@ -207,10 +224,18 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def message_path(project: str, conversation: str, message: str,) -> str:
+    def message_path(
+        project: str,
+        conversation: str,
+        message: str,
+    ) -> str:
         """Returns a fully-qualified message string."""
-        return "projects/{project}/conversations/{conversation}/messages/{message}".format(
-            project=project, conversation=conversation, message=message,
+        return (
+            "projects/{project}/conversations/{conversation}/messages/{message}".format(
+                project=project,
+                conversation=conversation,
+                message=message,
+            )
         )
 
     @staticmethod
@@ -223,10 +248,16 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def participant_path(project: str, conversation: str, participant: str,) -> str:
+    def participant_path(
+        project: str,
+        conversation: str,
+        participant: str,
+    ) -> str:
         """Returns a fully-qualified participant string."""
         return "projects/{project}/conversations/{conversation}/participants/{participant}".format(
-            project=project, conversation=conversation, participant=participant,
+            project=project,
+            conversation=conversation,
+            participant=participant,
         )
 
     @staticmethod
@@ -239,10 +270,16 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def session_entity_type_path(project: str, session: str, entity_type: str,) -> str:
+    def session_entity_type_path(
+        project: str,
+        session: str,
+        entity_type: str,
+    ) -> str:
         """Returns a fully-qualified session_entity_type string."""
         return "projects/{project}/agent/sessions/{session}/entityTypes/{entity_type}".format(
-            project=project, session=session, entity_type=entity_type,
+            project=project,
+            session=session,
+            entity_type=entity_type,
         )
 
     @staticmethod
@@ -255,7 +292,9 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_billing_account_path(billing_account: str,) -> str:
+    def common_billing_account_path(
+        billing_account: str,
+    ) -> str:
         """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
@@ -268,9 +307,13 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(folder: str,) -> str:
+    def common_folder_path(
+        folder: str,
+    ) -> str:
         """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(folder=folder,)
+        return "folders/{folder}".format(
+            folder=folder,
+        )
 
     @staticmethod
     def parse_common_folder_path(path: str) -> Dict[str, str]:
@@ -279,9 +322,13 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(organization: str,) -> str:
+    def common_organization_path(
+        organization: str,
+    ) -> str:
         """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(organization=organization,)
+        return "organizations/{organization}".format(
+            organization=organization,
+        )
 
     @staticmethod
     def parse_common_organization_path(path: str) -> Dict[str, str]:
@@ -290,9 +337,13 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(project: str,) -> str:
+    def common_project_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified project string."""
-        return "projects/{project}".format(project=project,)
+        return "projects/{project}".format(
+            project=project,
+        )
 
     @staticmethod
     def parse_common_project_path(path: str) -> Dict[str, str]:
@@ -301,10 +352,14 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(project: str, location: str,) -> str:
+    def common_location_path(
+        project: str,
+        location: str,
+    ) -> str:
         """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
-            project=project, location=location,
+            project=project,
+            location=location,
         )
 
     @staticmethod
@@ -572,7 +627,12 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -662,7 +722,12 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -759,12 +824,20 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListParticipantsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -864,7 +937,12 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -986,7 +1064,12 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1079,7 +1162,12 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1172,7 +1260,12 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1265,7 +1358,12 @@ class ParticipantsClient(metaclass=ParticipantsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response

@@ -129,28 +129,44 @@ class AgentsTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.get_agent: gapic_v1.method.wrap_method(
-                self.get_agent, default_timeout=None, client_info=client_info,
+                self.get_agent,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.set_agent: gapic_v1.method.wrap_method(
-                self.set_agent, default_timeout=None, client_info=client_info,
+                self.set_agent,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.delete_agent: gapic_v1.method.wrap_method(
-                self.delete_agent, default_timeout=None, client_info=client_info,
+                self.delete_agent,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.search_agents: gapic_v1.method.wrap_method(
-                self.search_agents, default_timeout=None, client_info=client_info,
+                self.search_agents,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.train_agent: gapic_v1.method.wrap_method(
-                self.train_agent, default_timeout=None, client_info=client_info,
+                self.train_agent,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.export_agent: gapic_v1.method.wrap_method(
-                self.export_agent, default_timeout=None, client_info=client_info,
+                self.export_agent,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.import_agent: gapic_v1.method.wrap_method(
-                self.import_agent, default_timeout=None, client_info=client_info,
+                self.import_agent,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.restore_agent: gapic_v1.method.wrap_method(
-                self.restore_agent, default_timeout=None, client_info=client_info,
+                self.restore_agent,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_validation_result: gapic_v1.method.wrap_method(
                 self.get_validation_result,
@@ -162,9 +178,9 @@ class AgentsTransport(abc.ABC):
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 
