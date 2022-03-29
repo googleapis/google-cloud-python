@@ -836,8 +836,10 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
             request, metadata = self._interceptor.pre_abandon_instances(
                 request, metadata
             )
-            request_kwargs = compute.AbandonInstancesRegionInstanceGroupManagerRequest.to_dict(
-                request
+            request_kwargs = (
+                compute.AbandonInstancesRegionInstanceGroupManagerRequest.to_dict(
+                    request
+                )
             )
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -911,37 +913,37 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> compute.Operation:
             r"""Call the apply updates to
-        instances method over HTTP.
+            instances method over HTTP.
 
-            Args:
-                request (~.compute.ApplyUpdatesToInstancesRegionInstanceGroupManagerRequest):
-                    The request object. A request message for
-                RegionInstanceGroupManagers.ApplyUpdatesToInstances.
-                See the method description for details.
+                Args:
+                    request (~.compute.ApplyUpdatesToInstancesRegionInstanceGroupManagerRequest):
+                        The request object. A request message for
+                    RegionInstanceGroupManagers.ApplyUpdatesToInstances.
+                    See the method description for details.
 
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
 
-            Returns:
-                ~.compute.Operation:
-                    Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                `Global </compute/docs/reference/rest/v1/globalOperations>`__
-                \*
-                `Regional </compute/docs/reference/rest/v1/regionOperations>`__
-                \*
-                `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
-                You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the ``globalOperations``
-                resource. - For regional operations, use the
-                ``regionOperations`` resource. - For zonal operations,
-                use the ``zonalOperations`` resource. For more
-                information, read Global, Regional, and Zonal Resources.
+                Returns:
+                    ~.compute.Operation:
+                        Represents an Operation resource. Google Compute Engine
+                    has three Operation resources: \*
+                    `Global </compute/docs/reference/rest/v1/globalOperations>`__
+                    \*
+                    `Regional </compute/docs/reference/rest/v1/regionOperations>`__
+                    \*
+                    `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
+                    You can use an operation resource to manage asynchronous
+                    API requests. For more information, read Handling API
+                    responses. Operations can be global, regional or zonal.
+                    - For global operations, use the ``globalOperations``
+                    resource. - For regional operations, use the
+                    ``regionOperations`` resource. - For zonal operations,
+                    use the ``zonalOperations`` resource. For more
+                    information, read Global, Regional, and Zonal Resources.
 
             """
 
@@ -1073,8 +1075,10 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
             request, metadata = self._interceptor.pre_create_instances(
                 request, metadata
             )
-            request_kwargs = compute.CreateInstancesRegionInstanceGroupManagerRequest.to_dict(
-                request
+            request_kwargs = (
+                compute.CreateInstancesRegionInstanceGroupManagerRequest.to_dict(
+                    request
+                )
             )
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -1297,8 +1301,10 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
             request, metadata = self._interceptor.pre_delete_instances(
                 request, metadata
             )
-            request_kwargs = compute.DeleteInstancesRegionInstanceGroupManagerRequest.to_dict(
-                request
+            request_kwargs = (
+                compute.DeleteInstancesRegionInstanceGroupManagerRequest.to_dict(
+                    request
+                )
             )
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -1372,37 +1378,37 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> compute.Operation:
             r"""Call the delete per instance
-        configs method over HTTP.
+            configs method over HTTP.
 
-            Args:
-                request (~.compute.DeletePerInstanceConfigsRegionInstanceGroupManagerRequest):
-                    The request object. A request message for
-                RegionInstanceGroupManagers.DeletePerInstanceConfigs.
-                See the method description for details.
+                Args:
+                    request (~.compute.DeletePerInstanceConfigsRegionInstanceGroupManagerRequest):
+                        The request object. A request message for
+                    RegionInstanceGroupManagers.DeletePerInstanceConfigs.
+                    See the method description for details.
 
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
 
-            Returns:
-                ~.compute.Operation:
-                    Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                `Global </compute/docs/reference/rest/v1/globalOperations>`__
-                \*
-                `Regional </compute/docs/reference/rest/v1/regionOperations>`__
-                \*
-                `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
-                You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the ``globalOperations``
-                resource. - For regional operations, use the
-                ``regionOperations`` resource. - For zonal operations,
-                use the ``zonalOperations`` resource. For more
-                information, read Global, Regional, and Zonal Resources.
+                Returns:
+                    ~.compute.Operation:
+                        Represents an Operation resource. Google Compute Engine
+                    has three Operation resources: \*
+                    `Global </compute/docs/reference/rest/v1/globalOperations>`__
+                    \*
+                    `Regional </compute/docs/reference/rest/v1/regionOperations>`__
+                    \*
+                    `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
+                    You can use an operation resource to manage asynchronous
+                    API requests. For more information, read Handling API
+                    responses. Operations can be global, regional or zonal.
+                    - For global operations, use the ``globalOperations``
+                    resource. - For regional operations, use the
+                    ``regionOperations`` resource. - For zonal operations,
+                    use the ``zonalOperations`` resource. For more
+                    information, read Global, Regional, and Zonal Resources.
 
             """
 
@@ -1823,8 +1829,8 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
                 },
             ]
             request, metadata = self._interceptor.pre_list_errors(request, metadata)
-            request_kwargs = compute.ListErrorsRegionInstanceGroupManagersRequest.to_dict(
-                request
+            request_kwargs = (
+                compute.ListErrorsRegionInstanceGroupManagersRequest.to_dict(request)
             )
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -1916,8 +1922,10 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
             request, metadata = self._interceptor.pre_list_managed_instances(
                 request, metadata
             )
-            request_kwargs = compute.ListManagedInstancesRegionInstanceGroupManagersRequest.to_dict(
-                request
+            request_kwargs = (
+                compute.ListManagedInstancesRegionInstanceGroupManagersRequest.to_dict(
+                    request
+                )
             )
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -2189,37 +2197,37 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> compute.Operation:
             r"""Call the patch per instance
-        configs method over HTTP.
+            configs method over HTTP.
 
-            Args:
-                request (~.compute.PatchPerInstanceConfigsRegionInstanceGroupManagerRequest):
-                    The request object. A request message for
-                RegionInstanceGroupManagers.PatchPerInstanceConfigs.
-                See the method description for details.
+                Args:
+                    request (~.compute.PatchPerInstanceConfigsRegionInstanceGroupManagerRequest):
+                        The request object. A request message for
+                    RegionInstanceGroupManagers.PatchPerInstanceConfigs.
+                    See the method description for details.
 
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
 
-            Returns:
-                ~.compute.Operation:
-                    Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                `Global </compute/docs/reference/rest/v1/globalOperations>`__
-                \*
-                `Regional </compute/docs/reference/rest/v1/regionOperations>`__
-                \*
-                `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
-                You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the ``globalOperations``
-                resource. - For regional operations, use the
-                ``regionOperations`` resource. - For zonal operations,
-                use the ``zonalOperations`` resource. For more
-                information, read Global, Regional, and Zonal Resources.
+                Returns:
+                    ~.compute.Operation:
+                        Represents an Operation resource. Google Compute Engine
+                    has three Operation resources: \*
+                    `Global </compute/docs/reference/rest/v1/globalOperations>`__
+                    \*
+                    `Regional </compute/docs/reference/rest/v1/regionOperations>`__
+                    \*
+                    `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
+                    You can use an operation resource to manage asynchronous
+                    API requests. For more information, read Handling API
+                    responses. Operations can be global, regional or zonal.
+                    - For global operations, use the ``globalOperations``
+                    resource. - For regional operations, use the
+                    ``regionOperations`` resource. - For zonal operations,
+                    use the ``zonalOperations`` resource. For more
+                    information, read Global, Regional, and Zonal Resources.
 
             """
 
@@ -2351,8 +2359,10 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
             request, metadata = self._interceptor.pre_recreate_instances(
                 request, metadata
             )
-            request_kwargs = compute.RecreateInstancesRegionInstanceGroupManagerRequest.to_dict(
-                request
+            request_kwargs = (
+                compute.RecreateInstancesRegionInstanceGroupManagerRequest.to_dict(
+                    request
+                )
             )
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -2577,8 +2587,10 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
             request, metadata = self._interceptor.pre_set_instance_template(
                 request, metadata
             )
-            request_kwargs = compute.SetInstanceTemplateRegionInstanceGroupManagerRequest.to_dict(
-                request
+            request_kwargs = (
+                compute.SetInstanceTemplateRegionInstanceGroupManagerRequest.to_dict(
+                    request
+                )
             )
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -2695,8 +2707,8 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
             request, metadata = self._interceptor.pre_set_target_pools(
                 request, metadata
             )
-            request_kwargs = compute.SetTargetPoolsRegionInstanceGroupManagerRequest.to_dict(
-                request
+            request_kwargs = (
+                compute.SetTargetPoolsRegionInstanceGroupManagerRequest.to_dict(request)
             )
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -2770,37 +2782,37 @@ class RegionInstanceGroupManagersRestTransport(RegionInstanceGroupManagersTransp
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> compute.Operation:
             r"""Call the update per instance
-        configs method over HTTP.
+            configs method over HTTP.
 
-            Args:
-                request (~.compute.UpdatePerInstanceConfigsRegionInstanceGroupManagerRequest):
-                    The request object. A request message for
-                RegionInstanceGroupManagers.UpdatePerInstanceConfigs.
-                See the method description for details.
+                Args:
+                    request (~.compute.UpdatePerInstanceConfigsRegionInstanceGroupManagerRequest):
+                        The request object. A request message for
+                    RegionInstanceGroupManagers.UpdatePerInstanceConfigs.
+                    See the method description for details.
 
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
 
-            Returns:
-                ~.compute.Operation:
-                    Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                `Global </compute/docs/reference/rest/v1/globalOperations>`__
-                \*
-                `Regional </compute/docs/reference/rest/v1/regionOperations>`__
-                \*
-                `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
-                You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the ``globalOperations``
-                resource. - For regional operations, use the
-                ``regionOperations`` resource. - For zonal operations,
-                use the ``zonalOperations`` resource. For more
-                information, read Global, Regional, and Zonal Resources.
+                Returns:
+                    ~.compute.Operation:
+                        Represents an Operation resource. Google Compute Engine
+                    has three Operation resources: \*
+                    `Global </compute/docs/reference/rest/v1/globalOperations>`__
+                    \*
+                    `Regional </compute/docs/reference/rest/v1/regionOperations>`__
+                    \*
+                    `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
+                    You can use an operation resource to manage asynchronous
+                    API requests. For more information, read Handling API
+                    responses. Operations can be global, regional or zonal.
+                    - For global operations, use the ``globalOperations``
+                    resource. - For regional operations, use the
+                    ``regionOperations`` resource. - For zonal operations,
+                    use the ``zonalOperations`` resource. For more
+                    information, read Global, Regional, and Zonal Resources.
 
             """
 

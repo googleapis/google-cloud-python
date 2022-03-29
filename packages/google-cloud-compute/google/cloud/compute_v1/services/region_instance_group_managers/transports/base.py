@@ -29,7 +29,9 @@ from google.cloud.compute_v1.types import compute
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-compute",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-compute",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
@@ -122,7 +124,9 @@ class RegionInstanceGroupManagersTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.abandon_instances: gapic_v1.method.wrap_method(
-                self.abandon_instances, default_timeout=None, client_info=client_info,
+                self.abandon_instances,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.apply_updates_to_instances: gapic_v1.method.wrap_method(
                 self.apply_updates_to_instances,
@@ -130,13 +134,19 @@ class RegionInstanceGroupManagersTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.create_instances: gapic_v1.method.wrap_method(
-                self.create_instances, default_timeout=None, client_info=client_info,
+                self.create_instances,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.delete: gapic_v1.method.wrap_method(
-                self.delete, default_timeout=None, client_info=client_info,
+                self.delete,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.delete_instances: gapic_v1.method.wrap_method(
-                self.delete_instances, default_timeout=None, client_info=client_info,
+                self.delete_instances,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.delete_per_instance_configs: gapic_v1.method.wrap_method(
                 self.delete_per_instance_configs,
@@ -144,16 +154,24 @@ class RegionInstanceGroupManagersTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.get: gapic_v1.method.wrap_method(
-                self.get, default_timeout=None, client_info=client_info,
+                self.get,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.insert: gapic_v1.method.wrap_method(
-                self.insert, default_timeout=None, client_info=client_info,
+                self.insert,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list: gapic_v1.method.wrap_method(
-                self.list, default_timeout=None, client_info=client_info,
+                self.list,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_errors: gapic_v1.method.wrap_method(
-                self.list_errors, default_timeout=None, client_info=client_info,
+                self.list_errors,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_managed_instances: gapic_v1.method.wrap_method(
                 self.list_managed_instances,
@@ -166,7 +184,9 @@ class RegionInstanceGroupManagersTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.patch: gapic_v1.method.wrap_method(
-                self.patch, default_timeout=None, client_info=client_info,
+                self.patch,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.patch_per_instance_configs: gapic_v1.method.wrap_method(
                 self.patch_per_instance_configs,
@@ -174,10 +194,14 @@ class RegionInstanceGroupManagersTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.recreate_instances: gapic_v1.method.wrap_method(
-                self.recreate_instances, default_timeout=None, client_info=client_info,
+                self.recreate_instances,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.resize: gapic_v1.method.wrap_method(
-                self.resize, default_timeout=None, client_info=client_info,
+                self.resize,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.set_instance_template: gapic_v1.method.wrap_method(
                 self.set_instance_template,
@@ -185,7 +209,9 @@ class RegionInstanceGroupManagersTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.set_target_pools: gapic_v1.method.wrap_method(
-                self.set_target_pools, default_timeout=None, client_info=client_info,
+                self.set_target_pools,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.update_per_instance_configs: gapic_v1.method.wrap_method(
                 self.update_per_instance_configs,
@@ -197,9 +223,9 @@ class RegionInstanceGroupManagersTransport(abc.ABC):
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

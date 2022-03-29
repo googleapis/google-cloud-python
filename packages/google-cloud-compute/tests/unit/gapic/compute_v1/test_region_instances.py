@@ -88,7 +88,10 @@ def test__get_default_mtls_endpoint():
 
 
 @pytest.mark.parametrize(
-    "client_class,transport_name", [(RegionInstancesClient, "rest"),]
+    "client_class,transport_name",
+    [
+        (RegionInstancesClient, "rest"),
+    ],
 )
 def test_region_instances_client_from_service_account_info(
     client_class, transport_name
@@ -112,7 +115,9 @@ def test_region_instances_client_from_service_account_info(
 
 @pytest.mark.parametrize(
     "transport_class,transport_name",
-    [(transports.RegionInstancesRestTransport, "rest"),],
+    [
+        (transports.RegionInstancesRestTransport, "rest"),
+    ],
 )
 def test_region_instances_client_service_account_always_use_jwt(
     transport_class, transport_name
@@ -133,7 +138,10 @@ def test_region_instances_client_service_account_always_use_jwt(
 
 
 @pytest.mark.parametrize(
-    "client_class,transport_name", [(RegionInstancesClient, "rest"),]
+    "client_class,transport_name",
+    [
+        (RegionInstancesClient, "rest"),
+    ],
 )
 def test_region_instances_client_from_service_account_file(
     client_class, transport_name
@@ -175,7 +183,9 @@ def test_region_instances_client_get_transport_class():
 
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
-    [(RegionInstancesClient, transports.RegionInstancesRestTransport, "rest"),],
+    [
+        (RegionInstancesClient, transports.RegionInstancesRestTransport, "rest"),
+    ],
 )
 @mock.patch.object(
     RegionInstancesClient,
@@ -468,13 +478,17 @@ def test_region_instances_client_get_mtls_endpoint_and_cert_source(client_class)
 
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
-    [(RegionInstancesClient, transports.RegionInstancesRestTransport, "rest"),],
+    [
+        (RegionInstancesClient, transports.RegionInstancesRestTransport, "rest"),
+    ],
 )
 def test_region_instances_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -492,7 +506,9 @@ def test_region_instances_client_client_options_scopes(
 
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name,grpc_helpers",
-    [(RegionInstancesClient, transports.RegionInstancesRestTransport, "rest", None),],
+    [
+        (RegionInstancesClient, transports.RegionInstancesRestTransport, "rest", None),
+    ],
 )
 def test_region_instances_client_client_options_credentials_file(
     client_class, transport_class, transport_name, grpc_helpers
@@ -516,11 +532,16 @@ def test_region_instances_client_client_options_credentials_file(
 
 
 @pytest.mark.parametrize(
-    "request_type", [compute.BulkInsertRegionInstanceRequest, dict,]
+    "request_type",
+    [
+        compute.BulkInsertRegionInstanceRequest,
+        dict,
+    ],
 )
 def test_bulk_insert_unary_rest(request_type):
     client = RegionInstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -788,7 +809,8 @@ def test_bulk_insert_unary_rest_required_fields(
     assert jsonified_request["region"] == "region_value"
 
     client = RegionInstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -831,7 +853,13 @@ def test_bulk_insert_unary_rest_unset_required_fields():
     unset_fields = transport.bulk_insert._get_unset_required_fields({})
     assert set(unset_fields) == (
         set(("requestId",))
-        & set(("bulkInsertInstanceResourceResource", "project", "region",))
+        & set(
+            (
+                "bulkInsertInstanceResourceResource",
+                "project",
+                "region",
+            )
+        )
     )
 
 
@@ -877,7 +905,11 @@ def test_bulk_insert_unary_rest_interceptors(null_interceptor):
         post.return_value = compute.Operation
 
         client.bulk_insert_unary(
-            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
         )
 
         pre.assert_called_once()
@@ -888,7 +920,8 @@ def test_bulk_insert_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.BulkInsertRegionInstanceRequest
 ):
     client = RegionInstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -1067,7 +1100,8 @@ def test_bulk_insert_unary_rest_bad_request(
 
 def test_bulk_insert_unary_rest_flattened():
     client = RegionInstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -1111,7 +1145,8 @@ def test_bulk_insert_unary_rest_flattened():
 
 def test_bulk_insert_unary_rest_flattened_error(transport: str = "rest"):
     client = RegionInstancesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1140,7 +1175,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = RegionInstancesClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -1160,7 +1196,10 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = RegionInstancesClient(client_options=options, transport=transport,)
+        client = RegionInstancesClient(
+            client_options=options,
+            transport=transport,
+        )
 
     # It is an error to provide an api_key and a credential.
     options = mock.Mock()
@@ -1176,7 +1215,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = RegionInstancesClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -1189,7 +1229,12 @@ def test_transport_instance():
     assert client.transport is transport
 
 
-@pytest.mark.parametrize("transport_class", [transports.RegionInstancesRestTransport,])
+@pytest.mark.parametrize(
+    "transport_class",
+    [
+        transports.RegionInstancesRestTransport,
+    ],
+)
 def test_transport_adc(transport_class):
     # Test default credentials are used if not provided.
     with mock.patch.object(google.auth, "default") as adc:
@@ -1238,7 +1283,8 @@ def test_region_instances_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.RegionInstancesTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -1288,7 +1334,12 @@ def test_region_instances_http_transport_client_cert_source_for_mtls():
         mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
 
 
-@pytest.mark.parametrize("transport_name", ["rest",])
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
 def test_region_instances_host_no_port(transport_name):
     client = RegionInstancesClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -1304,7 +1355,12 @@ def test_region_instances_host_no_port(transport_name):
     )
 
 
-@pytest.mark.parametrize("transport_name", ["rest",])
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
 def test_region_instances_host_with_port(transport_name):
     client = RegionInstancesClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -1342,7 +1398,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "whelk"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = RegionInstancesClient.common_folder_path(folder)
     assert expected == actual
 
@@ -1360,7 +1418,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "oyster"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = RegionInstancesClient.common_organization_path(organization)
     assert expected == actual
 
@@ -1378,7 +1438,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "cuttlefish"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = RegionInstancesClient.common_project_path(project)
     assert expected == actual
 
@@ -1398,7 +1460,8 @@ def test_common_location_path():
     project = "winkle"
     location = "nautilus"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = RegionInstancesClient.common_location_path(project, location)
     assert expected == actual
@@ -1423,7 +1486,8 @@ def test_client_with_default_client_info():
         transports.RegionInstancesTransport, "_prep_wrapped_messages"
     ) as prep:
         client = RegionInstancesClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -1432,7 +1496,8 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = RegionInstancesClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -1472,7 +1537,9 @@ def test_client_ctx():
 
 @pytest.mark.parametrize(
     "client_class,transport_class",
-    [(RegionInstancesClient, transports.RegionInstancesRestTransport),],
+    [
+        (RegionInstancesClient, transports.RegionInstancesRestTransport),
+    ],
 )
 def test_api_key_credentials(client_class, transport_class):
     with mock.patch.object(

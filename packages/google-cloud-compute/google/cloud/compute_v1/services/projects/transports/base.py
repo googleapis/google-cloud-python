@@ -29,7 +29,9 @@ from google.cloud.compute_v1.types import compute
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-compute",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-compute",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
@@ -122,7 +124,9 @@ class ProjectsTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.disable_xpn_host: gapic_v1.method.wrap_method(
-                self.disable_xpn_host, default_timeout=None, client_info=client_info,
+                self.disable_xpn_host,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.disable_xpn_resource: gapic_v1.method.wrap_method(
                 self.disable_xpn_resource,
@@ -130,28 +134,44 @@ class ProjectsTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.enable_xpn_host: gapic_v1.method.wrap_method(
-                self.enable_xpn_host, default_timeout=None, client_info=client_info,
+                self.enable_xpn_host,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.enable_xpn_resource: gapic_v1.method.wrap_method(
-                self.enable_xpn_resource, default_timeout=None, client_info=client_info,
+                self.enable_xpn_resource,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get: gapic_v1.method.wrap_method(
-                self.get, default_timeout=None, client_info=client_info,
+                self.get,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_xpn_host: gapic_v1.method.wrap_method(
-                self.get_xpn_host, default_timeout=None, client_info=client_info,
+                self.get_xpn_host,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_xpn_resources: gapic_v1.method.wrap_method(
-                self.get_xpn_resources, default_timeout=None, client_info=client_info,
+                self.get_xpn_resources,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_xpn_hosts: gapic_v1.method.wrap_method(
-                self.list_xpn_hosts, default_timeout=None, client_info=client_info,
+                self.list_xpn_hosts,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.move_disk: gapic_v1.method.wrap_method(
-                self.move_disk, default_timeout=None, client_info=client_info,
+                self.move_disk,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.move_instance: gapic_v1.method.wrap_method(
-                self.move_instance, default_timeout=None, client_info=client_info,
+                self.move_instance,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.set_common_instance_metadata: gapic_v1.method.wrap_method(
                 self.set_common_instance_metadata,
@@ -173,9 +193,9 @@ class ProjectsTransport(abc.ABC):
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

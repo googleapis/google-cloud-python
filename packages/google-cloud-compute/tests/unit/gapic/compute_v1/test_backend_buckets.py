@@ -89,7 +89,10 @@ def test__get_default_mtls_endpoint():
 
 
 @pytest.mark.parametrize(
-    "client_class,transport_name", [(BackendBucketsClient, "rest"),]
+    "client_class,transport_name",
+    [
+        (BackendBucketsClient, "rest"),
+    ],
 )
 def test_backend_buckets_client_from_service_account_info(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
@@ -111,7 +114,9 @@ def test_backend_buckets_client_from_service_account_info(client_class, transpor
 
 @pytest.mark.parametrize(
     "transport_class,transport_name",
-    [(transports.BackendBucketsRestTransport, "rest"),],
+    [
+        (transports.BackendBucketsRestTransport, "rest"),
+    ],
 )
 def test_backend_buckets_client_service_account_always_use_jwt(
     transport_class, transport_name
@@ -132,7 +137,10 @@ def test_backend_buckets_client_service_account_always_use_jwt(
 
 
 @pytest.mark.parametrize(
-    "client_class,transport_name", [(BackendBucketsClient, "rest"),]
+    "client_class,transport_name",
+    [
+        (BackendBucketsClient, "rest"),
+    ],
 )
 def test_backend_buckets_client_from_service_account_file(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
@@ -172,7 +180,9 @@ def test_backend_buckets_client_get_transport_class():
 
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
-    [(BackendBucketsClient, transports.BackendBucketsRestTransport, "rest"),],
+    [
+        (BackendBucketsClient, transports.BackendBucketsRestTransport, "rest"),
+    ],
 )
 @mock.patch.object(
     BackendBucketsClient,
@@ -455,13 +465,17 @@ def test_backend_buckets_client_get_mtls_endpoint_and_cert_source(client_class):
 
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
-    [(BackendBucketsClient, transports.BackendBucketsRestTransport, "rest"),],
+    [
+        (BackendBucketsClient, transports.BackendBucketsRestTransport, "rest"),
+    ],
 )
 def test_backend_buckets_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -479,7 +493,9 @@ def test_backend_buckets_client_client_options_scopes(
 
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name,grpc_helpers",
-    [(BackendBucketsClient, transports.BackendBucketsRestTransport, "rest", None),],
+    [
+        (BackendBucketsClient, transports.BackendBucketsRestTransport, "rest", None),
+    ],
 )
 def test_backend_buckets_client_client_options_credentials_file(
     client_class, transport_class, transport_name, grpc_helpers
@@ -503,11 +519,16 @@ def test_backend_buckets_client_client_options_credentials_file(
 
 
 @pytest.mark.parametrize(
-    "request_type", [compute.AddSignedUrlKeyBackendBucketRequest, dict,]
+    "request_type",
+    [
+        compute.AddSignedUrlKeyBackendBucketRequest,
+        dict,
+    ],
 )
 def test_add_signed_url_key_unary_rest(request_type):
     client = BackendBucketsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -621,7 +642,8 @@ def test_add_signed_url_key_unary_rest_required_fields(
     assert jsonified_request["project"] == "project_value"
 
     client = BackendBucketsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -663,7 +685,14 @@ def test_add_signed_url_key_unary_rest_unset_required_fields():
 
     unset_fields = transport.add_signed_url_key._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("requestId",)) & set(("backendBucket", "project", "signedUrlKeyResource",))
+        set(("requestId",))
+        & set(
+            (
+                "backendBucket",
+                "project",
+                "signedUrlKeyResource",
+            )
+        )
     )
 
 
@@ -709,7 +738,11 @@ def test_add_signed_url_key_unary_rest_interceptors(null_interceptor):
         post.return_value = compute.Operation
 
         client.add_signed_url_key_unary(
-            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
         )
 
         pre.assert_called_once()
@@ -720,7 +753,8 @@ def test_add_signed_url_key_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.AddSignedUrlKeyBackendBucketRequest
 ):
     client = BackendBucketsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -745,7 +779,8 @@ def test_add_signed_url_key_unary_rest_bad_request(
 
 def test_add_signed_url_key_unary_rest_flattened():
     client = BackendBucketsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -787,7 +822,8 @@ def test_add_signed_url_key_unary_rest_flattened():
 
 def test_add_signed_url_key_unary_rest_flattened_error(transport: str = "rest"):
     client = BackendBucketsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -807,10 +843,17 @@ def test_add_signed_url_key_unary_rest_error():
     )
 
 
-@pytest.mark.parametrize("request_type", [compute.DeleteBackendBucketRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.DeleteBackendBucketRequest,
+        dict,
+    ],
+)
 def test_delete_unary_rest(request_type):
     client = BackendBucketsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -920,7 +963,8 @@ def test_delete_unary_rest_required_fields(
     assert jsonified_request["project"] == "project_value"
 
     client = BackendBucketsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -961,7 +1005,13 @@ def test_delete_unary_rest_unset_required_fields():
 
     unset_fields = transport.delete._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("requestId",)) & set(("backendBucket", "project",))
+        set(("requestId",))
+        & set(
+            (
+                "backendBucket",
+                "project",
+            )
+        )
     )
 
 
@@ -1007,7 +1057,11 @@ def test_delete_unary_rest_interceptors(null_interceptor):
         post.return_value = compute.Operation
 
         client.delete_unary(
-            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
         )
 
         pre.assert_called_once()
@@ -1018,7 +1072,8 @@ def test_delete_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.DeleteBackendBucketRequest
 ):
     client = BackendBucketsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -1039,7 +1094,8 @@ def test_delete_unary_rest_bad_request(
 
 def test_delete_unary_rest_flattened():
     client = BackendBucketsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -1052,7 +1108,8 @@ def test_delete_unary_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            project="project_value", backend_bucket="backend_bucket_value",
+            project="project_value",
+            backend_bucket="backend_bucket_value",
         )
         mock_args.update(sample_request)
 
@@ -1079,7 +1136,8 @@ def test_delete_unary_rest_flattened():
 
 def test_delete_unary_rest_flattened_error(transport: str = "rest"):
     client = BackendBucketsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1099,11 +1157,16 @@ def test_delete_unary_rest_error():
 
 
 @pytest.mark.parametrize(
-    "request_type", [compute.DeleteSignedUrlKeyBackendBucketRequest, dict,]
+    "request_type",
+    [
+        compute.DeleteSignedUrlKeyBackendBucketRequest,
+        dict,
+    ],
 )
 def test_delete_signed_url_key_unary_rest(request_type):
     client = BackendBucketsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -1208,7 +1271,12 @@ def test_delete_signed_url_key_unary_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials()
     ).delete_signed_url_key._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("key_name", "request_id",))
+    assert not set(unset_fields) - set(
+        (
+            "key_name",
+            "request_id",
+        )
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -1220,7 +1288,8 @@ def test_delete_signed_url_key_unary_rest_required_fields(
     assert jsonified_request["project"] == "project_value"
 
     client = BackendBucketsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -1250,7 +1319,10 @@ def test_delete_signed_url_key_unary_rest_required_fields(
             response = client.delete_signed_url_key_unary(request)
 
             expected_params = [
-                ("keyName", "",),
+                (
+                    "keyName",
+                    "",
+                ),
             ]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
@@ -1263,7 +1335,19 @@ def test_delete_signed_url_key_unary_rest_unset_required_fields():
 
     unset_fields = transport.delete_signed_url_key._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("keyName", "requestId",)) & set(("backendBucket", "keyName", "project",))
+        set(
+            (
+                "keyName",
+                "requestId",
+            )
+        )
+        & set(
+            (
+                "backendBucket",
+                "keyName",
+                "project",
+            )
+        )
     )
 
 
@@ -1309,7 +1393,11 @@ def test_delete_signed_url_key_unary_rest_interceptors(null_interceptor):
         post.return_value = compute.Operation
 
         client.delete_signed_url_key_unary(
-            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
         )
 
         pre.assert_called_once()
@@ -1320,7 +1408,8 @@ def test_delete_signed_url_key_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.DeleteSignedUrlKeyBackendBucketRequest
 ):
     client = BackendBucketsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -1341,7 +1430,8 @@ def test_delete_signed_url_key_unary_rest_bad_request(
 
 def test_delete_signed_url_key_unary_rest_flattened():
     client = BackendBucketsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -1383,7 +1473,8 @@ def test_delete_signed_url_key_unary_rest_flattened():
 
 def test_delete_signed_url_key_unary_rest_flattened_error(transport: str = "rest"):
     client = BackendBucketsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1403,10 +1494,17 @@ def test_delete_signed_url_key_unary_rest_error():
     )
 
 
-@pytest.mark.parametrize("request_type", [compute.GetBackendBucketRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.GetBackendBucketRequest,
+        dict,
+    ],
+)
 def test_get_rest(request_type):
     client = BackendBucketsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -1488,7 +1586,8 @@ def test_get_rest_required_fields(request_type=compute.GetBackendBucketRequest):
     assert jsonified_request["project"] == "project_value"
 
     client = BackendBucketsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -1528,7 +1627,15 @@ def test_get_rest_unset_required_fields():
     )
 
     unset_fields = transport.get._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("backendBucket", "project",)))
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "backendBucket",
+                "project",
+            )
+        )
+    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -1574,7 +1681,13 @@ def test_get_rest_interceptors(null_interceptor):
         pre.return_value = request, metadata
         post.return_value = compute.BackendBucket
 
-        client.get(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+        client.get(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
 
         pre.assert_called_once()
         post.assert_called_once()
@@ -1584,7 +1697,8 @@ def test_get_rest_bad_request(
     transport: str = "rest", request_type=compute.GetBackendBucketRequest
 ):
     client = BackendBucketsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -1605,7 +1719,8 @@ def test_get_rest_bad_request(
 
 def test_get_rest_flattened():
     client = BackendBucketsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -1618,7 +1733,8 @@ def test_get_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            project="project_value", backend_bucket="backend_bucket_value",
+            project="project_value",
+            backend_bucket="backend_bucket_value",
         )
         mock_args.update(sample_request)
 
@@ -1645,7 +1761,8 @@ def test_get_rest_flattened():
 
 def test_get_rest_flattened_error(transport: str = "rest"):
     client = BackendBucketsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1664,10 +1781,17 @@ def test_get_rest_error():
     )
 
 
-@pytest.mark.parametrize("request_type", [compute.InsertBackendBucketRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.InsertBackendBucketRequest,
+        dict,
+    ],
+)
 def test_insert_unary_rest(request_type):
     client = BackendBucketsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -1814,7 +1938,8 @@ def test_insert_unary_rest_required_fields(
     assert jsonified_request["project"] == "project_value"
 
     client = BackendBucketsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -1856,7 +1981,13 @@ def test_insert_unary_rest_unset_required_fields():
 
     unset_fields = transport.insert._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("requestId",)) & set(("backendBucketResource", "project",))
+        set(("requestId",))
+        & set(
+            (
+                "backendBucketResource",
+                "project",
+            )
+        )
     )
 
 
@@ -1902,7 +2033,11 @@ def test_insert_unary_rest_interceptors(null_interceptor):
         post.return_value = compute.Operation
 
         client.insert_unary(
-            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
         )
 
         pre.assert_called_once()
@@ -1913,7 +2048,8 @@ def test_insert_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.InsertBackendBucketRequest
 ):
     client = BackendBucketsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -1975,7 +2111,8 @@ def test_insert_unary_rest_bad_request(
 
 def test_insert_unary_rest_flattened():
     client = BackendBucketsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -2018,7 +2155,8 @@ def test_insert_unary_rest_flattened():
 
 def test_insert_unary_rest_flattened_error(transport: str = "rest"):
     client = BackendBucketsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2039,10 +2177,17 @@ def test_insert_unary_rest_error():
     )
 
 
-@pytest.mark.parametrize("request_type", [compute.ListBackendBucketsRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.ListBackendBucketsRequest,
+        dict,
+    ],
+)
 def test_list_rest(request_type):
     client = BackendBucketsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -2103,7 +2248,13 @@ def test_list_rest_required_fields(request_type=compute.ListBackendBucketsReques
     ).list._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
-        ("filter", "max_results", "order_by", "page_token", "return_partial_success",)
+        (
+            "filter",
+            "max_results",
+            "order_by",
+            "page_token",
+            "return_partial_success",
+        )
     )
     jsonified_request.update(unset_fields)
 
@@ -2112,7 +2263,8 @@ def test_list_rest_required_fields(request_type=compute.ListBackendBucketsReques
     assert jsonified_request["project"] == "project_value"
 
     client = BackendBucketsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -2153,7 +2305,15 @@ def test_list_rest_unset_required_fields():
 
     unset_fields = transport.list._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("filter", "maxResults", "orderBy", "pageToken", "returnPartialSuccess",))
+        set(
+            (
+                "filter",
+                "maxResults",
+                "orderBy",
+                "pageToken",
+                "returnPartialSuccess",
+            )
+        )
         & set(("project",))
     )
 
@@ -2201,7 +2361,13 @@ def test_list_rest_interceptors(null_interceptor):
         pre.return_value = request, metadata
         post.return_value = compute.BackendBucketList
 
-        client.list(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+        client.list(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
 
         pre.assert_called_once()
         post.assert_called_once()
@@ -2211,7 +2377,8 @@ def test_list_rest_bad_request(
     transport: str = "rest", request_type=compute.ListBackendBucketsRequest
 ):
     client = BackendBucketsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -2232,7 +2399,8 @@ def test_list_rest_bad_request(
 
 def test_list_rest_flattened():
     client = BackendBucketsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -2244,7 +2412,9 @@ def test_list_rest_flattened():
         sample_request = {"project": "sample1"}
 
         # get truthy value for each flattened field
-        mock_args = dict(project="project_value",)
+        mock_args = dict(
+            project="project_value",
+        )
         mock_args.update(sample_request)
 
         # Wrap the value into a proper Response obj
@@ -2270,20 +2440,23 @@ def test_list_rest_flattened():
 
 def test_list_rest_flattened_error(transport: str = "rest"):
     client = BackendBucketsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list(
-            compute.ListBackendBucketsRequest(), project="project_value",
+            compute.ListBackendBucketsRequest(),
+            project="project_value",
         )
 
 
 def test_list_rest_pager(transport: str = "rest"):
     client = BackendBucketsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Mock the http request call within the method and fake a response.
@@ -2300,12 +2473,21 @@ def test_list_rest_pager(transport: str = "rest"):
                 ],
                 next_page_token="abc",
             ),
-            compute.BackendBucketList(items=[], next_page_token="def",),
             compute.BackendBucketList(
-                items=[compute.BackendBucket(),], next_page_token="ghi",
+                items=[],
+                next_page_token="def",
             ),
             compute.BackendBucketList(
-                items=[compute.BackendBucket(), compute.BackendBucket(),],
+                items=[
+                    compute.BackendBucket(),
+                ],
+                next_page_token="ghi",
+            ),
+            compute.BackendBucketList(
+                items=[
+                    compute.BackendBucket(),
+                    compute.BackendBucket(),
+                ],
             ),
         )
         # Two responses for two calls
@@ -2332,10 +2514,17 @@ def test_list_rest_pager(transport: str = "rest"):
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [compute.PatchBackendBucketRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.PatchBackendBucketRequest,
+        dict,
+    ],
+)
 def test_patch_unary_rest(request_type):
     client = BackendBucketsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -2486,7 +2675,8 @@ def test_patch_unary_rest_required_fields(
     assert jsonified_request["project"] == "project_value"
 
     client = BackendBucketsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -2529,7 +2719,13 @@ def test_patch_unary_rest_unset_required_fields():
     unset_fields = transport.patch._get_unset_required_fields({})
     assert set(unset_fields) == (
         set(("requestId",))
-        & set(("backendBucket", "backendBucketResource", "project",))
+        & set(
+            (
+                "backendBucket",
+                "backendBucketResource",
+                "project",
+            )
+        )
     )
 
 
@@ -2574,7 +2770,13 @@ def test_patch_unary_rest_interceptors(null_interceptor):
         pre.return_value = request, metadata
         post.return_value = compute.Operation
 
-        client.patch_unary(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+        client.patch_unary(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
 
         pre.assert_called_once()
         post.assert_called_once()
@@ -2584,7 +2786,8 @@ def test_patch_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.PatchBackendBucketRequest
 ):
     client = BackendBucketsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -2646,7 +2849,8 @@ def test_patch_unary_rest_bad_request(
 
 def test_patch_unary_rest_flattened():
     client = BackendBucketsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -2690,7 +2894,8 @@ def test_patch_unary_rest_flattened():
 
 def test_patch_unary_rest_flattened_error(transport: str = "rest"):
     client = BackendBucketsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2713,11 +2918,16 @@ def test_patch_unary_rest_error():
 
 
 @pytest.mark.parametrize(
-    "request_type", [compute.SetEdgeSecurityPolicyBackendBucketRequest, dict,]
+    "request_type",
+    [
+        compute.SetEdgeSecurityPolicyBackendBucketRequest,
+        dict,
+    ],
 )
 def test_set_edge_security_policy_unary_rest(request_type):
     client = BackendBucketsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -2830,7 +3040,8 @@ def test_set_edge_security_policy_unary_rest_required_fields(
     assert jsonified_request["project"] == "project_value"
 
     client = BackendBucketsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -2873,7 +3084,13 @@ def test_set_edge_security_policy_unary_rest_unset_required_fields():
     unset_fields = transport.set_edge_security_policy._get_unset_required_fields({})
     assert set(unset_fields) == (
         set(("requestId",))
-        & set(("backendBucket", "project", "securityPolicyReferenceResource",))
+        & set(
+            (
+                "backendBucket",
+                "project",
+                "securityPolicyReferenceResource",
+            )
+        )
     )
 
 
@@ -2919,7 +3136,11 @@ def test_set_edge_security_policy_unary_rest_interceptors(null_interceptor):
         post.return_value = compute.Operation
 
         client.set_edge_security_policy_unary(
-            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
         )
 
         pre.assert_called_once()
@@ -2931,7 +3152,8 @@ def test_set_edge_security_policy_unary_rest_bad_request(
     request_type=compute.SetEdgeSecurityPolicyBackendBucketRequest,
 ):
     client = BackendBucketsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -2955,7 +3177,8 @@ def test_set_edge_security_policy_unary_rest_bad_request(
 
 def test_set_edge_security_policy_unary_rest_flattened():
     client = BackendBucketsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -2999,7 +3222,8 @@ def test_set_edge_security_policy_unary_rest_flattened():
 
 def test_set_edge_security_policy_unary_rest_flattened_error(transport: str = "rest"):
     client = BackendBucketsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3021,10 +3245,17 @@ def test_set_edge_security_policy_unary_rest_error():
     )
 
 
-@pytest.mark.parametrize("request_type", [compute.UpdateBackendBucketRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.UpdateBackendBucketRequest,
+        dict,
+    ],
+)
 def test_update_unary_rest(request_type):
     client = BackendBucketsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -3175,7 +3406,8 @@ def test_update_unary_rest_required_fields(
     assert jsonified_request["project"] == "project_value"
 
     client = BackendBucketsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -3218,7 +3450,13 @@ def test_update_unary_rest_unset_required_fields():
     unset_fields = transport.update._get_unset_required_fields({})
     assert set(unset_fields) == (
         set(("requestId",))
-        & set(("backendBucket", "backendBucketResource", "project",))
+        & set(
+            (
+                "backendBucket",
+                "backendBucketResource",
+                "project",
+            )
+        )
     )
 
 
@@ -3264,7 +3502,11 @@ def test_update_unary_rest_interceptors(null_interceptor):
         post.return_value = compute.Operation
 
         client.update_unary(
-            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
         )
 
         pre.assert_called_once()
@@ -3275,7 +3517,8 @@ def test_update_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.UpdateBackendBucketRequest
 ):
     client = BackendBucketsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -3337,7 +3580,8 @@ def test_update_unary_rest_bad_request(
 
 def test_update_unary_rest_flattened():
     client = BackendBucketsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -3381,7 +3625,8 @@ def test_update_unary_rest_flattened():
 
 def test_update_unary_rest_flattened_error(transport: str = "rest"):
     client = BackendBucketsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3410,7 +3655,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = BackendBucketsClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -3430,7 +3676,10 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = BackendBucketsClient(client_options=options, transport=transport,)
+        client = BackendBucketsClient(
+            client_options=options,
+            transport=transport,
+        )
 
     # It is an error to provide an api_key and a credential.
     options = mock.Mock()
@@ -3446,7 +3695,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = BackendBucketsClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -3459,7 +3709,12 @@ def test_transport_instance():
     assert client.transport is transport
 
 
-@pytest.mark.parametrize("transport_class", [transports.BackendBucketsRestTransport,])
+@pytest.mark.parametrize(
+    "transport_class",
+    [
+        transports.BackendBucketsRestTransport,
+    ],
+)
 def test_transport_adc(transport_class):
     # Test default credentials are used if not provided.
     with mock.patch.object(google.auth, "default") as adc:
@@ -3518,7 +3773,8 @@ def test_backend_buckets_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.BackendBucketsTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -3568,7 +3824,12 @@ def test_backend_buckets_http_transport_client_cert_source_for_mtls():
         mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
 
 
-@pytest.mark.parametrize("transport_name", ["rest",])
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
 def test_backend_buckets_host_no_port(transport_name):
     client = BackendBucketsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3584,7 +3845,12 @@ def test_backend_buckets_host_no_port(transport_name):
     )
 
 
-@pytest.mark.parametrize("transport_name", ["rest",])
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
 def test_backend_buckets_host_with_port(transport_name):
     client = BackendBucketsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3622,7 +3888,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "whelk"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = BackendBucketsClient.common_folder_path(folder)
     assert expected == actual
 
@@ -3640,7 +3908,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "oyster"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = BackendBucketsClient.common_organization_path(organization)
     assert expected == actual
 
@@ -3658,7 +3928,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "cuttlefish"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = BackendBucketsClient.common_project_path(project)
     assert expected == actual
 
@@ -3678,7 +3950,8 @@ def test_common_location_path():
     project = "winkle"
     location = "nautilus"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = BackendBucketsClient.common_location_path(project, location)
     assert expected == actual
@@ -3703,7 +3976,8 @@ def test_client_with_default_client_info():
         transports.BackendBucketsTransport, "_prep_wrapped_messages"
     ) as prep:
         client = BackendBucketsClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -3712,7 +3986,8 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = BackendBucketsClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -3752,7 +4027,9 @@ def test_client_ctx():
 
 @pytest.mark.parametrize(
     "client_class,transport_class",
-    [(BackendBucketsClient, transports.BackendBucketsRestTransport),],
+    [
+        (BackendBucketsClient, transports.BackendBucketsRestTransport),
+    ],
 )
 def test_api_key_credentials(client_class, transport_class):
     with mock.patch.object(

@@ -29,7 +29,9 @@ from google.cloud.compute_v1.types import compute
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-compute",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-compute",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
@@ -122,55 +124,89 @@ class FirewallPoliciesTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.add_association: gapic_v1.method.wrap_method(
-                self.add_association, default_timeout=None, client_info=client_info,
+                self.add_association,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.add_rule: gapic_v1.method.wrap_method(
-                self.add_rule, default_timeout=None, client_info=client_info,
+                self.add_rule,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.clone_rules: gapic_v1.method.wrap_method(
-                self.clone_rules, default_timeout=None, client_info=client_info,
+                self.clone_rules,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.delete: gapic_v1.method.wrap_method(
-                self.delete, default_timeout=None, client_info=client_info,
+                self.delete,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get: gapic_v1.method.wrap_method(
-                self.get, default_timeout=None, client_info=client_info,
+                self.get,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_association: gapic_v1.method.wrap_method(
-                self.get_association, default_timeout=None, client_info=client_info,
+                self.get_association,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_iam_policy: gapic_v1.method.wrap_method(
-                self.get_iam_policy, default_timeout=None, client_info=client_info,
+                self.get_iam_policy,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_rule: gapic_v1.method.wrap_method(
-                self.get_rule, default_timeout=None, client_info=client_info,
+                self.get_rule,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.insert: gapic_v1.method.wrap_method(
-                self.insert, default_timeout=None, client_info=client_info,
+                self.insert,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list: gapic_v1.method.wrap_method(
-                self.list, default_timeout=None, client_info=client_info,
+                self.list,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_associations: gapic_v1.method.wrap_method(
-                self.list_associations, default_timeout=None, client_info=client_info,
+                self.list_associations,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.move: gapic_v1.method.wrap_method(
-                self.move, default_timeout=None, client_info=client_info,
+                self.move,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.patch: gapic_v1.method.wrap_method(
-                self.patch, default_timeout=None, client_info=client_info,
+                self.patch,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.patch_rule: gapic_v1.method.wrap_method(
-                self.patch_rule, default_timeout=None, client_info=client_info,
+                self.patch_rule,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.remove_association: gapic_v1.method.wrap_method(
-                self.remove_association, default_timeout=None, client_info=client_info,
+                self.remove_association,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.remove_rule: gapic_v1.method.wrap_method(
-                self.remove_rule, default_timeout=None, client_info=client_info,
+                self.remove_rule,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.set_iam_policy: gapic_v1.method.wrap_method(
-                self.set_iam_policy, default_timeout=None, client_info=client_info,
+                self.set_iam_policy,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.test_iam_permissions: gapic_v1.method.wrap_method(
                 self.test_iam_permissions,
@@ -182,9 +218,9 @@ class FirewallPoliciesTransport(abc.ABC):
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

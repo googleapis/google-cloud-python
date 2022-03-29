@@ -1087,22 +1087,22 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> compute.SecurityPoliciesListPreconfiguredExpressionSetsResponse:
             r"""Call the list preconfigured
-        expression sets method over HTTP.
+            expression sets method over HTTP.
 
-            Args:
-                request (~.compute.ListPreconfiguredExpressionSetsSecurityPoliciesRequest):
-                    The request object. A request message for
-                SecurityPolicies.ListPreconfiguredExpressionSets.
-                See the method description for details.
+                Args:
+                    request (~.compute.ListPreconfiguredExpressionSetsSecurityPoliciesRequest):
+                        The request object. A request message for
+                    SecurityPolicies.ListPreconfiguredExpressionSets.
+                    See the method description for details.
 
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
 
-            Returns:
-                ~.compute.SecurityPoliciesListPreconfiguredExpressionSetsResponse:
+                Returns:
+                    ~.compute.SecurityPoliciesListPreconfiguredExpressionSetsResponse:
 
             """
 
@@ -1118,8 +1118,10 @@ class SecurityPoliciesRestTransport(SecurityPoliciesTransport):
             ) = self._interceptor.pre_list_preconfigured_expression_sets(
                 request, metadata
             )
-            request_kwargs = compute.ListPreconfiguredExpressionSetsSecurityPoliciesRequest.to_dict(
-                request
+            request_kwargs = (
+                compute.ListPreconfiguredExpressionSetsSecurityPoliciesRequest.to_dict(
+                    request
+                )
             )
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 

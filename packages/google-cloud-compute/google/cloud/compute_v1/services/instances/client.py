@@ -51,7 +51,10 @@ class InstancesClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[InstancesTransport]]
     _transport_registry["rest"] = InstancesRestTransport
 
-    def get_transport_class(cls, label: str = None,) -> Type[InstancesTransport]:
+    def get_transport_class(
+        cls,
+        label: str = None,
+    ) -> Type[InstancesTransport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -156,7 +159,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
         return self._transport
 
     @staticmethod
-    def common_billing_account_path(billing_account: str,) -> str:
+    def common_billing_account_path(
+        billing_account: str,
+    ) -> str:
         """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
@@ -169,9 +174,13 @@ class InstancesClient(metaclass=InstancesClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(folder: str,) -> str:
+    def common_folder_path(
+        folder: str,
+    ) -> str:
         """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(folder=folder,)
+        return "folders/{folder}".format(
+            folder=folder,
+        )
 
     @staticmethod
     def parse_common_folder_path(path: str) -> Dict[str, str]:
@@ -180,9 +189,13 @@ class InstancesClient(metaclass=InstancesClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(organization: str,) -> str:
+    def common_organization_path(
+        organization: str,
+    ) -> str:
         """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(organization=organization,)
+        return "organizations/{organization}".format(
+            organization=organization,
+        )
 
     @staticmethod
     def parse_common_organization_path(path: str) -> Dict[str, str]:
@@ -191,9 +204,13 @@ class InstancesClient(metaclass=InstancesClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(project: str,) -> str:
+    def common_project_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified project string."""
-        return "projects/{project}".format(project=project,)
+        return "projects/{project}".format(
+            project=project,
+        )
 
     @staticmethod
     def parse_common_project_path(path: str) -> Dict[str, str]:
@@ -202,10 +219,14 @@ class InstancesClient(metaclass=InstancesClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(project: str, location: str,) -> str:
+    def common_location_path(
+        project: str,
+        location: str,
+    ) -> str:
         """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
-            project=project, location=location,
+            project=project,
+            location=location,
         )
 
     @staticmethod
@@ -490,7 +511,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.add_access_config]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -599,7 +625,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.add_resource_policies]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -668,12 +699,20 @@ class InstancesClient(metaclass=InstancesClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.aggregated_list]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.AggregatedListPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -781,7 +820,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.attach_disk]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -881,7 +925,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.bulk_insert]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -979,7 +1028,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.delete]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1095,7 +1149,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.delete_access_config]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1202,7 +1261,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.detach_disk]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1289,7 +1353,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.get]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1382,7 +1451,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.get_effective_firewalls]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1464,7 +1538,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.get_guest_attributes]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1587,7 +1666,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.get_iam_policy]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1669,7 +1753,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.get_screenshot]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1752,7 +1841,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.get_serial_port_output]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1836,7 +1930,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
         ]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1932,7 +2031,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.insert]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2008,12 +2112,20 @@ class InstancesClient(metaclass=InstancesClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.list]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -2108,12 +2220,20 @@ class InstancesClient(metaclass=InstancesClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.list_referrers]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListReferrersPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -2226,7 +2346,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.remove_resource_policies]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2324,7 +2449,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.reset]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2422,7 +2552,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.resume]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2509,7 +2644,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
         ]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2606,7 +2746,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.set_deletion_protection]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2724,7 +2869,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.set_disk_auto_delete]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2859,7 +3009,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.set_iam_policy]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2969,7 +3124,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.set_labels]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -3079,7 +3239,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.set_machine_resources]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -3189,7 +3354,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.set_machine_type]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -3295,7 +3465,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.set_metadata]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -3407,7 +3582,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.set_min_cpu_platform]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -3515,7 +3695,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.set_scheduling]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -3626,7 +3811,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.set_service_account]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -3744,7 +3934,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
         ]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -3850,7 +4045,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.set_tags]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -3950,7 +4150,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
         ]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -4048,7 +4253,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.start]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -4166,7 +4376,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
         ]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -4268,7 +4483,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.stop]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -4373,7 +4593,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.suspend]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -4468,7 +4693,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.test_iam_permissions]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -4576,7 +4806,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.update]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -4694,7 +4929,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.update_access_config]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -4802,7 +5042,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.update_display_device]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -4923,7 +5168,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.update_network_interface]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -5039,7 +5289,12 @@ class InstancesClient(metaclass=InstancesClientMeta):
         ]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -5060,7 +5315,9 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-compute",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-compute",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()

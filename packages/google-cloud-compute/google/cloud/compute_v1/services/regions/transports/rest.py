@@ -350,7 +350,10 @@ class RegionsRestTransport(RegionsTransport):
             """
 
             http_options: List[Dict[str, str]] = [
-                {"method": "get", "uri": "/compute/v1/projects/{project}/regions",},
+                {
+                    "method": "get",
+                    "uri": "/compute/v1/projects/{project}/regions",
+                },
             ]
             request, metadata = self._interceptor.pre_list(request, metadata)
             request_kwargs = compute.ListRegionsRequest.to_dict(request)

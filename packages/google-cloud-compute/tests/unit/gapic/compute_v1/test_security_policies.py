@@ -90,7 +90,10 @@ def test__get_default_mtls_endpoint():
 
 
 @pytest.mark.parametrize(
-    "client_class,transport_name", [(SecurityPoliciesClient, "rest"),]
+    "client_class,transport_name",
+    [
+        (SecurityPoliciesClient, "rest"),
+    ],
 )
 def test_security_policies_client_from_service_account_info(
     client_class, transport_name
@@ -114,7 +117,9 @@ def test_security_policies_client_from_service_account_info(
 
 @pytest.mark.parametrize(
     "transport_class,transport_name",
-    [(transports.SecurityPoliciesRestTransport, "rest"),],
+    [
+        (transports.SecurityPoliciesRestTransport, "rest"),
+    ],
 )
 def test_security_policies_client_service_account_always_use_jwt(
     transport_class, transport_name
@@ -135,7 +140,10 @@ def test_security_policies_client_service_account_always_use_jwt(
 
 
 @pytest.mark.parametrize(
-    "client_class,transport_name", [(SecurityPoliciesClient, "rest"),]
+    "client_class,transport_name",
+    [
+        (SecurityPoliciesClient, "rest"),
+    ],
 )
 def test_security_policies_client_from_service_account_file(
     client_class, transport_name
@@ -177,7 +185,9 @@ def test_security_policies_client_get_transport_class():
 
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
-    [(SecurityPoliciesClient, transports.SecurityPoliciesRestTransport, "rest"),],
+    [
+        (SecurityPoliciesClient, transports.SecurityPoliciesRestTransport, "rest"),
+    ],
 )
 @mock.patch.object(
     SecurityPoliciesClient,
@@ -470,13 +480,17 @@ def test_security_policies_client_get_mtls_endpoint_and_cert_source(client_class
 
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
-    [(SecurityPoliciesClient, transports.SecurityPoliciesRestTransport, "rest"),],
+    [
+        (SecurityPoliciesClient, transports.SecurityPoliciesRestTransport, "rest"),
+    ],
 )
 def test_security_policies_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -494,7 +508,14 @@ def test_security_policies_client_client_options_scopes(
 
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name,grpc_helpers",
-    [(SecurityPoliciesClient, transports.SecurityPoliciesRestTransport, "rest", None),],
+    [
+        (
+            SecurityPoliciesClient,
+            transports.SecurityPoliciesRestTransport,
+            "rest",
+            None,
+        ),
+    ],
 )
 def test_security_policies_client_client_options_credentials_file(
     client_class, transport_class, transport_name, grpc_helpers
@@ -517,10 +538,17 @@ def test_security_policies_client_client_options_credentials_file(
         )
 
 
-@pytest.mark.parametrize("request_type", [compute.AddRuleSecurityPolicyRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.AddRuleSecurityPolicyRequest,
+        dict,
+    ],
+)
 def test_add_rule_unary_rest(request_type):
     client = SecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -669,7 +697,8 @@ def test_add_rule_unary_rest_required_fields(
     assert jsonified_request["securityPolicy"] == "security_policy_value"
 
     client = SecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -711,7 +740,14 @@ def test_add_rule_unary_rest_unset_required_fields():
 
     unset_fields = transport.add_rule._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(()) & set(("project", "securityPolicy", "securityPolicyRuleResource",))
+        set(())
+        & set(
+            (
+                "project",
+                "securityPolicy",
+                "securityPolicyRuleResource",
+            )
+        )
     )
 
 
@@ -757,7 +793,11 @@ def test_add_rule_unary_rest_interceptors(null_interceptor):
         post.return_value = compute.Operation
 
         client.add_rule_unary(
-            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
         )
 
         pre.assert_called_once()
@@ -768,7 +808,8 @@ def test_add_rule_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.AddRuleSecurityPolicyRequest
 ):
     client = SecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -830,7 +871,8 @@ def test_add_rule_unary_rest_bad_request(
 
 def test_add_rule_unary_rest_flattened():
     client = SecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -874,7 +916,8 @@ def test_add_rule_unary_rest_flattened():
 
 def test_add_rule_unary_rest_flattened_error(transport: str = "rest"):
     client = SecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -896,10 +939,17 @@ def test_add_rule_unary_rest_error():
     )
 
 
-@pytest.mark.parametrize("request_type", [compute.DeleteSecurityPolicyRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.DeleteSecurityPolicyRequest,
+        dict,
+    ],
+)
 def test_delete_unary_rest(request_type):
     client = SecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -1009,7 +1059,8 @@ def test_delete_unary_rest_required_fields(
     assert jsonified_request["securityPolicy"] == "security_policy_value"
 
     client = SecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -1050,7 +1101,13 @@ def test_delete_unary_rest_unset_required_fields():
 
     unset_fields = transport.delete._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("requestId",)) & set(("project", "securityPolicy",))
+        set(("requestId",))
+        & set(
+            (
+                "project",
+                "securityPolicy",
+            )
+        )
     )
 
 
@@ -1096,7 +1153,11 @@ def test_delete_unary_rest_interceptors(null_interceptor):
         post.return_value = compute.Operation
 
         client.delete_unary(
-            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
         )
 
         pre.assert_called_once()
@@ -1107,7 +1168,8 @@ def test_delete_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.DeleteSecurityPolicyRequest
 ):
     client = SecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -1128,7 +1190,8 @@ def test_delete_unary_rest_bad_request(
 
 def test_delete_unary_rest_flattened():
     client = SecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -1141,7 +1204,8 @@ def test_delete_unary_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            project="project_value", security_policy="security_policy_value",
+            project="project_value",
+            security_policy="security_policy_value",
         )
         mock_args.update(sample_request)
 
@@ -1168,7 +1232,8 @@ def test_delete_unary_rest_flattened():
 
 def test_delete_unary_rest_flattened_error(transport: str = "rest"):
     client = SecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1187,10 +1252,17 @@ def test_delete_unary_rest_error():
     )
 
 
-@pytest.mark.parametrize("request_type", [compute.GetSecurityPolicyRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.GetSecurityPolicyRequest,
+        dict,
+    ],
+)
 def test_get_rest(request_type):
     client = SecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -1268,7 +1340,8 @@ def test_get_rest_required_fields(request_type=compute.GetSecurityPolicyRequest)
     assert jsonified_request["securityPolicy"] == "security_policy_value"
 
     client = SecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -1308,7 +1381,15 @@ def test_get_rest_unset_required_fields():
     )
 
     unset_fields = transport.get._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("project", "securityPolicy",)))
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "project",
+                "securityPolicy",
+            )
+        )
+    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -1354,7 +1435,13 @@ def test_get_rest_interceptors(null_interceptor):
         pre.return_value = request, metadata
         post.return_value = compute.SecurityPolicy
 
-        client.get(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+        client.get(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
 
         pre.assert_called_once()
         post.assert_called_once()
@@ -1364,7 +1451,8 @@ def test_get_rest_bad_request(
     transport: str = "rest", request_type=compute.GetSecurityPolicyRequest
 ):
     client = SecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -1385,7 +1473,8 @@ def test_get_rest_bad_request(
 
 def test_get_rest_flattened():
     client = SecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -1398,7 +1487,8 @@ def test_get_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            project="project_value", security_policy="security_policy_value",
+            project="project_value",
+            security_policy="security_policy_value",
         )
         mock_args.update(sample_request)
 
@@ -1425,7 +1515,8 @@ def test_get_rest_flattened():
 
 def test_get_rest_flattened_error(transport: str = "rest"):
     client = SecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1444,10 +1535,17 @@ def test_get_rest_error():
     )
 
 
-@pytest.mark.parametrize("request_type", [compute.GetRuleSecurityPolicyRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.GetRuleSecurityPolicyRequest,
+        dict,
+    ],
+)
 def test_get_rule_rest(request_type):
     client = SecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -1523,7 +1621,8 @@ def test_get_rule_rest_required_fields(
     assert jsonified_request["securityPolicy"] == "security_policy_value"
 
     client = SecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -1564,7 +1663,13 @@ def test_get_rule_rest_unset_required_fields():
 
     unset_fields = transport.get_rule._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("priority",)) & set(("project", "securityPolicy",))
+        set(("priority",))
+        & set(
+            (
+                "project",
+                "securityPolicy",
+            )
+        )
     )
 
 
@@ -1611,7 +1716,13 @@ def test_get_rule_rest_interceptors(null_interceptor):
         pre.return_value = request, metadata
         post.return_value = compute.SecurityPolicyRule
 
-        client.get_rule(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+        client.get_rule(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
 
         pre.assert_called_once()
         post.assert_called_once()
@@ -1621,7 +1732,8 @@ def test_get_rule_rest_bad_request(
     transport: str = "rest", request_type=compute.GetRuleSecurityPolicyRequest
 ):
     client = SecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -1642,7 +1754,8 @@ def test_get_rule_rest_bad_request(
 
 def test_get_rule_rest_flattened():
     client = SecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -1655,7 +1768,8 @@ def test_get_rule_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            project="project_value", security_policy="security_policy_value",
+            project="project_value",
+            security_policy="security_policy_value",
         )
         mock_args.update(sample_request)
 
@@ -1682,7 +1796,8 @@ def test_get_rule_rest_flattened():
 
 def test_get_rule_rest_flattened_error(transport: str = "rest"):
     client = SecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1701,10 +1816,17 @@ def test_get_rule_rest_error():
     )
 
 
-@pytest.mark.parametrize("request_type", [compute.InsertSecurityPolicyRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.InsertSecurityPolicyRequest,
+        dict,
+    ],
+)
 def test_insert_unary_rest(request_type):
     client = SecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -1877,7 +1999,8 @@ def test_insert_unary_rest_required_fields(
     assert jsonified_request["project"] == "project_value"
 
     client = SecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -1919,7 +2042,13 @@ def test_insert_unary_rest_unset_required_fields():
 
     unset_fields = transport.insert._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("requestId",)) & set(("project", "securityPolicyResource",))
+        set(("requestId",))
+        & set(
+            (
+                "project",
+                "securityPolicyResource",
+            )
+        )
     )
 
 
@@ -1965,7 +2094,11 @@ def test_insert_unary_rest_interceptors(null_interceptor):
         post.return_value = compute.Operation
 
         client.insert_unary(
-            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
         )
 
         pre.assert_called_once()
@@ -1976,7 +2109,8 @@ def test_insert_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.InsertSecurityPolicyRequest
 ):
     client = SecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -2064,7 +2198,8 @@ def test_insert_unary_rest_bad_request(
 
 def test_insert_unary_rest_flattened():
     client = SecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -2111,7 +2246,8 @@ def test_insert_unary_rest_flattened():
 
 def test_insert_unary_rest_flattened_error(transport: str = "rest"):
     client = SecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2136,10 +2272,17 @@ def test_insert_unary_rest_error():
     )
 
 
-@pytest.mark.parametrize("request_type", [compute.ListSecurityPoliciesRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.ListSecurityPoliciesRequest,
+        dict,
+    ],
+)
 def test_list_rest(request_type):
     client = SecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -2150,7 +2293,9 @@ def test_list_rest(request_type):
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.SecurityPolicyList(
-            id="id_value", kind="kind_value", next_page_token="next_page_token_value",
+            id="id_value",
+            kind="kind_value",
+            next_page_token="next_page_token_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -2196,7 +2341,13 @@ def test_list_rest_required_fields(request_type=compute.ListSecurityPoliciesRequ
     ).list._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
-        ("filter", "max_results", "order_by", "page_token", "return_partial_success",)
+        (
+            "filter",
+            "max_results",
+            "order_by",
+            "page_token",
+            "return_partial_success",
+        )
     )
     jsonified_request.update(unset_fields)
 
@@ -2205,7 +2356,8 @@ def test_list_rest_required_fields(request_type=compute.ListSecurityPoliciesRequ
     assert jsonified_request["project"] == "project_value"
 
     client = SecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -2246,7 +2398,15 @@ def test_list_rest_unset_required_fields():
 
     unset_fields = transport.list._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("filter", "maxResults", "orderBy", "pageToken", "returnPartialSuccess",))
+        set(
+            (
+                "filter",
+                "maxResults",
+                "orderBy",
+                "pageToken",
+                "returnPartialSuccess",
+            )
+        )
         & set(("project",))
     )
 
@@ -2294,7 +2454,13 @@ def test_list_rest_interceptors(null_interceptor):
         pre.return_value = request, metadata
         post.return_value = compute.SecurityPolicyList
 
-        client.list(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+        client.list(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
 
         pre.assert_called_once()
         post.assert_called_once()
@@ -2304,7 +2470,8 @@ def test_list_rest_bad_request(
     transport: str = "rest", request_type=compute.ListSecurityPoliciesRequest
 ):
     client = SecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -2325,7 +2492,8 @@ def test_list_rest_bad_request(
 
 def test_list_rest_flattened():
     client = SecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -2337,7 +2505,9 @@ def test_list_rest_flattened():
         sample_request = {"project": "sample1"}
 
         # get truthy value for each flattened field
-        mock_args = dict(project="project_value",)
+        mock_args = dict(
+            project="project_value",
+        )
         mock_args.update(sample_request)
 
         # Wrap the value into a proper Response obj
@@ -2363,20 +2533,23 @@ def test_list_rest_flattened():
 
 def test_list_rest_flattened_error(transport: str = "rest"):
     client = SecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list(
-            compute.ListSecurityPoliciesRequest(), project="project_value",
+            compute.ListSecurityPoliciesRequest(),
+            project="project_value",
         )
 
 
 def test_list_rest_pager(transport: str = "rest"):
     client = SecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Mock the http request call within the method and fake a response.
@@ -2393,12 +2566,21 @@ def test_list_rest_pager(transport: str = "rest"):
                 ],
                 next_page_token="abc",
             ),
-            compute.SecurityPolicyList(items=[], next_page_token="def",),
             compute.SecurityPolicyList(
-                items=[compute.SecurityPolicy(),], next_page_token="ghi",
+                items=[],
+                next_page_token="def",
             ),
             compute.SecurityPolicyList(
-                items=[compute.SecurityPolicy(), compute.SecurityPolicy(),],
+                items=[
+                    compute.SecurityPolicy(),
+                ],
+                next_page_token="ghi",
+            ),
+            compute.SecurityPolicyList(
+                items=[
+                    compute.SecurityPolicy(),
+                    compute.SecurityPolicy(),
+                ],
             ),
         )
         # Two responses for two calls
@@ -2427,11 +2609,15 @@ def test_list_rest_pager(transport: str = "rest"):
 
 @pytest.mark.parametrize(
     "request_type",
-    [compute.ListPreconfiguredExpressionSetsSecurityPoliciesRequest, dict,],
+    [
+        compute.ListPreconfiguredExpressionSetsSecurityPoliciesRequest,
+        dict,
+    ],
 )
 def test_list_preconfigured_expression_sets_rest(request_type):
     client = SecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -2446,8 +2632,10 @@ def test_list_preconfigured_expression_sets_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.SecurityPoliciesListPreconfiguredExpressionSetsResponse.to_json(
-            return_value
+        json_return_value = (
+            compute.SecurityPoliciesListPreconfiguredExpressionSetsResponse.to_json(
+                return_value
+            )
         )
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -2489,7 +2677,13 @@ def test_list_preconfigured_expression_sets_rest_required_fields(
     ).list_preconfigured_expression_sets._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
-        ("filter", "max_results", "order_by", "page_token", "return_partial_success",)
+        (
+            "filter",
+            "max_results",
+            "order_by",
+            "page_token",
+            "return_partial_success",
+        )
     )
     jsonified_request.update(unset_fields)
 
@@ -2498,7 +2692,8 @@ def test_list_preconfigured_expression_sets_rest_required_fields(
     assert jsonified_request["project"] == "project_value"
 
     client = SecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -2521,8 +2716,10 @@ def test_list_preconfigured_expression_sets_rest_required_fields(
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.SecurityPoliciesListPreconfiguredExpressionSetsResponse.to_json(
-                return_value
+            json_return_value = (
+                compute.SecurityPoliciesListPreconfiguredExpressionSetsResponse.to_json(
+                    return_value
+                )
             )
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -2539,11 +2736,19 @@ def test_list_preconfigured_expression_sets_rest_unset_required_fields():
         credentials=ga_credentials.AnonymousCredentials
     )
 
-    unset_fields = transport.list_preconfigured_expression_sets._get_unset_required_fields(
-        {}
+    unset_fields = (
+        transport.list_preconfigured_expression_sets._get_unset_required_fields({})
     )
     assert set(unset_fields) == (
-        set(("filter", "maxResults", "orderBy", "pageToken", "returnPartialSuccess",))
+        set(
+            (
+                "filter",
+                "maxResults",
+                "orderBy",
+                "pageToken",
+                "returnPartialSuccess",
+            )
+        )
         & set(("project",))
     )
 
@@ -2581,8 +2786,10 @@ def test_list_preconfigured_expression_sets_rest_interceptors(null_interceptor):
         req.return_value = Response()
         req.return_value.status_code = 200
         req.return_value.request = PreparedRequest()
-        req.return_value._content = compute.SecurityPoliciesListPreconfiguredExpressionSetsResponse.to_json(
-            compute.SecurityPoliciesListPreconfiguredExpressionSetsResponse()
+        req.return_value._content = (
+            compute.SecurityPoliciesListPreconfiguredExpressionSetsResponse.to_json(
+                compute.SecurityPoliciesListPreconfiguredExpressionSetsResponse()
+            )
         )
 
         request = compute.ListPreconfiguredExpressionSetsSecurityPoliciesRequest()
@@ -2596,7 +2803,11 @@ def test_list_preconfigured_expression_sets_rest_interceptors(null_interceptor):
         )
 
         client.list_preconfigured_expression_sets(
-            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
         )
 
         pre.assert_called_once()
@@ -2608,7 +2819,8 @@ def test_list_preconfigured_expression_sets_rest_bad_request(
     request_type=compute.ListPreconfiguredExpressionSetsSecurityPoliciesRequest,
 ):
     client = SecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -2629,7 +2841,8 @@ def test_list_preconfigured_expression_sets_rest_bad_request(
 
 def test_list_preconfigured_expression_sets_rest_flattened():
     client = SecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -2641,14 +2854,18 @@ def test_list_preconfigured_expression_sets_rest_flattened():
         sample_request = {"project": "sample1"}
 
         # get truthy value for each flattened field
-        mock_args = dict(project="project_value",)
+        mock_args = dict(
+            project="project_value",
+        )
         mock_args.update(sample_request)
 
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.SecurityPoliciesListPreconfiguredExpressionSetsResponse.to_json(
-            return_value
+        json_return_value = (
+            compute.SecurityPoliciesListPreconfiguredExpressionSetsResponse.to_json(
+                return_value
+            )
         )
 
         response_value._content = json_return_value.encode("UTF-8")
@@ -2671,7 +2888,8 @@ def test_list_preconfigured_expression_sets_rest_flattened_error(
     transport: str = "rest",
 ):
     client = SecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2689,10 +2907,17 @@ def test_list_preconfigured_expression_sets_rest_error():
     )
 
 
-@pytest.mark.parametrize("request_type", [compute.PatchSecurityPolicyRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.PatchSecurityPolicyRequest,
+        dict,
+    ],
+)
 def test_patch_unary_rest(request_type):
     client = SecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -2869,7 +3094,8 @@ def test_patch_unary_rest_required_fields(
     assert jsonified_request["securityPolicy"] == "security_policy_value"
 
     client = SecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -2912,7 +3138,13 @@ def test_patch_unary_rest_unset_required_fields():
     unset_fields = transport.patch._get_unset_required_fields({})
     assert set(unset_fields) == (
         set(("requestId",))
-        & set(("project", "securityPolicy", "securityPolicyResource",))
+        & set(
+            (
+                "project",
+                "securityPolicy",
+                "securityPolicyResource",
+            )
+        )
     )
 
 
@@ -2957,7 +3189,13 @@ def test_patch_unary_rest_interceptors(null_interceptor):
         pre.return_value = request, metadata
         post.return_value = compute.Operation
 
-        client.patch_unary(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+        client.patch_unary(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
 
         pre.assert_called_once()
         post.assert_called_once()
@@ -2967,7 +3205,8 @@ def test_patch_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.PatchSecurityPolicyRequest
 ):
     client = SecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -3055,7 +3294,8 @@ def test_patch_unary_rest_bad_request(
 
 def test_patch_unary_rest_flattened():
     client = SecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -3103,7 +3343,8 @@ def test_patch_unary_rest_flattened():
 
 def test_patch_unary_rest_flattened_error(transport: str = "rest"):
     client = SecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3130,11 +3371,16 @@ def test_patch_unary_rest_error():
 
 
 @pytest.mark.parametrize(
-    "request_type", [compute.PatchRuleSecurityPolicyRequest, dict,]
+    "request_type",
+    [
+        compute.PatchRuleSecurityPolicyRequest,
+        dict,
+    ],
 )
 def test_patch_rule_unary_rest(request_type):
     client = SecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -3285,7 +3531,8 @@ def test_patch_rule_unary_rest_required_fields(
     assert jsonified_request["securityPolicy"] == "security_policy_value"
 
     client = SecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -3328,7 +3575,13 @@ def test_patch_rule_unary_rest_unset_required_fields():
     unset_fields = transport.patch_rule._get_unset_required_fields({})
     assert set(unset_fields) == (
         set(("priority",))
-        & set(("project", "securityPolicy", "securityPolicyRuleResource",))
+        & set(
+            (
+                "project",
+                "securityPolicy",
+                "securityPolicyRuleResource",
+            )
+        )
     )
 
 
@@ -3374,7 +3627,11 @@ def test_patch_rule_unary_rest_interceptors(null_interceptor):
         post.return_value = compute.Operation
 
         client.patch_rule_unary(
-            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
         )
 
         pre.assert_called_once()
@@ -3385,7 +3642,8 @@ def test_patch_rule_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.PatchRuleSecurityPolicyRequest
 ):
     client = SecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -3447,7 +3705,8 @@ def test_patch_rule_unary_rest_bad_request(
 
 def test_patch_rule_unary_rest_flattened():
     client = SecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -3491,7 +3750,8 @@ def test_patch_rule_unary_rest_flattened():
 
 def test_patch_rule_unary_rest_flattened_error(transport: str = "rest"):
     client = SecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3514,11 +3774,16 @@ def test_patch_rule_unary_rest_error():
 
 
 @pytest.mark.parametrize(
-    "request_type", [compute.RemoveRuleSecurityPolicyRequest, dict,]
+    "request_type",
+    [
+        compute.RemoveRuleSecurityPolicyRequest,
+        dict,
+    ],
 )
 def test_remove_rule_unary_rest(request_type):
     client = SecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -3628,7 +3893,8 @@ def test_remove_rule_unary_rest_required_fields(
     assert jsonified_request["securityPolicy"] == "security_policy_value"
 
     client = SecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -3669,7 +3935,13 @@ def test_remove_rule_unary_rest_unset_required_fields():
 
     unset_fields = transport.remove_rule._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("priority",)) & set(("project", "securityPolicy",))
+        set(("priority",))
+        & set(
+            (
+                "project",
+                "securityPolicy",
+            )
+        )
     )
 
 
@@ -3715,7 +3987,11 @@ def test_remove_rule_unary_rest_interceptors(null_interceptor):
         post.return_value = compute.Operation
 
         client.remove_rule_unary(
-            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
         )
 
         pre.assert_called_once()
@@ -3726,7 +4002,8 @@ def test_remove_rule_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.RemoveRuleSecurityPolicyRequest
 ):
     client = SecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -3747,7 +4024,8 @@ def test_remove_rule_unary_rest_bad_request(
 
 def test_remove_rule_unary_rest_flattened():
     client = SecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -3760,7 +4038,8 @@ def test_remove_rule_unary_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            project="project_value", security_policy="security_policy_value",
+            project="project_value",
+            security_policy="security_policy_value",
         )
         mock_args.update(sample_request)
 
@@ -3787,7 +4066,8 @@ def test_remove_rule_unary_rest_flattened():
 
 def test_remove_rule_unary_rest_flattened_error(transport: str = "rest"):
     client = SecurityPoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3813,7 +4093,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = SecurityPoliciesClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -3833,7 +4114,10 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = SecurityPoliciesClient(client_options=options, transport=transport,)
+        client = SecurityPoliciesClient(
+            client_options=options,
+            transport=transport,
+        )
 
     # It is an error to provide an api_key and a credential.
     options = mock.Mock()
@@ -3849,7 +4133,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = SecurityPoliciesClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -3862,7 +4147,12 @@ def test_transport_instance():
     assert client.transport is transport
 
 
-@pytest.mark.parametrize("transport_class", [transports.SecurityPoliciesRestTransport,])
+@pytest.mark.parametrize(
+    "transport_class",
+    [
+        transports.SecurityPoliciesRestTransport,
+    ],
+)
 def test_transport_adc(transport_class):
     # Test default credentials are used if not provided.
     with mock.patch.object(google.auth, "default") as adc:
@@ -3922,7 +4212,8 @@ def test_security_policies_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.SecurityPoliciesTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -3972,7 +4263,12 @@ def test_security_policies_http_transport_client_cert_source_for_mtls():
         mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
 
 
-@pytest.mark.parametrize("transport_name", ["rest",])
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
 def test_security_policies_host_no_port(transport_name):
     client = SecurityPoliciesClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3988,7 +4284,12 @@ def test_security_policies_host_no_port(transport_name):
     )
 
 
-@pytest.mark.parametrize("transport_name", ["rest",])
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
 def test_security_policies_host_with_port(transport_name):
     client = SecurityPoliciesClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -4026,7 +4327,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "whelk"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = SecurityPoliciesClient.common_folder_path(folder)
     assert expected == actual
 
@@ -4044,7 +4347,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "oyster"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = SecurityPoliciesClient.common_organization_path(organization)
     assert expected == actual
 
@@ -4062,7 +4367,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "cuttlefish"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = SecurityPoliciesClient.common_project_path(project)
     assert expected == actual
 
@@ -4082,7 +4389,8 @@ def test_common_location_path():
     project = "winkle"
     location = "nautilus"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = SecurityPoliciesClient.common_location_path(project, location)
     assert expected == actual
@@ -4107,7 +4415,8 @@ def test_client_with_default_client_info():
         transports.SecurityPoliciesTransport, "_prep_wrapped_messages"
     ) as prep:
         client = SecurityPoliciesClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -4116,7 +4425,8 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = SecurityPoliciesClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -4156,7 +4466,9 @@ def test_client_ctx():
 
 @pytest.mark.parametrize(
     "client_class,transport_class",
-    [(SecurityPoliciesClient, transports.SecurityPoliciesRestTransport),],
+    [
+        (SecurityPoliciesClient, transports.SecurityPoliciesRestTransport),
+    ],
 )
 def test_api_key_credentials(client_class, transport_class):
     with mock.patch.object(

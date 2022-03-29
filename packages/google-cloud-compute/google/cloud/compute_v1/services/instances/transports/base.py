@@ -29,7 +29,9 @@ from google.cloud.compute_v1.types import compute
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-compute",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-compute",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
@@ -122,7 +124,9 @@ class InstancesTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.add_access_config: gapic_v1.method.wrap_method(
-                self.add_access_config, default_timeout=None, client_info=client_info,
+                self.add_access_config,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.add_resource_policies: gapic_v1.method.wrap_method(
                 self.add_resource_policies,
@@ -130,16 +134,24 @@ class InstancesTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.aggregated_list: gapic_v1.method.wrap_method(
-                self.aggregated_list, default_timeout=None, client_info=client_info,
+                self.aggregated_list,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.attach_disk: gapic_v1.method.wrap_method(
-                self.attach_disk, default_timeout=None, client_info=client_info,
+                self.attach_disk,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.bulk_insert: gapic_v1.method.wrap_method(
-                self.bulk_insert, default_timeout=None, client_info=client_info,
+                self.bulk_insert,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.delete: gapic_v1.method.wrap_method(
-                self.delete, default_timeout=None, client_info=client_info,
+                self.delete,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.delete_access_config: gapic_v1.method.wrap_method(
                 self.delete_access_config,
@@ -147,10 +159,14 @@ class InstancesTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.detach_disk: gapic_v1.method.wrap_method(
-                self.detach_disk, default_timeout=None, client_info=client_info,
+                self.detach_disk,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get: gapic_v1.method.wrap_method(
-                self.get, default_timeout=None, client_info=client_info,
+                self.get,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_effective_firewalls: gapic_v1.method.wrap_method(
                 self.get_effective_firewalls,
@@ -163,10 +179,14 @@ class InstancesTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.get_iam_policy: gapic_v1.method.wrap_method(
-                self.get_iam_policy, default_timeout=None, client_info=client_info,
+                self.get_iam_policy,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_screenshot: gapic_v1.method.wrap_method(
-                self.get_screenshot, default_timeout=None, client_info=client_info,
+                self.get_screenshot,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_serial_port_output: gapic_v1.method.wrap_method(
                 self.get_serial_port_output,
@@ -179,13 +199,19 @@ class InstancesTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.insert: gapic_v1.method.wrap_method(
-                self.insert, default_timeout=None, client_info=client_info,
+                self.insert,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list: gapic_v1.method.wrap_method(
-                self.list, default_timeout=None, client_info=client_info,
+                self.list,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_referrers: gapic_v1.method.wrap_method(
-                self.list_referrers, default_timeout=None, client_info=client_info,
+                self.list_referrers,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.remove_resource_policies: gapic_v1.method.wrap_method(
                 self.remove_resource_policies,
@@ -193,10 +219,14 @@ class InstancesTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.reset: gapic_v1.method.wrap_method(
-                self.reset, default_timeout=None, client_info=client_info,
+                self.reset,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.resume: gapic_v1.method.wrap_method(
-                self.resume, default_timeout=None, client_info=client_info,
+                self.resume,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.send_diagnostic_interrupt: gapic_v1.method.wrap_method(
                 self.send_diagnostic_interrupt,
@@ -214,10 +244,14 @@ class InstancesTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.set_iam_policy: gapic_v1.method.wrap_method(
-                self.set_iam_policy, default_timeout=None, client_info=client_info,
+                self.set_iam_policy,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.set_labels: gapic_v1.method.wrap_method(
-                self.set_labels, default_timeout=None, client_info=client_info,
+                self.set_labels,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.set_machine_resources: gapic_v1.method.wrap_method(
                 self.set_machine_resources,
@@ -225,10 +259,14 @@ class InstancesTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.set_machine_type: gapic_v1.method.wrap_method(
-                self.set_machine_type, default_timeout=None, client_info=client_info,
+                self.set_machine_type,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.set_metadata: gapic_v1.method.wrap_method(
-                self.set_metadata, default_timeout=None, client_info=client_info,
+                self.set_metadata,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.set_min_cpu_platform: gapic_v1.method.wrap_method(
                 self.set_min_cpu_platform,
@@ -236,10 +274,14 @@ class InstancesTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.set_scheduling: gapic_v1.method.wrap_method(
-                self.set_scheduling, default_timeout=None, client_info=client_info,
+                self.set_scheduling,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.set_service_account: gapic_v1.method.wrap_method(
-                self.set_service_account, default_timeout=None, client_info=client_info,
+                self.set_service_account,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.set_shielded_instance_integrity_policy: gapic_v1.method.wrap_method(
                 self.set_shielded_instance_integrity_policy,
@@ -247,7 +289,9 @@ class InstancesTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.set_tags: gapic_v1.method.wrap_method(
-                self.set_tags, default_timeout=None, client_info=client_info,
+                self.set_tags,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.simulate_maintenance_event: gapic_v1.method.wrap_method(
                 self.simulate_maintenance_event,
@@ -255,7 +299,9 @@ class InstancesTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.start: gapic_v1.method.wrap_method(
-                self.start, default_timeout=None, client_info=client_info,
+                self.start,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.start_with_encryption_key: gapic_v1.method.wrap_method(
                 self.start_with_encryption_key,
@@ -263,10 +309,14 @@ class InstancesTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.stop: gapic_v1.method.wrap_method(
-                self.stop, default_timeout=None, client_info=client_info,
+                self.stop,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.suspend: gapic_v1.method.wrap_method(
-                self.suspend, default_timeout=None, client_info=client_info,
+                self.suspend,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.test_iam_permissions: gapic_v1.method.wrap_method(
                 self.test_iam_permissions,
@@ -274,7 +324,9 @@ class InstancesTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.update: gapic_v1.method.wrap_method(
-                self.update, default_timeout=None, client_info=client_info,
+                self.update,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.update_access_config: gapic_v1.method.wrap_method(
                 self.update_access_config,
@@ -301,9 +353,9 @@ class InstancesTransport(abc.ABC):
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

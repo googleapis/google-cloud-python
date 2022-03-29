@@ -90,7 +90,10 @@ def test__get_default_mtls_endpoint():
 
 
 @pytest.mark.parametrize(
-    "client_class,transport_name", [(TargetSslProxiesClient, "rest"),]
+    "client_class,transport_name",
+    [
+        (TargetSslProxiesClient, "rest"),
+    ],
 )
 def test_target_ssl_proxies_client_from_service_account_info(
     client_class, transport_name
@@ -114,7 +117,9 @@ def test_target_ssl_proxies_client_from_service_account_info(
 
 @pytest.mark.parametrize(
     "transport_class,transport_name",
-    [(transports.TargetSslProxiesRestTransport, "rest"),],
+    [
+        (transports.TargetSslProxiesRestTransport, "rest"),
+    ],
 )
 def test_target_ssl_proxies_client_service_account_always_use_jwt(
     transport_class, transport_name
@@ -135,7 +140,10 @@ def test_target_ssl_proxies_client_service_account_always_use_jwt(
 
 
 @pytest.mark.parametrize(
-    "client_class,transport_name", [(TargetSslProxiesClient, "rest"),]
+    "client_class,transport_name",
+    [
+        (TargetSslProxiesClient, "rest"),
+    ],
 )
 def test_target_ssl_proxies_client_from_service_account_file(
     client_class, transport_name
@@ -177,7 +185,9 @@ def test_target_ssl_proxies_client_get_transport_class():
 
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
-    [(TargetSslProxiesClient, transports.TargetSslProxiesRestTransport, "rest"),],
+    [
+        (TargetSslProxiesClient, transports.TargetSslProxiesRestTransport, "rest"),
+    ],
 )
 @mock.patch.object(
     TargetSslProxiesClient,
@@ -470,13 +480,17 @@ def test_target_ssl_proxies_client_get_mtls_endpoint_and_cert_source(client_clas
 
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
-    [(TargetSslProxiesClient, transports.TargetSslProxiesRestTransport, "rest"),],
+    [
+        (TargetSslProxiesClient, transports.TargetSslProxiesRestTransport, "rest"),
+    ],
 )
 def test_target_ssl_proxies_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -494,7 +508,14 @@ def test_target_ssl_proxies_client_client_options_scopes(
 
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name,grpc_helpers",
-    [(TargetSslProxiesClient, transports.TargetSslProxiesRestTransport, "rest", None),],
+    [
+        (
+            TargetSslProxiesClient,
+            transports.TargetSslProxiesRestTransport,
+            "rest",
+            None,
+        ),
+    ],
 )
 def test_target_ssl_proxies_client_client_options_credentials_file(
     client_class, transport_class, transport_name, grpc_helpers
@@ -517,10 +538,17 @@ def test_target_ssl_proxies_client_client_options_credentials_file(
         )
 
 
-@pytest.mark.parametrize("request_type", [compute.DeleteTargetSslProxyRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.DeleteTargetSslProxyRequest,
+        dict,
+    ],
+)
 def test_delete_unary_rest(request_type):
     client = TargetSslProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -630,7 +658,8 @@ def test_delete_unary_rest_required_fields(
     assert jsonified_request["targetSslProxy"] == "target_ssl_proxy_value"
 
     client = TargetSslProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -671,7 +700,13 @@ def test_delete_unary_rest_unset_required_fields():
 
     unset_fields = transport.delete._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("requestId",)) & set(("project", "targetSslProxy",))
+        set(("requestId",))
+        & set(
+            (
+                "project",
+                "targetSslProxy",
+            )
+        )
     )
 
 
@@ -717,7 +752,11 @@ def test_delete_unary_rest_interceptors(null_interceptor):
         post.return_value = compute.Operation
 
         client.delete_unary(
-            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
         )
 
         pre.assert_called_once()
@@ -728,7 +767,8 @@ def test_delete_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.DeleteTargetSslProxyRequest
 ):
     client = TargetSslProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -749,7 +789,8 @@ def test_delete_unary_rest_bad_request(
 
 def test_delete_unary_rest_flattened():
     client = TargetSslProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -762,7 +803,8 @@ def test_delete_unary_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            project="project_value", target_ssl_proxy="target_ssl_proxy_value",
+            project="project_value",
+            target_ssl_proxy="target_ssl_proxy_value",
         )
         mock_args.update(sample_request)
 
@@ -789,7 +831,8 @@ def test_delete_unary_rest_flattened():
 
 def test_delete_unary_rest_flattened_error(transport: str = "rest"):
     client = TargetSslProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -808,10 +851,17 @@ def test_delete_unary_rest_error():
     )
 
 
-@pytest.mark.parametrize("request_type", [compute.GetTargetSslProxyRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.GetTargetSslProxyRequest,
+        dict,
+    ],
+)
 def test_get_rest(request_type):
     client = TargetSslProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -893,7 +943,8 @@ def test_get_rest_required_fields(request_type=compute.GetTargetSslProxyRequest)
     assert jsonified_request["targetSslProxy"] == "target_ssl_proxy_value"
 
     client = TargetSslProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -933,7 +984,15 @@ def test_get_rest_unset_required_fields():
     )
 
     unset_fields = transport.get._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("project", "targetSslProxy",)))
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "project",
+                "targetSslProxy",
+            )
+        )
+    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -979,7 +1038,13 @@ def test_get_rest_interceptors(null_interceptor):
         pre.return_value = request, metadata
         post.return_value = compute.TargetSslProxy
 
-        client.get(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+        client.get(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
 
         pre.assert_called_once()
         post.assert_called_once()
@@ -989,7 +1054,8 @@ def test_get_rest_bad_request(
     transport: str = "rest", request_type=compute.GetTargetSslProxyRequest
 ):
     client = TargetSslProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -1010,7 +1076,8 @@ def test_get_rest_bad_request(
 
 def test_get_rest_flattened():
     client = TargetSslProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -1023,7 +1090,8 @@ def test_get_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            project="project_value", target_ssl_proxy="target_ssl_proxy_value",
+            project="project_value",
+            target_ssl_proxy="target_ssl_proxy_value",
         )
         mock_args.update(sample_request)
 
@@ -1050,7 +1118,8 @@ def test_get_rest_flattened():
 
 def test_get_rest_flattened_error(transport: str = "rest"):
     client = TargetSslProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1069,10 +1138,17 @@ def test_get_rest_error():
     )
 
 
-@pytest.mark.parametrize("request_type", [compute.InsertTargetSslProxyRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.InsertTargetSslProxyRequest,
+        dict,
+    ],
+)
 def test_insert_unary_rest(request_type):
     client = TargetSslProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -1190,7 +1266,8 @@ def test_insert_unary_rest_required_fields(
     assert jsonified_request["project"] == "project_value"
 
     client = TargetSslProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -1232,7 +1309,13 @@ def test_insert_unary_rest_unset_required_fields():
 
     unset_fields = transport.insert._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("requestId",)) & set(("project", "targetSslProxyResource",))
+        set(("requestId",))
+        & set(
+            (
+                "project",
+                "targetSslProxyResource",
+            )
+        )
     )
 
 
@@ -1278,7 +1361,11 @@ def test_insert_unary_rest_interceptors(null_interceptor):
         post.return_value = compute.Operation
 
         client.insert_unary(
-            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
         )
 
         pre.assert_called_once()
@@ -1289,7 +1376,8 @@ def test_insert_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.InsertTargetSslProxyRequest
 ):
     client = TargetSslProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -1322,7 +1410,8 @@ def test_insert_unary_rest_bad_request(
 
 def test_insert_unary_rest_flattened():
     client = TargetSslProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -1365,7 +1454,8 @@ def test_insert_unary_rest_flattened():
 
 def test_insert_unary_rest_flattened_error(transport: str = "rest"):
     client = TargetSslProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1386,10 +1476,17 @@ def test_insert_unary_rest_error():
     )
 
 
-@pytest.mark.parametrize("request_type", [compute.ListTargetSslProxiesRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.ListTargetSslProxiesRequest,
+        dict,
+    ],
+)
 def test_list_rest(request_type):
     client = TargetSslProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -1450,7 +1547,13 @@ def test_list_rest_required_fields(request_type=compute.ListTargetSslProxiesRequ
     ).list._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
-        ("filter", "max_results", "order_by", "page_token", "return_partial_success",)
+        (
+            "filter",
+            "max_results",
+            "order_by",
+            "page_token",
+            "return_partial_success",
+        )
     )
     jsonified_request.update(unset_fields)
 
@@ -1459,7 +1562,8 @@ def test_list_rest_required_fields(request_type=compute.ListTargetSslProxiesRequ
     assert jsonified_request["project"] == "project_value"
 
     client = TargetSslProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -1500,7 +1604,15 @@ def test_list_rest_unset_required_fields():
 
     unset_fields = transport.list._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("filter", "maxResults", "orderBy", "pageToken", "returnPartialSuccess",))
+        set(
+            (
+                "filter",
+                "maxResults",
+                "orderBy",
+                "pageToken",
+                "returnPartialSuccess",
+            )
+        )
         & set(("project",))
     )
 
@@ -1548,7 +1660,13 @@ def test_list_rest_interceptors(null_interceptor):
         pre.return_value = request, metadata
         post.return_value = compute.TargetSslProxyList
 
-        client.list(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+        client.list(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
 
         pre.assert_called_once()
         post.assert_called_once()
@@ -1558,7 +1676,8 @@ def test_list_rest_bad_request(
     transport: str = "rest", request_type=compute.ListTargetSslProxiesRequest
 ):
     client = TargetSslProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -1579,7 +1698,8 @@ def test_list_rest_bad_request(
 
 def test_list_rest_flattened():
     client = TargetSslProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -1591,7 +1711,9 @@ def test_list_rest_flattened():
         sample_request = {"project": "sample1"}
 
         # get truthy value for each flattened field
-        mock_args = dict(project="project_value",)
+        mock_args = dict(
+            project="project_value",
+        )
         mock_args.update(sample_request)
 
         # Wrap the value into a proper Response obj
@@ -1617,20 +1739,23 @@ def test_list_rest_flattened():
 
 def test_list_rest_flattened_error(transport: str = "rest"):
     client = TargetSslProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list(
-            compute.ListTargetSslProxiesRequest(), project="project_value",
+            compute.ListTargetSslProxiesRequest(),
+            project="project_value",
         )
 
 
 def test_list_rest_pager(transport: str = "rest"):
     client = TargetSslProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Mock the http request call within the method and fake a response.
@@ -1647,12 +1772,21 @@ def test_list_rest_pager(transport: str = "rest"):
                 ],
                 next_page_token="abc",
             ),
-            compute.TargetSslProxyList(items=[], next_page_token="def",),
             compute.TargetSslProxyList(
-                items=[compute.TargetSslProxy(),], next_page_token="ghi",
+                items=[],
+                next_page_token="def",
             ),
             compute.TargetSslProxyList(
-                items=[compute.TargetSslProxy(), compute.TargetSslProxy(),],
+                items=[
+                    compute.TargetSslProxy(),
+                ],
+                next_page_token="ghi",
+            ),
+            compute.TargetSslProxyList(
+                items=[
+                    compute.TargetSslProxy(),
+                    compute.TargetSslProxy(),
+                ],
             ),
         )
         # Two responses for two calls
@@ -1680,11 +1814,16 @@ def test_list_rest_pager(transport: str = "rest"):
 
 
 @pytest.mark.parametrize(
-    "request_type", [compute.SetBackendServiceTargetSslProxyRequest, dict,]
+    "request_type",
+    [
+        compute.SetBackendServiceTargetSslProxyRequest,
+        dict,
+    ],
 )
 def test_set_backend_service_unary_rest(request_type):
     client = TargetSslProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -1797,7 +1936,8 @@ def test_set_backend_service_unary_rest_required_fields(
     assert jsonified_request["targetSslProxy"] == "target_ssl_proxy_value"
 
     client = TargetSslProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -1892,7 +2032,11 @@ def test_set_backend_service_unary_rest_interceptors(null_interceptor):
         post.return_value = compute.Operation
 
         client.set_backend_service_unary(
-            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
         )
 
         pre.assert_called_once()
@@ -1903,7 +2047,8 @@ def test_set_backend_service_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.SetBackendServiceTargetSslProxyRequest
 ):
     client = TargetSslProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -1927,7 +2072,8 @@ def test_set_backend_service_unary_rest_bad_request(
 
 def test_set_backend_service_unary_rest_flattened():
     client = TargetSslProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -1971,7 +2117,8 @@ def test_set_backend_service_unary_rest_flattened():
 
 def test_set_backend_service_unary_rest_flattened_error(transport: str = "rest"):
     client = TargetSslProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1994,11 +2141,16 @@ def test_set_backend_service_unary_rest_error():
 
 
 @pytest.mark.parametrize(
-    "request_type", [compute.SetProxyHeaderTargetSslProxyRequest, dict,]
+    "request_type",
+    [
+        compute.SetProxyHeaderTargetSslProxyRequest,
+        dict,
+    ],
 )
 def test_set_proxy_header_unary_rest(request_type):
     client = TargetSslProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -2111,7 +2263,8 @@ def test_set_proxy_header_unary_rest_required_fields(
     assert jsonified_request["targetSslProxy"] == "target_ssl_proxy_value"
 
     client = TargetSslProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -2206,7 +2359,11 @@ def test_set_proxy_header_unary_rest_interceptors(null_interceptor):
         post.return_value = compute.Operation
 
         client.set_proxy_header_unary(
-            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
         )
 
         pre.assert_called_once()
@@ -2217,7 +2374,8 @@ def test_set_proxy_header_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.SetProxyHeaderTargetSslProxyRequest
 ):
     client = TargetSslProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -2241,7 +2399,8 @@ def test_set_proxy_header_unary_rest_bad_request(
 
 def test_set_proxy_header_unary_rest_flattened():
     client = TargetSslProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -2285,7 +2444,8 @@ def test_set_proxy_header_unary_rest_flattened():
 
 def test_set_proxy_header_unary_rest_flattened_error(transport: str = "rest"):
     client = TargetSslProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2308,11 +2468,16 @@ def test_set_proxy_header_unary_rest_error():
 
 
 @pytest.mark.parametrize(
-    "request_type", [compute.SetSslCertificatesTargetSslProxyRequest, dict,]
+    "request_type",
+    [
+        compute.SetSslCertificatesTargetSslProxyRequest,
+        dict,
+    ],
 )
 def test_set_ssl_certificates_unary_rest(request_type):
     client = TargetSslProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -2425,7 +2590,8 @@ def test_set_ssl_certificates_unary_rest_required_fields(
     assert jsonified_request["targetSslProxy"] == "target_ssl_proxy_value"
 
     client = TargetSslProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -2520,7 +2686,11 @@ def test_set_ssl_certificates_unary_rest_interceptors(null_interceptor):
         post.return_value = compute.Operation
 
         client.set_ssl_certificates_unary(
-            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
         )
 
         pre.assert_called_once()
@@ -2532,7 +2702,8 @@ def test_set_ssl_certificates_unary_rest_bad_request(
     request_type=compute.SetSslCertificatesTargetSslProxyRequest,
 ):
     client = TargetSslProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -2556,7 +2727,8 @@ def test_set_ssl_certificates_unary_rest_bad_request(
 
 def test_set_ssl_certificates_unary_rest_flattened():
     client = TargetSslProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -2600,7 +2772,8 @@ def test_set_ssl_certificates_unary_rest_flattened():
 
 def test_set_ssl_certificates_unary_rest_flattened_error(transport: str = "rest"):
     client = TargetSslProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2623,11 +2796,16 @@ def test_set_ssl_certificates_unary_rest_error():
 
 
 @pytest.mark.parametrize(
-    "request_type", [compute.SetSslPolicyTargetSslProxyRequest, dict,]
+    "request_type",
+    [
+        compute.SetSslPolicyTargetSslProxyRequest,
+        dict,
+    ],
 )
 def test_set_ssl_policy_unary_rest(request_type):
     client = TargetSslProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -2738,7 +2916,8 @@ def test_set_ssl_policy_unary_rest_required_fields(
     assert jsonified_request["targetSslProxy"] == "target_ssl_proxy_value"
 
     client = TargetSslProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -2781,7 +2960,13 @@ def test_set_ssl_policy_unary_rest_unset_required_fields():
     unset_fields = transport.set_ssl_policy._get_unset_required_fields({})
     assert set(unset_fields) == (
         set(("requestId",))
-        & set(("project", "sslPolicyReferenceResource", "targetSslProxy",))
+        & set(
+            (
+                "project",
+                "sslPolicyReferenceResource",
+                "targetSslProxy",
+            )
+        )
     )
 
 
@@ -2827,7 +3012,11 @@ def test_set_ssl_policy_unary_rest_interceptors(null_interceptor):
         post.return_value = compute.Operation
 
         client.set_ssl_policy_unary(
-            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
         )
 
         pre.assert_called_once()
@@ -2838,7 +3027,8 @@ def test_set_ssl_policy_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.SetSslPolicyTargetSslProxyRequest
 ):
     client = TargetSslProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -2860,7 +3050,8 @@ def test_set_ssl_policy_unary_rest_bad_request(
 
 def test_set_ssl_policy_unary_rest_flattened():
     client = TargetSslProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -2904,7 +3095,8 @@ def test_set_ssl_policy_unary_rest_flattened():
 
 def test_set_ssl_policy_unary_rest_flattened_error(transport: str = "rest"):
     client = TargetSslProxiesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2933,7 +3125,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = TargetSslProxiesClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -2953,7 +3146,10 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = TargetSslProxiesClient(client_options=options, transport=transport,)
+        client = TargetSslProxiesClient(
+            client_options=options,
+            transport=transport,
+        )
 
     # It is an error to provide an api_key and a credential.
     options = mock.Mock()
@@ -2969,7 +3165,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = TargetSslProxiesClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -2982,7 +3179,12 @@ def test_transport_instance():
     assert client.transport is transport
 
 
-@pytest.mark.parametrize("transport_class", [transports.TargetSslProxiesRestTransport,])
+@pytest.mark.parametrize(
+    "transport_class",
+    [
+        transports.TargetSslProxiesRestTransport,
+    ],
+)
 def test_transport_adc(transport_class):
     # Test default credentials are used if not provided.
     with mock.patch.object(google.auth, "default") as adc:
@@ -3040,7 +3242,8 @@ def test_target_ssl_proxies_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.TargetSslProxiesTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -3090,7 +3293,12 @@ def test_target_ssl_proxies_http_transport_client_cert_source_for_mtls():
         mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
 
 
-@pytest.mark.parametrize("transport_name", ["rest",])
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
 def test_target_ssl_proxies_host_no_port(transport_name):
     client = TargetSslProxiesClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3106,7 +3314,12 @@ def test_target_ssl_proxies_host_no_port(transport_name):
     )
 
 
-@pytest.mark.parametrize("transport_name", ["rest",])
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
 def test_target_ssl_proxies_host_with_port(transport_name):
     client = TargetSslProxiesClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3144,7 +3357,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "whelk"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = TargetSslProxiesClient.common_folder_path(folder)
     assert expected == actual
 
@@ -3162,7 +3377,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "oyster"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = TargetSslProxiesClient.common_organization_path(organization)
     assert expected == actual
 
@@ -3180,7 +3397,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "cuttlefish"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = TargetSslProxiesClient.common_project_path(project)
     assert expected == actual
 
@@ -3200,7 +3419,8 @@ def test_common_location_path():
     project = "winkle"
     location = "nautilus"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = TargetSslProxiesClient.common_location_path(project, location)
     assert expected == actual
@@ -3225,7 +3445,8 @@ def test_client_with_default_client_info():
         transports.TargetSslProxiesTransport, "_prep_wrapped_messages"
     ) as prep:
         client = TargetSslProxiesClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -3234,7 +3455,8 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = TargetSslProxiesClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -3274,7 +3496,9 @@ def test_client_ctx():
 
 @pytest.mark.parametrize(
     "client_class,transport_class",
-    [(TargetSslProxiesClient, transports.TargetSslProxiesRestTransport),],
+    [
+        (TargetSslProxiesClient, transports.TargetSslProxiesRestTransport),
+    ],
 )
 def test_api_key_credentials(client_class, transport_class):
     with mock.patch.object(

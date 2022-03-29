@@ -2950,23 +2950,23 @@ class InstancesRestTransport(InstancesTransport):
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> compute.ShieldedInstanceIdentity:
             r"""Call the get shielded instance
-        identity method over HTTP.
+            identity method over HTTP.
 
-            Args:
-                request (~.compute.GetShieldedInstanceIdentityInstanceRequest):
-                    The request object. A request message for
-                Instances.GetShieldedInstanceIdentity.
-                See the method description for details.
+                Args:
+                    request (~.compute.GetShieldedInstanceIdentityInstanceRequest):
+                        The request object. A request message for
+                    Instances.GetShieldedInstanceIdentity.
+                    See the method description for details.
 
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
 
-            Returns:
-                ~.compute.ShieldedInstanceIdentity:
-                    A Shielded Instance Identity.
+                Returns:
+                    ~.compute.ShieldedInstanceIdentity:
+                        A Shielded Instance Identity.
             """
 
             http_options: List[Dict[str, str]] = [
@@ -4896,37 +4896,37 @@ class InstancesRestTransport(InstancesTransport):
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> compute.Operation:
             r"""Call the set shielded instance
-        integrity policy method over HTTP.
+            integrity policy method over HTTP.
 
-            Args:
-                request (~.compute.SetShieldedInstanceIntegrityPolicyInstanceRequest):
-                    The request object. A request message for
-                Instances.SetShieldedInstanceIntegrityPolicy.
-                See the method description for details.
+                Args:
+                    request (~.compute.SetShieldedInstanceIntegrityPolicyInstanceRequest):
+                        The request object. A request message for
+                    Instances.SetShieldedInstanceIntegrityPolicy.
+                    See the method description for details.
 
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
 
-            Returns:
-                ~.compute.Operation:
-                    Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                `Global </compute/docs/reference/rest/v1/globalOperations>`__
-                \*
-                `Regional </compute/docs/reference/rest/v1/regionOperations>`__
-                \*
-                `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
-                You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the ``globalOperations``
-                resource. - For regional operations, use the
-                ``regionOperations`` resource. - For zonal operations,
-                use the ``zonalOperations`` resource. For more
-                information, read Global, Regional, and Zonal Resources.
+                Returns:
+                    ~.compute.Operation:
+                        Represents an Operation resource. Google Compute Engine
+                    has three Operation resources: \*
+                    `Global </compute/docs/reference/rest/v1/globalOperations>`__
+                    \*
+                    `Regional </compute/docs/reference/rest/v1/regionOperations>`__
+                    \*
+                    `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
+                    You can use an operation resource to manage asynchronous
+                    API requests. For more information, read Handling API
+                    responses. Operations can be global, regional or zonal.
+                    - For global operations, use the ``globalOperations``
+                    resource. - For regional operations, use the
+                    ``regionOperations`` resource. - For zonal operations,
+                    use the ``zonalOperations`` resource. For more
+                    information, read Global, Regional, and Zonal Resources.
 
             """
 
@@ -4943,8 +4943,10 @@ class InstancesRestTransport(InstancesTransport):
             ) = self._interceptor.pre_set_shielded_instance_integrity_policy(
                 request, metadata
             )
-            request_kwargs = compute.SetShieldedInstanceIntegrityPolicyInstanceRequest.to_dict(
-                request
+            request_kwargs = (
+                compute.SetShieldedInstanceIntegrityPolicyInstanceRequest.to_dict(
+                    request
+                )
             )
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -5126,37 +5128,37 @@ class InstancesRestTransport(InstancesTransport):
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> compute.Operation:
             r"""Call the simulate maintenance
-        event method over HTTP.
+            event method over HTTP.
 
-            Args:
-                request (~.compute.SimulateMaintenanceEventInstanceRequest):
-                    The request object. A request message for
-                Instances.SimulateMaintenanceEvent. See
-                the method description for details.
+                Args:
+                    request (~.compute.SimulateMaintenanceEventInstanceRequest):
+                        The request object. A request message for
+                    Instances.SimulateMaintenanceEvent. See
+                    the method description for details.
 
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
 
-            Returns:
-                ~.compute.Operation:
-                    Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                `Global </compute/docs/reference/rest/v1/globalOperations>`__
-                \*
-                `Regional </compute/docs/reference/rest/v1/regionOperations>`__
-                \*
-                `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
-                You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the ``globalOperations``
-                resource. - For regional operations, use the
-                ``regionOperations`` resource. - For zonal operations,
-                use the ``zonalOperations`` resource. For more
-                information, read Global, Regional, and Zonal Resources.
+                Returns:
+                    ~.compute.Operation:
+                        Represents an Operation resource. Google Compute Engine
+                    has three Operation resources: \*
+                    `Global </compute/docs/reference/rest/v1/globalOperations>`__
+                    \*
+                    `Regional </compute/docs/reference/rest/v1/regionOperations>`__
+                    \*
+                    `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
+                    You can use an operation resource to manage asynchronous
+                    API requests. For more information, read Handling API
+                    responses. Operations can be global, regional or zonal.
+                    - For global operations, use the ``globalOperations``
+                    resource. - For regional operations, use the
+                    ``regionOperations`` resource. - For zonal operations,
+                    use the ``zonalOperations`` resource. For more
+                    information, read Global, Regional, and Zonal Resources.
 
             """
 
@@ -6215,37 +6217,37 @@ class InstancesRestTransport(InstancesTransport):
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> compute.Operation:
             r"""Call the update shielded instance
-        config method over HTTP.
+            config method over HTTP.
 
-            Args:
-                request (~.compute.UpdateShieldedInstanceConfigInstanceRequest):
-                    The request object. A request message for
-                Instances.UpdateShieldedInstanceConfig.
-                See the method description for details.
+                Args:
+                    request (~.compute.UpdateShieldedInstanceConfigInstanceRequest):
+                        The request object. A request message for
+                    Instances.UpdateShieldedInstanceConfig.
+                    See the method description for details.
 
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
 
-            Returns:
-                ~.compute.Operation:
-                    Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                `Global </compute/docs/reference/rest/v1/globalOperations>`__
-                \*
-                `Regional </compute/docs/reference/rest/v1/regionOperations>`__
-                \*
-                `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
-                You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the ``globalOperations``
-                resource. - For regional operations, use the
-                ``regionOperations`` resource. - For zonal operations,
-                use the ``zonalOperations`` resource. For more
-                information, read Global, Regional, and Zonal Resources.
+                Returns:
+                    ~.compute.Operation:
+                        Represents an Operation resource. Google Compute Engine
+                    has three Operation resources: \*
+                    `Global </compute/docs/reference/rest/v1/globalOperations>`__
+                    \*
+                    `Regional </compute/docs/reference/rest/v1/regionOperations>`__
+                    \*
+                    `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
+                    You can use an operation resource to manage asynchronous
+                    API requests. For more information, read Handling API
+                    responses. Operations can be global, regional or zonal.
+                    - For global operations, use the ``globalOperations``
+                    resource. - For regional operations, use the
+                    ``regionOperations`` resource. - For zonal operations,
+                    use the ``zonalOperations`` resource. For more
+                    information, read Global, Regional, and Zonal Resources.
 
             """
 
@@ -6259,8 +6261,8 @@ class InstancesRestTransport(InstancesTransport):
             request, metadata = self._interceptor.pre_update_shielded_instance_config(
                 request, metadata
             )
-            request_kwargs = compute.UpdateShieldedInstanceConfigInstanceRequest.to_dict(
-                request
+            request_kwargs = (
+                compute.UpdateShieldedInstanceConfigInstanceRequest.to_dict(request)
             )
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 

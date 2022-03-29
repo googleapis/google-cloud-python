@@ -394,8 +394,8 @@ class PublicDelegatedPrefixesRestTransport(PublicDelegatedPrefixesTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_aggregated_list(request, metadata)
-            request_kwargs = compute.AggregatedListPublicDelegatedPrefixesRequest.to_dict(
-                request
+            request_kwargs = (
+                compute.AggregatedListPublicDelegatedPrefixesRequest.to_dict(request)
             )
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 

@@ -1027,7 +1027,10 @@ class ProjectsRestTransport(ProjectsTransport):
             """
 
             http_options: List[Dict[str, str]] = [
-                {"method": "get", "uri": "/compute/v1/projects/{project}",},
+                {
+                    "method": "get",
+                    "uri": "/compute/v1/projects/{project}",
+                },
             ]
             request, metadata = self._interceptor.pre_get(request, metadata)
             request_kwargs = compute.GetProjectRequest.to_dict(request)
@@ -1116,7 +1119,10 @@ class ProjectsRestTransport(ProjectsTransport):
             """
 
             http_options: List[Dict[str, str]] = [
-                {"method": "get", "uri": "/compute/v1/projects/{project}/getXpnHost",},
+                {
+                    "method": "get",
+                    "uri": "/compute/v1/projects/{project}/getXpnHost",
+                },
             ]
             request, metadata = self._interceptor.pre_get_xpn_host(request, metadata)
             request_kwargs = compute.GetXpnHostProjectRequest.to_dict(request)
@@ -1593,37 +1599,37 @@ class ProjectsRestTransport(ProjectsTransport):
             metadata: Sequence[Tuple[str, str]] = (),
         ) -> compute.Operation:
             r"""Call the set common instance
-        metadata method over HTTP.
+            metadata method over HTTP.
 
-            Args:
-                request (~.compute.SetCommonInstanceMetadataProjectRequest):
-                    The request object. A request message for
-                Projects.SetCommonInstanceMetadata. See
-                the method description for details.
+                Args:
+                    request (~.compute.SetCommonInstanceMetadataProjectRequest):
+                        The request object. A request message for
+                    Projects.SetCommonInstanceMetadata. See
+                    the method description for details.
 
-                retry (google.api_core.retry.Retry): Designation of what errors, if any,
-                    should be retried.
-                timeout (float): The timeout for this request.
-                metadata (Sequence[Tuple[str, str]]): Strings which should be
-                    sent along with the request as metadata.
+                    retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                        should be retried.
+                    timeout (float): The timeout for this request.
+                    metadata (Sequence[Tuple[str, str]]): Strings which should be
+                        sent along with the request as metadata.
 
-            Returns:
-                ~.compute.Operation:
-                    Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                `Global </compute/docs/reference/rest/v1/globalOperations>`__
-                \*
-                `Regional </compute/docs/reference/rest/v1/regionOperations>`__
-                \*
-                `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
-                You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the ``globalOperations``
-                resource. - For regional operations, use the
-                ``regionOperations`` resource. - For zonal operations,
-                use the ``zonalOperations`` resource. For more
-                information, read Global, Regional, and Zonal Resources.
+                Returns:
+                    ~.compute.Operation:
+                        Represents an Operation resource. Google Compute Engine
+                    has three Operation resources: \*
+                    `Global </compute/docs/reference/rest/v1/globalOperations>`__
+                    \*
+                    `Regional </compute/docs/reference/rest/v1/regionOperations>`__
+                    \*
+                    `Zonal </compute/docs/reference/rest/v1/zoneOperations>`__
+                    You can use an operation resource to manage asynchronous
+                    API requests. For more information, read Handling API
+                    responses. Operations can be global, regional or zonal.
+                    - For global operations, use the ``globalOperations``
+                    resource. - For regional operations, use the
+                    ``regionOperations`` resource. - For zonal operations,
+                    use the ``zonalOperations`` resource. For more
+                    information, read Global, Regional, and Zonal Resources.
 
             """
 

@@ -457,8 +457,10 @@ class GlobalNetworkEndpointGroupsRestTransport(GlobalNetworkEndpointGroupsTransp
             request, metadata = self._interceptor.pre_attach_network_endpoints(
                 request, metadata
             )
-            request_kwargs = compute.AttachNetworkEndpointsGlobalNetworkEndpointGroupRequest.to_dict(
-                request
+            request_kwargs = (
+                compute.AttachNetworkEndpointsGlobalNetworkEndpointGroupRequest.to_dict(
+                    request
+                )
             )
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -681,8 +683,10 @@ class GlobalNetworkEndpointGroupsRestTransport(GlobalNetworkEndpointGroupsTransp
             request, metadata = self._interceptor.pre_detach_network_endpoints(
                 request, metadata
             )
-            request_kwargs = compute.DetachNetworkEndpointsGlobalNetworkEndpointGroupRequest.to_dict(
-                request
+            request_kwargs = (
+                compute.DetachNetworkEndpointsGlobalNetworkEndpointGroupRequest.to_dict(
+                    request
+                )
             )
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -1090,8 +1094,10 @@ class GlobalNetworkEndpointGroupsRestTransport(GlobalNetworkEndpointGroupsTransp
             request, metadata = self._interceptor.pre_list_network_endpoints(
                 request, metadata
             )
-            request_kwargs = compute.ListNetworkEndpointsGlobalNetworkEndpointGroupsRequest.to_dict(
-                request
+            request_kwargs = (
+                compute.ListNetworkEndpointsGlobalNetworkEndpointGroupsRequest.to_dict(
+                    request
+                )
             )
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 

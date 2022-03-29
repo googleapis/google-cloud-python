@@ -919,8 +919,8 @@ class ExternalVpnGatewaysRestTransport(ExternalVpnGatewaysTransport):
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
             )
-            request_kwargs = compute.TestIamPermissionsExternalVpnGatewayRequest.to_dict(
-                request
+            request_kwargs = (
+                compute.TestIamPermissionsExternalVpnGatewayRequest.to_dict(request)
             )
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 

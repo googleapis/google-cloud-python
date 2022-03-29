@@ -85,7 +85,12 @@ def test__get_default_mtls_endpoint():
     assert AutoscalersClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
 
 
-@pytest.mark.parametrize("client_class,transport_name", [(AutoscalersClient, "rest"),])
+@pytest.mark.parametrize(
+    "client_class,transport_name",
+    [
+        (AutoscalersClient, "rest"),
+    ],
+)
 def test_autoscalers_client_from_service_account_info(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
@@ -105,7 +110,10 @@ def test_autoscalers_client_from_service_account_info(client_class, transport_na
 
 
 @pytest.mark.parametrize(
-    "transport_class,transport_name", [(transports.AutoscalersRestTransport, "rest"),]
+    "transport_class,transport_name",
+    [
+        (transports.AutoscalersRestTransport, "rest"),
+    ],
 )
 def test_autoscalers_client_service_account_always_use_jwt(
     transport_class, transport_name
@@ -125,7 +133,12 @@ def test_autoscalers_client_service_account_always_use_jwt(
         use_jwt.assert_not_called()
 
 
-@pytest.mark.parametrize("client_class,transport_name", [(AutoscalersClient, "rest"),])
+@pytest.mark.parametrize(
+    "client_class,transport_name",
+    [
+        (AutoscalersClient, "rest"),
+    ],
+)
 def test_autoscalers_client_from_service_account_file(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
@@ -164,7 +177,9 @@ def test_autoscalers_client_get_transport_class():
 
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
-    [(AutoscalersClient, transports.AutoscalersRestTransport, "rest"),],
+    [
+        (AutoscalersClient, transports.AutoscalersRestTransport, "rest"),
+    ],
 )
 @mock.patch.object(
     AutoscalersClient, "DEFAULT_ENDPOINT", modify_default_endpoint(AutoscalersClient)
@@ -441,13 +456,17 @@ def test_autoscalers_client_get_mtls_endpoint_and_cert_source(client_class):
 
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
-    [(AutoscalersClient, transports.AutoscalersRestTransport, "rest"),],
+    [
+        (AutoscalersClient, transports.AutoscalersRestTransport, "rest"),
+    ],
 )
 def test_autoscalers_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -465,7 +484,9 @@ def test_autoscalers_client_client_options_scopes(
 
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name,grpc_helpers",
-    [(AutoscalersClient, transports.AutoscalersRestTransport, "rest", None),],
+    [
+        (AutoscalersClient, transports.AutoscalersRestTransport, "rest", None),
+    ],
 )
 def test_autoscalers_client_client_options_credentials_file(
     client_class, transport_class, transport_name, grpc_helpers
@@ -489,11 +510,16 @@ def test_autoscalers_client_client_options_credentials_file(
 
 
 @pytest.mark.parametrize(
-    "request_type", [compute.AggregatedListAutoscalersRequest, dict,]
+    "request_type",
+    [
+        compute.AggregatedListAutoscalersRequest,
+        dict,
+    ],
 )
 def test_aggregated_list_rest(request_type):
     client = AutoscalersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -574,7 +600,8 @@ def test_aggregated_list_rest_required_fields(
     assert jsonified_request["project"] == "project_value"
 
     client = AutoscalersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -673,7 +700,11 @@ def test_aggregated_list_rest_interceptors(null_interceptor):
         post.return_value = compute.AutoscalerAggregatedList
 
         client.aggregated_list(
-            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
         )
 
         pre.assert_called_once()
@@ -684,7 +715,8 @@ def test_aggregated_list_rest_bad_request(
     transport: str = "rest", request_type=compute.AggregatedListAutoscalersRequest
 ):
     client = AutoscalersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -705,7 +737,8 @@ def test_aggregated_list_rest_bad_request(
 
 def test_aggregated_list_rest_flattened():
     client = AutoscalersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -717,7 +750,9 @@ def test_aggregated_list_rest_flattened():
         sample_request = {"project": "sample1"}
 
         # get truthy value for each flattened field
-        mock_args = dict(project="project_value",)
+        mock_args = dict(
+            project="project_value",
+        )
         mock_args.update(sample_request)
 
         # Wrap the value into a proper Response obj
@@ -743,20 +778,23 @@ def test_aggregated_list_rest_flattened():
 
 def test_aggregated_list_rest_flattened_error(transport: str = "rest"):
     client = AutoscalersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.aggregated_list(
-            compute.AggregatedListAutoscalersRequest(), project="project_value",
+            compute.AggregatedListAutoscalersRequest(),
+            project="project_value",
         )
 
 
 def test_aggregated_list_rest_pager(transport: str = "rest"):
     client = AutoscalersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Mock the http request call within the method and fake a response.
@@ -773,9 +811,15 @@ def test_aggregated_list_rest_pager(transport: str = "rest"):
                 },
                 next_page_token="abc",
             ),
-            compute.AutoscalerAggregatedList(items={}, next_page_token="def",),
             compute.AutoscalerAggregatedList(
-                items={"g": compute.AutoscalersScopedList(),}, next_page_token="ghi",
+                items={},
+                next_page_token="def",
+            ),
+            compute.AutoscalerAggregatedList(
+                items={
+                    "g": compute.AutoscalersScopedList(),
+                },
+                next_page_token="ghi",
             ),
             compute.AutoscalerAggregatedList(
                 items={
@@ -820,10 +864,17 @@ def test_aggregated_list_rest_pager(transport: str = "rest"):
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [compute.DeleteAutoscalerRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.DeleteAutoscalerRequest,
+        dict,
+    ],
+)
 def test_delete_unary_rest(request_type):
     client = AutoscalersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -937,7 +988,8 @@ def test_delete_unary_rest_required_fields(
     assert jsonified_request["zone"] == "zone_value"
 
     client = AutoscalersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -978,7 +1030,14 @@ def test_delete_unary_rest_unset_required_fields():
 
     unset_fields = transport.delete._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("requestId",)) & set(("autoscaler", "project", "zone",))
+        set(("requestId",))
+        & set(
+            (
+                "autoscaler",
+                "project",
+                "zone",
+            )
+        )
     )
 
 
@@ -1024,7 +1083,11 @@ def test_delete_unary_rest_interceptors(null_interceptor):
         post.return_value = compute.Operation
 
         client.delete_unary(
-            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
         )
 
         pre.assert_called_once()
@@ -1035,7 +1098,8 @@ def test_delete_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.DeleteAutoscalerRequest
 ):
     client = AutoscalersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -1056,7 +1120,8 @@ def test_delete_unary_rest_bad_request(
 
 def test_delete_unary_rest_flattened():
     client = AutoscalersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -1073,7 +1138,9 @@ def test_delete_unary_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            project="project_value", zone="zone_value", autoscaler="autoscaler_value",
+            project="project_value",
+            zone="zone_value",
+            autoscaler="autoscaler_value",
         )
         mock_args.update(sample_request)
 
@@ -1100,7 +1167,8 @@ def test_delete_unary_rest_flattened():
 
 def test_delete_unary_rest_flattened_error(transport: str = "rest"):
     client = AutoscalersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1120,10 +1188,17 @@ def test_delete_unary_rest_error():
     )
 
 
-@pytest.mark.parametrize("request_type", [compute.GetAutoscalerRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.GetAutoscalerRequest,
+        dict,
+    ],
+)
 def test_get_rest(request_type):
     client = AutoscalersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -1211,7 +1286,8 @@ def test_get_rest_required_fields(request_type=compute.GetAutoscalerRequest):
     assert jsonified_request["zone"] == "zone_value"
 
     client = AutoscalersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -1251,7 +1327,16 @@ def test_get_rest_unset_required_fields():
     )
 
     unset_fields = transport.get._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("autoscaler", "project", "zone",)))
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "autoscaler",
+                "project",
+                "zone",
+            )
+        )
+    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -1295,7 +1380,13 @@ def test_get_rest_interceptors(null_interceptor):
         pre.return_value = request, metadata
         post.return_value = compute.Autoscaler
 
-        client.get(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+        client.get(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
 
         pre.assert_called_once()
         post.assert_called_once()
@@ -1305,7 +1396,8 @@ def test_get_rest_bad_request(
     transport: str = "rest", request_type=compute.GetAutoscalerRequest
 ):
     client = AutoscalersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -1326,7 +1418,8 @@ def test_get_rest_bad_request(
 
 def test_get_rest_flattened():
     client = AutoscalersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -1343,7 +1436,9 @@ def test_get_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            project="project_value", zone="zone_value", autoscaler="autoscaler_value",
+            project="project_value",
+            zone="zone_value",
+            autoscaler="autoscaler_value",
         )
         mock_args.update(sample_request)
 
@@ -1370,7 +1465,8 @@ def test_get_rest_flattened():
 
 def test_get_rest_flattened_error(transport: str = "rest"):
     client = AutoscalersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1390,10 +1486,17 @@ def test_get_rest_error():
     )
 
 
-@pytest.mark.parametrize("request_type", [compute.InsertAutoscalerRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.InsertAutoscalerRequest,
+        dict,
+    ],
+)
 def test_insert_unary_rest(request_type):
     client = AutoscalersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -1547,7 +1650,8 @@ def test_insert_unary_rest_required_fields(
     assert jsonified_request["zone"] == "zone_value"
 
     client = AutoscalersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -1589,7 +1693,14 @@ def test_insert_unary_rest_unset_required_fields():
 
     unset_fields = transport.insert._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("requestId",)) & set(("autoscalerResource", "project", "zone",))
+        set(("requestId",))
+        & set(
+            (
+                "autoscalerResource",
+                "project",
+                "zone",
+            )
+        )
     )
 
 
@@ -1635,7 +1746,11 @@ def test_insert_unary_rest_interceptors(null_interceptor):
         post.return_value = compute.Operation
 
         client.insert_unary(
-            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
         )
 
         pre.assert_called_once()
@@ -1646,7 +1761,8 @@ def test_insert_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.InsertAutoscalerRequest
 ):
     client = AutoscalersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -1711,7 +1827,8 @@ def test_insert_unary_rest_bad_request(
 
 def test_insert_unary_rest_flattened():
     client = AutoscalersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -1755,7 +1872,8 @@ def test_insert_unary_rest_flattened():
 
 def test_insert_unary_rest_flattened_error(transport: str = "rest"):
     client = AutoscalersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1777,10 +1895,17 @@ def test_insert_unary_rest_error():
     )
 
 
-@pytest.mark.parametrize("request_type", [compute.ListAutoscalersRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.ListAutoscalersRequest,
+        dict,
+    ],
+)
 def test_list_rest(request_type):
     client = AutoscalersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -1843,7 +1968,13 @@ def test_list_rest_required_fields(request_type=compute.ListAutoscalersRequest):
     ).list._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
-        ("filter", "max_results", "order_by", "page_token", "return_partial_success",)
+        (
+            "filter",
+            "max_results",
+            "order_by",
+            "page_token",
+            "return_partial_success",
+        )
     )
     jsonified_request.update(unset_fields)
 
@@ -1854,7 +1985,8 @@ def test_list_rest_required_fields(request_type=compute.ListAutoscalersRequest):
     assert jsonified_request["zone"] == "zone_value"
 
     client = AutoscalersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -1895,8 +2027,21 @@ def test_list_rest_unset_required_fields():
 
     unset_fields = transport.list._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("filter", "maxResults", "orderBy", "pageToken", "returnPartialSuccess",))
-        & set(("project", "zone",))
+        set(
+            (
+                "filter",
+                "maxResults",
+                "orderBy",
+                "pageToken",
+                "returnPartialSuccess",
+            )
+        )
+        & set(
+            (
+                "project",
+                "zone",
+            )
+        )
     )
 
 
@@ -1943,7 +2088,13 @@ def test_list_rest_interceptors(null_interceptor):
         pre.return_value = request, metadata
         post.return_value = compute.AutoscalerList
 
-        client.list(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+        client.list(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
 
         pre.assert_called_once()
         post.assert_called_once()
@@ -1953,7 +2104,8 @@ def test_list_rest_bad_request(
     transport: str = "rest", request_type=compute.ListAutoscalersRequest
 ):
     client = AutoscalersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -1974,7 +2126,8 @@ def test_list_rest_bad_request(
 
 def test_list_rest_flattened():
     client = AutoscalersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -1986,7 +2139,10 @@ def test_list_rest_flattened():
         sample_request = {"project": "sample1", "zone": "sample2"}
 
         # get truthy value for each flattened field
-        mock_args = dict(project="project_value", zone="zone_value",)
+        mock_args = dict(
+            project="project_value",
+            zone="zone_value",
+        )
         mock_args.update(sample_request)
 
         # Wrap the value into a proper Response obj
@@ -2012,7 +2168,8 @@ def test_list_rest_flattened():
 
 def test_list_rest_flattened_error(transport: str = "rest"):
     client = AutoscalersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2027,7 +2184,8 @@ def test_list_rest_flattened_error(transport: str = "rest"):
 
 def test_list_rest_pager(transport: str = "rest"):
     client = AutoscalersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Mock the http request call within the method and fake a response.
@@ -2044,12 +2202,21 @@ def test_list_rest_pager(transport: str = "rest"):
                 ],
                 next_page_token="abc",
             ),
-            compute.AutoscalerList(items=[], next_page_token="def",),
             compute.AutoscalerList(
-                items=[compute.Autoscaler(),], next_page_token="ghi",
+                items=[],
+                next_page_token="def",
             ),
             compute.AutoscalerList(
-                items=[compute.Autoscaler(), compute.Autoscaler(),],
+                items=[
+                    compute.Autoscaler(),
+                ],
+                next_page_token="ghi",
+            ),
+            compute.AutoscalerList(
+                items=[
+                    compute.Autoscaler(),
+                    compute.Autoscaler(),
+                ],
             ),
         )
         # Two responses for two calls
@@ -2076,10 +2243,17 @@ def test_list_rest_pager(transport: str = "rest"):
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [compute.PatchAutoscalerRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.PatchAutoscalerRequest,
+        dict,
+    ],
+)
 def test_patch_unary_rest(request_type):
     client = AutoscalersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -2221,7 +2395,12 @@ def test_patch_unary_rest_required_fields(request_type=compute.PatchAutoscalerRe
         credentials=ga_credentials.AnonymousCredentials()
     ).patch._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("autoscaler", "request_id",))
+    assert not set(unset_fields) - set(
+        (
+            "autoscaler",
+            "request_id",
+        )
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -2231,7 +2410,8 @@ def test_patch_unary_rest_required_fields(request_type=compute.PatchAutoscalerRe
     assert jsonified_request["zone"] == "zone_value"
 
     client = AutoscalersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -2273,8 +2453,19 @@ def test_patch_unary_rest_unset_required_fields():
 
     unset_fields = transport.patch._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("autoscaler", "requestId",))
-        & set(("autoscalerResource", "project", "zone",))
+        set(
+            (
+                "autoscaler",
+                "requestId",
+            )
+        )
+        & set(
+            (
+                "autoscalerResource",
+                "project",
+                "zone",
+            )
+        )
     )
 
 
@@ -2319,7 +2510,13 @@ def test_patch_unary_rest_interceptors(null_interceptor):
         pre.return_value = request, metadata
         post.return_value = compute.Operation
 
-        client.patch_unary(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+        client.patch_unary(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
 
         pre.assert_called_once()
         post.assert_called_once()
@@ -2329,7 +2526,8 @@ def test_patch_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.PatchAutoscalerRequest
 ):
     client = AutoscalersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -2394,7 +2592,8 @@ def test_patch_unary_rest_bad_request(
 
 def test_patch_unary_rest_flattened():
     client = AutoscalersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -2438,7 +2637,8 @@ def test_patch_unary_rest_flattened():
 
 def test_patch_unary_rest_flattened_error(transport: str = "rest"):
     client = AutoscalersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2460,10 +2660,17 @@ def test_patch_unary_rest_error():
     )
 
 
-@pytest.mark.parametrize("request_type", [compute.UpdateAutoscalerRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.UpdateAutoscalerRequest,
+        dict,
+    ],
+)
 def test_update_unary_rest(request_type):
     client = AutoscalersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -2607,7 +2814,12 @@ def test_update_unary_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials()
     ).update._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("autoscaler", "request_id",))
+    assert not set(unset_fields) - set(
+        (
+            "autoscaler",
+            "request_id",
+        )
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -2617,7 +2829,8 @@ def test_update_unary_rest_required_fields(
     assert jsonified_request["zone"] == "zone_value"
 
     client = AutoscalersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -2659,8 +2872,19 @@ def test_update_unary_rest_unset_required_fields():
 
     unset_fields = transport.update._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("autoscaler", "requestId",))
-        & set(("autoscalerResource", "project", "zone",))
+        set(
+            (
+                "autoscaler",
+                "requestId",
+            )
+        )
+        & set(
+            (
+                "autoscalerResource",
+                "project",
+                "zone",
+            )
+        )
     )
 
 
@@ -2706,7 +2930,11 @@ def test_update_unary_rest_interceptors(null_interceptor):
         post.return_value = compute.Operation
 
         client.update_unary(
-            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
         )
 
         pre.assert_called_once()
@@ -2717,7 +2945,8 @@ def test_update_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.UpdateAutoscalerRequest
 ):
     client = AutoscalersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -2782,7 +3011,8 @@ def test_update_unary_rest_bad_request(
 
 def test_update_unary_rest_flattened():
     client = AutoscalersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -2826,7 +3056,8 @@ def test_update_unary_rest_flattened():
 
 def test_update_unary_rest_flattened_error(transport: str = "rest"):
     client = AutoscalersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2855,7 +3086,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = AutoscalersClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -2875,7 +3107,10 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = AutoscalersClient(client_options=options, transport=transport,)
+        client = AutoscalersClient(
+            client_options=options,
+            transport=transport,
+        )
 
     # It is an error to provide an api_key and a credential.
     options = mock.Mock()
@@ -2891,7 +3126,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = AutoscalersClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -2904,7 +3140,12 @@ def test_transport_instance():
     assert client.transport is transport
 
 
-@pytest.mark.parametrize("transport_class", [transports.AutoscalersRestTransport,])
+@pytest.mark.parametrize(
+    "transport_class",
+    [
+        transports.AutoscalersRestTransport,
+    ],
+)
 def test_transport_adc(transport_class):
     # Test default credentials are used if not provided.
     with mock.patch.object(google.auth, "default") as adc:
@@ -2961,7 +3202,8 @@ def test_autoscalers_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.AutoscalersTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -3011,7 +3253,12 @@ def test_autoscalers_http_transport_client_cert_source_for_mtls():
         mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
 
 
-@pytest.mark.parametrize("transport_name", ["rest",])
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
 def test_autoscalers_host_no_port(transport_name):
     client = AutoscalersClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3027,7 +3274,12 @@ def test_autoscalers_host_no_port(transport_name):
     )
 
 
-@pytest.mark.parametrize("transport_name", ["rest",])
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
 def test_autoscalers_host_with_port(transport_name):
     client = AutoscalersClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3065,7 +3317,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "whelk"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = AutoscalersClient.common_folder_path(folder)
     assert expected == actual
 
@@ -3083,7 +3337,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "oyster"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = AutoscalersClient.common_organization_path(organization)
     assert expected == actual
 
@@ -3101,7 +3357,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "cuttlefish"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = AutoscalersClient.common_project_path(project)
     assert expected == actual
 
@@ -3121,7 +3379,8 @@ def test_common_location_path():
     project = "winkle"
     location = "nautilus"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = AutoscalersClient.common_location_path(project, location)
     assert expected == actual
@@ -3146,7 +3405,8 @@ def test_client_with_default_client_info():
         transports.AutoscalersTransport, "_prep_wrapped_messages"
     ) as prep:
         client = AutoscalersClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -3155,7 +3415,8 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = AutoscalersClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -3195,7 +3456,9 @@ def test_client_ctx():
 
 @pytest.mark.parametrize(
     "client_class,transport_class",
-    [(AutoscalersClient, transports.AutoscalersRestTransport),],
+    [
+        (AutoscalersClient, transports.AutoscalersRestTransport),
+    ],
 )
 def test_api_key_credentials(client_class, transport_class):
     with mock.patch.object(

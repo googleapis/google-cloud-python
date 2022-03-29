@@ -82,7 +82,12 @@ def test__get_default_mtls_endpoint():
     assert ImagesClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
 
 
-@pytest.mark.parametrize("client_class,transport_name", [(ImagesClient, "rest"),])
+@pytest.mark.parametrize(
+    "client_class,transport_name",
+    [
+        (ImagesClient, "rest"),
+    ],
+)
 def test_images_client_from_service_account_info(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
@@ -102,7 +107,10 @@ def test_images_client_from_service_account_info(client_class, transport_name):
 
 
 @pytest.mark.parametrize(
-    "transport_class,transport_name", [(transports.ImagesRestTransport, "rest"),]
+    "transport_class,transport_name",
+    [
+        (transports.ImagesRestTransport, "rest"),
+    ],
 )
 def test_images_client_service_account_always_use_jwt(transport_class, transport_name):
     with mock.patch.object(
@@ -120,7 +128,12 @@ def test_images_client_service_account_always_use_jwt(transport_class, transport
         use_jwt.assert_not_called()
 
 
-@pytest.mark.parametrize("client_class,transport_name", [(ImagesClient, "rest"),])
+@pytest.mark.parametrize(
+    "client_class,transport_name",
+    [
+        (ImagesClient, "rest"),
+    ],
+)
 def test_images_client_from_service_account_file(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
@@ -159,7 +172,9 @@ def test_images_client_get_transport_class():
 
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
-    [(ImagesClient, transports.ImagesRestTransport, "rest"),],
+    [
+        (ImagesClient, transports.ImagesRestTransport, "rest"),
+    ],
 )
 @mock.patch.object(
     ImagesClient, "DEFAULT_ENDPOINT", modify_default_endpoint(ImagesClient)
@@ -434,13 +449,17 @@ def test_images_client_get_mtls_endpoint_and_cert_source(client_class):
 
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
-    [(ImagesClient, transports.ImagesRestTransport, "rest"),],
+    [
+        (ImagesClient, transports.ImagesRestTransport, "rest"),
+    ],
 )
 def test_images_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -458,7 +477,9 @@ def test_images_client_client_options_scopes(
 
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name,grpc_helpers",
-    [(ImagesClient, transports.ImagesRestTransport, "rest", None),],
+    [
+        (ImagesClient, transports.ImagesRestTransport, "rest", None),
+    ],
 )
 def test_images_client_client_options_credentials_file(
     client_class, transport_class, transport_name, grpc_helpers
@@ -481,10 +502,17 @@ def test_images_client_client_options_credentials_file(
         )
 
 
-@pytest.mark.parametrize("request_type", [compute.DeleteImageRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.DeleteImageRequest,
+        dict,
+    ],
+)
 def test_delete_unary_rest(request_type):
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -592,7 +620,8 @@ def test_delete_unary_rest_required_fields(request_type=compute.DeleteImageReque
     assert jsonified_request["project"] == "project_value"
 
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -632,7 +661,15 @@ def test_delete_unary_rest_unset_required_fields():
     )
 
     unset_fields = transport.delete._get_unset_required_fields({})
-    assert set(unset_fields) == (set(("requestId",)) & set(("image", "project",)))
+    assert set(unset_fields) == (
+        set(("requestId",))
+        & set(
+            (
+                "image",
+                "project",
+            )
+        )
+    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -675,7 +712,11 @@ def test_delete_unary_rest_interceptors(null_interceptor):
         post.return_value = compute.Operation
 
         client.delete_unary(
-            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
         )
 
         pre.assert_called_once()
@@ -686,7 +727,8 @@ def test_delete_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.DeleteImageRequest
 ):
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -707,7 +749,8 @@ def test_delete_unary_rest_bad_request(
 
 def test_delete_unary_rest_flattened():
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -719,7 +762,10 @@ def test_delete_unary_rest_flattened():
         sample_request = {"project": "sample1", "image": "sample2"}
 
         # get truthy value for each flattened field
-        mock_args = dict(project="project_value", image="image_value",)
+        mock_args = dict(
+            project="project_value",
+            image="image_value",
+        )
         mock_args.update(sample_request)
 
         # Wrap the value into a proper Response obj
@@ -745,14 +791,17 @@ def test_delete_unary_rest_flattened():
 
 def test_delete_unary_rest_flattened_error(transport: str = "rest"):
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_unary(
-            compute.DeleteImageRequest(), project="project_value", image="image_value",
+            compute.DeleteImageRequest(),
+            project="project_value",
+            image="image_value",
         )
 
 
@@ -762,10 +811,17 @@ def test_delete_unary_rest_error():
     )
 
 
-@pytest.mark.parametrize("request_type", [compute.DeprecateImageRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.DeprecateImageRequest,
+        dict,
+    ],
+)
 def test_deprecate_unary_rest(request_type):
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -882,7 +938,8 @@ def test_deprecate_unary_rest_required_fields(
     assert jsonified_request["project"] == "project_value"
 
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -924,7 +981,14 @@ def test_deprecate_unary_rest_unset_required_fields():
 
     unset_fields = transport.deprecate._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("requestId",)) & set(("deprecationStatusResource", "image", "project",))
+        set(("requestId",))
+        & set(
+            (
+                "deprecationStatusResource",
+                "image",
+                "project",
+            )
+        )
     )
 
 
@@ -968,7 +1032,11 @@ def test_deprecate_unary_rest_interceptors(null_interceptor):
         post.return_value = compute.Operation
 
         client.deprecate_unary(
-            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
         )
 
         pre.assert_called_once()
@@ -979,7 +1047,8 @@ def test_deprecate_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.DeprecateImageRequest
 ):
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -1007,7 +1076,8 @@ def test_deprecate_unary_rest_bad_request(
 
 def test_deprecate_unary_rest_flattened():
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -1051,7 +1121,8 @@ def test_deprecate_unary_rest_flattened():
 
 def test_deprecate_unary_rest_flattened_error(transport: str = "rest"):
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1073,10 +1144,17 @@ def test_deprecate_unary_rest_error():
     )
 
 
-@pytest.mark.parametrize("request_type", [compute.GetImageRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.GetImageRequest,
+        dict,
+    ],
+)
 def test_get_rest(request_type):
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -1182,7 +1260,8 @@ def test_get_rest_required_fields(request_type=compute.GetImageRequest):
     assert jsonified_request["project"] == "project_value"
 
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -1222,7 +1301,15 @@ def test_get_rest_unset_required_fields():
     )
 
     unset_fields = transport.get._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("image", "project",)))
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "image",
+                "project",
+            )
+        )
+    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -1264,7 +1351,13 @@ def test_get_rest_interceptors(null_interceptor):
         pre.return_value = request, metadata
         post.return_value = compute.Image
 
-        client.get(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+        client.get(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
 
         pre.assert_called_once()
         post.assert_called_once()
@@ -1274,7 +1367,8 @@ def test_get_rest_bad_request(
     transport: str = "rest", request_type=compute.GetImageRequest
 ):
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -1295,7 +1389,8 @@ def test_get_rest_bad_request(
 
 def test_get_rest_flattened():
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -1307,7 +1402,10 @@ def test_get_rest_flattened():
         sample_request = {"project": "sample1", "image": "sample2"}
 
         # get truthy value for each flattened field
-        mock_args = dict(project="project_value", image="image_value",)
+        mock_args = dict(
+            project="project_value",
+            image="image_value",
+        )
         mock_args.update(sample_request)
 
         # Wrap the value into a proper Response obj
@@ -1333,14 +1431,17 @@ def test_get_rest_flattened():
 
 def test_get_rest_flattened_error(transport: str = "rest"):
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get(
-            compute.GetImageRequest(), project="project_value", image="image_value",
+            compute.GetImageRequest(),
+            project="project_value",
+            image="image_value",
         )
 
 
@@ -1350,10 +1451,17 @@ def test_get_rest_error():
     )
 
 
-@pytest.mark.parametrize("request_type", [compute.GetFromFamilyImageRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.GetFromFamilyImageRequest,
+        dict,
+    ],
+)
 def test_get_from_family_rest(request_type):
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -1461,7 +1569,8 @@ def test_get_from_family_rest_required_fields(
     assert jsonified_request["project"] == "project_value"
 
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -1501,7 +1610,15 @@ def test_get_from_family_rest_unset_required_fields():
     )
 
     unset_fields = transport.get_from_family._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("family", "project",)))
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "family",
+                "project",
+            )
+        )
+    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -1544,7 +1661,11 @@ def test_get_from_family_rest_interceptors(null_interceptor):
         post.return_value = compute.Image
 
         client.get_from_family(
-            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
         )
 
         pre.assert_called_once()
@@ -1555,7 +1676,8 @@ def test_get_from_family_rest_bad_request(
     transport: str = "rest", request_type=compute.GetFromFamilyImageRequest
 ):
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -1576,7 +1698,8 @@ def test_get_from_family_rest_bad_request(
 
 def test_get_from_family_rest_flattened():
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -1588,7 +1711,10 @@ def test_get_from_family_rest_flattened():
         sample_request = {"project": "sample1", "family": "sample2"}
 
         # get truthy value for each flattened field
-        mock_args = dict(project="project_value", family="family_value",)
+        mock_args = dict(
+            project="project_value",
+            family="family_value",
+        )
         mock_args.update(sample_request)
 
         # Wrap the value into a proper Response obj
@@ -1614,7 +1740,8 @@ def test_get_from_family_rest_flattened():
 
 def test_get_from_family_rest_flattened_error(transport: str = "rest"):
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1633,10 +1760,17 @@ def test_get_from_family_rest_error():
     )
 
 
-@pytest.mark.parametrize("request_type", [compute.GetIamPolicyImageRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.GetIamPolicyImageRequest,
+        dict,
+    ],
+)
 def test_get_iam_policy_rest(request_type):
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -1646,7 +1780,11 @@ def test_get_iam_policy_rest(request_type):
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = compute.Policy(etag="etag_value", iam_owned=True, version=774,)
+        return_value = compute.Policy(
+            etag="etag_value",
+            iam_owned=True,
+            version=774,
+        )
 
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -1704,7 +1842,8 @@ def test_get_iam_policy_rest_required_fields(
     assert jsonified_request["resource"] == "resource_value"
 
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -1745,7 +1884,13 @@ def test_get_iam_policy_rest_unset_required_fields():
 
     unset_fields = transport.get_iam_policy._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("optionsRequestedPolicyVersion",)) & set(("project", "resource",))
+        set(("optionsRequestedPolicyVersion",))
+        & set(
+            (
+                "project",
+                "resource",
+            )
+        )
     )
 
 
@@ -1789,7 +1934,11 @@ def test_get_iam_policy_rest_interceptors(null_interceptor):
         post.return_value = compute.Policy
 
         client.get_iam_policy(
-            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
         )
 
         pre.assert_called_once()
@@ -1800,7 +1949,8 @@ def test_get_iam_policy_rest_bad_request(
     transport: str = "rest", request_type=compute.GetIamPolicyImageRequest
 ):
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -1821,7 +1971,8 @@ def test_get_iam_policy_rest_bad_request(
 
 def test_get_iam_policy_rest_flattened():
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -1833,7 +1984,10 @@ def test_get_iam_policy_rest_flattened():
         sample_request = {"project": "sample1", "resource": "sample2"}
 
         # get truthy value for each flattened field
-        mock_args = dict(project="project_value", resource="resource_value",)
+        mock_args = dict(
+            project="project_value",
+            resource="resource_value",
+        )
         mock_args.update(sample_request)
 
         # Wrap the value into a proper Response obj
@@ -1859,7 +2013,8 @@ def test_get_iam_policy_rest_flattened():
 
 def test_get_iam_policy_rest_flattened_error(transport: str = "rest"):
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1878,10 +2033,17 @@ def test_get_iam_policy_rest_error():
     )
 
 
-@pytest.mark.parametrize("request_type", [compute.InsertImageRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.InsertImageRequest,
+        dict,
+    ],
+)
 def test_insert_unary_rest(request_type):
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -2031,7 +2193,12 @@ def test_insert_unary_rest_required_fields(request_type=compute.InsertImageReque
         credentials=ga_credentials.AnonymousCredentials()
     ).insert._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("force_create", "request_id",))
+    assert not set(unset_fields) - set(
+        (
+            "force_create",
+            "request_id",
+        )
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -2039,7 +2206,8 @@ def test_insert_unary_rest_required_fields(request_type=compute.InsertImageReque
     assert jsonified_request["project"] == "project_value"
 
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -2081,7 +2249,18 @@ def test_insert_unary_rest_unset_required_fields():
 
     unset_fields = transport.insert._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("forceCreate", "requestId",)) & set(("imageResource", "project",))
+        set(
+            (
+                "forceCreate",
+                "requestId",
+            )
+        )
+        & set(
+            (
+                "imageResource",
+                "project",
+            )
+        )
     )
 
 
@@ -2125,7 +2304,11 @@ def test_insert_unary_rest_interceptors(null_interceptor):
         post.return_value = compute.Operation
 
         client.insert_unary(
-            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
         )
 
         pre.assert_called_once()
@@ -2136,7 +2319,8 @@ def test_insert_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.InsertImageRequest
 ):
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -2211,7 +2395,8 @@ def test_insert_unary_rest_bad_request(
 
 def test_insert_unary_rest_flattened():
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -2251,7 +2436,8 @@ def test_insert_unary_rest_flattened():
 
 def test_insert_unary_rest_flattened_error(transport: str = "rest"):
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2270,10 +2456,17 @@ def test_insert_unary_rest_error():
     )
 
 
-@pytest.mark.parametrize("request_type", [compute.ListImagesRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.ListImagesRequest,
+        dict,
+    ],
+)
 def test_list_rest(request_type):
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -2334,7 +2527,13 @@ def test_list_rest_required_fields(request_type=compute.ListImagesRequest):
     ).list._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
-        ("filter", "max_results", "order_by", "page_token", "return_partial_success",)
+        (
+            "filter",
+            "max_results",
+            "order_by",
+            "page_token",
+            "return_partial_success",
+        )
     )
     jsonified_request.update(unset_fields)
 
@@ -2343,7 +2542,8 @@ def test_list_rest_required_fields(request_type=compute.ListImagesRequest):
     assert jsonified_request["project"] == "project_value"
 
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -2384,7 +2584,15 @@ def test_list_rest_unset_required_fields():
 
     unset_fields = transport.list._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("filter", "maxResults", "orderBy", "pageToken", "returnPartialSuccess",))
+        set(
+            (
+                "filter",
+                "maxResults",
+                "orderBy",
+                "pageToken",
+                "returnPartialSuccess",
+            )
+        )
         & set(("project",))
     )
 
@@ -2428,7 +2636,13 @@ def test_list_rest_interceptors(null_interceptor):
         pre.return_value = request, metadata
         post.return_value = compute.ImageList
 
-        client.list(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+        client.list(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
 
         pre.assert_called_once()
         post.assert_called_once()
@@ -2438,7 +2652,8 @@ def test_list_rest_bad_request(
     transport: str = "rest", request_type=compute.ListImagesRequest
 ):
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -2459,7 +2674,8 @@ def test_list_rest_bad_request(
 
 def test_list_rest_flattened():
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -2471,7 +2687,9 @@ def test_list_rest_flattened():
         sample_request = {"project": "sample1"}
 
         # get truthy value for each flattened field
-        mock_args = dict(project="project_value",)
+        mock_args = dict(
+            project="project_value",
+        )
         mock_args.update(sample_request)
 
         # Wrap the value into a proper Response obj
@@ -2496,20 +2714,23 @@ def test_list_rest_flattened():
 
 def test_list_rest_flattened_error(transport: str = "rest"):
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list(
-            compute.ListImagesRequest(), project="project_value",
+            compute.ListImagesRequest(),
+            project="project_value",
         )
 
 
 def test_list_rest_pager(transport: str = "rest"):
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Mock the http request call within the method and fake a response.
@@ -2519,12 +2740,29 @@ def test_list_rest_pager(transport: str = "rest"):
         # Set the response as a series of pages
         response = (
             compute.ImageList(
-                items=[compute.Image(), compute.Image(), compute.Image(),],
+                items=[
+                    compute.Image(),
+                    compute.Image(),
+                    compute.Image(),
+                ],
                 next_page_token="abc",
             ),
-            compute.ImageList(items=[], next_page_token="def",),
-            compute.ImageList(items=[compute.Image(),], next_page_token="ghi",),
-            compute.ImageList(items=[compute.Image(), compute.Image(),],),
+            compute.ImageList(
+                items=[],
+                next_page_token="def",
+            ),
+            compute.ImageList(
+                items=[
+                    compute.Image(),
+                ],
+                next_page_token="ghi",
+            ),
+            compute.ImageList(
+                items=[
+                    compute.Image(),
+                    compute.Image(),
+                ],
+            ),
         )
         # Two responses for two calls
         response = response + response
@@ -2550,10 +2788,17 @@ def test_list_rest_pager(transport: str = "rest"):
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [compute.PatchImageRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.PatchImageRequest,
+        dict,
+    ],
+)
 def test_patch_unary_rest(request_type):
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -2715,7 +2960,8 @@ def test_patch_unary_rest_required_fields(request_type=compute.PatchImageRequest
     assert jsonified_request["project"] == "project_value"
 
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -2757,7 +3003,14 @@ def test_patch_unary_rest_unset_required_fields():
 
     unset_fields = transport.patch._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("requestId",)) & set(("image", "imageResource", "project",))
+        set(("requestId",))
+        & set(
+            (
+                "image",
+                "imageResource",
+                "project",
+            )
+        )
     )
 
 
@@ -2800,7 +3053,13 @@ def test_patch_unary_rest_interceptors(null_interceptor):
         pre.return_value = request, metadata
         post.return_value = compute.Operation
 
-        client.patch_unary(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+        client.patch_unary(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
 
         pre.assert_called_once()
         post.assert_called_once()
@@ -2810,7 +3069,8 @@ def test_patch_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.PatchImageRequest
 ):
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -2885,7 +3145,8 @@ def test_patch_unary_rest_bad_request(
 
 def test_patch_unary_rest_flattened():
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -2927,7 +3188,8 @@ def test_patch_unary_rest_flattened():
 
 def test_patch_unary_rest_flattened_error(transport: str = "rest"):
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2947,10 +3209,17 @@ def test_patch_unary_rest_error():
     )
 
 
-@pytest.mark.parametrize("request_type", [compute.SetIamPolicyImageRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.SetIamPolicyImageRequest,
+        dict,
+    ],
+)
 def test_set_iam_policy_rest(request_type):
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -3037,7 +3306,11 @@ def test_set_iam_policy_rest(request_type):
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = compute.Policy(etag="etag_value", iam_owned=True, version=774,)
+        return_value = compute.Policy(
+            etag="etag_value",
+            iam_owned=True,
+            version=774,
+        )
 
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -3093,7 +3366,8 @@ def test_set_iam_policy_rest_required_fields(
     assert jsonified_request["resource"] == "resource_value"
 
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -3135,7 +3409,14 @@ def test_set_iam_policy_rest_unset_required_fields():
 
     unset_fields = transport.set_iam_policy._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(()) & set(("globalSetPolicyRequestResource", "project", "resource",))
+        set(())
+        & set(
+            (
+                "globalSetPolicyRequestResource",
+                "project",
+                "resource",
+            )
+        )
     )
 
 
@@ -3179,7 +3460,11 @@ def test_set_iam_policy_rest_interceptors(null_interceptor):
         post.return_value = compute.Policy
 
         client.set_iam_policy(
-            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
         )
 
         pre.assert_called_once()
@@ -3190,7 +3475,8 @@ def test_set_iam_policy_rest_bad_request(
     transport: str = "rest", request_type=compute.SetIamPolicyImageRequest
 ):
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -3288,7 +3574,8 @@ def test_set_iam_policy_rest_bad_request(
 
 def test_set_iam_policy_rest_flattened():
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -3332,7 +3619,8 @@ def test_set_iam_policy_rest_flattened():
 
 def test_set_iam_policy_rest_flattened_error(transport: str = "rest"):
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3354,10 +3642,17 @@ def test_set_iam_policy_rest_error():
     )
 
 
-@pytest.mark.parametrize("request_type", [compute.SetLabelsImageRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.SetLabelsImageRequest,
+        dict,
+    ],
+)
 def test_set_labels_unary_rest(request_type):
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -3469,7 +3764,8 @@ def test_set_labels_unary_rest_required_fields(
     assert jsonified_request["resource"] == "resource_value"
 
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -3511,7 +3807,14 @@ def test_set_labels_unary_rest_unset_required_fields():
 
     unset_fields = transport.set_labels._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(()) & set(("globalSetLabelsRequestResource", "project", "resource",))
+        set(())
+        & set(
+            (
+                "globalSetLabelsRequestResource",
+                "project",
+                "resource",
+            )
+        )
     )
 
 
@@ -3555,7 +3858,11 @@ def test_set_labels_unary_rest_interceptors(null_interceptor):
         post.return_value = compute.Operation
 
         client.set_labels_unary(
-            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
         )
 
         pre.assert_called_once()
@@ -3566,7 +3873,8 @@ def test_set_labels_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.SetLabelsImageRequest
 ):
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -3591,7 +3899,8 @@ def test_set_labels_unary_rest_bad_request(
 
 def test_set_labels_unary_rest_flattened():
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -3635,7 +3944,8 @@ def test_set_labels_unary_rest_flattened():
 
 def test_set_labels_unary_rest_flattened_error(transport: str = "rest"):
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3658,11 +3968,16 @@ def test_set_labels_unary_rest_error():
 
 
 @pytest.mark.parametrize(
-    "request_type", [compute.TestIamPermissionsImageRequest, dict,]
+    "request_type",
+    [
+        compute.TestIamPermissionsImageRequest,
+        dict,
+    ],
 )
 def test_test_iam_permissions_rest(request_type):
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -3731,7 +4046,8 @@ def test_test_iam_permissions_rest_required_fields(
     assert jsonified_request["resource"] == "resource_value"
 
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -3773,7 +4089,14 @@ def test_test_iam_permissions_rest_unset_required_fields():
 
     unset_fields = transport.test_iam_permissions._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(()) & set(("project", "resource", "testPermissionsRequestResource",))
+        set(())
+        & set(
+            (
+                "project",
+                "resource",
+                "testPermissionsRequestResource",
+            )
+        )
     )
 
 
@@ -3819,7 +4142,11 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
         post.return_value = compute.TestPermissionsResponse
 
         client.test_iam_permissions(
-            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
         )
 
         pre.assert_called_once()
@@ -3830,7 +4157,8 @@ def test_test_iam_permissions_rest_bad_request(
     transport: str = "rest", request_type=compute.TestIamPermissionsImageRequest
 ):
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -3854,7 +4182,8 @@ def test_test_iam_permissions_rest_bad_request(
 
 def test_test_iam_permissions_rest_flattened():
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -3898,7 +4227,8 @@ def test_test_iam_permissions_rest_flattened():
 
 def test_test_iam_permissions_rest_flattened_error(transport: str = "rest"):
     client = ImagesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3927,7 +4257,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = ImagesClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -3947,7 +4278,10 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = ImagesClient(client_options=options, transport=transport,)
+        client = ImagesClient(
+            client_options=options,
+            transport=transport,
+        )
 
     # It is an error to provide an api_key and a credential.
     options = mock.Mock()
@@ -3963,7 +4297,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = ImagesClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -3976,7 +4311,12 @@ def test_transport_instance():
     assert client.transport is transport
 
 
-@pytest.mark.parametrize("transport_class", [transports.ImagesRestTransport,])
+@pytest.mark.parametrize(
+    "transport_class",
+    [
+        transports.ImagesRestTransport,
+    ],
+)
 def test_transport_adc(transport_class):
     # Test default credentials are used if not provided.
     with mock.patch.object(google.auth, "default") as adc:
@@ -4037,7 +4377,8 @@ def test_images_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.ImagesTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -4087,7 +4428,12 @@ def test_images_http_transport_client_cert_source_for_mtls():
         mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
 
 
-@pytest.mark.parametrize("transport_name", ["rest",])
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
 def test_images_host_no_port(transport_name):
     client = ImagesClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -4103,7 +4449,12 @@ def test_images_host_no_port(transport_name):
     )
 
 
-@pytest.mark.parametrize("transport_name", ["rest",])
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
 def test_images_host_with_port(transport_name):
     client = ImagesClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -4141,7 +4492,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "whelk"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = ImagesClient.common_folder_path(folder)
     assert expected == actual
 
@@ -4159,7 +4512,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "oyster"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = ImagesClient.common_organization_path(organization)
     assert expected == actual
 
@@ -4177,7 +4532,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "cuttlefish"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = ImagesClient.common_project_path(project)
     assert expected == actual
 
@@ -4197,7 +4554,8 @@ def test_common_location_path():
     project = "winkle"
     location = "nautilus"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = ImagesClient.common_location_path(project, location)
     assert expected == actual
@@ -4222,7 +4580,8 @@ def test_client_with_default_client_info():
         transports.ImagesTransport, "_prep_wrapped_messages"
     ) as prep:
         client = ImagesClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -4231,7 +4590,8 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = ImagesClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -4270,7 +4630,10 @@ def test_client_ctx():
 
 
 @pytest.mark.parametrize(
-    "client_class,transport_class", [(ImagesClient, transports.ImagesRestTransport),]
+    "client_class,transport_class",
+    [
+        (ImagesClient, transports.ImagesRestTransport),
+    ],
 )
 def test_api_key_credentials(client_class, transport_class):
     with mock.patch.object(

@@ -606,8 +606,10 @@ class NetworkEndpointGroupsRestTransport(NetworkEndpointGroupsTransport):
             request, metadata = self._interceptor.pre_attach_network_endpoints(
                 request, metadata
             )
-            request_kwargs = compute.AttachNetworkEndpointsNetworkEndpointGroupRequest.to_dict(
-                request
+            request_kwargs = (
+                compute.AttachNetworkEndpointsNetworkEndpointGroupRequest.to_dict(
+                    request
+                )
             )
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -828,8 +830,10 @@ class NetworkEndpointGroupsRestTransport(NetworkEndpointGroupsTransport):
             request, metadata = self._interceptor.pre_detach_network_endpoints(
                 request, metadata
             )
-            request_kwargs = compute.DetachNetworkEndpointsNetworkEndpointGroupRequest.to_dict(
-                request
+            request_kwargs = (
+                compute.DetachNetworkEndpointsNetworkEndpointGroupRequest.to_dict(
+                    request
+                )
             )
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -1232,8 +1236,10 @@ class NetworkEndpointGroupsRestTransport(NetworkEndpointGroupsTransport):
             request, metadata = self._interceptor.pre_list_network_endpoints(
                 request, metadata
             )
-            request_kwargs = compute.ListNetworkEndpointsNetworkEndpointGroupsRequest.to_dict(
-                request
+            request_kwargs = (
+                compute.ListNetworkEndpointsNetworkEndpointGroupsRequest.to_dict(
+                    request
+                )
             )
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
@@ -1335,8 +1341,8 @@ class NetworkEndpointGroupsRestTransport(NetworkEndpointGroupsTransport):
             request, metadata = self._interceptor.pre_test_iam_permissions(
                 request, metadata
             )
-            request_kwargs = compute.TestIamPermissionsNetworkEndpointGroupRequest.to_dict(
-                request
+            request_kwargs = (
+                compute.TestIamPermissionsNetworkEndpointGroupRequest.to_dict(request)
             )
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 

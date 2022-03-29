@@ -83,7 +83,12 @@ def test__get_default_mtls_endpoint():
     assert ProjectsClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
 
 
-@pytest.mark.parametrize("client_class,transport_name", [(ProjectsClient, "rest"),])
+@pytest.mark.parametrize(
+    "client_class,transport_name",
+    [
+        (ProjectsClient, "rest"),
+    ],
+)
 def test_projects_client_from_service_account_info(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
@@ -103,7 +108,10 @@ def test_projects_client_from_service_account_info(client_class, transport_name)
 
 
 @pytest.mark.parametrize(
-    "transport_class,transport_name", [(transports.ProjectsRestTransport, "rest"),]
+    "transport_class,transport_name",
+    [
+        (transports.ProjectsRestTransport, "rest"),
+    ],
 )
 def test_projects_client_service_account_always_use_jwt(
     transport_class, transport_name
@@ -123,7 +131,12 @@ def test_projects_client_service_account_always_use_jwt(
         use_jwt.assert_not_called()
 
 
-@pytest.mark.parametrize("client_class,transport_name", [(ProjectsClient, "rest"),])
+@pytest.mark.parametrize(
+    "client_class,transport_name",
+    [
+        (ProjectsClient, "rest"),
+    ],
+)
 def test_projects_client_from_service_account_file(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
@@ -162,7 +175,9 @@ def test_projects_client_get_transport_class():
 
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
-    [(ProjectsClient, transports.ProjectsRestTransport, "rest"),],
+    [
+        (ProjectsClient, transports.ProjectsRestTransport, "rest"),
+    ],
 )
 @mock.patch.object(
     ProjectsClient, "DEFAULT_ENDPOINT", modify_default_endpoint(ProjectsClient)
@@ -437,13 +452,17 @@ def test_projects_client_get_mtls_endpoint_and_cert_source(client_class):
 
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
-    [(ProjectsClient, transports.ProjectsRestTransport, "rest"),],
+    [
+        (ProjectsClient, transports.ProjectsRestTransport, "rest"),
+    ],
 )
 def test_projects_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -461,7 +480,9 @@ def test_projects_client_client_options_scopes(
 
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name,grpc_helpers",
-    [(ProjectsClient, transports.ProjectsRestTransport, "rest", None),],
+    [
+        (ProjectsClient, transports.ProjectsRestTransport, "rest", None),
+    ],
 )
 def test_projects_client_client_options_credentials_file(
     client_class, transport_class, transport_name, grpc_helpers
@@ -484,10 +505,17 @@ def test_projects_client_client_options_credentials_file(
         )
 
 
-@pytest.mark.parametrize("request_type", [compute.DisableXpnHostProjectRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.DisableXpnHostProjectRequest,
+        dict,
+    ],
+)
 def test_disable_xpn_host_unary_rest(request_type):
     client = ProjectsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -593,7 +621,8 @@ def test_disable_xpn_host_unary_rest_required_fields(
     assert jsonified_request["project"] == "project_value"
 
     client = ProjectsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -676,7 +705,11 @@ def test_disable_xpn_host_unary_rest_interceptors(null_interceptor):
         post.return_value = compute.Operation
 
         client.disable_xpn_host_unary(
-            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
         )
 
         pre.assert_called_once()
@@ -687,7 +720,8 @@ def test_disable_xpn_host_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.DisableXpnHostProjectRequest
 ):
     client = ProjectsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -708,7 +742,8 @@ def test_disable_xpn_host_unary_rest_bad_request(
 
 def test_disable_xpn_host_unary_rest_flattened():
     client = ProjectsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -720,7 +755,9 @@ def test_disable_xpn_host_unary_rest_flattened():
         sample_request = {"project": "sample1"}
 
         # get truthy value for each flattened field
-        mock_args = dict(project="project_value",)
+        mock_args = dict(
+            project="project_value",
+        )
         mock_args.update(sample_request)
 
         # Wrap the value into a proper Response obj
@@ -745,14 +782,16 @@ def test_disable_xpn_host_unary_rest_flattened():
 
 def test_disable_xpn_host_unary_rest_flattened_error(transport: str = "rest"):
     client = ProjectsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.disable_xpn_host_unary(
-            compute.DisableXpnHostProjectRequest(), project="project_value",
+            compute.DisableXpnHostProjectRequest(),
+            project="project_value",
         )
 
 
@@ -763,11 +802,16 @@ def test_disable_xpn_host_unary_rest_error():
 
 
 @pytest.mark.parametrize(
-    "request_type", [compute.DisableXpnResourceProjectRequest, dict,]
+    "request_type",
+    [
+        compute.DisableXpnResourceProjectRequest,
+        dict,
+    ],
 )
 def test_disable_xpn_resource_unary_rest(request_type):
     client = ProjectsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -876,7 +920,8 @@ def test_disable_xpn_resource_unary_rest_required_fields(
     assert jsonified_request["project"] == "project_value"
 
     client = ProjectsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -919,7 +964,12 @@ def test_disable_xpn_resource_unary_rest_unset_required_fields():
     unset_fields = transport.disable_xpn_resource._get_unset_required_fields({})
     assert set(unset_fields) == (
         set(("requestId",))
-        & set(("project", "projectsDisableXpnResourceRequestResource",))
+        & set(
+            (
+                "project",
+                "projectsDisableXpnResourceRequestResource",
+            )
+        )
     )
 
 
@@ -963,7 +1013,11 @@ def test_disable_xpn_resource_unary_rest_interceptors(null_interceptor):
         post.return_value = compute.Operation
 
         client.disable_xpn_resource_unary(
-            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
         )
 
         pre.assert_called_once()
@@ -974,7 +1028,8 @@ def test_disable_xpn_resource_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.DisableXpnResourceProjectRequest
 ):
     client = ProjectsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -998,7 +1053,8 @@ def test_disable_xpn_resource_unary_rest_bad_request(
 
 def test_disable_xpn_resource_unary_rest_flattened():
     client = ProjectsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -1041,7 +1097,8 @@ def test_disable_xpn_resource_unary_rest_flattened():
 
 def test_disable_xpn_resource_unary_rest_flattened_error(transport: str = "rest"):
     client = ProjectsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1062,10 +1119,17 @@ def test_disable_xpn_resource_unary_rest_error():
     )
 
 
-@pytest.mark.parametrize("request_type", [compute.EnableXpnHostProjectRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.EnableXpnHostProjectRequest,
+        dict,
+    ],
+)
 def test_enable_xpn_host_unary_rest(request_type):
     client = ProjectsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -1171,7 +1235,8 @@ def test_enable_xpn_host_unary_rest_required_fields(
     assert jsonified_request["project"] == "project_value"
 
     client = ProjectsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -1254,7 +1319,11 @@ def test_enable_xpn_host_unary_rest_interceptors(null_interceptor):
         post.return_value = compute.Operation
 
         client.enable_xpn_host_unary(
-            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
         )
 
         pre.assert_called_once()
@@ -1265,7 +1334,8 @@ def test_enable_xpn_host_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.EnableXpnHostProjectRequest
 ):
     client = ProjectsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -1286,7 +1356,8 @@ def test_enable_xpn_host_unary_rest_bad_request(
 
 def test_enable_xpn_host_unary_rest_flattened():
     client = ProjectsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -1298,7 +1369,9 @@ def test_enable_xpn_host_unary_rest_flattened():
         sample_request = {"project": "sample1"}
 
         # get truthy value for each flattened field
-        mock_args = dict(project="project_value",)
+        mock_args = dict(
+            project="project_value",
+        )
         mock_args.update(sample_request)
 
         # Wrap the value into a proper Response obj
@@ -1323,14 +1396,16 @@ def test_enable_xpn_host_unary_rest_flattened():
 
 def test_enable_xpn_host_unary_rest_flattened_error(transport: str = "rest"):
     client = ProjectsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.enable_xpn_host_unary(
-            compute.EnableXpnHostProjectRequest(), project="project_value",
+            compute.EnableXpnHostProjectRequest(),
+            project="project_value",
         )
 
 
@@ -1341,11 +1416,16 @@ def test_enable_xpn_host_unary_rest_error():
 
 
 @pytest.mark.parametrize(
-    "request_type", [compute.EnableXpnResourceProjectRequest, dict,]
+    "request_type",
+    [
+        compute.EnableXpnResourceProjectRequest,
+        dict,
+    ],
 )
 def test_enable_xpn_resource_unary_rest(request_type):
     client = ProjectsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -1454,7 +1534,8 @@ def test_enable_xpn_resource_unary_rest_required_fields(
     assert jsonified_request["project"] == "project_value"
 
     client = ProjectsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -1497,7 +1578,12 @@ def test_enable_xpn_resource_unary_rest_unset_required_fields():
     unset_fields = transport.enable_xpn_resource._get_unset_required_fields({})
     assert set(unset_fields) == (
         set(("requestId",))
-        & set(("project", "projectsEnableXpnResourceRequestResource",))
+        & set(
+            (
+                "project",
+                "projectsEnableXpnResourceRequestResource",
+            )
+        )
     )
 
 
@@ -1541,7 +1627,11 @@ def test_enable_xpn_resource_unary_rest_interceptors(null_interceptor):
         post.return_value = compute.Operation
 
         client.enable_xpn_resource_unary(
-            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
         )
 
         pre.assert_called_once()
@@ -1552,7 +1642,8 @@ def test_enable_xpn_resource_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.EnableXpnResourceProjectRequest
 ):
     client = ProjectsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -1576,7 +1667,8 @@ def test_enable_xpn_resource_unary_rest_bad_request(
 
 def test_enable_xpn_resource_unary_rest_flattened():
     client = ProjectsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -1619,7 +1711,8 @@ def test_enable_xpn_resource_unary_rest_flattened():
 
 def test_enable_xpn_resource_unary_rest_flattened_error(transport: str = "rest"):
     client = ProjectsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1640,10 +1733,17 @@ def test_enable_xpn_resource_unary_rest_error():
     )
 
 
-@pytest.mark.parametrize("request_type", [compute.GetProjectRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.GetProjectRequest,
+        dict,
+    ],
+)
 def test_get_rest(request_type):
     client = ProjectsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -1721,7 +1821,8 @@ def test_get_rest_required_fields(request_type=compute.GetProjectRequest):
     assert jsonified_request["project"] == "project_value"
 
     client = ProjectsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -1803,7 +1904,13 @@ def test_get_rest_interceptors(null_interceptor):
         pre.return_value = request, metadata
         post.return_value = compute.Project
 
-        client.get(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+        client.get(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
 
         pre.assert_called_once()
         post.assert_called_once()
@@ -1813,7 +1920,8 @@ def test_get_rest_bad_request(
     transport: str = "rest", request_type=compute.GetProjectRequest
 ):
     client = ProjectsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -1834,7 +1942,8 @@ def test_get_rest_bad_request(
 
 def test_get_rest_flattened():
     client = ProjectsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -1846,7 +1955,9 @@ def test_get_rest_flattened():
         sample_request = {"project": "sample1"}
 
         # get truthy value for each flattened field
-        mock_args = dict(project="project_value",)
+        mock_args = dict(
+            project="project_value",
+        )
         mock_args.update(sample_request)
 
         # Wrap the value into a proper Response obj
@@ -1870,14 +1981,16 @@ def test_get_rest_flattened():
 
 def test_get_rest_flattened_error(transport: str = "rest"):
     client = ProjectsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get(
-            compute.GetProjectRequest(), project="project_value",
+            compute.GetProjectRequest(),
+            project="project_value",
         )
 
 
@@ -1887,10 +2000,17 @@ def test_get_rest_error():
     )
 
 
-@pytest.mark.parametrize("request_type", [compute.GetXpnHostProjectRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.GetXpnHostProjectRequest,
+        dict,
+    ],
+)
 def test_get_xpn_host_rest(request_type):
     client = ProjectsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -1970,7 +2090,8 @@ def test_get_xpn_host_rest_required_fields(
     assert jsonified_request["project"] == "project_value"
 
     client = ProjectsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -2053,7 +2174,11 @@ def test_get_xpn_host_rest_interceptors(null_interceptor):
         post.return_value = compute.Project
 
         client.get_xpn_host(
-            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
         )
 
         pre.assert_called_once()
@@ -2064,7 +2189,8 @@ def test_get_xpn_host_rest_bad_request(
     transport: str = "rest", request_type=compute.GetXpnHostProjectRequest
 ):
     client = ProjectsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -2085,7 +2211,8 @@ def test_get_xpn_host_rest_bad_request(
 
 def test_get_xpn_host_rest_flattened():
     client = ProjectsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -2097,7 +2224,9 @@ def test_get_xpn_host_rest_flattened():
         sample_request = {"project": "sample1"}
 
         # get truthy value for each flattened field
-        mock_args = dict(project="project_value",)
+        mock_args = dict(
+            project="project_value",
+        )
         mock_args.update(sample_request)
 
         # Wrap the value into a proper Response obj
@@ -2122,14 +2251,16 @@ def test_get_xpn_host_rest_flattened():
 
 def test_get_xpn_host_rest_flattened_error(transport: str = "rest"):
     client = ProjectsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_xpn_host(
-            compute.GetXpnHostProjectRequest(), project="project_value",
+            compute.GetXpnHostProjectRequest(),
+            project="project_value",
         )
 
 
@@ -2140,11 +2271,16 @@ def test_get_xpn_host_rest_error():
 
 
 @pytest.mark.parametrize(
-    "request_type", [compute.GetXpnResourcesProjectsRequest, dict,]
+    "request_type",
+    [
+        compute.GetXpnResourcesProjectsRequest,
+        dict,
+    ],
 )
 def test_get_xpn_resources_rest(request_type):
     client = ProjectsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -2155,7 +2291,8 @@ def test_get_xpn_resources_rest(request_type):
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = compute.ProjectsGetXpnResources(
-            kind="kind_value", next_page_token="next_page_token_value",
+            kind="kind_value",
+            next_page_token="next_page_token_value",
         )
 
         # Wrap the value into a proper Response obj
@@ -2202,7 +2339,13 @@ def test_get_xpn_resources_rest_required_fields(
     ).get_xpn_resources._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
-        ("filter", "max_results", "order_by", "page_token", "return_partial_success",)
+        (
+            "filter",
+            "max_results",
+            "order_by",
+            "page_token",
+            "return_partial_success",
+        )
     )
     jsonified_request.update(unset_fields)
 
@@ -2211,7 +2354,8 @@ def test_get_xpn_resources_rest_required_fields(
     assert jsonified_request["project"] == "project_value"
 
     client = ProjectsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -2252,7 +2396,15 @@ def test_get_xpn_resources_rest_unset_required_fields():
 
     unset_fields = transport.get_xpn_resources._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("filter", "maxResults", "orderBy", "pageToken", "returnPartialSuccess",))
+        set(
+            (
+                "filter",
+                "maxResults",
+                "orderBy",
+                "pageToken",
+                "returnPartialSuccess",
+            )
+        )
         & set(("project",))
     )
 
@@ -2299,7 +2451,11 @@ def test_get_xpn_resources_rest_interceptors(null_interceptor):
         post.return_value = compute.ProjectsGetXpnResources
 
         client.get_xpn_resources(
-            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
         )
 
         pre.assert_called_once()
@@ -2310,7 +2466,8 @@ def test_get_xpn_resources_rest_bad_request(
     transport: str = "rest", request_type=compute.GetXpnResourcesProjectsRequest
 ):
     client = ProjectsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -2331,7 +2488,8 @@ def test_get_xpn_resources_rest_bad_request(
 
 def test_get_xpn_resources_rest_flattened():
     client = ProjectsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -2343,7 +2501,9 @@ def test_get_xpn_resources_rest_flattened():
         sample_request = {"project": "sample1"}
 
         # get truthy value for each flattened field
-        mock_args = dict(project="project_value",)
+        mock_args = dict(
+            project="project_value",
+        )
         mock_args.update(sample_request)
 
         # Wrap the value into a proper Response obj
@@ -2368,20 +2528,23 @@ def test_get_xpn_resources_rest_flattened():
 
 def test_get_xpn_resources_rest_flattened_error(transport: str = "rest"):
     client = ProjectsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_xpn_resources(
-            compute.GetXpnResourcesProjectsRequest(), project="project_value",
+            compute.GetXpnResourcesProjectsRequest(),
+            project="project_value",
         )
 
 
 def test_get_xpn_resources_rest_pager(transport: str = "rest"):
     client = ProjectsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Mock the http request call within the method and fake a response.
@@ -2398,12 +2561,21 @@ def test_get_xpn_resources_rest_pager(transport: str = "rest"):
                 ],
                 next_page_token="abc",
             ),
-            compute.ProjectsGetXpnResources(resources=[], next_page_token="def",),
             compute.ProjectsGetXpnResources(
-                resources=[compute.XpnResourceId(),], next_page_token="ghi",
+                resources=[],
+                next_page_token="def",
             ),
             compute.ProjectsGetXpnResources(
-                resources=[compute.XpnResourceId(), compute.XpnResourceId(),],
+                resources=[
+                    compute.XpnResourceId(),
+                ],
+                next_page_token="ghi",
+            ),
+            compute.ProjectsGetXpnResources(
+                resources=[
+                    compute.XpnResourceId(),
+                    compute.XpnResourceId(),
+                ],
             ),
         )
         # Two responses for two calls
@@ -2430,10 +2602,17 @@ def test_get_xpn_resources_rest_pager(transport: str = "rest"):
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [compute.ListXpnHostsProjectsRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.ListXpnHostsProjectsRequest,
+        dict,
+    ],
+)
 def test_list_xpn_hosts_rest(request_type):
     client = ProjectsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -2499,7 +2678,13 @@ def test_list_xpn_hosts_rest_required_fields(
     ).list_xpn_hosts._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
-        ("filter", "max_results", "order_by", "page_token", "return_partial_success",)
+        (
+            "filter",
+            "max_results",
+            "order_by",
+            "page_token",
+            "return_partial_success",
+        )
     )
     jsonified_request.update(unset_fields)
 
@@ -2508,7 +2693,8 @@ def test_list_xpn_hosts_rest_required_fields(
     assert jsonified_request["project"] == "project_value"
 
     client = ProjectsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -2550,8 +2736,21 @@ def test_list_xpn_hosts_rest_unset_required_fields():
 
     unset_fields = transport.list_xpn_hosts._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("filter", "maxResults", "orderBy", "pageToken", "returnPartialSuccess",))
-        & set(("project", "projectsListXpnHostsRequestResource",))
+        set(
+            (
+                "filter",
+                "maxResults",
+                "orderBy",
+                "pageToken",
+                "returnPartialSuccess",
+            )
+        )
+        & set(
+            (
+                "project",
+                "projectsListXpnHostsRequestResource",
+            )
+        )
     )
 
 
@@ -2595,7 +2794,11 @@ def test_list_xpn_hosts_rest_interceptors(null_interceptor):
         post.return_value = compute.XpnHostList
 
         client.list_xpn_hosts(
-            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
         )
 
         pre.assert_called_once()
@@ -2606,7 +2809,8 @@ def test_list_xpn_hosts_rest_bad_request(
     transport: str = "rest", request_type=compute.ListXpnHostsProjectsRequest
 ):
     client = ProjectsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -2630,7 +2834,8 @@ def test_list_xpn_hosts_rest_bad_request(
 
 def test_list_xpn_hosts_rest_flattened():
     client = ProjectsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -2672,7 +2877,8 @@ def test_list_xpn_hosts_rest_flattened():
 
 def test_list_xpn_hosts_rest_flattened_error(transport: str = "rest"):
     client = ProjectsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2689,7 +2895,8 @@ def test_list_xpn_hosts_rest_flattened_error(transport: str = "rest"):
 
 def test_list_xpn_hosts_rest_pager(transport: str = "rest"):
     client = ProjectsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Mock the http request call within the method and fake a response.
@@ -2699,12 +2906,29 @@ def test_list_xpn_hosts_rest_pager(transport: str = "rest"):
         # Set the response as a series of pages
         response = (
             compute.XpnHostList(
-                items=[compute.Project(), compute.Project(), compute.Project(),],
+                items=[
+                    compute.Project(),
+                    compute.Project(),
+                    compute.Project(),
+                ],
                 next_page_token="abc",
             ),
-            compute.XpnHostList(items=[], next_page_token="def",),
-            compute.XpnHostList(items=[compute.Project(),], next_page_token="ghi",),
-            compute.XpnHostList(items=[compute.Project(), compute.Project(),],),
+            compute.XpnHostList(
+                items=[],
+                next_page_token="def",
+            ),
+            compute.XpnHostList(
+                items=[
+                    compute.Project(),
+                ],
+                next_page_token="ghi",
+            ),
+            compute.XpnHostList(
+                items=[
+                    compute.Project(),
+                    compute.Project(),
+                ],
+            ),
         )
         # Two responses for two calls
         response = response + response
@@ -2733,10 +2957,17 @@ def test_list_xpn_hosts_rest_pager(transport: str = "rest"):
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [compute.MoveDiskProjectRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.MoveDiskProjectRequest,
+        dict,
+    ],
+)
 def test_move_disk_unary_rest(request_type):
     client = ProjectsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -2846,7 +3077,8 @@ def test_move_disk_unary_rest_required_fields(
     assert jsonified_request["project"] == "project_value"
 
     client = ProjectsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -2888,7 +3120,13 @@ def test_move_disk_unary_rest_unset_required_fields():
 
     unset_fields = transport.move_disk._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("requestId",)) & set(("diskMoveRequestResource", "project",))
+        set(("requestId",))
+        & set(
+            (
+                "diskMoveRequestResource",
+                "project",
+            )
+        )
     )
 
 
@@ -2932,7 +3170,11 @@ def test_move_disk_unary_rest_interceptors(null_interceptor):
         post.return_value = compute.Operation
 
         client.move_disk_unary(
-            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
         )
 
         pre.assert_called_once()
@@ -2943,7 +3185,8 @@ def test_move_disk_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.MoveDiskProjectRequest
 ):
     client = ProjectsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -2968,7 +3211,8 @@ def test_move_disk_unary_rest_bad_request(
 
 def test_move_disk_unary_rest_flattened():
     client = ProjectsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -3010,7 +3254,8 @@ def test_move_disk_unary_rest_flattened():
 
 def test_move_disk_unary_rest_flattened_error(transport: str = "rest"):
     client = ProjectsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3031,10 +3276,17 @@ def test_move_disk_unary_rest_error():
     )
 
 
-@pytest.mark.parametrize("request_type", [compute.MoveInstanceProjectRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.MoveInstanceProjectRequest,
+        dict,
+    ],
+)
 def test_move_instance_unary_rest(request_type):
     client = ProjectsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -3144,7 +3396,8 @@ def test_move_instance_unary_rest_required_fields(
     assert jsonified_request["project"] == "project_value"
 
     client = ProjectsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -3186,7 +3439,13 @@ def test_move_instance_unary_rest_unset_required_fields():
 
     unset_fields = transport.move_instance._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("requestId",)) & set(("instanceMoveRequestResource", "project",))
+        set(("requestId",))
+        & set(
+            (
+                "instanceMoveRequestResource",
+                "project",
+            )
+        )
     )
 
 
@@ -3230,7 +3489,11 @@ def test_move_instance_unary_rest_interceptors(null_interceptor):
         post.return_value = compute.Operation
 
         client.move_instance_unary(
-            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
         )
 
         pre.assert_called_once()
@@ -3241,7 +3504,8 @@ def test_move_instance_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.MoveInstanceProjectRequest
 ):
     client = ProjectsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -3266,7 +3530,8 @@ def test_move_instance_unary_rest_bad_request(
 
 def test_move_instance_unary_rest_flattened():
     client = ProjectsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -3308,7 +3573,8 @@ def test_move_instance_unary_rest_flattened():
 
 def test_move_instance_unary_rest_flattened_error(transport: str = "rest"):
     client = ProjectsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3330,11 +3596,16 @@ def test_move_instance_unary_rest_error():
 
 
 @pytest.mark.parametrize(
-    "request_type", [compute.SetCommonInstanceMetadataProjectRequest, dict,]
+    "request_type",
+    [
+        compute.SetCommonInstanceMetadataProjectRequest,
+        dict,
+    ],
 )
 def test_set_common_instance_metadata_unary_rest(request_type):
     client = ProjectsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -3445,7 +3716,8 @@ def test_set_common_instance_metadata_unary_rest_required_fields(
     assert jsonified_request["project"] == "project_value"
 
     client = ProjectsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -3487,7 +3759,13 @@ def test_set_common_instance_metadata_unary_rest_unset_required_fields():
 
     unset_fields = transport.set_common_instance_metadata._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("requestId",)) & set(("metadataResource", "project",))
+        set(("requestId",))
+        & set(
+            (
+                "metadataResource",
+                "project",
+            )
+        )
     )
 
 
@@ -3531,7 +3809,11 @@ def test_set_common_instance_metadata_unary_rest_interceptors(null_interceptor):
         post.return_value = compute.Operation
 
         client.set_common_instance_metadata_unary(
-            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
         )
 
         pre.assert_called_once()
@@ -3543,7 +3825,8 @@ def test_set_common_instance_metadata_unary_rest_bad_request(
     request_type=compute.SetCommonInstanceMetadataProjectRequest,
 ):
     client = ProjectsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -3569,7 +3852,8 @@ def test_set_common_instance_metadata_unary_rest_bad_request(
 
 def test_set_common_instance_metadata_unary_rest_flattened():
     client = ProjectsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -3612,7 +3896,8 @@ def test_set_common_instance_metadata_unary_rest_flattened_error(
     transport: str = "rest",
 ):
     client = ProjectsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3632,11 +3917,16 @@ def test_set_common_instance_metadata_unary_rest_error():
 
 
 @pytest.mark.parametrize(
-    "request_type", [compute.SetDefaultNetworkTierProjectRequest, dict,]
+    "request_type",
+    [
+        compute.SetDefaultNetworkTierProjectRequest,
+        dict,
+    ],
 )
 def test_set_default_network_tier_unary_rest(request_type):
     client = ProjectsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -3745,7 +4035,8 @@ def test_set_default_network_tier_unary_rest_required_fields(
     assert jsonified_request["project"] == "project_value"
 
     client = ProjectsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -3788,7 +4079,12 @@ def test_set_default_network_tier_unary_rest_unset_required_fields():
     unset_fields = transport.set_default_network_tier._get_unset_required_fields({})
     assert set(unset_fields) == (
         set(("requestId",))
-        & set(("project", "projectsSetDefaultNetworkTierRequestResource",))
+        & set(
+            (
+                "project",
+                "projectsSetDefaultNetworkTierRequestResource",
+            )
+        )
     )
 
 
@@ -3832,7 +4128,11 @@ def test_set_default_network_tier_unary_rest_interceptors(null_interceptor):
         post.return_value = compute.Operation
 
         client.set_default_network_tier_unary(
-            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
         )
 
         pre.assert_called_once()
@@ -3843,7 +4143,8 @@ def test_set_default_network_tier_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.SetDefaultNetworkTierProjectRequest
 ):
     client = ProjectsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -3867,7 +4168,8 @@ def test_set_default_network_tier_unary_rest_bad_request(
 
 def test_set_default_network_tier_unary_rest_flattened():
     client = ProjectsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -3910,7 +4212,8 @@ def test_set_default_network_tier_unary_rest_flattened():
 
 def test_set_default_network_tier_unary_rest_flattened_error(transport: str = "rest"):
     client = ProjectsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3932,11 +4235,16 @@ def test_set_default_network_tier_unary_rest_error():
 
 
 @pytest.mark.parametrize(
-    "request_type", [compute.SetUsageExportBucketProjectRequest, dict,]
+    "request_type",
+    [
+        compute.SetUsageExportBucketProjectRequest,
+        dict,
+    ],
 )
 def test_set_usage_export_bucket_unary_rest(request_type):
     client = ProjectsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -4046,7 +4354,8 @@ def test_set_usage_export_bucket_unary_rest_required_fields(
     assert jsonified_request["project"] == "project_value"
 
     client = ProjectsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -4088,7 +4397,13 @@ def test_set_usage_export_bucket_unary_rest_unset_required_fields():
 
     unset_fields = transport.set_usage_export_bucket._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("requestId",)) & set(("project", "usageExportLocationResource",))
+        set(("requestId",))
+        & set(
+            (
+                "project",
+                "usageExportLocationResource",
+            )
+        )
     )
 
 
@@ -4132,7 +4447,11 @@ def test_set_usage_export_bucket_unary_rest_interceptors(null_interceptor):
         post.return_value = compute.Operation
 
         client.set_usage_export_bucket_unary(
-            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
         )
 
         pre.assert_called_once()
@@ -4143,7 +4462,8 @@ def test_set_usage_export_bucket_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.SetUsageExportBucketProjectRequest
 ):
     client = ProjectsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -4168,7 +4488,8 @@ def test_set_usage_export_bucket_unary_rest_bad_request(
 
 def test_set_usage_export_bucket_unary_rest_flattened():
     client = ProjectsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -4211,7 +4532,8 @@ def test_set_usage_export_bucket_unary_rest_flattened():
 
 def test_set_usage_export_bucket_unary_rest_flattened_error(transport: str = "rest"):
     client = ProjectsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4239,7 +4561,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = ProjectsClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -4259,7 +4582,10 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = ProjectsClient(client_options=options, transport=transport,)
+        client = ProjectsClient(
+            client_options=options,
+            transport=transport,
+        )
 
     # It is an error to provide an api_key and a credential.
     options = mock.Mock()
@@ -4275,7 +4601,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = ProjectsClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -4288,7 +4615,12 @@ def test_transport_instance():
     assert client.transport is transport
 
 
-@pytest.mark.parametrize("transport_class", [transports.ProjectsRestTransport,])
+@pytest.mark.parametrize(
+    "transport_class",
+    [
+        transports.ProjectsRestTransport,
+    ],
+)
 def test_transport_adc(transport_class):
     # Test default credentials are used if not provided.
     with mock.patch.object(google.auth, "default") as adc:
@@ -4351,7 +4683,8 @@ def test_projects_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.ProjectsTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -4401,7 +4734,12 @@ def test_projects_http_transport_client_cert_source_for_mtls():
         mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
 
 
-@pytest.mark.parametrize("transport_name", ["rest",])
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
 def test_projects_host_no_port(transport_name):
     client = ProjectsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -4417,7 +4755,12 @@ def test_projects_host_no_port(transport_name):
     )
 
 
-@pytest.mark.parametrize("transport_name", ["rest",])
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
 def test_projects_host_with_port(transport_name):
     client = ProjectsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -4455,7 +4798,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "whelk"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = ProjectsClient.common_folder_path(folder)
     assert expected == actual
 
@@ -4473,7 +4818,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "oyster"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = ProjectsClient.common_organization_path(organization)
     assert expected == actual
 
@@ -4491,7 +4838,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "cuttlefish"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = ProjectsClient.common_project_path(project)
     assert expected == actual
 
@@ -4511,7 +4860,8 @@ def test_common_location_path():
     project = "winkle"
     location = "nautilus"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = ProjectsClient.common_location_path(project, location)
     assert expected == actual
@@ -4536,7 +4886,8 @@ def test_client_with_default_client_info():
         transports.ProjectsTransport, "_prep_wrapped_messages"
     ) as prep:
         client = ProjectsClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -4545,7 +4896,8 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = ProjectsClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -4585,7 +4937,9 @@ def test_client_ctx():
 
 @pytest.mark.parametrize(
     "client_class,transport_class",
-    [(ProjectsClient, transports.ProjectsRestTransport),],
+    [
+        (ProjectsClient, transports.ProjectsRestTransport),
+    ],
 )
 def test_api_key_credentials(client_class, transport_class):
     with mock.patch.object(

@@ -94,7 +94,10 @@ def test__get_default_mtls_endpoint():
 
 
 @pytest.mark.parametrize(
-    "client_class,transport_name", [(RegionInstanceGroupManagersClient, "rest"),]
+    "client_class,transport_name",
+    [
+        (RegionInstanceGroupManagersClient, "rest"),
+    ],
 )
 def test_region_instance_group_managers_client_from_service_account_info(
     client_class, transport_name
@@ -118,7 +121,9 @@ def test_region_instance_group_managers_client_from_service_account_info(
 
 @pytest.mark.parametrize(
     "transport_class,transport_name",
-    [(transports.RegionInstanceGroupManagersRestTransport, "rest"),],
+    [
+        (transports.RegionInstanceGroupManagersRestTransport, "rest"),
+    ],
 )
 def test_region_instance_group_managers_client_service_account_always_use_jwt(
     transport_class, transport_name
@@ -139,7 +144,10 @@ def test_region_instance_group_managers_client_service_account_always_use_jwt(
 
 
 @pytest.mark.parametrize(
-    "client_class,transport_name", [(RegionInstanceGroupManagersClient, "rest"),]
+    "client_class,transport_name",
+    [
+        (RegionInstanceGroupManagersClient, "rest"),
+    ],
 )
 def test_region_instance_group_managers_client_from_service_account_file(
     client_class, transport_name
@@ -498,7 +506,9 @@ def test_region_instance_group_managers_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -547,11 +557,16 @@ def test_region_instance_group_managers_client_client_options_credentials_file(
 
 
 @pytest.mark.parametrize(
-    "request_type", [compute.AbandonInstancesRegionInstanceGroupManagerRequest, dict,]
+    "request_type",
+    [
+        compute.AbandonInstancesRegionInstanceGroupManagerRequest,
+        dict,
+    ],
 )
 def test_abandon_instances_unary_rest(request_type):
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -672,7 +687,8 @@ def test_abandon_instances_unary_rest_required_fields(
     assert jsonified_request["region"] == "region_value"
 
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -768,7 +784,11 @@ def test_abandon_instances_unary_rest_interceptors(null_interceptor):
         post.return_value = compute.Operation
 
         client.abandon_instances_unary(
-            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
         )
 
         pre.assert_called_once()
@@ -780,7 +800,8 @@ def test_abandon_instances_unary_rest_bad_request(
     request_type=compute.AbandonInstancesRegionInstanceGroupManagerRequest,
 ):
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -808,7 +829,8 @@ def test_abandon_instances_unary_rest_bad_request(
 
 def test_abandon_instances_unary_rest_flattened():
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -857,7 +879,8 @@ def test_abandon_instances_unary_rest_flattened():
 
 def test_abandon_instances_unary_rest_flattened_error(transport: str = "rest"):
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -882,11 +905,15 @@ def test_abandon_instances_unary_rest_error():
 
 @pytest.mark.parametrize(
     "request_type",
-    [compute.ApplyUpdatesToInstancesRegionInstanceGroupManagerRequest, dict,],
+    [
+        compute.ApplyUpdatesToInstancesRegionInstanceGroupManagerRequest,
+        dict,
+    ],
 )
 def test_apply_updates_to_instances_unary_rest(request_type):
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -1008,7 +1035,8 @@ def test_apply_updates_to_instances_unary_rest_required_fields(
     assert jsonified_request["region"] == "region_value"
 
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -1106,7 +1134,11 @@ def test_apply_updates_to_instances_unary_rest_interceptors(null_interceptor):
         post.return_value = compute.Operation
 
         client.apply_updates_to_instances_unary(
-            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
         )
 
         pre.assert_called_once()
@@ -1118,7 +1150,8 @@ def test_apply_updates_to_instances_unary_rest_bad_request(
     request_type=compute.ApplyUpdatesToInstancesRegionInstanceGroupManagerRequest,
 ):
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -1149,7 +1182,8 @@ def test_apply_updates_to_instances_unary_rest_bad_request(
 
 def test_apply_updates_to_instances_unary_rest_flattened():
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -1198,7 +1232,8 @@ def test_apply_updates_to_instances_unary_rest_flattened():
 
 def test_apply_updates_to_instances_unary_rest_flattened_error(transport: str = "rest"):
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1222,11 +1257,16 @@ def test_apply_updates_to_instances_unary_rest_error():
 
 
 @pytest.mark.parametrize(
-    "request_type", [compute.CreateInstancesRegionInstanceGroupManagerRequest, dict,]
+    "request_type",
+    [
+        compute.CreateInstancesRegionInstanceGroupManagerRequest,
+        dict,
+    ],
 )
 def test_create_instances_unary_rest(request_type):
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -1354,7 +1394,8 @@ def test_create_instances_unary_rest_required_fields(
     assert jsonified_request["region"] == "region_value"
 
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -1450,7 +1491,11 @@ def test_create_instances_unary_rest_interceptors(null_interceptor):
         post.return_value = compute.Operation
 
         client.create_instances_unary(
-            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
         )
 
         pre.assert_called_once()
@@ -1462,7 +1507,8 @@ def test_create_instances_unary_rest_bad_request(
     request_type=compute.CreateInstancesRegionInstanceGroupManagerRequest,
 ):
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -1497,7 +1543,8 @@ def test_create_instances_unary_rest_bad_request(
 
 def test_create_instances_unary_rest_flattened():
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -1546,7 +1593,8 @@ def test_create_instances_unary_rest_flattened():
 
 def test_create_instances_unary_rest_flattened_error(transport: str = "rest"):
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1570,11 +1618,16 @@ def test_create_instances_unary_rest_error():
 
 
 @pytest.mark.parametrize(
-    "request_type", [compute.DeleteRegionInstanceGroupManagerRequest, dict,]
+    "request_type",
+    [
+        compute.DeleteRegionInstanceGroupManagerRequest,
+        dict,
+    ],
 )
 def test_delete_unary_rest(request_type):
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -1692,7 +1745,8 @@ def test_delete_unary_rest_required_fields(
     assert jsonified_request["region"] == "region_value"
 
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -1733,7 +1787,14 @@ def test_delete_unary_rest_unset_required_fields():
 
     unset_fields = transport.delete._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("requestId",)) & set(("instanceGroupManager", "project", "region",))
+        set(("requestId",))
+        & set(
+            (
+                "instanceGroupManager",
+                "project",
+                "region",
+            )
+        )
     )
 
 
@@ -1779,7 +1840,11 @@ def test_delete_unary_rest_interceptors(null_interceptor):
         post.return_value = compute.Operation
 
         client.delete_unary(
-            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
         )
 
         pre.assert_called_once()
@@ -1791,7 +1856,8 @@ def test_delete_unary_rest_bad_request(
     request_type=compute.DeleteRegionInstanceGroupManagerRequest,
 ):
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -1816,7 +1882,8 @@ def test_delete_unary_rest_bad_request(
 
 def test_delete_unary_rest_flattened():
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -1862,7 +1929,8 @@ def test_delete_unary_rest_flattened():
 
 def test_delete_unary_rest_flattened_error(transport: str = "rest"):
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1883,11 +1951,16 @@ def test_delete_unary_rest_error():
 
 
 @pytest.mark.parametrize(
-    "request_type", [compute.DeleteInstancesRegionInstanceGroupManagerRequest, dict,]
+    "request_type",
+    [
+        compute.DeleteInstancesRegionInstanceGroupManagerRequest,
+        dict,
+    ],
 )
 def test_delete_instances_unary_rest(request_type):
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -2009,7 +2082,8 @@ def test_delete_instances_unary_rest_required_fields(
     assert jsonified_request["region"] == "region_value"
 
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -2105,7 +2179,11 @@ def test_delete_instances_unary_rest_interceptors(null_interceptor):
         post.return_value = compute.Operation
 
         client.delete_instances_unary(
-            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
         )
 
         pre.assert_called_once()
@@ -2117,7 +2195,8 @@ def test_delete_instances_unary_rest_bad_request(
     request_type=compute.DeleteInstancesRegionInstanceGroupManagerRequest,
 ):
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -2146,7 +2225,8 @@ def test_delete_instances_unary_rest_bad_request(
 
 def test_delete_instances_unary_rest_flattened():
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -2195,7 +2275,8 @@ def test_delete_instances_unary_rest_flattened():
 
 def test_delete_instances_unary_rest_flattened_error(transport: str = "rest"):
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2220,11 +2301,15 @@ def test_delete_instances_unary_rest_error():
 
 @pytest.mark.parametrize(
     "request_type",
-    [compute.DeletePerInstanceConfigsRegionInstanceGroupManagerRequest, dict,],
+    [
+        compute.DeletePerInstanceConfigsRegionInstanceGroupManagerRequest,
+        dict,
+    ],
 )
 def test_delete_per_instance_configs_unary_rest(request_type):
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -2343,7 +2428,8 @@ def test_delete_per_instance_configs_unary_rest_required_fields(
     assert jsonified_request["region"] == "region_value"
 
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -2441,7 +2527,11 @@ def test_delete_per_instance_configs_unary_rest_interceptors(null_interceptor):
         post.return_value = compute.Operation
 
         client.delete_per_instance_configs_unary(
-            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
         )
 
         pre.assert_called_once()
@@ -2453,7 +2543,8 @@ def test_delete_per_instance_configs_unary_rest_bad_request(
     request_type=compute.DeletePerInstanceConfigsRegionInstanceGroupManagerRequest,
 ):
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -2481,7 +2572,8 @@ def test_delete_per_instance_configs_unary_rest_bad_request(
 
 def test_delete_per_instance_configs_unary_rest_flattened():
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -2532,7 +2624,8 @@ def test_delete_per_instance_configs_unary_rest_flattened_error(
     transport: str = "rest",
 ):
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2556,11 +2649,16 @@ def test_delete_per_instance_configs_unary_rest_error():
 
 
 @pytest.mark.parametrize(
-    "request_type", [compute.GetRegionInstanceGroupManagerRequest, dict,]
+    "request_type",
+    [
+        compute.GetRegionInstanceGroupManagerRequest,
+        dict,
+    ],
 )
 def test_get_rest(request_type):
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -2660,7 +2758,8 @@ def test_get_rest_required_fields(
     assert jsonified_request["region"] == "region_value"
 
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -2701,7 +2800,14 @@ def test_get_rest_unset_required_fields():
 
     unset_fields = transport.get._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(()) & set(("instanceGroupManager", "project", "region",))
+        set(())
+        & set(
+            (
+                "instanceGroupManager",
+                "project",
+                "region",
+            )
+        )
     )
 
 
@@ -2748,7 +2854,13 @@ def test_get_rest_interceptors(null_interceptor):
         pre.return_value = request, metadata
         post.return_value = compute.InstanceGroupManager
 
-        client.get(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+        client.get(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
 
         pre.assert_called_once()
         post.assert_called_once()
@@ -2758,7 +2870,8 @@ def test_get_rest_bad_request(
     transport: str = "rest", request_type=compute.GetRegionInstanceGroupManagerRequest
 ):
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -2783,7 +2896,8 @@ def test_get_rest_bad_request(
 
 def test_get_rest_flattened():
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -2829,7 +2943,8 @@ def test_get_rest_flattened():
 
 def test_get_rest_flattened_error(transport: str = "rest"):
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2850,11 +2965,16 @@ def test_get_rest_error():
 
 
 @pytest.mark.parametrize(
-    "request_type", [compute.InsertRegionInstanceGroupManagerRequest, dict,]
+    "request_type",
+    [
+        compute.InsertRegionInstanceGroupManagerRequest,
+        dict,
+    ],
 )
 def test_insert_unary_rest(request_type):
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -3029,7 +3149,8 @@ def test_insert_unary_rest_required_fields(
     assert jsonified_request["region"] == "region_value"
 
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -3072,7 +3193,13 @@ def test_insert_unary_rest_unset_required_fields():
     unset_fields = transport.insert._get_unset_required_fields({})
     assert set(unset_fields) == (
         set(("requestId",))
-        & set(("instanceGroupManagerResource", "project", "region",))
+        & set(
+            (
+                "instanceGroupManagerResource",
+                "project",
+                "region",
+            )
+        )
     )
 
 
@@ -3118,7 +3245,11 @@ def test_insert_unary_rest_interceptors(null_interceptor):
         post.return_value = compute.Operation
 
         client.insert_unary(
-            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
         )
 
         pre.assert_called_once()
@@ -3130,7 +3261,8 @@ def test_insert_unary_rest_bad_request(
     request_type=compute.InsertRegionInstanceGroupManagerRequest,
 ):
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -3216,7 +3348,8 @@ def test_insert_unary_rest_bad_request(
 
 def test_insert_unary_rest_flattened():
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -3264,7 +3397,8 @@ def test_insert_unary_rest_flattened():
 
 def test_insert_unary_rest_flattened_error(transport: str = "rest"):
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3291,11 +3425,16 @@ def test_insert_unary_rest_error():
 
 
 @pytest.mark.parametrize(
-    "request_type", [compute.ListRegionInstanceGroupManagersRequest, dict,]
+    "request_type",
+    [
+        compute.ListRegionInstanceGroupManagersRequest,
+        dict,
+    ],
 )
 def test_list_rest(request_type):
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -3360,7 +3499,13 @@ def test_list_rest_required_fields(
     ).list._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
-        ("filter", "max_results", "order_by", "page_token", "return_partial_success",)
+        (
+            "filter",
+            "max_results",
+            "order_by",
+            "page_token",
+            "return_partial_success",
+        )
     )
     jsonified_request.update(unset_fields)
 
@@ -3371,7 +3516,8 @@ def test_list_rest_required_fields(
     assert jsonified_request["region"] == "region_value"
 
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -3414,8 +3560,21 @@ def test_list_rest_unset_required_fields():
 
     unset_fields = transport.list._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("filter", "maxResults", "orderBy", "pageToken", "returnPartialSuccess",))
-        & set(("project", "region",))
+        set(
+            (
+                "filter",
+                "maxResults",
+                "orderBy",
+                "pageToken",
+                "returnPartialSuccess",
+            )
+        )
+        & set(
+            (
+                "project",
+                "region",
+            )
+        )
     )
 
 
@@ -3462,7 +3621,13 @@ def test_list_rest_interceptors(null_interceptor):
         pre.return_value = request, metadata
         post.return_value = compute.RegionInstanceGroupManagerList
 
-        client.list(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+        client.list(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
 
         pre.assert_called_once()
         post.assert_called_once()
@@ -3472,7 +3637,8 @@ def test_list_rest_bad_request(
     transport: str = "rest", request_type=compute.ListRegionInstanceGroupManagersRequest
 ):
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -3493,7 +3659,8 @@ def test_list_rest_bad_request(
 
 def test_list_rest_flattened():
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -3505,7 +3672,10 @@ def test_list_rest_flattened():
         sample_request = {"project": "sample1", "region": "sample2"}
 
         # get truthy value for each flattened field
-        mock_args = dict(project="project_value", region="region_value",)
+        mock_args = dict(
+            project="project_value",
+            region="region_value",
+        )
         mock_args.update(sample_request)
 
         # Wrap the value into a proper Response obj
@@ -3531,7 +3701,8 @@ def test_list_rest_flattened():
 
 def test_list_rest_flattened_error(transport: str = "rest"):
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3546,7 +3717,8 @@ def test_list_rest_flattened_error(transport: str = "rest"):
 
 def test_list_rest_pager(transport: str = "rest"):
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Mock the http request call within the method and fake a response.
@@ -3563,12 +3735,21 @@ def test_list_rest_pager(transport: str = "rest"):
                 ],
                 next_page_token="abc",
             ),
-            compute.RegionInstanceGroupManagerList(items=[], next_page_token="def",),
             compute.RegionInstanceGroupManagerList(
-                items=[compute.InstanceGroupManager(),], next_page_token="ghi",
+                items=[],
+                next_page_token="def",
             ),
             compute.RegionInstanceGroupManagerList(
-                items=[compute.InstanceGroupManager(), compute.InstanceGroupManager(),],
+                items=[
+                    compute.InstanceGroupManager(),
+                ],
+                next_page_token="ghi",
+            ),
+            compute.RegionInstanceGroupManagerList(
+                items=[
+                    compute.InstanceGroupManager(),
+                    compute.InstanceGroupManager(),
+                ],
             ),
         )
         # Two responses for two calls
@@ -3598,11 +3779,16 @@ def test_list_rest_pager(transport: str = "rest"):
 
 
 @pytest.mark.parametrize(
-    "request_type", [compute.ListErrorsRegionInstanceGroupManagersRequest, dict,]
+    "request_type",
+    [
+        compute.ListErrorsRegionInstanceGroupManagersRequest,
+        dict,
+    ],
 )
 def test_list_errors_rest(request_type):
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -3623,8 +3809,8 @@ def test_list_errors_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.RegionInstanceGroupManagersListErrorsResponse.to_json(
-            return_value
+        json_return_value = (
+            compute.RegionInstanceGroupManagersListErrorsResponse.to_json(return_value)
         )
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -3669,7 +3855,13 @@ def test_list_errors_rest_required_fields(
     ).list_errors._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
-        ("filter", "max_results", "order_by", "page_token", "return_partial_success",)
+        (
+            "filter",
+            "max_results",
+            "order_by",
+            "page_token",
+            "return_partial_success",
+        )
     )
     jsonified_request.update(unset_fields)
 
@@ -3682,7 +3874,8 @@ def test_list_errors_rest_required_fields(
     assert jsonified_request["region"] == "region_value"
 
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -3705,8 +3898,10 @@ def test_list_errors_rest_required_fields(
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.RegionInstanceGroupManagersListErrorsResponse.to_json(
-                return_value
+            json_return_value = (
+                compute.RegionInstanceGroupManagersListErrorsResponse.to_json(
+                    return_value
+                )
             )
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -3725,8 +3920,22 @@ def test_list_errors_rest_unset_required_fields():
 
     unset_fields = transport.list_errors._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("filter", "maxResults", "orderBy", "pageToken", "returnPartialSuccess",))
-        & set(("instanceGroupManager", "project", "region",))
+        set(
+            (
+                "filter",
+                "maxResults",
+                "orderBy",
+                "pageToken",
+                "returnPartialSuccess",
+            )
+        )
+        & set(
+            (
+                "instanceGroupManager",
+                "project",
+                "region",
+            )
+        )
     )
 
 
@@ -3761,8 +3970,10 @@ def test_list_errors_rest_interceptors(null_interceptor):
         req.return_value = Response()
         req.return_value.status_code = 200
         req.return_value.request = PreparedRequest()
-        req.return_value._content = compute.RegionInstanceGroupManagersListErrorsResponse.to_json(
-            compute.RegionInstanceGroupManagersListErrorsResponse()
+        req.return_value._content = (
+            compute.RegionInstanceGroupManagersListErrorsResponse.to_json(
+                compute.RegionInstanceGroupManagersListErrorsResponse()
+            )
         )
 
         request = compute.ListErrorsRegionInstanceGroupManagersRequest()
@@ -3773,7 +3984,13 @@ def test_list_errors_rest_interceptors(null_interceptor):
         pre.return_value = request, metadata
         post.return_value = compute.RegionInstanceGroupManagersListErrorsResponse
 
-        client.list_errors(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+        client.list_errors(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
 
         pre.assert_called_once()
         post.assert_called_once()
@@ -3784,7 +4001,8 @@ def test_list_errors_rest_bad_request(
     request_type=compute.ListErrorsRegionInstanceGroupManagersRequest,
 ):
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -3809,7 +4027,8 @@ def test_list_errors_rest_bad_request(
 
 def test_list_errors_rest_flattened():
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -3835,8 +4054,8 @@ def test_list_errors_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.RegionInstanceGroupManagersListErrorsResponse.to_json(
-            return_value
+        json_return_value = (
+            compute.RegionInstanceGroupManagersListErrorsResponse.to_json(return_value)
         )
 
         response_value._content = json_return_value.encode("UTF-8")
@@ -3857,7 +4076,8 @@ def test_list_errors_rest_flattened():
 
 def test_list_errors_rest_flattened_error(transport: str = "rest"):
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3873,7 +4093,8 @@ def test_list_errors_rest_flattened_error(transport: str = "rest"):
 
 def test_list_errors_rest_pager(transport: str = "rest"):
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Mock the http request call within the method and fake a response.
@@ -3891,10 +4112,14 @@ def test_list_errors_rest_pager(transport: str = "rest"):
                 next_page_token="abc",
             ),
             compute.RegionInstanceGroupManagersListErrorsResponse(
-                items=[], next_page_token="def",
+                items=[],
+                next_page_token="def",
             ),
             compute.RegionInstanceGroupManagersListErrorsResponse(
-                items=[compute.InstanceManagedByIgmError(),], next_page_token="ghi",
+                items=[
+                    compute.InstanceManagedByIgmError(),
+                ],
+                next_page_token="ghi",
             ),
             compute.RegionInstanceGroupManagersListErrorsResponse(
                 items=[
@@ -3936,11 +4161,15 @@ def test_list_errors_rest_pager(transport: str = "rest"):
 
 @pytest.mark.parametrize(
     "request_type",
-    [compute.ListManagedInstancesRegionInstanceGroupManagersRequest, dict,],
+    [
+        compute.ListManagedInstancesRegionInstanceGroupManagersRequest,
+        dict,
+    ],
 )
 def test_list_managed_instances_rest(request_type):
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -3961,8 +4190,10 @@ def test_list_managed_instances_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.RegionInstanceGroupManagersListInstancesResponse.to_json(
-            return_value
+        json_return_value = (
+            compute.RegionInstanceGroupManagersListInstancesResponse.to_json(
+                return_value
+            )
         )
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -4007,7 +4238,13 @@ def test_list_managed_instances_rest_required_fields(
     ).list_managed_instances._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
-        ("filter", "max_results", "order_by", "page_token", "return_partial_success",)
+        (
+            "filter",
+            "max_results",
+            "order_by",
+            "page_token",
+            "return_partial_success",
+        )
     )
     jsonified_request.update(unset_fields)
 
@@ -4020,7 +4257,8 @@ def test_list_managed_instances_rest_required_fields(
     assert jsonified_request["region"] == "region_value"
 
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -4043,8 +4281,10 @@ def test_list_managed_instances_rest_required_fields(
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.RegionInstanceGroupManagersListInstancesResponse.to_json(
-                return_value
+            json_return_value = (
+                compute.RegionInstanceGroupManagersListInstancesResponse.to_json(
+                    return_value
+                )
             )
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -4063,8 +4303,22 @@ def test_list_managed_instances_rest_unset_required_fields():
 
     unset_fields = transport.list_managed_instances._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("filter", "maxResults", "orderBy", "pageToken", "returnPartialSuccess",))
-        & set(("instanceGroupManager", "project", "region",))
+        set(
+            (
+                "filter",
+                "maxResults",
+                "orderBy",
+                "pageToken",
+                "returnPartialSuccess",
+            )
+        )
+        & set(
+            (
+                "instanceGroupManager",
+                "project",
+                "region",
+            )
+        )
     )
 
 
@@ -4101,8 +4355,10 @@ def test_list_managed_instances_rest_interceptors(null_interceptor):
         req.return_value = Response()
         req.return_value.status_code = 200
         req.return_value.request = PreparedRequest()
-        req.return_value._content = compute.RegionInstanceGroupManagersListInstancesResponse.to_json(
-            compute.RegionInstanceGroupManagersListInstancesResponse()
+        req.return_value._content = (
+            compute.RegionInstanceGroupManagersListInstancesResponse.to_json(
+                compute.RegionInstanceGroupManagersListInstancesResponse()
+            )
         )
 
         request = compute.ListManagedInstancesRegionInstanceGroupManagersRequest()
@@ -4114,7 +4370,11 @@ def test_list_managed_instances_rest_interceptors(null_interceptor):
         post.return_value = compute.RegionInstanceGroupManagersListInstancesResponse
 
         client.list_managed_instances(
-            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
         )
 
         pre.assert_called_once()
@@ -4126,7 +4386,8 @@ def test_list_managed_instances_rest_bad_request(
     request_type=compute.ListManagedInstancesRegionInstanceGroupManagersRequest,
 ):
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -4151,7 +4412,8 @@ def test_list_managed_instances_rest_bad_request(
 
 def test_list_managed_instances_rest_flattened():
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -4177,8 +4439,10 @@ def test_list_managed_instances_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.RegionInstanceGroupManagersListInstancesResponse.to_json(
-            return_value
+        json_return_value = (
+            compute.RegionInstanceGroupManagersListInstancesResponse.to_json(
+                return_value
+            )
         )
 
         response_value._content = json_return_value.encode("UTF-8")
@@ -4199,7 +4463,8 @@ def test_list_managed_instances_rest_flattened():
 
 def test_list_managed_instances_rest_flattened_error(transport: str = "rest"):
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4215,7 +4480,8 @@ def test_list_managed_instances_rest_flattened_error(transport: str = "rest"):
 
 def test_list_managed_instances_rest_pager(transport: str = "rest"):
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Mock the http request call within the method and fake a response.
@@ -4233,10 +4499,14 @@ def test_list_managed_instances_rest_pager(transport: str = "rest"):
                 next_page_token="abc",
             ),
             compute.RegionInstanceGroupManagersListInstancesResponse(
-                managed_instances=[], next_page_token="def",
+                managed_instances=[],
+                next_page_token="def",
             ),
             compute.RegionInstanceGroupManagersListInstancesResponse(
-                managed_instances=[compute.ManagedInstance(),], next_page_token="ghi",
+                managed_instances=[
+                    compute.ManagedInstance(),
+                ],
+                next_page_token="ghi",
             ),
             compute.RegionInstanceGroupManagersListInstancesResponse(
                 managed_instances=[
@@ -4278,11 +4548,15 @@ def test_list_managed_instances_rest_pager(transport: str = "rest"):
 
 @pytest.mark.parametrize(
     "request_type",
-    [compute.ListPerInstanceConfigsRegionInstanceGroupManagersRequest, dict,],
+    [
+        compute.ListPerInstanceConfigsRegionInstanceGroupManagersRequest,
+        dict,
+    ],
 )
 def test_list_per_instance_configs_rest(request_type):
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -4303,8 +4577,10 @@ def test_list_per_instance_configs_rest(request_type):
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.RegionInstanceGroupManagersListInstanceConfigsResp.to_json(
-            return_value
+        json_return_value = (
+            compute.RegionInstanceGroupManagersListInstanceConfigsResp.to_json(
+                return_value
+            )
         )
         response_value._content = json_return_value.encode("UTF-8")
         req.return_value = response_value
@@ -4349,7 +4625,13 @@ def test_list_per_instance_configs_rest_required_fields(
     ).list_per_instance_configs._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
-        ("filter", "max_results", "order_by", "page_token", "return_partial_success",)
+        (
+            "filter",
+            "max_results",
+            "order_by",
+            "page_token",
+            "return_partial_success",
+        )
     )
     jsonified_request.update(unset_fields)
 
@@ -4362,7 +4644,8 @@ def test_list_per_instance_configs_rest_required_fields(
     assert jsonified_request["region"] == "region_value"
 
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -4385,8 +4668,10 @@ def test_list_per_instance_configs_rest_required_fields(
 
             response_value = Response()
             response_value.status_code = 200
-            json_return_value = compute.RegionInstanceGroupManagersListInstanceConfigsResp.to_json(
-                return_value
+            json_return_value = (
+                compute.RegionInstanceGroupManagersListInstanceConfigsResp.to_json(
+                    return_value
+                )
             )
             response_value._content = json_return_value.encode("UTF-8")
             req.return_value = response_value
@@ -4405,8 +4690,22 @@ def test_list_per_instance_configs_rest_unset_required_fields():
 
     unset_fields = transport.list_per_instance_configs._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("filter", "maxResults", "orderBy", "pageToken", "returnPartialSuccess",))
-        & set(("instanceGroupManager", "project", "region",))
+        set(
+            (
+                "filter",
+                "maxResults",
+                "orderBy",
+                "pageToken",
+                "returnPartialSuccess",
+            )
+        )
+        & set(
+            (
+                "instanceGroupManager",
+                "project",
+                "region",
+            )
+        )
     )
 
 
@@ -4443,8 +4742,10 @@ def test_list_per_instance_configs_rest_interceptors(null_interceptor):
         req.return_value = Response()
         req.return_value.status_code = 200
         req.return_value.request = PreparedRequest()
-        req.return_value._content = compute.RegionInstanceGroupManagersListInstanceConfigsResp.to_json(
-            compute.RegionInstanceGroupManagersListInstanceConfigsResp()
+        req.return_value._content = (
+            compute.RegionInstanceGroupManagersListInstanceConfigsResp.to_json(
+                compute.RegionInstanceGroupManagersListInstanceConfigsResp()
+            )
         )
 
         request = compute.ListPerInstanceConfigsRegionInstanceGroupManagersRequest()
@@ -4456,7 +4757,11 @@ def test_list_per_instance_configs_rest_interceptors(null_interceptor):
         post.return_value = compute.RegionInstanceGroupManagersListInstanceConfigsResp
 
         client.list_per_instance_configs(
-            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
         )
 
         pre.assert_called_once()
@@ -4468,7 +4773,8 @@ def test_list_per_instance_configs_rest_bad_request(
     request_type=compute.ListPerInstanceConfigsRegionInstanceGroupManagersRequest,
 ):
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -4493,7 +4799,8 @@ def test_list_per_instance_configs_rest_bad_request(
 
 def test_list_per_instance_configs_rest_flattened():
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -4519,8 +4826,10 @@ def test_list_per_instance_configs_rest_flattened():
         # Wrap the value into a proper Response obj
         response_value = Response()
         response_value.status_code = 200
-        json_return_value = compute.RegionInstanceGroupManagersListInstanceConfigsResp.to_json(
-            return_value
+        json_return_value = (
+            compute.RegionInstanceGroupManagersListInstanceConfigsResp.to_json(
+                return_value
+            )
         )
 
         response_value._content = json_return_value.encode("UTF-8")
@@ -4541,7 +4850,8 @@ def test_list_per_instance_configs_rest_flattened():
 
 def test_list_per_instance_configs_rest_flattened_error(transport: str = "rest"):
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -4557,7 +4867,8 @@ def test_list_per_instance_configs_rest_flattened_error(transport: str = "rest")
 
 def test_list_per_instance_configs_rest_pager(transport: str = "rest"):
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Mock the http request call within the method and fake a response.
@@ -4575,13 +4886,20 @@ def test_list_per_instance_configs_rest_pager(transport: str = "rest"):
                 next_page_token="abc",
             ),
             compute.RegionInstanceGroupManagersListInstanceConfigsResp(
-                items=[], next_page_token="def",
+                items=[],
+                next_page_token="def",
             ),
             compute.RegionInstanceGroupManagersListInstanceConfigsResp(
-                items=[compute.PerInstanceConfig(),], next_page_token="ghi",
+                items=[
+                    compute.PerInstanceConfig(),
+                ],
+                next_page_token="ghi",
             ),
             compute.RegionInstanceGroupManagersListInstanceConfigsResp(
-                items=[compute.PerInstanceConfig(), compute.PerInstanceConfig(),],
+                items=[
+                    compute.PerInstanceConfig(),
+                    compute.PerInstanceConfig(),
+                ],
             ),
         )
         # Two responses for two calls
@@ -4616,11 +4934,16 @@ def test_list_per_instance_configs_rest_pager(transport: str = "rest"):
 
 
 @pytest.mark.parametrize(
-    "request_type", [compute.PatchRegionInstanceGroupManagerRequest, dict,]
+    "request_type",
+    [
+        compute.PatchRegionInstanceGroupManagerRequest,
+        dict,
+    ],
 )
 def test_patch_unary_rest(request_type):
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -4803,7 +5126,8 @@ def test_patch_unary_rest_required_fields(
     assert jsonified_request["region"] == "region_value"
 
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -4898,7 +5222,13 @@ def test_patch_unary_rest_interceptors(null_interceptor):
         pre.return_value = request, metadata
         post.return_value = compute.Operation
 
-        client.patch_unary(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+        client.patch_unary(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
 
         pre.assert_called_once()
         post.assert_called_once()
@@ -4908,7 +5238,8 @@ def test_patch_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.PatchRegionInstanceGroupManagerRequest
 ):
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -4998,7 +5329,8 @@ def test_patch_unary_rest_bad_request(
 
 def test_patch_unary_rest_flattened():
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -5051,7 +5383,8 @@ def test_patch_unary_rest_flattened():
 
 def test_patch_unary_rest_flattened_error(transport: str = "rest"):
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5080,11 +5413,15 @@ def test_patch_unary_rest_error():
 
 @pytest.mark.parametrize(
     "request_type",
-    [compute.PatchPerInstanceConfigsRegionInstanceGroupManagerRequest, dict,],
+    [
+        compute.PatchPerInstanceConfigsRegionInstanceGroupManagerRequest,
+        dict,
+    ],
 )
 def test_patch_per_instance_configs_unary_rest(request_type):
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -5212,7 +5549,8 @@ def test_patch_per_instance_configs_unary_rest_required_fields(
     assert jsonified_request["region"] == "region_value"
 
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -5310,7 +5648,11 @@ def test_patch_per_instance_configs_unary_rest_interceptors(null_interceptor):
         post.return_value = compute.Operation
 
         client.patch_per_instance_configs_unary(
-            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
         )
 
         pre.assert_called_once()
@@ -5322,7 +5664,8 @@ def test_patch_per_instance_configs_unary_rest_bad_request(
     request_type=compute.PatchPerInstanceConfigsRegionInstanceGroupManagerRequest,
 ):
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -5357,7 +5700,8 @@ def test_patch_per_instance_configs_unary_rest_bad_request(
 
 def test_patch_per_instance_configs_unary_rest_flattened():
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -5408,7 +5752,8 @@ def test_patch_per_instance_configs_unary_rest_flattened():
 
 def test_patch_per_instance_configs_unary_rest_flattened_error(transport: str = "rest"):
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5434,11 +5779,16 @@ def test_patch_per_instance_configs_unary_rest_error():
 
 
 @pytest.mark.parametrize(
-    "request_type", [compute.RecreateInstancesRegionInstanceGroupManagerRequest, dict,]
+    "request_type",
+    [
+        compute.RecreateInstancesRegionInstanceGroupManagerRequest,
+        dict,
+    ],
 )
 def test_recreate_instances_unary_rest(request_type):
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -5559,7 +5909,8 @@ def test_recreate_instances_unary_rest_required_fields(
     assert jsonified_request["region"] == "region_value"
 
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -5655,7 +6006,11 @@ def test_recreate_instances_unary_rest_interceptors(null_interceptor):
         post.return_value = compute.Operation
 
         client.recreate_instances_unary(
-            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
         )
 
         pre.assert_called_once()
@@ -5667,7 +6022,8 @@ def test_recreate_instances_unary_rest_bad_request(
     request_type=compute.RecreateInstancesRegionInstanceGroupManagerRequest,
 ):
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -5695,7 +6051,8 @@ def test_recreate_instances_unary_rest_bad_request(
 
 def test_recreate_instances_unary_rest_flattened():
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -5744,7 +6101,8 @@ def test_recreate_instances_unary_rest_flattened():
 
 def test_recreate_instances_unary_rest_flattened_error(transport: str = "rest"):
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -5768,11 +6126,16 @@ def test_recreate_instances_unary_rest_error():
 
 
 @pytest.mark.parametrize(
-    "request_type", [compute.ResizeRegionInstanceGroupManagerRequest, dict,]
+    "request_type",
+    [
+        compute.ResizeRegionInstanceGroupManagerRequest,
+        dict,
+    ],
 )
 def test_resize_unary_rest(request_type):
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -5883,7 +6246,12 @@ def test_resize_unary_rest_required_fields(
         credentials=ga_credentials.AnonymousCredentials()
     ).resize._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
-    assert not set(unset_fields) - set(("request_id", "size",))
+    assert not set(unset_fields) - set(
+        (
+            "request_id",
+            "size",
+        )
+    )
     jsonified_request.update(unset_fields)
 
     # verify required fields with non-default values are left alone
@@ -5897,7 +6265,8 @@ def test_resize_unary_rest_required_fields(
     assert jsonified_request["size"] == 443
 
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -5927,7 +6296,10 @@ def test_resize_unary_rest_required_fields(
             response = client.resize_unary(request)
 
             expected_params = [
-                ("size", 0,),
+                (
+                    "size",
+                    0,
+                ),
             ]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
@@ -5940,8 +6312,20 @@ def test_resize_unary_rest_unset_required_fields():
 
     unset_fields = transport.resize._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("requestId", "size",))
-        & set(("instanceGroupManager", "project", "region", "size",))
+        set(
+            (
+                "requestId",
+                "size",
+            )
+        )
+        & set(
+            (
+                "instanceGroupManager",
+                "project",
+                "region",
+                "size",
+            )
+        )
     )
 
 
@@ -5987,7 +6371,11 @@ def test_resize_unary_rest_interceptors(null_interceptor):
         post.return_value = compute.Operation
 
         client.resize_unary(
-            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
         )
 
         pre.assert_called_once()
@@ -5999,7 +6387,8 @@ def test_resize_unary_rest_bad_request(
     request_type=compute.ResizeRegionInstanceGroupManagerRequest,
 ):
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -6024,7 +6413,8 @@ def test_resize_unary_rest_bad_request(
 
 def test_resize_unary_rest_flattened():
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -6071,7 +6461,8 @@ def test_resize_unary_rest_flattened():
 
 def test_resize_unary_rest_flattened_error(transport: str = "rest"):
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6094,11 +6485,15 @@ def test_resize_unary_rest_error():
 
 @pytest.mark.parametrize(
     "request_type",
-    [compute.SetInstanceTemplateRegionInstanceGroupManagerRequest, dict,],
+    [
+        compute.SetInstanceTemplateRegionInstanceGroupManagerRequest,
+        dict,
+    ],
 )
 def test_set_instance_template_unary_rest(request_type):
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -6219,7 +6614,8 @@ def test_set_instance_template_unary_rest_required_fields(
     assert jsonified_request["region"] == "region_value"
 
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -6317,7 +6713,11 @@ def test_set_instance_template_unary_rest_interceptors(null_interceptor):
         post.return_value = compute.Operation
 
         client.set_instance_template_unary(
-            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
         )
 
         pre.assert_called_once()
@@ -6329,7 +6729,8 @@ def test_set_instance_template_unary_rest_bad_request(
     request_type=compute.SetInstanceTemplateRegionInstanceGroupManagerRequest,
 ):
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -6357,7 +6758,8 @@ def test_set_instance_template_unary_rest_bad_request(
 
 def test_set_instance_template_unary_rest_flattened():
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -6406,7 +6808,8 @@ def test_set_instance_template_unary_rest_flattened():
 
 def test_set_instance_template_unary_rest_flattened_error(transport: str = "rest"):
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6430,11 +6833,16 @@ def test_set_instance_template_unary_rest_error():
 
 
 @pytest.mark.parametrize(
-    "request_type", [compute.SetTargetPoolsRegionInstanceGroupManagerRequest, dict,]
+    "request_type",
+    [
+        compute.SetTargetPoolsRegionInstanceGroupManagerRequest,
+        dict,
+    ],
 )
 def test_set_target_pools_unary_rest(request_type):
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -6556,7 +6964,8 @@ def test_set_target_pools_unary_rest_required_fields(
     assert jsonified_request["region"] == "region_value"
 
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -6652,7 +7061,11 @@ def test_set_target_pools_unary_rest_interceptors(null_interceptor):
         post.return_value = compute.Operation
 
         client.set_target_pools_unary(
-            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
         )
 
         pre.assert_called_once()
@@ -6664,7 +7077,8 @@ def test_set_target_pools_unary_rest_bad_request(
     request_type=compute.SetTargetPoolsRegionInstanceGroupManagerRequest,
 ):
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -6693,7 +7107,8 @@ def test_set_target_pools_unary_rest_bad_request(
 
 def test_set_target_pools_unary_rest_flattened():
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -6742,7 +7157,8 @@ def test_set_target_pools_unary_rest_flattened():
 
 def test_set_target_pools_unary_rest_flattened_error(transport: str = "rest"):
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -6767,11 +7183,15 @@ def test_set_target_pools_unary_rest_error():
 
 @pytest.mark.parametrize(
     "request_type",
-    [compute.UpdatePerInstanceConfigsRegionInstanceGroupManagerRequest, dict,],
+    [
+        compute.UpdatePerInstanceConfigsRegionInstanceGroupManagerRequest,
+        dict,
+    ],
 )
 def test_update_per_instance_configs_unary_rest(request_type):
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -6901,7 +7321,8 @@ def test_update_per_instance_configs_unary_rest_required_fields(
     assert jsonified_request["region"] == "region_value"
 
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -6999,7 +7420,11 @@ def test_update_per_instance_configs_unary_rest_interceptors(null_interceptor):
         post.return_value = compute.Operation
 
         client.update_per_instance_configs_unary(
-            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
         )
 
         pre.assert_called_once()
@@ -7011,7 +7436,8 @@ def test_update_per_instance_configs_unary_rest_bad_request(
     request_type=compute.UpdatePerInstanceConfigsRegionInstanceGroupManagerRequest,
 ):
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -7048,7 +7474,8 @@ def test_update_per_instance_configs_unary_rest_bad_request(
 
 def test_update_per_instance_configs_unary_rest_flattened():
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -7101,7 +7528,8 @@ def test_update_per_instance_configs_unary_rest_flattened_error(
     transport: str = "rest",
 ):
     client = RegionInstanceGroupManagersClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -7133,7 +7561,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = RegionInstanceGroupManagersClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -7154,7 +7583,8 @@ def test_credentials_transport_error():
     options.api_key = "api_key"
     with pytest.raises(ValueError):
         client = RegionInstanceGroupManagersClient(
-            client_options=options, transport=transport,
+            client_options=options,
+            transport=transport,
         )
 
     # It is an error to provide an api_key and a credential.
@@ -7171,7 +7601,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = RegionInstanceGroupManagersClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -7185,7 +7616,10 @@ def test_transport_instance():
 
 
 @pytest.mark.parametrize(
-    "transport_class", [transports.RegionInstanceGroupManagersRestTransport,]
+    "transport_class",
+    [
+        transports.RegionInstanceGroupManagersRestTransport,
+    ],
 )
 def test_transport_adc(transport_class):
     # Test default credentials are used if not provided.
@@ -7255,7 +7689,8 @@ def test_region_instance_group_managers_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.RegionInstanceGroupManagersTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -7305,7 +7740,12 @@ def test_region_instance_group_managers_http_transport_client_cert_source_for_mt
         mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
 
 
-@pytest.mark.parametrize("transport_name", ["rest",])
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
 def test_region_instance_group_managers_host_no_port(transport_name):
     client = RegionInstanceGroupManagersClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -7321,7 +7761,12 @@ def test_region_instance_group_managers_host_no_port(transport_name):
     )
 
 
-@pytest.mark.parametrize("transport_name", ["rest",])
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
 def test_region_instance_group_managers_host_with_port(transport_name):
     client = RegionInstanceGroupManagersClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -7361,7 +7806,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "whelk"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = RegionInstanceGroupManagersClient.common_folder_path(folder)
     assert expected == actual
 
@@ -7379,7 +7826,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "oyster"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = RegionInstanceGroupManagersClient.common_organization_path(organization)
     assert expected == actual
 
@@ -7397,7 +7846,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "cuttlefish"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = RegionInstanceGroupManagersClient.common_project_path(project)
     assert expected == actual
 
@@ -7417,7 +7868,8 @@ def test_common_location_path():
     project = "winkle"
     location = "nautilus"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = RegionInstanceGroupManagersClient.common_location_path(project, location)
     assert expected == actual
@@ -7442,7 +7894,8 @@ def test_client_with_default_client_info():
         transports.RegionInstanceGroupManagersTransport, "_prep_wrapped_messages"
     ) as prep:
         client = RegionInstanceGroupManagersClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -7451,7 +7904,8 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = RegionInstanceGroupManagersClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 

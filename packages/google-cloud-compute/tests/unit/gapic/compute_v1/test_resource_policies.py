@@ -90,7 +90,10 @@ def test__get_default_mtls_endpoint():
 
 
 @pytest.mark.parametrize(
-    "client_class,transport_name", [(ResourcePoliciesClient, "rest"),]
+    "client_class,transport_name",
+    [
+        (ResourcePoliciesClient, "rest"),
+    ],
 )
 def test_resource_policies_client_from_service_account_info(
     client_class, transport_name
@@ -114,7 +117,9 @@ def test_resource_policies_client_from_service_account_info(
 
 @pytest.mark.parametrize(
     "transport_class,transport_name",
-    [(transports.ResourcePoliciesRestTransport, "rest"),],
+    [
+        (transports.ResourcePoliciesRestTransport, "rest"),
+    ],
 )
 def test_resource_policies_client_service_account_always_use_jwt(
     transport_class, transport_name
@@ -135,7 +140,10 @@ def test_resource_policies_client_service_account_always_use_jwt(
 
 
 @pytest.mark.parametrize(
-    "client_class,transport_name", [(ResourcePoliciesClient, "rest"),]
+    "client_class,transport_name",
+    [
+        (ResourcePoliciesClient, "rest"),
+    ],
 )
 def test_resource_policies_client_from_service_account_file(
     client_class, transport_name
@@ -177,7 +185,9 @@ def test_resource_policies_client_get_transport_class():
 
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
-    [(ResourcePoliciesClient, transports.ResourcePoliciesRestTransport, "rest"),],
+    [
+        (ResourcePoliciesClient, transports.ResourcePoliciesRestTransport, "rest"),
+    ],
 )
 @mock.patch.object(
     ResourcePoliciesClient,
@@ -470,13 +480,17 @@ def test_resource_policies_client_get_mtls_endpoint_and_cert_source(client_class
 
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
-    [(ResourcePoliciesClient, transports.ResourcePoliciesRestTransport, "rest"),],
+    [
+        (ResourcePoliciesClient, transports.ResourcePoliciesRestTransport, "rest"),
+    ],
 )
 def test_resource_policies_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -494,7 +508,14 @@ def test_resource_policies_client_client_options_scopes(
 
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name,grpc_helpers",
-    [(ResourcePoliciesClient, transports.ResourcePoliciesRestTransport, "rest", None),],
+    [
+        (
+            ResourcePoliciesClient,
+            transports.ResourcePoliciesRestTransport,
+            "rest",
+            None,
+        ),
+    ],
 )
 def test_resource_policies_client_client_options_credentials_file(
     client_class, transport_class, transport_name, grpc_helpers
@@ -518,11 +539,16 @@ def test_resource_policies_client_client_options_credentials_file(
 
 
 @pytest.mark.parametrize(
-    "request_type", [compute.AggregatedListResourcePoliciesRequest, dict,]
+    "request_type",
+    [
+        compute.AggregatedListResourcePoliciesRequest,
+        dict,
+    ],
 )
 def test_aggregated_list_rest(request_type):
     client = ResourcePoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -605,7 +631,8 @@ def test_aggregated_list_rest_required_fields(
     assert jsonified_request["project"] == "project_value"
 
     client = ResourcePoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -706,7 +733,11 @@ def test_aggregated_list_rest_interceptors(null_interceptor):
         post.return_value = compute.ResourcePolicyAggregatedList
 
         client.aggregated_list(
-            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
         )
 
         pre.assert_called_once()
@@ -717,7 +748,8 @@ def test_aggregated_list_rest_bad_request(
     transport: str = "rest", request_type=compute.AggregatedListResourcePoliciesRequest
 ):
     client = ResourcePoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -738,7 +770,8 @@ def test_aggregated_list_rest_bad_request(
 
 def test_aggregated_list_rest_flattened():
     client = ResourcePoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -750,7 +783,9 @@ def test_aggregated_list_rest_flattened():
         sample_request = {"project": "sample1"}
 
         # get truthy value for each flattened field
-        mock_args = dict(project="project_value",)
+        mock_args = dict(
+            project="project_value",
+        )
         mock_args.update(sample_request)
 
         # Wrap the value into a proper Response obj
@@ -776,20 +811,23 @@ def test_aggregated_list_rest_flattened():
 
 def test_aggregated_list_rest_flattened_error(transport: str = "rest"):
     client = ResourcePoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.aggregated_list(
-            compute.AggregatedListResourcePoliciesRequest(), project="project_value",
+            compute.AggregatedListResourcePoliciesRequest(),
+            project="project_value",
         )
 
 
 def test_aggregated_list_rest_pager(transport: str = "rest"):
     client = ResourcePoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Mock the http request call within the method and fake a response.
@@ -806,9 +844,14 @@ def test_aggregated_list_rest_pager(transport: str = "rest"):
                 },
                 next_page_token="abc",
             ),
-            compute.ResourcePolicyAggregatedList(items={}, next_page_token="def",),
             compute.ResourcePolicyAggregatedList(
-                items={"g": compute.ResourcePoliciesScopedList(),},
+                items={},
+                next_page_token="def",
+            ),
+            compute.ResourcePolicyAggregatedList(
+                items={
+                    "g": compute.ResourcePoliciesScopedList(),
+                },
                 next_page_token="ghi",
             ),
             compute.ResourcePolicyAggregatedList(
@@ -856,10 +899,17 @@ def test_aggregated_list_rest_pager(transport: str = "rest"):
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [compute.DeleteResourcePolicyRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.DeleteResourcePolicyRequest,
+        dict,
+    ],
+)
 def test_delete_unary_rest(request_type):
     client = ResourcePoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -977,7 +1027,8 @@ def test_delete_unary_rest_required_fields(
     assert jsonified_request["resourcePolicy"] == "resource_policy_value"
 
     client = ResourcePoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -1018,7 +1069,14 @@ def test_delete_unary_rest_unset_required_fields():
 
     unset_fields = transport.delete._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("requestId",)) & set(("project", "region", "resourcePolicy",))
+        set(("requestId",))
+        & set(
+            (
+                "project",
+                "region",
+                "resourcePolicy",
+            )
+        )
     )
 
 
@@ -1064,7 +1122,11 @@ def test_delete_unary_rest_interceptors(null_interceptor):
         post.return_value = compute.Operation
 
         client.delete_unary(
-            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
         )
 
         pre.assert_called_once()
@@ -1075,7 +1137,8 @@ def test_delete_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.DeleteResourcePolicyRequest
 ):
     client = ResourcePoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -1100,7 +1163,8 @@ def test_delete_unary_rest_bad_request(
 
 def test_delete_unary_rest_flattened():
     client = ResourcePoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -1146,7 +1210,8 @@ def test_delete_unary_rest_flattened():
 
 def test_delete_unary_rest_flattened_error(transport: str = "rest"):
     client = ResourcePoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1166,10 +1231,17 @@ def test_delete_unary_rest_error():
     )
 
 
-@pytest.mark.parametrize("request_type", [compute.GetResourcePolicyRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.GetResourcePolicyRequest,
+        dict,
+    ],
+)
 def test_get_rest(request_type):
     client = ResourcePoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -1255,7 +1327,8 @@ def test_get_rest_required_fields(request_type=compute.GetResourcePolicyRequest)
     assert jsonified_request["resourcePolicy"] == "resource_policy_value"
 
     client = ResourcePoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -1296,7 +1369,14 @@ def test_get_rest_unset_required_fields():
 
     unset_fields = transport.get._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(()) & set(("project", "region", "resourcePolicy",))
+        set(())
+        & set(
+            (
+                "project",
+                "region",
+                "resourcePolicy",
+            )
+        )
     )
 
 
@@ -1343,7 +1423,13 @@ def test_get_rest_interceptors(null_interceptor):
         pre.return_value = request, metadata
         post.return_value = compute.ResourcePolicy
 
-        client.get(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+        client.get(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
 
         pre.assert_called_once()
         post.assert_called_once()
@@ -1353,7 +1439,8 @@ def test_get_rest_bad_request(
     transport: str = "rest", request_type=compute.GetResourcePolicyRequest
 ):
     client = ResourcePoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -1378,7 +1465,8 @@ def test_get_rest_bad_request(
 
 def test_get_rest_flattened():
     client = ResourcePoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -1424,7 +1512,8 @@ def test_get_rest_flattened():
 
 def test_get_rest_flattened_error(transport: str = "rest"):
     client = ResourcePoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1445,11 +1534,16 @@ def test_get_rest_error():
 
 
 @pytest.mark.parametrize(
-    "request_type", [compute.GetIamPolicyResourcePolicyRequest, dict,]
+    "request_type",
+    [
+        compute.GetIamPolicyResourcePolicyRequest,
+        dict,
+    ],
 )
 def test_get_iam_policy_rest(request_type):
     client = ResourcePoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -1459,7 +1553,11 @@ def test_get_iam_policy_rest(request_type):
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = compute.Policy(etag="etag_value", iam_owned=True, version=774,)
+        return_value = compute.Policy(
+            etag="etag_value",
+            iam_owned=True,
+            version=774,
+        )
 
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -1521,7 +1619,8 @@ def test_get_iam_policy_rest_required_fields(
     assert jsonified_request["resource"] == "resource_value"
 
     client = ResourcePoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -1563,7 +1662,13 @@ def test_get_iam_policy_rest_unset_required_fields():
     unset_fields = transport.get_iam_policy._get_unset_required_fields({})
     assert set(unset_fields) == (
         set(("optionsRequestedPolicyVersion",))
-        & set(("project", "region", "resource",))
+        & set(
+            (
+                "project",
+                "region",
+                "resource",
+            )
+        )
     )
 
 
@@ -1609,7 +1714,11 @@ def test_get_iam_policy_rest_interceptors(null_interceptor):
         post.return_value = compute.Policy
 
         client.get_iam_policy(
-            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
         )
 
         pre.assert_called_once()
@@ -1620,7 +1729,8 @@ def test_get_iam_policy_rest_bad_request(
     transport: str = "rest", request_type=compute.GetIamPolicyResourcePolicyRequest
 ):
     client = ResourcePoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -1641,7 +1751,8 @@ def test_get_iam_policy_rest_bad_request(
 
 def test_get_iam_policy_rest_flattened():
     client = ResourcePoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -1658,7 +1769,9 @@ def test_get_iam_policy_rest_flattened():
 
         # get truthy value for each flattened field
         mock_args = dict(
-            project="project_value", region="region_value", resource="resource_value",
+            project="project_value",
+            region="region_value",
+            resource="resource_value",
         )
         mock_args.update(sample_request)
 
@@ -1685,7 +1798,8 @@ def test_get_iam_policy_rest_flattened():
 
 def test_get_iam_policy_rest_flattened_error(transport: str = "rest"):
     client = ResourcePoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1705,10 +1819,17 @@ def test_get_iam_policy_rest_error():
     )
 
 
-@pytest.mark.parametrize("request_type", [compute.InsertResourcePolicyRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.InsertResourcePolicyRequest,
+        dict,
+    ],
+)
 def test_insert_unary_rest(request_type):
     client = ResourcePoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -1882,7 +2003,8 @@ def test_insert_unary_rest_required_fields(
     assert jsonified_request["region"] == "region_value"
 
     client = ResourcePoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -1924,7 +2046,14 @@ def test_insert_unary_rest_unset_required_fields():
 
     unset_fields = transport.insert._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("requestId",)) & set(("project", "region", "resourcePolicyResource",))
+        set(("requestId",))
+        & set(
+            (
+                "project",
+                "region",
+                "resourcePolicyResource",
+            )
+        )
     )
 
 
@@ -1970,7 +2099,11 @@ def test_insert_unary_rest_interceptors(null_interceptor):
         post.return_value = compute.Operation
 
         client.insert_unary(
-            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
         )
 
         pre.assert_called_once()
@@ -1981,7 +2114,8 @@ def test_insert_unary_rest_bad_request(
     transport: str = "rest", request_type=compute.InsertResourcePolicyRequest
 ):
     client = ResourcePoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -2066,7 +2200,8 @@ def test_insert_unary_rest_bad_request(
 
 def test_insert_unary_rest_flattened():
     client = ResourcePoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -2110,7 +2245,8 @@ def test_insert_unary_rest_flattened():
 
 def test_insert_unary_rest_flattened_error(transport: str = "rest"):
     client = ResourcePoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2132,10 +2268,17 @@ def test_insert_unary_rest_error():
     )
 
 
-@pytest.mark.parametrize("request_type", [compute.ListResourcePoliciesRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.ListResourcePoliciesRequest,
+        dict,
+    ],
+)
 def test_list_rest(request_type):
     client = ResourcePoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -2200,7 +2343,13 @@ def test_list_rest_required_fields(request_type=compute.ListResourcePoliciesRequ
     ).list._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
-        ("filter", "max_results", "order_by", "page_token", "return_partial_success",)
+        (
+            "filter",
+            "max_results",
+            "order_by",
+            "page_token",
+            "return_partial_success",
+        )
     )
     jsonified_request.update(unset_fields)
 
@@ -2211,7 +2360,8 @@ def test_list_rest_required_fields(request_type=compute.ListResourcePoliciesRequ
     assert jsonified_request["region"] == "region_value"
 
     client = ResourcePoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -2252,8 +2402,21 @@ def test_list_rest_unset_required_fields():
 
     unset_fields = transport.list._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("filter", "maxResults", "orderBy", "pageToken", "returnPartialSuccess",))
-        & set(("project", "region",))
+        set(
+            (
+                "filter",
+                "maxResults",
+                "orderBy",
+                "pageToken",
+                "returnPartialSuccess",
+            )
+        )
+        & set(
+            (
+                "project",
+                "region",
+            )
+        )
     )
 
 
@@ -2300,7 +2463,13 @@ def test_list_rest_interceptors(null_interceptor):
         pre.return_value = request, metadata
         post.return_value = compute.ResourcePolicyList
 
-        client.list(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+        client.list(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
 
         pre.assert_called_once()
         post.assert_called_once()
@@ -2310,7 +2479,8 @@ def test_list_rest_bad_request(
     transport: str = "rest", request_type=compute.ListResourcePoliciesRequest
 ):
     client = ResourcePoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -2331,7 +2501,8 @@ def test_list_rest_bad_request(
 
 def test_list_rest_flattened():
     client = ResourcePoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -2343,7 +2514,10 @@ def test_list_rest_flattened():
         sample_request = {"project": "sample1", "region": "sample2"}
 
         # get truthy value for each flattened field
-        mock_args = dict(project="project_value", region="region_value",)
+        mock_args = dict(
+            project="project_value",
+            region="region_value",
+        )
         mock_args.update(sample_request)
 
         # Wrap the value into a proper Response obj
@@ -2369,7 +2543,8 @@ def test_list_rest_flattened():
 
 def test_list_rest_flattened_error(transport: str = "rest"):
     client = ResourcePoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2384,7 +2559,8 @@ def test_list_rest_flattened_error(transport: str = "rest"):
 
 def test_list_rest_pager(transport: str = "rest"):
     client = ResourcePoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Mock the http request call within the method and fake a response.
@@ -2401,12 +2577,21 @@ def test_list_rest_pager(transport: str = "rest"):
                 ],
                 next_page_token="abc",
             ),
-            compute.ResourcePolicyList(items=[], next_page_token="def",),
             compute.ResourcePolicyList(
-                items=[compute.ResourcePolicy(),], next_page_token="ghi",
+                items=[],
+                next_page_token="def",
             ),
             compute.ResourcePolicyList(
-                items=[compute.ResourcePolicy(), compute.ResourcePolicy(),],
+                items=[
+                    compute.ResourcePolicy(),
+                ],
+                next_page_token="ghi",
+            ),
+            compute.ResourcePolicyList(
+                items=[
+                    compute.ResourcePolicy(),
+                    compute.ResourcePolicy(),
+                ],
             ),
         )
         # Two responses for two calls
@@ -2434,11 +2619,16 @@ def test_list_rest_pager(transport: str = "rest"):
 
 
 @pytest.mark.parametrize(
-    "request_type", [compute.SetIamPolicyResourcePolicyRequest, dict,]
+    "request_type",
+    [
+        compute.SetIamPolicyResourcePolicyRequest,
+        dict,
+    ],
 )
 def test_set_iam_policy_rest(request_type):
     client = ResourcePoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -2525,7 +2715,11 @@ def test_set_iam_policy_rest(request_type):
     # Mock the http request call within the method and fake a response.
     with mock.patch.object(type(client.transport._session), "request") as req:
         # Designate an appropriate value for the returned response.
-        return_value = compute.Policy(etag="etag_value", iam_owned=True, version=774,)
+        return_value = compute.Policy(
+            etag="etag_value",
+            iam_owned=True,
+            version=774,
+        )
 
         # Wrap the value into a proper Response obj
         response_value = Response()
@@ -2585,7 +2779,8 @@ def test_set_iam_policy_rest_required_fields(
     assert jsonified_request["resource"] == "resource_value"
 
     client = ResourcePoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -2628,7 +2823,14 @@ def test_set_iam_policy_rest_unset_required_fields():
     unset_fields = transport.set_iam_policy._get_unset_required_fields({})
     assert set(unset_fields) == (
         set(())
-        & set(("project", "region", "regionSetPolicyRequestResource", "resource",))
+        & set(
+            (
+                "project",
+                "region",
+                "regionSetPolicyRequestResource",
+                "resource",
+            )
+        )
     )
 
 
@@ -2674,7 +2876,11 @@ def test_set_iam_policy_rest_interceptors(null_interceptor):
         post.return_value = compute.Policy
 
         client.set_iam_policy(
-            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
         )
 
         pre.assert_called_once()
@@ -2685,7 +2891,8 @@ def test_set_iam_policy_rest_bad_request(
     transport: str = "rest", request_type=compute.SetIamPolicyResourcePolicyRequest
 ):
     client = ResourcePoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -2783,7 +2990,8 @@ def test_set_iam_policy_rest_bad_request(
 
 def test_set_iam_policy_rest_flattened():
     client = ResourcePoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -2832,7 +3040,8 @@ def test_set_iam_policy_rest_flattened():
 
 def test_set_iam_policy_rest_flattened_error(transport: str = "rest"):
     client = ResourcePoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -2856,11 +3065,16 @@ def test_set_iam_policy_rest_error():
 
 
 @pytest.mark.parametrize(
-    "request_type", [compute.TestIamPermissionsResourcePolicyRequest, dict,]
+    "request_type",
+    [
+        compute.TestIamPermissionsResourcePolicyRequest,
+        dict,
+    ],
 )
 def test_test_iam_permissions_rest(request_type):
     client = ResourcePoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -2933,7 +3147,8 @@ def test_test_iam_permissions_rest_required_fields(
     assert jsonified_request["resource"] == "resource_value"
 
     client = ResourcePoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -2976,7 +3191,14 @@ def test_test_iam_permissions_rest_unset_required_fields():
     unset_fields = transport.test_iam_permissions._get_unset_required_fields({})
     assert set(unset_fields) == (
         set(())
-        & set(("project", "region", "resource", "testPermissionsRequestResource",))
+        & set(
+            (
+                "project",
+                "region",
+                "resource",
+                "testPermissionsRequestResource",
+            )
+        )
     )
 
 
@@ -3024,7 +3246,11 @@ def test_test_iam_permissions_rest_interceptors(null_interceptor):
         post.return_value = compute.TestPermissionsResponse
 
         client.test_iam_permissions(
-            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
         )
 
         pre.assert_called_once()
@@ -3036,7 +3262,8 @@ def test_test_iam_permissions_rest_bad_request(
     request_type=compute.TestIamPermissionsResourcePolicyRequest,
 ):
     client = ResourcePoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -3060,7 +3287,8 @@ def test_test_iam_permissions_rest_bad_request(
 
 def test_test_iam_permissions_rest_flattened():
     client = ResourcePoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -3109,7 +3337,8 @@ def test_test_iam_permissions_rest_flattened():
 
 def test_test_iam_permissions_rest_flattened_error(transport: str = "rest"):
     client = ResourcePoliciesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -3139,7 +3368,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = ResourcePoliciesClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -3159,7 +3389,10 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = ResourcePoliciesClient(client_options=options, transport=transport,)
+        client = ResourcePoliciesClient(
+            client_options=options,
+            transport=transport,
+        )
 
     # It is an error to provide an api_key and a credential.
     options = mock.Mock()
@@ -3175,7 +3408,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = ResourcePoliciesClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -3188,7 +3422,12 @@ def test_transport_instance():
     assert client.transport is transport
 
 
-@pytest.mark.parametrize("transport_class", [transports.ResourcePoliciesRestTransport,])
+@pytest.mark.parametrize(
+    "transport_class",
+    [
+        transports.ResourcePoliciesRestTransport,
+    ],
+)
 def test_transport_adc(transport_class):
     # Test default credentials are used if not provided.
     with mock.patch.object(google.auth, "default") as adc:
@@ -3246,7 +3485,8 @@ def test_resource_policies_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.ResourcePoliciesTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -3296,7 +3536,12 @@ def test_resource_policies_http_transport_client_cert_source_for_mtls():
         mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
 
 
-@pytest.mark.parametrize("transport_name", ["rest",])
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
 def test_resource_policies_host_no_port(transport_name):
     client = ResourcePoliciesClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3312,7 +3557,12 @@ def test_resource_policies_host_no_port(transport_name):
     )
 
 
-@pytest.mark.parametrize("transport_name", ["rest",])
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
 def test_resource_policies_host_with_port(transport_name):
     client = ResourcePoliciesClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3350,7 +3600,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "whelk"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = ResourcePoliciesClient.common_folder_path(folder)
     assert expected == actual
 
@@ -3368,7 +3620,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "oyster"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = ResourcePoliciesClient.common_organization_path(organization)
     assert expected == actual
 
@@ -3386,7 +3640,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "cuttlefish"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = ResourcePoliciesClient.common_project_path(project)
     assert expected == actual
 
@@ -3406,7 +3662,8 @@ def test_common_location_path():
     project = "winkle"
     location = "nautilus"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = ResourcePoliciesClient.common_location_path(project, location)
     assert expected == actual
@@ -3431,7 +3688,8 @@ def test_client_with_default_client_info():
         transports.ResourcePoliciesTransport, "_prep_wrapped_messages"
     ) as prep:
         client = ResourcePoliciesClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -3440,7 +3698,8 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = ResourcePoliciesClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -3480,7 +3739,9 @@ def test_client_ctx():
 
 @pytest.mark.parametrize(
     "client_class,transport_class",
-    [(ResourcePoliciesClient, transports.ResourcePoliciesRestTransport),],
+    [
+        (ResourcePoliciesClient, transports.ResourcePoliciesRestTransport),
+    ],
 )
 def test_api_key_credentials(client_class, transport_class):
     with mock.patch.object(

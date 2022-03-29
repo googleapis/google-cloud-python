@@ -90,7 +90,10 @@ def test__get_default_mtls_endpoint():
 
 
 @pytest.mark.parametrize(
-    "client_class,transport_name", [(AcceleratorTypesClient, "rest"),]
+    "client_class,transport_name",
+    [
+        (AcceleratorTypesClient, "rest"),
+    ],
 )
 def test_accelerator_types_client_from_service_account_info(
     client_class, transport_name
@@ -114,7 +117,9 @@ def test_accelerator_types_client_from_service_account_info(
 
 @pytest.mark.parametrize(
     "transport_class,transport_name",
-    [(transports.AcceleratorTypesRestTransport, "rest"),],
+    [
+        (transports.AcceleratorTypesRestTransport, "rest"),
+    ],
 )
 def test_accelerator_types_client_service_account_always_use_jwt(
     transport_class, transport_name
@@ -135,7 +140,10 @@ def test_accelerator_types_client_service_account_always_use_jwt(
 
 
 @pytest.mark.parametrize(
-    "client_class,transport_name", [(AcceleratorTypesClient, "rest"),]
+    "client_class,transport_name",
+    [
+        (AcceleratorTypesClient, "rest"),
+    ],
 )
 def test_accelerator_types_client_from_service_account_file(
     client_class, transport_name
@@ -177,7 +185,9 @@ def test_accelerator_types_client_get_transport_class():
 
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
-    [(AcceleratorTypesClient, transports.AcceleratorTypesRestTransport, "rest"),],
+    [
+        (AcceleratorTypesClient, transports.AcceleratorTypesRestTransport, "rest"),
+    ],
 )
 @mock.patch.object(
     AcceleratorTypesClient,
@@ -470,13 +480,17 @@ def test_accelerator_types_client_get_mtls_endpoint_and_cert_source(client_class
 
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name",
-    [(AcceleratorTypesClient, transports.AcceleratorTypesRestTransport, "rest"),],
+    [
+        (AcceleratorTypesClient, transports.AcceleratorTypesRestTransport, "rest"),
+    ],
 )
 def test_accelerator_types_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -494,7 +508,14 @@ def test_accelerator_types_client_client_options_scopes(
 
 @pytest.mark.parametrize(
     "client_class,transport_class,transport_name,grpc_helpers",
-    [(AcceleratorTypesClient, transports.AcceleratorTypesRestTransport, "rest", None),],
+    [
+        (
+            AcceleratorTypesClient,
+            transports.AcceleratorTypesRestTransport,
+            "rest",
+            None,
+        ),
+    ],
 )
 def test_accelerator_types_client_client_options_credentials_file(
     client_class, transport_class, transport_name, grpc_helpers
@@ -518,11 +539,16 @@ def test_accelerator_types_client_client_options_credentials_file(
 
 
 @pytest.mark.parametrize(
-    "request_type", [compute.AggregatedListAcceleratorTypesRequest, dict,]
+    "request_type",
+    [
+        compute.AggregatedListAcceleratorTypesRequest,
+        dict,
+    ],
 )
 def test_aggregated_list_rest(request_type):
     client = AcceleratorTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -603,7 +629,8 @@ def test_aggregated_list_rest_required_fields(
     assert jsonified_request["project"] == "project_value"
 
     client = AcceleratorTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -704,7 +731,11 @@ def test_aggregated_list_rest_interceptors(null_interceptor):
         post.return_value = compute.AcceleratorTypeAggregatedList
 
         client.aggregated_list(
-            request, metadata=[("key", "val"), ("cephalopod", "squid"),]
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
         )
 
         pre.assert_called_once()
@@ -715,7 +746,8 @@ def test_aggregated_list_rest_bad_request(
     transport: str = "rest", request_type=compute.AggregatedListAcceleratorTypesRequest
 ):
     client = AcceleratorTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -736,7 +768,8 @@ def test_aggregated_list_rest_bad_request(
 
 def test_aggregated_list_rest_flattened():
     client = AcceleratorTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -748,7 +781,9 @@ def test_aggregated_list_rest_flattened():
         sample_request = {"project": "sample1"}
 
         # get truthy value for each flattened field
-        mock_args = dict(project="project_value",)
+        mock_args = dict(
+            project="project_value",
+        )
         mock_args.update(sample_request)
 
         # Wrap the value into a proper Response obj
@@ -774,20 +809,23 @@ def test_aggregated_list_rest_flattened():
 
 def test_aggregated_list_rest_flattened_error(transport: str = "rest"):
     client = AcceleratorTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.aggregated_list(
-            compute.AggregatedListAcceleratorTypesRequest(), project="project_value",
+            compute.AggregatedListAcceleratorTypesRequest(),
+            project="project_value",
         )
 
 
 def test_aggregated_list_rest_pager(transport: str = "rest"):
     client = AcceleratorTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Mock the http request call within the method and fake a response.
@@ -804,9 +842,14 @@ def test_aggregated_list_rest_pager(transport: str = "rest"):
                 },
                 next_page_token="abc",
             ),
-            compute.AcceleratorTypeAggregatedList(items={}, next_page_token="def",),
             compute.AcceleratorTypeAggregatedList(
-                items={"g": compute.AcceleratorTypesScopedList(),},
+                items={},
+                next_page_token="def",
+            ),
+            compute.AcceleratorTypeAggregatedList(
+                items={
+                    "g": compute.AcceleratorTypesScopedList(),
+                },
                 next_page_token="ghi",
             ),
             compute.AcceleratorTypeAggregatedList(
@@ -854,10 +897,17 @@ def test_aggregated_list_rest_pager(transport: str = "rest"):
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [compute.GetAcceleratorTypeRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.GetAcceleratorTypeRequest,
+        dict,
+    ],
+)
 def test_get_rest(request_type):
     client = AcceleratorTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -943,7 +993,8 @@ def test_get_rest_required_fields(request_type=compute.GetAcceleratorTypeRequest
     assert jsonified_request["zone"] == "zone_value"
 
     client = AcceleratorTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -983,7 +1034,16 @@ def test_get_rest_unset_required_fields():
     )
 
     unset_fields = transport.get._get_unset_required_fields({})
-    assert set(unset_fields) == (set(()) & set(("acceleratorType", "project", "zone",)))
+    assert set(unset_fields) == (
+        set(())
+        & set(
+            (
+                "acceleratorType",
+                "project",
+                "zone",
+            )
+        )
+    )
 
 
 @pytest.mark.parametrize("null_interceptor", [True, False])
@@ -1029,7 +1089,13 @@ def test_get_rest_interceptors(null_interceptor):
         pre.return_value = request, metadata
         post.return_value = compute.AcceleratorType
 
-        client.get(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+        client.get(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
 
         pre.assert_called_once()
         post.assert_called_once()
@@ -1039,7 +1105,8 @@ def test_get_rest_bad_request(
     transport: str = "rest", request_type=compute.GetAcceleratorTypeRequest
 ):
     client = AcceleratorTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -1064,7 +1131,8 @@ def test_get_rest_bad_request(
 
 def test_get_rest_flattened():
     client = AcceleratorTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -1110,7 +1178,8 @@ def test_get_rest_flattened():
 
 def test_get_rest_flattened_error(transport: str = "rest"):
     client = AcceleratorTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1130,10 +1199,17 @@ def test_get_rest_error():
     )
 
 
-@pytest.mark.parametrize("request_type", [compute.ListAcceleratorTypesRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.ListAcceleratorTypesRequest,
+        dict,
+    ],
+)
 def test_list_rest(request_type):
     client = AcceleratorTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # send a request that will satisfy transcoding
@@ -1196,7 +1272,13 @@ def test_list_rest_required_fields(request_type=compute.ListAcceleratorTypesRequ
     ).list._get_unset_required_fields(jsonified_request)
     # Check that path parameters and body parameters are not mixing in.
     assert not set(unset_fields) - set(
-        ("filter", "max_results", "order_by", "page_token", "return_partial_success",)
+        (
+            "filter",
+            "max_results",
+            "order_by",
+            "page_token",
+            "return_partial_success",
+        )
     )
     jsonified_request.update(unset_fields)
 
@@ -1207,7 +1289,8 @@ def test_list_rest_required_fields(request_type=compute.ListAcceleratorTypesRequ
     assert jsonified_request["zone"] == "zone_value"
 
     client = AcceleratorTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
     request = request_type(request_init)
 
@@ -1248,8 +1331,21 @@ def test_list_rest_unset_required_fields():
 
     unset_fields = transport.list._get_unset_required_fields({})
     assert set(unset_fields) == (
-        set(("filter", "maxResults", "orderBy", "pageToken", "returnPartialSuccess",))
-        & set(("project", "zone",))
+        set(
+            (
+                "filter",
+                "maxResults",
+                "orderBy",
+                "pageToken",
+                "returnPartialSuccess",
+            )
+        )
+        & set(
+            (
+                "project",
+                "zone",
+            )
+        )
     )
 
 
@@ -1296,7 +1392,13 @@ def test_list_rest_interceptors(null_interceptor):
         pre.return_value = request, metadata
         post.return_value = compute.AcceleratorTypeList
 
-        client.list(request, metadata=[("key", "val"), ("cephalopod", "squid"),])
+        client.list(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
 
         pre.assert_called_once()
         post.assert_called_once()
@@ -1306,7 +1408,8 @@ def test_list_rest_bad_request(
     transport: str = "rest", request_type=compute.ListAcceleratorTypesRequest
 ):
     client = AcceleratorTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # send a request that will satisfy transcoding
@@ -1327,7 +1430,8 @@ def test_list_rest_bad_request(
 
 def test_list_rest_flattened():
     client = AcceleratorTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="rest",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
     )
 
     # Mock the http request call within the method and fake a response.
@@ -1339,7 +1443,10 @@ def test_list_rest_flattened():
         sample_request = {"project": "sample1", "zone": "sample2"}
 
         # get truthy value for each flattened field
-        mock_args = dict(project="project_value", zone="zone_value",)
+        mock_args = dict(
+            project="project_value",
+            zone="zone_value",
+        )
         mock_args.update(sample_request)
 
         # Wrap the value into a proper Response obj
@@ -1365,7 +1472,8 @@ def test_list_rest_flattened():
 
 def test_list_rest_flattened_error(transport: str = "rest"):
     client = AcceleratorTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Attempting to call a method with both a request object and flattened
@@ -1380,7 +1488,8 @@ def test_list_rest_flattened_error(transport: str = "rest"):
 
 def test_list_rest_pager(transport: str = "rest"):
     client = AcceleratorTypesClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Mock the http request call within the method and fake a response.
@@ -1397,12 +1506,21 @@ def test_list_rest_pager(transport: str = "rest"):
                 ],
                 next_page_token="abc",
             ),
-            compute.AcceleratorTypeList(items=[], next_page_token="def",),
             compute.AcceleratorTypeList(
-                items=[compute.AcceleratorType(),], next_page_token="ghi",
+                items=[],
+                next_page_token="def",
             ),
             compute.AcceleratorTypeList(
-                items=[compute.AcceleratorType(), compute.AcceleratorType(),],
+                items=[
+                    compute.AcceleratorType(),
+                ],
+                next_page_token="ghi",
+            ),
+            compute.AcceleratorTypeList(
+                items=[
+                    compute.AcceleratorType(),
+                    compute.AcceleratorType(),
+                ],
             ),
         )
         # Two responses for two calls
@@ -1436,7 +1554,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = AcceleratorTypesClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -1456,7 +1575,10 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = AcceleratorTypesClient(client_options=options, transport=transport,)
+        client = AcceleratorTypesClient(
+            client_options=options,
+            transport=transport,
+        )
 
     # It is an error to provide an api_key and a credential.
     options = mock.Mock()
@@ -1472,7 +1594,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = AcceleratorTypesClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -1485,7 +1608,12 @@ def test_transport_instance():
     assert client.transport is transport
 
 
-@pytest.mark.parametrize("transport_class", [transports.AcceleratorTypesRestTransport,])
+@pytest.mark.parametrize(
+    "transport_class",
+    [
+        transports.AcceleratorTypesRestTransport,
+    ],
+)
 def test_transport_adc(transport_class):
     # Test default credentials are used if not provided.
     with mock.patch.object(google.auth, "default") as adc:
@@ -1538,7 +1666,8 @@ def test_accelerator_types_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.AcceleratorTypesTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -1590,7 +1719,12 @@ def test_accelerator_types_http_transport_client_cert_source_for_mtls():
         mock_configure_mtls_channel.assert_called_once_with(client_cert_source_callback)
 
 
-@pytest.mark.parametrize("transport_name", ["rest",])
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
 def test_accelerator_types_host_no_port(transport_name):
     client = AcceleratorTypesClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -1606,7 +1740,12 @@ def test_accelerator_types_host_no_port(transport_name):
     )
 
 
-@pytest.mark.parametrize("transport_name", ["rest",])
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
 def test_accelerator_types_host_with_port(transport_name):
     client = AcceleratorTypesClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -1644,7 +1783,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "whelk"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = AcceleratorTypesClient.common_folder_path(folder)
     assert expected == actual
 
@@ -1662,7 +1803,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "oyster"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = AcceleratorTypesClient.common_organization_path(organization)
     assert expected == actual
 
@@ -1680,7 +1823,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "cuttlefish"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = AcceleratorTypesClient.common_project_path(project)
     assert expected == actual
 
@@ -1700,7 +1845,8 @@ def test_common_location_path():
     project = "winkle"
     location = "nautilus"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = AcceleratorTypesClient.common_location_path(project, location)
     assert expected == actual
@@ -1725,7 +1871,8 @@ def test_client_with_default_client_info():
         transports.AcceleratorTypesTransport, "_prep_wrapped_messages"
     ) as prep:
         client = AcceleratorTypesClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -1734,7 +1881,8 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = AcceleratorTypesClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -1774,7 +1922,9 @@ def test_client_ctx():
 
 @pytest.mark.parametrize(
     "client_class,transport_class",
-    [(AcceleratorTypesClient, transports.AcceleratorTypesRestTransport),],
+    [
+        (AcceleratorTypesClient, transports.AcceleratorTypesRestTransport),
+    ],
 )
 def test_api_key_credentials(client_class, transport_class):
     with mock.patch.object(

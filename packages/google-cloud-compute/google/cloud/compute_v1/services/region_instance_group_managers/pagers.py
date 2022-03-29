@@ -258,8 +258,8 @@ class ListPerInstanceConfigsPager:
                 sent along with the request as metadata.
         """
         self._method = method
-        self._request = compute.ListPerInstanceConfigsRegionInstanceGroupManagersRequest(
-            request
+        self._request = (
+            compute.ListPerInstanceConfigsRegionInstanceGroupManagersRequest(request)
         )
         self._response = response
         self._metadata = metadata

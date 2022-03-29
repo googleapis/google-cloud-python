@@ -350,7 +350,10 @@ class ZonesRestTransport(ZonesTransport):
             """
 
             http_options: List[Dict[str, str]] = [
-                {"method": "get", "uri": "/compute/v1/projects/{project}/zones",},
+                {
+                    "method": "get",
+                    "uri": "/compute/v1/projects/{project}/zones",
+                },
             ]
             request, metadata = self._interceptor.pre_list(request, metadata)
             request_kwargs = compute.ListZonesRequest.to_dict(request)

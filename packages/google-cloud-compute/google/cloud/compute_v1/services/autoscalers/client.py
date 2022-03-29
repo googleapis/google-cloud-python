@@ -51,7 +51,10 @@ class AutoscalersClientMeta(type):
     _transport_registry = OrderedDict()  # type: Dict[str, Type[AutoscalersTransport]]
     _transport_registry["rest"] = AutoscalersRestTransport
 
-    def get_transport_class(cls, label: str = None,) -> Type[AutoscalersTransport]:
+    def get_transport_class(
+        cls,
+        label: str = None,
+    ) -> Type[AutoscalersTransport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -156,7 +159,9 @@ class AutoscalersClient(metaclass=AutoscalersClientMeta):
         return self._transport
 
     @staticmethod
-    def common_billing_account_path(billing_account: str,) -> str:
+    def common_billing_account_path(
+        billing_account: str,
+    ) -> str:
         """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
@@ -169,9 +174,13 @@ class AutoscalersClient(metaclass=AutoscalersClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(folder: str,) -> str:
+    def common_folder_path(
+        folder: str,
+    ) -> str:
         """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(folder=folder,)
+        return "folders/{folder}".format(
+            folder=folder,
+        )
 
     @staticmethod
     def parse_common_folder_path(path: str) -> Dict[str, str]:
@@ -180,9 +189,13 @@ class AutoscalersClient(metaclass=AutoscalersClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(organization: str,) -> str:
+    def common_organization_path(
+        organization: str,
+    ) -> str:
         """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(organization=organization,)
+        return "organizations/{organization}".format(
+            organization=organization,
+        )
 
     @staticmethod
     def parse_common_organization_path(path: str) -> Dict[str, str]:
@@ -191,9 +204,13 @@ class AutoscalersClient(metaclass=AutoscalersClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(project: str,) -> str:
+    def common_project_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified project string."""
-        return "projects/{project}".format(project=project,)
+        return "projects/{project}".format(
+            project=project,
+        )
 
     @staticmethod
     def parse_common_project_path(path: str) -> Dict[str, str]:
@@ -202,10 +219,14 @@ class AutoscalersClient(metaclass=AutoscalersClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(project: str, location: str,) -> str:
+    def common_location_path(
+        project: str,
+        location: str,
+    ) -> str:
         """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
-            project=project, location=location,
+            project=project,
+            location=location,
         )
 
     @staticmethod
@@ -439,12 +460,20 @@ class AutoscalersClient(metaclass=AutoscalersClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.aggregated_list]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.AggregatedListPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -538,7 +567,12 @@ class AutoscalersClient(metaclass=AutoscalersClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.delete]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -628,7 +662,12 @@ class AutoscalersClient(metaclass=AutoscalersClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.get]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -722,7 +761,12 @@ class AutoscalersClient(metaclass=AutoscalersClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.insert]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -798,12 +842,20 @@ class AutoscalersClient(metaclass=AutoscalersClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.list]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -900,7 +952,12 @@ class AutoscalersClient(metaclass=AutoscalersClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.patch]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -994,7 +1051,12 @@ class AutoscalersClient(metaclass=AutoscalersClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.update]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1015,7 +1077,9 @@ class AutoscalersClient(metaclass=AutoscalersClientMeta):
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-compute",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-compute",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()

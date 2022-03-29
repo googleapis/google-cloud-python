@@ -827,8 +827,8 @@ class RegionTargetHttpsProxiesRestTransport(RegionTargetHttpsProxiesTransport):
             request, metadata = self._interceptor.pre_set_ssl_certificates(
                 request, metadata
             )
-            request_kwargs = compute.SetSslCertificatesRegionTargetHttpsProxyRequest.to_dict(
-                request
+            request_kwargs = (
+                compute.SetSslCertificatesRegionTargetHttpsProxyRequest.to_dict(request)
             )
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 

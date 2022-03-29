@@ -496,7 +496,10 @@ class GlobalOrganizationOperationsRestTransport(GlobalOrganizationOperationsTran
             """
 
             http_options: List[Dict[str, str]] = [
-                {"method": "get", "uri": "/compute/v1/locations/global/operations",},
+                {
+                    "method": "get",
+                    "uri": "/compute/v1/locations/global/operations",
+                },
             ]
             request, metadata = self._interceptor.pre_list(request, metadata)
             request_kwargs = compute.ListGlobalOrganizationOperationsRequest.to_dict(

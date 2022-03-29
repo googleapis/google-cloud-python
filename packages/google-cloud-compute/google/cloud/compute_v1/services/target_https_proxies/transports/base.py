@@ -29,7 +29,9 @@ from google.cloud.compute_v1.types import compute
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-compute",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-compute",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
@@ -122,25 +124,39 @@ class TargetHttpsProxiesTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.aggregated_list: gapic_v1.method.wrap_method(
-                self.aggregated_list, default_timeout=None, client_info=client_info,
+                self.aggregated_list,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.delete: gapic_v1.method.wrap_method(
-                self.delete, default_timeout=None, client_info=client_info,
+                self.delete,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get: gapic_v1.method.wrap_method(
-                self.get, default_timeout=None, client_info=client_info,
+                self.get,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.insert: gapic_v1.method.wrap_method(
-                self.insert, default_timeout=None, client_info=client_info,
+                self.insert,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list: gapic_v1.method.wrap_method(
-                self.list, default_timeout=None, client_info=client_info,
+                self.list,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.patch: gapic_v1.method.wrap_method(
-                self.patch, default_timeout=None, client_info=client_info,
+                self.patch,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.set_quic_override: gapic_v1.method.wrap_method(
-                self.set_quic_override, default_timeout=None, client_info=client_info,
+                self.set_quic_override,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.set_ssl_certificates: gapic_v1.method.wrap_method(
                 self.set_ssl_certificates,
@@ -148,19 +164,23 @@ class TargetHttpsProxiesTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.set_ssl_policy: gapic_v1.method.wrap_method(
-                self.set_ssl_policy, default_timeout=None, client_info=client_info,
+                self.set_ssl_policy,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.set_url_map: gapic_v1.method.wrap_method(
-                self.set_url_map, default_timeout=None, client_info=client_info,
+                self.set_url_map,
+                default_timeout=None,
+                client_info=client_info,
             ),
         }
 
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

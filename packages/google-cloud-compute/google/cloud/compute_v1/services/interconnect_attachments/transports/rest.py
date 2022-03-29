@@ -394,8 +394,8 @@ class InterconnectAttachmentsRestTransport(InterconnectAttachmentsTransport):
                 },
             ]
             request, metadata = self._interceptor.pre_aggregated_list(request, metadata)
-            request_kwargs = compute.AggregatedListInterconnectAttachmentsRequest.to_dict(
-                request
+            request_kwargs = (
+                compute.AggregatedListInterconnectAttachmentsRequest.to_dict(request)
             )
             transcoded_request = path_template.transcode(http_options, **request_kwargs)
 
