@@ -125,31 +125,49 @@ class ContactCenterInsightsTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.create_conversation: gapic_v1.method.wrap_method(
-                self.create_conversation, default_timeout=None, client_info=client_info,
+                self.create_conversation,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.update_conversation: gapic_v1.method.wrap_method(
-                self.update_conversation, default_timeout=None, client_info=client_info,
+                self.update_conversation,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_conversation: gapic_v1.method.wrap_method(
-                self.get_conversation, default_timeout=None, client_info=client_info,
+                self.get_conversation,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_conversations: gapic_v1.method.wrap_method(
-                self.list_conversations, default_timeout=None, client_info=client_info,
+                self.list_conversations,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.delete_conversation: gapic_v1.method.wrap_method(
-                self.delete_conversation, default_timeout=None, client_info=client_info,
+                self.delete_conversation,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.create_analysis: gapic_v1.method.wrap_method(
-                self.create_analysis, default_timeout=None, client_info=client_info,
+                self.create_analysis,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_analysis: gapic_v1.method.wrap_method(
-                self.get_analysis, default_timeout=None, client_info=client_info,
+                self.get_analysis,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_analyses: gapic_v1.method.wrap_method(
-                self.list_analyses, default_timeout=None, client_info=client_info,
+                self.list_analyses,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.delete_analysis: gapic_v1.method.wrap_method(
-                self.delete_analysis, default_timeout=None, client_info=client_info,
+                self.delete_analysis,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.export_insights_data: gapic_v1.method.wrap_method(
                 self.export_insights_data,
@@ -157,22 +175,34 @@ class ContactCenterInsightsTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.create_issue_model: gapic_v1.method.wrap_method(
-                self.create_issue_model, default_timeout=None, client_info=client_info,
+                self.create_issue_model,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.update_issue_model: gapic_v1.method.wrap_method(
-                self.update_issue_model, default_timeout=None, client_info=client_info,
+                self.update_issue_model,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_issue_model: gapic_v1.method.wrap_method(
-                self.get_issue_model, default_timeout=None, client_info=client_info,
+                self.get_issue_model,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_issue_models: gapic_v1.method.wrap_method(
-                self.list_issue_models, default_timeout=None, client_info=client_info,
+                self.list_issue_models,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.delete_issue_model: gapic_v1.method.wrap_method(
-                self.delete_issue_model, default_timeout=None, client_info=client_info,
+                self.delete_issue_model,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.deploy_issue_model: gapic_v1.method.wrap_method(
-                self.deploy_issue_model, default_timeout=None, client_info=client_info,
+                self.deploy_issue_model,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.undeploy_issue_model: gapic_v1.method.wrap_method(
                 self.undeploy_issue_model,
@@ -180,13 +210,19 @@ class ContactCenterInsightsTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.get_issue: gapic_v1.method.wrap_method(
-                self.get_issue, default_timeout=None, client_info=client_info,
+                self.get_issue,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_issues: gapic_v1.method.wrap_method(
-                self.list_issues, default_timeout=None, client_info=client_info,
+                self.list_issues,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.update_issue: gapic_v1.method.wrap_method(
-                self.update_issue, default_timeout=None, client_info=client_info,
+                self.update_issue,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.calculate_issue_model_stats: gapic_v1.method.wrap_method(
                 self.calculate_issue_model_stats,
@@ -199,7 +235,9 @@ class ContactCenterInsightsTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.get_phrase_matcher: gapic_v1.method.wrap_method(
-                self.get_phrase_matcher, default_timeout=None, client_info=client_info,
+                self.get_phrase_matcher,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_phrase_matchers: gapic_v1.method.wrap_method(
                 self.list_phrase_matchers,
@@ -217,37 +255,53 @@ class ContactCenterInsightsTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.calculate_stats: gapic_v1.method.wrap_method(
-                self.calculate_stats, default_timeout=None, client_info=client_info,
+                self.calculate_stats,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_settings: gapic_v1.method.wrap_method(
-                self.get_settings, default_timeout=None, client_info=client_info,
+                self.get_settings,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.update_settings: gapic_v1.method.wrap_method(
-                self.update_settings, default_timeout=None, client_info=client_info,
+                self.update_settings,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.create_view: gapic_v1.method.wrap_method(
-                self.create_view, default_timeout=None, client_info=client_info,
+                self.create_view,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_view: gapic_v1.method.wrap_method(
-                self.get_view, default_timeout=None, client_info=client_info,
+                self.get_view,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_views: gapic_v1.method.wrap_method(
-                self.list_views, default_timeout=None, client_info=client_info,
+                self.list_views,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.update_view: gapic_v1.method.wrap_method(
-                self.update_view, default_timeout=None, client_info=client_info,
+                self.update_view,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.delete_view: gapic_v1.method.wrap_method(
-                self.delete_view, default_timeout=None, client_info=client_info,
+                self.delete_view,
+                default_timeout=None,
+                client_info=client_info,
             ),
         }
 
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

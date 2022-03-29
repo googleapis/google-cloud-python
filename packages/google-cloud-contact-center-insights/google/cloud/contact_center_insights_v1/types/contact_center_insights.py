@@ -101,8 +101,14 @@ class CalculateStatsRequest(proto.Message):
             properties.
     """
 
-    location = proto.Field(proto.STRING, number=1,)
-    filter = proto.Field(proto.STRING, number=2,)
+    location = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class CalculateStatsResponse(proto.Message):
@@ -167,12 +173,19 @@ class CalculateStatsResponse(proto.Message):
             """
 
             start_time = proto.Field(
-                proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,
+                proto.MESSAGE,
+                number=1,
+                message=timestamp_pb2.Timestamp,
             )
-            conversation_count = proto.Field(proto.INT32, number=2,)
+            conversation_count = proto.Field(
+                proto.INT32,
+                number=2,
+            )
 
         interval_duration = proto.Field(
-            proto.MESSAGE, number=1, message=duration_pb2.Duration,
+            proto.MESSAGE,
+            number=1,
+            message=duration_pb2.Duration,
         )
         points = proto.RepeatedField(
             proto.MESSAGE,
@@ -181,13 +194,33 @@ class CalculateStatsResponse(proto.Message):
         )
 
     average_duration = proto.Field(
-        proto.MESSAGE, number=1, message=duration_pb2.Duration,
+        proto.MESSAGE,
+        number=1,
+        message=duration_pb2.Duration,
     )
-    average_turn_count = proto.Field(proto.INT32, number=2,)
-    conversation_count = proto.Field(proto.INT32, number=3,)
-    smart_highlighter_matches = proto.MapField(proto.STRING, proto.INT32, number=4,)
-    custom_highlighter_matches = proto.MapField(proto.STRING, proto.INT32, number=5,)
-    issue_matches = proto.MapField(proto.STRING, proto.INT32, number=6,)
+    average_turn_count = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    conversation_count = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    smart_highlighter_matches = proto.MapField(
+        proto.STRING,
+        proto.INT32,
+        number=4,
+    )
+    custom_highlighter_matches = proto.MapField(
+        proto.STRING,
+        proto.INT32,
+        number=5,
+    )
+    issue_matches = proto.MapField(
+        proto.STRING,
+        proto.INT32,
+        number=6,
+    )
     issue_matches_stats = proto.MapField(
         proto.STRING,
         proto.MESSAGE,
@@ -195,7 +228,9 @@ class CalculateStatsResponse(proto.Message):
         message=resources.IssueModelLabelStats.IssueStats,
     )
     conversation_count_time_series = proto.Field(
-        proto.MESSAGE, number=7, message=TimeSeries,
+        proto.MESSAGE,
+        number=7,
+        message=TimeSeries,
     )
 
 
@@ -214,9 +249,20 @@ class CreateAnalysisOperationMetadata(proto.Message):
             Analysis Operation belongs to.
     """
 
-    create_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
-    end_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    conversation = proto.Field(proto.STRING, number=3,)
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    conversation = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class CreateConversationRequest(proto.Message):
@@ -239,9 +285,19 @@ class CreateConversationRequest(proto.Message):
             are ``[a-z][0-9]-``
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    conversation = proto.Field(proto.MESSAGE, number=2, message=resources.Conversation,)
-    conversation_id = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    conversation = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=resources.Conversation,
+    )
+    conversation_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListConversationsRequest(proto.Message):
@@ -272,11 +328,27 @@ class ListConversationsRequest(proto.Message):
             ``BASIC``.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    filter = proto.Field(proto.STRING, number=4,)
-    view = proto.Field(proto.ENUM, number=5, enum="ConversationView",)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    view = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum="ConversationView",
+    )
 
 
 class ListConversationsResponse(proto.Message):
@@ -297,9 +369,14 @@ class ListConversationsResponse(proto.Message):
         return self
 
     conversations = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=resources.Conversation,
+        proto.MESSAGE,
+        number=1,
+        message=resources.Conversation,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetConversationRequest(proto.Message):
@@ -314,8 +391,15 @@ class GetConversationRequest(proto.Message):
             ``FULL``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    view = proto.Field(proto.ENUM, number=2, enum="ConversationView",)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    view = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum="ConversationView",
+    )
 
 
 class UpdateConversationRequest(proto.Message):
@@ -329,9 +413,15 @@ class UpdateConversationRequest(proto.Message):
             The list of fields to be updated.
     """
 
-    conversation = proto.Field(proto.MESSAGE, number=1, message=resources.Conversation,)
+    conversation = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=resources.Conversation,
+    )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -349,8 +439,14 @@ class DeleteConversationRequest(proto.Message):
             has no analyses.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    force = proto.Field(proto.BOOL, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    force = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
 
 
 class CreateAnalysisRequest(proto.Message):
@@ -364,8 +460,15 @@ class CreateAnalysisRequest(proto.Message):
             Required. The analysis to create.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    analysis = proto.Field(proto.MESSAGE, number=2, message=resources.Analysis,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    analysis = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=resources.Analysis,
+    )
 
 
 class ListAnalysesRequest(proto.Message):
@@ -392,10 +495,22 @@ class ListAnalysesRequest(proto.Message):
             specific properties.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    filter = proto.Field(proto.STRING, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class ListAnalysesResponse(proto.Message):
@@ -414,8 +529,15 @@ class ListAnalysesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    analyses = proto.RepeatedField(proto.MESSAGE, number=1, message=resources.Analysis,)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    analyses = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=resources.Analysis,
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetAnalysisRequest(proto.Message):
@@ -426,7 +548,10 @@ class GetAnalysisRequest(proto.Message):
             Required. The name of the analysis to get.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class DeleteAnalysisRequest(proto.Message):
@@ -437,7 +562,10 @@ class DeleteAnalysisRequest(proto.Message):
             Required. The name of the analysis to delete.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ExportInsightsDataRequest(proto.Message):
@@ -493,17 +621,42 @@ class ExportInsightsDataRequest(proto.Message):
                 returns an INVALID_ARGUMENT error.
         """
 
-        project_id = proto.Field(proto.STRING, number=3,)
-        dataset = proto.Field(proto.STRING, number=1,)
-        table = proto.Field(proto.STRING, number=2,)
+        project_id = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+        dataset = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        table = proto.Field(
+            proto.STRING,
+            number=2,
+        )
 
     big_query_destination = proto.Field(
-        proto.MESSAGE, number=2, oneof="destination", message=BigQueryDestination,
+        proto.MESSAGE,
+        number=2,
+        oneof="destination",
+        message=BigQueryDestination,
     )
-    parent = proto.Field(proto.STRING, number=1,)
-    filter = proto.Field(proto.STRING, number=3,)
-    kms_key = proto.Field(proto.STRING, number=4,)
-    write_disposition = proto.Field(proto.ENUM, number=5, enum=WriteDisposition,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    kms_key = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    write_disposition = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum=WriteDisposition,
+    )
 
 
 class ExportInsightsDataMetadata(proto.Message):
@@ -524,17 +677,30 @@ class ExportInsightsDataMetadata(proto.Message):
             incomplete.
     """
 
-    create_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
-    end_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    request = proto.Field(proto.MESSAGE, number=3, message="ExportInsightsDataRequest",)
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    request = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="ExportInsightsDataRequest",
+    )
     partial_errors = proto.RepeatedField(
-        proto.MESSAGE, number=4, message=status_pb2.Status,
+        proto.MESSAGE,
+        number=4,
+        message=status_pb2.Status,
     )
 
 
 class ExportInsightsDataResponse(proto.Message):
-    r"""Response for an export insights operation.
-    """
+    r"""Response for an export insights operation."""
 
 
 class CreateIssueModelRequest(proto.Message):
@@ -548,8 +714,15 @@ class CreateIssueModelRequest(proto.Message):
             Required. The issue model to create.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    issue_model = proto.Field(proto.MESSAGE, number=2, message=resources.IssueModel,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    issue_model = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=resources.IssueModel,
+    )
 
 
 class CreateIssueModelMetadata(proto.Message):
@@ -566,9 +739,21 @@ class CreateIssueModelMetadata(proto.Message):
             The original request for creation.
     """
 
-    create_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
-    end_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    request = proto.Field(proto.MESSAGE, number=3, message="CreateIssueModelRequest",)
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    request = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="CreateIssueModelRequest",
+    )
 
 
 class UpdateIssueModelRequest(proto.Message):
@@ -581,9 +766,15 @@ class UpdateIssueModelRequest(proto.Message):
             The list of fields to be updated.
     """
 
-    issue_model = proto.Field(proto.MESSAGE, number=1, message=resources.IssueModel,)
+    issue_model = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=resources.IssueModel,
+    )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -596,7 +787,10 @@ class ListIssueModelsRequest(proto.Message):
             model.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListIssueModelsResponse(proto.Message):
@@ -608,7 +802,9 @@ class ListIssueModelsResponse(proto.Message):
     """
 
     issue_models = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=resources.IssueModel,
+        proto.MESSAGE,
+        number=1,
+        message=resources.IssueModel,
     )
 
 
@@ -620,7 +816,10 @@ class GetIssueModelRequest(proto.Message):
             Required. The name of the issue model to get.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class DeleteIssueModelRequest(proto.Message):
@@ -632,7 +831,10 @@ class DeleteIssueModelRequest(proto.Message):
             delete.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class DeleteIssueModelMetadata(proto.Message):
@@ -649,9 +851,21 @@ class DeleteIssueModelMetadata(proto.Message):
             The original request for deletion.
     """
 
-    create_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
-    end_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    request = proto.Field(proto.MESSAGE, number=3, message="DeleteIssueModelRequest",)
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    request = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="DeleteIssueModelRequest",
+    )
 
 
 class DeployIssueModelRequest(proto.Message):
@@ -662,12 +876,14 @@ class DeployIssueModelRequest(proto.Message):
             Required. The issue model to deploy.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class DeployIssueModelResponse(proto.Message):
-    r"""The response to deploy an issue model.
-    """
+    r"""The response to deploy an issue model."""
 
 
 class DeployIssueModelMetadata(proto.Message):
@@ -684,9 +900,21 @@ class DeployIssueModelMetadata(proto.Message):
             The original request for deployment.
     """
 
-    create_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
-    end_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    request = proto.Field(proto.MESSAGE, number=3, message="DeployIssueModelRequest",)
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    request = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="DeployIssueModelRequest",
+    )
 
 
 class UndeployIssueModelRequest(proto.Message):
@@ -697,12 +925,14 @@ class UndeployIssueModelRequest(proto.Message):
             Required. The issue model to undeploy.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class UndeployIssueModelResponse(proto.Message):
-    r"""The response to undeploy an issue model.
-    """
+    r"""The response to undeploy an issue model."""
 
 
 class UndeployIssueModelMetadata(proto.Message):
@@ -719,9 +949,21 @@ class UndeployIssueModelMetadata(proto.Message):
             The original request for undeployment.
     """
 
-    create_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
-    end_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    request = proto.Field(proto.MESSAGE, number=3, message="UndeployIssueModelRequest",)
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    request = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="UndeployIssueModelRequest",
+    )
 
 
 class GetIssueRequest(proto.Message):
@@ -732,7 +974,10 @@ class GetIssueRequest(proto.Message):
             Required. The name of the issue to get.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListIssuesRequest(proto.Message):
@@ -743,7 +988,10 @@ class ListIssuesRequest(proto.Message):
             Required. The parent resource of the issue.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListIssuesResponse(proto.Message):
@@ -754,7 +1002,11 @@ class ListIssuesResponse(proto.Message):
             The issues that match the request.
     """
 
-    issues = proto.RepeatedField(proto.MESSAGE, number=1, message=resources.Issue,)
+    issues = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=resources.Issue,
+    )
 
 
 class UpdateIssueRequest(proto.Message):
@@ -767,9 +1019,15 @@ class UpdateIssueRequest(proto.Message):
             The list of fields to be updated.
     """
 
-    issue = proto.Field(proto.MESSAGE, number=1, message=resources.Issue,)
+    issue = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=resources.Issue,
+    )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -782,7 +1040,10 @@ class CalculateIssueModelStatsRequest(proto.Message):
             model to query against.
     """
 
-    issue_model = proto.Field(proto.STRING, number=1,)
+    issue_model = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CalculateIssueModelStatsResponse(proto.Message):
@@ -796,7 +1057,9 @@ class CalculateIssueModelStatsResponse(proto.Message):
     """
 
     current_stats = proto.Field(
-        proto.MESSAGE, number=4, message=resources.IssueModelLabelStats,
+        proto.MESSAGE,
+        number=4,
+        message=resources.IssueModelLabelStats,
     )
 
 
@@ -814,9 +1077,14 @@ class CreatePhraseMatcherRequest(proto.Message):
             create.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     phrase_matcher = proto.Field(
-        proto.MESSAGE, number=2, message=resources.PhraseMatcher,
+        proto.MESSAGE,
+        number=2,
+        message=resources.PhraseMatcher,
     )
 
 
@@ -845,10 +1113,22 @@ class ListPhraseMatchersRequest(proto.Message):
             specific properties.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    filter = proto.Field(proto.STRING, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class ListPhraseMatchersResponse(proto.Message):
@@ -868,9 +1148,14 @@ class ListPhraseMatchersResponse(proto.Message):
         return self
 
     phrase_matchers = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=resources.PhraseMatcher,
+        proto.MESSAGE,
+        number=1,
+        message=resources.PhraseMatcher,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetPhraseMatcherRequest(proto.Message):
@@ -882,7 +1167,10 @@ class GetPhraseMatcherRequest(proto.Message):
             get.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class DeletePhraseMatcherRequest(proto.Message):
@@ -894,7 +1182,10 @@ class DeletePhraseMatcherRequest(proto.Message):
             delete.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class UpdatePhraseMatcherRequest(proto.Message):
@@ -909,10 +1200,14 @@ class UpdatePhraseMatcherRequest(proto.Message):
     """
 
     phrase_matcher = proto.Field(
-        proto.MESSAGE, number=1, message=resources.PhraseMatcher,
+        proto.MESSAGE,
+        number=1,
+        message=resources.PhraseMatcher,
     )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -925,7 +1220,10 @@ class GetSettingsRequest(proto.Message):
             to get.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class UpdateSettingsRequest(proto.Message):
@@ -938,9 +1236,15 @@ class UpdateSettingsRequest(proto.Message):
             Required. The list of fields to be updated.
     """
 
-    settings = proto.Field(proto.MESSAGE, number=1, message=resources.Settings,)
+    settings = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=resources.Settings,
+    )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -957,8 +1261,15 @@ class CreateViewRequest(proto.Message):
             Required. The view resource to create.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    view = proto.Field(proto.MESSAGE, number=2, message=resources.View,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    view = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=resources.View,
+    )
 
 
 class GetViewRequest(proto.Message):
@@ -969,7 +1280,10 @@ class GetViewRequest(proto.Message):
             Required. The name of the view to get.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListViewsRequest(proto.Message):
@@ -991,9 +1305,18 @@ class ListViewsRequest(proto.Message):
             page of data.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListViewsResponse(proto.Message):
@@ -1012,8 +1335,15 @@ class ListViewsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    views = proto.RepeatedField(proto.MESSAGE, number=1, message=resources.View,)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    views = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=resources.View,
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class UpdateViewRequest(proto.Message):
@@ -1026,9 +1356,15 @@ class UpdateViewRequest(proto.Message):
             The list of fields to be updated.
     """
 
-    view = proto.Field(proto.MESSAGE, number=1, message=resources.View,)
+    view = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=resources.View,
+    )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -1040,7 +1376,10 @@ class DeleteViewRequest(proto.Message):
             Required. The name of the view to delete.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

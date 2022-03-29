@@ -162,8 +162,14 @@ class Conversation(proto.Message):
                 The audio channel that contains the agent.
         """
 
-        customer_channel = proto.Field(proto.INT32, number=1,)
-        agent_channel = proto.Field(proto.INT32, number=2,)
+        customer_channel = proto.Field(
+            proto.INT32,
+            number=1,
+        )
+        agent_channel = proto.Field(
+            proto.INT32,
+            number=2,
+        )
 
     class Transcript(proto.Message):
         r"""A message representing the transcript of a conversation.
@@ -231,13 +237,23 @@ class Conversation(proto.Message):
                 """
 
                 start_offset = proto.Field(
-                    proto.MESSAGE, number=1, message=duration_pb2.Duration,
+                    proto.MESSAGE,
+                    number=1,
+                    message=duration_pb2.Duration,
                 )
                 end_offset = proto.Field(
-                    proto.MESSAGE, number=2, message=duration_pb2.Duration,
+                    proto.MESSAGE,
+                    number=2,
+                    message=duration_pb2.Duration,
                 )
-                word = proto.Field(proto.STRING, number=3,)
-                confidence = proto.Field(proto.FLOAT, number=4,)
+                word = proto.Field(
+                    proto.STRING,
+                    number=3,
+                )
+                confidence = proto.Field(
+                    proto.FLOAT,
+                    number=4,
+                )
 
             class DialogflowSegmentMetadata(proto.Message):
                 r"""Metadata from Dialogflow relating to the current transcript
@@ -250,29 +266,52 @@ class Conversation(proto.Message):
                         Agent Assist.
                 """
 
-                smart_reply_allowlist_covered = proto.Field(proto.BOOL, number=1,)
+                smart_reply_allowlist_covered = proto.Field(
+                    proto.BOOL,
+                    number=1,
+                )
 
             message_time = proto.Field(
-                proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,
+                proto.MESSAGE,
+                number=6,
+                message=timestamp_pb2.Timestamp,
             )
-            text = proto.Field(proto.STRING, number=1,)
-            confidence = proto.Field(proto.FLOAT, number=2,)
+            text = proto.Field(
+                proto.STRING,
+                number=1,
+            )
+            confidence = proto.Field(
+                proto.FLOAT,
+                number=2,
+            )
             words = proto.RepeatedField(
                 proto.MESSAGE,
                 number=3,
                 message="Conversation.Transcript.TranscriptSegment.WordInfo",
             )
-            language_code = proto.Field(proto.STRING, number=4,)
-            channel_tag = proto.Field(proto.INT32, number=5,)
+            language_code = proto.Field(
+                proto.STRING,
+                number=4,
+            )
+            channel_tag = proto.Field(
+                proto.INT32,
+                number=5,
+            )
             segment_participant = proto.Field(
-                proto.MESSAGE, number=9, message="ConversationParticipant",
+                proto.MESSAGE,
+                number=9,
+                message="ConversationParticipant",
             )
             dialogflow_segment_metadata = proto.Field(
                 proto.MESSAGE,
                 number=10,
                 message="Conversation.Transcript.TranscriptSegment.DialogflowSegmentMetadata",
             )
-            sentiment = proto.Field(proto.MESSAGE, number=11, message="SentimentData",)
+            sentiment = proto.Field(
+                proto.MESSAGE,
+                number=11,
+                message="SentimentData",
+            )
 
         transcript_segments = proto.RepeatedField(
             proto.MESSAGE,
@@ -281,36 +320,99 @@ class Conversation(proto.Message):
         )
 
     call_metadata = proto.Field(
-        proto.MESSAGE, number=7, oneof="metadata", message=CallMetadata,
+        proto.MESSAGE,
+        number=7,
+        oneof="metadata",
+        message=CallMetadata,
     )
     expire_time = proto.Field(
-        proto.MESSAGE, number=15, oneof="expiration", message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=15,
+        oneof="expiration",
+        message=timestamp_pb2.Timestamp,
     )
     ttl = proto.Field(
-        proto.MESSAGE, number=16, oneof="expiration", message=duration_pb2.Duration,
+        proto.MESSAGE,
+        number=16,
+        oneof="expiration",
+        message=duration_pb2.Duration,
     )
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     data_source = proto.Field(
-        proto.MESSAGE, number=2, message="ConversationDataSource",
+        proto.MESSAGE,
+        number=2,
+        message="ConversationDataSource",
     )
-    create_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
-    start_time = proto.Field(proto.MESSAGE, number=17, message=timestamp_pb2.Timestamp,)
-    language_code = proto.Field(proto.STRING, number=14,)
-    agent_id = proto.Field(proto.STRING, number=5,)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=6,)
-    transcript = proto.Field(proto.MESSAGE, number=8, message=Transcript,)
-    medium = proto.Field(proto.ENUM, number=9, enum=Medium,)
-    duration = proto.Field(proto.MESSAGE, number=10, message=duration_pb2.Duration,)
-    turn_count = proto.Field(proto.INT32, number=11,)
-    latest_analysis = proto.Field(proto.MESSAGE, number=12, message="Analysis",)
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    start_time = proto.Field(
+        proto.MESSAGE,
+        number=17,
+        message=timestamp_pb2.Timestamp,
+    )
+    language_code = proto.Field(
+        proto.STRING,
+        number=14,
+    )
+    agent_id = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=6,
+    )
+    transcript = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=Transcript,
+    )
+    medium = proto.Field(
+        proto.ENUM,
+        number=9,
+        enum=Medium,
+    )
+    duration = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message=duration_pb2.Duration,
+    )
+    turn_count = proto.Field(
+        proto.INT32,
+        number=11,
+    )
+    latest_analysis = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        message="Analysis",
+    )
     runtime_annotations = proto.RepeatedField(
-        proto.MESSAGE, number=13, message="RuntimeAnnotation",
+        proto.MESSAGE,
+        number=13,
+        message="RuntimeAnnotation",
     )
     dialogflow_intents = proto.MapField(
-        proto.STRING, proto.MESSAGE, number=18, message="DialogflowIntent",
+        proto.STRING,
+        proto.MESSAGE,
+        number=18,
+        message="DialogflowIntent",
     )
-    obfuscated_user_id = proto.Field(proto.STRING, number=21,)
+    obfuscated_user_id = proto.Field(
+        proto.STRING,
+        number=21,
+    )
 
 
 class Analysis(proto.Message):
@@ -333,12 +435,25 @@ class Analysis(proto.Message):
             which is populated when the analysis finishes.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    request_time = proto.Field(
-        proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,
+    name = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    create_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
-    analysis_result = proto.Field(proto.MESSAGE, number=7, message="AnalysisResult",)
+    request_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    analysis_result = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message="AnalysisResult",
+    )
 
 
 class ConversationDataSource(proto.Message):
@@ -366,10 +481,16 @@ class ConversationDataSource(proto.Message):
     """
 
     gcs_source = proto.Field(
-        proto.MESSAGE, number=1, oneof="source", message="GcsSource",
+        proto.MESSAGE,
+        number=1,
+        oneof="source",
+        message="GcsSource",
     )
     dialogflow_source = proto.Field(
-        proto.MESSAGE, number=3, oneof="source", message="DialogflowSource",
+        proto.MESSAGE,
+        number=3,
+        oneof="source",
+        message="DialogflowSource",
     )
 
 
@@ -385,8 +506,14 @@ class GcsSource(proto.Message):
             file that contains the conversation transcript.
     """
 
-    audio_uri = proto.Field(proto.STRING, number=1,)
-    transcript_uri = proto.Field(proto.STRING, number=2,)
+    audio_uri = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    transcript_uri = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class DialogflowSource(proto.Message):
@@ -403,8 +530,14 @@ class DialogflowSource(proto.Message):
             contains the conversation audio.
     """
 
-    dialogflow_conversation = proto.Field(proto.STRING, number=1,)
-    audio_uri = proto.Field(proto.STRING, number=3,)
+    dialogflow_conversation = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    audio_uri = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class AnalysisResult(proto.Message):
@@ -444,28 +577,50 @@ class AnalysisResult(proto.Message):
         """
 
         annotations = proto.RepeatedField(
-            proto.MESSAGE, number=2, message="CallAnnotation",
+            proto.MESSAGE,
+            number=2,
+            message="CallAnnotation",
         )
         entities = proto.MapField(
-            proto.STRING, proto.MESSAGE, number=3, message="Entity",
+            proto.STRING,
+            proto.MESSAGE,
+            number=3,
+            message="Entity",
         )
         sentiments = proto.RepeatedField(
-            proto.MESSAGE, number=4, message="ConversationLevelSentiment",
+            proto.MESSAGE,
+            number=4,
+            message="ConversationLevelSentiment",
         )
         intents = proto.MapField(
-            proto.STRING, proto.MESSAGE, number=6, message="Intent",
+            proto.STRING,
+            proto.MESSAGE,
+            number=6,
+            message="Intent",
         )
         phrase_matchers = proto.MapField(
-            proto.STRING, proto.MESSAGE, number=7, message="PhraseMatchData",
+            proto.STRING,
+            proto.MESSAGE,
+            number=7,
+            message="PhraseMatchData",
         )
         issue_model_result = proto.Field(
-            proto.MESSAGE, number=8, message="IssueModelResult",
+            proto.MESSAGE,
+            number=8,
+            message="IssueModelResult",
         )
 
     call_analysis_metadata = proto.Field(
-        proto.MESSAGE, number=2, oneof="metadata", message=CallAnalysisMetadata,
+        proto.MESSAGE,
+        number=2,
+        oneof="metadata",
+        message=CallAnalysisMetadata,
     )
-    end_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
+    end_time = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 class IssueModelResult(proto.Message):
@@ -479,8 +634,15 @@ class IssueModelResult(proto.Message):
             All the matched issues.
     """
 
-    issue_model = proto.Field(proto.STRING, number=1,)
-    issues = proto.RepeatedField(proto.MESSAGE, number=2, message="IssueAssignment",)
+    issue_model = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    issues = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="IssueAssignment",
+    )
 
 
 class ConversationLevelSentiment(proto.Message):
@@ -494,8 +656,15 @@ class ConversationLevelSentiment(proto.Message):
             Data specifying sentiment.
     """
 
-    channel_tag = proto.Field(proto.INT32, number=1,)
-    sentiment_data = proto.Field(proto.MESSAGE, number=2, message="SentimentData",)
+    channel_tag = proto.Field(
+        proto.INT32,
+        number=1,
+    )
+    sentiment_data = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="SentimentData",
+    )
 
 
 class IssueAssignment(proto.Message):
@@ -513,9 +682,18 @@ class IssueAssignment(proto.Message):
             immutable since then.
     """
 
-    issue = proto.Field(proto.STRING, number=1,)
-    score = proto.Field(proto.DOUBLE, number=2,)
-    display_name = proto.Field(proto.STRING, number=3,)
+    issue = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    score = proto.Field(
+        proto.DOUBLE,
+        number=2,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class CallAnnotation(proto.Message):
@@ -570,30 +748,60 @@ class CallAnnotation(proto.Message):
     """
 
     interruption_data = proto.Field(
-        proto.MESSAGE, number=10, oneof="data", message="InterruptionData",
+        proto.MESSAGE,
+        number=10,
+        oneof="data",
+        message="InterruptionData",
     )
     sentiment_data = proto.Field(
-        proto.MESSAGE, number=11, oneof="data", message="SentimentData",
+        proto.MESSAGE,
+        number=11,
+        oneof="data",
+        message="SentimentData",
     )
     silence_data = proto.Field(
-        proto.MESSAGE, number=12, oneof="data", message="SilenceData",
+        proto.MESSAGE,
+        number=12,
+        oneof="data",
+        message="SilenceData",
     )
-    hold_data = proto.Field(proto.MESSAGE, number=13, oneof="data", message="HoldData",)
+    hold_data = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        oneof="data",
+        message="HoldData",
+    )
     entity_mention_data = proto.Field(
-        proto.MESSAGE, number=15, oneof="data", message="EntityMentionData",
+        proto.MESSAGE,
+        number=15,
+        oneof="data",
+        message="EntityMentionData",
     )
     intent_match_data = proto.Field(
-        proto.MESSAGE, number=16, oneof="data", message="IntentMatchData",
+        proto.MESSAGE,
+        number=16,
+        oneof="data",
+        message="IntentMatchData",
     )
     phrase_match_data = proto.Field(
-        proto.MESSAGE, number=17, oneof="data", message="PhraseMatchData",
+        proto.MESSAGE,
+        number=17,
+        oneof="data",
+        message="PhraseMatchData",
     )
-    channel_tag = proto.Field(proto.INT32, number=1,)
+    channel_tag = proto.Field(
+        proto.INT32,
+        number=1,
+    )
     annotation_start_boundary = proto.Field(
-        proto.MESSAGE, number=4, message="AnnotationBoundary",
+        proto.MESSAGE,
+        number=4,
+        message="AnnotationBoundary",
     )
     annotation_end_boundary = proto.Field(
-        proto.MESSAGE, number=5, message="AnnotationBoundary",
+        proto.MESSAGE,
+        number=5,
+        message="AnnotationBoundary",
     )
 
 
@@ -617,8 +825,15 @@ class AnnotationBoundary(proto.Message):
             located. This index starts at zero.
     """
 
-    word_index = proto.Field(proto.INT32, number=3, oneof="detailed_boundary",)
-    transcript_index = proto.Field(proto.INT32, number=1,)
+    word_index = proto.Field(
+        proto.INT32,
+        number=3,
+        oneof="detailed_boundary",
+    )
+    transcript_index = proto.Field(
+        proto.INT32,
+        number=1,
+    )
 
 
 class Entity(proto.Message):
@@ -671,11 +886,29 @@ class Entity(proto.Message):
         NUMBER = 12
         PRICE = 13
 
-    display_name = proto.Field(proto.STRING, number=1,)
-    type_ = proto.Field(proto.ENUM, number=2, enum=Type,)
-    metadata = proto.MapField(proto.STRING, proto.STRING, number=3,)
-    salience = proto.Field(proto.FLOAT, number=4,)
-    sentiment = proto.Field(proto.MESSAGE, number=5, message="SentimentData",)
+    display_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    type_ = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=Type,
+    )
+    metadata = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=3,
+    )
+    salience = proto.Field(
+        proto.FLOAT,
+        number=4,
+    )
+    sentiment = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message="SentimentData",
+    )
 
 
 class Intent(proto.Message):
@@ -689,8 +922,14 @@ class Intent(proto.Message):
             The human-readable name of the intent.
     """
 
-    id = proto.Field(proto.STRING, number=1,)
-    display_name = proto.Field(proto.STRING, number=2,)
+    id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class PhraseMatchData(proto.Message):
@@ -707,8 +946,14 @@ class PhraseMatchData(proto.Message):
             matcher.
     """
 
-    phrase_matcher = proto.Field(proto.STRING, number=1,)
-    display_name = proto.Field(proto.STRING, number=2,)
+    phrase_matcher = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class DialogflowIntent(proto.Message):
@@ -720,22 +965,22 @@ class DialogflowIntent(proto.Message):
             The human-readable name of the intent.
     """
 
-    display_name = proto.Field(proto.STRING, number=1,)
+    display_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class InterruptionData(proto.Message):
-    r"""The data for an interruption annotation.
-    """
+    r"""The data for an interruption annotation."""
 
 
 class SilenceData(proto.Message):
-    r"""The data for a silence annotation.
-    """
+    r"""The data for a silence annotation."""
 
 
 class HoldData(proto.Message):
-    r"""The data for a hold annotation.
-    """
+    r"""The data for a hold annotation."""
 
 
 class EntityMentionData(proto.Message):
@@ -760,9 +1005,20 @@ class EntityMentionData(proto.Message):
         PROPER = 1
         COMMON = 2
 
-    entity_unique_id = proto.Field(proto.STRING, number=1,)
-    type_ = proto.Field(proto.ENUM, number=2, enum=MentionType,)
-    sentiment = proto.Field(proto.MESSAGE, number=3, message="SentimentData",)
+    entity_unique_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    type_ = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=MentionType,
+    )
+    sentiment = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="SentimentData",
+    )
 
 
 class IntentMatchData(proto.Message):
@@ -778,7 +1034,10 @@ class IntentMatchData(proto.Message):
             information.
     """
 
-    intent_unique_id = proto.Field(proto.STRING, number=1,)
+    intent_unique_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class SentimentData(proto.Message):
@@ -794,8 +1053,14 @@ class SentimentData(proto.Message):
             and 1.0 (positive).
     """
 
-    magnitude = proto.Field(proto.FLOAT, number=1,)
-    score = proto.Field(proto.FLOAT, number=2,)
+    magnitude = proto.Field(
+        proto.FLOAT,
+        number=1,
+    )
+    score = proto.Field(
+        proto.FLOAT,
+        number=2,
+    )
 
 
 class IssueModel(proto.Message):
@@ -849,18 +1114,52 @@ class IssueModel(proto.Message):
                 training the model to a specific subset.
         """
 
-        medium = proto.Field(proto.ENUM, number=1, enum="Conversation.Medium",)
-        training_conversations_count = proto.Field(proto.INT64, number=2,)
-        filter = proto.Field(proto.STRING, number=3,)
+        medium = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="Conversation.Medium",
+        )
+        training_conversations_count = proto.Field(
+            proto.INT64,
+            number=2,
+        )
+        filter = proto.Field(
+            proto.STRING,
+            number=3,
+        )
 
-    name = proto.Field(proto.STRING, number=1,)
-    display_name = proto.Field(proto.STRING, number=2,)
-    create_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
-    state = proto.Field(proto.ENUM, number=5, enum=State,)
-    input_data_config = proto.Field(proto.MESSAGE, number=6, message=InputDataConfig,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum=State,
+    )
+    input_data_config = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=InputDataConfig,
+    )
     training_stats = proto.Field(
-        proto.MESSAGE, number=7, message="IssueModelLabelStats",
+        proto.MESSAGE,
+        number=7,
+        message="IssueModelLabelStats",
     )
 
 
@@ -881,10 +1180,24 @@ class Issue(proto.Message):
             issue was updated.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    display_name = proto.Field(proto.STRING, number=2,)
-    create_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 class IssueModelLabelStats(proto.Message):
@@ -916,14 +1229,32 @@ class IssueModelLabelStats(proto.Message):
                 Display name of the issue.
         """
 
-        issue = proto.Field(proto.STRING, number=1,)
-        labeled_conversations_count = proto.Field(proto.INT64, number=2,)
-        display_name = proto.Field(proto.STRING, number=3,)
+        issue = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        labeled_conversations_count = proto.Field(
+            proto.INT64,
+            number=2,
+        )
+        display_name = proto.Field(
+            proto.STRING,
+            number=3,
+        )
 
-    analyzed_conversations_count = proto.Field(proto.INT64, number=1,)
-    unclassified_conversations_count = proto.Field(proto.INT64, number=2,)
+    analyzed_conversations_count = proto.Field(
+        proto.INT64,
+        number=1,
+    )
+    unclassified_conversations_count = proto.Field(
+        proto.INT64,
+        number=2,
+    )
     issue_stats = proto.MapField(
-        proto.STRING, proto.MESSAGE, number=3, message=IssueStats,
+        proto.STRING,
+        proto.MESSAGE,
+        number=3,
+        message=IssueStats,
     )
 
 
@@ -979,26 +1310,55 @@ class PhraseMatcher(proto.Message):
         ALL_OF = 1
         ANY_OF = 2
 
-    name = proto.Field(proto.STRING, number=1,)
-    revision_id = proto.Field(proto.STRING, number=2,)
-    version_tag = proto.Field(proto.STRING, number=3,)
-    revision_create_time = proto.Field(
-        proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,
+    name = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    display_name = proto.Field(proto.STRING, number=5,)
-    type_ = proto.Field(proto.ENUM, number=6, enum=PhraseMatcherType,)
-    active = proto.Field(proto.BOOL, number=7,)
+    revision_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    version_tag = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    revision_create_time = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    type_ = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum=PhraseMatcherType,
+    )
+    active = proto.Field(
+        proto.BOOL,
+        number=7,
+    )
     phrase_match_rule_groups = proto.RepeatedField(
-        proto.MESSAGE, number=8, message="PhraseMatchRuleGroup",
+        proto.MESSAGE,
+        number=8,
+        message="PhraseMatchRuleGroup",
     )
     activation_update_time = proto.Field(
-        proto.MESSAGE, number=9, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=9,
+        message=timestamp_pb2.Timestamp,
     )
     role_match = proto.Field(
-        proto.ENUM, number=10, enum="ConversationParticipant.Role",
+        proto.ENUM,
+        number=10,
+        enum="ConversationParticipant.Role",
     )
     update_time = proto.Field(
-        proto.MESSAGE, number=11, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=11,
+        message=timestamp_pb2.Timestamp,
     )
 
 
@@ -1022,9 +1382,15 @@ class PhraseMatchRuleGroup(proto.Message):
         ALL_OF = 1
         ANY_OF = 2
 
-    type_ = proto.Field(proto.ENUM, number=1, enum=PhraseMatchRuleGroupType,)
+    type_ = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=PhraseMatchRuleGroupType,
+    )
     phrase_match_rules = proto.RepeatedField(
-        proto.MESSAGE, number=2, message="PhraseMatchRule",
+        proto.MESSAGE,
+        number=2,
+        message="PhraseMatchRule",
     )
 
 
@@ -1043,9 +1409,19 @@ class PhraseMatchRule(proto.Message):
             rule that specifies how to apply the rule.
     """
 
-    query = proto.Field(proto.STRING, number=1,)
-    negated = proto.Field(proto.BOOL, number=2,)
-    config = proto.Field(proto.MESSAGE, number=3, message="PhraseMatchRuleConfig",)
+    query = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    negated = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+    config = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="PhraseMatchRuleConfig",
+    )
 
 
 class PhraseMatchRuleConfig(proto.Message):
@@ -1061,7 +1437,10 @@ class PhraseMatchRuleConfig(proto.Message):
     """
 
     exact_match_config = proto.Field(
-        proto.MESSAGE, number=1, oneof="config", message="ExactMatchConfig",
+        proto.MESSAGE,
+        number=1,
+        oneof="config",
+        message="ExactMatchConfig",
     )
 
 
@@ -1074,7 +1453,10 @@ class ExactMatchConfig(proto.Message):
             performing an exact match.
     """
 
-    case_sensitive = proto.Field(proto.BOOL, number=1,)
+    case_sensitive = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
 
 
 class Settings(proto.Message):
@@ -1138,17 +1520,44 @@ class Settings(proto.Message):
                 integration to analyze automatically, between [0, 100].
         """
 
-        runtime_integration_analysis_percentage = proto.Field(proto.DOUBLE, number=1,)
+        runtime_integration_analysis_percentage = proto.Field(
+            proto.DOUBLE,
+            number=1,
+        )
 
-    name = proto.Field(proto.STRING, number=1,)
-    create_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
-    language_code = proto.Field(proto.STRING, number=4,)
-    conversation_ttl = proto.Field(
-        proto.MESSAGE, number=5, message=duration_pb2.Duration,
+    name = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    pubsub_notification_settings = proto.MapField(proto.STRING, proto.STRING, number=6,)
-    analysis_config = proto.Field(proto.MESSAGE, number=7, message=AnalysisConfig,)
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    language_code = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    conversation_ttl = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=duration_pb2.Duration,
+    )
+    pubsub_notification_settings = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=6,
+    )
+    analysis_config = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=AnalysisConfig,
+    )
 
 
 class RuntimeAnnotation(proto.Message):
@@ -1201,25 +1610,59 @@ class RuntimeAnnotation(proto.Message):
     """
 
     article_suggestion = proto.Field(
-        proto.MESSAGE, number=6, oneof="data", message="ArticleSuggestionData",
+        proto.MESSAGE,
+        number=6,
+        oneof="data",
+        message="ArticleSuggestionData",
     )
     faq_answer = proto.Field(
-        proto.MESSAGE, number=7, oneof="data", message="FaqAnswerData",
+        proto.MESSAGE,
+        number=7,
+        oneof="data",
+        message="FaqAnswerData",
     )
     smart_reply = proto.Field(
-        proto.MESSAGE, number=8, oneof="data", message="SmartReplyData",
+        proto.MESSAGE,
+        number=8,
+        oneof="data",
+        message="SmartReplyData",
     )
     smart_compose_suggestion = proto.Field(
-        proto.MESSAGE, number=9, oneof="data", message="SmartComposeSuggestionData",
+        proto.MESSAGE,
+        number=9,
+        oneof="data",
+        message="SmartComposeSuggestionData",
     )
     dialogflow_interaction = proto.Field(
-        proto.MESSAGE, number=10, oneof="data", message="DialogflowInteractionData",
+        proto.MESSAGE,
+        number=10,
+        oneof="data",
+        message="DialogflowInteractionData",
     )
-    annotation_id = proto.Field(proto.STRING, number=1,)
-    create_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    start_boundary = proto.Field(proto.MESSAGE, number=3, message="AnnotationBoundary",)
-    end_boundary = proto.Field(proto.MESSAGE, number=4, message="AnnotationBoundary",)
-    answer_feedback = proto.Field(proto.MESSAGE, number=5, message="AnswerFeedback",)
+    annotation_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    start_boundary = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="AnnotationBoundary",
+    )
+    end_boundary = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="AnnotationBoundary",
+    )
+    answer_feedback = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message="AnswerFeedback",
+    )
 
 
 class AnswerFeedback(proto.Message):
@@ -1245,9 +1688,19 @@ class AnswerFeedback(proto.Message):
         PARTIALLY_CORRECT = 2
         FULLY_CORRECT = 3
 
-    correctness_level = proto.Field(proto.ENUM, number=1, enum=CorrectnessLevel,)
-    clicked = proto.Field(proto.BOOL, number=2,)
-    displayed = proto.Field(proto.BOOL, number=3,)
+    correctness_level = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=CorrectnessLevel,
+    )
+    clicked = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+    displayed = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
 
 
 class ArticleSuggestionData(proto.Message):
@@ -1276,12 +1729,31 @@ class ArticleSuggestionData(proto.Message):
             projects/{project}/knowledgeBases/{knowledge_base}/documents/{document}
     """
 
-    title = proto.Field(proto.STRING, number=1,)
-    uri = proto.Field(proto.STRING, number=2,)
-    confidence_score = proto.Field(proto.FLOAT, number=3,)
-    metadata = proto.MapField(proto.STRING, proto.STRING, number=4,)
-    query_record = proto.Field(proto.STRING, number=5,)
-    source = proto.Field(proto.STRING, number=6,)
+    title = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    uri = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    confidence_score = proto.Field(
+        proto.FLOAT,
+        number=3,
+    )
+    metadata = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=4,
+    )
+    query_record = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    source = proto.Field(
+        proto.STRING,
+        number=6,
+    )
 
 
 class FaqAnswerData(proto.Message):
@@ -1310,12 +1782,31 @@ class FaqAnswerData(proto.Message):
             projects/{project}/knowledgeBases/{knowledge_base}/documents/{document}.
     """
 
-    answer = proto.Field(proto.STRING, number=1,)
-    confidence_score = proto.Field(proto.FLOAT, number=2,)
-    question = proto.Field(proto.STRING, number=3,)
-    metadata = proto.MapField(proto.STRING, proto.STRING, number=4,)
-    query_record = proto.Field(proto.STRING, number=5,)
-    source = proto.Field(proto.STRING, number=6,)
+    answer = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    confidence_score = proto.Field(
+        proto.FLOAT,
+        number=2,
+    )
+    question = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    metadata = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=4,
+    )
+    query_record = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    source = proto.Field(
+        proto.STRING,
+        number=6,
+    )
 
 
 class SmartReplyData(proto.Message):
@@ -1337,10 +1828,23 @@ class SmartReplyData(proto.Message):
             projects/{project}/locations/{location}/queryRecords/{query_record}
     """
 
-    reply = proto.Field(proto.STRING, number=1,)
-    confidence_score = proto.Field(proto.DOUBLE, number=2,)
-    metadata = proto.MapField(proto.STRING, proto.STRING, number=3,)
-    query_record = proto.Field(proto.STRING, number=4,)
+    reply = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    confidence_score = proto.Field(
+        proto.DOUBLE,
+        number=2,
+    )
+    metadata = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=3,
+    )
+    query_record = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class SmartComposeSuggestionData(proto.Message):
@@ -1363,10 +1867,23 @@ class SmartComposeSuggestionData(proto.Message):
             projects/{project}/locations/{location}/queryRecords/{query_record}
     """
 
-    suggestion = proto.Field(proto.STRING, number=1,)
-    confidence_score = proto.Field(proto.DOUBLE, number=2,)
-    metadata = proto.MapField(proto.STRING, proto.STRING, number=3,)
-    query_record = proto.Field(proto.STRING, number=4,)
+    suggestion = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    confidence_score = proto.Field(
+        proto.DOUBLE,
+        number=2,
+    )
+    metadata = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=3,
+    )
+    query_record = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class DialogflowInteractionData(proto.Message):
@@ -1382,8 +1899,14 @@ class DialogflowInteractionData(proto.Message):
             certain).
     """
 
-    dialogflow_intent_id = proto.Field(proto.STRING, number=1,)
-    confidence = proto.Field(proto.FLOAT, number=2,)
+    dialogflow_intent_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    confidence = proto.Field(
+        proto.FLOAT,
+        number=2,
+    )
 
 
 class ConversationParticipant(proto.Message):
@@ -1427,12 +1950,28 @@ class ConversationParticipant(proto.Message):
         ANY_AGENT = 4
 
     dialogflow_participant_name = proto.Field(
-        proto.STRING, number=5, oneof="participant",
+        proto.STRING,
+        number=5,
+        oneof="participant",
     )
-    user_id = proto.Field(proto.STRING, number=6, oneof="participant",)
-    dialogflow_participant = proto.Field(proto.STRING, number=1,)
-    obfuscated_external_user_id = proto.Field(proto.STRING, number=3,)
-    role = proto.Field(proto.ENUM, number=2, enum=Role,)
+    user_id = proto.Field(
+        proto.STRING,
+        number=6,
+        oneof="participant",
+    )
+    dialogflow_participant = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    obfuscated_external_user_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    role = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=Role,
+    )
 
 
 class View(proto.Message):
@@ -1455,11 +1994,28 @@ class View(proto.Message):
             String with specific view properties.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    display_name = proto.Field(proto.STRING, number=2,)
-    create_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
-    value = proto.Field(proto.STRING, number=5,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    value = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

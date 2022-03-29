@@ -65,7 +65,8 @@ class ContactCenterInsightsClientMeta(type):
     _transport_registry["grpc_asyncio"] = ContactCenterInsightsGrpcAsyncIOTransport
 
     def get_transport_class(
-        cls, label: str = None,
+        cls,
+        label: str = None,
     ) -> Type[ContactCenterInsightsTransport]:
         """Returns an appropriate transport class.
 
@@ -174,7 +175,10 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
     @staticmethod
     def analysis_path(
-        project: str, location: str, conversation: str, analysis: str,
+        project: str,
+        location: str,
+        conversation: str,
+        analysis: str,
     ) -> str:
         """Returns a fully-qualified analysis string."""
         return "projects/{project}/locations/{location}/conversations/{conversation}/analyses/{analysis}".format(
@@ -194,10 +198,16 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def conversation_path(project: str, location: str, conversation: str,) -> str:
+    def conversation_path(
+        project: str,
+        location: str,
+        conversation: str,
+    ) -> str:
         """Returns a fully-qualified conversation string."""
         return "projects/{project}/locations/{location}/conversations/{conversation}".format(
-            project=project, location=location, conversation=conversation,
+            project=project,
+            location=location,
+            conversation=conversation,
         )
 
     @staticmethod
@@ -210,10 +220,18 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def issue_path(project: str, location: str, issue_model: str, issue: str,) -> str:
+    def issue_path(
+        project: str,
+        location: str,
+        issue_model: str,
+        issue: str,
+    ) -> str:
         """Returns a fully-qualified issue string."""
         return "projects/{project}/locations/{location}/issueModels/{issue_model}/issues/{issue}".format(
-            project=project, location=location, issue_model=issue_model, issue=issue,
+            project=project,
+            location=location,
+            issue_model=issue_model,
+            issue=issue,
         )
 
     @staticmethod
@@ -226,10 +244,18 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def issue_model_path(project: str, location: str, issue_model: str,) -> str:
+    def issue_model_path(
+        project: str,
+        location: str,
+        issue_model: str,
+    ) -> str:
         """Returns a fully-qualified issue_model string."""
-        return "projects/{project}/locations/{location}/issueModels/{issue_model}".format(
-            project=project, location=location, issue_model=issue_model,
+        return (
+            "projects/{project}/locations/{location}/issueModels/{issue_model}".format(
+                project=project,
+                location=location,
+                issue_model=issue_model,
+            )
         )
 
     @staticmethod
@@ -242,10 +268,16 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def participant_path(project: str, conversation: str, participant: str,) -> str:
+    def participant_path(
+        project: str,
+        conversation: str,
+        participant: str,
+    ) -> str:
         """Returns a fully-qualified participant string."""
         return "projects/{project}/conversations/{conversation}/participants/{participant}".format(
-            project=project, conversation=conversation, participant=participant,
+            project=project,
+            conversation=conversation,
+            participant=participant,
         )
 
     @staticmethod
@@ -258,10 +290,16 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def phrase_matcher_path(project: str, location: str, phrase_matcher: str,) -> str:
+    def phrase_matcher_path(
+        project: str,
+        location: str,
+        phrase_matcher: str,
+    ) -> str:
         """Returns a fully-qualified phrase_matcher string."""
         return "projects/{project}/locations/{location}/phraseMatchers/{phrase_matcher}".format(
-            project=project, location=location, phrase_matcher=phrase_matcher,
+            project=project,
+            location=location,
+            phrase_matcher=phrase_matcher,
         )
 
     @staticmethod
@@ -274,10 +312,14 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def settings_path(project: str, location: str,) -> str:
+    def settings_path(
+        project: str,
+        location: str,
+    ) -> str:
         """Returns a fully-qualified settings string."""
         return "projects/{project}/locations/{location}/settings".format(
-            project=project, location=location,
+            project=project,
+            location=location,
         )
 
     @staticmethod
@@ -289,10 +331,16 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def view_path(project: str, location: str, view: str,) -> str:
+    def view_path(
+        project: str,
+        location: str,
+        view: str,
+    ) -> str:
         """Returns a fully-qualified view string."""
         return "projects/{project}/locations/{location}/views/{view}".format(
-            project=project, location=location, view=view,
+            project=project,
+            location=location,
+            view=view,
         )
 
     @staticmethod
@@ -305,7 +353,9 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_billing_account_path(billing_account: str,) -> str:
+    def common_billing_account_path(
+        billing_account: str,
+    ) -> str:
         """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
@@ -318,9 +368,13 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(folder: str,) -> str:
+    def common_folder_path(
+        folder: str,
+    ) -> str:
         """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(folder=folder,)
+        return "folders/{folder}".format(
+            folder=folder,
+        )
 
     @staticmethod
     def parse_common_folder_path(path: str) -> Dict[str, str]:
@@ -329,9 +383,13 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(organization: str,) -> str:
+    def common_organization_path(
+        organization: str,
+    ) -> str:
         """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(organization=organization,)
+        return "organizations/{organization}".format(
+            organization=organization,
+        )
 
     @staticmethod
     def parse_common_organization_path(path: str) -> Dict[str, str]:
@@ -340,9 +398,13 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(project: str,) -> str:
+    def common_project_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified project string."""
-        return "projects/{project}".format(project=project,)
+        return "projects/{project}".format(
+            project=project,
+        )
 
     @staticmethod
     def parse_common_project_path(path: str) -> Dict[str, str]:
@@ -351,10 +413,14 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(project: str, location: str,) -> str:
+    def common_location_path(
+        project: str,
+        location: str,
+    ) -> str:
         """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
-            project=project, location=location,
+            project=project,
+            location=location,
         )
 
     @staticmethod
@@ -636,7 +702,12 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -733,7 +804,12 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -820,7 +896,12 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -913,12 +994,20 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListConversationsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1001,7 +1090,10 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def create_analysis(
@@ -1105,7 +1197,12 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1200,7 +1297,12 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1292,12 +1394,20 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListAnalysesPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1379,7 +1489,10 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def export_insights_data(
@@ -1479,7 +1592,12 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1592,7 +1710,12 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1697,7 +1820,12 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1784,7 +1912,12 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1871,7 +2004,12 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1978,7 +2116,12 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -2084,7 +2227,12 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -2192,7 +2340,12 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -2287,7 +2440,12 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2374,7 +2532,12 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2470,7 +2633,12 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2568,7 +2736,12 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2672,7 +2845,12 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2760,7 +2938,12 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2853,12 +3036,20 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListPhraseMatchersPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -2941,7 +3132,10 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def update_phrase_matcher(
@@ -3040,7 +3234,12 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -3130,7 +3329,12 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -3218,7 +3422,12 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -3315,7 +3524,12 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -3414,7 +3628,12 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -3501,7 +3720,12 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -3593,12 +3817,20 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListViewsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -3693,7 +3925,12 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -3774,7 +4011,10 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def __enter__(self):
