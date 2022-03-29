@@ -19,7 +19,10 @@ from google.cloud.servicedirectory_v1.types import endpoint
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.servicedirectory.v1", manifest={"Service",},
+    package="google.cloud.servicedirectory.v1",
+    manifest={
+        "Service",
+    },
 )
 
 
@@ -65,9 +68,20 @@ class Service(proto.Message):
             RegistrationService.ListEndpoints.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    annotations = proto.MapField(proto.STRING, proto.STRING, number=4,)
-    endpoints = proto.RepeatedField(proto.MESSAGE, number=3, message=endpoint.Endpoint,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    annotations = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=4,
+    )
+    endpoints = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=endpoint.Endpoint,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

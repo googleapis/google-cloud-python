@@ -17,7 +17,10 @@ import proto  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.servicedirectory.v1", manifest={"Endpoint",},
+    package="google.cloud.servicedirectory.v1",
+    manifest={
+        "Endpoint",
+    },
 )
 
 
@@ -65,10 +68,23 @@ class Endpoint(proto.Message):
                to the same location in Service Directory.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    address = proto.Field(proto.STRING, number=2,)
-    port = proto.Field(proto.INT32, number=3,)
-    annotations = proto.MapField(proto.STRING, proto.STRING, number=5,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    address = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    port = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    annotations = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=5,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

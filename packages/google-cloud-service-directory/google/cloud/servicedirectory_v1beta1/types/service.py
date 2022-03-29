@@ -20,7 +20,10 @@ from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.servicedirectory.v1beta1", manifest={"Service",},
+    package="google.cloud.servicedirectory.v1beta1",
+    manifest={
+        "Service",
+    },
 )
 
 
@@ -79,11 +82,30 @@ class Service(proto.Message):
             of this timestamp.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    metadata = proto.MapField(proto.STRING, proto.STRING, number=2,)
-    endpoints = proto.RepeatedField(proto.MESSAGE, number=3, message=endpoint.Endpoint,)
-    create_time = proto.Field(proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=7, message=timestamp_pb2.Timestamp,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    metadata = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=2,
+    )
+    endpoints = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=endpoint.Endpoint,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

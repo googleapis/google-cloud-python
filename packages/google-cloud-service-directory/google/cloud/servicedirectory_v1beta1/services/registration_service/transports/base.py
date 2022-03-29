@@ -130,55 +130,89 @@ class RegistrationServiceTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.create_namespace: gapic_v1.method.wrap_method(
-                self.create_namespace, default_timeout=None, client_info=client_info,
+                self.create_namespace,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_namespaces: gapic_v1.method.wrap_method(
-                self.list_namespaces, default_timeout=None, client_info=client_info,
+                self.list_namespaces,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_namespace: gapic_v1.method.wrap_method(
-                self.get_namespace, default_timeout=None, client_info=client_info,
+                self.get_namespace,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.update_namespace: gapic_v1.method.wrap_method(
-                self.update_namespace, default_timeout=None, client_info=client_info,
+                self.update_namespace,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.delete_namespace: gapic_v1.method.wrap_method(
-                self.delete_namespace, default_timeout=None, client_info=client_info,
+                self.delete_namespace,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.create_service: gapic_v1.method.wrap_method(
-                self.create_service, default_timeout=None, client_info=client_info,
+                self.create_service,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_services: gapic_v1.method.wrap_method(
-                self.list_services, default_timeout=None, client_info=client_info,
+                self.list_services,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_service: gapic_v1.method.wrap_method(
-                self.get_service, default_timeout=None, client_info=client_info,
+                self.get_service,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.update_service: gapic_v1.method.wrap_method(
-                self.update_service, default_timeout=None, client_info=client_info,
+                self.update_service,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.delete_service: gapic_v1.method.wrap_method(
-                self.delete_service, default_timeout=None, client_info=client_info,
+                self.delete_service,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.create_endpoint: gapic_v1.method.wrap_method(
-                self.create_endpoint, default_timeout=None, client_info=client_info,
+                self.create_endpoint,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_endpoints: gapic_v1.method.wrap_method(
-                self.list_endpoints, default_timeout=None, client_info=client_info,
+                self.list_endpoints,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_endpoint: gapic_v1.method.wrap_method(
-                self.get_endpoint, default_timeout=None, client_info=client_info,
+                self.get_endpoint,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.update_endpoint: gapic_v1.method.wrap_method(
-                self.update_endpoint, default_timeout=None, client_info=client_info,
+                self.update_endpoint,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.delete_endpoint: gapic_v1.method.wrap_method(
-                self.delete_endpoint, default_timeout=None, client_info=client_info,
+                self.delete_endpoint,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_iam_policy: gapic_v1.method.wrap_method(
-                self.get_iam_policy, default_timeout=None, client_info=client_info,
+                self.get_iam_policy,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.set_iam_policy: gapic_v1.method.wrap_method(
-                self.set_iam_policy, default_timeout=None, client_info=client_info,
+                self.set_iam_policy,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.test_iam_permissions: gapic_v1.method.wrap_method(
                 self.test_iam_permissions,
@@ -190,9 +224,9 @@ class RegistrationServiceTransport(abc.ABC):
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

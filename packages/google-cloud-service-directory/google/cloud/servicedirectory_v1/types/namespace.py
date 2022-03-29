@@ -17,7 +17,10 @@ import proto  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.servicedirectory.v1", manifest={"Namespace",},
+    package="google.cloud.servicedirectory.v1",
+    manifest={
+        "Namespace",
+    },
 )
 
 
@@ -38,8 +41,15 @@ class Namespace(proto.Message):
             and values can be no longer than 63 characters.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=2,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
