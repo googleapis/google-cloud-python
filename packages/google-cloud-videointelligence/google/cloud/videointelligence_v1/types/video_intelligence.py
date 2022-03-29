@@ -148,12 +148,32 @@ class AnnotateVideoRequest(proto.Message):
             the region will be determined based on video file location.
     """
 
-    input_uri = proto.Field(proto.STRING, number=1,)
-    input_content = proto.Field(proto.BYTES, number=6,)
-    features = proto.RepeatedField(proto.ENUM, number=2, enum="Feature",)
-    video_context = proto.Field(proto.MESSAGE, number=3, message="VideoContext",)
-    output_uri = proto.Field(proto.STRING, number=4,)
-    location_id = proto.Field(proto.STRING, number=5,)
+    input_uri = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    input_content = proto.Field(
+        proto.BYTES,
+        number=6,
+    )
+    features = proto.RepeatedField(
+        proto.ENUM,
+        number=2,
+        enum="Feature",
+    )
+    video_context = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="VideoContext",
+    )
+    output_uri = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    location_id = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class VideoContext(proto.Message):
@@ -183,30 +203,50 @@ class VideoContext(proto.Message):
             Config for OBJECT_TRACKING.
     """
 
-    segments = proto.RepeatedField(proto.MESSAGE, number=1, message="VideoSegment",)
+    segments = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="VideoSegment",
+    )
     label_detection_config = proto.Field(
-        proto.MESSAGE, number=2, message="LabelDetectionConfig",
+        proto.MESSAGE,
+        number=2,
+        message="LabelDetectionConfig",
     )
     shot_change_detection_config = proto.Field(
-        proto.MESSAGE, number=3, message="ShotChangeDetectionConfig",
+        proto.MESSAGE,
+        number=3,
+        message="ShotChangeDetectionConfig",
     )
     explicit_content_detection_config = proto.Field(
-        proto.MESSAGE, number=4, message="ExplicitContentDetectionConfig",
+        proto.MESSAGE,
+        number=4,
+        message="ExplicitContentDetectionConfig",
     )
     face_detection_config = proto.Field(
-        proto.MESSAGE, number=5, message="FaceDetectionConfig",
+        proto.MESSAGE,
+        number=5,
+        message="FaceDetectionConfig",
     )
     speech_transcription_config = proto.Field(
-        proto.MESSAGE, number=6, message="SpeechTranscriptionConfig",
+        proto.MESSAGE,
+        number=6,
+        message="SpeechTranscriptionConfig",
     )
     text_detection_config = proto.Field(
-        proto.MESSAGE, number=8, message="TextDetectionConfig",
+        proto.MESSAGE,
+        number=8,
+        message="TextDetectionConfig",
     )
     person_detection_config = proto.Field(
-        proto.MESSAGE, number=11, message="PersonDetectionConfig",
+        proto.MESSAGE,
+        number=11,
+        message="PersonDetectionConfig",
     )
     object_tracking_config = proto.Field(
-        proto.MESSAGE, number=13, message="ObjectTrackingConfig",
+        proto.MESSAGE,
+        number=13,
+        message="ObjectTrackingConfig",
     )
 
 
@@ -245,11 +285,27 @@ class LabelDetectionConfig(proto.Message):
             when we release a new model.
     """
 
-    label_detection_mode = proto.Field(proto.ENUM, number=1, enum="LabelDetectionMode",)
-    stationary_camera = proto.Field(proto.BOOL, number=2,)
-    model = proto.Field(proto.STRING, number=3,)
-    frame_confidence_threshold = proto.Field(proto.FLOAT, number=4,)
-    video_confidence_threshold = proto.Field(proto.FLOAT, number=5,)
+    label_detection_mode = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum="LabelDetectionMode",
+    )
+    stationary_camera = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+    model = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    frame_confidence_threshold = proto.Field(
+        proto.FLOAT,
+        number=4,
+    )
+    video_confidence_threshold = proto.Field(
+        proto.FLOAT,
+        number=5,
+    )
 
 
 class ShotChangeDetectionConfig(proto.Message):
@@ -262,7 +318,10 @@ class ShotChangeDetectionConfig(proto.Message):
             if unset) and "builtin/latest".
     """
 
-    model = proto.Field(proto.STRING, number=1,)
+    model = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ObjectTrackingConfig(proto.Message):
@@ -275,7 +334,10 @@ class ObjectTrackingConfig(proto.Message):
             if unset) and "builtin/latest".
     """
 
-    model = proto.Field(proto.STRING, number=1,)
+    model = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class FaceDetectionConfig(proto.Message):
@@ -295,9 +357,18 @@ class FaceDetectionConfig(proto.Message):
             'include_bounding_boxes' is set to false.
     """
 
-    model = proto.Field(proto.STRING, number=1,)
-    include_bounding_boxes = proto.Field(proto.BOOL, number=2,)
-    include_attributes = proto.Field(proto.BOOL, number=5,)
+    model = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    include_bounding_boxes = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+    include_attributes = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
 
 
 class PersonDetectionConfig(proto.Message):
@@ -317,9 +388,18 @@ class PersonDetectionConfig(proto.Message):
             'include_bounding_boxes' is set to false.
     """
 
-    include_bounding_boxes = proto.Field(proto.BOOL, number=1,)
-    include_pose_landmarks = proto.Field(proto.BOOL, number=2,)
-    include_attributes = proto.Field(proto.BOOL, number=3,)
+    include_bounding_boxes = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
+    include_pose_landmarks = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+    include_attributes = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
 
 
 class ExplicitContentDetectionConfig(proto.Message):
@@ -332,7 +412,10 @@ class ExplicitContentDetectionConfig(proto.Message):
             if unset) and "builtin/latest".
     """
 
-    model = proto.Field(proto.STRING, number=1,)
+    model = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class TextDetectionConfig(proto.Message):
@@ -354,8 +437,14 @@ class TextDetectionConfig(proto.Message):
             if unset) and "builtin/latest".
     """
 
-    language_hints = proto.RepeatedField(proto.STRING, number=1,)
-    model = proto.Field(proto.STRING, number=2,)
+    language_hints = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
+    model = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class VideoSegment(proto.Message):
@@ -373,10 +462,14 @@ class VideoSegment(proto.Message):
     """
 
     start_time_offset = proto.Field(
-        proto.MESSAGE, number=1, message=duration_pb2.Duration,
+        proto.MESSAGE,
+        number=1,
+        message=duration_pb2.Duration,
     )
     end_time_offset = proto.Field(
-        proto.MESSAGE, number=2, message=duration_pb2.Duration,
+        proto.MESSAGE,
+        number=2,
+        message=duration_pb2.Duration,
     )
 
 
@@ -390,8 +483,15 @@ class LabelSegment(proto.Message):
             Confidence that the label is accurate. Range: [0, 1].
     """
 
-    segment = proto.Field(proto.MESSAGE, number=1, message="VideoSegment",)
-    confidence = proto.Field(proto.FLOAT, number=2,)
+    segment = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="VideoSegment",
+    )
+    confidence = proto.Field(
+        proto.FLOAT,
+        number=2,
+    )
 
 
 class LabelFrame(proto.Message):
@@ -406,8 +506,15 @@ class LabelFrame(proto.Message):
             Confidence that the label is accurate. Range: [0, 1].
     """
 
-    time_offset = proto.Field(proto.MESSAGE, number=1, message=duration_pb2.Duration,)
-    confidence = proto.Field(proto.FLOAT, number=2,)
+    time_offset = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=duration_pb2.Duration,
+    )
+    confidence = proto.Field(
+        proto.FLOAT,
+        number=2,
+    )
 
 
 class Entity(proto.Message):
@@ -424,9 +531,18 @@ class Entity(proto.Message):
             Language code for ``description`` in BCP-47 format.
     """
 
-    entity_id = proto.Field(proto.STRING, number=1,)
-    description = proto.Field(proto.STRING, number=2,)
-    language_code = proto.Field(proto.STRING, number=3,)
+    entity_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    language_code = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class LabelAnnotation(proto.Message):
@@ -449,11 +565,30 @@ class LabelAnnotation(proto.Message):
             Feature version.
     """
 
-    entity = proto.Field(proto.MESSAGE, number=1, message="Entity",)
-    category_entities = proto.RepeatedField(proto.MESSAGE, number=2, message="Entity",)
-    segments = proto.RepeatedField(proto.MESSAGE, number=3, message="LabelSegment",)
-    frames = proto.RepeatedField(proto.MESSAGE, number=4, message="LabelFrame",)
-    version = proto.Field(proto.STRING, number=5,)
+    entity = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="Entity",
+    )
+    category_entities = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="Entity",
+    )
+    segments = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message="LabelSegment",
+    )
+    frames = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message="LabelFrame",
+    )
+    version = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class ExplicitContentFrame(proto.Message):
@@ -468,8 +603,16 @@ class ExplicitContentFrame(proto.Message):
             Likelihood of the pornography content..
     """
 
-    time_offset = proto.Field(proto.MESSAGE, number=1, message=duration_pb2.Duration,)
-    pornography_likelihood = proto.Field(proto.ENUM, number=2, enum="Likelihood",)
+    time_offset = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=duration_pb2.Duration,
+    )
+    pornography_likelihood = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum="Likelihood",
+    )
 
 
 class ExplicitContentAnnotation(proto.Message):
@@ -486,9 +629,14 @@ class ExplicitContentAnnotation(proto.Message):
     """
 
     frames = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="ExplicitContentFrame",
+        proto.MESSAGE,
+        number=1,
+        message="ExplicitContentFrame",
     )
-    version = proto.Field(proto.STRING, number=2,)
+    version = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class NormalizedBoundingBox(proto.Message):
@@ -506,10 +654,22 @@ class NormalizedBoundingBox(proto.Message):
             Bottom Y coordinate.
     """
 
-    left = proto.Field(proto.FLOAT, number=1,)
-    top = proto.Field(proto.FLOAT, number=2,)
-    right = proto.Field(proto.FLOAT, number=3,)
-    bottom = proto.Field(proto.FLOAT, number=4,)
+    left = proto.Field(
+        proto.FLOAT,
+        number=1,
+    )
+    top = proto.Field(
+        proto.FLOAT,
+        number=2,
+    )
+    right = proto.Field(
+        proto.FLOAT,
+        number=3,
+    )
+    bottom = proto.Field(
+        proto.FLOAT,
+        number=4,
+    )
 
 
 class FaceDetectionAnnotation(proto.Message):
@@ -524,9 +684,19 @@ class FaceDetectionAnnotation(proto.Message):
             Feature version.
     """
 
-    tracks = proto.RepeatedField(proto.MESSAGE, number=3, message="Track",)
-    thumbnail = proto.Field(proto.BYTES, number=4,)
-    version = proto.Field(proto.STRING, number=5,)
+    tracks = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message="Track",
+    )
+    thumbnail = proto.Field(
+        proto.BYTES,
+        number=4,
+    )
+    version = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class PersonDetectionAnnotation(proto.Message):
@@ -539,8 +709,15 @@ class PersonDetectionAnnotation(proto.Message):
             Feature version.
     """
 
-    tracks = proto.RepeatedField(proto.MESSAGE, number=1, message="Track",)
-    version = proto.Field(proto.STRING, number=2,)
+    tracks = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Track",
+    )
+    version = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class FaceSegment(proto.Message):
@@ -551,7 +728,11 @@ class FaceSegment(proto.Message):
             Video segment where a face was detected.
     """
 
-    segment = proto.Field(proto.MESSAGE, number=1, message="VideoSegment",)
+    segment = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="VideoSegment",
+    )
 
 
 class FaceFrame(proto.Message):
@@ -570,9 +751,15 @@ class FaceFrame(proto.Message):
     """
 
     normalized_bounding_boxes = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="NormalizedBoundingBox",
+        proto.MESSAGE,
+        number=1,
+        message="NormalizedBoundingBox",
     )
-    time_offset = proto.Field(proto.MESSAGE, number=2, message=duration_pb2.Duration,)
+    time_offset = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=duration_pb2.Duration,
+    )
 
 
 class FaceAnnotation(proto.Message):
@@ -588,9 +775,20 @@ class FaceAnnotation(proto.Message):
             All video frames where a face was detected.
     """
 
-    thumbnail = proto.Field(proto.BYTES, number=1,)
-    segments = proto.RepeatedField(proto.MESSAGE, number=2, message="FaceSegment",)
-    frames = proto.RepeatedField(proto.MESSAGE, number=3, message="FaceFrame",)
+    thumbnail = proto.Field(
+        proto.BYTES,
+        number=1,
+    )
+    segments = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="FaceSegment",
+    )
+    frames = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message="FaceFrame",
+    )
 
 
 class TimestampedObject(proto.Message):
@@ -613,14 +811,24 @@ class TimestampedObject(proto.Message):
     """
 
     normalized_bounding_box = proto.Field(
-        proto.MESSAGE, number=1, message="NormalizedBoundingBox",
+        proto.MESSAGE,
+        number=1,
+        message="NormalizedBoundingBox",
     )
-    time_offset = proto.Field(proto.MESSAGE, number=2, message=duration_pb2.Duration,)
+    time_offset = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=duration_pb2.Duration,
+    )
     attributes = proto.RepeatedField(
-        proto.MESSAGE, number=3, message="DetectedAttribute",
+        proto.MESSAGE,
+        number=3,
+        message="DetectedAttribute",
     )
     landmarks = proto.RepeatedField(
-        proto.MESSAGE, number=4, message="DetectedLandmark",
+        proto.MESSAGE,
+        number=4,
+        message="DetectedLandmark",
     )
 
 
@@ -640,14 +848,25 @@ class Track(proto.Message):
             object.
     """
 
-    segment = proto.Field(proto.MESSAGE, number=1, message="VideoSegment",)
+    segment = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="VideoSegment",
+    )
     timestamped_objects = proto.RepeatedField(
-        proto.MESSAGE, number=2, message="TimestampedObject",
+        proto.MESSAGE,
+        number=2,
+        message="TimestampedObject",
     )
     attributes = proto.RepeatedField(
-        proto.MESSAGE, number=3, message="DetectedAttribute",
+        proto.MESSAGE,
+        number=3,
+        message="DetectedAttribute",
     )
-    confidence = proto.Field(proto.FLOAT, number=4,)
+    confidence = proto.Field(
+        proto.FLOAT,
+        number=4,
+    )
 
 
 class DetectedAttribute(proto.Message):
@@ -667,9 +886,18 @@ class DetectedAttribute(proto.Message):
             "black", "blonde", etc.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    confidence = proto.Field(proto.FLOAT, number=2,)
-    value = proto.Field(proto.STRING, number=3,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    confidence = proto.Field(
+        proto.FLOAT,
+        number=2,
+    )
+    value = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class DetectedLandmark(proto.Message):
@@ -689,9 +917,19 @@ class DetectedLandmark(proto.Message):
             The confidence score of the detected landmark. Range [0, 1].
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    point = proto.Field(proto.MESSAGE, number=2, message="NormalizedVertex",)
-    confidence = proto.Field(proto.FLOAT, number=3,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    point = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="NormalizedVertex",
+    )
+    confidence = proto.Field(
+        proto.FLOAT,
+        number=3,
+    )
 
 
 class VideoAnnotationResults(proto.Message):
@@ -763,51 +1001,90 @@ class VideoAnnotationResults(proto.Message):
             may fail.
     """
 
-    input_uri = proto.Field(proto.STRING, number=1,)
-    segment = proto.Field(proto.MESSAGE, number=10, message="VideoSegment",)
+    input_uri = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    segment = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message="VideoSegment",
+    )
     segment_label_annotations = proto.RepeatedField(
-        proto.MESSAGE, number=2, message="LabelAnnotation",
+        proto.MESSAGE,
+        number=2,
+        message="LabelAnnotation",
     )
     segment_presence_label_annotations = proto.RepeatedField(
-        proto.MESSAGE, number=23, message="LabelAnnotation",
+        proto.MESSAGE,
+        number=23,
+        message="LabelAnnotation",
     )
     shot_label_annotations = proto.RepeatedField(
-        proto.MESSAGE, number=3, message="LabelAnnotation",
+        proto.MESSAGE,
+        number=3,
+        message="LabelAnnotation",
     )
     shot_presence_label_annotations = proto.RepeatedField(
-        proto.MESSAGE, number=24, message="LabelAnnotation",
+        proto.MESSAGE,
+        number=24,
+        message="LabelAnnotation",
     )
     frame_label_annotations = proto.RepeatedField(
-        proto.MESSAGE, number=4, message="LabelAnnotation",
+        proto.MESSAGE,
+        number=4,
+        message="LabelAnnotation",
     )
     face_annotations = proto.RepeatedField(
-        proto.MESSAGE, number=5, message="FaceAnnotation",
+        proto.MESSAGE,
+        number=5,
+        message="FaceAnnotation",
     )
     face_detection_annotations = proto.RepeatedField(
-        proto.MESSAGE, number=13, message="FaceDetectionAnnotation",
+        proto.MESSAGE,
+        number=13,
+        message="FaceDetectionAnnotation",
     )
     shot_annotations = proto.RepeatedField(
-        proto.MESSAGE, number=6, message="VideoSegment",
+        proto.MESSAGE,
+        number=6,
+        message="VideoSegment",
     )
     explicit_annotation = proto.Field(
-        proto.MESSAGE, number=7, message="ExplicitContentAnnotation",
+        proto.MESSAGE,
+        number=7,
+        message="ExplicitContentAnnotation",
     )
     speech_transcriptions = proto.RepeatedField(
-        proto.MESSAGE, number=11, message="SpeechTranscription",
+        proto.MESSAGE,
+        number=11,
+        message="SpeechTranscription",
     )
     text_annotations = proto.RepeatedField(
-        proto.MESSAGE, number=12, message="TextAnnotation",
+        proto.MESSAGE,
+        number=12,
+        message="TextAnnotation",
     )
     object_annotations = proto.RepeatedField(
-        proto.MESSAGE, number=14, message="ObjectTrackingAnnotation",
+        proto.MESSAGE,
+        number=14,
+        message="ObjectTrackingAnnotation",
     )
     logo_recognition_annotations = proto.RepeatedField(
-        proto.MESSAGE, number=19, message="LogoRecognitionAnnotation",
+        proto.MESSAGE,
+        number=19,
+        message="LogoRecognitionAnnotation",
     )
     person_detection_annotations = proto.RepeatedField(
-        proto.MESSAGE, number=20, message="PersonDetectionAnnotation",
+        proto.MESSAGE,
+        number=20,
+        message="PersonDetectionAnnotation",
     )
-    error = proto.Field(proto.MESSAGE, number=9, message=status_pb2.Status,)
+    error = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message=status_pb2.Status,
+    )
 
 
 class AnnotateVideoResponse(proto.Message):
@@ -822,7 +1099,9 @@ class AnnotateVideoResponse(proto.Message):
     """
 
     annotation_results = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="VideoAnnotationResults",
+        proto.MESSAGE,
+        number=1,
+        message="VideoAnnotationResults",
     )
 
 
@@ -848,12 +1127,34 @@ class VideoAnnotationProgress(proto.Message):
             the request contains more than one segment.
     """
 
-    input_uri = proto.Field(proto.STRING, number=1,)
-    progress_percent = proto.Field(proto.INT32, number=2,)
-    start_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
-    feature = proto.Field(proto.ENUM, number=5, enum="Feature",)
-    segment = proto.Field(proto.MESSAGE, number=6, message="VideoSegment",)
+    input_uri = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    progress_percent = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    start_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    feature = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum="Feature",
+    )
+    segment = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message="VideoSegment",
+    )
 
 
 class AnnotateVideoProgress(proto.Message):
@@ -868,7 +1169,9 @@ class AnnotateVideoProgress(proto.Message):
     """
 
     annotation_progress = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="VideoAnnotationProgress",
+        proto.MESSAGE,
+        number=1,
+        message="VideoAnnotationProgress",
     )
 
 
@@ -934,17 +1237,43 @@ class SpeechTranscriptionConfig(proto.Message):
             is ``false``.
     """
 
-    language_code = proto.Field(proto.STRING, number=1,)
-    max_alternatives = proto.Field(proto.INT32, number=2,)
-    filter_profanity = proto.Field(proto.BOOL, number=3,)
-    speech_contexts = proto.RepeatedField(
-        proto.MESSAGE, number=4, message="SpeechContext",
+    language_code = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    enable_automatic_punctuation = proto.Field(proto.BOOL, number=5,)
-    audio_tracks = proto.RepeatedField(proto.INT32, number=6,)
-    enable_speaker_diarization = proto.Field(proto.BOOL, number=7,)
-    diarization_speaker_count = proto.Field(proto.INT32, number=8,)
-    enable_word_confidence = proto.Field(proto.BOOL, number=9,)
+    max_alternatives = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    filter_profanity = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+    speech_contexts = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message="SpeechContext",
+    )
+    enable_automatic_punctuation = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
+    audio_tracks = proto.RepeatedField(
+        proto.INT32,
+        number=6,
+    )
+    enable_speaker_diarization = proto.Field(
+        proto.BOOL,
+        number=7,
+    )
+    diarization_speaker_count = proto.Field(
+        proto.INT32,
+        number=8,
+    )
+    enable_word_confidence = proto.Field(
+        proto.BOOL,
+        number=9,
+    )
 
 
 class SpeechContext(proto.Message):
@@ -963,7 +1292,10 @@ class SpeechContext(proto.Message):
             limits <https://cloud.google.com/speech/limits#content>`__.
     """
 
-    phrases = proto.RepeatedField(proto.STRING, number=1,)
+    phrases = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
 
 
 class SpeechTranscription(proto.Message):
@@ -986,9 +1318,14 @@ class SpeechTranscription(proto.Message):
     """
 
     alternatives = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="SpeechRecognitionAlternative",
+        proto.MESSAGE,
+        number=1,
+        message="SpeechRecognitionAlternative",
     )
-    language_code = proto.Field(proto.STRING, number=2,)
+    language_code = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class SpeechRecognitionAlternative(proto.Message):
@@ -1013,9 +1350,19 @@ class SpeechRecognitionAlternative(proto.Message):
             beginning of the audio.
     """
 
-    transcript = proto.Field(proto.STRING, number=1,)
-    confidence = proto.Field(proto.FLOAT, number=2,)
-    words = proto.RepeatedField(proto.MESSAGE, number=3, message="WordInfo",)
+    transcript = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    confidence = proto.Field(
+        proto.FLOAT,
+        number=2,
+    )
+    words = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message="WordInfo",
+    )
 
 
 class WordInfo(proto.Message):
@@ -1055,11 +1402,28 @@ class WordInfo(proto.Message):
             set if speaker diarization is enabled.
     """
 
-    start_time = proto.Field(proto.MESSAGE, number=1, message=duration_pb2.Duration,)
-    end_time = proto.Field(proto.MESSAGE, number=2, message=duration_pb2.Duration,)
-    word = proto.Field(proto.STRING, number=3,)
-    confidence = proto.Field(proto.FLOAT, number=4,)
-    speaker_tag = proto.Field(proto.INT32, number=5,)
+    start_time = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=duration_pb2.Duration,
+    )
+    end_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=duration_pb2.Duration,
+    )
+    word = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    confidence = proto.Field(
+        proto.FLOAT,
+        number=4,
+    )
+    speaker_tag = proto.Field(
+        proto.INT32,
+        number=5,
+    )
 
 
 class NormalizedVertex(proto.Message):
@@ -1074,8 +1438,14 @@ class NormalizedVertex(proto.Message):
             Y coordinate.
     """
 
-    x = proto.Field(proto.FLOAT, number=1,)
-    y = proto.Field(proto.FLOAT, number=2,)
+    x = proto.Field(
+        proto.FLOAT,
+        number=1,
+    )
+    y = proto.Field(
+        proto.FLOAT,
+        number=2,
+    )
 
 
 class NormalizedBoundingPoly(proto.Message):
@@ -1097,7 +1467,11 @@ class NormalizedBoundingPoly(proto.Message):
             Normalized vertices of the bounding polygon.
     """
 
-    vertices = proto.RepeatedField(proto.MESSAGE, number=1, message="NormalizedVertex",)
+    vertices = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="NormalizedVertex",
+    )
 
 
 class TextSegment(proto.Message):
@@ -1116,9 +1490,20 @@ class TextSegment(proto.Message):
             detected text appears.
     """
 
-    segment = proto.Field(proto.MESSAGE, number=1, message="VideoSegment",)
-    confidence = proto.Field(proto.FLOAT, number=2,)
-    frames = proto.RepeatedField(proto.MESSAGE, number=3, message="TextFrame",)
+    segment = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="VideoSegment",
+    )
+    confidence = proto.Field(
+        proto.FLOAT,
+        number=2,
+    )
+    frames = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message="TextFrame",
+    )
 
 
 class TextFrame(proto.Message):
@@ -1135,9 +1520,15 @@ class TextFrame(proto.Message):
     """
 
     rotated_bounding_box = proto.Field(
-        proto.MESSAGE, number=1, message="NormalizedBoundingPoly",
+        proto.MESSAGE,
+        number=1,
+        message="NormalizedBoundingPoly",
     )
-    time_offset = proto.Field(proto.MESSAGE, number=2, message=duration_pb2.Duration,)
+    time_offset = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=duration_pb2.Duration,
+    )
 
 
 class TextAnnotation(proto.Message):
@@ -1155,9 +1546,19 @@ class TextAnnotation(proto.Message):
             Feature version.
     """
 
-    text = proto.Field(proto.STRING, number=1,)
-    segments = proto.RepeatedField(proto.MESSAGE, number=2, message="TextSegment",)
-    version = proto.Field(proto.STRING, number=3,)
+    text = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    segments = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="TextSegment",
+    )
+    version = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ObjectTrackingFrame(proto.Message):
@@ -1174,9 +1575,15 @@ class ObjectTrackingFrame(proto.Message):
     """
 
     normalized_bounding_box = proto.Field(
-        proto.MESSAGE, number=1, message="NormalizedBoundingBox",
+        proto.MESSAGE,
+        number=1,
+        message="NormalizedBoundingBox",
     )
-    time_offset = proto.Field(proto.MESSAGE, number=2, message=duration_pb2.Duration,)
+    time_offset = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=duration_pb2.Duration,
+    )
 
 
 class ObjectTrackingAnnotation(proto.Message):
@@ -1223,15 +1630,34 @@ class ObjectTrackingAnnotation(proto.Message):
     """
 
     segment = proto.Field(
-        proto.MESSAGE, number=3, oneof="track_info", message="VideoSegment",
+        proto.MESSAGE,
+        number=3,
+        oneof="track_info",
+        message="VideoSegment",
     )
-    track_id = proto.Field(proto.INT64, number=5, oneof="track_info",)
-    entity = proto.Field(proto.MESSAGE, number=1, message="Entity",)
-    confidence = proto.Field(proto.FLOAT, number=4,)
+    track_id = proto.Field(
+        proto.INT64,
+        number=5,
+        oneof="track_info",
+    )
+    entity = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="Entity",
+    )
+    confidence = proto.Field(
+        proto.FLOAT,
+        number=4,
+    )
     frames = proto.RepeatedField(
-        proto.MESSAGE, number=2, message="ObjectTrackingFrame",
+        proto.MESSAGE,
+        number=2,
+        message="ObjectTrackingFrame",
     )
-    version = proto.Field(proto.STRING, number=6,)
+    version = proto.Field(
+        proto.STRING,
+        number=6,
+    )
 
 
 class LogoRecognitionAnnotation(proto.Message):
@@ -1254,9 +1680,21 @@ class LogoRecognitionAnnotation(proto.Message):
             VideoSegment.
     """
 
-    entity = proto.Field(proto.MESSAGE, number=1, message="Entity",)
-    tracks = proto.RepeatedField(proto.MESSAGE, number=2, message="Track",)
-    segments = proto.RepeatedField(proto.MESSAGE, number=3, message="VideoSegment",)
+    entity = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="Entity",
+    )
+    tracks = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="Track",
+    )
+    segments = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message="VideoSegment",
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
