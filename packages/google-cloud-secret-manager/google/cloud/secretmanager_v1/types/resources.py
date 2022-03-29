@@ -106,19 +106,51 @@ class Secret(proto.Message):
             excluded if there is no rotation policy.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    replication = proto.Field(proto.MESSAGE, number=2, message="Replication",)
-    create_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=4,)
-    topics = proto.RepeatedField(proto.MESSAGE, number=5, message="Topic",)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    replication = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="Replication",
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=4,
+    )
+    topics = proto.RepeatedField(
+        proto.MESSAGE,
+        number=5,
+        message="Topic",
+    )
     expire_time = proto.Field(
-        proto.MESSAGE, number=6, oneof="expiration", message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=6,
+        oneof="expiration",
+        message=timestamp_pb2.Timestamp,
     )
     ttl = proto.Field(
-        proto.MESSAGE, number=7, oneof="expiration", message=duration_pb2.Duration,
+        proto.MESSAGE,
+        number=7,
+        oneof="expiration",
+        message=duration_pb2.Duration,
     )
-    etag = proto.Field(proto.STRING, number=8,)
-    rotation = proto.Field(proto.MESSAGE, number=9, message="Rotation",)
+    etag = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    rotation = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message="Rotation",
+    )
 
 
 class SecretVersion(proto.Message):
@@ -173,17 +205,38 @@ class SecretVersion(proto.Message):
         DISABLED = 2
         DESTROYED = 3
 
-    name = proto.Field(proto.STRING, number=1,)
-    create_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
     destroy_time = proto.Field(
-        proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
     )
-    state = proto.Field(proto.ENUM, number=4, enum=State,)
+    state = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=State,
+    )
     replication_status = proto.Field(
-        proto.MESSAGE, number=5, message="ReplicationStatus",
+        proto.MESSAGE,
+        number=5,
+        message="ReplicationStatus",
     )
-    etag = proto.Field(proto.STRING, number=6,)
-    client_specified_payload_checksum = proto.Field(proto.BOOL, number=7,)
+    etag = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    client_specified_payload_checksum = proto.Field(
+        proto.BOOL,
+        number=7,
+    )
 
 
 class Replication(proto.Message):
@@ -232,7 +285,9 @@ class Replication(proto.Message):
         """
 
         customer_managed_encryption = proto.Field(
-            proto.MESSAGE, number=1, message="CustomerManagedEncryption",
+            proto.MESSAGE,
+            number=1,
+            message="CustomerManagedEncryption",
         )
 
     class UserManaged(proto.Message):
@@ -271,20 +326,33 @@ class Replication(proto.Message):
                     [SecretVersions][google.cloud.secretmanager.v1.SecretVersion].
             """
 
-            location = proto.Field(proto.STRING, number=1,)
+            location = proto.Field(
+                proto.STRING,
+                number=1,
+            )
             customer_managed_encryption = proto.Field(
-                proto.MESSAGE, number=2, message="CustomerManagedEncryption",
+                proto.MESSAGE,
+                number=2,
+                message="CustomerManagedEncryption",
             )
 
         replicas = proto.RepeatedField(
-            proto.MESSAGE, number=1, message="Replication.UserManaged.Replica",
+            proto.MESSAGE,
+            number=1,
+            message="Replication.UserManaged.Replica",
         )
 
     automatic = proto.Field(
-        proto.MESSAGE, number=1, oneof="replication", message=Automatic,
+        proto.MESSAGE,
+        number=1,
+        oneof="replication",
+        message=Automatic,
     )
     user_managed = proto.Field(
-        proto.MESSAGE, number=2, oneof="replication", message=UserManaged,
+        proto.MESSAGE,
+        number=2,
+        oneof="replication",
+        message=UserManaged,
     )
 
 
@@ -312,7 +380,10 @@ class CustomerManagedEncryption(proto.Message):
             ``projects/*/locations/*/keyRings/*/cryptoKeys/*``.
     """
 
-    kms_key_name = proto.Field(proto.STRING, number=1,)
+    kms_key_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ReplicationStatus(proto.Message):
@@ -366,7 +437,9 @@ class ReplicationStatus(proto.Message):
         """
 
         customer_managed_encryption = proto.Field(
-            proto.MESSAGE, number=1, message="CustomerManagedEncryptionStatus",
+            proto.MESSAGE,
+            number=1,
+            message="CustomerManagedEncryptionStatus",
         )
 
     class UserManagedStatus(proto.Message):
@@ -398,9 +471,14 @@ class ReplicationStatus(proto.Message):
                     Only populated if customer-managed encryption is used.
             """
 
-            location = proto.Field(proto.STRING, number=1,)
+            location = proto.Field(
+                proto.STRING,
+                number=1,
+            )
             customer_managed_encryption = proto.Field(
-                proto.MESSAGE, number=2, message="CustomerManagedEncryptionStatus",
+                proto.MESSAGE,
+                number=2,
+                message="CustomerManagedEncryptionStatus",
             )
 
         replicas = proto.RepeatedField(
@@ -410,10 +488,16 @@ class ReplicationStatus(proto.Message):
         )
 
     automatic = proto.Field(
-        proto.MESSAGE, number=1, oneof="replication_status", message=AutomaticStatus,
+        proto.MESSAGE,
+        number=1,
+        oneof="replication_status",
+        message=AutomaticStatus,
     )
     user_managed = proto.Field(
-        proto.MESSAGE, number=2, oneof="replication_status", message=UserManagedStatus,
+        proto.MESSAGE,
+        number=2,
+        oneof="replication_status",
+        message=UserManagedStatus,
     )
 
 
@@ -428,7 +512,10 @@ class CustomerManagedEncryptionStatus(proto.Message):
             ``projects/*/locations/*/keyRings/*/cryptoKeys/*/versions/*``.
     """
 
-    kms_key_version_name = proto.Field(proto.STRING, number=1,)
+    kms_key_version_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class Topic(proto.Message):
@@ -444,7 +531,10 @@ class Topic(proto.Message):
             permissions on the topic.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class Rotation(proto.Message):
@@ -482,10 +572,14 @@ class Rotation(proto.Message):
     """
 
     next_rotation_time = proto.Field(
-        proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
     )
     rotation_period = proto.Field(
-        proto.MESSAGE, number=2, message=duration_pb2.Duration,
+        proto.MESSAGE,
+        number=2,
+        message=duration_pb2.Duration,
     )
 
 
@@ -521,8 +615,15 @@ class SecretPayload(proto.Message):
             This field is a member of `oneof`_ ``_data_crc32c``.
     """
 
-    data = proto.Field(proto.BYTES, number=1,)
-    data_crc32c = proto.Field(proto.INT64, number=2, optional=True,)
+    data = proto.Field(
+        proto.BYTES,
+        number=1,
+    )
+    data_crc32c = proto.Field(
+        proto.INT64,
+        number=2,
+        optional=True,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

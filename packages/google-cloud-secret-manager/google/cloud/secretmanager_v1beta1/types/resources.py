@@ -23,7 +23,12 @@ from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.secrets.v1beta1",
-    manifest={"Secret", "SecretVersion", "Replication", "SecretPayload",},
+    manifest={
+        "Secret",
+        "SecretVersion",
+        "Replication",
+        "SecretPayload",
+    },
 )
 
 
@@ -68,9 +73,17 @@ class Secret(proto.Message):
 
     name = proto.Field(proto.STRING, number=1)
 
-    replication = proto.Field(proto.MESSAGE, number=2, message="Replication",)
+    replication = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="Replication",
+    )
 
-    create_time = proto.Field(proto.MESSAGE, number=3, message=timestamp.Timestamp,)
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp.Timestamp,
+    )
 
     labels = proto.MapField(proto.STRING, proto.STRING, number=4)
 
@@ -115,11 +128,23 @@ class SecretVersion(proto.Message):
 
     name = proto.Field(proto.STRING, number=1)
 
-    create_time = proto.Field(proto.MESSAGE, number=2, message=timestamp.Timestamp,)
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp.Timestamp,
+    )
 
-    destroy_time = proto.Field(proto.MESSAGE, number=3, message=timestamp.Timestamp,)
+    destroy_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp.Timestamp,
+    )
 
-    state = proto.Field(proto.ENUM, number=4, enum=State,)
+    state = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=State,
+    )
 
 
 class Replication(proto.Message):
@@ -166,15 +191,23 @@ class Replication(proto.Message):
             location = proto.Field(proto.STRING, number=1)
 
         replicas = proto.RepeatedField(
-            proto.MESSAGE, number=1, message="Replication.UserManaged.Replica",
+            proto.MESSAGE,
+            number=1,
+            message="Replication.UserManaged.Replica",
         )
 
     automatic = proto.Field(
-        proto.MESSAGE, number=1, oneof="replication", message=Automatic,
+        proto.MESSAGE,
+        number=1,
+        oneof="replication",
+        message=Automatic,
     )
 
     user_managed = proto.Field(
-        proto.MESSAGE, number=2, oneof="replication", message=UserManaged,
+        proto.MESSAGE,
+        number=2,
+        oneof="replication",
+        message=UserManaged,
     )
 
 

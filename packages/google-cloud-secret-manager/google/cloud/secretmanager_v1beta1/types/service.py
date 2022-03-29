@@ -93,7 +93,11 @@ class ListSecretsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    secrets = proto.RepeatedField(proto.MESSAGE, number=1, message=resources.Secret,)
+    secrets = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=resources.Secret,
+    )
 
     next_page_token = proto.Field(proto.STRING, number=2)
 
@@ -125,7 +129,11 @@ class CreateSecretRequest(proto.Message):
 
     secret_id = proto.Field(proto.STRING, number=2)
 
-    secret = proto.Field(proto.MESSAGE, number=3, message=resources.Secret,)
+    secret = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=resources.Secret,
+    )
 
 
 class AddSecretVersionRequest(proto.Message):
@@ -146,7 +154,11 @@ class AddSecretVersionRequest(proto.Message):
 
     parent = proto.Field(proto.STRING, number=1)
 
-    payload = proto.Field(proto.MESSAGE, number=2, message=resources.SecretPayload,)
+    payload = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=resources.SecretPayload,
+    )
 
 
 class GetSecretRequest(proto.Message):
@@ -216,7 +228,9 @@ class ListSecretVersionsResponse(proto.Message):
         return self
 
     versions = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=resources.SecretVersion,
+        proto.MESSAGE,
+        number=1,
+        message=resources.SecretVersion,
     )
 
     next_page_token = proto.Field(proto.STRING, number=2)
@@ -253,9 +267,17 @@ class UpdateSecretRequest(proto.Message):
             Required. Specifies the fields to be updated.
     """
 
-    secret = proto.Field(proto.MESSAGE, number=1, message=resources.Secret,)
+    secret = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=resources.Secret,
+    )
 
-    update_mask = proto.Field(proto.MESSAGE, number=2, message=field_mask.FieldMask,)
+    update_mask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask.FieldMask,
+    )
 
 
 class AccessSecretVersionRequest(proto.Message):
@@ -287,7 +309,11 @@ class AccessSecretVersionResponse(proto.Message):
 
     name = proto.Field(proto.STRING, number=1)
 
-    payload = proto.Field(proto.MESSAGE, number=2, message=resources.SecretPayload,)
+    payload = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=resources.SecretPayload,
+    )
 
 
 class DeleteSecretRequest(proto.Message):

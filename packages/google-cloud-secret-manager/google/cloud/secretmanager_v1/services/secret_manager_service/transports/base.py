@@ -125,22 +125,34 @@ class SecretManagerServiceTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.list_secrets: gapic_v1.method.wrap_method(
-                self.list_secrets, default_timeout=60.0, client_info=client_info,
+                self.list_secrets,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.create_secret: gapic_v1.method.wrap_method(
-                self.create_secret, default_timeout=60.0, client_info=client_info,
+                self.create_secret,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.add_secret_version: gapic_v1.method.wrap_method(
-                self.add_secret_version, default_timeout=60.0, client_info=client_info,
+                self.add_secret_version,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.get_secret: gapic_v1.method.wrap_method(
-                self.get_secret, default_timeout=60.0, client_info=client_info,
+                self.get_secret,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.update_secret: gapic_v1.method.wrap_method(
-                self.update_secret, default_timeout=60.0, client_info=client_info,
+                self.update_secret,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.delete_secret: gapic_v1.method.wrap_method(
-                self.delete_secret, default_timeout=60.0, client_info=client_info,
+                self.delete_secret,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.list_secret_versions: gapic_v1.method.wrap_method(
                 self.list_secret_versions,
@@ -148,7 +160,9 @@ class SecretManagerServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.get_secret_version: gapic_v1.method.wrap_method(
-                self.get_secret_version, default_timeout=60.0, client_info=client_info,
+                self.get_secret_version,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.access_secret_version: gapic_v1.method.wrap_method(
                 self.access_secret_version,
@@ -181,10 +195,14 @@ class SecretManagerServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.set_iam_policy: gapic_v1.method.wrap_method(
-                self.set_iam_policy, default_timeout=60.0, client_info=client_info,
+                self.set_iam_policy,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.get_iam_policy: gapic_v1.method.wrap_method(
-                self.get_iam_policy, default_timeout=60.0, client_info=client_info,
+                self.get_iam_policy,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.test_iam_permissions: gapic_v1.method.wrap_method(
                 self.test_iam_permissions,
@@ -196,9 +214,9 @@ class SecretManagerServiceTransport(abc.ABC):
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 
