@@ -54,7 +54,8 @@ SERIES_ARRAYS_DEFAULT_TYPES = [
             [dt.date(2021, 9, 27), None, dt.date(2011, 9, 27)], dtype="dbdate"
         ),
         pyarrow.array(
-            [dt.date(2021, 9, 27), None, dt.date(2011, 9, 27)], type=pyarrow.date32(),
+            [dt.date(2021, 9, 27), None, dt.date(2011, 9, 27)],
+            type=pyarrow.date32(),
         ),
     ),
     (
@@ -67,14 +68,18 @@ SERIES_ARRAYS_DEFAULT_TYPES = [
             type=pyarrow.date32(),
         ),
     ),
-    (pandas.Series([], dtype="dbtime"), pyarrow.array([], type=pyarrow.time64("ns")),),
+    (
+        pandas.Series([], dtype="dbtime"),
+        pyarrow.array([], type=pyarrow.time64("ns")),
+    ),
     (
         pandas.Series([None, None, None], dtype="dbtime"),
         pyarrow.array([None, None, None], type=pyarrow.time64("ns")),
     ),
     (
         pandas.Series(
-            [dt.time(0, 0, 0, 0), None, dt.time(23, 59, 59, 999_999)], dtype="dbtime",
+            [dt.time(0, 0, 0, 0), None, dt.time(23, 59, 59, 999_999)],
+            dtype="dbtime",
         ),
         pyarrow.array(
             [dt.time(0, 0, 0, 0), None, dt.time(23, 59, 59, 999_999)],
@@ -111,7 +116,8 @@ SERIES_ARRAYS_CUSTOM_ARROW_TYPES = [
             [dt.date(2021, 9, 27), None, dt.date(2011, 9, 27)], dtype="dbdate"
         ),
         pyarrow.array(
-            [dt.date(2021, 9, 27), None, dt.date(2011, 9, 27)], type=pyarrow.date64(),
+            [dt.date(2021, 9, 27), None, dt.date(2011, 9, 27)],
+            type=pyarrow.date64(),
         ),
     ),
     (
@@ -124,14 +130,18 @@ SERIES_ARRAYS_CUSTOM_ARROW_TYPES = [
             type=pyarrow.date64(),
         ),
     ),
-    (pandas.Series([], dtype="dbtime"), pyarrow.array([], type=pyarrow.time32("ms")),),
+    (
+        pandas.Series([], dtype="dbtime"),
+        pyarrow.array([], type=pyarrow.time32("ms")),
+    ),
     (
         pandas.Series([None, None, None], dtype="dbtime"),
         pyarrow.array([None, None, None], type=pyarrow.time32("ms")),
     ),
     (
         pandas.Series(
-            [dt.time(0, 0, 0, 0), None, dt.time(23, 59, 59, 999_000)], dtype="dbtime",
+            [dt.time(0, 0, 0, 0), None, dt.time(23, 59, 59, 999_000)],
+            dtype="dbtime",
         ),
         pyarrow.array(
             [dt.time(0, 0, 0, 0), None, dt.time(23, 59, 59, 999_000)],
@@ -158,7 +168,8 @@ SERIES_ARRAYS_CUSTOM_ARROW_TYPES = [
     ),
     (
         pandas.Series(
-            [dt.time(0, 0, 0, 0), None, dt.time(23, 59, 59, 999_999)], dtype="dbtime",
+            [dt.time(0, 0, 0, 0), None, dt.time(23, 59, 59, 999_999)],
+            dtype="dbtime",
         ),
         pyarrow.array(
             [dt.time(0, 0, 0, 0), None, dt.time(23, 59, 59, 999_999)],
@@ -220,7 +231,8 @@ SERIES_ARRAYS_CUSTOM_ARROW_TYPES = [
     ),
     pytest.param(
         pandas.Series(
-            ["0:0:0", "12:30:15.123456789", "23:59:59.999999999"], dtype="dbtime",
+            ["0:0:0", "12:30:15.123456789", "23:59:59.999999999"],
+            dtype="dbtime",
         ),
         pyarrow.array(
             [

@@ -201,7 +201,8 @@ def test___getitem___arrayindex(dtype):
     cls = _cls(dtype)
     sample_values = SAMPLE_VALUES[dtype]
     np.testing.assert_array_equal(
-        cls(sample_values)[[1, 3]], cls([sample_values[1], sample_values[3]]),
+        cls(sample_values)[[1, 3]],
+        cls([sample_values[1], sample_values[3]]),
     )
 
 
@@ -410,7 +411,8 @@ def test_unique(dtype):
     cls = _cls(dtype)
     sample_values = SAMPLE_VALUES[dtype]
     np.testing.assert_array_equal(
-        cls(sample_values * 3).unique(), cls(sample_values),
+        cls(sample_values * 3).unique(),
+        cls(sample_values),
     )
 
 

@@ -197,7 +197,8 @@ class TimeArray(core.BaseDatetimeArray):
         # since the datetime epoch (midnight 1970-01-01).
         array = array.view(pyarrow.time64("ns"))
         return pyarrow.compute.cast(
-            array, type if type is not None else pyarrow.time64("ns"),
+            array,
+            type if type is not None else pyarrow.time64("ns"),
         )
 
 
@@ -297,7 +298,8 @@ class DateArray(core.BaseDatetimeArray):
         """
         array = pyarrow.array(self._ndarray, type=pyarrow.timestamp("ns"))
         return pyarrow.compute.cast(
-            array, type if type is not None else pyarrow.date32(),
+            array,
+            type if type is not None else pyarrow.date32(),
         )
 
     def __add__(self, other):

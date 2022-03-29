@@ -64,7 +64,10 @@ class BaseDatetimeArray(
 
     @classmethod
     def __ndarray(cls, scalars):
-        return numpy.array([cls._datetime(scalar) for scalar in scalars], "M8[ns]",)
+        return numpy.array(
+            [cls._datetime(scalar) for scalar in scalars],
+            "M8[ns]",
+        )
 
     @classmethod
     def _from_sequence(cls, scalars, *, dtype=None, copy=False):
@@ -186,7 +189,8 @@ class BaseDatetimeArray(
             raise NotImplementedError("Need pandas 1.3 or later to calculate median.")
 
         pandas_backports.numpy_validate_median(
-            (), {"out": out, "overwrite_input": overwrite_input, "keepdims": keepdims},
+            (),
+            {"out": out, "overwrite_input": overwrite_input, "keepdims": keepdims},
         )
         result = pandas_backports.nanmedian(self._ndarray, axis=axis, skipna=skipna)
         if axis is None or self.ndim == 1:
