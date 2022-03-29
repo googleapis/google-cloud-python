@@ -82,7 +82,13 @@ def test__get_default_mtls_endpoint():
     assert TpuClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
 
 
-@pytest.mark.parametrize("client_class", [TpuClient, TpuAsyncClient,])
+@pytest.mark.parametrize(
+    "client_class",
+    [
+        TpuClient,
+        TpuAsyncClient,
+    ],
+)
 def test_tpu_client_from_service_account_info(client_class):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
@@ -120,7 +126,13 @@ def test_tpu_client_service_account_always_use_jwt(transport_class, transport_na
         use_jwt.assert_not_called()
 
 
-@pytest.mark.parametrize("client_class", [TpuClient, TpuAsyncClient,])
+@pytest.mark.parametrize(
+    "client_class",
+    [
+        TpuClient,
+        TpuAsyncClient,
+    ],
+)
 def test_tpu_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
@@ -443,7 +455,9 @@ def test_tpu_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -571,10 +585,17 @@ def test_tpu_client_create_channel_credentials_file(
         )
 
 
-@pytest.mark.parametrize("request_type", [cloud_tpu.ListNodesRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_tpu.ListNodesRequest,
+        dict,
+    ],
+)
 def test_list_nodes(request_type, transport: str = "grpc"):
     client = TpuClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -585,7 +606,8 @@ def test_list_nodes(request_type, transport: str = "grpc"):
     with mock.patch.object(type(client.transport.list_nodes), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = cloud_tpu.ListNodesResponse(
-            next_page_token="next_page_token_value", unreachable=["unreachable_value"],
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
         )
         response = client.list_nodes(request)
 
@@ -604,7 +626,8 @@ def test_list_nodes_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TpuClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -620,7 +643,8 @@ async def test_list_nodes_async(
     transport: str = "grpc_asyncio", request_type=cloud_tpu.ListNodesRequest
 ):
     client = TpuAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -655,7 +679,9 @@ async def test_list_nodes_async_from_dict():
 
 
 def test_list_nodes_field_headers():
-    client = TpuClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TpuClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -675,12 +701,17 @@ def test_list_nodes_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_list_nodes_field_headers_async():
-    client = TpuAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TpuAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -702,11 +733,16 @@ async def test_list_nodes_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_nodes_flattened():
-    client = TpuClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TpuClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_nodes), "__call__") as call:
@@ -714,7 +750,9 @@ def test_list_nodes_flattened():
         call.return_value = cloud_tpu.ListNodesResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_nodes(parent="parent_value",)
+        client.list_nodes(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -726,19 +764,24 @@ def test_list_nodes_flattened():
 
 
 def test_list_nodes_flattened_error():
-    client = TpuClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TpuClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_nodes(
-            cloud_tpu.ListNodesRequest(), parent="parent_value",
+            cloud_tpu.ListNodesRequest(),
+            parent="parent_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_list_nodes_flattened_async():
-    client = TpuAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TpuAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_nodes), "__call__") as call:
@@ -750,7 +793,9 @@ async def test_list_nodes_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_nodes(parent="parent_value",)
+        response = await client.list_nodes(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -763,19 +808,23 @@ async def test_list_nodes_flattened_async():
 
 @pytest.mark.asyncio
 async def test_list_nodes_flattened_error_async():
-    client = TpuAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TpuAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_nodes(
-            cloud_tpu.ListNodesRequest(), parent="parent_value",
+            cloud_tpu.ListNodesRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_nodes_pager(transport_name: str = "grpc"):
     client = TpuClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -783,14 +832,29 @@ def test_list_nodes_pager(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             cloud_tpu.ListNodesResponse(
-                nodes=[cloud_tpu.Node(), cloud_tpu.Node(), cloud_tpu.Node(),],
+                nodes=[
+                    cloud_tpu.Node(),
+                    cloud_tpu.Node(),
+                    cloud_tpu.Node(),
+                ],
                 next_page_token="abc",
             ),
-            cloud_tpu.ListNodesResponse(nodes=[], next_page_token="def",),
             cloud_tpu.ListNodesResponse(
-                nodes=[cloud_tpu.Node(),], next_page_token="ghi",
+                nodes=[],
+                next_page_token="def",
             ),
-            cloud_tpu.ListNodesResponse(nodes=[cloud_tpu.Node(), cloud_tpu.Node(),],),
+            cloud_tpu.ListNodesResponse(
+                nodes=[
+                    cloud_tpu.Node(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloud_tpu.ListNodesResponse(
+                nodes=[
+                    cloud_tpu.Node(),
+                    cloud_tpu.Node(),
+                ],
+            ),
             RuntimeError,
         )
 
@@ -809,7 +873,8 @@ def test_list_nodes_pager(transport_name: str = "grpc"):
 
 def test_list_nodes_pages(transport_name: str = "grpc"):
     client = TpuClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -817,14 +882,29 @@ def test_list_nodes_pages(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             cloud_tpu.ListNodesResponse(
-                nodes=[cloud_tpu.Node(), cloud_tpu.Node(), cloud_tpu.Node(),],
+                nodes=[
+                    cloud_tpu.Node(),
+                    cloud_tpu.Node(),
+                    cloud_tpu.Node(),
+                ],
                 next_page_token="abc",
             ),
-            cloud_tpu.ListNodesResponse(nodes=[], next_page_token="def",),
             cloud_tpu.ListNodesResponse(
-                nodes=[cloud_tpu.Node(),], next_page_token="ghi",
+                nodes=[],
+                next_page_token="def",
             ),
-            cloud_tpu.ListNodesResponse(nodes=[cloud_tpu.Node(), cloud_tpu.Node(),],),
+            cloud_tpu.ListNodesResponse(
+                nodes=[
+                    cloud_tpu.Node(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloud_tpu.ListNodesResponse(
+                nodes=[
+                    cloud_tpu.Node(),
+                    cloud_tpu.Node(),
+                ],
+            ),
             RuntimeError,
         )
         pages = list(client.list_nodes(request={}).pages)
@@ -834,7 +914,9 @@ def test_list_nodes_pages(transport_name: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_list_nodes_async_pager():
-    client = TpuAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = TpuAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -843,17 +925,34 @@ async def test_list_nodes_async_pager():
         # Set the response to a series of pages.
         call.side_effect = (
             cloud_tpu.ListNodesResponse(
-                nodes=[cloud_tpu.Node(), cloud_tpu.Node(), cloud_tpu.Node(),],
+                nodes=[
+                    cloud_tpu.Node(),
+                    cloud_tpu.Node(),
+                    cloud_tpu.Node(),
+                ],
                 next_page_token="abc",
             ),
-            cloud_tpu.ListNodesResponse(nodes=[], next_page_token="def",),
             cloud_tpu.ListNodesResponse(
-                nodes=[cloud_tpu.Node(),], next_page_token="ghi",
+                nodes=[],
+                next_page_token="def",
             ),
-            cloud_tpu.ListNodesResponse(nodes=[cloud_tpu.Node(), cloud_tpu.Node(),],),
+            cloud_tpu.ListNodesResponse(
+                nodes=[
+                    cloud_tpu.Node(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloud_tpu.ListNodesResponse(
+                nodes=[
+                    cloud_tpu.Node(),
+                    cloud_tpu.Node(),
+                ],
+            ),
             RuntimeError,
         )
-        async_pager = await client.list_nodes(request={},)
+        async_pager = await client.list_nodes(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -865,7 +964,9 @@ async def test_list_nodes_async_pager():
 
 @pytest.mark.asyncio
 async def test_list_nodes_async_pages():
-    client = TpuAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = TpuAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -874,14 +975,29 @@ async def test_list_nodes_async_pages():
         # Set the response to a series of pages.
         call.side_effect = (
             cloud_tpu.ListNodesResponse(
-                nodes=[cloud_tpu.Node(), cloud_tpu.Node(), cloud_tpu.Node(),],
+                nodes=[
+                    cloud_tpu.Node(),
+                    cloud_tpu.Node(),
+                    cloud_tpu.Node(),
+                ],
                 next_page_token="abc",
             ),
-            cloud_tpu.ListNodesResponse(nodes=[], next_page_token="def",),
             cloud_tpu.ListNodesResponse(
-                nodes=[cloud_tpu.Node(),], next_page_token="ghi",
+                nodes=[],
+                next_page_token="def",
             ),
-            cloud_tpu.ListNodesResponse(nodes=[cloud_tpu.Node(), cloud_tpu.Node(),],),
+            cloud_tpu.ListNodesResponse(
+                nodes=[
+                    cloud_tpu.Node(),
+                ],
+                next_page_token="ghi",
+            ),
+            cloud_tpu.ListNodesResponse(
+                nodes=[
+                    cloud_tpu.Node(),
+                    cloud_tpu.Node(),
+                ],
+            ),
             RuntimeError,
         )
         pages = []
@@ -891,10 +1007,17 @@ async def test_list_nodes_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [cloud_tpu.GetNodeRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_tpu.GetNodeRequest,
+        dict,
+    ],
+)
 def test_get_node(request_type, transport: str = "grpc"):
     client = TpuClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -943,7 +1066,8 @@ def test_get_node_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TpuClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -959,7 +1083,8 @@ async def test_get_node_async(
     transport: str = "grpc_asyncio", request_type=cloud_tpu.GetNodeRequest
 ):
     client = TpuAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1012,7 +1137,9 @@ async def test_get_node_async_from_dict():
 
 
 def test_get_node_field_headers():
-    client = TpuClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TpuClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1032,12 +1159,17 @@ def test_get_node_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_get_node_field_headers_async():
-    client = TpuAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TpuAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1057,11 +1189,16 @@ async def test_get_node_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_node_flattened():
-    client = TpuClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TpuClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_node), "__call__") as call:
@@ -1069,7 +1206,9 @@ def test_get_node_flattened():
         call.return_value = cloud_tpu.Node()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_node(name="name_value",)
+        client.get_node(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1081,19 +1220,24 @@ def test_get_node_flattened():
 
 
 def test_get_node_flattened_error():
-    client = TpuClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TpuClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_node(
-            cloud_tpu.GetNodeRequest(), name="name_value",
+            cloud_tpu.GetNodeRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_get_node_flattened_async():
-    client = TpuAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TpuAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_node), "__call__") as call:
@@ -1103,7 +1247,9 @@ async def test_get_node_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(cloud_tpu.Node())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_node(name="name_value",)
+        response = await client.get_node(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1116,20 +1262,30 @@ async def test_get_node_flattened_async():
 
 @pytest.mark.asyncio
 async def test_get_node_flattened_error_async():
-    client = TpuAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TpuAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_node(
-            cloud_tpu.GetNodeRequest(), name="name_value",
+            cloud_tpu.GetNodeRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [cloud_tpu.CreateNodeRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_tpu.CreateNodeRequest,
+        dict,
+    ],
+)
 def test_create_node(request_type, transport: str = "grpc"):
     client = TpuClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1155,7 +1311,8 @@ def test_create_node_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TpuClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1171,7 +1328,8 @@ async def test_create_node_async(
     transport: str = "grpc_asyncio", request_type=cloud_tpu.CreateNodeRequest
 ):
     client = TpuAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1201,7 +1359,9 @@ async def test_create_node_async_from_dict():
 
 
 def test_create_node_field_headers():
-    client = TpuClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TpuClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1221,12 +1381,17 @@ def test_create_node_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_create_node_field_headers_async():
-    client = TpuAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TpuAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1248,11 +1413,16 @@ async def test_create_node_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_node_flattened():
-    client = TpuClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TpuClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_node), "__call__") as call:
@@ -1282,7 +1452,9 @@ def test_create_node_flattened():
 
 
 def test_create_node_flattened_error():
-    client = TpuClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TpuClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1297,7 +1469,9 @@ def test_create_node_flattened_error():
 
 @pytest.mark.asyncio
 async def test_create_node_flattened_async():
-    client = TpuAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TpuAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_node), "__call__") as call:
@@ -1332,7 +1506,9 @@ async def test_create_node_flattened_async():
 
 @pytest.mark.asyncio
 async def test_create_node_flattened_error_async():
-    client = TpuAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TpuAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1345,10 +1521,17 @@ async def test_create_node_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [cloud_tpu.DeleteNodeRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_tpu.DeleteNodeRequest,
+        dict,
+    ],
+)
 def test_delete_node(request_type, transport: str = "grpc"):
     client = TpuClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1374,7 +1557,8 @@ def test_delete_node_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TpuClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1390,7 +1574,8 @@ async def test_delete_node_async(
     transport: str = "grpc_asyncio", request_type=cloud_tpu.DeleteNodeRequest
 ):
     client = TpuAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1420,7 +1605,9 @@ async def test_delete_node_async_from_dict():
 
 
 def test_delete_node_field_headers():
-    client = TpuClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TpuClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1440,12 +1627,17 @@ def test_delete_node_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_delete_node_field_headers_async():
-    client = TpuAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TpuAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1467,11 +1659,16 @@ async def test_delete_node_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_node_flattened():
-    client = TpuClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TpuClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_node), "__call__") as call:
@@ -1479,7 +1676,9 @@ def test_delete_node_flattened():
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_node(name="name_value",)
+        client.delete_node(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1491,19 +1690,24 @@ def test_delete_node_flattened():
 
 
 def test_delete_node_flattened_error():
-    client = TpuClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TpuClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_node(
-            cloud_tpu.DeleteNodeRequest(), name="name_value",
+            cloud_tpu.DeleteNodeRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_delete_node_flattened_async():
-    client = TpuAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TpuAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_node), "__call__") as call:
@@ -1515,7 +1719,9 @@ async def test_delete_node_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_node(name="name_value",)
+        response = await client.delete_node(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1528,20 +1734,30 @@ async def test_delete_node_flattened_async():
 
 @pytest.mark.asyncio
 async def test_delete_node_flattened_error_async():
-    client = TpuAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TpuAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_node(
-            cloud_tpu.DeleteNodeRequest(), name="name_value",
+            cloud_tpu.DeleteNodeRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [cloud_tpu.StopNodeRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_tpu.StopNodeRequest,
+        dict,
+    ],
+)
 def test_stop_node(request_type, transport: str = "grpc"):
     client = TpuClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1567,7 +1783,8 @@ def test_stop_node_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TpuClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1583,7 +1800,8 @@ async def test_stop_node_async(
     transport: str = "grpc_asyncio", request_type=cloud_tpu.StopNodeRequest
 ):
     client = TpuAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1613,7 +1831,9 @@ async def test_stop_node_async_from_dict():
 
 
 def test_stop_node_field_headers():
-    client = TpuClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TpuClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1633,12 +1853,17 @@ def test_stop_node_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_stop_node_field_headers_async():
-    client = TpuAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TpuAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1660,13 +1885,23 @@ async def test_stop_node_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
-@pytest.mark.parametrize("request_type", [cloud_tpu.StartNodeRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_tpu.StartNodeRequest,
+        dict,
+    ],
+)
 def test_start_node(request_type, transport: str = "grpc"):
     client = TpuClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1692,7 +1927,8 @@ def test_start_node_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TpuClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1708,7 +1944,8 @@ async def test_start_node_async(
     transport: str = "grpc_asyncio", request_type=cloud_tpu.StartNodeRequest
 ):
     client = TpuAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1738,7 +1975,9 @@ async def test_start_node_async_from_dict():
 
 
 def test_start_node_field_headers():
-    client = TpuClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TpuClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1758,12 +1997,17 @@ def test_start_node_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_start_node_field_headers_async():
-    client = TpuAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TpuAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1785,13 +2029,23 @@ async def test_start_node_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
-@pytest.mark.parametrize("request_type", [cloud_tpu.UpdateNodeRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_tpu.UpdateNodeRequest,
+        dict,
+    ],
+)
 def test_update_node(request_type, transport: str = "grpc"):
     client = TpuClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1817,7 +2071,8 @@ def test_update_node_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TpuClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1833,7 +2088,8 @@ async def test_update_node_async(
     transport: str = "grpc_asyncio", request_type=cloud_tpu.UpdateNodeRequest
 ):
     client = TpuAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1863,7 +2119,9 @@ async def test_update_node_async_from_dict():
 
 
 def test_update_node_field_headers():
-    client = TpuClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TpuClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1883,12 +2141,17 @@ def test_update_node_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "node.name=node.name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "node.name=node.name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_update_node_field_headers_async():
-    client = TpuAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TpuAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1910,11 +2173,16 @@ async def test_update_node_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "node.name=node.name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "node.name=node.name/value",
+    ) in kw["metadata"]
 
 
 def test_update_node_flattened():
-    client = TpuClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TpuClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_node), "__call__") as call:
@@ -1940,7 +2208,9 @@ def test_update_node_flattened():
 
 
 def test_update_node_flattened_error():
-    client = TpuClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TpuClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1954,7 +2224,9 @@ def test_update_node_flattened_error():
 
 @pytest.mark.asyncio
 async def test_update_node_flattened_async():
-    client = TpuAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TpuAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_node), "__call__") as call:
@@ -1985,7 +2257,9 @@ async def test_update_node_flattened_async():
 
 @pytest.mark.asyncio
 async def test_update_node_flattened_error_async():
-    client = TpuAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TpuAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1998,11 +2272,16 @@ async def test_update_node_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [cloud_tpu.GenerateServiceIdentityRequest, dict,]
+    "request_type",
+    [
+        cloud_tpu.GenerateServiceIdentityRequest,
+        dict,
+    ],
 )
 def test_generate_service_identity(request_type, transport: str = "grpc"):
     client = TpuClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2030,7 +2309,8 @@ def test_generate_service_identity_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TpuClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2049,7 +2329,8 @@ async def test_generate_service_identity_async(
     request_type=cloud_tpu.GenerateServiceIdentityRequest,
 ):
     client = TpuAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2081,7 +2362,9 @@ async def test_generate_service_identity_async_from_dict():
 
 
 def test_generate_service_identity_field_headers():
-    client = TpuClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TpuClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2103,12 +2386,17 @@ def test_generate_service_identity_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_generate_service_identity_field_headers_async():
-    client = TpuAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TpuAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2132,13 +2420,23 @@ async def test_generate_service_identity_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
-@pytest.mark.parametrize("request_type", [cloud_tpu.ListAcceleratorTypesRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_tpu.ListAcceleratorTypesRequest,
+        dict,
+    ],
+)
 def test_list_accelerator_types(request_type, transport: str = "grpc"):
     client = TpuClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2151,7 +2449,8 @@ def test_list_accelerator_types(request_type, transport: str = "grpc"):
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = cloud_tpu.ListAcceleratorTypesResponse(
-            next_page_token="next_page_token_value", unreachable=["unreachable_value"],
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
         )
         response = client.list_accelerator_types(request)
 
@@ -2170,7 +2469,8 @@ def test_list_accelerator_types_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TpuClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2188,7 +2488,8 @@ async def test_list_accelerator_types_async(
     transport: str = "grpc_asyncio", request_type=cloud_tpu.ListAcceleratorTypesRequest
 ):
     client = TpuAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2225,7 +2526,9 @@ async def test_list_accelerator_types_async_from_dict():
 
 
 def test_list_accelerator_types_field_headers():
-    client = TpuClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TpuClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2247,12 +2550,17 @@ def test_list_accelerator_types_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_list_accelerator_types_field_headers_async():
-    client = TpuAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TpuAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2276,11 +2584,16 @@ async def test_list_accelerator_types_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_accelerator_types_flattened():
-    client = TpuClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TpuClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2290,7 +2603,9 @@ def test_list_accelerator_types_flattened():
         call.return_value = cloud_tpu.ListAcceleratorTypesResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_accelerator_types(parent="parent_value",)
+        client.list_accelerator_types(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2302,19 +2617,24 @@ def test_list_accelerator_types_flattened():
 
 
 def test_list_accelerator_types_flattened_error():
-    client = TpuClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TpuClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_accelerator_types(
-            cloud_tpu.ListAcceleratorTypesRequest(), parent="parent_value",
+            cloud_tpu.ListAcceleratorTypesRequest(),
+            parent="parent_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_list_accelerator_types_flattened_async():
-    client = TpuAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TpuAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2328,7 +2648,9 @@ async def test_list_accelerator_types_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_accelerator_types(parent="parent_value",)
+        response = await client.list_accelerator_types(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2341,19 +2663,23 @@ async def test_list_accelerator_types_flattened_async():
 
 @pytest.mark.asyncio
 async def test_list_accelerator_types_flattened_error_async():
-    client = TpuAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TpuAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_accelerator_types(
-            cloud_tpu.ListAcceleratorTypesRequest(), parent="parent_value",
+            cloud_tpu.ListAcceleratorTypesRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_accelerator_types_pager(transport_name: str = "grpc"):
     client = TpuClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2371,10 +2697,14 @@ def test_list_accelerator_types_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             cloud_tpu.ListAcceleratorTypesResponse(
-                accelerator_types=[], next_page_token="def",
+                accelerator_types=[],
+                next_page_token="def",
             ),
             cloud_tpu.ListAcceleratorTypesResponse(
-                accelerator_types=[cloud_tpu.AcceleratorType(),], next_page_token="ghi",
+                accelerator_types=[
+                    cloud_tpu.AcceleratorType(),
+                ],
+                next_page_token="ghi",
             ),
             cloud_tpu.ListAcceleratorTypesResponse(
                 accelerator_types=[
@@ -2400,7 +2730,8 @@ def test_list_accelerator_types_pager(transport_name: str = "grpc"):
 
 def test_list_accelerator_types_pages(transport_name: str = "grpc"):
     client = TpuClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2418,10 +2749,14 @@ def test_list_accelerator_types_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             cloud_tpu.ListAcceleratorTypesResponse(
-                accelerator_types=[], next_page_token="def",
+                accelerator_types=[],
+                next_page_token="def",
             ),
             cloud_tpu.ListAcceleratorTypesResponse(
-                accelerator_types=[cloud_tpu.AcceleratorType(),], next_page_token="ghi",
+                accelerator_types=[
+                    cloud_tpu.AcceleratorType(),
+                ],
+                next_page_token="ghi",
             ),
             cloud_tpu.ListAcceleratorTypesResponse(
                 accelerator_types=[
@@ -2438,7 +2773,9 @@ def test_list_accelerator_types_pages(transport_name: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_list_accelerator_types_async_pager():
-    client = TpuAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = TpuAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2457,10 +2794,14 @@ async def test_list_accelerator_types_async_pager():
                 next_page_token="abc",
             ),
             cloud_tpu.ListAcceleratorTypesResponse(
-                accelerator_types=[], next_page_token="def",
+                accelerator_types=[],
+                next_page_token="def",
             ),
             cloud_tpu.ListAcceleratorTypesResponse(
-                accelerator_types=[cloud_tpu.AcceleratorType(),], next_page_token="ghi",
+                accelerator_types=[
+                    cloud_tpu.AcceleratorType(),
+                ],
+                next_page_token="ghi",
             ),
             cloud_tpu.ListAcceleratorTypesResponse(
                 accelerator_types=[
@@ -2470,7 +2811,9 @@ async def test_list_accelerator_types_async_pager():
             ),
             RuntimeError,
         )
-        async_pager = await client.list_accelerator_types(request={},)
+        async_pager = await client.list_accelerator_types(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -2482,7 +2825,9 @@ async def test_list_accelerator_types_async_pager():
 
 @pytest.mark.asyncio
 async def test_list_accelerator_types_async_pages():
-    client = TpuAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = TpuAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2501,10 +2846,14 @@ async def test_list_accelerator_types_async_pages():
                 next_page_token="abc",
             ),
             cloud_tpu.ListAcceleratorTypesResponse(
-                accelerator_types=[], next_page_token="def",
+                accelerator_types=[],
+                next_page_token="def",
             ),
             cloud_tpu.ListAcceleratorTypesResponse(
-                accelerator_types=[cloud_tpu.AcceleratorType(),], next_page_token="ghi",
+                accelerator_types=[
+                    cloud_tpu.AcceleratorType(),
+                ],
+                next_page_token="ghi",
             ),
             cloud_tpu.ListAcceleratorTypesResponse(
                 accelerator_types=[
@@ -2521,10 +2870,17 @@ async def test_list_accelerator_types_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [cloud_tpu.GetAcceleratorTypeRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_tpu.GetAcceleratorTypeRequest,
+        dict,
+    ],
+)
 def test_get_accelerator_type(request_type, transport: str = "grpc"):
     client = TpuClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2537,7 +2893,8 @@ def test_get_accelerator_type(request_type, transport: str = "grpc"):
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = cloud_tpu.AcceleratorType(
-            name="name_value", type_="type__value",
+            name="name_value",
+            type_="type__value",
         )
         response = client.get_accelerator_type(request)
 
@@ -2556,7 +2913,8 @@ def test_get_accelerator_type_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TpuClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2574,7 +2932,8 @@ async def test_get_accelerator_type_async(
     transport: str = "grpc_asyncio", request_type=cloud_tpu.GetAcceleratorTypeRequest
 ):
     client = TpuAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2587,7 +2946,10 @@ async def test_get_accelerator_type_async(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            cloud_tpu.AcceleratorType(name="name_value", type_="type__value",)
+            cloud_tpu.AcceleratorType(
+                name="name_value",
+                type_="type__value",
+            )
         )
         response = await client.get_accelerator_type(request)
 
@@ -2608,7 +2970,9 @@ async def test_get_accelerator_type_async_from_dict():
 
 
 def test_get_accelerator_type_field_headers():
-    client = TpuClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TpuClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2630,12 +2994,17 @@ def test_get_accelerator_type_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_get_accelerator_type_field_headers_async():
-    client = TpuAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TpuAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2659,11 +3028,16 @@ async def test_get_accelerator_type_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_accelerator_type_flattened():
-    client = TpuClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TpuClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2673,7 +3047,9 @@ def test_get_accelerator_type_flattened():
         call.return_value = cloud_tpu.AcceleratorType()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_accelerator_type(name="name_value",)
+        client.get_accelerator_type(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2685,19 +3061,24 @@ def test_get_accelerator_type_flattened():
 
 
 def test_get_accelerator_type_flattened_error():
-    client = TpuClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TpuClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_accelerator_type(
-            cloud_tpu.GetAcceleratorTypeRequest(), name="name_value",
+            cloud_tpu.GetAcceleratorTypeRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_get_accelerator_type_flattened_async():
-    client = TpuAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TpuAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2711,7 +3092,9 @@ async def test_get_accelerator_type_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_accelerator_type(name="name_value",)
+        response = await client.get_accelerator_type(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2724,20 +3107,30 @@ async def test_get_accelerator_type_flattened_async():
 
 @pytest.mark.asyncio
 async def test_get_accelerator_type_flattened_error_async():
-    client = TpuAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TpuAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_accelerator_type(
-            cloud_tpu.GetAcceleratorTypeRequest(), name="name_value",
+            cloud_tpu.GetAcceleratorTypeRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [cloud_tpu.ListRuntimeVersionsRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_tpu.ListRuntimeVersionsRequest,
+        dict,
+    ],
+)
 def test_list_runtime_versions(request_type, transport: str = "grpc"):
     client = TpuClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2750,7 +3143,8 @@ def test_list_runtime_versions(request_type, transport: str = "grpc"):
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = cloud_tpu.ListRuntimeVersionsResponse(
-            next_page_token="next_page_token_value", unreachable=["unreachable_value"],
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
         )
         response = client.list_runtime_versions(request)
 
@@ -2769,7 +3163,8 @@ def test_list_runtime_versions_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TpuClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2787,7 +3182,8 @@ async def test_list_runtime_versions_async(
     transport: str = "grpc_asyncio", request_type=cloud_tpu.ListRuntimeVersionsRequest
 ):
     client = TpuAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2824,7 +3220,9 @@ async def test_list_runtime_versions_async_from_dict():
 
 
 def test_list_runtime_versions_field_headers():
-    client = TpuClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TpuClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2846,12 +3244,17 @@ def test_list_runtime_versions_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_list_runtime_versions_field_headers_async():
-    client = TpuAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TpuAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2875,11 +3278,16 @@ async def test_list_runtime_versions_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_runtime_versions_flattened():
-    client = TpuClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TpuClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2889,7 +3297,9 @@ def test_list_runtime_versions_flattened():
         call.return_value = cloud_tpu.ListRuntimeVersionsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_runtime_versions(parent="parent_value",)
+        client.list_runtime_versions(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2901,19 +3311,24 @@ def test_list_runtime_versions_flattened():
 
 
 def test_list_runtime_versions_flattened_error():
-    client = TpuClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TpuClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_runtime_versions(
-            cloud_tpu.ListRuntimeVersionsRequest(), parent="parent_value",
+            cloud_tpu.ListRuntimeVersionsRequest(),
+            parent="parent_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_list_runtime_versions_flattened_async():
-    client = TpuAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TpuAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2927,7 +3342,9 @@ async def test_list_runtime_versions_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_runtime_versions(parent="parent_value",)
+        response = await client.list_runtime_versions(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2940,19 +3357,23 @@ async def test_list_runtime_versions_flattened_async():
 
 @pytest.mark.asyncio
 async def test_list_runtime_versions_flattened_error_async():
-    client = TpuAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TpuAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_runtime_versions(
-            cloud_tpu.ListRuntimeVersionsRequest(), parent="parent_value",
+            cloud_tpu.ListRuntimeVersionsRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_runtime_versions_pager(transport_name: str = "grpc"):
     client = TpuClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2970,10 +3391,14 @@ def test_list_runtime_versions_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             cloud_tpu.ListRuntimeVersionsResponse(
-                runtime_versions=[], next_page_token="def",
+                runtime_versions=[],
+                next_page_token="def",
             ),
             cloud_tpu.ListRuntimeVersionsResponse(
-                runtime_versions=[cloud_tpu.RuntimeVersion(),], next_page_token="ghi",
+                runtime_versions=[
+                    cloud_tpu.RuntimeVersion(),
+                ],
+                next_page_token="ghi",
             ),
             cloud_tpu.ListRuntimeVersionsResponse(
                 runtime_versions=[
@@ -2999,7 +3424,8 @@ def test_list_runtime_versions_pager(transport_name: str = "grpc"):
 
 def test_list_runtime_versions_pages(transport_name: str = "grpc"):
     client = TpuClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3017,10 +3443,14 @@ def test_list_runtime_versions_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             cloud_tpu.ListRuntimeVersionsResponse(
-                runtime_versions=[], next_page_token="def",
+                runtime_versions=[],
+                next_page_token="def",
             ),
             cloud_tpu.ListRuntimeVersionsResponse(
-                runtime_versions=[cloud_tpu.RuntimeVersion(),], next_page_token="ghi",
+                runtime_versions=[
+                    cloud_tpu.RuntimeVersion(),
+                ],
+                next_page_token="ghi",
             ),
             cloud_tpu.ListRuntimeVersionsResponse(
                 runtime_versions=[
@@ -3037,7 +3467,9 @@ def test_list_runtime_versions_pages(transport_name: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_list_runtime_versions_async_pager():
-    client = TpuAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = TpuAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3056,10 +3488,14 @@ async def test_list_runtime_versions_async_pager():
                 next_page_token="abc",
             ),
             cloud_tpu.ListRuntimeVersionsResponse(
-                runtime_versions=[], next_page_token="def",
+                runtime_versions=[],
+                next_page_token="def",
             ),
             cloud_tpu.ListRuntimeVersionsResponse(
-                runtime_versions=[cloud_tpu.RuntimeVersion(),], next_page_token="ghi",
+                runtime_versions=[
+                    cloud_tpu.RuntimeVersion(),
+                ],
+                next_page_token="ghi",
             ),
             cloud_tpu.ListRuntimeVersionsResponse(
                 runtime_versions=[
@@ -3069,7 +3505,9 @@ async def test_list_runtime_versions_async_pager():
             ),
             RuntimeError,
         )
-        async_pager = await client.list_runtime_versions(request={},)
+        async_pager = await client.list_runtime_versions(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -3081,7 +3519,9 @@ async def test_list_runtime_versions_async_pager():
 
 @pytest.mark.asyncio
 async def test_list_runtime_versions_async_pages():
-    client = TpuAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = TpuAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3100,10 +3540,14 @@ async def test_list_runtime_versions_async_pages():
                 next_page_token="abc",
             ),
             cloud_tpu.ListRuntimeVersionsResponse(
-                runtime_versions=[], next_page_token="def",
+                runtime_versions=[],
+                next_page_token="def",
             ),
             cloud_tpu.ListRuntimeVersionsResponse(
-                runtime_versions=[cloud_tpu.RuntimeVersion(),], next_page_token="ghi",
+                runtime_versions=[
+                    cloud_tpu.RuntimeVersion(),
+                ],
+                next_page_token="ghi",
             ),
             cloud_tpu.ListRuntimeVersionsResponse(
                 runtime_versions=[
@@ -3120,10 +3564,17 @@ async def test_list_runtime_versions_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [cloud_tpu.GetRuntimeVersionRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_tpu.GetRuntimeVersionRequest,
+        dict,
+    ],
+)
 def test_get_runtime_version(request_type, transport: str = "grpc"):
     client = TpuClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3136,7 +3587,8 @@ def test_get_runtime_version(request_type, transport: str = "grpc"):
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = cloud_tpu.RuntimeVersion(
-            name="name_value", version="version_value",
+            name="name_value",
+            version="version_value",
         )
         response = client.get_runtime_version(request)
 
@@ -3155,7 +3607,8 @@ def test_get_runtime_version_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TpuClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3173,7 +3626,8 @@ async def test_get_runtime_version_async(
     transport: str = "grpc_asyncio", request_type=cloud_tpu.GetRuntimeVersionRequest
 ):
     client = TpuAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3186,7 +3640,10 @@ async def test_get_runtime_version_async(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            cloud_tpu.RuntimeVersion(name="name_value", version="version_value",)
+            cloud_tpu.RuntimeVersion(
+                name="name_value",
+                version="version_value",
+            )
         )
         response = await client.get_runtime_version(request)
 
@@ -3207,7 +3664,9 @@ async def test_get_runtime_version_async_from_dict():
 
 
 def test_get_runtime_version_field_headers():
-    client = TpuClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TpuClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3229,12 +3688,17 @@ def test_get_runtime_version_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_get_runtime_version_field_headers_async():
-    client = TpuAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TpuAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3258,11 +3722,16 @@ async def test_get_runtime_version_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_runtime_version_flattened():
-    client = TpuClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TpuClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3272,7 +3741,9 @@ def test_get_runtime_version_flattened():
         call.return_value = cloud_tpu.RuntimeVersion()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_runtime_version(name="name_value",)
+        client.get_runtime_version(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3284,19 +3755,24 @@ def test_get_runtime_version_flattened():
 
 
 def test_get_runtime_version_flattened_error():
-    client = TpuClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TpuClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_runtime_version(
-            cloud_tpu.GetRuntimeVersionRequest(), name="name_value",
+            cloud_tpu.GetRuntimeVersionRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_get_runtime_version_flattened_async():
-    client = TpuAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TpuAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3310,7 +3786,9 @@ async def test_get_runtime_version_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_runtime_version(name="name_value",)
+        response = await client.get_runtime_version(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3323,20 +3801,30 @@ async def test_get_runtime_version_flattened_async():
 
 @pytest.mark.asyncio
 async def test_get_runtime_version_flattened_error_async():
-    client = TpuAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TpuAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_runtime_version(
-            cloud_tpu.GetRuntimeVersionRequest(), name="name_value",
+            cloud_tpu.GetRuntimeVersionRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [cloud_tpu.GetGuestAttributesRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        cloud_tpu.GetGuestAttributesRequest,
+        dict,
+    ],
+)
 def test_get_guest_attributes(request_type, transport: str = "grpc"):
     client = TpuClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3364,7 +3852,8 @@ def test_get_guest_attributes_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = TpuClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3382,7 +3871,8 @@ async def test_get_guest_attributes_async(
     transport: str = "grpc_asyncio", request_type=cloud_tpu.GetGuestAttributesRequest
 ):
     client = TpuAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3414,7 +3904,9 @@ async def test_get_guest_attributes_async_from_dict():
 
 
 def test_get_guest_attributes_field_headers():
-    client = TpuClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TpuClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3436,12 +3928,17 @@ def test_get_guest_attributes_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_get_guest_attributes_field_headers_async():
-    client = TpuAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = TpuAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3465,7 +3962,10 @@ async def test_get_guest_attributes_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_credentials_transport_error():
@@ -3475,7 +3975,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = TpuClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -3495,7 +3996,10 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = TpuClient(client_options=options, transport=transport,)
+        client = TpuClient(
+            client_options=options,
+            transport=transport,
+        )
 
     # It is an error to provide an api_key and a credential.
     options = mock.Mock()
@@ -3510,7 +4014,10 @@ def test_credentials_transport_error():
         credentials=ga_credentials.AnonymousCredentials(),
     )
     with pytest.raises(ValueError):
-        client = TpuClient(client_options={"scopes": ["1", "2"]}, transport=transport,)
+        client = TpuClient(
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
+        )
 
 
 def test_transport_instance():
@@ -3539,7 +4046,10 @@ def test_transport_get_channel():
 
 @pytest.mark.parametrize(
     "transport_class",
-    [transports.TpuGrpcTransport, transports.TpuGrpcAsyncIOTransport,],
+    [
+        transports.TpuGrpcTransport,
+        transports.TpuGrpcAsyncIOTransport,
+    ],
 )
 def test_transport_adc(transport_class):
     # Test default credentials are used if not provided.
@@ -3551,8 +4061,13 @@ def test_transport_adc(transport_class):
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
-    client = TpuClient(credentials=ga_credentials.AnonymousCredentials(),)
-    assert isinstance(client.transport, transports.TpuGrpcTransport,)
+    client = TpuClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    assert isinstance(
+        client.transport,
+        transports.TpuGrpcTransport,
+    )
 
 
 def test_tpu_base_transport_error():
@@ -3614,7 +4129,8 @@ def test_tpu_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.TpuTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -3649,7 +4165,10 @@ def test_tpu_auth_adc():
 
 @pytest.mark.parametrize(
     "transport_class",
-    [transports.TpuGrpcTransport, transports.TpuGrpcAsyncIOTransport,],
+    [
+        transports.TpuGrpcTransport,
+        transports.TpuGrpcAsyncIOTransport,
+    ],
 )
 def test_tpu_transport_auth_adc(transport_class):
     # If credentials and host are not provided, the transport class should use
@@ -3762,7 +4281,10 @@ def test_tpu_grpc_transport_channel():
     channel = grpc.secure_channel("http://localhost/", grpc.local_channel_credentials())
 
     # Check that channel is used if provided.
-    transport = transports.TpuGrpcTransport(host="squid.clam.whelk", channel=channel,)
+    transport = transports.TpuGrpcTransport(
+        host="squid.clam.whelk",
+        channel=channel,
+    )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
     assert transport._ssl_channel_credentials == None
@@ -3773,7 +4295,8 @@ def test_tpu_grpc_asyncio_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.TpuGrpcAsyncIOTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -3872,12 +4395,16 @@ def test_tpu_transport_channel_mtls_with_adc(transport_class):
 
 def test_tpu_grpc_lro_client():
     client = TpuClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
     transport = client.transport
 
     # Ensure that we have a api-core operations client.
-    assert isinstance(transport.operations_client, operations_v1.OperationsClient,)
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsClient,
+    )
 
     # Ensure that subsequent calls to the property send the exact same object.
     assert transport.operations_client is transport.operations_client
@@ -3885,12 +4412,16 @@ def test_tpu_grpc_lro_client():
 
 def test_tpu_grpc_lro_async_client():
     client = TpuAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     transport = client.transport
 
     # Ensure that we have a api-core operations client.
-    assert isinstance(transport.operations_client, operations_v1.OperationsAsyncClient,)
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsAsyncClient,
+    )
 
     # Ensure that subsequent calls to the property send the exact same object.
     assert transport.operations_client is transport.operations_client
@@ -3901,7 +4432,9 @@ def test_accelerator_type_path():
     location = "clam"
     accelerator_type = "whelk"
     expected = "projects/{project}/locations/{location}/acceleratorTypes/{accelerator_type}".format(
-        project=project, location=location, accelerator_type=accelerator_type,
+        project=project,
+        location=location,
+        accelerator_type=accelerator_type,
     )
     actual = TpuClient.accelerator_type_path(project, location, accelerator_type)
     assert expected == actual
@@ -3925,7 +4458,9 @@ def test_node_path():
     location = "mussel"
     node = "winkle"
     expected = "projects/{project}/locations/{location}/nodes/{node}".format(
-        project=project, location=location, node=node,
+        project=project,
+        location=location,
+        node=node,
     )
     actual = TpuClient.node_path(project, location, node)
     assert expected == actual
@@ -3949,7 +4484,9 @@ def test_runtime_version_path():
     location = "clam"
     runtime_version = "whelk"
     expected = "projects/{project}/locations/{location}/runtimeVersions/{runtime_version}".format(
-        project=project, location=location, runtime_version=runtime_version,
+        project=project,
+        location=location,
+        runtime_version=runtime_version,
     )
     actual = TpuClient.runtime_version_path(project, location, runtime_version)
     assert expected == actual
@@ -3990,7 +4527,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "winkle"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = TpuClient.common_folder_path(folder)
     assert expected == actual
 
@@ -4008,7 +4547,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "scallop"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = TpuClient.common_organization_path(organization)
     assert expected == actual
 
@@ -4026,7 +4567,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "squid"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = TpuClient.common_project_path(project)
     assert expected == actual
 
@@ -4046,7 +4589,8 @@ def test_common_location_path():
     project = "whelk"
     location = "octopus"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = TpuClient.common_location_path(project, location)
     assert expected == actual
@@ -4069,14 +4613,16 @@ def test_client_with_default_client_info():
 
     with mock.patch.object(transports.TpuTransport, "_prep_wrapped_messages") as prep:
         client = TpuClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
     with mock.patch.object(transports.TpuTransport, "_prep_wrapped_messages") as prep:
         transport_class = TpuClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -4084,7 +4630,8 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = TpuAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     with mock.patch.object(
         type(getattr(client.transport, "grpc_channel")), "close"

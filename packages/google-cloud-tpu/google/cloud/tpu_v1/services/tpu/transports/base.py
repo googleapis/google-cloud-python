@@ -31,7 +31,9 @@ from google.longrunning import operations_pb2  # type: ignore
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-tpu",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-tpu",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
@@ -121,25 +123,39 @@ class TpuTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.list_nodes: gapic_v1.method.wrap_method(
-                self.list_nodes, default_timeout=None, client_info=client_info,
+                self.list_nodes,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_node: gapic_v1.method.wrap_method(
-                self.get_node, default_timeout=None, client_info=client_info,
+                self.get_node,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.create_node: gapic_v1.method.wrap_method(
-                self.create_node, default_timeout=None, client_info=client_info,
+                self.create_node,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.delete_node: gapic_v1.method.wrap_method(
-                self.delete_node, default_timeout=None, client_info=client_info,
+                self.delete_node,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.reimage_node: gapic_v1.method.wrap_method(
-                self.reimage_node, default_timeout=None, client_info=client_info,
+                self.reimage_node,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.stop_node: gapic_v1.method.wrap_method(
-                self.stop_node, default_timeout=None, client_info=client_info,
+                self.stop_node,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.start_node: gapic_v1.method.wrap_method(
-                self.start_node, default_timeout=None, client_info=client_info,
+                self.start_node,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_tensor_flow_versions: gapic_v1.method.wrap_method(
                 self.list_tensor_flow_versions,
@@ -166,9 +182,9 @@ class TpuTransport(abc.ABC):
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

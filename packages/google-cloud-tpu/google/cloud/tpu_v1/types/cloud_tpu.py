@@ -57,8 +57,14 @@ class SchedulingConfig(proto.Message):
             reservation.
     """
 
-    preemptible = proto.Field(proto.BOOL, number=1,)
-    reserved = proto.Field(proto.BOOL, number=2,)
+    preemptible = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
+    reserved = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
 
 
 class NetworkEndpoint(proto.Message):
@@ -71,8 +77,14 @@ class NetworkEndpoint(proto.Message):
             The port of this network endpoint.
     """
 
-    ip_address = proto.Field(proto.STRING, number=1,)
-    port = proto.Field(proto.INT32, number=2,)
+    ip_address = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    port = proto.Field(
+        proto.INT32,
+        number=2,
+    )
 
 
 class Node(proto.Message):
@@ -199,31 +211,90 @@ class Node(proto.Message):
         V1 = 2
         V2_ALPHA1 = 3
 
-    name = proto.Field(proto.STRING, number=1,)
-    description = proto.Field(proto.STRING, number=3,)
-    accelerator_type = proto.Field(proto.STRING, number=5,)
-    ip_address = proto.Field(proto.STRING, number=8,)
-    port = proto.Field(proto.STRING, number=14,)
-    state = proto.Field(proto.ENUM, number=9, enum=State,)
-    health_description = proto.Field(proto.STRING, number=10,)
-    tensorflow_version = proto.Field(proto.STRING, number=11,)
-    network = proto.Field(proto.STRING, number=12,)
-    cidr_block = proto.Field(proto.STRING, number=13,)
-    service_account = proto.Field(proto.STRING, number=15,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    accelerator_type = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    ip_address = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    port = proto.Field(
+        proto.STRING,
+        number=14,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=9,
+        enum=State,
+    )
+    health_description = proto.Field(
+        proto.STRING,
+        number=10,
+    )
+    tensorflow_version = proto.Field(
+        proto.STRING,
+        number=11,
+    )
+    network = proto.Field(
+        proto.STRING,
+        number=12,
+    )
+    cidr_block = proto.Field(
+        proto.STRING,
+        number=13,
+    )
+    service_account = proto.Field(
+        proto.STRING,
+        number=15,
+    )
     create_time = proto.Field(
-        proto.MESSAGE, number=16, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=16,
+        message=timestamp_pb2.Timestamp,
     )
     scheduling_config = proto.Field(
-        proto.MESSAGE, number=17, message="SchedulingConfig",
+        proto.MESSAGE,
+        number=17,
+        message="SchedulingConfig",
     )
     network_endpoints = proto.RepeatedField(
-        proto.MESSAGE, number=21, message="NetworkEndpoint",
+        proto.MESSAGE,
+        number=21,
+        message="NetworkEndpoint",
     )
-    health = proto.Field(proto.ENUM, number=22, enum=Health,)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=24,)
-    use_service_networking = proto.Field(proto.BOOL, number=27,)
-    api_version = proto.Field(proto.ENUM, number=38, enum=ApiVersion,)
-    symptoms = proto.RepeatedField(proto.MESSAGE, number=39, message="Symptom",)
+    health = proto.Field(
+        proto.ENUM,
+        number=22,
+        enum=Health,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=24,
+    )
+    use_service_networking = proto.Field(
+        proto.BOOL,
+        number=27,
+    )
+    api_version = proto.Field(
+        proto.ENUM,
+        number=38,
+        enum=ApiVersion,
+    )
+    symptoms = proto.RepeatedField(
+        proto.MESSAGE,
+        number=39,
+        message="Symptom",
+    )
 
 
 class ListNodesRequest(proto.Message):
@@ -239,9 +310,18 @@ class ListNodesRequest(proto.Message):
             request, if any.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListNodesResponse(proto.Message):
@@ -260,9 +340,19 @@ class ListNodesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    nodes = proto.RepeatedField(proto.MESSAGE, number=1, message="Node",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
-    unreachable = proto.RepeatedField(proto.STRING, number=3,)
+    nodes = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Node",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 class GetNodeRequest(proto.Message):
@@ -273,7 +363,10 @@ class GetNodeRequest(proto.Message):
             Required. The resource name.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CreateNodeRequest(proto.Message):
@@ -288,9 +381,19 @@ class CreateNodeRequest(proto.Message):
             Required. The node.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    node_id = proto.Field(proto.STRING, number=2,)
-    node = proto.Field(proto.MESSAGE, number=3, message="Node",)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    node_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    node = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="Node",
+    )
 
 
 class DeleteNodeRequest(proto.Message):
@@ -301,7 +404,10 @@ class DeleteNodeRequest(proto.Message):
             Required. The resource name.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ReimageNodeRequest(proto.Message):
@@ -314,8 +420,14 @@ class ReimageNodeRequest(proto.Message):
             The version for reimage to create.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    tensorflow_version = proto.Field(proto.STRING, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    tensorflow_version = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class StopNodeRequest(proto.Message):
@@ -326,7 +438,10 @@ class StopNodeRequest(proto.Message):
             The resource name.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class StartNodeRequest(proto.Message):
@@ -337,7 +452,10 @@ class StartNodeRequest(proto.Message):
             The resource name.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class TensorFlowVersion(proto.Message):
@@ -350,8 +468,14 @@ class TensorFlowVersion(proto.Message):
             the tensorflow version.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    version = proto.Field(proto.STRING, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    version = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetTensorFlowVersionRequest(proto.Message):
@@ -363,7 +487,10 @@ class GetTensorFlowVersionRequest(proto.Message):
             Required. The resource name.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListTensorFlowVersionsRequest(proto.Message):
@@ -384,11 +511,26 @@ class ListTensorFlowVersionsRequest(proto.Message):
             Sort results.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    filter = proto.Field(proto.STRING, number=5,)
-    order_by = proto.Field(proto.STRING, number=6,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    order_by = proto.Field(
+        proto.STRING,
+        number=6,
+    )
 
 
 class ListTensorFlowVersionsResponse(proto.Message):
@@ -409,10 +551,18 @@ class ListTensorFlowVersionsResponse(proto.Message):
         return self
 
     tensorflow_versions = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="TensorFlowVersion",
+        proto.MESSAGE,
+        number=1,
+        message="TensorFlowVersion",
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
-    unreachable = proto.RepeatedField(proto.STRING, number=3,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 class AcceleratorType(proto.Message):
@@ -425,8 +575,14 @@ class AcceleratorType(proto.Message):
             the accelerator type.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    type_ = proto.Field(proto.STRING, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    type_ = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetAcceleratorTypeRequest(proto.Message):
@@ -438,7 +594,10 @@ class GetAcceleratorTypeRequest(proto.Message):
             Required. The resource name.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListAcceleratorTypesRequest(proto.Message):
@@ -459,11 +618,26 @@ class ListAcceleratorTypesRequest(proto.Message):
             Sort results.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    filter = proto.Field(proto.STRING, number=5,)
-    order_by = proto.Field(proto.STRING, number=6,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    order_by = proto.Field(
+        proto.STRING,
+        number=6,
+    )
 
 
 class ListAcceleratorTypesResponse(proto.Message):
@@ -484,10 +658,18 @@ class ListAcceleratorTypesResponse(proto.Message):
         return self
 
     accelerator_types = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="AcceleratorType",
+        proto.MESSAGE,
+        number=1,
+        message="AcceleratorType",
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
-    unreachable = proto.RepeatedField(proto.STRING, number=3,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 class OperationMetadata(proto.Message):
@@ -513,13 +695,36 @@ class OperationMetadata(proto.Message):
             API version.
     """
 
-    create_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
-    end_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    target = proto.Field(proto.STRING, number=3,)
-    verb = proto.Field(proto.STRING, number=4,)
-    status_detail = proto.Field(proto.STRING, number=5,)
-    cancel_requested = proto.Field(proto.BOOL, number=6,)
-    api_version = proto.Field(proto.STRING, number=7,)
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    target = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    verb = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    status_detail = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    cancel_requested = proto.Field(
+        proto.BOOL,
+        number=6,
+    )
+    api_version = proto.Field(
+        proto.STRING,
+        number=7,
+    )
 
 
 class Symptom(proto.Message):
@@ -549,10 +754,24 @@ class Symptom(proto.Message):
         HBM_OUT_OF_MEMORY = 5
         PROJECT_ABUSE = 6
 
-    create_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
-    symptom_type = proto.Field(proto.ENUM, number=2, enum=SymptomType,)
-    details = proto.Field(proto.STRING, number=3,)
-    worker_id = proto.Field(proto.STRING, number=4,)
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    symptom_type = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=SymptomType,
+    )
+    details = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    worker_id = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

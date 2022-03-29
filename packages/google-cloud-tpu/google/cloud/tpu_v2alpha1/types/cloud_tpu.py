@@ -72,8 +72,15 @@ class GuestAttributes(proto.Message):
             The value of the requested queried path.
     """
 
-    query_path = proto.Field(proto.STRING, number=1,)
-    query_value = proto.Field(proto.MESSAGE, number=2, message="GuestAttributesValue",)
+    query_path = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    query_value = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="GuestAttributesValue",
+    )
 
 
 class GuestAttributesValue(proto.Message):
@@ -85,7 +92,9 @@ class GuestAttributesValue(proto.Message):
     """
 
     items = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="GuestAttributesEntry",
+        proto.MESSAGE,
+        number=1,
+        message="GuestAttributesEntry",
     )
 
 
@@ -101,9 +110,18 @@ class GuestAttributesEntry(proto.Message):
             Value for the guest attribute entry.
     """
 
-    namespace = proto.Field(proto.STRING, number=1,)
-    key = proto.Field(proto.STRING, number=2,)
-    value = proto.Field(proto.STRING, number=3,)
+    namespace = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    key = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    value = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class AttachedDisk(proto.Message):
@@ -126,8 +144,15 @@ class AttachedDisk(proto.Message):
         READ_WRITE = 1
         READ_ONLY = 2
 
-    source_disk = proto.Field(proto.STRING, number=3,)
-    mode = proto.Field(proto.ENUM, number=4, enum=DiskMode,)
+    source_disk = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    mode = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=DiskMode,
+    )
 
 
 class SchedulingConfig(proto.Message):
@@ -141,8 +166,14 @@ class SchedulingConfig(proto.Message):
             reservation.
     """
 
-    preemptible = proto.Field(proto.BOOL, number=1,)
-    reserved = proto.Field(proto.BOOL, number=2,)
+    preemptible = proto.Field(
+        proto.BOOL,
+        number=1,
+    )
+    reserved = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
 
 
 class NetworkEndpoint(proto.Message):
@@ -158,9 +189,19 @@ class NetworkEndpoint(proto.Message):
             The access config for the TPU worker.
     """
 
-    ip_address = proto.Field(proto.STRING, number=1,)
-    port = proto.Field(proto.INT32, number=2,)
-    access_config = proto.Field(proto.MESSAGE, number=5, message="AccessConfig",)
+    ip_address = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    port = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    access_config = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message="AccessConfig",
+    )
 
 
 class AccessConfig(proto.Message):
@@ -172,7 +213,10 @@ class AccessConfig(proto.Message):
             associated with the TPU worker.
     """
 
-    external_ip = proto.Field(proto.STRING, number=1,)
+    external_ip = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class NetworkConfig(proto.Message):
@@ -196,9 +240,18 @@ class NetworkConfig(proto.Message):
             should have Private Google Access enabled.
     """
 
-    network = proto.Field(proto.STRING, number=1,)
-    subnetwork = proto.Field(proto.STRING, number=2,)
-    enable_external_ips = proto.Field(proto.BOOL, number=3,)
+    network = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    subnetwork = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    enable_external_ips = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
 
 
 class ServiceAccount(proto.Message):
@@ -215,8 +268,14 @@ class ServiceAccount(proto.Message):
             Cloud APIs will be allowed.
     """
 
-    email = proto.Field(proto.STRING, number=1,)
-    scope = proto.RepeatedField(proto.STRING, number=2,)
+    email = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    scope = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
 
 
 class Node(proto.Message):
@@ -332,32 +391,98 @@ class Node(proto.Message):
         V1 = 2
         V2_ALPHA1 = 3
 
-    name = proto.Field(proto.STRING, number=1,)
-    description = proto.Field(proto.STRING, number=3,)
-    accelerator_type = proto.Field(proto.STRING, number=5,)
-    state = proto.Field(proto.ENUM, number=9, enum=State,)
-    health_description = proto.Field(proto.STRING, number=10,)
-    runtime_version = proto.Field(proto.STRING, number=11,)
-    network_config = proto.Field(proto.MESSAGE, number=36, message="NetworkConfig",)
-    cidr_block = proto.Field(proto.STRING, number=13,)
-    service_account = proto.Field(proto.MESSAGE, number=37, message="ServiceAccount",)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    accelerator_type = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=9,
+        enum=State,
+    )
+    health_description = proto.Field(
+        proto.STRING,
+        number=10,
+    )
+    runtime_version = proto.Field(
+        proto.STRING,
+        number=11,
+    )
+    network_config = proto.Field(
+        proto.MESSAGE,
+        number=36,
+        message="NetworkConfig",
+    )
+    cidr_block = proto.Field(
+        proto.STRING,
+        number=13,
+    )
+    service_account = proto.Field(
+        proto.MESSAGE,
+        number=37,
+        message="ServiceAccount",
+    )
     create_time = proto.Field(
-        proto.MESSAGE, number=16, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=16,
+        message=timestamp_pb2.Timestamp,
     )
     scheduling_config = proto.Field(
-        proto.MESSAGE, number=17, message="SchedulingConfig",
+        proto.MESSAGE,
+        number=17,
+        message="SchedulingConfig",
     )
     network_endpoints = proto.RepeatedField(
-        proto.MESSAGE, number=21, message="NetworkEndpoint",
+        proto.MESSAGE,
+        number=21,
+        message="NetworkEndpoint",
     )
-    health = proto.Field(proto.ENUM, number=22, enum=Health,)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=24,)
-    metadata = proto.MapField(proto.STRING, proto.STRING, number=34,)
-    tags = proto.RepeatedField(proto.STRING, number=40,)
-    id = proto.Field(proto.INT64, number=33,)
-    data_disks = proto.RepeatedField(proto.MESSAGE, number=41, message="AttachedDisk",)
-    api_version = proto.Field(proto.ENUM, number=38, enum=ApiVersion,)
-    symptoms = proto.RepeatedField(proto.MESSAGE, number=39, message="Symptom",)
+    health = proto.Field(
+        proto.ENUM,
+        number=22,
+        enum=Health,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=24,
+    )
+    metadata = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=34,
+    )
+    tags = proto.RepeatedField(
+        proto.STRING,
+        number=40,
+    )
+    id = proto.Field(
+        proto.INT64,
+        number=33,
+    )
+    data_disks = proto.RepeatedField(
+        proto.MESSAGE,
+        number=41,
+        message="AttachedDisk",
+    )
+    api_version = proto.Field(
+        proto.ENUM,
+        number=38,
+        enum=ApiVersion,
+    )
+    symptoms = proto.RepeatedField(
+        proto.MESSAGE,
+        number=39,
+        message="Symptom",
+    )
 
 
 class ListNodesRequest(proto.Message):
@@ -373,9 +498,18 @@ class ListNodesRequest(proto.Message):
             request, if any.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListNodesResponse(proto.Message):
@@ -394,9 +528,19 @@ class ListNodesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    nodes = proto.RepeatedField(proto.MESSAGE, number=1, message="Node",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
-    unreachable = proto.RepeatedField(proto.STRING, number=3,)
+    nodes = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Node",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 class GetNodeRequest(proto.Message):
@@ -407,7 +551,10 @@ class GetNodeRequest(proto.Message):
             Required. The resource name.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CreateNodeRequest(proto.Message):
@@ -422,9 +569,19 @@ class CreateNodeRequest(proto.Message):
             Required. The node.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    node_id = proto.Field(proto.STRING, number=2,)
-    node = proto.Field(proto.MESSAGE, number=3, message="Node",)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    node_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    node = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="Node",
+    )
 
 
 class DeleteNodeRequest(proto.Message):
@@ -435,7 +592,10 @@ class DeleteNodeRequest(proto.Message):
             Required. The resource name.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class StopNodeRequest(proto.Message):
@@ -446,7 +606,10 @@ class StopNodeRequest(proto.Message):
             The resource name.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class StartNodeRequest(proto.Message):
@@ -457,7 +620,10 @@ class StartNodeRequest(proto.Message):
             The resource name.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class UpdateNodeRequest(proto.Message):
@@ -473,9 +639,15 @@ class UpdateNodeRequest(proto.Message):
     """
 
     update_mask = proto.Field(
-        proto.MESSAGE, number=1, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=1,
+        message=field_mask_pb2.FieldMask,
     )
-    node = proto.Field(proto.MESSAGE, number=2, message="Node",)
+    node = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="Node",
+    )
 
 
 class ServiceIdentity(proto.Message):
@@ -487,7 +659,10 @@ class ServiceIdentity(proto.Message):
             The email address of the service identity.
     """
 
-    email = proto.Field(proto.STRING, number=1,)
+    email = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class GenerateServiceIdentityRequest(proto.Message):
@@ -499,7 +674,10 @@ class GenerateServiceIdentityRequest(proto.Message):
             Required. The parent resource name.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class GenerateServiceIdentityResponse(proto.Message):
@@ -512,7 +690,11 @@ class GenerateServiceIdentityResponse(proto.Message):
             retrieved.
     """
 
-    identity = proto.Field(proto.MESSAGE, number=1, message="ServiceIdentity",)
+    identity = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="ServiceIdentity",
+    )
 
 
 class AcceleratorType(proto.Message):
@@ -525,8 +707,14 @@ class AcceleratorType(proto.Message):
             the accelerator type.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    type_ = proto.Field(proto.STRING, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    type_ = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetAcceleratorTypeRequest(proto.Message):
@@ -538,7 +726,10 @@ class GetAcceleratorTypeRequest(proto.Message):
             Required. The resource name.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListAcceleratorTypesRequest(proto.Message):
@@ -559,11 +750,26 @@ class ListAcceleratorTypesRequest(proto.Message):
             Sort results.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    filter = proto.Field(proto.STRING, number=5,)
-    order_by = proto.Field(proto.STRING, number=6,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    order_by = proto.Field(
+        proto.STRING,
+        number=6,
+    )
 
 
 class ListAcceleratorTypesResponse(proto.Message):
@@ -584,10 +790,18 @@ class ListAcceleratorTypesResponse(proto.Message):
         return self
 
     accelerator_types = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="AcceleratorType",
+        proto.MESSAGE,
+        number=1,
+        message="AcceleratorType",
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
-    unreachable = proto.RepeatedField(proto.STRING, number=3,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 class OperationMetadata(proto.Message):
@@ -613,13 +827,36 @@ class OperationMetadata(proto.Message):
             API version.
     """
 
-    create_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
-    end_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    target = proto.Field(proto.STRING, number=3,)
-    verb = proto.Field(proto.STRING, number=4,)
-    status_detail = proto.Field(proto.STRING, number=5,)
-    cancel_requested = proto.Field(proto.BOOL, number=6,)
-    api_version = proto.Field(proto.STRING, number=7,)
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    target = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    verb = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    status_detail = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    cancel_requested = proto.Field(
+        proto.BOOL,
+        number=6,
+    )
+    api_version = proto.Field(
+        proto.STRING,
+        number=7,
+    )
 
 
 class RuntimeVersion(proto.Message):
@@ -632,8 +869,14 @@ class RuntimeVersion(proto.Message):
             The runtime version.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    version = proto.Field(proto.STRING, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    version = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetRuntimeVersionRequest(proto.Message):
@@ -645,7 +888,10 @@ class GetRuntimeVersionRequest(proto.Message):
             Required. The resource name.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListRuntimeVersionsRequest(proto.Message):
@@ -666,11 +912,26 @@ class ListRuntimeVersionsRequest(proto.Message):
             Sort results.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    filter = proto.Field(proto.STRING, number=5,)
-    order_by = proto.Field(proto.STRING, number=6,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    order_by = proto.Field(
+        proto.STRING,
+        number=6,
+    )
 
 
 class ListRuntimeVersionsResponse(proto.Message):
@@ -691,10 +952,18 @@ class ListRuntimeVersionsResponse(proto.Message):
         return self
 
     runtime_versions = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="RuntimeVersion",
+        proto.MESSAGE,
+        number=1,
+        message="RuntimeVersion",
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
-    unreachable = proto.RepeatedField(proto.STRING, number=3,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 class Symptom(proto.Message):
@@ -724,10 +993,24 @@ class Symptom(proto.Message):
         HBM_OUT_OF_MEMORY = 5
         PROJECT_ABUSE = 6
 
-    create_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
-    symptom_type = proto.Field(proto.ENUM, number=2, enum=SymptomType,)
-    details = proto.Field(proto.STRING, number=3,)
-    worker_id = proto.Field(proto.STRING, number=4,)
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    symptom_type = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=SymptomType,
+    )
+    details = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    worker_id = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class GetGuestAttributesRequest(proto.Message):
@@ -744,9 +1027,18 @@ class GetGuestAttributesRequest(proto.Message):
             workers' GuestAttributes will be returned.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    query_path = proto.Field(proto.STRING, number=2,)
-    worker_ids = proto.RepeatedField(proto.STRING, number=3,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    query_path = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    worker_ids = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 class GetGuestAttributesResponse(proto.Message):
@@ -759,7 +1051,9 @@ class GetGuestAttributesResponse(proto.Message):
     """
 
     guest_attributes = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="GuestAttributes",
+        proto.MESSAGE,
+        number=1,
+        message="GuestAttributes",
     )
 
 

@@ -57,7 +57,10 @@ class TpuClientMeta(type):
     _transport_registry["grpc"] = TpuGrpcTransport
     _transport_registry["grpc_asyncio"] = TpuGrpcAsyncIOTransport
 
-    def get_transport_class(cls, label: str = None,) -> Type[TpuTransport]:
+    def get_transport_class(
+        cls,
+        label: str = None,
+    ) -> Type[TpuTransport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -165,11 +168,15 @@ class TpuClient(metaclass=TpuClientMeta):
 
     @staticmethod
     def accelerator_type_path(
-        project: str, location: str, accelerator_type: str,
+        project: str,
+        location: str,
+        accelerator_type: str,
     ) -> str:
         """Returns a fully-qualified accelerator_type string."""
         return "projects/{project}/locations/{location}/acceleratorTypes/{accelerator_type}".format(
-            project=project, location=location, accelerator_type=accelerator_type,
+            project=project,
+            location=location,
+            accelerator_type=accelerator_type,
         )
 
     @staticmethod
@@ -182,10 +189,16 @@ class TpuClient(metaclass=TpuClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def node_path(project: str, location: str, node: str,) -> str:
+    def node_path(
+        project: str,
+        location: str,
+        node: str,
+    ) -> str:
         """Returns a fully-qualified node string."""
         return "projects/{project}/locations/{location}/nodes/{node}".format(
-            project=project, location=location, node=node,
+            project=project,
+            location=location,
+            node=node,
         )
 
     @staticmethod
@@ -198,10 +211,16 @@ class TpuClient(metaclass=TpuClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def runtime_version_path(project: str, location: str, runtime_version: str,) -> str:
+    def runtime_version_path(
+        project: str,
+        location: str,
+        runtime_version: str,
+    ) -> str:
         """Returns a fully-qualified runtime_version string."""
         return "projects/{project}/locations/{location}/runtimeVersions/{runtime_version}".format(
-            project=project, location=location, runtime_version=runtime_version,
+            project=project,
+            location=location,
+            runtime_version=runtime_version,
         )
 
     @staticmethod
@@ -214,7 +233,9 @@ class TpuClient(metaclass=TpuClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_billing_account_path(billing_account: str,) -> str:
+    def common_billing_account_path(
+        billing_account: str,
+    ) -> str:
         """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
@@ -227,9 +248,13 @@ class TpuClient(metaclass=TpuClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(folder: str,) -> str:
+    def common_folder_path(
+        folder: str,
+    ) -> str:
         """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(folder=folder,)
+        return "folders/{folder}".format(
+            folder=folder,
+        )
 
     @staticmethod
     def parse_common_folder_path(path: str) -> Dict[str, str]:
@@ -238,9 +263,13 @@ class TpuClient(metaclass=TpuClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(organization: str,) -> str:
+    def common_organization_path(
+        organization: str,
+    ) -> str:
         """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(organization=organization,)
+        return "organizations/{organization}".format(
+            organization=organization,
+        )
 
     @staticmethod
     def parse_common_organization_path(path: str) -> Dict[str, str]:
@@ -249,9 +278,13 @@ class TpuClient(metaclass=TpuClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(project: str,) -> str:
+    def common_project_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified project string."""
-        return "projects/{project}".format(project=project,)
+        return "projects/{project}".format(
+            project=project,
+        )
 
     @staticmethod
     def parse_common_project_path(path: str) -> Dict[str, str]:
@@ -260,10 +293,14 @@ class TpuClient(metaclass=TpuClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(project: str, location: str,) -> str:
+    def common_location_path(
+        project: str,
+        location: str,
+    ) -> str:
         """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
-            project=project, location=location,
+            project=project,
+            location=location,
         )
 
     @staticmethod
@@ -524,12 +561,20 @@ class TpuClient(metaclass=TpuClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListNodesPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -616,7 +661,12 @@ class TpuClient(metaclass=TpuClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -732,7 +782,12 @@ class TpuClient(metaclass=TpuClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -835,7 +890,12 @@ class TpuClient(metaclass=TpuClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -920,7 +980,12 @@ class TpuClient(metaclass=TpuClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1003,7 +1068,12 @@ class TpuClient(metaclass=TpuClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1124,7 +1194,12 @@ class TpuClient(metaclass=TpuClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1205,7 +1280,12 @@ class TpuClient(metaclass=TpuClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1297,12 +1377,20 @@ class TpuClient(metaclass=TpuClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListAcceleratorTypesPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1391,7 +1479,12 @@ class TpuClient(metaclass=TpuClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1483,12 +1576,20 @@ class TpuClient(metaclass=TpuClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListRuntimeVersionsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1577,7 +1678,12 @@ class TpuClient(metaclass=TpuClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1646,7 +1752,12 @@ class TpuClient(metaclass=TpuClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1667,7 +1778,9 @@ class TpuClient(metaclass=TpuClientMeta):
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-tpu",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-tpu",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
