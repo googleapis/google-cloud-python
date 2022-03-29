@@ -124,28 +124,44 @@ class BareMetalSolutionTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.list_instances: gapic_v1.method.wrap_method(
-                self.list_instances, default_timeout=None, client_info=client_info,
+                self.list_instances,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_instance: gapic_v1.method.wrap_method(
-                self.get_instance, default_timeout=None, client_info=client_info,
+                self.get_instance,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.reset_instance: gapic_v1.method.wrap_method(
-                self.reset_instance, default_timeout=None, client_info=client_info,
+                self.reset_instance,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_volumes: gapic_v1.method.wrap_method(
-                self.list_volumes, default_timeout=None, client_info=client_info,
+                self.list_volumes,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_volume: gapic_v1.method.wrap_method(
-                self.get_volume, default_timeout=None, client_info=client_info,
+                self.get_volume,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.update_volume: gapic_v1.method.wrap_method(
-                self.update_volume, default_timeout=None, client_info=client_info,
+                self.update_volume,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_networks: gapic_v1.method.wrap_method(
-                self.list_networks, default_timeout=None, client_info=client_info,
+                self.list_networks,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_network: gapic_v1.method.wrap_method(
-                self.get_network, default_timeout=None, client_info=client_info,
+                self.get_network,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_snapshot_schedule_policies: gapic_v1.method.wrap_method(
                 self.list_snapshot_schedule_policies,
@@ -188,7 +204,9 @@ class BareMetalSolutionTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.get_volume_snapshot: gapic_v1.method.wrap_method(
-                self.get_volume_snapshot, default_timeout=None, client_info=client_info,
+                self.get_volume_snapshot,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_volume_snapshots: gapic_v1.method.wrap_method(
                 self.list_volume_snapshots,
@@ -196,19 +214,23 @@ class BareMetalSolutionTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.get_lun: gapic_v1.method.wrap_method(
-                self.get_lun, default_timeout=None, client_info=client_info,
+                self.get_lun,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_luns: gapic_v1.method.wrap_method(
-                self.list_luns, default_timeout=None, client_info=client_info,
+                self.list_luns,
+                default_timeout=None,
+                client_info=client_info,
             ),
         }
 
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

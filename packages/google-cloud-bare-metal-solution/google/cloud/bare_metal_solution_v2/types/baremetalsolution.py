@@ -143,24 +143,63 @@ class Volume(proto.Message):
                 this storage volume's reserved snapshot space.
         """
 
-        reserved_space_gib = proto.Field(proto.INT64, number=1,)
-        reserved_space_used_percent = proto.Field(proto.INT32, number=2,)
-        reserved_space_remaining_gib = proto.Field(proto.INT64, number=3,)
+        reserved_space_gib = proto.Field(
+            proto.INT64,
+            number=1,
+        )
+        reserved_space_used_percent = proto.Field(
+            proto.INT32,
+            number=2,
+        )
+        reserved_space_remaining_gib = proto.Field(
+            proto.INT64,
+            number=3,
+        )
 
-    name = proto.Field(proto.STRING, number=1,)
-    storage_type = proto.Field(proto.ENUM, number=2, enum=StorageType,)
-    state = proto.Field(proto.ENUM, number=3, enum=State,)
-    requested_size_gib = proto.Field(proto.INT64, number=4,)
-    current_size_gib = proto.Field(proto.INT64, number=5,)
-    auto_grown_size_gib = proto.Field(proto.INT64, number=6,)
-    remaining_space_gib = proto.Field(proto.INT64, number=7,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    storage_type = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=StorageType,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=State,
+    )
+    requested_size_gib = proto.Field(
+        proto.INT64,
+        number=4,
+    )
+    current_size_gib = proto.Field(
+        proto.INT64,
+        number=5,
+    )
+    auto_grown_size_gib = proto.Field(
+        proto.INT64,
+        number=6,
+    )
+    remaining_space_gib = proto.Field(
+        proto.INT64,
+        number=7,
+    )
     snapshot_reservation_detail = proto.Field(
-        proto.MESSAGE, number=8, message=SnapshotReservationDetail,
+        proto.MESSAGE,
+        number=8,
+        message=SnapshotReservationDetail,
     )
     snapshot_auto_delete_behavior = proto.Field(
-        proto.ENUM, number=9, enum=SnapshotAutoDeleteBehavior,
+        proto.ENUM,
+        number=9,
+        enum=SnapshotAutoDeleteBehavior,
     )
-    snapshot_schedule_policy = proto.Field(proto.STRING, number=10,)
+    snapshot_schedule_policy = proto.Field(
+        proto.STRING,
+        number=10,
+    )
 
 
 class ListVolumesRequest(proto.Message):
@@ -179,9 +218,18 @@ class ListVolumesRequest(proto.Message):
             the server.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListVolumesResponse(proto.Message):
@@ -201,9 +249,19 @@ class ListVolumesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    volumes = proto.RepeatedField(proto.MESSAGE, number=1, message="Volume",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
-    unreachable = proto.RepeatedField(proto.STRING, number=3,)
+    volumes = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Volume",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 class GetVolumeRequest(proto.Message):
@@ -214,7 +272,10 @@ class GetVolumeRequest(proto.Message):
             Required. Name of the resource.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class Lun(proto.Message):
@@ -265,15 +326,45 @@ class Lun(proto.Message):
         SSD = 1
         HDD = 2
 
-    name = proto.Field(proto.STRING, number=1,)
-    state = proto.Field(proto.ENUM, number=2, enum=State,)
-    size_gb = proto.Field(proto.INT64, number=3,)
-    multiprotocol_type = proto.Field(proto.ENUM, number=4, enum=MultiprotocolType,)
-    storage_volume = proto.Field(proto.STRING, number=5,)
-    shareable = proto.Field(proto.BOOL, number=6,)
-    boot_lun = proto.Field(proto.BOOL, number=7,)
-    storage_type = proto.Field(proto.ENUM, number=8, enum=StorageType,)
-    wwid = proto.Field(proto.STRING, number=9,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=State,
+    )
+    size_gb = proto.Field(
+        proto.INT64,
+        number=3,
+    )
+    multiprotocol_type = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=MultiprotocolType,
+    )
+    storage_volume = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    shareable = proto.Field(
+        proto.BOOL,
+        number=6,
+    )
+    boot_lun = proto.Field(
+        proto.BOOL,
+        number=7,
+    )
+    storage_type = proto.Field(
+        proto.ENUM,
+        number=8,
+        enum=StorageType,
+    )
+    wwid = proto.Field(
+        proto.STRING,
+        number=9,
+    )
 
 
 class Network(proto.Message):
@@ -318,15 +409,45 @@ class Network(proto.Message):
         PROVISIONING = 1
         PROVISIONED = 2
 
-    name = proto.Field(proto.STRING, number=5,)
-    network = proto.Field(proto.STRING, number=1,)
-    type_ = proto.Field(proto.ENUM, number=2, enum=Type,)
-    ip_address = proto.Field(proto.STRING, number=3,)
-    mac_address = proto.RepeatedField(proto.STRING, number=4,)
-    state = proto.Field(proto.ENUM, number=6, enum=State,)
-    vlan_id = proto.Field(proto.STRING, number=7,)
-    cidr = proto.Field(proto.STRING, number=8,)
-    vrf = proto.Field(proto.MESSAGE, number=9, message="VRF",)
+    name = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    network = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    type_ = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=Type,
+    )
+    ip_address = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    mac_address = proto.RepeatedField(
+        proto.STRING,
+        number=4,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum=State,
+    )
+    vlan_id = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    cidr = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    vrf = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message="VRF",
+    )
 
 
 class VRF(proto.Message):
@@ -358,7 +479,10 @@ class VRF(proto.Message):
                 gbps.
         """
 
-        bandwidth_gbps = proto.Field(proto.DOUBLE, number=1,)
+        bandwidth_gbps = proto.Field(
+            proto.DOUBLE,
+            number=1,
+        )
 
     class VlanAttachment(proto.Message):
         r"""VLAN attachment details.
@@ -372,15 +496,37 @@ class VRF(proto.Message):
                 The router IP of the attachment.
         """
 
-        peer_vlan_id = proto.Field(proto.INT64, number=1,)
-        peer_ip = proto.Field(proto.STRING, number=2,)
-        router_ip = proto.Field(proto.STRING, number=3,)
+        peer_vlan_id = proto.Field(
+            proto.INT64,
+            number=1,
+        )
+        peer_ip = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        router_ip = proto.Field(
+            proto.STRING,
+            number=3,
+        )
 
-    name = proto.Field(proto.STRING, number=1,)
-    state = proto.Field(proto.ENUM, number=5, enum=State,)
-    qos_policy = proto.Field(proto.MESSAGE, number=6, message=QosPolicy,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum=State,
+    )
+    qos_policy = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=QosPolicy,
+    )
     vlan_attachments = proto.RepeatedField(
-        proto.MESSAGE, number=7, message=VlanAttachment,
+        proto.MESSAGE,
+        number=7,
+        message=VlanAttachment,
     )
 
 
@@ -400,9 +546,18 @@ class ListNetworksRequest(proto.Message):
             the server.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListNetworksResponse(proto.Message):
@@ -422,9 +577,19 @@ class ListNetworksResponse(proto.Message):
     def raw_page(self):
         return self
 
-    networks = proto.RepeatedField(proto.MESSAGE, number=1, message="Network",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
-    unreachable = proto.RepeatedField(proto.STRING, number=3,)
+    networks = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Network",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 class GetNetworkRequest(proto.Message):
@@ -435,7 +600,10 @@ class GetNetworkRequest(proto.Message):
             Required. Name of the resource.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class GetSnapshotSchedulePolicyRequest(proto.Message):
@@ -446,7 +614,10 @@ class GetSnapshotSchedulePolicyRequest(proto.Message):
             Required. Name of the resource.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class Instance(proto.Message):
@@ -491,16 +662,52 @@ class Instance(proto.Message):
         RUNNING = 2
         DELETED = 3
 
-    name = proto.Field(proto.STRING, number=1,)
-    create_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
-    machine_type = proto.Field(proto.STRING, number=4,)
-    state = proto.Field(proto.ENUM, number=5, enum=State,)
-    hyperthreading_enabled = proto.Field(proto.BOOL, number=6,)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=7,)
-    luns = proto.RepeatedField(proto.MESSAGE, number=8, message="Lun",)
-    networks = proto.RepeatedField(proto.MESSAGE, number=9, message="Network",)
-    interactive_serial_console_enabled = proto.Field(proto.BOOL, number=10,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    machine_type = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum=State,
+    )
+    hyperthreading_enabled = proto.Field(
+        proto.BOOL,
+        number=6,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=7,
+    )
+    luns = proto.RepeatedField(
+        proto.MESSAGE,
+        number=8,
+        message="Lun",
+    )
+    networks = proto.RepeatedField(
+        proto.MESSAGE,
+        number=9,
+        message="Network",
+    )
+    interactive_serial_console_enabled = proto.Field(
+        proto.BOOL,
+        number=10,
+    )
 
 
 class ListInstancesRequest(proto.Message):
@@ -519,9 +726,18 @@ class ListInstancesRequest(proto.Message):
             the server.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListInstancesResponse(proto.Message):
@@ -541,9 +757,19 @@ class ListInstancesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    instances = proto.RepeatedField(proto.MESSAGE, number=1, message="Instance",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
-    unreachable = proto.RepeatedField(proto.STRING, number=3,)
+    instances = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Instance",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 class GetInstanceRequest(proto.Message):
@@ -554,7 +780,10 @@ class GetInstanceRequest(proto.Message):
             Required. Name of the resource.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ResetInstanceRequest(proto.Message):
@@ -565,12 +794,14 @@ class ResetInstanceRequest(proto.Message):
             Required. Name of the resource.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ResetInstanceResponse(proto.Message):
-    r"""Response message from resetting a server.
-    """
+    r"""Response message from resetting a server."""
 
 
 class GetVolumeSnapshotRequest(proto.Message):
@@ -581,7 +812,10 @@ class GetVolumeSnapshotRequest(proto.Message):
             Required. Name of the resource.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListVolumeSnapshotsRequest(proto.Message):
@@ -600,9 +834,18 @@ class ListVolumeSnapshotsRequest(proto.Message):
             the server.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListVolumeSnapshotsResponse(proto.Message):
@@ -624,10 +867,18 @@ class ListVolumeSnapshotsResponse(proto.Message):
         return self
 
     volume_snapshots = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="VolumeSnapshot",
+        proto.MESSAGE,
+        number=1,
+        message="VolumeSnapshot",
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
-    unreachable = proto.RepeatedField(proto.STRING, number=3,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 class DeleteVolumeSnapshotRequest(proto.Message):
@@ -638,7 +889,10 @@ class DeleteVolumeSnapshotRequest(proto.Message):
             Required. The name of the snapshot to delete.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class OperationMetadata(proto.Message):
@@ -667,13 +921,36 @@ class OperationMetadata(proto.Message):
             API version used with the operation.
     """
 
-    create_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
-    end_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    target = proto.Field(proto.STRING, number=3,)
-    verb = proto.Field(proto.STRING, number=4,)
-    status_message = proto.Field(proto.STRING, number=5,)
-    requested_cancellation = proto.Field(proto.BOOL, number=6,)
-    api_version = proto.Field(proto.STRING, number=7,)
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    target = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    verb = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    status_message = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    requested_cancellation = proto.Field(
+        proto.BOOL,
+        number=6,
+    )
+    api_version = proto.Field(
+        proto.STRING,
+        number=7,
+    )
 
 
 class VolumeSnapshot(proto.Message):
@@ -696,11 +973,27 @@ class VolumeSnapshot(proto.Message):
             The storage volume this snapshot belongs to.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    description = proto.Field(proto.STRING, number=2,)
-    size_bytes = proto.Field(proto.INT64, number=3,)
-    create_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
-    storage_volume = proto.Field(proto.STRING, number=5,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    size_bytes = proto.Field(
+        proto.INT64,
+        number=3,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    storage_volume = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class SnapshotSchedulePolicy(proto.Message):
@@ -734,13 +1027,32 @@ class SnapshotSchedulePolicy(proto.Message):
                 schedule.
         """
 
-        crontab_spec = proto.Field(proto.STRING, number=1,)
-        retention_count = proto.Field(proto.INT32, number=2,)
-        prefix = proto.Field(proto.STRING, number=3,)
+        crontab_spec = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        retention_count = proto.Field(
+            proto.INT32,
+            number=2,
+        )
+        prefix = proto.Field(
+            proto.STRING,
+            number=3,
+        )
 
-    name = proto.Field(proto.STRING, number=1,)
-    description = proto.Field(proto.STRING, number=2,)
-    schedules = proto.RepeatedField(proto.MESSAGE, number=3, message=Schedule,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    schedules = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=Schedule,
+    )
 
 
 class ListSnapshotSchedulePoliciesRequest(proto.Message):
@@ -757,9 +1069,18 @@ class ListSnapshotSchedulePoliciesRequest(proto.Message):
             request, if any.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListSnapshotSchedulePoliciesResponse(proto.Message):
@@ -781,9 +1102,14 @@ class ListSnapshotSchedulePoliciesResponse(proto.Message):
         return self
 
     snapshot_schedule_policies = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="SnapshotSchedulePolicy",
+        proto.MESSAGE,
+        number=1,
+        message="SnapshotSchedulePolicy",
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class CreateSnapshotSchedulePolicyRequest(proto.Message):
@@ -800,11 +1126,19 @@ class CreateSnapshotSchedulePolicyRequest(proto.Message):
             Required. Snapshot policy ID
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    snapshot_schedule_policy = proto.Field(
-        proto.MESSAGE, number=2, message="SnapshotSchedulePolicy",
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    snapshot_schedule_policy_id = proto.Field(proto.STRING, number=3,)
+    snapshot_schedule_policy = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="SnapshotSchedulePolicy",
+    )
+    snapshot_schedule_policy_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class UpdateSnapshotSchedulePolicyRequest(proto.Message):
@@ -822,10 +1156,14 @@ class UpdateSnapshotSchedulePolicyRequest(proto.Message):
     """
 
     snapshot_schedule_policy = proto.Field(
-        proto.MESSAGE, number=1, message="SnapshotSchedulePolicy",
+        proto.MESSAGE,
+        number=1,
+        message="SnapshotSchedulePolicy",
     )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -838,7 +1176,10 @@ class DeleteSnapshotSchedulePolicyRequest(proto.Message):
             policy to delete.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class UpdateVolumeRequest(proto.Message):
@@ -857,9 +1198,15 @@ class UpdateVolumeRequest(proto.Message):
             ``snapshot_schedule_policy_name``
     """
 
-    volume = proto.Field(proto.MESSAGE, number=1, message="Volume",)
+    volume = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="Volume",
+    )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -871,7 +1218,10 @@ class GetLunRequest(proto.Message):
             Required. Name of the resource.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListLunsRequest(proto.Message):
@@ -889,9 +1239,18 @@ class ListLunsRequest(proto.Message):
             the server.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListLunsResponse(proto.Message):
@@ -911,9 +1270,19 @@ class ListLunsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    luns = proto.RepeatedField(proto.MESSAGE, number=1, message="Lun",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
-    unreachable = proto.RepeatedField(proto.STRING, number=3,)
+    luns = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Lun",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 class CreateVolumeSnapshotRequest(proto.Message):
@@ -927,8 +1296,15 @@ class CreateVolumeSnapshotRequest(proto.Message):
             the description field may be specified.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    volume_snapshot = proto.Field(proto.MESSAGE, number=2, message="VolumeSnapshot",)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    volume_snapshot = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="VolumeSnapshot",
+    )
 
 
 class RestoreVolumeSnapshotRequest(proto.Message):
@@ -939,7 +1315,10 @@ class RestoreVolumeSnapshotRequest(proto.Message):
             Required. Name of the resource.
     """
 
-    volume_snapshot = proto.Field(proto.STRING, number=1,)
+    volume_snapshot = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

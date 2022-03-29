@@ -60,7 +60,8 @@ class BareMetalSolutionClientMeta(type):
     _transport_registry["grpc_asyncio"] = BareMetalSolutionGrpcAsyncIOTransport
 
     def get_transport_class(
-        cls, label: str = None,
+        cls,
+        label: str = None,
     ) -> Type[BareMetalSolutionTransport]:
         """Returns an appropriate transport class.
 
@@ -175,10 +176,16 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
         return self._transport
 
     @staticmethod
-    def instance_path(project: str, location: str, instance: str,) -> str:
+    def instance_path(
+        project: str,
+        location: str,
+        instance: str,
+    ) -> str:
         """Returns a fully-qualified instance string."""
         return "projects/{project}/locations/{location}/instances/{instance}".format(
-            project=project, location=location, instance=instance,
+            project=project,
+            location=location,
+            instance=instance,
         )
 
     @staticmethod
@@ -191,10 +198,18 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def lun_path(project: str, location: str, volume: str, lun: str,) -> str:
+    def lun_path(
+        project: str,
+        location: str,
+        volume: str,
+        lun: str,
+    ) -> str:
         """Returns a fully-qualified lun string."""
         return "projects/{project}/locations/{location}/volumes/{volume}/luns/{lun}".format(
-            project=project, location=location, volume=volume, lun=lun,
+            project=project,
+            location=location,
+            volume=volume,
+            lun=lun,
         )
 
     @staticmethod
@@ -207,10 +222,16 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def network_path(project: str, location: str, network: str,) -> str:
+    def network_path(
+        project: str,
+        location: str,
+        network: str,
+    ) -> str:
         """Returns a fully-qualified network string."""
         return "projects/{project}/locations/{location}/networks/{network}".format(
-            project=project, location=location, network=network,
+            project=project,
+            location=location,
+            network=network,
         )
 
     @staticmethod
@@ -224,7 +245,9 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
     @staticmethod
     def snapshot_schedule_policy_path(
-        project: str, location: str, snapshot_schedule_policy: str,
+        project: str,
+        location: str,
+        snapshot_schedule_policy: str,
     ) -> str:
         """Returns a fully-qualified snapshot_schedule_policy string."""
         return "projects/{project}/locations/{location}/snapshotSchedulePolicies/{snapshot_schedule_policy}".format(
@@ -243,10 +266,16 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def volume_path(project: str, location: str, volume: str,) -> str:
+    def volume_path(
+        project: str,
+        location: str,
+        volume: str,
+    ) -> str:
         """Returns a fully-qualified volume string."""
         return "projects/{project}/locations/{location}/volumes/{volume}".format(
-            project=project, location=location, volume=volume,
+            project=project,
+            location=location,
+            volume=volume,
         )
 
     @staticmethod
@@ -260,11 +289,17 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
     @staticmethod
     def volume_snapshot_path(
-        project: str, location: str, volume: str, snapshot: str,
+        project: str,
+        location: str,
+        volume: str,
+        snapshot: str,
     ) -> str:
         """Returns a fully-qualified volume_snapshot string."""
         return "projects/{project}/locations/{location}/volumes/{volume}/snapshots/{snapshot}".format(
-            project=project, location=location, volume=volume, snapshot=snapshot,
+            project=project,
+            location=location,
+            volume=volume,
+            snapshot=snapshot,
         )
 
     @staticmethod
@@ -277,7 +312,9 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_billing_account_path(billing_account: str,) -> str:
+    def common_billing_account_path(
+        billing_account: str,
+    ) -> str:
         """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
@@ -290,9 +327,13 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(folder: str,) -> str:
+    def common_folder_path(
+        folder: str,
+    ) -> str:
         """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(folder=folder,)
+        return "folders/{folder}".format(
+            folder=folder,
+        )
 
     @staticmethod
     def parse_common_folder_path(path: str) -> Dict[str, str]:
@@ -301,9 +342,13 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(organization: str,) -> str:
+    def common_organization_path(
+        organization: str,
+    ) -> str:
         """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(organization=organization,)
+        return "organizations/{organization}".format(
+            organization=organization,
+        )
 
     @staticmethod
     def parse_common_organization_path(path: str) -> Dict[str, str]:
@@ -312,9 +357,13 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(project: str,) -> str:
+    def common_project_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified project string."""
-        return "projects/{project}".format(project=project,)
+        return "projects/{project}".format(
+            project=project,
+        )
 
     @staticmethod
     def parse_common_project_path(path: str) -> Dict[str, str]:
@@ -323,10 +372,14 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(project: str, location: str,) -> str:
+    def common_location_path(
+        project: str,
+        location: str,
+    ) -> str:
         """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
-            project=project, location=location,
+            project=project,
+            location=location,
         )
 
     @staticmethod
@@ -589,12 +642,20 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListInstancesPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -681,7 +742,12 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -779,7 +845,12 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -881,12 +952,20 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListVolumesPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -973,7 +1052,12 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1084,7 +1168,12 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1186,12 +1275,20 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListNetworksPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1278,7 +1375,12 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1381,12 +1483,20 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListSnapshotSchedulePoliciesPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1475,7 +1585,12 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1593,7 +1708,12 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1708,7 +1828,12 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1796,7 +1921,10 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def create_volume_snapshot(
@@ -1895,7 +2023,12 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1994,7 +2127,12 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -2084,7 +2222,10 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def get_volume_snapshot(
@@ -2170,7 +2311,12 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2266,12 +2412,20 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListVolumeSnapshotsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -2362,7 +2516,12 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2456,12 +2615,20 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListLunsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
