@@ -80,10 +80,23 @@ class CreateChannelRequest(proto.Message):
             ``(00000000-0000-0000-0000-000000000000)``.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    channel = proto.Field(proto.MESSAGE, number=2, message=resources.Channel,)
-    channel_id = proto.Field(proto.STRING, number=3,)
-    request_id = proto.Field(proto.STRING, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    channel = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=resources.Channel,
+    )
+    channel_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    request_id = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class ListChannelsRequest(proto.Message):
@@ -110,11 +123,26 @@ class ListChannelsRequest(proto.Message):
             https://cloud.google.com/apis/design/design_patterns#sorting_order.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    filter = proto.Field(proto.STRING, number=4,)
-    order_by = proto.Field(proto.STRING, number=5,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class ListChannelsResponse(proto.Message):
@@ -135,9 +163,19 @@ class ListChannelsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    channels = proto.RepeatedField(proto.MESSAGE, number=1, message=resources.Channel,)
-    next_page_token = proto.Field(proto.STRING, number=2,)
-    unreachable = proto.RepeatedField(proto.STRING, number=3,)
+    channels = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=resources.Channel,
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 class GetChannelRequest(proto.Message):
@@ -149,7 +187,10 @@ class GetChannelRequest(proto.Message):
             ``projects/{project}/locations/{location}/channels/{channelId}``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class DeleteChannelRequest(proto.Message):
@@ -184,9 +225,18 @@ class DeleteChannelRequest(proto.Message):
             associated channel events.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    request_id = proto.Field(proto.STRING, number=2,)
-    force = proto.Field(proto.BOOL, number=3,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    request_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    force = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
 
 
 class UpdateChannelRequest(proto.Message):
@@ -230,10 +280,19 @@ class UpdateChannelRequest(proto.Message):
     """
 
     update_mask = proto.Field(
-        proto.MESSAGE, number=1, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=1,
+        message=field_mask_pb2.FieldMask,
     )
-    channel = proto.Field(proto.MESSAGE, number=2, message=resources.Channel,)
-    request_id = proto.Field(proto.STRING, number=3,)
+    channel = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=resources.Channel,
+    )
+    request_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class StartChannelRequest(proto.Message):
@@ -262,8 +321,14 @@ class StartChannelRequest(proto.Message):
             ``(00000000-0000-0000-0000-000000000000)``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    request_id = proto.Field(proto.STRING, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    request_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class StopChannelRequest(proto.Message):
@@ -292,8 +357,14 @@ class StopChannelRequest(proto.Message):
             ``(00000000-0000-0000-0000-000000000000)``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    request_id = proto.Field(proto.STRING, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    request_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class CreateInputRequest(proto.Message):
@@ -328,10 +399,23 @@ class CreateInputRequest(proto.Message):
             ``(00000000-0000-0000-0000-000000000000)``.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    input = proto.Field(proto.MESSAGE, number=2, message=resources.Input,)
-    input_id = proto.Field(proto.STRING, number=3,)
-    request_id = proto.Field(proto.STRING, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    input = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=resources.Input,
+    )
+    input_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    request_id = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class ListInputsRequest(proto.Message):
@@ -359,11 +443,26 @@ class ListInputsRequest(proto.Message):
             Order <https://cloud.google.com/apis/design/design_patterns#sorting_order>`__.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    filter = proto.Field(proto.STRING, number=4,)
-    order_by = proto.Field(proto.STRING, number=5,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class ListInputsResponse(proto.Message):
@@ -384,9 +483,19 @@ class ListInputsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    inputs = proto.RepeatedField(proto.MESSAGE, number=1, message=resources.Input,)
-    next_page_token = proto.Field(proto.STRING, number=2,)
-    unreachable = proto.RepeatedField(proto.STRING, number=3,)
+    inputs = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=resources.Input,
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 class GetInputRequest(proto.Message):
@@ -398,7 +507,10 @@ class GetInputRequest(proto.Message):
             ``projects/{project}/locations/{location}/inputs/{inputId}``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class DeleteInputRequest(proto.Message):
@@ -427,8 +539,14 @@ class DeleteInputRequest(proto.Message):
             ``(00000000-0000-0000-0000-000000000000)``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    request_id = proto.Field(proto.STRING, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    request_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class UpdateInputRequest(proto.Message):
@@ -468,10 +586,19 @@ class UpdateInputRequest(proto.Message):
     """
 
     update_mask = proto.Field(
-        proto.MESSAGE, number=1, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=1,
+        message=field_mask_pb2.FieldMask,
     )
-    input = proto.Field(proto.MESSAGE, number=2, message=resources.Input,)
-    request_id = proto.Field(proto.STRING, number=3,)
+    input = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=resources.Input,
+    )
+    request_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class CreateEventRequest(proto.Message):
@@ -507,10 +634,23 @@ class CreateEventRequest(proto.Message):
             ``(00000000-0000-0000-0000-000000000000)``.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    event = proto.Field(proto.MESSAGE, number=2, message=resources.Event,)
-    event_id = proto.Field(proto.STRING, number=3,)
-    request_id = proto.Field(proto.STRING, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    event = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=resources.Event,
+    )
+    event_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    request_id = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class ListEventsRequest(proto.Message):
@@ -538,11 +678,26 @@ class ListEventsRequest(proto.Message):
             https://cloud.google.com/apis/design/design_patterns#sorting_order.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    filter = proto.Field(proto.STRING, number=4,)
-    order_by = proto.Field(proto.STRING, number=5,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class ListEventsResponse(proto.Message):
@@ -563,9 +718,19 @@ class ListEventsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    events = proto.RepeatedField(proto.MESSAGE, number=1, message=resources.Event,)
-    next_page_token = proto.Field(proto.STRING, number=2,)
-    unreachable = proto.RepeatedField(proto.STRING, number=3,)
+    events = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=resources.Event,
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 class GetEventRequest(proto.Message):
@@ -577,7 +742,10 @@ class GetEventRequest(proto.Message):
             ``projects/{project}/locations/{location}/channels/{channelId}/events/{eventId}``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class DeleteEventRequest(proto.Message):
@@ -606,8 +774,14 @@ class DeleteEventRequest(proto.Message):
             ``(00000000-0000-0000-0000-000000000000)``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    request_id = proto.Field(proto.STRING, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    request_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class ChannelOperationResponse(proto.Message):
@@ -644,12 +818,32 @@ class OperationMetadata(proto.Message):
             operation.
     """
 
-    create_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
-    end_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    target = proto.Field(proto.STRING, number=3,)
-    verb = proto.Field(proto.STRING, number=4,)
-    requested_cancellation = proto.Field(proto.BOOL, number=5,)
-    api_version = proto.Field(proto.STRING, number=6,)
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    target = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    verb = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    requested_cancellation = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
+    api_version = proto.Field(
+        proto.STRING,
+        number=6,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

@@ -102,7 +102,11 @@ def test__get_default_mtls_endpoint():
 
 
 @pytest.mark.parametrize(
-    "client_class", [LivestreamServiceClient, LivestreamServiceAsyncClient,]
+    "client_class",
+    [
+        LivestreamServiceClient,
+        LivestreamServiceAsyncClient,
+    ],
 )
 def test_livestream_service_client_from_service_account_info(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -144,7 +148,11 @@ def test_livestream_service_client_service_account_always_use_jwt(
 
 
 @pytest.mark.parametrize(
-    "client_class", [LivestreamServiceClient, LivestreamServiceAsyncClient,]
+    "client_class",
+    [
+        LivestreamServiceClient,
+        LivestreamServiceAsyncClient,
+    ],
 )
 def test_livestream_service_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -518,7 +526,9 @@ def test_livestream_service_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -658,10 +668,17 @@ def test_livestream_service_client_create_channel_credentials_file(
         )
 
 
-@pytest.mark.parametrize("request_type", [service.CreateChannelRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateChannelRequest,
+        dict,
+    ],
+)
 def test_create_channel(request_type, transport: str = "grpc"):
     client = LivestreamServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -687,7 +704,8 @@ def test_create_channel_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = LivestreamServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -703,7 +721,8 @@ async def test_create_channel_async(
     transport: str = "grpc_asyncio", request_type=service.CreateChannelRequest
 ):
     client = LivestreamServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -733,7 +752,9 @@ async def test_create_channel_async_from_dict():
 
 
 def test_create_channel_field_headers():
-    client = LivestreamServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = LivestreamServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -753,7 +774,10 @@ def test_create_channel_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -782,11 +806,16 @@ async def test_create_channel_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_channel_flattened():
-    client = LivestreamServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = LivestreamServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_channel_), "__call__") as call:
@@ -816,7 +845,9 @@ def test_create_channel_flattened():
 
 
 def test_create_channel_flattened_error():
-    client = LivestreamServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = LivestreamServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -883,10 +914,17 @@ async def test_create_channel_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [service.ListChannelsRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListChannelsRequest,
+        dict,
+    ],
+)
 def test_list_channels(request_type, transport: str = "grpc"):
     client = LivestreamServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -897,7 +935,8 @@ def test_list_channels(request_type, transport: str = "grpc"):
     with mock.patch.object(type(client.transport.list_channels), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = service.ListChannelsResponse(
-            next_page_token="next_page_token_value", unreachable=["unreachable_value"],
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
         )
         response = client.list_channels(request)
 
@@ -916,7 +955,8 @@ def test_list_channels_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = LivestreamServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -932,7 +972,8 @@ async def test_list_channels_async(
     transport: str = "grpc_asyncio", request_type=service.ListChannelsRequest
 ):
     client = LivestreamServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -967,7 +1008,9 @@ async def test_list_channels_async_from_dict():
 
 
 def test_list_channels_field_headers():
-    client = LivestreamServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = LivestreamServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -987,7 +1030,10 @@ def test_list_channels_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1016,11 +1062,16 @@ async def test_list_channels_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_channels_flattened():
-    client = LivestreamServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = LivestreamServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_channels), "__call__") as call:
@@ -1028,7 +1079,9 @@ def test_list_channels_flattened():
         call.return_value = service.ListChannelsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_channels(parent="parent_value",)
+        client.list_channels(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1040,13 +1093,16 @@ def test_list_channels_flattened():
 
 
 def test_list_channels_flattened_error():
-    client = LivestreamServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = LivestreamServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_channels(
-            service.ListChannelsRequest(), parent="parent_value",
+            service.ListChannelsRequest(),
+            parent="parent_value",
         )
 
 
@@ -1066,7 +1122,9 @@ async def test_list_channels_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_channels(parent="parent_value",)
+        response = await client.list_channels(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1087,13 +1145,15 @@ async def test_list_channels_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_channels(
-            service.ListChannelsRequest(), parent="parent_value",
+            service.ListChannelsRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_channels_pager(transport_name: str = "grpc"):
     client = LivestreamServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1108,12 +1168,21 @@ def test_list_channels_pager(transport_name: str = "grpc"):
                 ],
                 next_page_token="abc",
             ),
-            service.ListChannelsResponse(channels=[], next_page_token="def",),
             service.ListChannelsResponse(
-                channels=[resources.Channel(),], next_page_token="ghi",
+                channels=[],
+                next_page_token="def",
             ),
             service.ListChannelsResponse(
-                channels=[resources.Channel(), resources.Channel(),],
+                channels=[
+                    resources.Channel(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListChannelsResponse(
+                channels=[
+                    resources.Channel(),
+                    resources.Channel(),
+                ],
             ),
             RuntimeError,
         )
@@ -1133,7 +1202,8 @@ def test_list_channels_pager(transport_name: str = "grpc"):
 
 def test_list_channels_pages(transport_name: str = "grpc"):
     client = LivestreamServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1148,12 +1218,21 @@ def test_list_channels_pages(transport_name: str = "grpc"):
                 ],
                 next_page_token="abc",
             ),
-            service.ListChannelsResponse(channels=[], next_page_token="def",),
             service.ListChannelsResponse(
-                channels=[resources.Channel(),], next_page_token="ghi",
+                channels=[],
+                next_page_token="def",
             ),
             service.ListChannelsResponse(
-                channels=[resources.Channel(), resources.Channel(),],
+                channels=[
+                    resources.Channel(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListChannelsResponse(
+                channels=[
+                    resources.Channel(),
+                    resources.Channel(),
+                ],
             ),
             RuntimeError,
         )
@@ -1182,16 +1261,27 @@ async def test_list_channels_async_pager():
                 ],
                 next_page_token="abc",
             ),
-            service.ListChannelsResponse(channels=[], next_page_token="def",),
             service.ListChannelsResponse(
-                channels=[resources.Channel(),], next_page_token="ghi",
+                channels=[],
+                next_page_token="def",
             ),
             service.ListChannelsResponse(
-                channels=[resources.Channel(), resources.Channel(),],
+                channels=[
+                    resources.Channel(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListChannelsResponse(
+                channels=[
+                    resources.Channel(),
+                    resources.Channel(),
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.list_channels(request={},)
+        async_pager = await client.list_channels(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -1221,12 +1311,21 @@ async def test_list_channels_async_pages():
                 ],
                 next_page_token="abc",
             ),
-            service.ListChannelsResponse(channels=[], next_page_token="def",),
             service.ListChannelsResponse(
-                channels=[resources.Channel(),], next_page_token="ghi",
+                channels=[],
+                next_page_token="def",
             ),
             service.ListChannelsResponse(
-                channels=[resources.Channel(), resources.Channel(),],
+                channels=[
+                    resources.Channel(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListChannelsResponse(
+                channels=[
+                    resources.Channel(),
+                    resources.Channel(),
+                ],
             ),
             RuntimeError,
         )
@@ -1237,10 +1336,17 @@ async def test_list_channels_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [service.GetChannelRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetChannelRequest,
+        dict,
+    ],
+)
 def test_get_channel(request_type, transport: str = "grpc"):
     client = LivestreamServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1273,7 +1379,8 @@ def test_get_channel_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = LivestreamServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1289,7 +1396,8 @@ async def test_get_channel_async(
     transport: str = "grpc_asyncio", request_type=service.GetChannelRequest
 ):
     client = LivestreamServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1326,7 +1434,9 @@ async def test_get_channel_async_from_dict():
 
 
 def test_get_channel_field_headers():
-    client = LivestreamServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = LivestreamServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1346,7 +1456,10 @@ def test_get_channel_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1373,11 +1486,16 @@ async def test_get_channel_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_channel_flattened():
-    client = LivestreamServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = LivestreamServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_channel), "__call__") as call:
@@ -1385,7 +1503,9 @@ def test_get_channel_flattened():
         call.return_value = resources.Channel()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_channel(name="name_value",)
+        client.get_channel(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1397,13 +1517,16 @@ def test_get_channel_flattened():
 
 
 def test_get_channel_flattened_error():
-    client = LivestreamServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = LivestreamServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_channel(
-            service.GetChannelRequest(), name="name_value",
+            service.GetChannelRequest(),
+            name="name_value",
         )
 
 
@@ -1421,7 +1544,9 @@ async def test_get_channel_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(resources.Channel())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_channel(name="name_value",)
+        response = await client.get_channel(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1442,14 +1567,22 @@ async def test_get_channel_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_channel(
-            service.GetChannelRequest(), name="name_value",
+            service.GetChannelRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [service.DeleteChannelRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DeleteChannelRequest,
+        dict,
+    ],
+)
 def test_delete_channel(request_type, transport: str = "grpc"):
     client = LivestreamServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1475,7 +1608,8 @@ def test_delete_channel_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = LivestreamServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1491,7 +1625,8 @@ async def test_delete_channel_async(
     transport: str = "grpc_asyncio", request_type=service.DeleteChannelRequest
 ):
     client = LivestreamServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1521,7 +1656,9 @@ async def test_delete_channel_async_from_dict():
 
 
 def test_delete_channel_field_headers():
-    client = LivestreamServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = LivestreamServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1541,7 +1678,10 @@ def test_delete_channel_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1570,11 +1710,16 @@ async def test_delete_channel_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_channel_flattened():
-    client = LivestreamServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = LivestreamServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_channel), "__call__") as call:
@@ -1582,7 +1727,9 @@ def test_delete_channel_flattened():
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_channel(name="name_value",)
+        client.delete_channel(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1594,13 +1741,16 @@ def test_delete_channel_flattened():
 
 
 def test_delete_channel_flattened_error():
-    client = LivestreamServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = LivestreamServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_channel(
-            service.DeleteChannelRequest(), name="name_value",
+            service.DeleteChannelRequest(),
+            name="name_value",
         )
 
 
@@ -1620,7 +1770,9 @@ async def test_delete_channel_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_channel(name="name_value",)
+        response = await client.delete_channel(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1641,14 +1793,22 @@ async def test_delete_channel_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_channel(
-            service.DeleteChannelRequest(), name="name_value",
+            service.DeleteChannelRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [service.UpdateChannelRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UpdateChannelRequest,
+        dict,
+    ],
+)
 def test_update_channel(request_type, transport: str = "grpc"):
     client = LivestreamServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1674,7 +1834,8 @@ def test_update_channel_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = LivestreamServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1690,7 +1851,8 @@ async def test_update_channel_async(
     transport: str = "grpc_asyncio", request_type=service.UpdateChannelRequest
 ):
     client = LivestreamServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1720,7 +1882,9 @@ async def test_update_channel_async_from_dict():
 
 
 def test_update_channel_field_headers():
-    client = LivestreamServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = LivestreamServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1740,9 +1904,10 @@ def test_update_channel_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "channel.name=channel.name/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "channel.name=channel.name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1771,13 +1936,16 @@ async def test_update_channel_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "channel.name=channel.name/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "channel.name=channel.name/value",
+    ) in kw["metadata"]
 
 
 def test_update_channel_flattened():
-    client = LivestreamServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = LivestreamServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_channel), "__call__") as call:
@@ -1803,7 +1971,9 @@ def test_update_channel_flattened():
 
 
 def test_update_channel_flattened_error():
-    client = LivestreamServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = LivestreamServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1864,10 +2034,17 @@ async def test_update_channel_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [service.StartChannelRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.StartChannelRequest,
+        dict,
+    ],
+)
 def test_start_channel(request_type, transport: str = "grpc"):
     client = LivestreamServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1893,7 +2070,8 @@ def test_start_channel_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = LivestreamServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1909,7 +2087,8 @@ async def test_start_channel_async(
     transport: str = "grpc_asyncio", request_type=service.StartChannelRequest
 ):
     client = LivestreamServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1939,7 +2118,9 @@ async def test_start_channel_async_from_dict():
 
 
 def test_start_channel_field_headers():
-    client = LivestreamServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = LivestreamServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1959,7 +2140,10 @@ def test_start_channel_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1988,11 +2172,16 @@ async def test_start_channel_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_start_channel_flattened():
-    client = LivestreamServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = LivestreamServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.start_channel), "__call__") as call:
@@ -2000,7 +2189,9 @@ def test_start_channel_flattened():
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.start_channel(name="name_value",)
+        client.start_channel(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2012,13 +2203,16 @@ def test_start_channel_flattened():
 
 
 def test_start_channel_flattened_error():
-    client = LivestreamServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = LivestreamServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.start_channel(
-            service.StartChannelRequest(), name="name_value",
+            service.StartChannelRequest(),
+            name="name_value",
         )
 
 
@@ -2038,7 +2232,9 @@ async def test_start_channel_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.start_channel(name="name_value",)
+        response = await client.start_channel(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2059,14 +2255,22 @@ async def test_start_channel_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.start_channel(
-            service.StartChannelRequest(), name="name_value",
+            service.StartChannelRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [service.StopChannelRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.StopChannelRequest,
+        dict,
+    ],
+)
 def test_stop_channel(request_type, transport: str = "grpc"):
     client = LivestreamServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2092,7 +2296,8 @@ def test_stop_channel_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = LivestreamServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2108,7 +2313,8 @@ async def test_stop_channel_async(
     transport: str = "grpc_asyncio", request_type=service.StopChannelRequest
 ):
     client = LivestreamServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2138,7 +2344,9 @@ async def test_stop_channel_async_from_dict():
 
 
 def test_stop_channel_field_headers():
-    client = LivestreamServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = LivestreamServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2158,7 +2366,10 @@ def test_stop_channel_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2187,11 +2398,16 @@ async def test_stop_channel_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_stop_channel_flattened():
-    client = LivestreamServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = LivestreamServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.stop_channel), "__call__") as call:
@@ -2199,7 +2415,9 @@ def test_stop_channel_flattened():
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.stop_channel(name="name_value",)
+        client.stop_channel(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2211,13 +2429,16 @@ def test_stop_channel_flattened():
 
 
 def test_stop_channel_flattened_error():
-    client = LivestreamServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = LivestreamServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.stop_channel(
-            service.StopChannelRequest(), name="name_value",
+            service.StopChannelRequest(),
+            name="name_value",
         )
 
 
@@ -2237,7 +2458,9 @@ async def test_stop_channel_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.stop_channel(name="name_value",)
+        response = await client.stop_channel(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2258,14 +2481,22 @@ async def test_stop_channel_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.stop_channel(
-            service.StopChannelRequest(), name="name_value",
+            service.StopChannelRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [service.CreateInputRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateInputRequest,
+        dict,
+    ],
+)
 def test_create_input(request_type, transport: str = "grpc"):
     client = LivestreamServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2291,7 +2522,8 @@ def test_create_input_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = LivestreamServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2307,7 +2539,8 @@ async def test_create_input_async(
     transport: str = "grpc_asyncio", request_type=service.CreateInputRequest
 ):
     client = LivestreamServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2337,7 +2570,9 @@ async def test_create_input_async_from_dict():
 
 
 def test_create_input_field_headers():
-    client = LivestreamServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = LivestreamServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2357,7 +2592,10 @@ def test_create_input_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2386,11 +2624,16 @@ async def test_create_input_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_input_flattened():
-    client = LivestreamServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = LivestreamServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_input), "__call__") as call:
@@ -2420,7 +2663,9 @@ def test_create_input_flattened():
 
 
 def test_create_input_flattened_error():
-    client = LivestreamServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = LivestreamServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2487,10 +2732,17 @@ async def test_create_input_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [service.ListInputsRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListInputsRequest,
+        dict,
+    ],
+)
 def test_list_inputs(request_type, transport: str = "grpc"):
     client = LivestreamServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2501,7 +2753,8 @@ def test_list_inputs(request_type, transport: str = "grpc"):
     with mock.patch.object(type(client.transport.list_inputs), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = service.ListInputsResponse(
-            next_page_token="next_page_token_value", unreachable=["unreachable_value"],
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
         )
         response = client.list_inputs(request)
 
@@ -2520,7 +2773,8 @@ def test_list_inputs_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = LivestreamServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2536,7 +2790,8 @@ async def test_list_inputs_async(
     transport: str = "grpc_asyncio", request_type=service.ListInputsRequest
 ):
     client = LivestreamServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2571,7 +2826,9 @@ async def test_list_inputs_async_from_dict():
 
 
 def test_list_inputs_field_headers():
-    client = LivestreamServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = LivestreamServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2591,7 +2848,10 @@ def test_list_inputs_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2620,11 +2880,16 @@ async def test_list_inputs_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_inputs_flattened():
-    client = LivestreamServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = LivestreamServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_inputs), "__call__") as call:
@@ -2632,7 +2897,9 @@ def test_list_inputs_flattened():
         call.return_value = service.ListInputsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_inputs(parent="parent_value",)
+        client.list_inputs(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2644,13 +2911,16 @@ def test_list_inputs_flattened():
 
 
 def test_list_inputs_flattened_error():
-    client = LivestreamServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = LivestreamServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_inputs(
-            service.ListInputsRequest(), parent="parent_value",
+            service.ListInputsRequest(),
+            parent="parent_value",
         )
 
 
@@ -2670,7 +2940,9 @@ async def test_list_inputs_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_inputs(parent="parent_value",)
+        response = await client.list_inputs(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2691,13 +2963,15 @@ async def test_list_inputs_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_inputs(
-            service.ListInputsRequest(), parent="parent_value",
+            service.ListInputsRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_inputs_pager(transport_name: str = "grpc"):
     client = LivestreamServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2705,14 +2979,29 @@ def test_list_inputs_pager(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListInputsResponse(
-                inputs=[resources.Input(), resources.Input(), resources.Input(),],
+                inputs=[
+                    resources.Input(),
+                    resources.Input(),
+                    resources.Input(),
+                ],
                 next_page_token="abc",
             ),
-            service.ListInputsResponse(inputs=[], next_page_token="def",),
             service.ListInputsResponse(
-                inputs=[resources.Input(),], next_page_token="ghi",
+                inputs=[],
+                next_page_token="def",
             ),
-            service.ListInputsResponse(inputs=[resources.Input(), resources.Input(),],),
+            service.ListInputsResponse(
+                inputs=[
+                    resources.Input(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListInputsResponse(
+                inputs=[
+                    resources.Input(),
+                    resources.Input(),
+                ],
+            ),
             RuntimeError,
         )
 
@@ -2731,7 +3020,8 @@ def test_list_inputs_pager(transport_name: str = "grpc"):
 
 def test_list_inputs_pages(transport_name: str = "grpc"):
     client = LivestreamServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2739,14 +3029,29 @@ def test_list_inputs_pages(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListInputsResponse(
-                inputs=[resources.Input(), resources.Input(), resources.Input(),],
+                inputs=[
+                    resources.Input(),
+                    resources.Input(),
+                    resources.Input(),
+                ],
                 next_page_token="abc",
             ),
-            service.ListInputsResponse(inputs=[], next_page_token="def",),
             service.ListInputsResponse(
-                inputs=[resources.Input(),], next_page_token="ghi",
+                inputs=[],
+                next_page_token="def",
             ),
-            service.ListInputsResponse(inputs=[resources.Input(), resources.Input(),],),
+            service.ListInputsResponse(
+                inputs=[
+                    resources.Input(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListInputsResponse(
+                inputs=[
+                    resources.Input(),
+                    resources.Input(),
+                ],
+            ),
             RuntimeError,
         )
         pages = list(client.list_inputs(request={}).pages)
@@ -2767,17 +3072,34 @@ async def test_list_inputs_async_pager():
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListInputsResponse(
-                inputs=[resources.Input(), resources.Input(), resources.Input(),],
+                inputs=[
+                    resources.Input(),
+                    resources.Input(),
+                    resources.Input(),
+                ],
                 next_page_token="abc",
             ),
-            service.ListInputsResponse(inputs=[], next_page_token="def",),
             service.ListInputsResponse(
-                inputs=[resources.Input(),], next_page_token="ghi",
+                inputs=[],
+                next_page_token="def",
             ),
-            service.ListInputsResponse(inputs=[resources.Input(), resources.Input(),],),
+            service.ListInputsResponse(
+                inputs=[
+                    resources.Input(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListInputsResponse(
+                inputs=[
+                    resources.Input(),
+                    resources.Input(),
+                ],
+            ),
             RuntimeError,
         )
-        async_pager = await client.list_inputs(request={},)
+        async_pager = await client.list_inputs(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -2800,14 +3122,29 @@ async def test_list_inputs_async_pages():
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListInputsResponse(
-                inputs=[resources.Input(), resources.Input(), resources.Input(),],
+                inputs=[
+                    resources.Input(),
+                    resources.Input(),
+                    resources.Input(),
+                ],
                 next_page_token="abc",
             ),
-            service.ListInputsResponse(inputs=[], next_page_token="def",),
             service.ListInputsResponse(
-                inputs=[resources.Input(),], next_page_token="ghi",
+                inputs=[],
+                next_page_token="def",
             ),
-            service.ListInputsResponse(inputs=[resources.Input(), resources.Input(),],),
+            service.ListInputsResponse(
+                inputs=[
+                    resources.Input(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListInputsResponse(
+                inputs=[
+                    resources.Input(),
+                    resources.Input(),
+                ],
+            ),
             RuntimeError,
         )
         pages = []
@@ -2817,10 +3154,17 @@ async def test_list_inputs_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [service.GetInputRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetInputRequest,
+        dict,
+    ],
+)
 def test_get_input(request_type, transport: str = "grpc"):
     client = LivestreamServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2855,7 +3199,8 @@ def test_get_input_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = LivestreamServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2871,7 +3216,8 @@ async def test_get_input_async(
     transport: str = "grpc_asyncio", request_type=service.GetInputRequest
 ):
     client = LivestreamServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2910,7 +3256,9 @@ async def test_get_input_async_from_dict():
 
 
 def test_get_input_field_headers():
-    client = LivestreamServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = LivestreamServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2930,7 +3278,10 @@ def test_get_input_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2957,11 +3308,16 @@ async def test_get_input_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_input_flattened():
-    client = LivestreamServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = LivestreamServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_input), "__call__") as call:
@@ -2969,7 +3325,9 @@ def test_get_input_flattened():
         call.return_value = resources.Input()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_input(name="name_value",)
+        client.get_input(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2981,13 +3339,16 @@ def test_get_input_flattened():
 
 
 def test_get_input_flattened_error():
-    client = LivestreamServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = LivestreamServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_input(
-            service.GetInputRequest(), name="name_value",
+            service.GetInputRequest(),
+            name="name_value",
         )
 
 
@@ -3005,7 +3366,9 @@ async def test_get_input_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(resources.Input())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_input(name="name_value",)
+        response = await client.get_input(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3026,14 +3389,22 @@ async def test_get_input_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_input(
-            service.GetInputRequest(), name="name_value",
+            service.GetInputRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [service.DeleteInputRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DeleteInputRequest,
+        dict,
+    ],
+)
 def test_delete_input(request_type, transport: str = "grpc"):
     client = LivestreamServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3059,7 +3430,8 @@ def test_delete_input_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = LivestreamServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3075,7 +3447,8 @@ async def test_delete_input_async(
     transport: str = "grpc_asyncio", request_type=service.DeleteInputRequest
 ):
     client = LivestreamServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3105,7 +3478,9 @@ async def test_delete_input_async_from_dict():
 
 
 def test_delete_input_field_headers():
-    client = LivestreamServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = LivestreamServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3125,7 +3500,10 @@ def test_delete_input_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -3154,11 +3532,16 @@ async def test_delete_input_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_input_flattened():
-    client = LivestreamServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = LivestreamServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_input), "__call__") as call:
@@ -3166,7 +3549,9 @@ def test_delete_input_flattened():
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_input(name="name_value",)
+        client.delete_input(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3178,13 +3563,16 @@ def test_delete_input_flattened():
 
 
 def test_delete_input_flattened_error():
-    client = LivestreamServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = LivestreamServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_input(
-            service.DeleteInputRequest(), name="name_value",
+            service.DeleteInputRequest(),
+            name="name_value",
         )
 
 
@@ -3204,7 +3592,9 @@ async def test_delete_input_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_input(name="name_value",)
+        response = await client.delete_input(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3225,14 +3615,22 @@ async def test_delete_input_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_input(
-            service.DeleteInputRequest(), name="name_value",
+            service.DeleteInputRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [service.UpdateInputRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UpdateInputRequest,
+        dict,
+    ],
+)
 def test_update_input(request_type, transport: str = "grpc"):
     client = LivestreamServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3258,7 +3656,8 @@ def test_update_input_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = LivestreamServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3274,7 +3673,8 @@ async def test_update_input_async(
     transport: str = "grpc_asyncio", request_type=service.UpdateInputRequest
 ):
     client = LivestreamServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3304,7 +3704,9 @@ async def test_update_input_async_from_dict():
 
 
 def test_update_input_field_headers():
-    client = LivestreamServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = LivestreamServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3324,7 +3726,10 @@ def test_update_input_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "input.name=input.name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "input.name=input.name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -3353,11 +3758,16 @@ async def test_update_input_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "input.name=input.name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "input.name=input.name/value",
+    ) in kw["metadata"]
 
 
 def test_update_input_flattened():
-    client = LivestreamServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = LivestreamServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_input), "__call__") as call:
@@ -3383,7 +3793,9 @@ def test_update_input_flattened():
 
 
 def test_update_input_flattened_error():
-    client = LivestreamServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = LivestreamServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -3444,10 +3856,17 @@ async def test_update_input_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [service.CreateEventRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateEventRequest,
+        dict,
+    ],
+)
 def test_create_event(request_type, transport: str = "grpc"):
     client = LivestreamServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3483,7 +3902,8 @@ def test_create_event_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = LivestreamServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3499,7 +3919,8 @@ async def test_create_event_async(
     transport: str = "grpc_asyncio", request_type=service.CreateEventRequest
 ):
     client = LivestreamServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3536,7 +3957,9 @@ async def test_create_event_async_from_dict():
 
 
 def test_create_event_field_headers():
-    client = LivestreamServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = LivestreamServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3556,7 +3979,10 @@ def test_create_event_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -3583,11 +4009,16 @@ async def test_create_event_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_event_flattened():
-    client = LivestreamServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = LivestreamServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_event), "__call__") as call:
@@ -3617,7 +4048,9 @@ def test_create_event_flattened():
 
 
 def test_create_event_flattened_error():
-    client = LivestreamServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = LivestreamServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -3682,10 +4115,17 @@ async def test_create_event_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [service.ListEventsRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListEventsRequest,
+        dict,
+    ],
+)
 def test_list_events(request_type, transport: str = "grpc"):
     client = LivestreamServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3696,7 +4136,8 @@ def test_list_events(request_type, transport: str = "grpc"):
     with mock.patch.object(type(client.transport.list_events), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = service.ListEventsResponse(
-            next_page_token="next_page_token_value", unreachable=["unreachable_value"],
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
         )
         response = client.list_events(request)
 
@@ -3715,7 +4156,8 @@ def test_list_events_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = LivestreamServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3731,7 +4173,8 @@ async def test_list_events_async(
     transport: str = "grpc_asyncio", request_type=service.ListEventsRequest
 ):
     client = LivestreamServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3766,7 +4209,9 @@ async def test_list_events_async_from_dict():
 
 
 def test_list_events_field_headers():
-    client = LivestreamServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = LivestreamServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3786,7 +4231,10 @@ def test_list_events_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -3815,11 +4263,16 @@ async def test_list_events_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_events_flattened():
-    client = LivestreamServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = LivestreamServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_events), "__call__") as call:
@@ -3827,7 +4280,9 @@ def test_list_events_flattened():
         call.return_value = service.ListEventsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_events(parent="parent_value",)
+        client.list_events(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3839,13 +4294,16 @@ def test_list_events_flattened():
 
 
 def test_list_events_flattened_error():
-    client = LivestreamServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = LivestreamServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_events(
-            service.ListEventsRequest(), parent="parent_value",
+            service.ListEventsRequest(),
+            parent="parent_value",
         )
 
 
@@ -3865,7 +4323,9 @@ async def test_list_events_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_events(parent="parent_value",)
+        response = await client.list_events(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3886,13 +4346,15 @@ async def test_list_events_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_events(
-            service.ListEventsRequest(), parent="parent_value",
+            service.ListEventsRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_events_pager(transport_name: str = "grpc"):
     client = LivestreamServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3900,14 +4362,29 @@ def test_list_events_pager(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListEventsResponse(
-                events=[resources.Event(), resources.Event(), resources.Event(),],
+                events=[
+                    resources.Event(),
+                    resources.Event(),
+                    resources.Event(),
+                ],
                 next_page_token="abc",
             ),
-            service.ListEventsResponse(events=[], next_page_token="def",),
             service.ListEventsResponse(
-                events=[resources.Event(),], next_page_token="ghi",
+                events=[],
+                next_page_token="def",
             ),
-            service.ListEventsResponse(events=[resources.Event(), resources.Event(),],),
+            service.ListEventsResponse(
+                events=[
+                    resources.Event(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListEventsResponse(
+                events=[
+                    resources.Event(),
+                    resources.Event(),
+                ],
+            ),
             RuntimeError,
         )
 
@@ -3926,7 +4403,8 @@ def test_list_events_pager(transport_name: str = "grpc"):
 
 def test_list_events_pages(transport_name: str = "grpc"):
     client = LivestreamServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3934,14 +4412,29 @@ def test_list_events_pages(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListEventsResponse(
-                events=[resources.Event(), resources.Event(), resources.Event(),],
+                events=[
+                    resources.Event(),
+                    resources.Event(),
+                    resources.Event(),
+                ],
                 next_page_token="abc",
             ),
-            service.ListEventsResponse(events=[], next_page_token="def",),
             service.ListEventsResponse(
-                events=[resources.Event(),], next_page_token="ghi",
+                events=[],
+                next_page_token="def",
             ),
-            service.ListEventsResponse(events=[resources.Event(), resources.Event(),],),
+            service.ListEventsResponse(
+                events=[
+                    resources.Event(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListEventsResponse(
+                events=[
+                    resources.Event(),
+                    resources.Event(),
+                ],
+            ),
             RuntimeError,
         )
         pages = list(client.list_events(request={}).pages)
@@ -3962,17 +4455,34 @@ async def test_list_events_async_pager():
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListEventsResponse(
-                events=[resources.Event(), resources.Event(), resources.Event(),],
+                events=[
+                    resources.Event(),
+                    resources.Event(),
+                    resources.Event(),
+                ],
                 next_page_token="abc",
             ),
-            service.ListEventsResponse(events=[], next_page_token="def",),
             service.ListEventsResponse(
-                events=[resources.Event(),], next_page_token="ghi",
+                events=[],
+                next_page_token="def",
             ),
-            service.ListEventsResponse(events=[resources.Event(), resources.Event(),],),
+            service.ListEventsResponse(
+                events=[
+                    resources.Event(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListEventsResponse(
+                events=[
+                    resources.Event(),
+                    resources.Event(),
+                ],
+            ),
             RuntimeError,
         )
-        async_pager = await client.list_events(request={},)
+        async_pager = await client.list_events(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -3995,14 +4505,29 @@ async def test_list_events_async_pages():
         # Set the response to a series of pages.
         call.side_effect = (
             service.ListEventsResponse(
-                events=[resources.Event(), resources.Event(), resources.Event(),],
+                events=[
+                    resources.Event(),
+                    resources.Event(),
+                    resources.Event(),
+                ],
                 next_page_token="abc",
             ),
-            service.ListEventsResponse(events=[], next_page_token="def",),
             service.ListEventsResponse(
-                events=[resources.Event(),], next_page_token="ghi",
+                events=[],
+                next_page_token="def",
             ),
-            service.ListEventsResponse(events=[resources.Event(), resources.Event(),],),
+            service.ListEventsResponse(
+                events=[
+                    resources.Event(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListEventsResponse(
+                events=[
+                    resources.Event(),
+                    resources.Event(),
+                ],
+            ),
             RuntimeError,
         )
         pages = []
@@ -4012,10 +4537,17 @@ async def test_list_events_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [service.GetEventRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetEventRequest,
+        dict,
+    ],
+)
 def test_get_event(request_type, transport: str = "grpc"):
     client = LivestreamServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4051,7 +4583,8 @@ def test_get_event_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = LivestreamServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4067,7 +4600,8 @@ async def test_get_event_async(
     transport: str = "grpc_asyncio", request_type=service.GetEventRequest
 ):
     client = LivestreamServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4104,7 +4638,9 @@ async def test_get_event_async_from_dict():
 
 
 def test_get_event_field_headers():
-    client = LivestreamServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = LivestreamServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -4124,7 +4660,10 @@ def test_get_event_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -4151,11 +4690,16 @@ async def test_get_event_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_event_flattened():
-    client = LivestreamServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = LivestreamServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_event), "__call__") as call:
@@ -4163,7 +4707,9 @@ def test_get_event_flattened():
         call.return_value = resources.Event()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_event(name="name_value",)
+        client.get_event(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -4175,13 +4721,16 @@ def test_get_event_flattened():
 
 
 def test_get_event_flattened_error():
-    client = LivestreamServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = LivestreamServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_event(
-            service.GetEventRequest(), name="name_value",
+            service.GetEventRequest(),
+            name="name_value",
         )
 
 
@@ -4199,7 +4748,9 @@ async def test_get_event_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(resources.Event())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_event(name="name_value",)
+        response = await client.get_event(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -4220,14 +4771,22 @@ async def test_get_event_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_event(
-            service.GetEventRequest(), name="name_value",
+            service.GetEventRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [service.DeleteEventRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DeleteEventRequest,
+        dict,
+    ],
+)
 def test_delete_event(request_type, transport: str = "grpc"):
     client = LivestreamServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4253,7 +4812,8 @@ def test_delete_event_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = LivestreamServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4269,7 +4829,8 @@ async def test_delete_event_async(
     transport: str = "grpc_asyncio", request_type=service.DeleteEventRequest
 ):
     client = LivestreamServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4297,7 +4858,9 @@ async def test_delete_event_async_from_dict():
 
 
 def test_delete_event_field_headers():
-    client = LivestreamServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = LivestreamServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -4317,7 +4880,10 @@ def test_delete_event_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -4344,11 +4910,16 @@ async def test_delete_event_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_event_flattened():
-    client = LivestreamServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = LivestreamServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_event), "__call__") as call:
@@ -4356,7 +4927,9 @@ def test_delete_event_flattened():
         call.return_value = None
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_event(name="name_value",)
+        client.delete_event(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -4368,13 +4941,16 @@ def test_delete_event_flattened():
 
 
 def test_delete_event_flattened_error():
-    client = LivestreamServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = LivestreamServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_event(
-            service.DeleteEventRequest(), name="name_value",
+            service.DeleteEventRequest(),
+            name="name_value",
         )
 
 
@@ -4392,7 +4968,9 @@ async def test_delete_event_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_event(name="name_value",)
+        response = await client.delete_event(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -4413,7 +4991,8 @@ async def test_delete_event_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_event(
-            service.DeleteEventRequest(), name="name_value",
+            service.DeleteEventRequest(),
+            name="name_value",
         )
 
 
@@ -4424,7 +5003,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = LivestreamServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -4444,7 +5024,10 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = LivestreamServiceClient(client_options=options, transport=transport,)
+        client = LivestreamServiceClient(
+            client_options=options,
+            transport=transport,
+        )
 
     # It is an error to provide an api_key and a credential.
     options = mock.Mock()
@@ -4460,7 +5043,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = LivestreamServiceClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -4505,8 +5089,13 @@ def test_transport_adc(transport_class):
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
-    client = LivestreamServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
-    assert isinstance(client.transport, transports.LivestreamServiceGrpcTransport,)
+    client = LivestreamServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    assert isinstance(
+        client.transport,
+        transports.LivestreamServiceGrpcTransport,
+    )
 
 
 def test_livestream_service_base_transport_error():
@@ -4571,7 +5160,8 @@ def test_livestream_service_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.LivestreamServiceTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -4729,7 +5319,8 @@ def test_livestream_service_grpc_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.LivestreamServiceGrpcTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -4741,7 +5332,8 @@ def test_livestream_service_grpc_asyncio_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.LivestreamServiceGrpcAsyncIOTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -4850,12 +5442,16 @@ def test_livestream_service_transport_channel_mtls_with_adc(transport_class):
 
 def test_livestream_service_grpc_lro_client():
     client = LivestreamServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
     transport = client.transport
 
     # Ensure that we have a api-core operations client.
-    assert isinstance(transport.operations_client, operations_v1.OperationsClient,)
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsClient,
+    )
 
     # Ensure that subsequent calls to the property send the exact same object.
     assert transport.operations_client is transport.operations_client
@@ -4863,12 +5459,16 @@ def test_livestream_service_grpc_lro_client():
 
 def test_livestream_service_grpc_lro_async_client():
     client = LivestreamServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     transport = client.transport
 
     # Ensure that we have a api-core operations client.
-    assert isinstance(transport.operations_client, operations_v1.OperationsAsyncClient,)
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsAsyncClient,
+    )
 
     # Ensure that subsequent calls to the property send the exact same object.
     assert transport.operations_client is transport.operations_client
@@ -4879,7 +5479,9 @@ def test_channel_path():
     location = "clam"
     channel = "whelk"
     expected = "projects/{project}/locations/{location}/channels/{channel}".format(
-        project=project, location=location, channel=channel,
+        project=project,
+        location=location,
+        channel=channel,
     )
     actual = LivestreamServiceClient.channel_path(project, location, channel)
     assert expected == actual
@@ -4904,7 +5506,10 @@ def test_event_path():
     channel = "winkle"
     event = "nautilus"
     expected = "projects/{project}/locations/{location}/channels/{channel}/events/{event}".format(
-        project=project, location=location, channel=channel, event=event,
+        project=project,
+        location=location,
+        channel=channel,
+        event=event,
     )
     actual = LivestreamServiceClient.event_path(project, location, channel, event)
     assert expected == actual
@@ -4929,7 +5534,9 @@ def test_input_path():
     location = "octopus"
     input = "oyster"
     expected = "projects/{project}/locations/{location}/inputs/{input}".format(
-        project=project, location=location, input=input,
+        project=project,
+        location=location,
+        input=input,
     )
     actual = LivestreamServiceClient.input_path(project, location, input)
     assert expected == actual
@@ -4970,7 +5577,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "scallop"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = LivestreamServiceClient.common_folder_path(folder)
     assert expected == actual
 
@@ -4988,7 +5597,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "squid"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = LivestreamServiceClient.common_organization_path(organization)
     assert expected == actual
 
@@ -5006,7 +5617,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "whelk"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = LivestreamServiceClient.common_project_path(project)
     assert expected == actual
 
@@ -5026,7 +5639,8 @@ def test_common_location_path():
     project = "oyster"
     location = "nudibranch"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = LivestreamServiceClient.common_location_path(project, location)
     assert expected == actual
@@ -5051,7 +5665,8 @@ def test_client_with_default_client_info():
         transports.LivestreamServiceTransport, "_prep_wrapped_messages"
     ) as prep:
         client = LivestreamServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -5060,7 +5675,8 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = LivestreamServiceClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -5068,7 +5684,8 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = LivestreamServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     with mock.patch.object(
         type(getattr(client.transport, "grpc_channel")), "close"

@@ -125,7 +125,9 @@ class LivestreamServiceTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.create_channel_: gapic_v1.method.wrap_method(
-                self.create_channel_, default_timeout=60.0, client_info=client_info,
+                self.create_channel_,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.list_channels: gapic_v1.method.wrap_method(
                 self.list_channels,
@@ -156,19 +158,29 @@ class LivestreamServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.delete_channel: gapic_v1.method.wrap_method(
-                self.delete_channel, default_timeout=60.0, client_info=client_info,
+                self.delete_channel,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.update_channel: gapic_v1.method.wrap_method(
-                self.update_channel, default_timeout=60.0, client_info=client_info,
+                self.update_channel,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.start_channel: gapic_v1.method.wrap_method(
-                self.start_channel, default_timeout=60.0, client_info=client_info,
+                self.start_channel,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.stop_channel: gapic_v1.method.wrap_method(
-                self.stop_channel, default_timeout=60.0, client_info=client_info,
+                self.stop_channel,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.create_input: gapic_v1.method.wrap_method(
-                self.create_input, default_timeout=60.0, client_info=client_info,
+                self.create_input,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.list_inputs: gapic_v1.method.wrap_method(
                 self.list_inputs,
@@ -199,13 +211,19 @@ class LivestreamServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.delete_input: gapic_v1.method.wrap_method(
-                self.delete_input, default_timeout=60.0, client_info=client_info,
+                self.delete_input,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.update_input: gapic_v1.method.wrap_method(
-                self.update_input, default_timeout=60.0, client_info=client_info,
+                self.update_input,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.create_event: gapic_v1.method.wrap_method(
-                self.create_event, default_timeout=60.0, client_info=client_info,
+                self.create_event,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.list_events: gapic_v1.method.wrap_method(
                 self.list_events,
@@ -236,16 +254,18 @@ class LivestreamServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.delete_event: gapic_v1.method.wrap_method(
-                self.delete_event, default_timeout=60.0, client_info=client_info,
+                self.delete_event,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
         }
 
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

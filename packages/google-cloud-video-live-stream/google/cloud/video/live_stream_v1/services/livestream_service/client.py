@@ -64,7 +64,8 @@ class LivestreamServiceClientMeta(type):
     _transport_registry["grpc_asyncio"] = LivestreamServiceGrpcAsyncIOTransport
 
     def get_transport_class(
-        cls, label: str = None,
+        cls,
+        label: str = None,
     ) -> Type[LivestreamServiceTransport]:
         """Returns an appropriate transport class.
 
@@ -176,10 +177,16 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
         return self._transport
 
     @staticmethod
-    def channel_path(project: str, location: str, channel: str,) -> str:
+    def channel_path(
+        project: str,
+        location: str,
+        channel: str,
+    ) -> str:
         """Returns a fully-qualified channel string."""
         return "projects/{project}/locations/{location}/channels/{channel}".format(
-            project=project, location=location, channel=channel,
+            project=project,
+            location=location,
+            channel=channel,
         )
 
     @staticmethod
@@ -192,10 +199,18 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def event_path(project: str, location: str, channel: str, event: str,) -> str:
+    def event_path(
+        project: str,
+        location: str,
+        channel: str,
+        event: str,
+    ) -> str:
         """Returns a fully-qualified event string."""
         return "projects/{project}/locations/{location}/channels/{channel}/events/{event}".format(
-            project=project, location=location, channel=channel, event=event,
+            project=project,
+            location=location,
+            channel=channel,
+            event=event,
         )
 
     @staticmethod
@@ -208,10 +223,16 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def input_path(project: str, location: str, input: str,) -> str:
+    def input_path(
+        project: str,
+        location: str,
+        input: str,
+    ) -> str:
         """Returns a fully-qualified input string."""
         return "projects/{project}/locations/{location}/inputs/{input}".format(
-            project=project, location=location, input=input,
+            project=project,
+            location=location,
+            input=input,
         )
 
     @staticmethod
@@ -224,7 +245,9 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_billing_account_path(billing_account: str,) -> str:
+    def common_billing_account_path(
+        billing_account: str,
+    ) -> str:
         """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
@@ -237,9 +260,13 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(folder: str,) -> str:
+    def common_folder_path(
+        folder: str,
+    ) -> str:
         """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(folder=folder,)
+        return "folders/{folder}".format(
+            folder=folder,
+        )
 
     @staticmethod
     def parse_common_folder_path(path: str) -> Dict[str, str]:
@@ -248,9 +275,13 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(organization: str,) -> str:
+    def common_organization_path(
+        organization: str,
+    ) -> str:
         """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(organization=organization,)
+        return "organizations/{organization}".format(
+            organization=organization,
+        )
 
     @staticmethod
     def parse_common_organization_path(path: str) -> Dict[str, str]:
@@ -259,9 +290,13 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(project: str,) -> str:
+    def common_project_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified project string."""
-        return "projects/{project}".format(project=project,)
+        return "projects/{project}".format(
+            project=project,
+        )
 
     @staticmethod
     def parse_common_project_path(path: str) -> Dict[str, str]:
@@ -270,10 +305,14 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(project: str, location: str,) -> str:
+    def common_location_path(
+        project: str,
+        location: str,
+    ) -> str:
         """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
-            project=project, location=location,
+            project=project,
+            location=location,
         )
 
     @staticmethod
@@ -566,7 +605,12 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -670,12 +714,20 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListChannelsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -773,7 +825,12 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -881,7 +938,12 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1012,7 +1074,12 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1122,7 +1189,12 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1232,7 +1304,12 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1360,7 +1437,12 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1462,12 +1544,20 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListInputsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1560,7 +1650,12 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1668,7 +1763,12 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1791,7 +1891,12 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1916,7 +2021,12 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2013,12 +2123,20 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListEventsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -2112,7 +2230,12 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2195,7 +2318,10 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def __enter__(self):

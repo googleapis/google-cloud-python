@@ -104,21 +104,58 @@ class Input(proto.Message):
                 single IP address.
         """
 
-        ip_ranges = proto.RepeatedField(proto.STRING, number=1,)
+        ip_ranges = proto.RepeatedField(
+            proto.STRING,
+            number=1,
+        )
 
-    name = proto.Field(proto.STRING, number=1,)
-    create_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=4,)
-    type_ = proto.Field(proto.ENUM, number=5, enum=Type,)
-    tier = proto.Field(proto.ENUM, number=14, enum=Tier,)
-    uri = proto.Field(proto.STRING, number=6,)
-    preprocessing_config = proto.Field(
-        proto.MESSAGE, number=9, message=outputs.PreprocessingConfig,
+    name = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    security_rules = proto.Field(proto.MESSAGE, number=12, message=SecurityRule,)
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=4,
+    )
+    type_ = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum=Type,
+    )
+    tier = proto.Field(
+        proto.ENUM,
+        number=14,
+        enum=Tier,
+    )
+    uri = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    preprocessing_config = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message=outputs.PreprocessingConfig,
+    )
+    security_rules = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        message=SecurityRule,
+    )
     input_stream_property = proto.Field(
-        proto.MESSAGE, number=15, message="InputStreamProperty",
+        proto.MESSAGE,
+        number=15,
+        message="InputStreamProperty",
     )
 
 
@@ -198,30 +235,79 @@ class Channel(proto.Message):
                 ``gs://my-bucket/outputs/``.
         """
 
-        uri = proto.Field(proto.STRING, number=1,)
+        uri = proto.Field(
+            proto.STRING,
+            number=1,
+        )
 
-    name = proto.Field(proto.STRING, number=1,)
-    create_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=4,)
-    input_attachments = proto.RepeatedField(
-        proto.MESSAGE, number=16, message="InputAttachment",
+    name = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    active_input = proto.Field(proto.STRING, number=6,)
-    output = proto.Field(proto.MESSAGE, number=9, message=Output,)
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=4,
+    )
+    input_attachments = proto.RepeatedField(
+        proto.MESSAGE,
+        number=16,
+        message="InputAttachment",
+    )
+    active_input = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    output = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message=Output,
+    )
     elementary_streams = proto.RepeatedField(
-        proto.MESSAGE, number=10, message=outputs.ElementaryStream,
+        proto.MESSAGE,
+        number=10,
+        message=outputs.ElementaryStream,
     )
     mux_streams = proto.RepeatedField(
-        proto.MESSAGE, number=11, message=outputs.MuxStream,
+        proto.MESSAGE,
+        number=11,
+        message=outputs.MuxStream,
     )
-    manifests = proto.RepeatedField(proto.MESSAGE, number=12, message=outputs.Manifest,)
+    manifests = proto.RepeatedField(
+        proto.MESSAGE,
+        number=12,
+        message=outputs.Manifest,
+    )
     sprite_sheets = proto.RepeatedField(
-        proto.MESSAGE, number=13, message=outputs.SpriteSheet,
+        proto.MESSAGE,
+        number=13,
+        message=outputs.SpriteSheet,
     )
-    streaming_state = proto.Field(proto.ENUM, number=14, enum=StreamingState,)
-    streaming_error = proto.Field(proto.MESSAGE, number=18, message=status_pb2.Status,)
-    log_config = proto.Field(proto.MESSAGE, number=19, message="LogConfig",)
+    streaming_state = proto.Field(
+        proto.ENUM,
+        number=14,
+        enum=StreamingState,
+    )
+    streaming_error = proto.Field(
+        proto.MESSAGE,
+        number=18,
+        message=status_pb2.Status,
+    )
+    log_config = proto.Field(
+        proto.MESSAGE,
+        number=19,
+        message="LogConfig",
+    )
 
 
 class LogConfig(proto.Message):
@@ -252,7 +338,11 @@ class LogConfig(proto.Message):
         WARNING = 400
         ERROR = 500
 
-    log_severity = proto.Field(proto.ENUM, number=1, enum=LogSeverity,)
+    log_severity = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=LogSeverity,
+    )
 
 
 class InputStreamProperty(proto.Message):
@@ -269,13 +359,19 @@ class InputStreamProperty(proto.Message):
     """
 
     last_establish_time = proto.Field(
-        proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
     )
     video_streams = proto.RepeatedField(
-        proto.MESSAGE, number=2, message="VideoStreamProperty",
+        proto.MESSAGE,
+        number=2,
+        message="VideoStreamProperty",
     )
     audio_streams = proto.RepeatedField(
-        proto.MESSAGE, number=3, message="AudioStreamProperty",
+        proto.MESSAGE,
+        number=3,
+        message="AudioStreamProperty",
     )
 
 
@@ -289,8 +385,15 @@ class VideoStreamProperty(proto.Message):
             Properties of the video format.
     """
 
-    index = proto.Field(proto.INT32, number=1,)
-    video_format = proto.Field(proto.MESSAGE, number=2, message="VideoFormat",)
+    index = proto.Field(
+        proto.INT32,
+        number=1,
+    )
+    video_format = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="VideoFormat",
+    )
 
 
 class VideoFormat(proto.Message):
@@ -307,10 +410,22 @@ class VideoFormat(proto.Message):
             The frame rate of the input video stream.
     """
 
-    codec = proto.Field(proto.STRING, number=1,)
-    width_pixels = proto.Field(proto.INT32, number=2,)
-    height_pixels = proto.Field(proto.INT32, number=3,)
-    frame_rate = proto.Field(proto.DOUBLE, number=4,)
+    codec = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    width_pixels = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    height_pixels = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    frame_rate = proto.Field(
+        proto.DOUBLE,
+        number=4,
+    )
 
 
 class AudioStreamProperty(proto.Message):
@@ -323,8 +438,15 @@ class AudioStreamProperty(proto.Message):
             Properties of the audio format.
     """
 
-    index = proto.Field(proto.INT32, number=1,)
-    audio_format = proto.Field(proto.MESSAGE, number=2, message="AudioFormat",)
+    index = proto.Field(
+        proto.INT32,
+        number=1,
+    )
+    audio_format = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="AudioFormat",
+    )
 
 
 class AudioFormat(proto.Message):
@@ -340,9 +462,18 @@ class AudioFormat(proto.Message):
             of the audio channels.
     """
 
-    codec = proto.Field(proto.STRING, number=1,)
-    channel_count = proto.Field(proto.INT32, number=2,)
-    channel_layout = proto.RepeatedField(proto.STRING, number=3,)
+    codec = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    channel_count = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    channel_layout = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 class InputAttachment(proto.Message):
@@ -370,12 +501,23 @@ class InputAttachment(proto.Message):
                 Currently, only up to one backup input is supported.
         """
 
-        input_keys = proto.RepeatedField(proto.STRING, number=1,)
+        input_keys = proto.RepeatedField(
+            proto.STRING,
+            number=1,
+        )
 
-    key = proto.Field(proto.STRING, number=1,)
-    input = proto.Field(proto.STRING, number=2,)
+    key = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    input = proto.Field(
+        proto.STRING,
+        number=2,
+    )
     automatic_failover = proto.Field(
-        proto.MESSAGE, number=3, message=AutomaticFailover,
+        proto.MESSAGE,
+        number=3,
+        message=AutomaticFailover,
     )
 
 
@@ -440,19 +582,56 @@ class Event(proto.Message):
                 greater than 0.
         """
 
-        duration = proto.Field(proto.MESSAGE, number=1, message=duration_pb2.Duration,)
+        duration = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=duration_pb2.Duration,
+        )
 
-    name = proto.Field(proto.STRING, number=1,)
-    create_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=4,)
-    ad_break = proto.Field(proto.MESSAGE, number=6, oneof="task", message=AdBreakTask,)
-    execute_now = proto.Field(proto.BOOL, number=9,)
-    execution_time = proto.Field(
-        proto.MESSAGE, number=10, message=timestamp_pb2.Timestamp,
+    name = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    state = proto.Field(proto.ENUM, number=11, enum=State,)
-    error = proto.Field(proto.MESSAGE, number=12, message=status_pb2.Status,)
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=4,
+    )
+    ad_break = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        oneof="task",
+        message=AdBreakTask,
+    )
+    execute_now = proto.Field(
+        proto.BOOL,
+        number=9,
+    )
+    execution_time = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message=timestamp_pb2.Timestamp,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=11,
+        enum=State,
+    )
+    error = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        message=status_pb2.Status,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
