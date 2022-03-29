@@ -58,7 +58,10 @@ class VpcAccessServiceClientMeta(type):
     _transport_registry["grpc"] = VpcAccessServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = VpcAccessServiceGrpcAsyncIOTransport
 
-    def get_transport_class(cls, label: str = None,) -> Type[VpcAccessServiceTransport]:
+    def get_transport_class(
+        cls,
+        label: str = None,
+    ) -> Type[VpcAccessServiceTransport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -166,10 +169,16 @@ class VpcAccessServiceClient(metaclass=VpcAccessServiceClientMeta):
         return self._transport
 
     @staticmethod
-    def connector_path(project: str, location: str, connector: str,) -> str:
+    def connector_path(
+        project: str,
+        location: str,
+        connector: str,
+    ) -> str:
         """Returns a fully-qualified connector string."""
         return "projects/{project}/locations/{location}/connectors/{connector}".format(
-            project=project, location=location, connector=connector,
+            project=project,
+            location=location,
+            connector=connector,
         )
 
     @staticmethod
@@ -182,7 +191,9 @@ class VpcAccessServiceClient(metaclass=VpcAccessServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_billing_account_path(billing_account: str,) -> str:
+    def common_billing_account_path(
+        billing_account: str,
+    ) -> str:
         """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
@@ -195,9 +206,13 @@ class VpcAccessServiceClient(metaclass=VpcAccessServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(folder: str,) -> str:
+    def common_folder_path(
+        folder: str,
+    ) -> str:
         """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(folder=folder,)
+        return "folders/{folder}".format(
+            folder=folder,
+        )
 
     @staticmethod
     def parse_common_folder_path(path: str) -> Dict[str, str]:
@@ -206,9 +221,13 @@ class VpcAccessServiceClient(metaclass=VpcAccessServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(organization: str,) -> str:
+    def common_organization_path(
+        organization: str,
+    ) -> str:
         """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(organization=organization,)
+        return "organizations/{organization}".format(
+            organization=organization,
+        )
 
     @staticmethod
     def parse_common_organization_path(path: str) -> Dict[str, str]:
@@ -217,9 +236,13 @@ class VpcAccessServiceClient(metaclass=VpcAccessServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(project: str,) -> str:
+    def common_project_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified project string."""
-        return "projects/{project}".format(project=project,)
+        return "projects/{project}".format(
+            project=project,
+        )
 
     @staticmethod
     def parse_common_project_path(path: str) -> Dict[str, str]:
@@ -228,10 +251,14 @@ class VpcAccessServiceClient(metaclass=VpcAccessServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(project: str, location: str,) -> str:
+    def common_location_path(
+        project: str,
+        location: str,
+    ) -> str:
         """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
-            project=project, location=location,
+            project=project,
+            location=location,
         )
 
     @staticmethod
@@ -519,7 +546,12 @@ class VpcAccessServiceClient(metaclass=VpcAccessServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -619,7 +651,12 @@ class VpcAccessServiceClient(metaclass=VpcAccessServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -713,12 +750,20 @@ class VpcAccessServiceClient(metaclass=VpcAccessServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListConnectorsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -828,7 +873,12 @@ class VpcAccessServiceClient(metaclass=VpcAccessServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(

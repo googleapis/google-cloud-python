@@ -87,17 +87,49 @@ class Connector(proto.Message):
                 was issued.
         """
 
-        name = proto.Field(proto.STRING, number=1,)
-        project_id = proto.Field(proto.STRING, number=2,)
+        name = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        project_id = proto.Field(
+            proto.STRING,
+            number=2,
+        )
 
-    name = proto.Field(proto.STRING, number=1,)
-    network = proto.Field(proto.STRING, number=2,)
-    ip_cidr_range = proto.Field(proto.STRING, number=3,)
-    state = proto.Field(proto.ENUM, number=4, enum=State,)
-    min_throughput = proto.Field(proto.INT32, number=5,)
-    max_throughput = proto.Field(proto.INT32, number=6,)
-    connected_projects = proto.RepeatedField(proto.STRING, number=7,)
-    subnet = proto.Field(proto.MESSAGE, number=8, message=Subnet,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    network = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    ip_cidr_range = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=State,
+    )
+    min_throughput = proto.Field(
+        proto.INT32,
+        number=5,
+    )
+    max_throughput = proto.Field(
+        proto.INT32,
+        number=6,
+    )
+    connected_projects = proto.RepeatedField(
+        proto.STRING,
+        number=7,
+    )
+    subnet = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=Subnet,
+    )
 
 
 class CreateConnectorRequest(proto.Message):
@@ -114,9 +146,19 @@ class CreateConnectorRequest(proto.Message):
             Required. Resource to create.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    connector_id = proto.Field(proto.STRING, number=2,)
-    connector = proto.Field(proto.MESSAGE, number=3, message="Connector",)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    connector_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    connector = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="Connector",
+    )
 
 
 class GetConnectorRequest(proto.Message):
@@ -128,7 +170,10 @@ class GetConnectorRequest(proto.Message):
             connector to get.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListConnectorsRequest(proto.Message):
@@ -146,9 +191,18 @@ class ListConnectorsRequest(proto.Message):
             Continuation token.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListConnectorsResponse(proto.Message):
@@ -165,8 +219,15 @@ class ListConnectorsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    connectors = proto.RepeatedField(proto.MESSAGE, number=1, message="Connector",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    connectors = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Connector",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class DeleteConnectorRequest(proto.Message):
@@ -178,7 +239,10 @@ class DeleteConnectorRequest(proto.Message):
             connector to delete.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class OperationMetadata(proto.Message):
@@ -201,10 +265,24 @@ class OperationMetadata(proto.Message):
             projects/my-project/locations/us-central1/connectors/v1.
     """
 
-    method = proto.Field(proto.STRING, number=1,)
-    create_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    end_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
-    target = proto.Field(proto.STRING, number=5,)
+    method = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    target = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
