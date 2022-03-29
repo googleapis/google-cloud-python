@@ -85,10 +85,24 @@ class RunPipelineRequest(proto.Message):
             topic or notifications will not be sent.
     """
 
-    parent = proto.Field(proto.STRING, number=4,)
-    pipeline = proto.Field(proto.MESSAGE, number=1, message="Pipeline",)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=2,)
-    pub_sub_topic = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    pipeline = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="Pipeline",
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=2,
+    )
+    pub_sub_topic = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class RunPipelineResponse(proto.Message):
@@ -124,10 +138,26 @@ class Pipeline(proto.Message):
             If unspecified, it will default to 7 days.
     """
 
-    actions = proto.RepeatedField(proto.MESSAGE, number=1, message="Action",)
-    resources = proto.Field(proto.MESSAGE, number=2, message="Resources",)
-    environment = proto.MapField(proto.STRING, proto.STRING, number=3,)
-    timeout = proto.Field(proto.MESSAGE, number=4, message=duration_pb2.Duration,)
+    actions = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Action",
+    )
+    resources = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="Resources",
+    )
+    environment = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=3,
+    )
+    timeout = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=duration_pb2.Duration,
+    )
 
 
 class Action(proto.Message):
@@ -297,25 +327,88 @@ class Action(proto.Message):
             external network.
     """
 
-    container_name = proto.Field(proto.STRING, number=1,)
-    image_uri = proto.Field(proto.STRING, number=2,)
-    commands = proto.RepeatedField(proto.STRING, number=3,)
-    entrypoint = proto.Field(proto.STRING, number=4,)
-    environment = proto.MapField(proto.STRING, proto.STRING, number=5,)
-    pid_namespace = proto.Field(proto.STRING, number=6,)
-    port_mappings = proto.MapField(proto.INT32, proto.INT32, number=8,)
-    mounts = proto.RepeatedField(proto.MESSAGE, number=9, message="Mount",)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=10,)
-    credentials = proto.Field(proto.MESSAGE, number=11, message="Secret",)
-    timeout = proto.Field(proto.MESSAGE, number=12, message=duration_pb2.Duration,)
-    ignore_exit_status = proto.Field(proto.BOOL, number=13,)
-    run_in_background = proto.Field(proto.BOOL, number=14,)
-    always_run = proto.Field(proto.BOOL, number=15,)
-    enable_fuse = proto.Field(proto.BOOL, number=16,)
-    publish_exposed_ports = proto.Field(proto.BOOL, number=17,)
-    disable_image_prefetch = proto.Field(proto.BOOL, number=18,)
-    disable_standard_error_capture = proto.Field(proto.BOOL, number=19,)
-    block_external_network = proto.Field(proto.BOOL, number=20,)
+    container_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    image_uri = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    commands = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+    entrypoint = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    environment = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=5,
+    )
+    pid_namespace = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    port_mappings = proto.MapField(
+        proto.INT32,
+        proto.INT32,
+        number=8,
+    )
+    mounts = proto.RepeatedField(
+        proto.MESSAGE,
+        number=9,
+        message="Mount",
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=10,
+    )
+    credentials = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message="Secret",
+    )
+    timeout = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        message=duration_pb2.Duration,
+    )
+    ignore_exit_status = proto.Field(
+        proto.BOOL,
+        number=13,
+    )
+    run_in_background = proto.Field(
+        proto.BOOL,
+        number=14,
+    )
+    always_run = proto.Field(
+        proto.BOOL,
+        number=15,
+    )
+    enable_fuse = proto.Field(
+        proto.BOOL,
+        number=16,
+    )
+    publish_exposed_ports = proto.Field(
+        proto.BOOL,
+        number=17,
+    )
+    disable_image_prefetch = proto.Field(
+        proto.BOOL,
+        number=18,
+    )
+    disable_standard_error_capture = proto.Field(
+        proto.BOOL,
+        number=19,
+    )
+    block_external_network = proto.Field(
+        proto.BOOL,
+        number=20,
+    )
 
 
 class Secret(proto.Message):
@@ -333,8 +426,14 @@ class Secret(proto.Message):
             method. This field is intentionally unaudited.
     """
 
-    key_name = proto.Field(proto.STRING, number=1,)
-    cipher_text = proto.Field(proto.STRING, number=2,)
+    key_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    cipher_text = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class Mount(proto.Message):
@@ -353,9 +452,18 @@ class Mount(proto.Message):
             the container.
     """
 
-    disk = proto.Field(proto.STRING, number=1,)
-    path = proto.Field(proto.STRING, number=2,)
-    read_only = proto.Field(proto.BOOL, number=3,)
+    disk = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    path = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    read_only = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
 
 
 class Resources(proto.Message):
@@ -374,9 +482,19 @@ class Resources(proto.Message):
             The virtual machine specification.
     """
 
-    regions = proto.RepeatedField(proto.STRING, number=2,)
-    zones = proto.RepeatedField(proto.STRING, number=3,)
-    virtual_machine = proto.Field(proto.MESSAGE, number=4, message="VirtualMachine",)
+    regions = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+    zones = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+    virtual_machine = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="VirtualMachine",
+    )
 
 
 class VirtualMachine(proto.Message):
@@ -485,20 +603,68 @@ class VirtualMachine(proto.Message):
             field, but not both.
     """
 
-    machine_type = proto.Field(proto.STRING, number=1,)
-    preemptible = proto.Field(proto.BOOL, number=2,)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=3,)
-    disks = proto.RepeatedField(proto.MESSAGE, number=4, message="Disk",)
-    network = proto.Field(proto.MESSAGE, number=5, message="Network",)
-    accelerators = proto.RepeatedField(proto.MESSAGE, number=6, message="Accelerator",)
-    service_account = proto.Field(proto.MESSAGE, number=7, message="ServiceAccount",)
-    boot_disk_size_gb = proto.Field(proto.INT32, number=8,)
-    cpu_platform = proto.Field(proto.STRING, number=9,)
-    boot_image = proto.Field(proto.STRING, number=10,)
-    nvidia_driver_version = proto.Field(proto.STRING, number=11,)
-    enable_stackdriver_monitoring = proto.Field(proto.BOOL, number=12,)
-    docker_cache_images = proto.RepeatedField(proto.STRING, number=13,)
-    volumes = proto.RepeatedField(proto.MESSAGE, number=14, message="Volume",)
+    machine_type = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    preemptible = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=3,
+    )
+    disks = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message="Disk",
+    )
+    network = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message="Network",
+    )
+    accelerators = proto.RepeatedField(
+        proto.MESSAGE,
+        number=6,
+        message="Accelerator",
+    )
+    service_account = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message="ServiceAccount",
+    )
+    boot_disk_size_gb = proto.Field(
+        proto.INT32,
+        number=8,
+    )
+    cpu_platform = proto.Field(
+        proto.STRING,
+        number=9,
+    )
+    boot_image = proto.Field(
+        proto.STRING,
+        number=10,
+    )
+    nvidia_driver_version = proto.Field(
+        proto.STRING,
+        number=11,
+    )
+    enable_stackdriver_monitoring = proto.Field(
+        proto.BOOL,
+        number=12,
+    )
+    docker_cache_images = proto.RepeatedField(
+        proto.STRING,
+        number=13,
+    )
+    volumes = proto.RepeatedField(
+        proto.MESSAGE,
+        number=14,
+        message="Volume",
+    )
 
 
 class ServiceAccount(proto.Message):
@@ -516,8 +682,14 @@ class ServiceAccount(proto.Message):
             default.
     """
 
-    email = proto.Field(proto.STRING, number=1,)
-    scopes = proto.RepeatedField(proto.STRING, number=2,)
+    email = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    scopes = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
 
 
 class Accelerator(proto.Message):
@@ -540,8 +712,14 @@ class Accelerator(proto.Message):
             How many accelerators of this type to attach.
     """
 
-    type_ = proto.Field(proto.STRING, number=1,)
-    count = proto.Field(proto.INT64, number=2,)
+    type_ = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    count = proto.Field(
+        proto.INT64,
+        number=2,
+    )
 
 
 class Network(proto.Message):
@@ -578,9 +756,18 @@ class Network(proto.Message):
             in.
     """
 
-    network = proto.Field(proto.STRING, number=1,)
-    use_private_address = proto.Field(proto.BOOL, number=2,)
-    subnetwork = proto.Field(proto.STRING, number=3,)
+    network = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    use_private_address = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+    subnetwork = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class Disk(proto.Message):
@@ -617,10 +804,22 @@ class Disk(proto.Message):
             attaching it to the VM.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    size_gb = proto.Field(proto.INT32, number=2,)
-    type_ = proto.Field(proto.STRING, number=3,)
-    source_image = proto.Field(proto.STRING, number=4,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    size_gb = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    type_ = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    source_image = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class Volume(proto.Message):
@@ -657,15 +856,27 @@ class Volume(proto.Message):
             This field is a member of `oneof`_ ``storage``.
     """
 
-    volume = proto.Field(proto.STRING, number=1,)
+    volume = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     persistent_disk = proto.Field(
-        proto.MESSAGE, number=2, oneof="storage", message="PersistentDisk",
+        proto.MESSAGE,
+        number=2,
+        oneof="storage",
+        message="PersistentDisk",
     )
     existing_disk = proto.Field(
-        proto.MESSAGE, number=3, oneof="storage", message="ExistingDisk",
+        proto.MESSAGE,
+        number=3,
+        oneof="storage",
+        message="ExistingDisk",
     )
     nfs_mount = proto.Field(
-        proto.MESSAGE, number=4, oneof="storage", message="NFSMount",
+        proto.MESSAGE,
+        number=4,
+        oneof="storage",
+        message="NFSMount",
     )
 
 
@@ -694,9 +905,18 @@ class PersistentDisk(proto.Message):
             it to the VM.
     """
 
-    size_gb = proto.Field(proto.INT32, number=1,)
-    type_ = proto.Field(proto.STRING, number=2,)
-    source_image = proto.Field(proto.STRING, number=3,)
+    size_gb = proto.Field(
+        proto.INT32,
+        number=1,
+    )
+    type_ = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    source_image = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ExistingDisk(proto.Message):
@@ -719,7 +939,10 @@ class ExistingDisk(proto.Message):
             be shared.
     """
 
-    disk = proto.Field(proto.STRING, number=1,)
+    disk = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class NFSMount(proto.Message):
@@ -731,7 +954,10 @@ class NFSMount(proto.Message):
             \`address:/mount".
     """
 
-    target = proto.Field(proto.STRING, number=1,)
+    target = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class Metadata(proto.Message):
@@ -762,13 +988,40 @@ class Metadata(proto.Message):
             sent.
     """
 
-    pipeline = proto.Field(proto.MESSAGE, number=1, message="Pipeline",)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=2,)
-    events = proto.RepeatedField(proto.MESSAGE, number=3, message="Event",)
-    create_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
-    start_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
-    end_time = proto.Field(proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,)
-    pub_sub_topic = proto.Field(proto.STRING, number=7,)
+    pipeline = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="Pipeline",
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=2,
+    )
+    events = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message="Event",
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    start_time = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
+    )
+    pub_sub_topic = proto.Field(
+        proto.STRING,
+        number=7,
+    )
 
 
 class Event(proto.Message):
@@ -842,37 +1095,74 @@ class Event(proto.Message):
             This field is a member of `oneof`_ ``details``.
     """
 
-    timestamp = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
-    description = proto.Field(proto.STRING, number=2,)
+    timestamp = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=2,
+    )
     delayed = proto.Field(
-        proto.MESSAGE, number=17, oneof="details", message="DelayedEvent",
+        proto.MESSAGE,
+        number=17,
+        oneof="details",
+        message="DelayedEvent",
     )
     worker_assigned = proto.Field(
-        proto.MESSAGE, number=18, oneof="details", message="WorkerAssignedEvent",
+        proto.MESSAGE,
+        number=18,
+        oneof="details",
+        message="WorkerAssignedEvent",
     )
     worker_released = proto.Field(
-        proto.MESSAGE, number=19, oneof="details", message="WorkerReleasedEvent",
+        proto.MESSAGE,
+        number=19,
+        oneof="details",
+        message="WorkerReleasedEvent",
     )
     pull_started = proto.Field(
-        proto.MESSAGE, number=20, oneof="details", message="PullStartedEvent",
+        proto.MESSAGE,
+        number=20,
+        oneof="details",
+        message="PullStartedEvent",
     )
     pull_stopped = proto.Field(
-        proto.MESSAGE, number=21, oneof="details", message="PullStoppedEvent",
+        proto.MESSAGE,
+        number=21,
+        oneof="details",
+        message="PullStoppedEvent",
     )
     container_started = proto.Field(
-        proto.MESSAGE, number=22, oneof="details", message="ContainerStartedEvent",
+        proto.MESSAGE,
+        number=22,
+        oneof="details",
+        message="ContainerStartedEvent",
     )
     container_stopped = proto.Field(
-        proto.MESSAGE, number=23, oneof="details", message="ContainerStoppedEvent",
+        proto.MESSAGE,
+        number=23,
+        oneof="details",
+        message="ContainerStoppedEvent",
     )
     container_killed = proto.Field(
-        proto.MESSAGE, number=24, oneof="details", message="ContainerKilledEvent",
+        proto.MESSAGE,
+        number=24,
+        oneof="details",
+        message="ContainerKilledEvent",
     )
     unexpected_exit_status = proto.Field(
-        proto.MESSAGE, number=25, oneof="details", message="UnexpectedExitStatusEvent",
+        proto.MESSAGE,
+        number=25,
+        oneof="details",
+        message="UnexpectedExitStatusEvent",
     )
     failed = proto.Field(
-        proto.MESSAGE, number=26, oneof="details", message="FailedEvent",
+        proto.MESSAGE,
+        number=26,
+        oneof="details",
+        message="FailedEvent",
     )
 
 
@@ -895,8 +1185,14 @@ class DelayedEvent(proto.Message):
             single ``UNKNOWN`` metric will be present.
     """
 
-    cause = proto.Field(proto.STRING, number=1,)
-    metrics = proto.RepeatedField(proto.STRING, number=2,)
+    cause = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    metrics = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
 
 
 class WorkerAssignedEvent(proto.Message):
@@ -913,9 +1209,18 @@ class WorkerAssignedEvent(proto.Message):
             worker.
     """
 
-    zone = proto.Field(proto.STRING, number=1,)
-    instance = proto.Field(proto.STRING, number=2,)
-    machine_type = proto.Field(proto.STRING, number=3,)
+    zone = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    instance = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    machine_type = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class WorkerReleasedEvent(proto.Message):
@@ -929,8 +1234,14 @@ class WorkerReleasedEvent(proto.Message):
             The worker's instance name.
     """
 
-    zone = proto.Field(proto.STRING, number=1,)
-    instance = proto.Field(proto.STRING, number=2,)
+    zone = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    instance = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class PullStartedEvent(proto.Message):
@@ -941,7 +1252,10 @@ class PullStartedEvent(proto.Message):
             The URI of the image that was pulled.
     """
 
-    image_uri = proto.Field(proto.STRING, number=1,)
+    image_uri = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class PullStoppedEvent(proto.Message):
@@ -952,7 +1266,10 @@ class PullStoppedEvent(proto.Message):
             The URI of the image that was pulled.
     """
 
-    image_uri = proto.Field(proto.STRING, number=1,)
+    image_uri = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ContainerStartedEvent(proto.Message):
@@ -976,9 +1293,19 @@ class ContainerStartedEvent(proto.Message):
             if port mappings exist.
     """
 
-    action_id = proto.Field(proto.INT32, number=1,)
-    port_mappings = proto.MapField(proto.INT32, proto.INT32, number=2,)
-    ip_address = proto.Field(proto.STRING, number=3,)
+    action_id = proto.Field(
+        proto.INT32,
+        number=1,
+    )
+    port_mappings = proto.MapField(
+        proto.INT32,
+        proto.INT32,
+        number=2,
+    )
+    ip_address = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ContainerStoppedEvent(proto.Message):
@@ -1003,9 +1330,18 @@ class ContainerStoppedEvent(proto.Message):
             be copied off the machine as described elsewhere.
     """
 
-    action_id = proto.Field(proto.INT32, number=1,)
-    exit_status = proto.Field(proto.INT32, number=2,)
-    stderr = proto.Field(proto.STRING, number=3,)
+    action_id = proto.Field(
+        proto.INT32,
+        number=1,
+    )
+    exit_status = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    stderr = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class UnexpectedExitStatusEvent(proto.Message):
@@ -1022,8 +1358,14 @@ class UnexpectedExitStatusEvent(proto.Message):
             The exit status of the container.
     """
 
-    action_id = proto.Field(proto.INT32, number=1,)
-    exit_status = proto.Field(proto.INT32, number=2,)
+    action_id = proto.Field(
+        proto.INT32,
+        number=1,
+    )
+    exit_status = proto.Field(
+        proto.INT32,
+        number=2,
+    )
 
 
 class ContainerKilledEvent(proto.Message):
@@ -1037,7 +1379,10 @@ class ContainerKilledEvent(proto.Message):
             container.
     """
 
-    action_id = proto.Field(proto.INT32, number=1,)
+    action_id = proto.Field(
+        proto.INT32,
+        number=1,
+    )
 
 
 class FailedEvent(proto.Message):
@@ -1054,8 +1399,15 @@ class FailedEvent(proto.Message):
             of the failure.
     """
 
-    code = proto.Field(proto.ENUM, number=1, enum=code_pb2.Code,)
-    cause = proto.Field(proto.STRING, number=2,)
+    code = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=code_pb2.Code,
+    )
+    cause = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
