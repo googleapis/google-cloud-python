@@ -18,7 +18,10 @@ import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.bigquery.migration.v2alpha",
-    manifest={"AssessmentTaskDetails", "AssessmentOrchestrationResultDetails",},
+    manifest={
+        "AssessmentTaskDetails",
+        "AssessmentOrchestrationResultDetails",
+    },
 )
 
 
@@ -41,10 +44,22 @@ class AssessmentTaskDetails(proto.Message):
             input data is extracted.
     """
 
-    input_path = proto.Field(proto.STRING, number=1,)
-    output_dataset = proto.Field(proto.STRING, number=2,)
-    querylogs_path = proto.Field(proto.STRING, number=3,)
-    data_source = proto.Field(proto.STRING, number=4,)
+    input_path = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    output_dataset = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    querylogs_path = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    data_source = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class AssessmentOrchestrationResultDetails(proto.Message):
@@ -56,7 +71,10 @@ class AssessmentOrchestrationResultDetails(proto.Message):
             table schemas.
     """
 
-    output_tables_schema_version = proto.Field(proto.STRING, number=1,)
+    output_tables_schema_version = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

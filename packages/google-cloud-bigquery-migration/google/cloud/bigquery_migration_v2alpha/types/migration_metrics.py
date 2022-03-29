@@ -22,7 +22,12 @@ from google.protobuf import timestamp_pb2  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.bigquery.migration.v2alpha",
-    manifest={"TimeSeries", "Point", "TimeInterval", "TypedValue",},
+    manifest={
+        "TimeSeries",
+        "Point",
+        "TimeInterval",
+        "TypedValue",
+    },
 )
 
 
@@ -56,14 +61,25 @@ class TimeSeries(proto.Message):
             ``BOOL``, ``INT64``, ``DOUBLE``, or ``DISTRIBUTION``.
     """
 
-    metric = proto.Field(proto.STRING, number=1,)
+    metric = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     value_type = proto.Field(
-        proto.ENUM, number=2, enum=metric_pb2.MetricDescriptor.ValueType,
+        proto.ENUM,
+        number=2,
+        enum=metric_pb2.MetricDescriptor.ValueType,
     )
     metric_kind = proto.Field(
-        proto.ENUM, number=3, enum=metric_pb2.MetricDescriptor.MetricKind,
+        proto.ENUM,
+        number=3,
+        enum=metric_pb2.MetricDescriptor.MetricKind,
     )
-    points = proto.RepeatedField(proto.MESSAGE, number=4, message="Point",)
+    points = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message="Point",
+    )
 
 
 class Point(proto.Message):
@@ -86,8 +102,16 @@ class Point(proto.Message):
             The value of the data point.
     """
 
-    interval = proto.Field(proto.MESSAGE, number=1, message="TimeInterval",)
-    value = proto.Field(proto.MESSAGE, number=2, message="TypedValue",)
+    interval = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="TimeInterval",
+    )
+    value = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="TypedValue",
+    )
 
 
 class TimeInterval(proto.Message):
@@ -105,8 +129,16 @@ class TimeInterval(proto.Message):
             Required. The end of the time interval.
     """
 
-    start_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
-    end_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
+    start_time = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 class TypedValue(proto.Message):
@@ -146,12 +178,31 @@ class TypedValue(proto.Message):
             This field is a member of `oneof`_ ``value``.
     """
 
-    bool_value = proto.Field(proto.BOOL, number=1, oneof="value",)
-    int64_value = proto.Field(proto.INT64, number=2, oneof="value",)
-    double_value = proto.Field(proto.DOUBLE, number=3, oneof="value",)
-    string_value = proto.Field(proto.STRING, number=4, oneof="value",)
+    bool_value = proto.Field(
+        proto.BOOL,
+        number=1,
+        oneof="value",
+    )
+    int64_value = proto.Field(
+        proto.INT64,
+        number=2,
+        oneof="value",
+    )
+    double_value = proto.Field(
+        proto.DOUBLE,
+        number=3,
+        oneof="value",
+    )
+    string_value = proto.Field(
+        proto.STRING,
+        number=4,
+        oneof="value",
+    )
     distribution_value = proto.Field(
-        proto.MESSAGE, number=5, oneof="value", message=distribution_pb2.Distribution,
+        proto.MESSAGE,
+        number=5,
+        oneof="value",
+        message=distribution_pb2.Distribution,
     )
 
 

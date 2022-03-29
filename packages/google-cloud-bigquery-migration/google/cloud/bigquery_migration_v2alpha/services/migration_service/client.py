@@ -60,7 +60,10 @@ class MigrationServiceClientMeta(type):
     _transport_registry["grpc"] = MigrationServiceGrpcTransport
     _transport_registry["grpc_asyncio"] = MigrationServiceGrpcAsyncIOTransport
 
-    def get_transport_class(cls, label: str = None,) -> Type[MigrationServiceTransport]:
+    def get_transport_class(
+        cls,
+        label: str = None,
+    ) -> Type[MigrationServiceTransport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -166,11 +169,17 @@ class MigrationServiceClient(metaclass=MigrationServiceClientMeta):
 
     @staticmethod
     def migration_subtask_path(
-        project: str, location: str, workflow: str, subtask: str,
+        project: str,
+        location: str,
+        workflow: str,
+        subtask: str,
     ) -> str:
         """Returns a fully-qualified migration_subtask string."""
         return "projects/{project}/locations/{location}/workflows/{workflow}/subtasks/{subtask}".format(
-            project=project, location=location, workflow=workflow, subtask=subtask,
+            project=project,
+            location=location,
+            workflow=workflow,
+            subtask=subtask,
         )
 
     @staticmethod
@@ -183,10 +192,16 @@ class MigrationServiceClient(metaclass=MigrationServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def migration_workflow_path(project: str, location: str, workflow: str,) -> str:
+    def migration_workflow_path(
+        project: str,
+        location: str,
+        workflow: str,
+    ) -> str:
         """Returns a fully-qualified migration_workflow string."""
         return "projects/{project}/locations/{location}/workflows/{workflow}".format(
-            project=project, location=location, workflow=workflow,
+            project=project,
+            location=location,
+            workflow=workflow,
         )
 
     @staticmethod
@@ -199,7 +214,9 @@ class MigrationServiceClient(metaclass=MigrationServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_billing_account_path(billing_account: str,) -> str:
+    def common_billing_account_path(
+        billing_account: str,
+    ) -> str:
         """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
@@ -212,9 +229,13 @@ class MigrationServiceClient(metaclass=MigrationServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(folder: str,) -> str:
+    def common_folder_path(
+        folder: str,
+    ) -> str:
         """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(folder=folder,)
+        return "folders/{folder}".format(
+            folder=folder,
+        )
 
     @staticmethod
     def parse_common_folder_path(path: str) -> Dict[str, str]:
@@ -223,9 +244,13 @@ class MigrationServiceClient(metaclass=MigrationServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(organization: str,) -> str:
+    def common_organization_path(
+        organization: str,
+    ) -> str:
         """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(organization=organization,)
+        return "organizations/{organization}".format(
+            organization=organization,
+        )
 
     @staticmethod
     def parse_common_organization_path(path: str) -> Dict[str, str]:
@@ -234,9 +259,13 @@ class MigrationServiceClient(metaclass=MigrationServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(project: str,) -> str:
+    def common_project_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified project string."""
-        return "projects/{project}".format(project=project,)
+        return "projects/{project}".format(
+            project=project,
+        )
 
     @staticmethod
     def parse_common_project_path(path: str) -> Dict[str, str]:
@@ -245,10 +274,14 @@ class MigrationServiceClient(metaclass=MigrationServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(project: str, location: str,) -> str:
+    def common_location_path(
+        project: str,
+        location: str,
+    ) -> str:
         """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
-            project=project, location=location,
+            project=project,
+            location=location,
         )
 
     @staticmethod
@@ -521,7 +554,12 @@ class MigrationServiceClient(metaclass=MigrationServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -613,7 +651,12 @@ class MigrationServiceClient(metaclass=MigrationServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -707,12 +750,20 @@ class MigrationServiceClient(metaclass=MigrationServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListMigrationWorkflowsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -798,7 +849,10 @@ class MigrationServiceClient(metaclass=MigrationServiceClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def start_migration_workflow(
@@ -884,7 +938,10 @@ class MigrationServiceClient(metaclass=MigrationServiceClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def get_migration_subtask(
@@ -977,7 +1034,12 @@ class MigrationServiceClient(metaclass=MigrationServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1070,12 +1132,20 @@ class MigrationServiceClient(metaclass=MigrationServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListMigrationSubtasksPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.

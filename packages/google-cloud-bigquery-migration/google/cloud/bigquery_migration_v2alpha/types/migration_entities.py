@@ -70,15 +70,34 @@ class MigrationWorkflow(proto.Message):
         PAUSED = 3
         COMPLETED = 4
 
-    name = proto.Field(proto.STRING, number=1,)
-    display_name = proto.Field(proto.STRING, number=6,)
-    tasks = proto.MapField(
-        proto.STRING, proto.MESSAGE, number=2, message="MigrationTask",
+    name = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    state = proto.Field(proto.ENUM, number=3, enum=State,)
-    create_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
+    display_name = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    tasks = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=2,
+        message="MigrationTask",
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=State,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
     last_update_time = proto.Field(
-        proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
     )
 
 
@@ -150,19 +169,43 @@ class MigrationTask(proto.Message):
         oneof="task_details",
         message=translation_task.TranslationTaskDetails,
     )
-    id = proto.Field(proto.STRING, number=1,)
-    type_ = proto.Field(proto.STRING, number=2,)
-    details = proto.Field(proto.MESSAGE, number=3, message=any_pb2.Any,)
-    state = proto.Field(proto.ENUM, number=4, enum=State,)
-    processing_error = proto.Field(
-        proto.MESSAGE, number=5, message=error_details_pb2.ErrorInfo,
+    id = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    create_time = proto.Field(proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,)
+    type_ = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    details = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=any_pb2.Any,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=State,
+    )
+    processing_error = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=error_details_pb2.ErrorInfo,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
+    )
     last_update_time = proto.Field(
-        proto.MESSAGE, number=7, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=7,
+        message=timestamp_pb2.Timestamp,
     )
     orchestration_result = proto.Field(
-        proto.MESSAGE, number=10, message="MigrationTaskOrchestrationResult",
+        proto.MESSAGE,
+        number=10,
+        message="MigrationTaskOrchestrationResult",
     )
 
 
@@ -223,23 +266,51 @@ class MigrationSubtask(proto.Message):
         FAILED = 4
         PAUSED = 5
 
-    name = proto.Field(proto.STRING, number=1,)
-    task_id = proto.Field(proto.STRING, number=2,)
-    type_ = proto.Field(proto.STRING, number=3,)
-    state = proto.Field(proto.ENUM, number=5, enum=State,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    task_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    type_ = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum=State,
+    )
     processing_error = proto.Field(
-        proto.MESSAGE, number=6, message=error_details_pb2.ErrorInfo,
+        proto.MESSAGE,
+        number=6,
+        message=error_details_pb2.ErrorInfo,
     )
     resource_error_details = proto.RepeatedField(
-        proto.MESSAGE, number=12, message=migration_error_details.ResourceErrorDetail,
+        proto.MESSAGE,
+        number=12,
+        message=migration_error_details.ResourceErrorDetail,
     )
-    resource_error_count = proto.Field(proto.INT32, number=13,)
-    create_time = proto.Field(proto.MESSAGE, number=7, message=timestamp_pb2.Timestamp,)
+    resource_error_count = proto.Field(
+        proto.INT32,
+        number=13,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=timestamp_pb2.Timestamp,
+    )
     last_update_time = proto.Field(
-        proto.MESSAGE, number=8, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=8,
+        message=timestamp_pb2.Timestamp,
     )
     metrics = proto.RepeatedField(
-        proto.MESSAGE, number=11, message=migration_metrics.TimeSeries,
+        proto.MESSAGE,
+        number=11,
+        message=migration_metrics.TimeSeries,
     )
 
 

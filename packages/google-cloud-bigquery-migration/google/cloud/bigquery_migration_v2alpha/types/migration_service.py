@@ -46,9 +46,14 @@ class CreateMigrationWorkflowRequest(proto.Message):
             Required. The migration workflow to create.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     migration_workflow = proto.Field(
-        proto.MESSAGE, number=2, message=migration_entities.MigrationWorkflow,
+        proto.MESSAGE,
+        number=2,
+        message=migration_entities.MigrationWorkflow,
     )
 
 
@@ -63,8 +68,15 @@ class GetMigrationWorkflowRequest(proto.Message):
             The list of fields to be retrieved.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    read_mask = proto.Field(proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    read_mask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
 
 
 class ListMigrationWorkflowsRequest(proto.Message):
@@ -90,10 +102,23 @@ class ListMigrationWorkflowsRequest(proto.Message):
             the page token.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    read_mask = proto.Field(proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,)
-    page_size = proto.Field(proto.INT32, number=3,)
-    page_token = proto.Field(proto.STRING, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    read_mask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class ListMigrationWorkflowsResponse(proto.Message):
@@ -114,9 +139,14 @@ class ListMigrationWorkflowsResponse(proto.Message):
         return self
 
     migration_workflows = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=migration_entities.MigrationWorkflow,
+        proto.MESSAGE,
+        number=1,
+        message=migration_entities.MigrationWorkflow,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class DeleteMigrationWorkflowRequest(proto.Message):
@@ -128,7 +158,10 @@ class DeleteMigrationWorkflowRequest(proto.Message):
             Example: ``projects/123/locations/us/workflows/1234``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class StartMigrationWorkflowRequest(proto.Message):
@@ -140,7 +173,10 @@ class StartMigrationWorkflowRequest(proto.Message):
             Example: ``projects/123/locations/us/workflows/1234``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class GetMigrationSubtaskRequest(proto.Message):
@@ -155,8 +191,15 @@ class GetMigrationSubtaskRequest(proto.Message):
             Optional. The list of fields to be retrieved.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    read_mask = proto.Field(proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    read_mask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
 
 
 class ListMigrationSubtasksRequest(proto.Message):
@@ -187,11 +230,27 @@ class ListMigrationSubtasksRequest(proto.Message):
             ID (not the name in the named map).
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    read_mask = proto.Field(proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,)
-    page_size = proto.Field(proto.INT32, number=3,)
-    page_token = proto.Field(proto.STRING, number=4,)
-    filter = proto.Field(proto.STRING, number=5,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    read_mask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class ListMigrationSubtasksResponse(proto.Message):
@@ -212,9 +271,14 @@ class ListMigrationSubtasksResponse(proto.Message):
         return self
 
     migration_subtasks = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=migration_entities.MigrationSubtask,
+        proto.MESSAGE,
+        number=1,
+        message=migration_entities.MigrationSubtask,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

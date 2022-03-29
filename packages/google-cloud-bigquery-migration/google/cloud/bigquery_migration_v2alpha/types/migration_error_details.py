@@ -20,7 +20,11 @@ from google.rpc import error_details_pb2  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.bigquery.migration.v2alpha",
-    manifest={"ResourceErrorDetail", "ErrorDetail", "ErrorLocation",},
+    manifest={
+        "ResourceErrorDetail",
+        "ErrorDetail",
+        "ErrorLocation",
+    },
 )
 
 
@@ -41,10 +45,19 @@ class ResourceErrorDetail(proto.Message):
     """
 
     resource_info = proto.Field(
-        proto.MESSAGE, number=1, message=error_details_pb2.ResourceInfo,
+        proto.MESSAGE,
+        number=1,
+        message=error_details_pb2.ResourceInfo,
     )
-    error_details = proto.RepeatedField(proto.MESSAGE, number=2, message="ErrorDetail",)
-    error_count = proto.Field(proto.INT32, number=3,)
+    error_details = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="ErrorDetail",
+    )
+    error_count = proto.Field(
+        proto.INT32,
+        number=3,
+    )
 
 
 class ErrorDetail(proto.Message):
@@ -60,9 +73,15 @@ class ErrorDetail(proto.Message):
             with structured detail.
     """
 
-    location = proto.Field(proto.MESSAGE, number=1, message="ErrorLocation",)
+    location = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="ErrorLocation",
+    )
     error_info = proto.Field(
-        proto.MESSAGE, number=2, message=error_details_pb2.ErrorInfo,
+        proto.MESSAGE,
+        number=2,
+        message=error_details_pb2.ErrorInfo,
     )
 
 
@@ -80,8 +99,14 @@ class ErrorLocation(proto.Message):
             that there is no columns information.
     """
 
-    line = proto.Field(proto.INT32, number=1,)
-    column = proto.Field(proto.INT32, number=2,)
+    line = proto.Field(
+        proto.INT32,
+        number=1,
+    )
+    column = proto.Field(
+        proto.INT32,
+        number=2,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

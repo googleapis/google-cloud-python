@@ -101,7 +101,11 @@ def test__get_default_mtls_endpoint():
 
 
 @pytest.mark.parametrize(
-    "client_class", [MigrationServiceClient, MigrationServiceAsyncClient,]
+    "client_class",
+    [
+        MigrationServiceClient,
+        MigrationServiceAsyncClient,
+    ],
 )
 def test_migration_service_client_from_service_account_info(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -143,7 +147,11 @@ def test_migration_service_client_service_account_always_use_jwt(
 
 
 @pytest.mark.parametrize(
-    "client_class", [MigrationServiceClient, MigrationServiceAsyncClient,]
+    "client_class",
+    [
+        MigrationServiceClient,
+        MigrationServiceAsyncClient,
+    ],
 )
 def test_migration_service_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -517,7 +525,9 @@ def test_migration_service_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -658,11 +668,16 @@ def test_migration_service_client_create_channel_credentials_file(
 
 
 @pytest.mark.parametrize(
-    "request_type", [migration_service.CreateMigrationWorkflowRequest, dict,]
+    "request_type",
+    [
+        migration_service.CreateMigrationWorkflowRequest,
+        dict,
+    ],
 )
 def test_create_migration_workflow(request_type, transport: str = "grpc"):
     client = MigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -697,7 +712,8 @@ def test_create_migration_workflow_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = MigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -716,7 +732,8 @@ async def test_create_migration_workflow_async(
     request_type=migration_service.CreateMigrationWorkflowRequest,
 ):
     client = MigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -755,7 +772,9 @@ async def test_create_migration_workflow_async_from_dict():
 
 
 def test_create_migration_workflow_field_headers():
-    client = MigrationServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = MigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -777,7 +796,10 @@ def test_create_migration_workflow_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -808,11 +830,16 @@ async def test_create_migration_workflow_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_migration_workflow_flattened():
-    client = MigrationServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = MigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -840,7 +867,9 @@ def test_create_migration_workflow_flattened():
 
 
 def test_create_migration_workflow_flattened_error():
-    client = MigrationServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = MigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -904,11 +933,16 @@ async def test_create_migration_workflow_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [migration_service.GetMigrationWorkflowRequest, dict,]
+    "request_type",
+    [
+        migration_service.GetMigrationWorkflowRequest,
+        dict,
+    ],
 )
 def test_get_migration_workflow(request_type, transport: str = "grpc"):
     client = MigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -943,7 +977,8 @@ def test_get_migration_workflow_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = MigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -962,7 +997,8 @@ async def test_get_migration_workflow_async(
     request_type=migration_service.GetMigrationWorkflowRequest,
 ):
     client = MigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1001,7 +1037,9 @@ async def test_get_migration_workflow_async_from_dict():
 
 
 def test_get_migration_workflow_field_headers():
-    client = MigrationServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = MigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1023,7 +1061,10 @@ def test_get_migration_workflow_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1054,11 +1095,16 @@ async def test_get_migration_workflow_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_migration_workflow_flattened():
-    client = MigrationServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = MigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1068,7 +1114,9 @@ def test_get_migration_workflow_flattened():
         call.return_value = migration_entities.MigrationWorkflow()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_migration_workflow(name="name_value",)
+        client.get_migration_workflow(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1080,13 +1128,16 @@ def test_get_migration_workflow_flattened():
 
 
 def test_get_migration_workflow_flattened_error():
-    client = MigrationServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = MigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_migration_workflow(
-            migration_service.GetMigrationWorkflowRequest(), name="name_value",
+            migration_service.GetMigrationWorkflowRequest(),
+            name="name_value",
         )
 
 
@@ -1108,7 +1159,9 @@ async def test_get_migration_workflow_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_migration_workflow(name="name_value",)
+        response = await client.get_migration_workflow(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1129,16 +1182,22 @@ async def test_get_migration_workflow_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_migration_workflow(
-            migration_service.GetMigrationWorkflowRequest(), name="name_value",
+            migration_service.GetMigrationWorkflowRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [migration_service.ListMigrationWorkflowsRequest, dict,]
+    "request_type",
+    [
+        migration_service.ListMigrationWorkflowsRequest,
+        dict,
+    ],
 )
 def test_list_migration_workflows(request_type, transport: str = "grpc"):
     client = MigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1169,7 +1228,8 @@ def test_list_migration_workflows_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = MigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1188,7 +1248,8 @@ async def test_list_migration_workflows_async(
     request_type=migration_service.ListMigrationWorkflowsRequest,
 ):
     client = MigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1223,7 +1284,9 @@ async def test_list_migration_workflows_async_from_dict():
 
 
 def test_list_migration_workflows_field_headers():
-    client = MigrationServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = MigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1245,7 +1308,10 @@ def test_list_migration_workflows_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1276,11 +1342,16 @@ async def test_list_migration_workflows_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_migration_workflows_flattened():
-    client = MigrationServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = MigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1290,7 +1361,9 @@ def test_list_migration_workflows_flattened():
         call.return_value = migration_service.ListMigrationWorkflowsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_migration_workflows(parent="parent_value",)
+        client.list_migration_workflows(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1302,13 +1375,16 @@ def test_list_migration_workflows_flattened():
 
 
 def test_list_migration_workflows_flattened_error():
-    client = MigrationServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = MigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_migration_workflows(
-            migration_service.ListMigrationWorkflowsRequest(), parent="parent_value",
+            migration_service.ListMigrationWorkflowsRequest(),
+            parent="parent_value",
         )
 
 
@@ -1330,7 +1406,9 @@ async def test_list_migration_workflows_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_migration_workflows(parent="parent_value",)
+        response = await client.list_migration_workflows(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1351,13 +1429,15 @@ async def test_list_migration_workflows_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_migration_workflows(
-            migration_service.ListMigrationWorkflowsRequest(), parent="parent_value",
+            migration_service.ListMigrationWorkflowsRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_migration_workflows_pager(transport_name: str = "grpc"):
     client = MigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1375,10 +1455,13 @@ def test_list_migration_workflows_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             migration_service.ListMigrationWorkflowsResponse(
-                migration_workflows=[], next_page_token="def",
+                migration_workflows=[],
+                next_page_token="def",
             ),
             migration_service.ListMigrationWorkflowsResponse(
-                migration_workflows=[migration_entities.MigrationWorkflow(),],
+                migration_workflows=[
+                    migration_entities.MigrationWorkflow(),
+                ],
                 next_page_token="ghi",
             ),
             migration_service.ListMigrationWorkflowsResponse(
@@ -1405,7 +1488,8 @@ def test_list_migration_workflows_pager(transport_name: str = "grpc"):
 
 def test_list_migration_workflows_pages(transport_name: str = "grpc"):
     client = MigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1423,10 +1507,13 @@ def test_list_migration_workflows_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             migration_service.ListMigrationWorkflowsResponse(
-                migration_workflows=[], next_page_token="def",
+                migration_workflows=[],
+                next_page_token="def",
             ),
             migration_service.ListMigrationWorkflowsResponse(
-                migration_workflows=[migration_entities.MigrationWorkflow(),],
+                migration_workflows=[
+                    migration_entities.MigrationWorkflow(),
+                ],
                 next_page_token="ghi",
             ),
             migration_service.ListMigrationWorkflowsResponse(
@@ -1465,10 +1552,13 @@ async def test_list_migration_workflows_async_pager():
                 next_page_token="abc",
             ),
             migration_service.ListMigrationWorkflowsResponse(
-                migration_workflows=[], next_page_token="def",
+                migration_workflows=[],
+                next_page_token="def",
             ),
             migration_service.ListMigrationWorkflowsResponse(
-                migration_workflows=[migration_entities.MigrationWorkflow(),],
+                migration_workflows=[
+                    migration_entities.MigrationWorkflow(),
+                ],
                 next_page_token="ghi",
             ),
             migration_service.ListMigrationWorkflowsResponse(
@@ -1479,7 +1569,9 @@ async def test_list_migration_workflows_async_pager():
             ),
             RuntimeError,
         )
-        async_pager = await client.list_migration_workflows(request={},)
+        async_pager = await client.list_migration_workflows(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -1514,10 +1606,13 @@ async def test_list_migration_workflows_async_pages():
                 next_page_token="abc",
             ),
             migration_service.ListMigrationWorkflowsResponse(
-                migration_workflows=[], next_page_token="def",
+                migration_workflows=[],
+                next_page_token="def",
             ),
             migration_service.ListMigrationWorkflowsResponse(
-                migration_workflows=[migration_entities.MigrationWorkflow(),],
+                migration_workflows=[
+                    migration_entities.MigrationWorkflow(),
+                ],
                 next_page_token="ghi",
             ),
             migration_service.ListMigrationWorkflowsResponse(
@@ -1536,11 +1631,16 @@ async def test_list_migration_workflows_async_pages():
 
 
 @pytest.mark.parametrize(
-    "request_type", [migration_service.DeleteMigrationWorkflowRequest, dict,]
+    "request_type",
+    [
+        migration_service.DeleteMigrationWorkflowRequest,
+        dict,
+    ],
 )
 def test_delete_migration_workflow(request_type, transport: str = "grpc"):
     client = MigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1568,7 +1668,8 @@ def test_delete_migration_workflow_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = MigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1587,7 +1688,8 @@ async def test_delete_migration_workflow_async(
     request_type=migration_service.DeleteMigrationWorkflowRequest,
 ):
     client = MigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1617,7 +1719,9 @@ async def test_delete_migration_workflow_async_from_dict():
 
 
 def test_delete_migration_workflow_field_headers():
-    client = MigrationServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = MigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1639,7 +1743,10 @@ def test_delete_migration_workflow_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1668,11 +1775,16 @@ async def test_delete_migration_workflow_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_migration_workflow_flattened():
-    client = MigrationServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = MigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1682,7 +1794,9 @@ def test_delete_migration_workflow_flattened():
         call.return_value = None
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_migration_workflow(name="name_value",)
+        client.delete_migration_workflow(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1694,13 +1808,16 @@ def test_delete_migration_workflow_flattened():
 
 
 def test_delete_migration_workflow_flattened_error():
-    client = MigrationServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = MigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_migration_workflow(
-            migration_service.DeleteMigrationWorkflowRequest(), name="name_value",
+            migration_service.DeleteMigrationWorkflowRequest(),
+            name="name_value",
         )
 
 
@@ -1720,7 +1837,9 @@ async def test_delete_migration_workflow_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_migration_workflow(name="name_value",)
+        response = await client.delete_migration_workflow(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1741,16 +1860,22 @@ async def test_delete_migration_workflow_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_migration_workflow(
-            migration_service.DeleteMigrationWorkflowRequest(), name="name_value",
+            migration_service.DeleteMigrationWorkflowRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [migration_service.StartMigrationWorkflowRequest, dict,]
+    "request_type",
+    [
+        migration_service.StartMigrationWorkflowRequest,
+        dict,
+    ],
 )
 def test_start_migration_workflow(request_type, transport: str = "grpc"):
     client = MigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1778,7 +1903,8 @@ def test_start_migration_workflow_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = MigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1797,7 +1923,8 @@ async def test_start_migration_workflow_async(
     request_type=migration_service.StartMigrationWorkflowRequest,
 ):
     client = MigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1827,7 +1954,9 @@ async def test_start_migration_workflow_async_from_dict():
 
 
 def test_start_migration_workflow_field_headers():
-    client = MigrationServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = MigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1849,7 +1978,10 @@ def test_start_migration_workflow_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1878,11 +2010,16 @@ async def test_start_migration_workflow_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_start_migration_workflow_flattened():
-    client = MigrationServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = MigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1892,7 +2029,9 @@ def test_start_migration_workflow_flattened():
         call.return_value = None
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.start_migration_workflow(name="name_value",)
+        client.start_migration_workflow(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1904,13 +2043,16 @@ def test_start_migration_workflow_flattened():
 
 
 def test_start_migration_workflow_flattened_error():
-    client = MigrationServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = MigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.start_migration_workflow(
-            migration_service.StartMigrationWorkflowRequest(), name="name_value",
+            migration_service.StartMigrationWorkflowRequest(),
+            name="name_value",
         )
 
 
@@ -1930,7 +2072,9 @@ async def test_start_migration_workflow_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.start_migration_workflow(name="name_value",)
+        response = await client.start_migration_workflow(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1951,16 +2095,22 @@ async def test_start_migration_workflow_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.start_migration_workflow(
-            migration_service.StartMigrationWorkflowRequest(), name="name_value",
+            migration_service.StartMigrationWorkflowRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [migration_service.GetMigrationSubtaskRequest, dict,]
+    "request_type",
+    [
+        migration_service.GetMigrationSubtaskRequest,
+        dict,
+    ],
 )
 def test_get_migration_subtask(request_type, transport: str = "grpc"):
     client = MigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1999,7 +2149,8 @@ def test_get_migration_subtask_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = MigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2018,7 +2169,8 @@ async def test_get_migration_subtask_async(
     request_type=migration_service.GetMigrationSubtaskRequest,
 ):
     client = MigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2061,7 +2213,9 @@ async def test_get_migration_subtask_async_from_dict():
 
 
 def test_get_migration_subtask_field_headers():
-    client = MigrationServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = MigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2083,7 +2237,10 @@ def test_get_migration_subtask_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2114,11 +2271,16 @@ async def test_get_migration_subtask_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_migration_subtask_flattened():
-    client = MigrationServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = MigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2128,7 +2290,9 @@ def test_get_migration_subtask_flattened():
         call.return_value = migration_entities.MigrationSubtask()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_migration_subtask(name="name_value",)
+        client.get_migration_subtask(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2140,13 +2304,16 @@ def test_get_migration_subtask_flattened():
 
 
 def test_get_migration_subtask_flattened_error():
-    client = MigrationServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = MigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_migration_subtask(
-            migration_service.GetMigrationSubtaskRequest(), name="name_value",
+            migration_service.GetMigrationSubtaskRequest(),
+            name="name_value",
         )
 
 
@@ -2168,7 +2335,9 @@ async def test_get_migration_subtask_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_migration_subtask(name="name_value",)
+        response = await client.get_migration_subtask(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2189,16 +2358,22 @@ async def test_get_migration_subtask_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_migration_subtask(
-            migration_service.GetMigrationSubtaskRequest(), name="name_value",
+            migration_service.GetMigrationSubtaskRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [migration_service.ListMigrationSubtasksRequest, dict,]
+    "request_type",
+    [
+        migration_service.ListMigrationSubtasksRequest,
+        dict,
+    ],
 )
 def test_list_migration_subtasks(request_type, transport: str = "grpc"):
     client = MigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2229,7 +2404,8 @@ def test_list_migration_subtasks_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = MigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2248,7 +2424,8 @@ async def test_list_migration_subtasks_async(
     request_type=migration_service.ListMigrationSubtasksRequest,
 ):
     client = MigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2283,7 +2460,9 @@ async def test_list_migration_subtasks_async_from_dict():
 
 
 def test_list_migration_subtasks_field_headers():
-    client = MigrationServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = MigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2305,7 +2484,10 @@ def test_list_migration_subtasks_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2336,11 +2518,16 @@ async def test_list_migration_subtasks_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_migration_subtasks_flattened():
-    client = MigrationServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = MigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2350,7 +2537,9 @@ def test_list_migration_subtasks_flattened():
         call.return_value = migration_service.ListMigrationSubtasksResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_migration_subtasks(parent="parent_value",)
+        client.list_migration_subtasks(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2362,13 +2551,16 @@ def test_list_migration_subtasks_flattened():
 
 
 def test_list_migration_subtasks_flattened_error():
-    client = MigrationServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = MigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_migration_subtasks(
-            migration_service.ListMigrationSubtasksRequest(), parent="parent_value",
+            migration_service.ListMigrationSubtasksRequest(),
+            parent="parent_value",
         )
 
 
@@ -2390,7 +2582,9 @@ async def test_list_migration_subtasks_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_migration_subtasks(parent="parent_value",)
+        response = await client.list_migration_subtasks(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2411,13 +2605,15 @@ async def test_list_migration_subtasks_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_migration_subtasks(
-            migration_service.ListMigrationSubtasksRequest(), parent="parent_value",
+            migration_service.ListMigrationSubtasksRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_migration_subtasks_pager(transport_name: str = "grpc"):
     client = MigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2435,10 +2631,13 @@ def test_list_migration_subtasks_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             migration_service.ListMigrationSubtasksResponse(
-                migration_subtasks=[], next_page_token="def",
+                migration_subtasks=[],
+                next_page_token="def",
             ),
             migration_service.ListMigrationSubtasksResponse(
-                migration_subtasks=[migration_entities.MigrationSubtask(),],
+                migration_subtasks=[
+                    migration_entities.MigrationSubtask(),
+                ],
                 next_page_token="ghi",
             ),
             migration_service.ListMigrationSubtasksResponse(
@@ -2465,7 +2664,8 @@ def test_list_migration_subtasks_pager(transport_name: str = "grpc"):
 
 def test_list_migration_subtasks_pages(transport_name: str = "grpc"):
     client = MigrationServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2483,10 +2683,13 @@ def test_list_migration_subtasks_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             migration_service.ListMigrationSubtasksResponse(
-                migration_subtasks=[], next_page_token="def",
+                migration_subtasks=[],
+                next_page_token="def",
             ),
             migration_service.ListMigrationSubtasksResponse(
-                migration_subtasks=[migration_entities.MigrationSubtask(),],
+                migration_subtasks=[
+                    migration_entities.MigrationSubtask(),
+                ],
                 next_page_token="ghi",
             ),
             migration_service.ListMigrationSubtasksResponse(
@@ -2525,10 +2728,13 @@ async def test_list_migration_subtasks_async_pager():
                 next_page_token="abc",
             ),
             migration_service.ListMigrationSubtasksResponse(
-                migration_subtasks=[], next_page_token="def",
+                migration_subtasks=[],
+                next_page_token="def",
             ),
             migration_service.ListMigrationSubtasksResponse(
-                migration_subtasks=[migration_entities.MigrationSubtask(),],
+                migration_subtasks=[
+                    migration_entities.MigrationSubtask(),
+                ],
                 next_page_token="ghi",
             ),
             migration_service.ListMigrationSubtasksResponse(
@@ -2539,7 +2745,9 @@ async def test_list_migration_subtasks_async_pager():
             ),
             RuntimeError,
         )
-        async_pager = await client.list_migration_subtasks(request={},)
+        async_pager = await client.list_migration_subtasks(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -2574,10 +2782,13 @@ async def test_list_migration_subtasks_async_pages():
                 next_page_token="abc",
             ),
             migration_service.ListMigrationSubtasksResponse(
-                migration_subtasks=[], next_page_token="def",
+                migration_subtasks=[],
+                next_page_token="def",
             ),
             migration_service.ListMigrationSubtasksResponse(
-                migration_subtasks=[migration_entities.MigrationSubtask(),],
+                migration_subtasks=[
+                    migration_entities.MigrationSubtask(),
+                ],
                 next_page_token="ghi",
             ),
             migration_service.ListMigrationSubtasksResponse(
@@ -2602,7 +2813,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = MigrationServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -2622,7 +2834,10 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = MigrationServiceClient(client_options=options, transport=transport,)
+        client = MigrationServiceClient(
+            client_options=options,
+            transport=transport,
+        )
 
     # It is an error to provide an api_key and a credential.
     options = mock.Mock()
@@ -2638,7 +2853,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = MigrationServiceClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -2683,8 +2899,13 @@ def test_transport_adc(transport_class):
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
-    client = MigrationServiceClient(credentials=ga_credentials.AnonymousCredentials(),)
-    assert isinstance(client.transport, transports.MigrationServiceGrpcTransport,)
+    client = MigrationServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    assert isinstance(
+        client.transport,
+        transports.MigrationServiceGrpcTransport,
+    )
 
 
 def test_migration_service_base_transport_error():
@@ -2735,7 +2956,8 @@ def test_migration_service_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.MigrationServiceTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -2893,7 +3115,8 @@ def test_migration_service_grpc_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.MigrationServiceGrpcTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -2905,7 +3128,8 @@ def test_migration_service_grpc_asyncio_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.MigrationServiceGrpcAsyncIOTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -3018,7 +3242,10 @@ def test_migration_subtask_path():
     workflow = "whelk"
     subtask = "octopus"
     expected = "projects/{project}/locations/{location}/workflows/{workflow}/subtasks/{subtask}".format(
-        project=project, location=location, workflow=workflow, subtask=subtask,
+        project=project,
+        location=location,
+        workflow=workflow,
+        subtask=subtask,
     )
     actual = MigrationServiceClient.migration_subtask_path(
         project, location, workflow, subtask
@@ -3045,7 +3272,9 @@ def test_migration_workflow_path():
     location = "nautilus"
     workflow = "scallop"
     expected = "projects/{project}/locations/{location}/workflows/{workflow}".format(
-        project=project, location=location, workflow=workflow,
+        project=project,
+        location=location,
+        workflow=workflow,
     )
     actual = MigrationServiceClient.migration_workflow_path(project, location, workflow)
     assert expected == actual
@@ -3086,7 +3315,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "oyster"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = MigrationServiceClient.common_folder_path(folder)
     assert expected == actual
 
@@ -3104,7 +3335,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "cuttlefish"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = MigrationServiceClient.common_organization_path(organization)
     assert expected == actual
 
@@ -3122,7 +3355,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "winkle"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = MigrationServiceClient.common_project_path(project)
     assert expected == actual
 
@@ -3142,7 +3377,8 @@ def test_common_location_path():
     project = "scallop"
     location = "abalone"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = MigrationServiceClient.common_location_path(project, location)
     assert expected == actual
@@ -3167,7 +3403,8 @@ def test_client_with_default_client_info():
         transports.MigrationServiceTransport, "_prep_wrapped_messages"
     ) as prep:
         client = MigrationServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -3176,7 +3413,8 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = MigrationServiceClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -3184,7 +3422,8 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = MigrationServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     with mock.patch.object(
         type(getattr(client.transport, "grpc_channel")), "close"
