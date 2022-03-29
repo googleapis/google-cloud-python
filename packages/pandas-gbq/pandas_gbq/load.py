@@ -59,7 +59,8 @@ def split_dataframe(dataframe, chunksize=None):
 
 
 def cast_dataframe_for_parquet(
-    dataframe: pandas.DataFrame, schema: Optional[Dict[str, Any]],
+    dataframe: pandas.DataFrame,
+    schema: Optional[Dict[str, Any]],
 ) -> pandas.DataFrame:
     """Cast columns to needed dtype when writing parquet files.
 

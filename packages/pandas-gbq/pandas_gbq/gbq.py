@@ -338,7 +338,7 @@ class GbqConnector(object):
 
         # BQ Queries costs $5 per TB. First 1 TB per month is free
         # see here for more: https://cloud.google.com/bigquery/pricing
-        self.query_price_for_TB = 5.0 / 2 ** 40  # USD/TB
+        self.query_price_for_TB = 5.0 / 2**40  # USD/TB
 
     def _start_timer(self):
         self.start = time.time()
@@ -500,7 +500,8 @@ class GbqConnector(object):
             bytes_billed = query_reply.total_bytes_billed or 0
             logger.debug(
                 "Query done.\nProcessed: {} Billed: {}".format(
-                    self.sizeof_fmt(bytes_processed), self.sizeof_fmt(bytes_billed),
+                    self.sizeof_fmt(bytes_processed),
+                    self.sizeof_fmt(bytes_billed),
                 )
             )
             logger.debug(
@@ -533,7 +534,11 @@ class GbqConnector(object):
         )
 
     def _download_results(
-        self, rows_iter, max_results=None, progress_bar_type=None, user_dtypes=None,
+        self,
+        rows_iter,
+        max_results=None,
+        progress_bar_type=None,
+        user_dtypes=None,
     ):
         # No results are desired, so don't bother downloading anything.
         if max_results == 0:
@@ -1309,7 +1314,9 @@ class _Table(GbqConnector):
             self.dataset_id
         ):
             _Dataset(
-                self.project_id, credentials=self.credentials, location=self.location,
+                self.project_id,
+                credentials=self.credentials,
+                location=self.location,
             ).create(self.dataset_id)
 
         table_ref = TableReference(

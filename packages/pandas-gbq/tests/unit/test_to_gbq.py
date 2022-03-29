@@ -41,8 +41,8 @@ def test_to_gbq_create_dataset_translates_exception(mock_bigquery_client):
     mock_bigquery_client.get_dataset.side_effect = google.api_core.exceptions.NotFound(
         "my_dataset"
     )
-    mock_bigquery_client.create_dataset.side_effect = google.api_core.exceptions.InternalServerError(
-        "something went wrong"
+    mock_bigquery_client.create_dataset.side_effect = (
+        google.api_core.exceptions.InternalServerError("something went wrong")
     )
 
     with pytest.raises(gbq.GenericGBQException):

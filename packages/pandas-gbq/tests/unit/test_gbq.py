@@ -339,7 +339,9 @@ def test_to_gbq_w_project_table(mock_bigquery_client):
         "my_table"
     )
     gbq.to_gbq(
-        DataFrame(), "project_table.my_dataset.my_table", project_id="project_client",
+        DataFrame(),
+        "project_table.my_dataset.my_table",
+        project_id="project_client",
     )
 
     mock_bigquery_client.get_table.assert_called_with(
@@ -390,8 +392,8 @@ def test_dataset_exists_true(mock_bigquery_client):
 def test_dataset_exists_translates_exception(mock_bigquery_client):
     connector = gbq._Dataset("my-project")
     connector.client = mock_bigquery_client
-    mock_bigquery_client.get_dataset.side_effect = google.api_core.exceptions.InternalServerError(
-        "something went wrong"
+    mock_bigquery_client.get_dataset.side_effect = (
+        google.api_core.exceptions.InternalServerError("something went wrong")
     )
     with pytest.raises(gbq.GenericGBQException):
         connector.exists("not_gonna_work")
@@ -413,8 +415,8 @@ def test_table_create_translates_exception(mock_bigquery_client):
     mock_bigquery_client.get_table.side_effect = google.api_core.exceptions.NotFound(
         "nope"
     )
-    mock_bigquery_client.create_table.side_effect = google.api_core.exceptions.InternalServerError(
-        "something went wrong"
+    mock_bigquery_client.create_table.side_effect = (
+        google.api_core.exceptions.InternalServerError("something went wrong")
     )
     with pytest.raises(gbq.GenericGBQException):
         connector.create(
@@ -435,8 +437,8 @@ def test_table_delete_notfound_ok(mock_bigquery_client):
 def test_table_delete_translates_exception(mock_bigquery_client):
     connector = gbq._Table("my-project", "my_dataset")
     connector.client = mock_bigquery_client
-    mock_bigquery_client.delete_table.side_effect = google.api_core.exceptions.InternalServerError(
-        "something went wrong"
+    mock_bigquery_client.delete_table.side_effect = (
+        google.api_core.exceptions.InternalServerError("something went wrong")
     )
     with pytest.raises(gbq.GenericGBQException):
         connector.delete("not_gonna_work")
@@ -461,8 +463,8 @@ def test_table_exists_true(mock_bigquery_client):
 def test_table_exists_translates_exception(mock_bigquery_client):
     connector = gbq._Table("my-project", "my_dataset")
     connector.client = mock_bigquery_client
-    mock_bigquery_client.get_table.side_effect = google.api_core.exceptions.InternalServerError(
-        "something went wrong"
+    mock_bigquery_client.get_table.side_effect = (
+        google.api_core.exceptions.InternalServerError("something went wrong")
     )
     with pytest.raises(gbq.GenericGBQException):
         connector.exists("not_gonna_work")
@@ -488,7 +490,9 @@ def test_read_gbq_with_inferred_project_id_from_service_account_credentials(
 ):
     mock_service_account_credentials.project_id = "service_account_project_id"
     df = gbq.read_gbq(
-        "SELECT 1", dialect="standard", credentials=mock_service_account_credentials,
+        "SELECT 1",
+        dialect="standard",
+        credentials=mock_service_account_credentials,
     )
     assert df is not None
     mock_bigquery_client.query.assert_called_once_with(
@@ -504,7 +508,9 @@ def test_read_gbq_without_inferred_project_id_from_compute_engine_credentials(
 ):
     with pytest.raises(ValueError, match="Could not determine project ID"):
         gbq.read_gbq(
-            "SELECT 1", dialect="standard", credentials=mock_compute_engine_credentials,
+            "SELECT 1",
+            dialect="standard",
+            credentials=mock_compute_engine_credentials,
         )
 
 
@@ -547,7 +553,8 @@ def test_read_gbq_with_old_bq_raises_importerror(monkeypatch):
     monkeypatch.setattr(FEATURES, "_bigquery_installed_version", None)
     with pytest.raises(ImportError, match="google-cloud-bigquery"):
         gbq.read_gbq(
-            "SELECT 1", project_id="my-project",
+            "SELECT 1",
+            project_id="my-project",
         )
 
 
@@ -558,7 +565,10 @@ def test_read_gbq_with_verbose_old_pandas_no_warnings(monkeypatch, recwarn):
         mock.PropertyMock(return_value=False),
     )
     gbq.read_gbq(
-        "SELECT 1", project_id="my-project", dialect="standard", verbose=True,
+        "SELECT 1",
+        project_id="my-project",
+        dialect="standard",
+        verbose=True,
     )
     assert len(recwarn) == 0
 
@@ -678,7 +688,9 @@ def test_read_gbq_use_bqstorage_api(
         )
     else:
         mock_list_rows.to_dataframe.assert_called_once_with(
-            create_bqstorage_client=True, dtypes=mock.ANY, progress_bar_type=mock.ANY,
+            create_bqstorage_client=True,
+            dtypes=mock.ANY,
+            progress_bar_type=mock.ANY,
         )
 
 

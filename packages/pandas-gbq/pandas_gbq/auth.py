@@ -58,7 +58,8 @@ def get_credentials_cache(reauth):
 
     if reauth:
         return pydata_google_auth.cache.WriteOnlyCredentialsCache(
-            dirname=CREDENTIALS_CACHE_DIRNAME, filename=CREDENTIALS_CACHE_FILENAME,
+            dirname=CREDENTIALS_CACHE_DIRNAME,
+            filename=CREDENTIALS_CACHE_FILENAME,
         )
     return pydata_google_auth.cache.ReadWriteCredentialsCache(
         dirname=CREDENTIALS_CACHE_DIRNAME, filename=CREDENTIALS_CACHE_FILENAME

@@ -35,11 +35,11 @@ def test_encode_chunk_with_unicode():
     df = pandas.DataFrame(
         numpy.random.randn(6, 4), index=range(6), columns=list("ABCD")
     )
-    df["s"] = u"信用卡"
+    df["s"] = "信用卡"
     csv_buffer = load.encode_chunk(df)
     csv_bytes = csv_buffer.read()
     csv_string = csv_bytes.decode("utf-8")
-    assert u"信用卡" in csv_string
+    assert "信用卡" in csv_string
 
 
 def test_encode_chunk_with_floats():
@@ -63,7 +63,9 @@ def test_encode_chunk_with_floats():
     csv_buffer = load.encode_chunk(input_df)
     round_trip = pandas.read_csv(csv_buffer, header=None, float_precision="round_trip")
     pandas.testing.assert_frame_equal(
-        round_trip, input_df, check_exact=True,
+        round_trip,
+        input_df,
+        check_exact=True,
     )
 
 
@@ -312,7 +314,8 @@ def test_cast_dataframe_for_parquet_w_string_date():
         {
             "row_num": [0, 1, 2],
             "date_col": pandas.Series(
-                ["2021-04-17", "1999-12-31", "2038-01-19"], dtype="object",
+                ["2021-04-17", "1999-12-31", "2038-01-19"],
+                dtype="object",
             ),
             "row_num_2": [0, 1, 2],
         },
@@ -330,7 +333,8 @@ def test_cast_dataframe_for_parquet_w_string_date():
         {
             "row_num": [0, 1, 2],
             "date_col": pandas.Series(
-                ["2021-04-17", "1999-12-31", "2038-01-19"], dtype=db_dtypes.DateDtype(),
+                ["2021-04-17", "1999-12-31", "2038-01-19"],
+                dtype=db_dtypes.DateDtype(),
             ),
             "row_num_2": [0, 1, 2],
         },

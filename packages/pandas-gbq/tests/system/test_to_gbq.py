@@ -112,7 +112,10 @@ def test_series_round_trip(
     round_trip = read_gbq(table_id)
     round_trip_series = round_trip["test_col"].sort_values().reset_index(drop=True)
     pandas.testing.assert_series_equal(
-        round_trip_series, input_series, check_exact=True, check_names=False,
+        round_trip_series,
+        input_series,
+        check_exact=True,
+        check_names=False,
     )
 
 
@@ -131,7 +134,8 @@ DATAFRAME_ROUND_TRIPS = [
             {
                 "row_num": [0, 1, 2],
                 "date_col": pandas.Series(
-                    ["2021-04-17", "1999-12-31", "2038-01-19"], dtype="datetime64[ns]",
+                    ["2021-04-17", "1999-12-31", "2038-01-19"],
+                    dtype="datetime64[ns]",
                 ),
             }
         ),
@@ -177,7 +181,8 @@ DATAFRAME_ROUND_TRIPS = [
     # https://github.com/googleapis/python-bigquery-pandas/issues/421
     DataFrameRoundTripTestCase(
         input_df=pandas.DataFrame(
-            {"row_num": [123], "num_col": [1.25]}, columns=["row_num", "num_col"],
+            {"row_num": [123], "num_col": [1.25]},
+            columns=["row_num", "num_col"],
         ),
         expected_df=pandas.DataFrame(
             {"row_num": [123], "num_col": [decimal.Decimal("1.25")]},

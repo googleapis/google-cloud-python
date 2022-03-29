@@ -30,8 +30,14 @@ def module_under_test():
         ),
         # Original schema from API may contain legacy SQL datatype names.
         # https://github.com/pydata/pandas-gbq/issues/322
-        ([{"name": "A", "type": "INTEGER"}], [{"name": "A", "type": "INT64"}],),
-        ([{"name": "A", "type": "BOOL"}], [{"name": "A", "type": "BOOLEAN"}],),
+        (
+            [{"name": "A", "type": "INTEGER"}],
+            [{"name": "A", "type": "INT64"}],
+        ),
+        (
+            [{"name": "A", "type": "BOOL"}],
+            [{"name": "A", "type": "BOOLEAN"}],
+        ),
         (
             # TODO: include sub-fields when struct uploads are supported.
             [{"name": "A", "type": "STRUCT"}],
@@ -79,7 +85,7 @@ def test_schema_is_subset_fails_if_not_subset(module_under_test):
             {"fields": [{"name": "col1", "type": "FLOAT"}]},
         ),
         (
-            pandas.DataFrame(data={"col1": [u"hello", u"world"]}),
+            pandas.DataFrame(data={"col1": ["hello", "world"]}),
             {"fields": [{"name": "col1", "type": "STRING"}]},
         ),
         (
@@ -90,7 +96,7 @@ def test_schema_is_subset_fails_if_not_subset(module_under_test):
             pandas.DataFrame(
                 data={
                     "col1": [datetime.datetime.now()],
-                    "col2": [u"hello"],
+                    "col2": ["hello"],
                     "col3": [3.14],
                     "col4": [True],
                     "col5": [4],

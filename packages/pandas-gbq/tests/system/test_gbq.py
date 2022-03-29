@@ -87,7 +87,8 @@ def get_schema(gbq_connector: gbq.GbqConnector, dataset_id: str, table_id: str):
 
     bqclient = gbq_connector.client
     table_ref = bigquery.TableReference(
-        bigquery.DatasetReference(bqclient.project, dataset_id), table_id,
+        bigquery.DatasetReference(bqclient.project, dataset_id),
+        table_id,
     )
 
     try:
@@ -518,7 +519,8 @@ class TestReadGBQIntegration(object):
             dialect="standard",
         )
         tm.assert_frame_equal(
-            df, DataFrame([[["a", "x", "b", "y", "c", "z"]]], columns=["letters"]),
+            df,
+            DataFrame([[["a", "x", "b", "y", "c", "z"]]], columns=["letters"]),
         )
 
     def test_array_length_zero(self, project_id):
@@ -565,7 +567,8 @@ class TestReadGBQIntegration(object):
             dialect="standard",
         )
         tm.assert_frame_equal(
-            df, DataFrame([["a", [1, 3]], ["b", [2]]], columns=["letter", "numbers"]),
+            df,
+            DataFrame([["a", [1, 3]], ["b", [2]]], columns=["letter", "numbers"]),
         )
 
     def test_array_of_floats(self, project_id):
@@ -990,7 +993,9 @@ class TestToGBQIntegration(object):
         test_id = "21"
         test_size = 6
         df = DataFrame(
-            np.random.randn(test_size, 4), index=range(test_size), columns=list("ABCD"),
+            np.random.randn(test_size, 4),
+            index=range(test_size),
+            columns=list("ABCD"),
         )
         df["times"] = pandas.Series(
             [
@@ -1069,7 +1074,8 @@ class TestToGBQIntegration(object):
 
         table = bigquery_client.get_table(
             bigquery.TableReference(
-                bigquery.DatasetReference(project_id, tokyo_dataset), "to_gbq_test",
+                bigquery.DatasetReference(project_id, tokyo_dataset),
+                "to_gbq_test",
             )
         )
         assert table.num_rows > 0

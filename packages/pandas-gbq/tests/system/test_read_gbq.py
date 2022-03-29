@@ -153,7 +153,7 @@ ORDER BY row_num ASC
                         ),
                         "float_col": [1.125, -2.375, 0.0],
                         "int64_col": pandas.Series(
-                            [(2 ** 63) - 1, -1, -(2 ** 63)], dtype="Int64"
+                            [(2**63) - 1, -1, -(2**63)], dtype="Int64"
                         ),
                         "numeric_col": [
                             decimal.Decimal("123.456789"),
@@ -377,15 +377,25 @@ ORDER BY row_num ASC
                             else "object",
                         ),
                         "bytes_col": [None],
-                        "date_col": pandas.Series([None], dtype=db_dtypes.DateDtype(),),
-                        "datetime_col": pandas.Series([None], dtype="datetime64[ns]",),
+                        "date_col": pandas.Series(
+                            [None],
+                            dtype=db_dtypes.DateDtype(),
+                        ),
+                        "datetime_col": pandas.Series(
+                            [None],
+                            dtype="datetime64[ns]",
+                        ),
                         "float_col": pandas.Series([None], dtype="float64"),
                         "int64_col": pandas.Series([None], dtype="Int64"),
                         "numeric_col": [None],
                         "string_col": [None],
-                        "time_col": pandas.Series([None], dtype=db_dtypes.TimeDtype(),),
+                        "time_col": pandas.Series(
+                            [None],
+                            dtype=db_dtypes.TimeDtype(),
+                        ),
                         "timestamp_col": pandas.Series(
-                            [None], dtype="datetime64[ns]",
+                            [None],
+                            dtype="datetime64[ns]",
                         ).dt.tz_localize(datetime.timezone.utc),
                     }
                 ),
@@ -605,19 +615,30 @@ ORDER BY row_num ASC
         {
             "row_num": pandas.Series([], dtype="Int64"),
             "bool_col": pandas.Series(
-                [], dtype="boolean" if FEATURES.pandas_has_boolean_dtype else "bool",
+                [],
+                dtype="boolean" if FEATURES.pandas_has_boolean_dtype else "bool",
             ),
             "bytes_col": pandas.Series([], dtype="object"),
-            "date_col": pandas.Series([], dtype=db_dtypes.DateDtype(),),
-            "datetime_col": pandas.Series([], dtype="datetime64[ns]",),
+            "date_col": pandas.Series(
+                [],
+                dtype=db_dtypes.DateDtype(),
+            ),
+            "datetime_col": pandas.Series(
+                [],
+                dtype="datetime64[ns]",
+            ),
             "float_col": pandas.Series([], dtype="float64"),
             "int64_col": pandas.Series([], dtype="Int64"),
             "numeric_col": pandas.Series([], dtype="object"),
             "string_col": pandas.Series([], dtype="object"),
-            "time_col": pandas.Series([], dtype=db_dtypes.TimeDtype(),),
-            "timestamp_col": pandas.Series([], dtype="datetime64[ns]",).dt.tz_localize(
-                datetime.timezone.utc
+            "time_col": pandas.Series(
+                [],
+                dtype=db_dtypes.TimeDtype(),
             ),
+            "timestamp_col": pandas.Series(
+                [],
+                dtype="datetime64[ns]",
+            ).dt.tz_localize(datetime.timezone.utc),
         }
     )
     result = read_gbq(query, use_bqstorage_api=use_bqstorage_api)
