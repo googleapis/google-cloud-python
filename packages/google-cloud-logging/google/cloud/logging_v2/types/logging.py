@@ -60,7 +60,10 @@ class DeleteLogRequest(proto.Message):
             [LogEntry][google.logging.v2.LogEntry].
     """
 
-    log_name = proto.Field(proto.STRING, number=1,)
+    log_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class WriteLogEntriesRequest(proto.Message):
@@ -152,19 +155,37 @@ class WriteLogEntriesRequest(proto.Message):
             properly before sending valuable data.
     """
 
-    log_name = proto.Field(proto.STRING, number=1,)
-    resource = proto.Field(
-        proto.MESSAGE, number=2, message=monitored_resource_pb2.MonitoredResource,
+    log_name = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    labels = proto.MapField(proto.STRING, proto.STRING, number=3,)
-    entries = proto.RepeatedField(proto.MESSAGE, number=4, message=log_entry.LogEntry,)
-    partial_success = proto.Field(proto.BOOL, number=5,)
-    dry_run = proto.Field(proto.BOOL, number=6,)
+    resource = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=monitored_resource_pb2.MonitoredResource,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=3,
+    )
+    entries = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message=log_entry.LogEntry,
+    )
+    partial_success = proto.Field(
+        proto.BOOL,
+        number=5,
+    )
+    dry_run = proto.Field(
+        proto.BOOL,
+        number=6,
+    )
 
 
 class WriteLogEntriesResponse(proto.Message):
-    r"""Result returned from WriteLogEntries.
-    """
+    r"""Result returned from WriteLogEntries."""
 
 
 class WriteLogEntriesPartialErrors(proto.Message):
@@ -182,7 +203,10 @@ class WriteLogEntriesPartialErrors(proto.Message):
     """
 
     log_entry_errors = proto.MapField(
-        proto.INT32, proto.MESSAGE, number=1, message=status_pb2.Status,
+        proto.INT32,
+        proto.MESSAGE,
+        number=1,
+        message=status_pb2.Status,
     )
 
 
@@ -241,11 +265,26 @@ class ListLogEntriesRequest(proto.Message):
             should be identical to those in the previous call.
     """
 
-    resource_names = proto.RepeatedField(proto.STRING, number=8,)
-    filter = proto.Field(proto.STRING, number=2,)
-    order_by = proto.Field(proto.STRING, number=3,)
-    page_size = proto.Field(proto.INT32, number=4,)
-    page_token = proto.Field(proto.STRING, number=5,)
+    resource_names = proto.RepeatedField(
+        proto.STRING,
+        number=8,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    order_by = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=4,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class ListLogEntriesResponse(proto.Message):
@@ -277,8 +316,15 @@ class ListLogEntriesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    entries = proto.RepeatedField(proto.MESSAGE, number=1, message=log_entry.LogEntry,)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    entries = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=log_entry.LogEntry,
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class ListMonitoredResourceDescriptorsRequest(proto.Message):
@@ -298,8 +344,14 @@ class ListMonitoredResourceDescriptorsRequest(proto.Message):
             should be identical to those in the previous call.
     """
 
-    page_size = proto.Field(proto.INT32, number=1,)
-    page_token = proto.Field(proto.STRING, number=2,)
+    page_size = proto.Field(
+        proto.INT32,
+        number=1,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class ListMonitoredResourceDescriptorsResponse(proto.Message):
@@ -324,7 +376,10 @@ class ListMonitoredResourceDescriptorsResponse(proto.Message):
         number=1,
         message=monitored_resource_pb2.MonitoredResourceDescriptor,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class ListLogsRequest(proto.Message):
@@ -365,10 +420,22 @@ class ListLogsRequest(proto.Message):
             -  ``folders/[FOLDER_ID]``
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    resource_names = proto.RepeatedField(proto.STRING, number=8,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    resource_names = proto.RepeatedField(
+        proto.STRING,
+        number=8,
+    )
 
 
 class ListLogsResponse(proto.Message):
@@ -390,8 +457,14 @@ class ListLogsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    log_names = proto.RepeatedField(proto.STRING, number=3,)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    log_names = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class TailLogEntriesRequest(proto.Message):
@@ -432,9 +505,19 @@ class TailLogEntriesRequest(proto.Message):
             milliseconds.
     """
 
-    resource_names = proto.RepeatedField(proto.STRING, number=1,)
-    filter = proto.Field(proto.STRING, number=2,)
-    buffer_window = proto.Field(proto.MESSAGE, number=3, message=duration_pb2.Duration,)
+    resource_names = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    buffer_window = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=duration_pb2.Duration,
+    )
 
 
 class TailLogEntriesResponse(proto.Message):
@@ -476,13 +559,24 @@ class TailLogEntriesResponse(proto.Message):
             NOT_CONSUMED = 2
 
         reason = proto.Field(
-            proto.ENUM, number=1, enum="TailLogEntriesResponse.SuppressionInfo.Reason",
+            proto.ENUM,
+            number=1,
+            enum="TailLogEntriesResponse.SuppressionInfo.Reason",
         )
-        suppressed_count = proto.Field(proto.INT32, number=2,)
+        suppressed_count = proto.Field(
+            proto.INT32,
+            number=2,
+        )
 
-    entries = proto.RepeatedField(proto.MESSAGE, number=1, message=log_entry.LogEntry,)
+    entries = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=log_entry.LogEntry,
+    )
     suppression_info = proto.RepeatedField(
-        proto.MESSAGE, number=2, message=SuppressionInfo,
+        proto.MESSAGE,
+        number=2,
+        message=SuppressionInfo,
     )
 
 

@@ -443,8 +443,8 @@ class TestLogger(unittest.TestCase):
 
     def test_log_lowercase_severity(self):
         """
-       lower case severity strings should be accepted
-       """
+        lower case severity strings should be accepted
+        """
         from google.cloud.logging_v2.handlers._monitored_resources import (
             detect_resource,
         )
@@ -785,7 +785,10 @@ class TestLogger(unittest.TestCase):
             },
         )
         # verify that default filter is 24 hours
-        LOG_FILTER = "logName=projects/%s/logs/%s" % (self.PROJECT, self.LOGGER_NAME,)
+        LOG_FILTER = "logName=projects/%s/logs/%s" % (
+            self.PROJECT,
+            self.LOGGER_NAME,
+        )
         combined_filter = (
             INPUT_FILTER
             + " AND "
@@ -826,7 +829,10 @@ class TestLogger(unittest.TestCase):
         self.assertEqual(len(entries), 0)
         # self.assertEqual(client._listed, LISTED)
         # check call payload
-        LOG_FILTER = "logName=projects/%s/logs/%s" % (self.PROJECT, self.LOGGER_NAME,)
+        LOG_FILTER = "logName=projects/%s/logs/%s" % (
+            self.PROJECT,
+            self.LOGGER_NAME,
+        )
         combined_filter = INPUT_FILTER + " AND " + LOG_FILTER
         self.assertEqual(
             client._connection._called_with,
@@ -958,7 +964,9 @@ class TestLogger(unittest.TestCase):
         returned = {"entries": ENTRIES}
         client._connection = _Connection(returned)
 
-        iterator = client.list_entries(resource_names=[f"folder/{FOLDER_ID}"],)
+        iterator = client.list_entries(
+            resource_names=[f"folder/{FOLDER_ID}"],
+        )
         entries = list(iterator)
         # Check the entries.
         self.assertEqual(len(entries), 1)

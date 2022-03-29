@@ -32,7 +32,9 @@ from google.protobuf import empty_pb2  # type: ignore
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-logging",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-logging",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
@@ -127,37 +129,59 @@ class ConfigServiceV2Transport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.list_buckets: gapic_v1.method.wrap_method(
-                self.list_buckets, default_timeout=None, client_info=client_info,
+                self.list_buckets,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_bucket: gapic_v1.method.wrap_method(
-                self.get_bucket, default_timeout=None, client_info=client_info,
+                self.get_bucket,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.create_bucket: gapic_v1.method.wrap_method(
-                self.create_bucket, default_timeout=None, client_info=client_info,
+                self.create_bucket,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.update_bucket: gapic_v1.method.wrap_method(
-                self.update_bucket, default_timeout=None, client_info=client_info,
+                self.update_bucket,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.delete_bucket: gapic_v1.method.wrap_method(
-                self.delete_bucket, default_timeout=None, client_info=client_info,
+                self.delete_bucket,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.undelete_bucket: gapic_v1.method.wrap_method(
-                self.undelete_bucket, default_timeout=None, client_info=client_info,
+                self.undelete_bucket,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_views: gapic_v1.method.wrap_method(
-                self.list_views, default_timeout=None, client_info=client_info,
+                self.list_views,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_view: gapic_v1.method.wrap_method(
-                self.get_view, default_timeout=None, client_info=client_info,
+                self.get_view,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.create_view: gapic_v1.method.wrap_method(
-                self.create_view, default_timeout=None, client_info=client_info,
+                self.create_view,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.update_view: gapic_v1.method.wrap_method(
-                self.update_view, default_timeout=None, client_info=client_info,
+                self.update_view,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.delete_view: gapic_v1.method.wrap_method(
-                self.delete_view, default_timeout=None, client_info=client_info,
+                self.delete_view,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_sinks: gapic_v1.method.wrap_method(
                 self.list_sinks,
@@ -192,7 +216,9 @@ class ConfigServiceV2Transport(abc.ABC):
                 client_info=client_info,
             ),
             self.create_sink: gapic_v1.method.wrap_method(
-                self.create_sink, default_timeout=120.0, client_info=client_info,
+                self.create_sink,
+                default_timeout=120.0,
+                client_info=client_info,
             ),
             self.update_sink: gapic_v1.method.wrap_method(
                 self.update_sink,
@@ -259,10 +285,14 @@ class ConfigServiceV2Transport(abc.ABC):
                 client_info=client_info,
             ),
             self.create_exclusion: gapic_v1.method.wrap_method(
-                self.create_exclusion, default_timeout=120.0, client_info=client_info,
+                self.create_exclusion,
+                default_timeout=120.0,
+                client_info=client_info,
             ),
             self.update_exclusion: gapic_v1.method.wrap_method(
-                self.update_exclusion, default_timeout=120.0, client_info=client_info,
+                self.update_exclusion,
+                default_timeout=120.0,
+                client_info=client_info,
             ),
             self.delete_exclusion: gapic_v1.method.wrap_method(
                 self.delete_exclusion,
@@ -281,7 +311,9 @@ class ConfigServiceV2Transport(abc.ABC):
                 client_info=client_info,
             ),
             self.get_cmek_settings: gapic_v1.method.wrap_method(
-                self.get_cmek_settings, default_timeout=None, client_info=client_info,
+                self.get_cmek_settings,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.update_cmek_settings: gapic_v1.method.wrap_method(
                 self.update_cmek_settings,
@@ -289,22 +321,28 @@ class ConfigServiceV2Transport(abc.ABC):
                 client_info=client_info,
             ),
             self.get_settings: gapic_v1.method.wrap_method(
-                self.get_settings, default_timeout=None, client_info=client_info,
+                self.get_settings,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.update_settings: gapic_v1.method.wrap_method(
-                self.update_settings, default_timeout=None, client_info=client_info,
+                self.update_settings,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.copy_log_entries: gapic_v1.method.wrap_method(
-                self.copy_log_entries, default_timeout=None, client_info=client_info,
+                self.copy_log_entries,
+                default_timeout=None,
+                client_info=client_info,
             ),
         }
 
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

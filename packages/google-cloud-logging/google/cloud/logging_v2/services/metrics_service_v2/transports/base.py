@@ -30,7 +30,9 @@ from google.protobuf import empty_pb2  # type: ignore
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-logging",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-logging",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
@@ -158,7 +160,9 @@ class MetricsServiceV2Transport(abc.ABC):
                 client_info=client_info,
             ),
             self.create_log_metric: gapic_v1.method.wrap_method(
-                self.create_log_metric, default_timeout=60.0, client_info=client_info,
+                self.create_log_metric,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.update_log_metric: gapic_v1.method.wrap_method(
                 self.update_log_metric,
@@ -197,9 +201,9 @@ class MetricsServiceV2Transport(abc.ABC):
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 
