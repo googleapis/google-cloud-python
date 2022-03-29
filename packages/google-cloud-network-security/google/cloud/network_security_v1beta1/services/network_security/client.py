@@ -73,7 +73,10 @@ class NetworkSecurityClientMeta(type):
     _transport_registry["grpc"] = NetworkSecurityGrpcTransport
     _transport_registry["grpc_asyncio"] = NetworkSecurityGrpcAsyncIOTransport
 
-    def get_transport_class(cls, label: str = None,) -> Type[NetworkSecurityTransport]:
+    def get_transport_class(
+        cls,
+        label: str = None,
+    ) -> Type[NetworkSecurityTransport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -182,7 +185,9 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
 
     @staticmethod
     def authorization_policy_path(
-        project: str, location: str, authorization_policy: str,
+        project: str,
+        location: str,
+        authorization_policy: str,
     ) -> str:
         """Returns a fully-qualified authorization_policy string."""
         return "projects/{project}/locations/{location}/authorizationPolicies/{authorization_policy}".format(
@@ -202,11 +207,15 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
 
     @staticmethod
     def client_tls_policy_path(
-        project: str, location: str, client_tls_policy: str,
+        project: str,
+        location: str,
+        client_tls_policy: str,
     ) -> str:
         """Returns a fully-qualified client_tls_policy string."""
         return "projects/{project}/locations/{location}/clientTlsPolicies/{client_tls_policy}".format(
-            project=project, location=location, client_tls_policy=client_tls_policy,
+            project=project,
+            location=location,
+            client_tls_policy=client_tls_policy,
         )
 
     @staticmethod
@@ -220,11 +229,15 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
 
     @staticmethod
     def server_tls_policy_path(
-        project: str, location: str, server_tls_policy: str,
+        project: str,
+        location: str,
+        server_tls_policy: str,
     ) -> str:
         """Returns a fully-qualified server_tls_policy string."""
         return "projects/{project}/locations/{location}/serverTlsPolicies/{server_tls_policy}".format(
-            project=project, location=location, server_tls_policy=server_tls_policy,
+            project=project,
+            location=location,
+            server_tls_policy=server_tls_policy,
         )
 
     @staticmethod
@@ -237,7 +250,9 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_billing_account_path(billing_account: str,) -> str:
+    def common_billing_account_path(
+        billing_account: str,
+    ) -> str:
         """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
@@ -250,9 +265,13 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(folder: str,) -> str:
+    def common_folder_path(
+        folder: str,
+    ) -> str:
         """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(folder=folder,)
+        return "folders/{folder}".format(
+            folder=folder,
+        )
 
     @staticmethod
     def parse_common_folder_path(path: str) -> Dict[str, str]:
@@ -261,9 +280,13 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(organization: str,) -> str:
+    def common_organization_path(
+        organization: str,
+    ) -> str:
         """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(organization=organization,)
+        return "organizations/{organization}".format(
+            organization=organization,
+        )
 
     @staticmethod
     def parse_common_organization_path(path: str) -> Dict[str, str]:
@@ -272,9 +295,13 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(project: str,) -> str:
+    def common_project_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified project string."""
-        return "projects/{project}".format(project=project,)
+        return "projects/{project}".format(
+            project=project,
+        )
 
     @staticmethod
     def parse_common_project_path(path: str) -> Dict[str, str]:
@@ -283,10 +310,14 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(project: str, location: str,) -> str:
+    def common_location_path(
+        project: str,
+        location: str,
+    ) -> str:
         """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
-            project=project, location=location,
+            project=project,
+            location=location,
         )
 
     @staticmethod
@@ -558,12 +589,20 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListAuthorizationPoliciesPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -660,7 +699,12 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -799,7 +843,12 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -935,7 +984,12 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1057,7 +1111,12 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1162,12 +1221,20 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListServerTlsPoliciesPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1264,7 +1331,12 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1394,7 +1466,12 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1521,7 +1598,12 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1637,7 +1719,12 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1742,12 +1829,20 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListClientTlsPoliciesPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1843,7 +1938,12 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1972,7 +2072,12 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -2098,7 +2203,12 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -2214,7 +2324,12 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(

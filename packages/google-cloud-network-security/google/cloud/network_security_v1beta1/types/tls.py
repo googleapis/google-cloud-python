@@ -37,7 +37,10 @@ class GrpcEndpoint(proto.Message):
             start with “unix:”.
     """
 
-    target_uri = proto.Field(proto.STRING, number=1,)
+    target_uri = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ValidationCA(proto.Message):
@@ -68,10 +71,16 @@ class ValidationCA(proto.Message):
     """
 
     grpc_endpoint = proto.Field(
-        proto.MESSAGE, number=2, oneof="type", message="GrpcEndpoint",
+        proto.MESSAGE,
+        number=2,
+        oneof="type",
+        message="GrpcEndpoint",
     )
     certificate_provider_instance = proto.Field(
-        proto.MESSAGE, number=3, oneof="type", message="CertificateProviderInstance",
+        proto.MESSAGE,
+        number=3,
+        oneof="type",
+        message="CertificateProviderInstance",
     )
 
 
@@ -91,7 +100,10 @@ class CertificateProviderInstance(proto.Message):
             Service certificate provider instance.
     """
 
-    plugin_instance = proto.Field(proto.STRING, number=1,)
+    plugin_instance = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CertificateProvider(proto.Message):
@@ -122,10 +134,16 @@ class CertificateProvider(proto.Message):
     """
 
     grpc_endpoint = proto.Field(
-        proto.MESSAGE, number=2, oneof="type", message="GrpcEndpoint",
+        proto.MESSAGE,
+        number=2,
+        oneof="type",
+        message="GrpcEndpoint",
     )
     certificate_provider_instance = proto.Field(
-        proto.MESSAGE, number=3, oneof="type", message="CertificateProviderInstance",
+        proto.MESSAGE,
+        number=3,
+        oneof="type",
+        message="CertificateProviderInstance",
     )
 
 

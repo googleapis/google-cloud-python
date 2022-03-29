@@ -16,7 +16,8 @@
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.networksecurity.v1beta1", manifest={},
+    package="google.cloud.networksecurity.v1beta1",
+    manifest={},
 )
 
 

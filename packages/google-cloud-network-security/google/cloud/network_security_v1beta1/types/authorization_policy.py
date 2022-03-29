@@ -118,8 +118,14 @@ class AuthorizationPolicy(proto.Message):
                     or proxies should be considered untrusted.
             """
 
-            principals = proto.RepeatedField(proto.STRING, number=1,)
-            ip_blocks = proto.RepeatedField(proto.STRING, number=2,)
+            principals = proto.RepeatedField(
+                proto.STRING,
+                number=1,
+            )
+            ip_blocks = proto.RepeatedField(
+                proto.STRING,
+                number=2,
+            )
 
         class Destination(proto.Message):
             r"""Specification of traffic destination attributes.
@@ -174,12 +180,28 @@ class AuthorizationPolicy(proto.Message):
                         method, use the headerName ":method".
                 """
 
-                regex_match = proto.Field(proto.STRING, number=2, oneof="type",)
-                header_name = proto.Field(proto.STRING, number=1,)
+                regex_match = proto.Field(
+                    proto.STRING,
+                    number=2,
+                    oneof="type",
+                )
+                header_name = proto.Field(
+                    proto.STRING,
+                    number=1,
+                )
 
-            hosts = proto.RepeatedField(proto.STRING, number=1,)
-            ports = proto.RepeatedField(proto.UINT32, number=2,)
-            methods = proto.RepeatedField(proto.STRING, number=4,)
+            hosts = proto.RepeatedField(
+                proto.STRING,
+                number=1,
+            )
+            ports = proto.RepeatedField(
+                proto.UINT32,
+                number=2,
+            )
+            methods = proto.RepeatedField(
+                proto.STRING,
+                number=4,
+            )
             http_header_match = proto.Field(
                 proto.MESSAGE,
                 number=5,
@@ -187,19 +209,49 @@ class AuthorizationPolicy(proto.Message):
             )
 
         sources = proto.RepeatedField(
-            proto.MESSAGE, number=1, message="AuthorizationPolicy.Rule.Source",
+            proto.MESSAGE,
+            number=1,
+            message="AuthorizationPolicy.Rule.Source",
         )
         destinations = proto.RepeatedField(
-            proto.MESSAGE, number=2, message="AuthorizationPolicy.Rule.Destination",
+            proto.MESSAGE,
+            number=2,
+            message="AuthorizationPolicy.Rule.Destination",
         )
 
-    name = proto.Field(proto.STRING, number=1,)
-    description = proto.Field(proto.STRING, number=2,)
-    create_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=5,)
-    action = proto.Field(proto.ENUM, number=6, enum=Action,)
-    rules = proto.RepeatedField(proto.MESSAGE, number=7, message=Rule,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=5,
+    )
+    action = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum=Action,
+    )
+    rules = proto.RepeatedField(
+        proto.MESSAGE,
+        number=7,
+        message=Rule,
+    )
 
 
 class ListAuthorizationPoliciesRequest(proto.Message):
@@ -221,9 +273,18 @@ class ListAuthorizationPoliciesRequest(proto.Message):
             data.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListAuthorizationPoliciesResponse(proto.Message):
@@ -244,9 +305,14 @@ class ListAuthorizationPoliciesResponse(proto.Message):
         return self
 
     authorization_policies = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="AuthorizationPolicy",
+        proto.MESSAGE,
+        number=1,
+        message="AuthorizationPolicy",
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetAuthorizationPolicyRequest(proto.Message):
@@ -259,7 +325,10 @@ class GetAuthorizationPolicyRequest(proto.Message):
             ``projects/{project}/locations/{location}/authorizationPolicies/*``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CreateAuthorizationPolicyRequest(proto.Message):
@@ -280,10 +349,18 @@ class CreateAuthorizationPolicyRequest(proto.Message):
             created.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    authorization_policy_id = proto.Field(proto.STRING, number=2,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    authorization_policy_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
     authorization_policy = proto.Field(
-        proto.MESSAGE, number=3, message="AuthorizationPolicy",
+        proto.MESSAGE,
+        number=3,
+        message="AuthorizationPolicy",
     )
 
 
@@ -304,10 +381,14 @@ class UpdateAuthorizationPolicyRequest(proto.Message):
     """
 
     update_mask = proto.Field(
-        proto.MESSAGE, number=1, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=1,
+        message=field_mask_pb2.FieldMask,
     )
     authorization_policy = proto.Field(
-        proto.MESSAGE, number=2, message="AuthorizationPolicy",
+        proto.MESSAGE,
+        number=2,
+        message="AuthorizationPolicy",
     )
 
 
@@ -321,7 +402,10 @@ class DeleteAuthorizationPolicyRequest(proto.Message):
             ``projects/{project}/locations/{location}/authorizationPolicies/*``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

@@ -109,7 +109,11 @@ def test__get_default_mtls_endpoint():
 
 
 @pytest.mark.parametrize(
-    "client_class", [NetworkSecurityClient, NetworkSecurityAsyncClient,]
+    "client_class",
+    [
+        NetworkSecurityClient,
+        NetworkSecurityAsyncClient,
+    ],
 )
 def test_network_security_client_from_service_account_info(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -151,7 +155,11 @@ def test_network_security_client_service_account_always_use_jwt(
 
 
 @pytest.mark.parametrize(
-    "client_class", [NetworkSecurityClient, NetworkSecurityAsyncClient,]
+    "client_class",
+    [
+        NetworkSecurityClient,
+        NetworkSecurityAsyncClient,
+    ],
 )
 def test_network_security_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -525,7 +533,9 @@ def test_network_security_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -666,11 +676,16 @@ def test_network_security_client_create_channel_credentials_file(
 
 
 @pytest.mark.parametrize(
-    "request_type", [authorization_policy.ListAuthorizationPoliciesRequest, dict,]
+    "request_type",
+    [
+        authorization_policy.ListAuthorizationPoliciesRequest,
+        dict,
+    ],
 )
 def test_list_authorization_policies(request_type, transport: str = "grpc"):
     client = NetworkSecurityClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -701,7 +716,8 @@ def test_list_authorization_policies_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = NetworkSecurityClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -720,7 +736,8 @@ async def test_list_authorization_policies_async(
     request_type=authorization_policy.ListAuthorizationPoliciesRequest,
 ):
     client = NetworkSecurityAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -755,7 +772,9 @@ async def test_list_authorization_policies_async_from_dict():
 
 
 def test_list_authorization_policies_field_headers():
-    client = NetworkSecurityClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = NetworkSecurityClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -777,7 +796,10 @@ def test_list_authorization_policies_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -808,11 +830,16 @@ async def test_list_authorization_policies_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_authorization_policies_flattened():
-    client = NetworkSecurityClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = NetworkSecurityClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -822,7 +849,9 @@ def test_list_authorization_policies_flattened():
         call.return_value = authorization_policy.ListAuthorizationPoliciesResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_authorization_policies(parent="parent_value",)
+        client.list_authorization_policies(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -834,7 +863,9 @@ def test_list_authorization_policies_flattened():
 
 
 def test_list_authorization_policies_flattened_error():
-    client = NetworkSecurityClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = NetworkSecurityClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -863,7 +894,9 @@ async def test_list_authorization_policies_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_authorization_policies(parent="parent_value",)
+        response = await client.list_authorization_policies(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -891,7 +924,8 @@ async def test_list_authorization_policies_flattened_error_async():
 
 def test_list_authorization_policies_pager(transport_name: str = "grpc"):
     client = NetworkSecurityClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -909,10 +943,13 @@ def test_list_authorization_policies_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             authorization_policy.ListAuthorizationPoliciesResponse(
-                authorization_policies=[], next_page_token="def",
+                authorization_policies=[],
+                next_page_token="def",
             ),
             authorization_policy.ListAuthorizationPoliciesResponse(
-                authorization_policies=[authorization_policy.AuthorizationPolicy(),],
+                authorization_policies=[
+                    authorization_policy.AuthorizationPolicy(),
+                ],
                 next_page_token="ghi",
             ),
             authorization_policy.ListAuthorizationPoliciesResponse(
@@ -941,7 +978,8 @@ def test_list_authorization_policies_pager(transport_name: str = "grpc"):
 
 def test_list_authorization_policies_pages(transport_name: str = "grpc"):
     client = NetworkSecurityClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -959,10 +997,13 @@ def test_list_authorization_policies_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             authorization_policy.ListAuthorizationPoliciesResponse(
-                authorization_policies=[], next_page_token="def",
+                authorization_policies=[],
+                next_page_token="def",
             ),
             authorization_policy.ListAuthorizationPoliciesResponse(
-                authorization_policies=[authorization_policy.AuthorizationPolicy(),],
+                authorization_policies=[
+                    authorization_policy.AuthorizationPolicy(),
+                ],
                 next_page_token="ghi",
             ),
             authorization_policy.ListAuthorizationPoliciesResponse(
@@ -1001,10 +1042,13 @@ async def test_list_authorization_policies_async_pager():
                 next_page_token="abc",
             ),
             authorization_policy.ListAuthorizationPoliciesResponse(
-                authorization_policies=[], next_page_token="def",
+                authorization_policies=[],
+                next_page_token="def",
             ),
             authorization_policy.ListAuthorizationPoliciesResponse(
-                authorization_policies=[authorization_policy.AuthorizationPolicy(),],
+                authorization_policies=[
+                    authorization_policy.AuthorizationPolicy(),
+                ],
                 next_page_token="ghi",
             ),
             authorization_policy.ListAuthorizationPoliciesResponse(
@@ -1015,7 +1059,9 @@ async def test_list_authorization_policies_async_pager():
             ),
             RuntimeError,
         )
-        async_pager = await client.list_authorization_policies(request={},)
+        async_pager = await client.list_authorization_policies(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -1050,10 +1096,13 @@ async def test_list_authorization_policies_async_pages():
                 next_page_token="abc",
             ),
             authorization_policy.ListAuthorizationPoliciesResponse(
-                authorization_policies=[], next_page_token="def",
+                authorization_policies=[],
+                next_page_token="def",
             ),
             authorization_policy.ListAuthorizationPoliciesResponse(
-                authorization_policies=[authorization_policy.AuthorizationPolicy(),],
+                authorization_policies=[
+                    authorization_policy.AuthorizationPolicy(),
+                ],
                 next_page_token="ghi",
             ),
             authorization_policy.ListAuthorizationPoliciesResponse(
@@ -1072,11 +1121,16 @@ async def test_list_authorization_policies_async_pages():
 
 
 @pytest.mark.parametrize(
-    "request_type", [authorization_policy.GetAuthorizationPolicyRequest, dict,]
+    "request_type",
+    [
+        authorization_policy.GetAuthorizationPolicyRequest,
+        dict,
+    ],
 )
 def test_get_authorization_policy(request_type, transport: str = "grpc"):
     client = NetworkSecurityClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1111,7 +1165,8 @@ def test_get_authorization_policy_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = NetworkSecurityClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1130,7 +1185,8 @@ async def test_get_authorization_policy_async(
     request_type=authorization_policy.GetAuthorizationPolicyRequest,
 ):
     client = NetworkSecurityAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1169,7 +1225,9 @@ async def test_get_authorization_policy_async_from_dict():
 
 
 def test_get_authorization_policy_field_headers():
-    client = NetworkSecurityClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = NetworkSecurityClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1191,7 +1249,10 @@ def test_get_authorization_policy_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1222,11 +1283,16 @@ async def test_get_authorization_policy_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_authorization_policy_flattened():
-    client = NetworkSecurityClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = NetworkSecurityClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1236,7 +1302,9 @@ def test_get_authorization_policy_flattened():
         call.return_value = authorization_policy.AuthorizationPolicy()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_authorization_policy(name="name_value",)
+        client.get_authorization_policy(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1248,13 +1316,16 @@ def test_get_authorization_policy_flattened():
 
 
 def test_get_authorization_policy_flattened_error():
-    client = NetworkSecurityClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = NetworkSecurityClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_authorization_policy(
-            authorization_policy.GetAuthorizationPolicyRequest(), name="name_value",
+            authorization_policy.GetAuthorizationPolicyRequest(),
+            name="name_value",
         )
 
 
@@ -1276,7 +1347,9 @@ async def test_get_authorization_policy_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_authorization_policy(name="name_value",)
+        response = await client.get_authorization_policy(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1297,16 +1370,22 @@ async def test_get_authorization_policy_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_authorization_policy(
-            authorization_policy.GetAuthorizationPolicyRequest(), name="name_value",
+            authorization_policy.GetAuthorizationPolicyRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [gcn_authorization_policy.CreateAuthorizationPolicyRequest, dict,]
+    "request_type",
+    [
+        gcn_authorization_policy.CreateAuthorizationPolicyRequest,
+        dict,
+    ],
 )
 def test_create_authorization_policy(request_type, transport: str = "grpc"):
     client = NetworkSecurityClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1334,7 +1413,8 @@ def test_create_authorization_policy_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = NetworkSecurityClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1353,7 +1433,8 @@ async def test_create_authorization_policy_async(
     request_type=gcn_authorization_policy.CreateAuthorizationPolicyRequest,
 ):
     client = NetworkSecurityAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1385,7 +1466,9 @@ async def test_create_authorization_policy_async_from_dict():
 
 
 def test_create_authorization_policy_field_headers():
-    client = NetworkSecurityClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = NetworkSecurityClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1407,7 +1490,10 @@ def test_create_authorization_policy_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1438,11 +1524,16 @@ async def test_create_authorization_policy_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_authorization_policy_flattened():
-    client = NetworkSecurityClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = NetworkSecurityClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1476,7 +1567,9 @@ def test_create_authorization_policy_flattened():
 
 
 def test_create_authorization_policy_flattened_error():
-    client = NetworkSecurityClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = NetworkSecurityClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1552,11 +1645,16 @@ async def test_create_authorization_policy_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [gcn_authorization_policy.UpdateAuthorizationPolicyRequest, dict,]
+    "request_type",
+    [
+        gcn_authorization_policy.UpdateAuthorizationPolicyRequest,
+        dict,
+    ],
 )
 def test_update_authorization_policy(request_type, transport: str = "grpc"):
     client = NetworkSecurityClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1584,7 +1682,8 @@ def test_update_authorization_policy_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = NetworkSecurityClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1603,7 +1702,8 @@ async def test_update_authorization_policy_async(
     request_type=gcn_authorization_policy.UpdateAuthorizationPolicyRequest,
 ):
     client = NetworkSecurityAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1635,7 +1735,9 @@ async def test_update_authorization_policy_async_from_dict():
 
 
 def test_update_authorization_policy_field_headers():
-    client = NetworkSecurityClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = NetworkSecurityClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1698,7 +1800,9 @@ async def test_update_authorization_policy_field_headers_async():
 
 
 def test_update_authorization_policy_flattened():
-    client = NetworkSecurityClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = NetworkSecurityClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1728,7 +1832,9 @@ def test_update_authorization_policy_flattened():
 
 
 def test_update_authorization_policy_flattened_error():
-    client = NetworkSecurityClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = NetworkSecurityClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1798,11 +1904,16 @@ async def test_update_authorization_policy_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [authorization_policy.DeleteAuthorizationPolicyRequest, dict,]
+    "request_type",
+    [
+        authorization_policy.DeleteAuthorizationPolicyRequest,
+        dict,
+    ],
 )
 def test_delete_authorization_policy(request_type, transport: str = "grpc"):
     client = NetworkSecurityClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1830,7 +1941,8 @@ def test_delete_authorization_policy_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = NetworkSecurityClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1849,7 +1961,8 @@ async def test_delete_authorization_policy_async(
     request_type=authorization_policy.DeleteAuthorizationPolicyRequest,
 ):
     client = NetworkSecurityAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1881,7 +1994,9 @@ async def test_delete_authorization_policy_async_from_dict():
 
 
 def test_delete_authorization_policy_field_headers():
-    client = NetworkSecurityClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = NetworkSecurityClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1903,7 +2018,10 @@ def test_delete_authorization_policy_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1934,11 +2052,16 @@ async def test_delete_authorization_policy_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_authorization_policy_flattened():
-    client = NetworkSecurityClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = NetworkSecurityClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1948,7 +2071,9 @@ def test_delete_authorization_policy_flattened():
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_authorization_policy(name="name_value",)
+        client.delete_authorization_policy(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1960,13 +2085,16 @@ def test_delete_authorization_policy_flattened():
 
 
 def test_delete_authorization_policy_flattened_error():
-    client = NetworkSecurityClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = NetworkSecurityClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_authorization_policy(
-            authorization_policy.DeleteAuthorizationPolicyRequest(), name="name_value",
+            authorization_policy.DeleteAuthorizationPolicyRequest(),
+            name="name_value",
         )
 
 
@@ -1988,7 +2116,9 @@ async def test_delete_authorization_policy_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_authorization_policy(name="name_value",)
+        response = await client.delete_authorization_policy(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2009,16 +2139,22 @@ async def test_delete_authorization_policy_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_authorization_policy(
-            authorization_policy.DeleteAuthorizationPolicyRequest(), name="name_value",
+            authorization_policy.DeleteAuthorizationPolicyRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [server_tls_policy.ListServerTlsPoliciesRequest, dict,]
+    "request_type",
+    [
+        server_tls_policy.ListServerTlsPoliciesRequest,
+        dict,
+    ],
 )
 def test_list_server_tls_policies(request_type, transport: str = "grpc"):
     client = NetworkSecurityClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2049,7 +2185,8 @@ def test_list_server_tls_policies_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = NetworkSecurityClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2068,7 +2205,8 @@ async def test_list_server_tls_policies_async(
     request_type=server_tls_policy.ListServerTlsPoliciesRequest,
 ):
     client = NetworkSecurityAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2103,7 +2241,9 @@ async def test_list_server_tls_policies_async_from_dict():
 
 
 def test_list_server_tls_policies_field_headers():
-    client = NetworkSecurityClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = NetworkSecurityClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2125,7 +2265,10 @@ def test_list_server_tls_policies_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2156,11 +2299,16 @@ async def test_list_server_tls_policies_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_server_tls_policies_flattened():
-    client = NetworkSecurityClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = NetworkSecurityClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2170,7 +2318,9 @@ def test_list_server_tls_policies_flattened():
         call.return_value = server_tls_policy.ListServerTlsPoliciesResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_server_tls_policies(parent="parent_value",)
+        client.list_server_tls_policies(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2182,13 +2332,16 @@ def test_list_server_tls_policies_flattened():
 
 
 def test_list_server_tls_policies_flattened_error():
-    client = NetworkSecurityClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = NetworkSecurityClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_server_tls_policies(
-            server_tls_policy.ListServerTlsPoliciesRequest(), parent="parent_value",
+            server_tls_policy.ListServerTlsPoliciesRequest(),
+            parent="parent_value",
         )
 
 
@@ -2210,7 +2363,9 @@ async def test_list_server_tls_policies_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_server_tls_policies(parent="parent_value",)
+        response = await client.list_server_tls_policies(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2231,13 +2386,15 @@ async def test_list_server_tls_policies_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_server_tls_policies(
-            server_tls_policy.ListServerTlsPoliciesRequest(), parent="parent_value",
+            server_tls_policy.ListServerTlsPoliciesRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_server_tls_policies_pager(transport_name: str = "grpc"):
     client = NetworkSecurityClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2255,10 +2412,13 @@ def test_list_server_tls_policies_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             server_tls_policy.ListServerTlsPoliciesResponse(
-                server_tls_policies=[], next_page_token="def",
+                server_tls_policies=[],
+                next_page_token="def",
             ),
             server_tls_policy.ListServerTlsPoliciesResponse(
-                server_tls_policies=[server_tls_policy.ServerTlsPolicy(),],
+                server_tls_policies=[
+                    server_tls_policy.ServerTlsPolicy(),
+                ],
                 next_page_token="ghi",
             ),
             server_tls_policy.ListServerTlsPoliciesResponse(
@@ -2285,7 +2445,8 @@ def test_list_server_tls_policies_pager(transport_name: str = "grpc"):
 
 def test_list_server_tls_policies_pages(transport_name: str = "grpc"):
     client = NetworkSecurityClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2303,10 +2464,13 @@ def test_list_server_tls_policies_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             server_tls_policy.ListServerTlsPoliciesResponse(
-                server_tls_policies=[], next_page_token="def",
+                server_tls_policies=[],
+                next_page_token="def",
             ),
             server_tls_policy.ListServerTlsPoliciesResponse(
-                server_tls_policies=[server_tls_policy.ServerTlsPolicy(),],
+                server_tls_policies=[
+                    server_tls_policy.ServerTlsPolicy(),
+                ],
                 next_page_token="ghi",
             ),
             server_tls_policy.ListServerTlsPoliciesResponse(
@@ -2345,10 +2509,13 @@ async def test_list_server_tls_policies_async_pager():
                 next_page_token="abc",
             ),
             server_tls_policy.ListServerTlsPoliciesResponse(
-                server_tls_policies=[], next_page_token="def",
+                server_tls_policies=[],
+                next_page_token="def",
             ),
             server_tls_policy.ListServerTlsPoliciesResponse(
-                server_tls_policies=[server_tls_policy.ServerTlsPolicy(),],
+                server_tls_policies=[
+                    server_tls_policy.ServerTlsPolicy(),
+                ],
                 next_page_token="ghi",
             ),
             server_tls_policy.ListServerTlsPoliciesResponse(
@@ -2359,7 +2526,9 @@ async def test_list_server_tls_policies_async_pager():
             ),
             RuntimeError,
         )
-        async_pager = await client.list_server_tls_policies(request={},)
+        async_pager = await client.list_server_tls_policies(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -2392,10 +2561,13 @@ async def test_list_server_tls_policies_async_pages():
                 next_page_token="abc",
             ),
             server_tls_policy.ListServerTlsPoliciesResponse(
-                server_tls_policies=[], next_page_token="def",
+                server_tls_policies=[],
+                next_page_token="def",
             ),
             server_tls_policy.ListServerTlsPoliciesResponse(
-                server_tls_policies=[server_tls_policy.ServerTlsPolicy(),],
+                server_tls_policies=[
+                    server_tls_policy.ServerTlsPolicy(),
+                ],
                 next_page_token="ghi",
             ),
             server_tls_policy.ListServerTlsPoliciesResponse(
@@ -2414,11 +2586,16 @@ async def test_list_server_tls_policies_async_pages():
 
 
 @pytest.mark.parametrize(
-    "request_type", [server_tls_policy.GetServerTlsPolicyRequest, dict,]
+    "request_type",
+    [
+        server_tls_policy.GetServerTlsPolicyRequest,
+        dict,
+    ],
 )
 def test_get_server_tls_policy(request_type, transport: str = "grpc"):
     client = NetworkSecurityClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2431,7 +2608,9 @@ def test_get_server_tls_policy(request_type, transport: str = "grpc"):
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = server_tls_policy.ServerTlsPolicy(
-            name="name_value", description="description_value", allow_open=True,
+            name="name_value",
+            description="description_value",
+            allow_open=True,
         )
         response = client.get_server_tls_policy(request)
 
@@ -2451,7 +2630,8 @@ def test_get_server_tls_policy_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = NetworkSecurityClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2470,7 +2650,8 @@ async def test_get_server_tls_policy_async(
     request_type=server_tls_policy.GetServerTlsPolicyRequest,
 ):
     client = NetworkSecurityAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2484,7 +2665,9 @@ async def test_get_server_tls_policy_async(
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             server_tls_policy.ServerTlsPolicy(
-                name="name_value", description="description_value", allow_open=True,
+                name="name_value",
+                description="description_value",
+                allow_open=True,
             )
         )
         response = await client.get_server_tls_policy(request)
@@ -2507,7 +2690,9 @@ async def test_get_server_tls_policy_async_from_dict():
 
 
 def test_get_server_tls_policy_field_headers():
-    client = NetworkSecurityClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = NetworkSecurityClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2529,7 +2714,10 @@ def test_get_server_tls_policy_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2560,11 +2748,16 @@ async def test_get_server_tls_policy_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_server_tls_policy_flattened():
-    client = NetworkSecurityClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = NetworkSecurityClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2574,7 +2767,9 @@ def test_get_server_tls_policy_flattened():
         call.return_value = server_tls_policy.ServerTlsPolicy()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_server_tls_policy(name="name_value",)
+        client.get_server_tls_policy(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2586,13 +2781,16 @@ def test_get_server_tls_policy_flattened():
 
 
 def test_get_server_tls_policy_flattened_error():
-    client = NetworkSecurityClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = NetworkSecurityClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_server_tls_policy(
-            server_tls_policy.GetServerTlsPolicyRequest(), name="name_value",
+            server_tls_policy.GetServerTlsPolicyRequest(),
+            name="name_value",
         )
 
 
@@ -2614,7 +2812,9 @@ async def test_get_server_tls_policy_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_server_tls_policy(name="name_value",)
+        response = await client.get_server_tls_policy(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2635,16 +2835,22 @@ async def test_get_server_tls_policy_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_server_tls_policy(
-            server_tls_policy.GetServerTlsPolicyRequest(), name="name_value",
+            server_tls_policy.GetServerTlsPolicyRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [gcn_server_tls_policy.CreateServerTlsPolicyRequest, dict,]
+    "request_type",
+    [
+        gcn_server_tls_policy.CreateServerTlsPolicyRequest,
+        dict,
+    ],
 )
 def test_create_server_tls_policy(request_type, transport: str = "grpc"):
     client = NetworkSecurityClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2672,7 +2878,8 @@ def test_create_server_tls_policy_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = NetworkSecurityClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2691,7 +2898,8 @@ async def test_create_server_tls_policy_async(
     request_type=gcn_server_tls_policy.CreateServerTlsPolicyRequest,
 ):
     client = NetworkSecurityAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2723,7 +2931,9 @@ async def test_create_server_tls_policy_async_from_dict():
 
 
 def test_create_server_tls_policy_field_headers():
-    client = NetworkSecurityClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = NetworkSecurityClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2745,7 +2955,10 @@ def test_create_server_tls_policy_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2776,11 +2989,16 @@ async def test_create_server_tls_policy_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_server_tls_policy_flattened():
-    client = NetworkSecurityClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = NetworkSecurityClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2812,7 +3030,9 @@ def test_create_server_tls_policy_flattened():
 
 
 def test_create_server_tls_policy_flattened_error():
-    client = NetworkSecurityClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = NetworkSecurityClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2882,11 +3102,16 @@ async def test_create_server_tls_policy_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [gcn_server_tls_policy.UpdateServerTlsPolicyRequest, dict,]
+    "request_type",
+    [
+        gcn_server_tls_policy.UpdateServerTlsPolicyRequest,
+        dict,
+    ],
 )
 def test_update_server_tls_policy(request_type, transport: str = "grpc"):
     client = NetworkSecurityClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2914,7 +3139,8 @@ def test_update_server_tls_policy_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = NetworkSecurityClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2933,7 +3159,8 @@ async def test_update_server_tls_policy_async(
     request_type=gcn_server_tls_policy.UpdateServerTlsPolicyRequest,
 ):
     client = NetworkSecurityAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2965,7 +3192,9 @@ async def test_update_server_tls_policy_async_from_dict():
 
 
 def test_update_server_tls_policy_field_headers():
-    client = NetworkSecurityClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = NetworkSecurityClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3028,7 +3257,9 @@ async def test_update_server_tls_policy_field_headers_async():
 
 
 def test_update_server_tls_policy_flattened():
-    client = NetworkSecurityClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = NetworkSecurityClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3056,7 +3287,9 @@ def test_update_server_tls_policy_flattened():
 
 
 def test_update_server_tls_policy_flattened_error():
-    client = NetworkSecurityClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = NetworkSecurityClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -3120,11 +3353,16 @@ async def test_update_server_tls_policy_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [server_tls_policy.DeleteServerTlsPolicyRequest, dict,]
+    "request_type",
+    [
+        server_tls_policy.DeleteServerTlsPolicyRequest,
+        dict,
+    ],
 )
 def test_delete_server_tls_policy(request_type, transport: str = "grpc"):
     client = NetworkSecurityClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3152,7 +3390,8 @@ def test_delete_server_tls_policy_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = NetworkSecurityClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3171,7 +3410,8 @@ async def test_delete_server_tls_policy_async(
     request_type=server_tls_policy.DeleteServerTlsPolicyRequest,
 ):
     client = NetworkSecurityAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3203,7 +3443,9 @@ async def test_delete_server_tls_policy_async_from_dict():
 
 
 def test_delete_server_tls_policy_field_headers():
-    client = NetworkSecurityClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = NetworkSecurityClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3225,7 +3467,10 @@ def test_delete_server_tls_policy_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -3256,11 +3501,16 @@ async def test_delete_server_tls_policy_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_server_tls_policy_flattened():
-    client = NetworkSecurityClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = NetworkSecurityClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3270,7 +3520,9 @@ def test_delete_server_tls_policy_flattened():
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_server_tls_policy(name="name_value",)
+        client.delete_server_tls_policy(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3282,13 +3534,16 @@ def test_delete_server_tls_policy_flattened():
 
 
 def test_delete_server_tls_policy_flattened_error():
-    client = NetworkSecurityClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = NetworkSecurityClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_server_tls_policy(
-            server_tls_policy.DeleteServerTlsPolicyRequest(), name="name_value",
+            server_tls_policy.DeleteServerTlsPolicyRequest(),
+            name="name_value",
         )
 
 
@@ -3310,7 +3565,9 @@ async def test_delete_server_tls_policy_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_server_tls_policy(name="name_value",)
+        response = await client.delete_server_tls_policy(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3331,16 +3588,22 @@ async def test_delete_server_tls_policy_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_server_tls_policy(
-            server_tls_policy.DeleteServerTlsPolicyRequest(), name="name_value",
+            server_tls_policy.DeleteServerTlsPolicyRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [client_tls_policy.ListClientTlsPoliciesRequest, dict,]
+    "request_type",
+    [
+        client_tls_policy.ListClientTlsPoliciesRequest,
+        dict,
+    ],
 )
 def test_list_client_tls_policies(request_type, transport: str = "grpc"):
     client = NetworkSecurityClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3371,7 +3634,8 @@ def test_list_client_tls_policies_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = NetworkSecurityClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3390,7 +3654,8 @@ async def test_list_client_tls_policies_async(
     request_type=client_tls_policy.ListClientTlsPoliciesRequest,
 ):
     client = NetworkSecurityAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3425,7 +3690,9 @@ async def test_list_client_tls_policies_async_from_dict():
 
 
 def test_list_client_tls_policies_field_headers():
-    client = NetworkSecurityClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = NetworkSecurityClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3447,7 +3714,10 @@ def test_list_client_tls_policies_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -3478,11 +3748,16 @@ async def test_list_client_tls_policies_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_client_tls_policies_flattened():
-    client = NetworkSecurityClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = NetworkSecurityClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3492,7 +3767,9 @@ def test_list_client_tls_policies_flattened():
         call.return_value = client_tls_policy.ListClientTlsPoliciesResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_client_tls_policies(parent="parent_value",)
+        client.list_client_tls_policies(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3504,13 +3781,16 @@ def test_list_client_tls_policies_flattened():
 
 
 def test_list_client_tls_policies_flattened_error():
-    client = NetworkSecurityClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = NetworkSecurityClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_client_tls_policies(
-            client_tls_policy.ListClientTlsPoliciesRequest(), parent="parent_value",
+            client_tls_policy.ListClientTlsPoliciesRequest(),
+            parent="parent_value",
         )
 
 
@@ -3532,7 +3812,9 @@ async def test_list_client_tls_policies_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_client_tls_policies(parent="parent_value",)
+        response = await client.list_client_tls_policies(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3553,13 +3835,15 @@ async def test_list_client_tls_policies_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_client_tls_policies(
-            client_tls_policy.ListClientTlsPoliciesRequest(), parent="parent_value",
+            client_tls_policy.ListClientTlsPoliciesRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_client_tls_policies_pager(transport_name: str = "grpc"):
     client = NetworkSecurityClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3577,10 +3861,13 @@ def test_list_client_tls_policies_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             client_tls_policy.ListClientTlsPoliciesResponse(
-                client_tls_policies=[], next_page_token="def",
+                client_tls_policies=[],
+                next_page_token="def",
             ),
             client_tls_policy.ListClientTlsPoliciesResponse(
-                client_tls_policies=[client_tls_policy.ClientTlsPolicy(),],
+                client_tls_policies=[
+                    client_tls_policy.ClientTlsPolicy(),
+                ],
                 next_page_token="ghi",
             ),
             client_tls_policy.ListClientTlsPoliciesResponse(
@@ -3607,7 +3894,8 @@ def test_list_client_tls_policies_pager(transport_name: str = "grpc"):
 
 def test_list_client_tls_policies_pages(transport_name: str = "grpc"):
     client = NetworkSecurityClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3625,10 +3913,13 @@ def test_list_client_tls_policies_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             client_tls_policy.ListClientTlsPoliciesResponse(
-                client_tls_policies=[], next_page_token="def",
+                client_tls_policies=[],
+                next_page_token="def",
             ),
             client_tls_policy.ListClientTlsPoliciesResponse(
-                client_tls_policies=[client_tls_policy.ClientTlsPolicy(),],
+                client_tls_policies=[
+                    client_tls_policy.ClientTlsPolicy(),
+                ],
                 next_page_token="ghi",
             ),
             client_tls_policy.ListClientTlsPoliciesResponse(
@@ -3667,10 +3958,13 @@ async def test_list_client_tls_policies_async_pager():
                 next_page_token="abc",
             ),
             client_tls_policy.ListClientTlsPoliciesResponse(
-                client_tls_policies=[], next_page_token="def",
+                client_tls_policies=[],
+                next_page_token="def",
             ),
             client_tls_policy.ListClientTlsPoliciesResponse(
-                client_tls_policies=[client_tls_policy.ClientTlsPolicy(),],
+                client_tls_policies=[
+                    client_tls_policy.ClientTlsPolicy(),
+                ],
                 next_page_token="ghi",
             ),
             client_tls_policy.ListClientTlsPoliciesResponse(
@@ -3681,7 +3975,9 @@ async def test_list_client_tls_policies_async_pager():
             ),
             RuntimeError,
         )
-        async_pager = await client.list_client_tls_policies(request={},)
+        async_pager = await client.list_client_tls_policies(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -3714,10 +4010,13 @@ async def test_list_client_tls_policies_async_pages():
                 next_page_token="abc",
             ),
             client_tls_policy.ListClientTlsPoliciesResponse(
-                client_tls_policies=[], next_page_token="def",
+                client_tls_policies=[],
+                next_page_token="def",
             ),
             client_tls_policy.ListClientTlsPoliciesResponse(
-                client_tls_policies=[client_tls_policy.ClientTlsPolicy(),],
+                client_tls_policies=[
+                    client_tls_policy.ClientTlsPolicy(),
+                ],
                 next_page_token="ghi",
             ),
             client_tls_policy.ListClientTlsPoliciesResponse(
@@ -3736,11 +4035,16 @@ async def test_list_client_tls_policies_async_pages():
 
 
 @pytest.mark.parametrize(
-    "request_type", [client_tls_policy.GetClientTlsPolicyRequest, dict,]
+    "request_type",
+    [
+        client_tls_policy.GetClientTlsPolicyRequest,
+        dict,
+    ],
 )
 def test_get_client_tls_policy(request_type, transport: str = "grpc"):
     client = NetworkSecurityClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3753,7 +4057,9 @@ def test_get_client_tls_policy(request_type, transport: str = "grpc"):
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = client_tls_policy.ClientTlsPolicy(
-            name="name_value", description="description_value", sni="sni_value",
+            name="name_value",
+            description="description_value",
+            sni="sni_value",
         )
         response = client.get_client_tls_policy(request)
 
@@ -3773,7 +4079,8 @@ def test_get_client_tls_policy_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = NetworkSecurityClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3792,7 +4099,8 @@ async def test_get_client_tls_policy_async(
     request_type=client_tls_policy.GetClientTlsPolicyRequest,
 ):
     client = NetworkSecurityAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3806,7 +4114,9 @@ async def test_get_client_tls_policy_async(
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             client_tls_policy.ClientTlsPolicy(
-                name="name_value", description="description_value", sni="sni_value",
+                name="name_value",
+                description="description_value",
+                sni="sni_value",
             )
         )
         response = await client.get_client_tls_policy(request)
@@ -3829,7 +4139,9 @@ async def test_get_client_tls_policy_async_from_dict():
 
 
 def test_get_client_tls_policy_field_headers():
-    client = NetworkSecurityClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = NetworkSecurityClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3851,7 +4163,10 @@ def test_get_client_tls_policy_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -3882,11 +4197,16 @@ async def test_get_client_tls_policy_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_client_tls_policy_flattened():
-    client = NetworkSecurityClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = NetworkSecurityClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3896,7 +4216,9 @@ def test_get_client_tls_policy_flattened():
         call.return_value = client_tls_policy.ClientTlsPolicy()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_client_tls_policy(name="name_value",)
+        client.get_client_tls_policy(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3908,13 +4230,16 @@ def test_get_client_tls_policy_flattened():
 
 
 def test_get_client_tls_policy_flattened_error():
-    client = NetworkSecurityClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = NetworkSecurityClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_client_tls_policy(
-            client_tls_policy.GetClientTlsPolicyRequest(), name="name_value",
+            client_tls_policy.GetClientTlsPolicyRequest(),
+            name="name_value",
         )
 
 
@@ -3936,7 +4261,9 @@ async def test_get_client_tls_policy_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_client_tls_policy(name="name_value",)
+        response = await client.get_client_tls_policy(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3957,16 +4284,22 @@ async def test_get_client_tls_policy_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_client_tls_policy(
-            client_tls_policy.GetClientTlsPolicyRequest(), name="name_value",
+            client_tls_policy.GetClientTlsPolicyRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [gcn_client_tls_policy.CreateClientTlsPolicyRequest, dict,]
+    "request_type",
+    [
+        gcn_client_tls_policy.CreateClientTlsPolicyRequest,
+        dict,
+    ],
 )
 def test_create_client_tls_policy(request_type, transport: str = "grpc"):
     client = NetworkSecurityClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3994,7 +4327,8 @@ def test_create_client_tls_policy_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = NetworkSecurityClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4013,7 +4347,8 @@ async def test_create_client_tls_policy_async(
     request_type=gcn_client_tls_policy.CreateClientTlsPolicyRequest,
 ):
     client = NetworkSecurityAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4045,7 +4380,9 @@ async def test_create_client_tls_policy_async_from_dict():
 
 
 def test_create_client_tls_policy_field_headers():
-    client = NetworkSecurityClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = NetworkSecurityClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -4067,7 +4404,10 @@ def test_create_client_tls_policy_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -4098,11 +4438,16 @@ async def test_create_client_tls_policy_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_client_tls_policy_flattened():
-    client = NetworkSecurityClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = NetworkSecurityClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4134,7 +4479,9 @@ def test_create_client_tls_policy_flattened():
 
 
 def test_create_client_tls_policy_flattened_error():
-    client = NetworkSecurityClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = NetworkSecurityClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -4204,11 +4551,16 @@ async def test_create_client_tls_policy_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [gcn_client_tls_policy.UpdateClientTlsPolicyRequest, dict,]
+    "request_type",
+    [
+        gcn_client_tls_policy.UpdateClientTlsPolicyRequest,
+        dict,
+    ],
 )
 def test_update_client_tls_policy(request_type, transport: str = "grpc"):
     client = NetworkSecurityClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4236,7 +4588,8 @@ def test_update_client_tls_policy_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = NetworkSecurityClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4255,7 +4608,8 @@ async def test_update_client_tls_policy_async(
     request_type=gcn_client_tls_policy.UpdateClientTlsPolicyRequest,
 ):
     client = NetworkSecurityAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4287,7 +4641,9 @@ async def test_update_client_tls_policy_async_from_dict():
 
 
 def test_update_client_tls_policy_field_headers():
-    client = NetworkSecurityClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = NetworkSecurityClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -4350,7 +4706,9 @@ async def test_update_client_tls_policy_field_headers_async():
 
 
 def test_update_client_tls_policy_flattened():
-    client = NetworkSecurityClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = NetworkSecurityClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4378,7 +4736,9 @@ def test_update_client_tls_policy_flattened():
 
 
 def test_update_client_tls_policy_flattened_error():
-    client = NetworkSecurityClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = NetworkSecurityClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -4442,11 +4802,16 @@ async def test_update_client_tls_policy_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [client_tls_policy.DeleteClientTlsPolicyRequest, dict,]
+    "request_type",
+    [
+        client_tls_policy.DeleteClientTlsPolicyRequest,
+        dict,
+    ],
 )
 def test_delete_client_tls_policy(request_type, transport: str = "grpc"):
     client = NetworkSecurityClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4474,7 +4839,8 @@ def test_delete_client_tls_policy_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = NetworkSecurityClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4493,7 +4859,8 @@ async def test_delete_client_tls_policy_async(
     request_type=client_tls_policy.DeleteClientTlsPolicyRequest,
 ):
     client = NetworkSecurityAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4525,7 +4892,9 @@ async def test_delete_client_tls_policy_async_from_dict():
 
 
 def test_delete_client_tls_policy_field_headers():
-    client = NetworkSecurityClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = NetworkSecurityClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -4547,7 +4916,10 @@ def test_delete_client_tls_policy_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -4578,11 +4950,16 @@ async def test_delete_client_tls_policy_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_client_tls_policy_flattened():
-    client = NetworkSecurityClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = NetworkSecurityClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4592,7 +4969,9 @@ def test_delete_client_tls_policy_flattened():
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_client_tls_policy(name="name_value",)
+        client.delete_client_tls_policy(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -4604,13 +4983,16 @@ def test_delete_client_tls_policy_flattened():
 
 
 def test_delete_client_tls_policy_flattened_error():
-    client = NetworkSecurityClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = NetworkSecurityClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_client_tls_policy(
-            client_tls_policy.DeleteClientTlsPolicyRequest(), name="name_value",
+            client_tls_policy.DeleteClientTlsPolicyRequest(),
+            name="name_value",
         )
 
 
@@ -4632,7 +5014,9 @@ async def test_delete_client_tls_policy_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_client_tls_policy(name="name_value",)
+        response = await client.delete_client_tls_policy(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -4653,7 +5037,8 @@ async def test_delete_client_tls_policy_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_client_tls_policy(
-            client_tls_policy.DeleteClientTlsPolicyRequest(), name="name_value",
+            client_tls_policy.DeleteClientTlsPolicyRequest(),
+            name="name_value",
         )
 
 
@@ -4664,7 +5049,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = NetworkSecurityClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -4684,7 +5070,10 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = NetworkSecurityClient(client_options=options, transport=transport,)
+        client = NetworkSecurityClient(
+            client_options=options,
+            transport=transport,
+        )
 
     # It is an error to provide an api_key and a credential.
     options = mock.Mock()
@@ -4700,7 +5089,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = NetworkSecurityClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -4745,8 +5135,13 @@ def test_transport_adc(transport_class):
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
-    client = NetworkSecurityClient(credentials=ga_credentials.AnonymousCredentials(),)
-    assert isinstance(client.transport, transports.NetworkSecurityGrpcTransport,)
+    client = NetworkSecurityClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    assert isinstance(
+        client.transport,
+        transports.NetworkSecurityGrpcTransport,
+    )
 
 
 def test_network_security_base_transport_error():
@@ -4810,7 +5205,8 @@ def test_network_security_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.NetworkSecurityTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -4968,7 +5364,8 @@ def test_network_security_grpc_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.NetworkSecurityGrpcTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -4980,7 +5377,8 @@ def test_network_security_grpc_asyncio_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.NetworkSecurityGrpcAsyncIOTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -5089,12 +5487,16 @@ def test_network_security_transport_channel_mtls_with_adc(transport_class):
 
 def test_network_security_grpc_lro_client():
     client = NetworkSecurityClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
     transport = client.transport
 
     # Ensure that we have a api-core operations client.
-    assert isinstance(transport.operations_client, operations_v1.OperationsClient,)
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsClient,
+    )
 
     # Ensure that subsequent calls to the property send the exact same object.
     assert transport.operations_client is transport.operations_client
@@ -5102,12 +5504,16 @@ def test_network_security_grpc_lro_client():
 
 def test_network_security_grpc_lro_async_client():
     client = NetworkSecurityAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     transport = client.transport
 
     # Ensure that we have a api-core operations client.
-    assert isinstance(transport.operations_client, operations_v1.OperationsAsyncClient,)
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsAsyncClient,
+    )
 
     # Ensure that subsequent calls to the property send the exact same object.
     assert transport.operations_client is transport.operations_client
@@ -5118,7 +5524,9 @@ def test_authorization_policy_path():
     location = "clam"
     authorization_policy = "whelk"
     expected = "projects/{project}/locations/{location}/authorizationPolicies/{authorization_policy}".format(
-        project=project, location=location, authorization_policy=authorization_policy,
+        project=project,
+        location=location,
+        authorization_policy=authorization_policy,
     )
     actual = NetworkSecurityClient.authorization_policy_path(
         project, location, authorization_policy
@@ -5144,7 +5552,9 @@ def test_client_tls_policy_path():
     location = "mussel"
     client_tls_policy = "winkle"
     expected = "projects/{project}/locations/{location}/clientTlsPolicies/{client_tls_policy}".format(
-        project=project, location=location, client_tls_policy=client_tls_policy,
+        project=project,
+        location=location,
+        client_tls_policy=client_tls_policy,
     )
     actual = NetworkSecurityClient.client_tls_policy_path(
         project, location, client_tls_policy
@@ -5170,7 +5580,9 @@ def test_server_tls_policy_path():
     location = "clam"
     server_tls_policy = "whelk"
     expected = "projects/{project}/locations/{location}/serverTlsPolicies/{server_tls_policy}".format(
-        project=project, location=location, server_tls_policy=server_tls_policy,
+        project=project,
+        location=location,
+        server_tls_policy=server_tls_policy,
     )
     actual = NetworkSecurityClient.server_tls_policy_path(
         project, location, server_tls_policy
@@ -5213,7 +5625,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "winkle"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = NetworkSecurityClient.common_folder_path(folder)
     assert expected == actual
 
@@ -5231,7 +5645,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "scallop"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = NetworkSecurityClient.common_organization_path(organization)
     assert expected == actual
 
@@ -5249,7 +5665,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "squid"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = NetworkSecurityClient.common_project_path(project)
     assert expected == actual
 
@@ -5269,7 +5687,8 @@ def test_common_location_path():
     project = "whelk"
     location = "octopus"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = NetworkSecurityClient.common_location_path(project, location)
     assert expected == actual
@@ -5294,7 +5713,8 @@ def test_client_with_default_client_info():
         transports.NetworkSecurityTransport, "_prep_wrapped_messages"
     ) as prep:
         client = NetworkSecurityClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -5303,7 +5723,8 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = NetworkSecurityClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -5311,7 +5732,8 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = NetworkSecurityAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     with mock.patch.object(
         type(getattr(client.transport, "grpc_channel")), "close"

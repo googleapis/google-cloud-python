@@ -89,19 +89,48 @@ class ServerTlsPolicy(proto.Message):
         """
 
         client_validation_ca = proto.RepeatedField(
-            proto.MESSAGE, number=1, message=tls.ValidationCA,
+            proto.MESSAGE,
+            number=1,
+            message=tls.ValidationCA,
         )
 
-    name = proto.Field(proto.STRING, number=1,)
-    description = proto.Field(proto.STRING, number=2,)
-    create_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=5,)
-    allow_open = proto.Field(proto.BOOL, number=6,)
-    server_certificate = proto.Field(
-        proto.MESSAGE, number=7, message=tls.CertificateProvider,
+    name = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    mtls_policy = proto.Field(proto.MESSAGE, number=8, message=MTLSPolicy,)
+    description = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=5,
+    )
+    allow_open = proto.Field(
+        proto.BOOL,
+        number=6,
+    )
+    server_certificate = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=tls.CertificateProvider,
+    )
+    mtls_policy = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=MTLSPolicy,
+    )
 
 
 class ListServerTlsPoliciesRequest(proto.Message):
@@ -122,9 +151,18 @@ class ListServerTlsPoliciesRequest(proto.Message):
             that the system should return the next page of data.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListServerTlsPoliciesResponse(proto.Message):
@@ -145,9 +183,14 @@ class ListServerTlsPoliciesResponse(proto.Message):
         return self
 
     server_tls_policies = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="ServerTlsPolicy",
+        proto.MESSAGE,
+        number=1,
+        message="ServerTlsPolicy",
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetServerTlsPolicyRequest(proto.Message):
@@ -160,7 +203,10 @@ class GetServerTlsPolicyRequest(proto.Message):
             ``projects/*/locations/{location}/serverTlsPolicies/*``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CreateServerTlsPolicyRequest(proto.Message):
@@ -181,9 +227,19 @@ class CreateServerTlsPolicyRequest(proto.Message):
             created.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    server_tls_policy_id = proto.Field(proto.STRING, number=2,)
-    server_tls_policy = proto.Field(proto.MESSAGE, number=3, message="ServerTlsPolicy",)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    server_tls_policy_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    server_tls_policy = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="ServerTlsPolicy",
+    )
 
 
 class UpdateServerTlsPolicyRequest(proto.Message):
@@ -202,9 +258,15 @@ class UpdateServerTlsPolicyRequest(proto.Message):
     """
 
     update_mask = proto.Field(
-        proto.MESSAGE, number=1, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=1,
+        message=field_mask_pb2.FieldMask,
     )
-    server_tls_policy = proto.Field(proto.MESSAGE, number=2, message="ServerTlsPolicy",)
+    server_tls_policy = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="ServerTlsPolicy",
+    )
 
 
 class DeleteServerTlsPolicyRequest(proto.Message):
@@ -217,7 +279,10 @@ class DeleteServerTlsPolicyRequest(proto.Message):
             ``projects/*/locations/{location}/serverTlsPolicies/*``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
