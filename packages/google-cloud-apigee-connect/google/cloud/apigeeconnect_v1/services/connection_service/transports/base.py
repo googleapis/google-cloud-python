@@ -127,7 +127,8 @@ class ConnectionServiceTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        core_exceptions.ServiceUnavailable, core_exceptions.Unknown,
+                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.Unknown,
                     ),
                     deadline=60.0,
                 ),
@@ -139,9 +140,9 @@ class ConnectionServiceTransport(abc.ABC):
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

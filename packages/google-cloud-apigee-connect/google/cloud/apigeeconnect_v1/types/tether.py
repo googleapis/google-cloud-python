@@ -76,12 +76,33 @@ class EgressRequest(proto.Message):
             Timeout for the HTTP request.
     """
 
-    id = proto.Field(proto.STRING, number=1,)
-    payload = proto.Field(proto.MESSAGE, number=2, message="Payload",)
-    endpoint = proto.Field(proto.ENUM, number=3, enum="TetherEndpoint",)
-    project = proto.Field(proto.STRING, number=4,)
-    trace_id = proto.Field(proto.STRING, number=5,)
-    timeout = proto.Field(proto.MESSAGE, number=6, message=duration_pb2.Duration,)
+    id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    payload = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="Payload",
+    )
+    endpoint = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum="TetherEndpoint",
+    )
+    project = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    trace_id = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    timeout = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=duration_pb2.Duration,
+    )
 
 
 class Payload(proto.Message):
@@ -110,12 +131,23 @@ class Payload(proto.Message):
     """
 
     http_request = proto.Field(
-        proto.MESSAGE, number=1, oneof="kind", message="HttpRequest",
+        proto.MESSAGE,
+        number=1,
+        oneof="kind",
+        message="HttpRequest",
     )
     stream_info = proto.Field(
-        proto.MESSAGE, number=2, oneof="kind", message="StreamInfo",
+        proto.MESSAGE,
+        number=2,
+        oneof="kind",
+        message="StreamInfo",
     )
-    action = proto.Field(proto.ENUM, number=3, oneof="kind", enum="Action",)
+    action = proto.Field(
+        proto.ENUM,
+        number=3,
+        oneof="kind",
+        enum="Action",
+    )
 
 
 class StreamInfo(proto.Message):
@@ -126,7 +158,10 @@ class StreamInfo(proto.Message):
             Unique identifier for the stream.
     """
 
-    id = proto.Field(proto.STRING, number=1,)
+    id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class EgressResponse(proto.Message):
@@ -154,13 +189,37 @@ class EgressResponse(proto.Message):
             ``projects/{project_number or project_id}/endpoints/{endpoint}``
     """
 
-    id = proto.Field(proto.STRING, number=1,)
-    http_response = proto.Field(proto.MESSAGE, number=2, message="HttpResponse",)
-    status = proto.Field(proto.MESSAGE, number=3, message=status_pb2.Status,)
-    project = proto.Field(proto.STRING, number=4,)
-    trace_id = proto.Field(proto.STRING, number=5,)
-    endpoint = proto.Field(proto.ENUM, number=6, enum="TetherEndpoint",)
-    name = proto.Field(proto.STRING, number=7,)
+    id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    http_response = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="HttpResponse",
+    )
+    status = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=status_pb2.Status,
+    )
+    project = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    trace_id = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    endpoint = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum="TetherEndpoint",
+    )
+    name = proto.Field(
+        proto.STRING,
+        number=7,
+    )
 
 
 class HttpRequest(proto.Message):
@@ -181,11 +240,28 @@ class HttpRequest(proto.Message):
             HTTP request body.
     """
 
-    id = proto.Field(proto.STRING, number=1,)
-    method = proto.Field(proto.STRING, number=2,)
-    url = proto.Field(proto.MESSAGE, number=3, message="Url",)
-    headers = proto.RepeatedField(proto.MESSAGE, number=4, message="Header",)
-    body = proto.Field(proto.BYTES, number=5,)
+    id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    method = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    url = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="Url",
+    )
+    headers = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message="Header",
+    )
+    body = proto.Field(
+        proto.BYTES,
+        number=5,
+    )
 
 
 class Url(proto.Message):
@@ -203,9 +279,19 @@ class Url(proto.Message):
             Path starts with ``/``.
     """
 
-    scheme = proto.Field(proto.ENUM, number=1, enum="Scheme",)
-    host = proto.Field(proto.STRING, number=2,)
-    path = proto.Field(proto.STRING, number=3,)
+    scheme = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum="Scheme",
+    )
+    host = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    path = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class Header(proto.Message):
@@ -218,8 +304,14 @@ class Header(proto.Message):
 
     """
 
-    key = proto.Field(proto.STRING, number=1,)
-    values = proto.RepeatedField(proto.STRING, number=2,)
+    key = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    values = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
 
 
 class HttpResponse(proto.Message):
@@ -245,12 +337,31 @@ class HttpResponse(proto.Message):
             number of bytes may be read from Body.
     """
 
-    id = proto.Field(proto.STRING, number=1,)
-    status = proto.Field(proto.STRING, number=2,)
-    status_code = proto.Field(proto.INT32, number=3,)
-    body = proto.Field(proto.BYTES, number=4,)
-    headers = proto.RepeatedField(proto.MESSAGE, number=5, message="Header",)
-    content_length = proto.Field(proto.INT64, number=6,)
+    id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    status = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    status_code = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    body = proto.Field(
+        proto.BYTES,
+        number=4,
+    )
+    headers = proto.RepeatedField(
+        proto.MESSAGE,
+        number=5,
+        message="Header",
+    )
+    content_length = proto.Field(
+        proto.INT64,
+        number=6,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

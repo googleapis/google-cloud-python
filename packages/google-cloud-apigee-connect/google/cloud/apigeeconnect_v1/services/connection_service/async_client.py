@@ -289,7 +289,8 @@ class ConnectionServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable, core_exceptions.Unknown,
+                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.Unknown,
                 ),
                 deadline=60.0,
             ),
@@ -304,12 +305,20 @@ class ConnectionServiceAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.
         response = pagers.ListConnectionsAsyncPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.

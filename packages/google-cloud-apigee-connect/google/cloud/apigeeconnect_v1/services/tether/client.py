@@ -53,7 +53,10 @@ class TetherClientMeta(type):
     _transport_registry["grpc"] = TetherGrpcTransport
     _transport_registry["grpc_asyncio"] = TetherGrpcAsyncIOTransport
 
-    def get_transport_class(cls, label: str = None,) -> Type[TetherTransport]:
+    def get_transport_class(
+        cls,
+        label: str = None,
+    ) -> Type[TetherTransport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -162,7 +165,9 @@ class TetherClient(metaclass=TetherClientMeta):
         return self._transport
 
     @staticmethod
-    def common_billing_account_path(billing_account: str,) -> str:
+    def common_billing_account_path(
+        billing_account: str,
+    ) -> str:
         """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
@@ -175,9 +180,13 @@ class TetherClient(metaclass=TetherClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(folder: str,) -> str:
+    def common_folder_path(
+        folder: str,
+    ) -> str:
         """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(folder=folder,)
+        return "folders/{folder}".format(
+            folder=folder,
+        )
 
     @staticmethod
     def parse_common_folder_path(path: str) -> Dict[str, str]:
@@ -186,9 +195,13 @@ class TetherClient(metaclass=TetherClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(organization: str,) -> str:
+    def common_organization_path(
+        organization: str,
+    ) -> str:
         """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(organization=organization,)
+        return "organizations/{organization}".format(
+            organization=organization,
+        )
 
     @staticmethod
     def parse_common_organization_path(path: str) -> Dict[str, str]:
@@ -197,9 +210,13 @@ class TetherClient(metaclass=TetherClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(project: str,) -> str:
+    def common_project_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified project string."""
-        return "projects/{project}".format(project=project,)
+        return "projects/{project}".format(
+            project=project,
+        )
 
     @staticmethod
     def parse_common_project_path(path: str) -> Dict[str, str]:
@@ -208,10 +225,14 @@ class TetherClient(metaclass=TetherClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(project: str, location: str,) -> str:
+    def common_location_path(
+        project: str,
+        location: str,
+    ) -> str:
         """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
-            project=project, location=location,
+            project=project,
+            location=location,
         )
 
     @staticmethod
@@ -452,7 +473,12 @@ class TetherClient(metaclass=TetherClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.egress]
 
         # Send the request.
-        response = rpc(requests, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            requests,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
