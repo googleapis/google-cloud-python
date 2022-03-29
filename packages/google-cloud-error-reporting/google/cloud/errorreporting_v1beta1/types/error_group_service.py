@@ -20,7 +20,10 @@ from google.cloud.errorreporting_v1beta1.types import common
 
 __protobuf__ = proto.module(
     package="google.devtools.clouderrorreporting.v1beta1",
-    manifest={"GetGroupRequest", "UpdateGroupRequest",},
+    manifest={
+        "GetGroupRequest",
+        "UpdateGroupRequest",
+    },
 )
 
 
@@ -37,7 +40,10 @@ class GetGroupRequest(proto.Message):
             Example: ``projects/my-project-123/groups/my-group``
     """
 
-    group_name = proto.Field(proto.STRING, number=1,)
+    group_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class UpdateGroupRequest(proto.Message):
@@ -49,7 +55,11 @@ class UpdateGroupRequest(proto.Message):
             resource on the server.
     """
 
-    group = proto.Field(proto.MESSAGE, number=1, message=common.ErrorGroup,)
+    group = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=common.ErrorGroup,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

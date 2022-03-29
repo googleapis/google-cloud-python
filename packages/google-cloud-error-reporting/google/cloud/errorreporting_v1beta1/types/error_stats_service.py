@@ -108,22 +108,52 @@ class ListGroupStatsRequest(proto.Message):
             with the identical query parameters as the first request.
     """
 
-    project_name = proto.Field(proto.STRING, number=1,)
-    group_id = proto.RepeatedField(proto.STRING, number=2,)
+    project_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    group_id = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
     service_filter = proto.Field(
-        proto.MESSAGE, number=3, message="ServiceContextFilter",
+        proto.MESSAGE,
+        number=3,
+        message="ServiceContextFilter",
     )
-    time_range = proto.Field(proto.MESSAGE, number=5, message="QueryTimeRange",)
+    time_range = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message="QueryTimeRange",
+    )
     timed_count_duration = proto.Field(
-        proto.MESSAGE, number=6, message=duration_pb2.Duration,
+        proto.MESSAGE,
+        number=6,
+        message=duration_pb2.Duration,
     )
-    alignment = proto.Field(proto.ENUM, number=7, enum="TimedCountAlignment",)
+    alignment = proto.Field(
+        proto.ENUM,
+        number=7,
+        enum="TimedCountAlignment",
+    )
     alignment_time = proto.Field(
-        proto.MESSAGE, number=8, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=8,
+        message=timestamp_pb2.Timestamp,
     )
-    order = proto.Field(proto.ENUM, number=9, enum="ErrorGroupOrder",)
-    page_size = proto.Field(proto.INT32, number=11,)
-    page_token = proto.Field(proto.STRING, number=12,)
+    order = proto.Field(
+        proto.ENUM,
+        number=9,
+        enum="ErrorGroupOrder",
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=11,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=12,
+    )
 
 
 class ListGroupStatsResponse(proto.Message):
@@ -152,11 +182,18 @@ class ListGroupStatsResponse(proto.Message):
         return self
 
     error_group_stats = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="ErrorGroupStats",
+        proto.MESSAGE,
+        number=1,
+        message="ErrorGroupStats",
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
     time_range_begin = proto.Field(
-        proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
     )
 
 
@@ -217,21 +254,48 @@ class ErrorGroupStats(proto.Message):
             characteristics of the group as a whole.
     """
 
-    group = proto.Field(proto.MESSAGE, number=1, message=common.ErrorGroup,)
-    count = proto.Field(proto.INT64, number=2,)
-    affected_users_count = proto.Field(proto.INT64, number=3,)
-    timed_counts = proto.RepeatedField(proto.MESSAGE, number=4, message="TimedCount",)
+    group = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=common.ErrorGroup,
+    )
+    count = proto.Field(
+        proto.INT64,
+        number=2,
+    )
+    affected_users_count = proto.Field(
+        proto.INT64,
+        number=3,
+    )
+    timed_counts = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message="TimedCount",
+    )
     first_seen_time = proto.Field(
-        proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
     )
     last_seen_time = proto.Field(
-        proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
     )
     affected_services = proto.RepeatedField(
-        proto.MESSAGE, number=7, message=common.ServiceContext,
+        proto.MESSAGE,
+        number=7,
+        message=common.ServiceContext,
     )
-    num_affected_services = proto.Field(proto.INT32, number=8,)
-    representative = proto.Field(proto.MESSAGE, number=9, message=common.ErrorEvent,)
+    num_affected_services = proto.Field(
+        proto.INT32,
+        number=8,
+    )
+    representative = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message=common.ErrorEvent,
+    )
 
 
 class TimedCount(proto.Message):
@@ -250,9 +314,20 @@ class TimedCount(proto.Message):
             End of the time period to which ``count`` refers (excluded).
     """
 
-    count = proto.Field(proto.INT64, number=1,)
-    start_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    end_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
+    count = proto.Field(
+        proto.INT64,
+        number=1,
+    )
+    start_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 class ListEventsRequest(proto.Message):
@@ -287,14 +362,32 @@ class ListEventsRequest(proto.Message):
             response.
     """
 
-    project_name = proto.Field(proto.STRING, number=1,)
-    group_id = proto.Field(proto.STRING, number=2,)
-    service_filter = proto.Field(
-        proto.MESSAGE, number=3, message="ServiceContextFilter",
+    project_name = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    time_range = proto.Field(proto.MESSAGE, number=4, message="QueryTimeRange",)
-    page_size = proto.Field(proto.INT32, number=6,)
-    page_token = proto.Field(proto.STRING, number=7,)
+    group_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    service_filter = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="ServiceContextFilter",
+    )
+    time_range = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="QueryTimeRange",
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=6,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=7,
+    )
 
 
 class ListEventsResponse(proto.Message):
@@ -319,11 +412,18 @@ class ListEventsResponse(proto.Message):
         return self
 
     error_events = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=common.ErrorEvent,
+        proto.MESSAGE,
+        number=1,
+        message=common.ErrorEvent,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
     time_range_begin = proto.Field(
-        proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
     )
 
 
@@ -346,7 +446,11 @@ class QueryTimeRange(proto.Message):
         PERIOD_1_WEEK = 4
         PERIOD_30_DAYS = 5
 
-    period = proto.Field(proto.ENUM, number=1, enum=Period,)
+    period = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Period,
+    )
 
 
 class ServiceContextFilter(proto.Message):
@@ -367,9 +471,18 @@ class ServiceContextFilter(proto.Message):
             ```ServiceContext.resource_type`` </error-reporting/reference/rest/v1beta1/ServiceContext#FIELDS.resource_type>`__.
     """
 
-    service = proto.Field(proto.STRING, number=2,)
-    version = proto.Field(proto.STRING, number=3,)
-    resource_type = proto.Field(proto.STRING, number=4,)
+    service = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    version = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    resource_type = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class DeleteEventsRequest(proto.Message):
@@ -385,12 +498,14 @@ class DeleteEventsRequest(proto.Message):
             Example: ``projects/my-project-123``.
     """
 
-    project_name = proto.Field(proto.STRING, number=1,)
+    project_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class DeleteEventsResponse(proto.Message):
-    r"""Response message for deleting error events.
-    """
+    r"""Response message for deleting error events."""
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

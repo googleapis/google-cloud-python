@@ -44,8 +44,15 @@ class ReportErrorEventRequest(proto.Message):
             Required. The error event to be reported.
     """
 
-    project_name = proto.Field(proto.STRING, number=1,)
-    event = proto.Field(proto.MESSAGE, number=2, message="ReportedErrorEvent",)
+    project_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    event = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="ReportedErrorEvent",
+    )
 
 
 class ReportErrorEventResponse(proto.Message):
@@ -99,12 +106,25 @@ class ReportedErrorEvent(proto.Message):
             which the error occurred.
     """
 
-    event_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
-    service_context = proto.Field(
-        proto.MESSAGE, number=2, message=common.ServiceContext,
+    event_time = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
     )
-    message = proto.Field(proto.STRING, number=3,)
-    context = proto.Field(proto.MESSAGE, number=4, message=common.ErrorContext,)
+    service_context = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=common.ServiceContext,
+    )
+    message = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    context = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=common.ErrorContext,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
