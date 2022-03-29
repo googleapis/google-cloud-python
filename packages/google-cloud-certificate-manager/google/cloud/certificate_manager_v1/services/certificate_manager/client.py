@@ -61,7 +61,8 @@ class CertificateManagerClientMeta(type):
     _transport_registry["grpc_asyncio"] = CertificateManagerGrpcAsyncIOTransport
 
     def get_transport_class(
-        cls, label: str = None,
+        cls,
+        label: str = None,
     ) -> Type[CertificateManagerTransport]:
         """Returns an appropriate transport class.
 
@@ -195,10 +196,18 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
         return self._transport
 
     @staticmethod
-    def certificate_path(project: str, location: str, certificate: str,) -> str:
+    def certificate_path(
+        project: str,
+        location: str,
+        certificate: str,
+    ) -> str:
         """Returns a fully-qualified certificate string."""
-        return "projects/{project}/locations/{location}/certificates/{certificate}".format(
-            project=project, location=location, certificate=certificate,
+        return (
+            "projects/{project}/locations/{location}/certificates/{certificate}".format(
+                project=project,
+                location=location,
+                certificate=certificate,
+            )
         )
 
     @staticmethod
@@ -211,10 +220,16 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def certificate_map_path(project: str, location: str, certificate_map: str,) -> str:
+    def certificate_map_path(
+        project: str,
+        location: str,
+        certificate_map: str,
+    ) -> str:
         """Returns a fully-qualified certificate_map string."""
         return "projects/{project}/locations/{location}/certificateMaps/{certificate_map}".format(
-            project=project, location=location, certificate_map=certificate_map,
+            project=project,
+            location=location,
+            certificate_map=certificate_map,
         )
 
     @staticmethod
@@ -228,7 +243,10 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
     @staticmethod
     def certificate_map_entry_path(
-        project: str, location: str, certificate_map: str, certificate_map_entry: str,
+        project: str,
+        location: str,
+        certificate_map: str,
+        certificate_map_entry: str,
     ) -> str:
         """Returns a fully-qualified certificate_map_entry string."""
         return "projects/{project}/locations/{location}/certificateMaps/{certificate_map}/certificateMapEntries/{certificate_map_entry}".format(
@@ -249,11 +267,15 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
     @staticmethod
     def dns_authorization_path(
-        project: str, location: str, dns_authorization: str,
+        project: str,
+        location: str,
+        dns_authorization: str,
     ) -> str:
         """Returns a fully-qualified dns_authorization string."""
         return "projects/{project}/locations/{location}/dnsAuthorizations/{dns_authorization}".format(
-            project=project, location=location, dns_authorization=dns_authorization,
+            project=project,
+            location=location,
+            dns_authorization=dns_authorization,
         )
 
     @staticmethod
@@ -267,11 +289,15 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
     @staticmethod
     def target_https_proxies_path(
-        project: str, location: str, targetHttpsProxy: str,
+        project: str,
+        location: str,
+        targetHttpsProxy: str,
     ) -> str:
         """Returns a fully-qualified target_https_proxies string."""
         return "projects/{project}/locations/{location}/targetHttpsProxies/{targetHttpsProxy}".format(
-            project=project, location=location, targetHttpsProxy=targetHttpsProxy,
+            project=project,
+            location=location,
+            targetHttpsProxy=targetHttpsProxy,
         )
 
     @staticmethod
@@ -285,11 +311,15 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
 
     @staticmethod
     def target_ssl_proxies_path(
-        project: str, location: str, targetSslProxy: str,
+        project: str,
+        location: str,
+        targetSslProxy: str,
     ) -> str:
         """Returns a fully-qualified target_ssl_proxies string."""
         return "projects/{project}/locations/{location}/targetSslProxies/{targetSslProxy}".format(
-            project=project, location=location, targetSslProxy=targetSslProxy,
+            project=project,
+            location=location,
+            targetSslProxy=targetSslProxy,
         )
 
     @staticmethod
@@ -302,7 +332,9 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_billing_account_path(billing_account: str,) -> str:
+    def common_billing_account_path(
+        billing_account: str,
+    ) -> str:
         """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
@@ -315,9 +347,13 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(folder: str,) -> str:
+    def common_folder_path(
+        folder: str,
+    ) -> str:
         """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(folder=folder,)
+        return "folders/{folder}".format(
+            folder=folder,
+        )
 
     @staticmethod
     def parse_common_folder_path(path: str) -> Dict[str, str]:
@@ -326,9 +362,13 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(organization: str,) -> str:
+    def common_organization_path(
+        organization: str,
+    ) -> str:
         """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(organization=organization,)
+        return "organizations/{organization}".format(
+            organization=organization,
+        )
 
     @staticmethod
     def parse_common_organization_path(path: str) -> Dict[str, str]:
@@ -337,9 +377,13 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(project: str,) -> str:
+    def common_project_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified project string."""
-        return "projects/{project}".format(project=project,)
+        return "projects/{project}".format(
+            project=project,
+        )
 
     @staticmethod
     def parse_common_project_path(path: str) -> Dict[str, str]:
@@ -348,10 +392,14 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(project: str, location: str,) -> str:
+    def common_location_path(
+        project: str,
+        location: str,
+    ) -> str:
         """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
-            project=project, location=location,
+            project=project,
+            location=location,
         )
 
     @staticmethod
@@ -614,12 +662,20 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListCertificatesPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -708,7 +764,12 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -828,7 +889,12 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -945,7 +1011,12 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1060,7 +1131,12 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1164,12 +1240,20 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListCertificateMapsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1261,7 +1345,12 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1381,7 +1470,12 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1498,7 +1592,12 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1618,7 +1717,12 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1729,12 +1833,20 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListCertificateMapEntriesPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1826,7 +1938,12 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1959,7 +2076,12 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -2087,7 +2209,12 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -2209,7 +2336,12 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -2313,12 +2445,20 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListDnsAuthorizationsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -2411,7 +2551,12 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2534,7 +2679,12 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -2654,7 +2804,12 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -2770,7 +2925,12 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(

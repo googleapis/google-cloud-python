@@ -97,7 +97,11 @@ def test__get_default_mtls_endpoint():
 
 
 @pytest.mark.parametrize(
-    "client_class", [CertificateManagerClient, CertificateManagerAsyncClient,]
+    "client_class",
+    [
+        CertificateManagerClient,
+        CertificateManagerAsyncClient,
+    ],
 )
 def test_certificate_manager_client_from_service_account_info(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -139,7 +143,11 @@ def test_certificate_manager_client_service_account_always_use_jwt(
 
 
 @pytest.mark.parametrize(
-    "client_class", [CertificateManagerClient, CertificateManagerAsyncClient,]
+    "client_class",
+    [
+        CertificateManagerClient,
+        CertificateManagerAsyncClient,
+    ],
 )
 def test_certificate_manager_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -513,7 +521,9 @@ def test_certificate_manager_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -654,11 +664,16 @@ def test_certificate_manager_client_create_channel_credentials_file(
 
 
 @pytest.mark.parametrize(
-    "request_type", [certificate_manager.ListCertificatesRequest, dict,]
+    "request_type",
+    [
+        certificate_manager.ListCertificatesRequest,
+        dict,
+    ],
 )
 def test_list_certificates(request_type, transport: str = "grpc"):
     client = CertificateManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -671,7 +686,8 @@ def test_list_certificates(request_type, transport: str = "grpc"):
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = certificate_manager.ListCertificatesResponse(
-            next_page_token="next_page_token_value", unreachable=["unreachable_value"],
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
         )
         response = client.list_certificates(request)
 
@@ -690,7 +706,8 @@ def test_list_certificates_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CertificateManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -709,7 +726,8 @@ async def test_list_certificates_async(
     request_type=certificate_manager.ListCertificatesRequest,
 ):
     client = CertificateManagerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -770,7 +788,10 @@ def test_list_certificates_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -801,7 +822,10 @@ async def test_list_certificates_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_certificates_flattened():
@@ -817,7 +841,9 @@ def test_list_certificates_flattened():
         call.return_value = certificate_manager.ListCertificatesResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_certificates(parent="parent_value",)
+        client.list_certificates(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -837,7 +863,8 @@ def test_list_certificates_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_certificates(
-            certificate_manager.ListCertificatesRequest(), parent="parent_value",
+            certificate_manager.ListCertificatesRequest(),
+            parent="parent_value",
         )
 
 
@@ -859,7 +886,9 @@ async def test_list_certificates_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_certificates(parent="parent_value",)
+        response = await client.list_certificates(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -880,13 +909,15 @@ async def test_list_certificates_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_certificates(
-            certificate_manager.ListCertificatesRequest(), parent="parent_value",
+            certificate_manager.ListCertificatesRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_certificates_pager(transport_name: str = "grpc"):
     client = CertificateManagerClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -904,10 +935,13 @@ def test_list_certificates_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             certificate_manager.ListCertificatesResponse(
-                certificates=[], next_page_token="def",
+                certificates=[],
+                next_page_token="def",
             ),
             certificate_manager.ListCertificatesResponse(
-                certificates=[certificate_manager.Certificate(),],
+                certificates=[
+                    certificate_manager.Certificate(),
+                ],
                 next_page_token="ghi",
             ),
             certificate_manager.ListCertificatesResponse(
@@ -934,7 +968,8 @@ def test_list_certificates_pager(transport_name: str = "grpc"):
 
 def test_list_certificates_pages(transport_name: str = "grpc"):
     client = CertificateManagerClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -952,10 +987,13 @@ def test_list_certificates_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             certificate_manager.ListCertificatesResponse(
-                certificates=[], next_page_token="def",
+                certificates=[],
+                next_page_token="def",
             ),
             certificate_manager.ListCertificatesResponse(
-                certificates=[certificate_manager.Certificate(),],
+                certificates=[
+                    certificate_manager.Certificate(),
+                ],
                 next_page_token="ghi",
             ),
             certificate_manager.ListCertificatesResponse(
@@ -994,10 +1032,13 @@ async def test_list_certificates_async_pager():
                 next_page_token="abc",
             ),
             certificate_manager.ListCertificatesResponse(
-                certificates=[], next_page_token="def",
+                certificates=[],
+                next_page_token="def",
             ),
             certificate_manager.ListCertificatesResponse(
-                certificates=[certificate_manager.Certificate(),],
+                certificates=[
+                    certificate_manager.Certificate(),
+                ],
                 next_page_token="ghi",
             ),
             certificate_manager.ListCertificatesResponse(
@@ -1008,7 +1049,9 @@ async def test_list_certificates_async_pager():
             ),
             RuntimeError,
         )
-        async_pager = await client.list_certificates(request={},)
+        async_pager = await client.list_certificates(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -1041,10 +1084,13 @@ async def test_list_certificates_async_pages():
                 next_page_token="abc",
             ),
             certificate_manager.ListCertificatesResponse(
-                certificates=[], next_page_token="def",
+                certificates=[],
+                next_page_token="def",
             ),
             certificate_manager.ListCertificatesResponse(
-                certificates=[certificate_manager.Certificate(),],
+                certificates=[
+                    certificate_manager.Certificate(),
+                ],
                 next_page_token="ghi",
             ),
             certificate_manager.ListCertificatesResponse(
@@ -1063,11 +1109,16 @@ async def test_list_certificates_async_pages():
 
 
 @pytest.mark.parametrize(
-    "request_type", [certificate_manager.GetCertificateRequest, dict,]
+    "request_type",
+    [
+        certificate_manager.GetCertificateRequest,
+        dict,
+    ],
 )
 def test_get_certificate(request_type, transport: str = "grpc"):
     client = CertificateManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1107,7 +1158,8 @@ def test_get_certificate_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CertificateManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1124,7 +1176,8 @@ async def test_get_certificate_async(
     request_type=certificate_manager.GetCertificateRequest,
 ):
     client = CertificateManagerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1187,7 +1240,10 @@ def test_get_certificate_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1216,7 +1272,10 @@ async def test_get_certificate_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_certificate_flattened():
@@ -1230,7 +1289,9 @@ def test_get_certificate_flattened():
         call.return_value = certificate_manager.Certificate()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_certificate(name="name_value",)
+        client.get_certificate(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1250,7 +1311,8 @@ def test_get_certificate_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_certificate(
-            certificate_manager.GetCertificateRequest(), name="name_value",
+            certificate_manager.GetCertificateRequest(),
+            name="name_value",
         )
 
 
@@ -1270,7 +1332,9 @@ async def test_get_certificate_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_certificate(name="name_value",)
+        response = await client.get_certificate(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1291,16 +1355,22 @@ async def test_get_certificate_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_certificate(
-            certificate_manager.GetCertificateRequest(), name="name_value",
+            certificate_manager.GetCertificateRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [certificate_manager.CreateCertificateRequest, dict,]
+    "request_type",
+    [
+        certificate_manager.CreateCertificateRequest,
+        dict,
+    ],
 )
 def test_create_certificate(request_type, transport: str = "grpc"):
     client = CertificateManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1328,7 +1398,8 @@ def test_create_certificate_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CertificateManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1347,7 +1418,8 @@ async def test_create_certificate_async(
     request_type=certificate_manager.CreateCertificateRequest,
 ):
     client = CertificateManagerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1403,7 +1475,10 @@ def test_create_certificate_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1434,7 +1509,10 @@ async def test_create_certificate_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_certificate_flattened():
@@ -1544,11 +1622,16 @@ async def test_create_certificate_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [certificate_manager.UpdateCertificateRequest, dict,]
+    "request_type",
+    [
+        certificate_manager.UpdateCertificateRequest,
+        dict,
+    ],
 )
 def test_update_certificate(request_type, transport: str = "grpc"):
     client = CertificateManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1576,7 +1659,8 @@ def test_update_certificate_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CertificateManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1595,7 +1679,8 @@ async def test_update_certificate_async(
     request_type=certificate_manager.UpdateCertificateRequest,
 ):
     client = CertificateManagerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1651,9 +1736,10 @@ def test_update_certificate_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "certificate.name=certificate.name/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "certificate.name=certificate.name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1684,9 +1770,10 @@ async def test_update_certificate_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "certificate.name=certificate.name/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "certificate.name=certificate.name/value",
+    ) in kw["metadata"]
 
 
 def test_update_certificate_flattened():
@@ -1786,11 +1873,16 @@ async def test_update_certificate_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [certificate_manager.DeleteCertificateRequest, dict,]
+    "request_type",
+    [
+        certificate_manager.DeleteCertificateRequest,
+        dict,
+    ],
 )
 def test_delete_certificate(request_type, transport: str = "grpc"):
     client = CertificateManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1818,7 +1910,8 @@ def test_delete_certificate_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CertificateManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1837,7 +1930,8 @@ async def test_delete_certificate_async(
     request_type=certificate_manager.DeleteCertificateRequest,
 ):
     client = CertificateManagerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1893,7 +1987,10 @@ def test_delete_certificate_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1924,7 +2021,10 @@ async def test_delete_certificate_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_certificate_flattened():
@@ -1940,7 +2040,9 @@ def test_delete_certificate_flattened():
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_certificate(name="name_value",)
+        client.delete_certificate(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1960,7 +2062,8 @@ def test_delete_certificate_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_certificate(
-            certificate_manager.DeleteCertificateRequest(), name="name_value",
+            certificate_manager.DeleteCertificateRequest(),
+            name="name_value",
         )
 
 
@@ -1982,7 +2085,9 @@ async def test_delete_certificate_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_certificate(name="name_value",)
+        response = await client.delete_certificate(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2003,16 +2108,22 @@ async def test_delete_certificate_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_certificate(
-            certificate_manager.DeleteCertificateRequest(), name="name_value",
+            certificate_manager.DeleteCertificateRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [certificate_manager.ListCertificateMapsRequest, dict,]
+    "request_type",
+    [
+        certificate_manager.ListCertificateMapsRequest,
+        dict,
+    ],
 )
 def test_list_certificate_maps(request_type, transport: str = "grpc"):
     client = CertificateManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2025,7 +2136,8 @@ def test_list_certificate_maps(request_type, transport: str = "grpc"):
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = certificate_manager.ListCertificateMapsResponse(
-            next_page_token="next_page_token_value", unreachable=["unreachable_value"],
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
         )
         response = client.list_certificate_maps(request)
 
@@ -2044,7 +2156,8 @@ def test_list_certificate_maps_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CertificateManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2063,7 +2176,8 @@ async def test_list_certificate_maps_async(
     request_type=certificate_manager.ListCertificateMapsRequest,
 ):
     client = CertificateManagerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2124,7 +2238,10 @@ def test_list_certificate_maps_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2155,7 +2272,10 @@ async def test_list_certificate_maps_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_certificate_maps_flattened():
@@ -2171,7 +2291,9 @@ def test_list_certificate_maps_flattened():
         call.return_value = certificate_manager.ListCertificateMapsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_certificate_maps(parent="parent_value",)
+        client.list_certificate_maps(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2191,7 +2313,8 @@ def test_list_certificate_maps_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_certificate_maps(
-            certificate_manager.ListCertificateMapsRequest(), parent="parent_value",
+            certificate_manager.ListCertificateMapsRequest(),
+            parent="parent_value",
         )
 
 
@@ -2213,7 +2336,9 @@ async def test_list_certificate_maps_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_certificate_maps(parent="parent_value",)
+        response = await client.list_certificate_maps(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2234,13 +2359,15 @@ async def test_list_certificate_maps_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_certificate_maps(
-            certificate_manager.ListCertificateMapsRequest(), parent="parent_value",
+            certificate_manager.ListCertificateMapsRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_certificate_maps_pager(transport_name: str = "grpc"):
     client = CertificateManagerClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2258,10 +2385,13 @@ def test_list_certificate_maps_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             certificate_manager.ListCertificateMapsResponse(
-                certificate_maps=[], next_page_token="def",
+                certificate_maps=[],
+                next_page_token="def",
             ),
             certificate_manager.ListCertificateMapsResponse(
-                certificate_maps=[certificate_manager.CertificateMap(),],
+                certificate_maps=[
+                    certificate_manager.CertificateMap(),
+                ],
                 next_page_token="ghi",
             ),
             certificate_manager.ListCertificateMapsResponse(
@@ -2288,7 +2418,8 @@ def test_list_certificate_maps_pager(transport_name: str = "grpc"):
 
 def test_list_certificate_maps_pages(transport_name: str = "grpc"):
     client = CertificateManagerClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2306,10 +2437,13 @@ def test_list_certificate_maps_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             certificate_manager.ListCertificateMapsResponse(
-                certificate_maps=[], next_page_token="def",
+                certificate_maps=[],
+                next_page_token="def",
             ),
             certificate_manager.ListCertificateMapsResponse(
-                certificate_maps=[certificate_manager.CertificateMap(),],
+                certificate_maps=[
+                    certificate_manager.CertificateMap(),
+                ],
                 next_page_token="ghi",
             ),
             certificate_manager.ListCertificateMapsResponse(
@@ -2348,10 +2482,13 @@ async def test_list_certificate_maps_async_pager():
                 next_page_token="abc",
             ),
             certificate_manager.ListCertificateMapsResponse(
-                certificate_maps=[], next_page_token="def",
+                certificate_maps=[],
+                next_page_token="def",
             ),
             certificate_manager.ListCertificateMapsResponse(
-                certificate_maps=[certificate_manager.CertificateMap(),],
+                certificate_maps=[
+                    certificate_manager.CertificateMap(),
+                ],
                 next_page_token="ghi",
             ),
             certificate_manager.ListCertificateMapsResponse(
@@ -2362,7 +2499,9 @@ async def test_list_certificate_maps_async_pager():
             ),
             RuntimeError,
         )
-        async_pager = await client.list_certificate_maps(request={},)
+        async_pager = await client.list_certificate_maps(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -2395,10 +2534,13 @@ async def test_list_certificate_maps_async_pages():
                 next_page_token="abc",
             ),
             certificate_manager.ListCertificateMapsResponse(
-                certificate_maps=[], next_page_token="def",
+                certificate_maps=[],
+                next_page_token="def",
             ),
             certificate_manager.ListCertificateMapsResponse(
-                certificate_maps=[certificate_manager.CertificateMap(),],
+                certificate_maps=[
+                    certificate_manager.CertificateMap(),
+                ],
                 next_page_token="ghi",
             ),
             certificate_manager.ListCertificateMapsResponse(
@@ -2417,11 +2559,16 @@ async def test_list_certificate_maps_async_pages():
 
 
 @pytest.mark.parametrize(
-    "request_type", [certificate_manager.GetCertificateMapRequest, dict,]
+    "request_type",
+    [
+        certificate_manager.GetCertificateMapRequest,
+        dict,
+    ],
 )
 def test_get_certificate_map(request_type, transport: str = "grpc"):
     client = CertificateManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2434,7 +2581,8 @@ def test_get_certificate_map(request_type, transport: str = "grpc"):
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = certificate_manager.CertificateMap(
-            name="name_value", description="description_value",
+            name="name_value",
+            description="description_value",
         )
         response = client.get_certificate_map(request)
 
@@ -2453,7 +2601,8 @@ def test_get_certificate_map_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CertificateManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2472,7 +2621,8 @@ async def test_get_certificate_map_async(
     request_type=certificate_manager.GetCertificateMapRequest,
 ):
     client = CertificateManagerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2486,7 +2636,8 @@ async def test_get_certificate_map_async(
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             certificate_manager.CertificateMap(
-                name="name_value", description="description_value",
+                name="name_value",
+                description="description_value",
             )
         )
         response = await client.get_certificate_map(request)
@@ -2532,7 +2683,10 @@ def test_get_certificate_map_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2563,7 +2717,10 @@ async def test_get_certificate_map_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_certificate_map_flattened():
@@ -2579,7 +2736,9 @@ def test_get_certificate_map_flattened():
         call.return_value = certificate_manager.CertificateMap()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_certificate_map(name="name_value",)
+        client.get_certificate_map(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2599,7 +2758,8 @@ def test_get_certificate_map_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_certificate_map(
-            certificate_manager.GetCertificateMapRequest(), name="name_value",
+            certificate_manager.GetCertificateMapRequest(),
+            name="name_value",
         )
 
 
@@ -2621,7 +2781,9 @@ async def test_get_certificate_map_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_certificate_map(name="name_value",)
+        response = await client.get_certificate_map(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2642,16 +2804,22 @@ async def test_get_certificate_map_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_certificate_map(
-            certificate_manager.GetCertificateMapRequest(), name="name_value",
+            certificate_manager.GetCertificateMapRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [certificate_manager.CreateCertificateMapRequest, dict,]
+    "request_type",
+    [
+        certificate_manager.CreateCertificateMapRequest,
+        dict,
+    ],
 )
 def test_create_certificate_map(request_type, transport: str = "grpc"):
     client = CertificateManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2679,7 +2847,8 @@ def test_create_certificate_map_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CertificateManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2698,7 +2867,8 @@ async def test_create_certificate_map_async(
     request_type=certificate_manager.CreateCertificateMapRequest,
 ):
     client = CertificateManagerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2754,7 +2924,10 @@ def test_create_certificate_map_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2785,7 +2958,10 @@ async def test_create_certificate_map_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_certificate_map_flattened():
@@ -2895,11 +3071,16 @@ async def test_create_certificate_map_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [certificate_manager.UpdateCertificateMapRequest, dict,]
+    "request_type",
+    [
+        certificate_manager.UpdateCertificateMapRequest,
+        dict,
+    ],
 )
 def test_update_certificate_map(request_type, transport: str = "grpc"):
     client = CertificateManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2927,7 +3108,8 @@ def test_update_certificate_map_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CertificateManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2946,7 +3128,8 @@ async def test_update_certificate_map_async(
     request_type=certificate_manager.UpdateCertificateMapRequest,
 ):
     client = CertificateManagerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3139,11 +3322,16 @@ async def test_update_certificate_map_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [certificate_manager.DeleteCertificateMapRequest, dict,]
+    "request_type",
+    [
+        certificate_manager.DeleteCertificateMapRequest,
+        dict,
+    ],
 )
 def test_delete_certificate_map(request_type, transport: str = "grpc"):
     client = CertificateManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3171,7 +3359,8 @@ def test_delete_certificate_map_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CertificateManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3190,7 +3379,8 @@ async def test_delete_certificate_map_async(
     request_type=certificate_manager.DeleteCertificateMapRequest,
 ):
     client = CertificateManagerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3246,7 +3436,10 @@ def test_delete_certificate_map_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -3277,7 +3470,10 @@ async def test_delete_certificate_map_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_certificate_map_flattened():
@@ -3293,7 +3489,9 @@ def test_delete_certificate_map_flattened():
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_certificate_map(name="name_value",)
+        client.delete_certificate_map(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3313,7 +3511,8 @@ def test_delete_certificate_map_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_certificate_map(
-            certificate_manager.DeleteCertificateMapRequest(), name="name_value",
+            certificate_manager.DeleteCertificateMapRequest(),
+            name="name_value",
         )
 
 
@@ -3335,7 +3534,9 @@ async def test_delete_certificate_map_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_certificate_map(name="name_value",)
+        response = await client.delete_certificate_map(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3356,16 +3557,22 @@ async def test_delete_certificate_map_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_certificate_map(
-            certificate_manager.DeleteCertificateMapRequest(), name="name_value",
+            certificate_manager.DeleteCertificateMapRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [certificate_manager.ListCertificateMapEntriesRequest, dict,]
+    "request_type",
+    [
+        certificate_manager.ListCertificateMapEntriesRequest,
+        dict,
+    ],
 )
 def test_list_certificate_map_entries(request_type, transport: str = "grpc"):
     client = CertificateManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3378,7 +3585,8 @@ def test_list_certificate_map_entries(request_type, transport: str = "grpc"):
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = certificate_manager.ListCertificateMapEntriesResponse(
-            next_page_token="next_page_token_value", unreachable=["unreachable_value"],
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
         )
         response = client.list_certificate_map_entries(request)
 
@@ -3397,7 +3605,8 @@ def test_list_certificate_map_entries_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CertificateManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3416,7 +3625,8 @@ async def test_list_certificate_map_entries_async(
     request_type=certificate_manager.ListCertificateMapEntriesRequest,
 ):
     client = CertificateManagerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3477,7 +3687,10 @@ def test_list_certificate_map_entries_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -3508,7 +3721,10 @@ async def test_list_certificate_map_entries_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_certificate_map_entries_flattened():
@@ -3524,7 +3740,9 @@ def test_list_certificate_map_entries_flattened():
         call.return_value = certificate_manager.ListCertificateMapEntriesResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_certificate_map_entries(parent="parent_value",)
+        client.list_certificate_map_entries(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3567,7 +3785,9 @@ async def test_list_certificate_map_entries_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_certificate_map_entries(parent="parent_value",)
+        response = await client.list_certificate_map_entries(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3595,7 +3815,8 @@ async def test_list_certificate_map_entries_flattened_error_async():
 
 def test_list_certificate_map_entries_pager(transport_name: str = "grpc"):
     client = CertificateManagerClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3613,10 +3834,13 @@ def test_list_certificate_map_entries_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             certificate_manager.ListCertificateMapEntriesResponse(
-                certificate_map_entries=[], next_page_token="def",
+                certificate_map_entries=[],
+                next_page_token="def",
             ),
             certificate_manager.ListCertificateMapEntriesResponse(
-                certificate_map_entries=[certificate_manager.CertificateMapEntry(),],
+                certificate_map_entries=[
+                    certificate_manager.CertificateMapEntry(),
+                ],
                 next_page_token="ghi",
             ),
             certificate_manager.ListCertificateMapEntriesResponse(
@@ -3645,7 +3869,8 @@ def test_list_certificate_map_entries_pager(transport_name: str = "grpc"):
 
 def test_list_certificate_map_entries_pages(transport_name: str = "grpc"):
     client = CertificateManagerClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3663,10 +3888,13 @@ def test_list_certificate_map_entries_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             certificate_manager.ListCertificateMapEntriesResponse(
-                certificate_map_entries=[], next_page_token="def",
+                certificate_map_entries=[],
+                next_page_token="def",
             ),
             certificate_manager.ListCertificateMapEntriesResponse(
-                certificate_map_entries=[certificate_manager.CertificateMapEntry(),],
+                certificate_map_entries=[
+                    certificate_manager.CertificateMapEntry(),
+                ],
                 next_page_token="ghi",
             ),
             certificate_manager.ListCertificateMapEntriesResponse(
@@ -3705,10 +3933,13 @@ async def test_list_certificate_map_entries_async_pager():
                 next_page_token="abc",
             ),
             certificate_manager.ListCertificateMapEntriesResponse(
-                certificate_map_entries=[], next_page_token="def",
+                certificate_map_entries=[],
+                next_page_token="def",
             ),
             certificate_manager.ListCertificateMapEntriesResponse(
-                certificate_map_entries=[certificate_manager.CertificateMapEntry(),],
+                certificate_map_entries=[
+                    certificate_manager.CertificateMapEntry(),
+                ],
                 next_page_token="ghi",
             ),
             certificate_manager.ListCertificateMapEntriesResponse(
@@ -3719,7 +3950,9 @@ async def test_list_certificate_map_entries_async_pager():
             ),
             RuntimeError,
         )
-        async_pager = await client.list_certificate_map_entries(request={},)
+        async_pager = await client.list_certificate_map_entries(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -3754,10 +3987,13 @@ async def test_list_certificate_map_entries_async_pages():
                 next_page_token="abc",
             ),
             certificate_manager.ListCertificateMapEntriesResponse(
-                certificate_map_entries=[], next_page_token="def",
+                certificate_map_entries=[],
+                next_page_token="def",
             ),
             certificate_manager.ListCertificateMapEntriesResponse(
-                certificate_map_entries=[certificate_manager.CertificateMapEntry(),],
+                certificate_map_entries=[
+                    certificate_manager.CertificateMapEntry(),
+                ],
                 next_page_token="ghi",
             ),
             certificate_manager.ListCertificateMapEntriesResponse(
@@ -3778,11 +4014,16 @@ async def test_list_certificate_map_entries_async_pages():
 
 
 @pytest.mark.parametrize(
-    "request_type", [certificate_manager.GetCertificateMapEntryRequest, dict,]
+    "request_type",
+    [
+        certificate_manager.GetCertificateMapEntryRequest,
+        dict,
+    ],
 )
 def test_get_certificate_map_entry(request_type, transport: str = "grpc"):
     client = CertificateManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3820,7 +4061,8 @@ def test_get_certificate_map_entry_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CertificateManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3839,7 +4081,8 @@ async def test_get_certificate_map_entry_async(
     request_type=certificate_manager.GetCertificateMapEntryRequest,
 ):
     client = CertificateManagerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3904,7 +4147,10 @@ def test_get_certificate_map_entry_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -3935,7 +4181,10 @@ async def test_get_certificate_map_entry_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_certificate_map_entry_flattened():
@@ -3951,7 +4200,9 @@ def test_get_certificate_map_entry_flattened():
         call.return_value = certificate_manager.CertificateMapEntry()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_certificate_map_entry(name="name_value",)
+        client.get_certificate_map_entry(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3971,7 +4222,8 @@ def test_get_certificate_map_entry_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_certificate_map_entry(
-            certificate_manager.GetCertificateMapEntryRequest(), name="name_value",
+            certificate_manager.GetCertificateMapEntryRequest(),
+            name="name_value",
         )
 
 
@@ -3993,7 +4245,9 @@ async def test_get_certificate_map_entry_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_certificate_map_entry(name="name_value",)
+        response = await client.get_certificate_map_entry(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -4014,16 +4268,22 @@ async def test_get_certificate_map_entry_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_certificate_map_entry(
-            certificate_manager.GetCertificateMapEntryRequest(), name="name_value",
+            certificate_manager.GetCertificateMapEntryRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [certificate_manager.CreateCertificateMapEntryRequest, dict,]
+    "request_type",
+    [
+        certificate_manager.CreateCertificateMapEntryRequest,
+        dict,
+    ],
 )
 def test_create_certificate_map_entry(request_type, transport: str = "grpc"):
     client = CertificateManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4051,7 +4311,8 @@ def test_create_certificate_map_entry_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CertificateManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4070,7 +4331,8 @@ async def test_create_certificate_map_entry_async(
     request_type=certificate_manager.CreateCertificateMapEntryRequest,
 ):
     client = CertificateManagerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4126,7 +4388,10 @@ def test_create_certificate_map_entry_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -4157,7 +4422,10 @@ async def test_create_certificate_map_entry_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_certificate_map_entry_flattened():
@@ -4275,11 +4543,16 @@ async def test_create_certificate_map_entry_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [certificate_manager.UpdateCertificateMapEntryRequest, dict,]
+    "request_type",
+    [
+        certificate_manager.UpdateCertificateMapEntryRequest,
+        dict,
+    ],
 )
 def test_update_certificate_map_entry(request_type, transport: str = "grpc"):
     client = CertificateManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4307,7 +4580,8 @@ def test_update_certificate_map_entry_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CertificateManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4326,7 +4600,8 @@ async def test_update_certificate_map_entry_async(
     request_type=certificate_manager.UpdateCertificateMapEntryRequest,
 ):
     client = CertificateManagerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4527,11 +4802,16 @@ async def test_update_certificate_map_entry_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [certificate_manager.DeleteCertificateMapEntryRequest, dict,]
+    "request_type",
+    [
+        certificate_manager.DeleteCertificateMapEntryRequest,
+        dict,
+    ],
 )
 def test_delete_certificate_map_entry(request_type, transport: str = "grpc"):
     client = CertificateManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4559,7 +4839,8 @@ def test_delete_certificate_map_entry_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CertificateManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4578,7 +4859,8 @@ async def test_delete_certificate_map_entry_async(
     request_type=certificate_manager.DeleteCertificateMapEntryRequest,
 ):
     client = CertificateManagerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4634,7 +4916,10 @@ def test_delete_certificate_map_entry_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -4665,7 +4950,10 @@ async def test_delete_certificate_map_entry_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_certificate_map_entry_flattened():
@@ -4681,7 +4969,9 @@ def test_delete_certificate_map_entry_flattened():
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_certificate_map_entry(name="name_value",)
+        client.delete_certificate_map_entry(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -4701,7 +4991,8 @@ def test_delete_certificate_map_entry_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_certificate_map_entry(
-            certificate_manager.DeleteCertificateMapEntryRequest(), name="name_value",
+            certificate_manager.DeleteCertificateMapEntryRequest(),
+            name="name_value",
         )
 
 
@@ -4723,7 +5014,9 @@ async def test_delete_certificate_map_entry_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_certificate_map_entry(name="name_value",)
+        response = await client.delete_certificate_map_entry(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -4744,16 +5037,22 @@ async def test_delete_certificate_map_entry_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_certificate_map_entry(
-            certificate_manager.DeleteCertificateMapEntryRequest(), name="name_value",
+            certificate_manager.DeleteCertificateMapEntryRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [certificate_manager.ListDnsAuthorizationsRequest, dict,]
+    "request_type",
+    [
+        certificate_manager.ListDnsAuthorizationsRequest,
+        dict,
+    ],
 )
 def test_list_dns_authorizations(request_type, transport: str = "grpc"):
     client = CertificateManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4766,7 +5065,8 @@ def test_list_dns_authorizations(request_type, transport: str = "grpc"):
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = certificate_manager.ListDnsAuthorizationsResponse(
-            next_page_token="next_page_token_value", unreachable=["unreachable_value"],
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
         )
         response = client.list_dns_authorizations(request)
 
@@ -4785,7 +5085,8 @@ def test_list_dns_authorizations_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CertificateManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4804,7 +5105,8 @@ async def test_list_dns_authorizations_async(
     request_type=certificate_manager.ListDnsAuthorizationsRequest,
 ):
     client = CertificateManagerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4865,7 +5167,10 @@ def test_list_dns_authorizations_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -4896,7 +5201,10 @@ async def test_list_dns_authorizations_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_dns_authorizations_flattened():
@@ -4912,7 +5220,9 @@ def test_list_dns_authorizations_flattened():
         call.return_value = certificate_manager.ListDnsAuthorizationsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_dns_authorizations(parent="parent_value",)
+        client.list_dns_authorizations(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -4932,7 +5242,8 @@ def test_list_dns_authorizations_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_dns_authorizations(
-            certificate_manager.ListDnsAuthorizationsRequest(), parent="parent_value",
+            certificate_manager.ListDnsAuthorizationsRequest(),
+            parent="parent_value",
         )
 
 
@@ -4954,7 +5265,9 @@ async def test_list_dns_authorizations_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_dns_authorizations(parent="parent_value",)
+        response = await client.list_dns_authorizations(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -4975,13 +5288,15 @@ async def test_list_dns_authorizations_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_dns_authorizations(
-            certificate_manager.ListDnsAuthorizationsRequest(), parent="parent_value",
+            certificate_manager.ListDnsAuthorizationsRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_dns_authorizations_pager(transport_name: str = "grpc"):
     client = CertificateManagerClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4999,10 +5314,13 @@ def test_list_dns_authorizations_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             certificate_manager.ListDnsAuthorizationsResponse(
-                dns_authorizations=[], next_page_token="def",
+                dns_authorizations=[],
+                next_page_token="def",
             ),
             certificate_manager.ListDnsAuthorizationsResponse(
-                dns_authorizations=[certificate_manager.DnsAuthorization(),],
+                dns_authorizations=[
+                    certificate_manager.DnsAuthorization(),
+                ],
                 next_page_token="ghi",
             ),
             certificate_manager.ListDnsAuthorizationsResponse(
@@ -5029,7 +5347,8 @@ def test_list_dns_authorizations_pager(transport_name: str = "grpc"):
 
 def test_list_dns_authorizations_pages(transport_name: str = "grpc"):
     client = CertificateManagerClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5047,10 +5366,13 @@ def test_list_dns_authorizations_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             certificate_manager.ListDnsAuthorizationsResponse(
-                dns_authorizations=[], next_page_token="def",
+                dns_authorizations=[],
+                next_page_token="def",
             ),
             certificate_manager.ListDnsAuthorizationsResponse(
-                dns_authorizations=[certificate_manager.DnsAuthorization(),],
+                dns_authorizations=[
+                    certificate_manager.DnsAuthorization(),
+                ],
                 next_page_token="ghi",
             ),
             certificate_manager.ListDnsAuthorizationsResponse(
@@ -5089,10 +5411,13 @@ async def test_list_dns_authorizations_async_pager():
                 next_page_token="abc",
             ),
             certificate_manager.ListDnsAuthorizationsResponse(
-                dns_authorizations=[], next_page_token="def",
+                dns_authorizations=[],
+                next_page_token="def",
             ),
             certificate_manager.ListDnsAuthorizationsResponse(
-                dns_authorizations=[certificate_manager.DnsAuthorization(),],
+                dns_authorizations=[
+                    certificate_manager.DnsAuthorization(),
+                ],
                 next_page_token="ghi",
             ),
             certificate_manager.ListDnsAuthorizationsResponse(
@@ -5103,7 +5428,9 @@ async def test_list_dns_authorizations_async_pager():
             ),
             RuntimeError,
         )
-        async_pager = await client.list_dns_authorizations(request={},)
+        async_pager = await client.list_dns_authorizations(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -5138,10 +5465,13 @@ async def test_list_dns_authorizations_async_pages():
                 next_page_token="abc",
             ),
             certificate_manager.ListDnsAuthorizationsResponse(
-                dns_authorizations=[], next_page_token="def",
+                dns_authorizations=[],
+                next_page_token="def",
             ),
             certificate_manager.ListDnsAuthorizationsResponse(
-                dns_authorizations=[certificate_manager.DnsAuthorization(),],
+                dns_authorizations=[
+                    certificate_manager.DnsAuthorization(),
+                ],
                 next_page_token="ghi",
             ),
             certificate_manager.ListDnsAuthorizationsResponse(
@@ -5160,11 +5490,16 @@ async def test_list_dns_authorizations_async_pages():
 
 
 @pytest.mark.parametrize(
-    "request_type", [certificate_manager.GetDnsAuthorizationRequest, dict,]
+    "request_type",
+    [
+        certificate_manager.GetDnsAuthorizationRequest,
+        dict,
+    ],
 )
 def test_get_dns_authorization(request_type, transport: str = "grpc"):
     client = CertificateManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5177,7 +5512,9 @@ def test_get_dns_authorization(request_type, transport: str = "grpc"):
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = certificate_manager.DnsAuthorization(
-            name="name_value", description="description_value", domain="domain_value",
+            name="name_value",
+            description="description_value",
+            domain="domain_value",
         )
         response = client.get_dns_authorization(request)
 
@@ -5197,7 +5534,8 @@ def test_get_dns_authorization_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CertificateManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5216,7 +5554,8 @@ async def test_get_dns_authorization_async(
     request_type=certificate_manager.GetDnsAuthorizationRequest,
 ):
     client = CertificateManagerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5279,7 +5618,10 @@ def test_get_dns_authorization_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -5310,7 +5652,10 @@ async def test_get_dns_authorization_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_dns_authorization_flattened():
@@ -5326,7 +5671,9 @@ def test_get_dns_authorization_flattened():
         call.return_value = certificate_manager.DnsAuthorization()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_dns_authorization(name="name_value",)
+        client.get_dns_authorization(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -5346,7 +5693,8 @@ def test_get_dns_authorization_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_dns_authorization(
-            certificate_manager.GetDnsAuthorizationRequest(), name="name_value",
+            certificate_manager.GetDnsAuthorizationRequest(),
+            name="name_value",
         )
 
 
@@ -5368,7 +5716,9 @@ async def test_get_dns_authorization_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_dns_authorization(name="name_value",)
+        response = await client.get_dns_authorization(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -5389,16 +5739,22 @@ async def test_get_dns_authorization_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_dns_authorization(
-            certificate_manager.GetDnsAuthorizationRequest(), name="name_value",
+            certificate_manager.GetDnsAuthorizationRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [certificate_manager.CreateDnsAuthorizationRequest, dict,]
+    "request_type",
+    [
+        certificate_manager.CreateDnsAuthorizationRequest,
+        dict,
+    ],
 )
 def test_create_dns_authorization(request_type, transport: str = "grpc"):
     client = CertificateManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5426,7 +5782,8 @@ def test_create_dns_authorization_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CertificateManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5445,7 +5802,8 @@ async def test_create_dns_authorization_async(
     request_type=certificate_manager.CreateDnsAuthorizationRequest,
 ):
     client = CertificateManagerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5501,7 +5859,10 @@ def test_create_dns_authorization_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -5532,7 +5893,10 @@ async def test_create_dns_authorization_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_dns_authorization_flattened():
@@ -5642,11 +6006,16 @@ async def test_create_dns_authorization_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [certificate_manager.UpdateDnsAuthorizationRequest, dict,]
+    "request_type",
+    [
+        certificate_manager.UpdateDnsAuthorizationRequest,
+        dict,
+    ],
 )
 def test_update_dns_authorization(request_type, transport: str = "grpc"):
     client = CertificateManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5674,7 +6043,8 @@ def test_update_dns_authorization_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CertificateManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5693,7 +6063,8 @@ async def test_update_dns_authorization_async(
     request_type=certificate_manager.UpdateDnsAuthorizationRequest,
 ):
     client = CertificateManagerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5886,11 +6257,16 @@ async def test_update_dns_authorization_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [certificate_manager.DeleteDnsAuthorizationRequest, dict,]
+    "request_type",
+    [
+        certificate_manager.DeleteDnsAuthorizationRequest,
+        dict,
+    ],
 )
 def test_delete_dns_authorization(request_type, transport: str = "grpc"):
     client = CertificateManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5918,7 +6294,8 @@ def test_delete_dns_authorization_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = CertificateManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5937,7 +6314,8 @@ async def test_delete_dns_authorization_async(
     request_type=certificate_manager.DeleteDnsAuthorizationRequest,
 ):
     client = CertificateManagerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5993,7 +6371,10 @@ def test_delete_dns_authorization_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -6024,7 +6405,10 @@ async def test_delete_dns_authorization_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_dns_authorization_flattened():
@@ -6040,7 +6424,9 @@ def test_delete_dns_authorization_flattened():
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_dns_authorization(name="name_value",)
+        client.delete_dns_authorization(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -6060,7 +6446,8 @@ def test_delete_dns_authorization_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_dns_authorization(
-            certificate_manager.DeleteDnsAuthorizationRequest(), name="name_value",
+            certificate_manager.DeleteDnsAuthorizationRequest(),
+            name="name_value",
         )
 
 
@@ -6082,7 +6469,9 @@ async def test_delete_dns_authorization_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_dns_authorization(name="name_value",)
+        response = await client.delete_dns_authorization(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -6103,7 +6492,8 @@ async def test_delete_dns_authorization_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_dns_authorization(
-            certificate_manager.DeleteDnsAuthorizationRequest(), name="name_value",
+            certificate_manager.DeleteDnsAuthorizationRequest(),
+            name="name_value",
         )
 
 
@@ -6114,7 +6504,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = CertificateManagerClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -6134,7 +6525,10 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = CertificateManagerClient(client_options=options, transport=transport,)
+        client = CertificateManagerClient(
+            client_options=options,
+            transport=transport,
+        )
 
     # It is an error to provide an api_key and a credential.
     options = mock.Mock()
@@ -6150,7 +6544,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = CertificateManagerClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -6198,7 +6593,10 @@ def test_transport_grpc_default():
     client = CertificateManagerClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
-    assert isinstance(client.transport, transports.CertificateManagerGrpcTransport,)
+    assert isinstance(
+        client.transport,
+        transports.CertificateManagerGrpcTransport,
+    )
 
 
 def test_certificate_manager_base_transport_error():
@@ -6267,7 +6665,8 @@ def test_certificate_manager_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.CertificateManagerTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -6427,7 +6826,8 @@ def test_certificate_manager_grpc_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.CertificateManagerGrpcTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -6439,7 +6839,8 @@ def test_certificate_manager_grpc_asyncio_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.CertificateManagerGrpcAsyncIOTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -6548,12 +6949,16 @@ def test_certificate_manager_transport_channel_mtls_with_adc(transport_class):
 
 def test_certificate_manager_grpc_lro_client():
     client = CertificateManagerClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
     transport = client.transport
 
     # Ensure that we have a api-core operations client.
-    assert isinstance(transport.operations_client, operations_v1.OperationsClient,)
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsClient,
+    )
 
     # Ensure that subsequent calls to the property send the exact same object.
     assert transport.operations_client is transport.operations_client
@@ -6561,12 +6966,16 @@ def test_certificate_manager_grpc_lro_client():
 
 def test_certificate_manager_grpc_lro_async_client():
     client = CertificateManagerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     transport = client.transport
 
     # Ensure that we have a api-core operations client.
-    assert isinstance(transport.operations_client, operations_v1.OperationsAsyncClient,)
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsAsyncClient,
+    )
 
     # Ensure that subsequent calls to the property send the exact same object.
     assert transport.operations_client is transport.operations_client
@@ -6576,8 +6985,12 @@ def test_certificate_path():
     project = "squid"
     location = "clam"
     certificate = "whelk"
-    expected = "projects/{project}/locations/{location}/certificates/{certificate}".format(
-        project=project, location=location, certificate=certificate,
+    expected = (
+        "projects/{project}/locations/{location}/certificates/{certificate}".format(
+            project=project,
+            location=location,
+            certificate=certificate,
+        )
     )
     actual = CertificateManagerClient.certificate_path(project, location, certificate)
     assert expected == actual
@@ -6601,7 +7014,9 @@ def test_certificate_map_path():
     location = "mussel"
     certificate_map = "winkle"
     expected = "projects/{project}/locations/{location}/certificateMaps/{certificate_map}".format(
-        project=project, location=location, certificate_map=certificate_map,
+        project=project,
+        location=location,
+        certificate_map=certificate_map,
     )
     actual = CertificateManagerClient.certificate_map_path(
         project, location, certificate_map
@@ -6658,7 +7073,9 @@ def test_dns_authorization_path():
     location = "nautilus"
     dns_authorization = "scallop"
     expected = "projects/{project}/locations/{location}/dnsAuthorizations/{dns_authorization}".format(
-        project=project, location=location, dns_authorization=dns_authorization,
+        project=project,
+        location=location,
+        dns_authorization=dns_authorization,
     )
     actual = CertificateManagerClient.dns_authorization_path(
         project, location, dns_authorization
@@ -6684,7 +7101,9 @@ def test_target_https_proxies_path():
     location = "octopus"
     targetHttpsProxy = "oyster"
     expected = "projects/{project}/locations/{location}/targetHttpsProxies/{targetHttpsProxy}".format(
-        project=project, location=location, targetHttpsProxy=targetHttpsProxy,
+        project=project,
+        location=location,
+        targetHttpsProxy=targetHttpsProxy,
     )
     actual = CertificateManagerClient.target_https_proxies_path(
         project, location, targetHttpsProxy
@@ -6710,7 +7129,9 @@ def test_target_ssl_proxies_path():
     location = "nautilus"
     targetSslProxy = "scallop"
     expected = "projects/{project}/locations/{location}/targetSslProxies/{targetSslProxy}".format(
-        project=project, location=location, targetSslProxy=targetSslProxy,
+        project=project,
+        location=location,
+        targetSslProxy=targetSslProxy,
     )
     actual = CertificateManagerClient.target_ssl_proxies_path(
         project, location, targetSslProxy
@@ -6753,7 +7174,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "oyster"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = CertificateManagerClient.common_folder_path(folder)
     assert expected == actual
 
@@ -6771,7 +7194,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "cuttlefish"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = CertificateManagerClient.common_organization_path(organization)
     assert expected == actual
 
@@ -6789,7 +7214,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "winkle"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = CertificateManagerClient.common_project_path(project)
     assert expected == actual
 
@@ -6809,7 +7236,8 @@ def test_common_location_path():
     project = "scallop"
     location = "abalone"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = CertificateManagerClient.common_location_path(project, location)
     assert expected == actual
@@ -6834,7 +7262,8 @@ def test_client_with_default_client_info():
         transports.CertificateManagerTransport, "_prep_wrapped_messages"
     ) as prep:
         client = CertificateManagerClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -6843,7 +7272,8 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = CertificateManagerClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -6851,7 +7281,8 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = CertificateManagerAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     with mock.patch.object(
         type(getattr(client.transport, "grpc_channel")), "close"
