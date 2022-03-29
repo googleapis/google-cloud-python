@@ -53,7 +53,10 @@ class CloudCatalogClientMeta(type):
     _transport_registry["grpc"] = CloudCatalogGrpcTransport
     _transport_registry["grpc_asyncio"] = CloudCatalogGrpcAsyncIOTransport
 
-    def get_transport_class(cls, label: str = None,) -> Type[CloudCatalogTransport]:
+    def get_transport_class(
+        cls,
+        label: str = None,
+    ) -> Type[CloudCatalogTransport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -161,9 +164,13 @@ class CloudCatalogClient(metaclass=CloudCatalogClientMeta):
         return self._transport
 
     @staticmethod
-    def service_path(service: str,) -> str:
+    def service_path(
+        service: str,
+    ) -> str:
         """Returns a fully-qualified service string."""
-        return "services/{service}".format(service=service,)
+        return "services/{service}".format(
+            service=service,
+        )
 
     @staticmethod
     def parse_service_path(path: str) -> Dict[str, str]:
@@ -172,9 +179,15 @@ class CloudCatalogClient(metaclass=CloudCatalogClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def sku_path(service: str, sku: str,) -> str:
+    def sku_path(
+        service: str,
+        sku: str,
+    ) -> str:
         """Returns a fully-qualified sku string."""
-        return "services/{service}/skus/{sku}".format(service=service, sku=sku,)
+        return "services/{service}/skus/{sku}".format(
+            service=service,
+            sku=sku,
+        )
 
     @staticmethod
     def parse_sku_path(path: str) -> Dict[str, str]:
@@ -183,7 +196,9 @@ class CloudCatalogClient(metaclass=CloudCatalogClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_billing_account_path(billing_account: str,) -> str:
+    def common_billing_account_path(
+        billing_account: str,
+    ) -> str:
         """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
@@ -196,9 +211,13 @@ class CloudCatalogClient(metaclass=CloudCatalogClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(folder: str,) -> str:
+    def common_folder_path(
+        folder: str,
+    ) -> str:
         """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(folder=folder,)
+        return "folders/{folder}".format(
+            folder=folder,
+        )
 
     @staticmethod
     def parse_common_folder_path(path: str) -> Dict[str, str]:
@@ -207,9 +226,13 @@ class CloudCatalogClient(metaclass=CloudCatalogClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(organization: str,) -> str:
+    def common_organization_path(
+        organization: str,
+    ) -> str:
         """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(organization=organization,)
+        return "organizations/{organization}".format(
+            organization=organization,
+        )
 
     @staticmethod
     def parse_common_organization_path(path: str) -> Dict[str, str]:
@@ -218,9 +241,13 @@ class CloudCatalogClient(metaclass=CloudCatalogClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(project: str,) -> str:
+    def common_project_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified project string."""
-        return "projects/{project}".format(project=project,)
+        return "projects/{project}".format(
+            project=project,
+        )
 
     @staticmethod
     def parse_common_project_path(path: str) -> Dict[str, str]:
@@ -229,10 +256,14 @@ class CloudCatalogClient(metaclass=CloudCatalogClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(project: str, location: str,) -> str:
+    def common_location_path(
+        project: str,
+        location: str,
+    ) -> str:
         """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
-            project=project, location=location,
+            project=project,
+            location=location,
         )
 
     @staticmethod
@@ -465,12 +496,20 @@ class CloudCatalogClient(metaclass=CloudCatalogClientMeta):
         rpc = self._transport._wrapped_methods[self._transport.list_services]
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListServicesPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -565,12 +604,20 @@ class CloudCatalogClient(metaclass=CloudCatalogClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListSkusPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -592,7 +639,9 @@ class CloudCatalogClient(metaclass=CloudCatalogClientMeta):
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-billing",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-billing",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
