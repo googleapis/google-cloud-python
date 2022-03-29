@@ -118,9 +118,19 @@ class Feature(proto.Message):
         PRODUCT_SEARCH = 12
         OBJECT_LOCALIZATION = 19
 
-    type_ = proto.Field(proto.ENUM, number=1, enum=Type,)
-    max_results = proto.Field(proto.INT32, number=2,)
-    model = proto.Field(proto.STRING, number=3,)
+    type_ = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Type,
+    )
+    max_results = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    model = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ImageSource(proto.Message):
@@ -158,8 +168,14 @@ class ImageSource(proto.Message):
             ``image_uri`` takes precedence.
     """
 
-    gcs_image_uri = proto.Field(proto.STRING, number=1,)
-    image_uri = proto.Field(proto.STRING, number=2,)
+    gcs_image_uri = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    image_uri = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class Image(proto.Message):
@@ -181,8 +197,15 @@ class Image(proto.Message):
             perform the image annotation request.
     """
 
-    content = proto.Field(proto.BYTES, number=1,)
-    source = proto.Field(proto.MESSAGE, number=2, message="ImageSource",)
+    content = proto.Field(
+        proto.BYTES,
+        number=1,
+    )
+    source = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="ImageSource",
+    )
 
 
 class FaceAnnotation(proto.Message):
@@ -295,26 +318,87 @@ class FaceAnnotation(proto.Message):
             LEFT_CHEEK_CENTER = 35
             RIGHT_CHEEK_CENTER = 36
 
-        type_ = proto.Field(proto.ENUM, number=3, enum="FaceAnnotation.Landmark.Type",)
-        position = proto.Field(proto.MESSAGE, number=4, message=geometry.Position,)
+        type_ = proto.Field(
+            proto.ENUM,
+            number=3,
+            enum="FaceAnnotation.Landmark.Type",
+        )
+        position = proto.Field(
+            proto.MESSAGE,
+            number=4,
+            message=geometry.Position,
+        )
 
-    bounding_poly = proto.Field(proto.MESSAGE, number=1, message=geometry.BoundingPoly,)
-    fd_bounding_poly = proto.Field(
-        proto.MESSAGE, number=2, message=geometry.BoundingPoly,
+    bounding_poly = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=geometry.BoundingPoly,
     )
-    landmarks = proto.RepeatedField(proto.MESSAGE, number=3, message=Landmark,)
-    roll_angle = proto.Field(proto.FLOAT, number=4,)
-    pan_angle = proto.Field(proto.FLOAT, number=5,)
-    tilt_angle = proto.Field(proto.FLOAT, number=6,)
-    detection_confidence = proto.Field(proto.FLOAT, number=7,)
-    landmarking_confidence = proto.Field(proto.FLOAT, number=8,)
-    joy_likelihood = proto.Field(proto.ENUM, number=9, enum="Likelihood",)
-    sorrow_likelihood = proto.Field(proto.ENUM, number=10, enum="Likelihood",)
-    anger_likelihood = proto.Field(proto.ENUM, number=11, enum="Likelihood",)
-    surprise_likelihood = proto.Field(proto.ENUM, number=12, enum="Likelihood",)
-    under_exposed_likelihood = proto.Field(proto.ENUM, number=13, enum="Likelihood",)
-    blurred_likelihood = proto.Field(proto.ENUM, number=14, enum="Likelihood",)
-    headwear_likelihood = proto.Field(proto.ENUM, number=15, enum="Likelihood",)
+    fd_bounding_poly = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=geometry.BoundingPoly,
+    )
+    landmarks = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=Landmark,
+    )
+    roll_angle = proto.Field(
+        proto.FLOAT,
+        number=4,
+    )
+    pan_angle = proto.Field(
+        proto.FLOAT,
+        number=5,
+    )
+    tilt_angle = proto.Field(
+        proto.FLOAT,
+        number=6,
+    )
+    detection_confidence = proto.Field(
+        proto.FLOAT,
+        number=7,
+    )
+    landmarking_confidence = proto.Field(
+        proto.FLOAT,
+        number=8,
+    )
+    joy_likelihood = proto.Field(
+        proto.ENUM,
+        number=9,
+        enum="Likelihood",
+    )
+    sorrow_likelihood = proto.Field(
+        proto.ENUM,
+        number=10,
+        enum="Likelihood",
+    )
+    anger_likelihood = proto.Field(
+        proto.ENUM,
+        number=11,
+        enum="Likelihood",
+    )
+    surprise_likelihood = proto.Field(
+        proto.ENUM,
+        number=12,
+        enum="Likelihood",
+    )
+    under_exposed_likelihood = proto.Field(
+        proto.ENUM,
+        number=13,
+        enum="Likelihood",
+    )
+    blurred_likelihood = proto.Field(
+        proto.ENUM,
+        number=14,
+        enum="Likelihood",
+    )
+    headwear_likelihood = proto.Field(
+        proto.ENUM,
+        number=15,
+        enum="Likelihood",
+    )
 
 
 class LocationInfo(proto.Message):
@@ -325,7 +409,11 @@ class LocationInfo(proto.Message):
             lat/long location coordinates.
     """
 
-    lat_lng = proto.Field(proto.MESSAGE, number=1, message=latlng_pb2.LatLng,)
+    lat_lng = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=latlng_pb2.LatLng,
+    )
 
 
 class Property(proto.Message):
@@ -340,9 +428,18 @@ class Property(proto.Message):
             Value of numeric properties.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    value = proto.Field(proto.STRING, number=2,)
-    uint64_value = proto.Field(proto.UINT64, number=3,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    value = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    uint64_value = proto.Field(
+        proto.UINT64,
+        number=3,
+    )
 
 
 class EntityAnnotation(proto.Message):
@@ -390,15 +487,45 @@ class EntityAnnotation(proto.Message):
             the entity.
     """
 
-    mid = proto.Field(proto.STRING, number=1,)
-    locale = proto.Field(proto.STRING, number=2,)
-    description = proto.Field(proto.STRING, number=3,)
-    score = proto.Field(proto.FLOAT, number=4,)
-    confidence = proto.Field(proto.FLOAT, number=5,)
-    topicality = proto.Field(proto.FLOAT, number=6,)
-    bounding_poly = proto.Field(proto.MESSAGE, number=7, message=geometry.BoundingPoly,)
-    locations = proto.RepeatedField(proto.MESSAGE, number=8, message="LocationInfo",)
-    properties = proto.RepeatedField(proto.MESSAGE, number=9, message="Property",)
+    mid = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    locale = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    score = proto.Field(
+        proto.FLOAT,
+        number=4,
+    )
+    confidence = proto.Field(
+        proto.FLOAT,
+        number=5,
+    )
+    topicality = proto.Field(
+        proto.FLOAT,
+        number=6,
+    )
+    bounding_poly = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=geometry.BoundingPoly,
+    )
+    locations = proto.RepeatedField(
+        proto.MESSAGE,
+        number=8,
+        message="LocationInfo",
+    )
+    properties = proto.RepeatedField(
+        proto.MESSAGE,
+        number=9,
+        message="Property",
+    )
 
 
 class LocalizedObjectAnnotation(proto.Message):
@@ -421,11 +548,27 @@ class LocalizedObjectAnnotation(proto.Message):
             This must be populated.
     """
 
-    mid = proto.Field(proto.STRING, number=1,)
-    language_code = proto.Field(proto.STRING, number=2,)
-    name = proto.Field(proto.STRING, number=3,)
-    score = proto.Field(proto.FLOAT, number=4,)
-    bounding_poly = proto.Field(proto.MESSAGE, number=5, message=geometry.BoundingPoly,)
+    mid = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    language_code = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    name = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    score = proto.Field(
+        proto.FLOAT,
+        number=4,
+    )
+    bounding_poly = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=geometry.BoundingPoly,
+    )
 
 
 class SafeSearchAnnotation(proto.Message):
@@ -475,17 +618,55 @@ class SafeSearchAnnotation(proto.Message):
             confident, 1 means very confident.
     """
 
-    adult = proto.Field(proto.ENUM, number=1, enum="Likelihood",)
-    spoof = proto.Field(proto.ENUM, number=2, enum="Likelihood",)
-    medical = proto.Field(proto.ENUM, number=3, enum="Likelihood",)
-    violence = proto.Field(proto.ENUM, number=4, enum="Likelihood",)
-    racy = proto.Field(proto.ENUM, number=9, enum="Likelihood",)
-    adult_confidence = proto.Field(proto.FLOAT, number=16,)
-    spoof_confidence = proto.Field(proto.FLOAT, number=18,)
-    medical_confidence = proto.Field(proto.FLOAT, number=20,)
-    violence_confidence = proto.Field(proto.FLOAT, number=22,)
-    racy_confidence = proto.Field(proto.FLOAT, number=24,)
-    nsfw_confidence = proto.Field(proto.FLOAT, number=26,)
+    adult = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum="Likelihood",
+    )
+    spoof = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum="Likelihood",
+    )
+    medical = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum="Likelihood",
+    )
+    violence = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum="Likelihood",
+    )
+    racy = proto.Field(
+        proto.ENUM,
+        number=9,
+        enum="Likelihood",
+    )
+    adult_confidence = proto.Field(
+        proto.FLOAT,
+        number=16,
+    )
+    spoof_confidence = proto.Field(
+        proto.FLOAT,
+        number=18,
+    )
+    medical_confidence = proto.Field(
+        proto.FLOAT,
+        number=20,
+    )
+    violence_confidence = proto.Field(
+        proto.FLOAT,
+        number=22,
+    )
+    racy_confidence = proto.Field(
+        proto.FLOAT,
+        number=24,
+    )
+    nsfw_confidence = proto.Field(
+        proto.FLOAT,
+        number=26,
+    )
 
 
 class LatLongRect(proto.Message):
@@ -498,8 +679,16 @@ class LatLongRect(proto.Message):
             Max lat/long pair.
     """
 
-    min_lat_lng = proto.Field(proto.MESSAGE, number=1, message=latlng_pb2.LatLng,)
-    max_lat_lng = proto.Field(proto.MESSAGE, number=2, message=latlng_pb2.LatLng,)
+    min_lat_lng = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=latlng_pb2.LatLng,
+    )
+    max_lat_lng = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=latlng_pb2.LatLng,
+    )
 
 
 class ColorInfo(proto.Message):
@@ -516,9 +705,19 @@ class ColorInfo(proto.Message):
             Value in range [0, 1].
     """
 
-    color = proto.Field(proto.MESSAGE, number=1, message=color_pb2.Color,)
-    score = proto.Field(proto.FLOAT, number=2,)
-    pixel_fraction = proto.Field(proto.FLOAT, number=3,)
+    color = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=color_pb2.Color,
+    )
+    score = proto.Field(
+        proto.FLOAT,
+        number=2,
+    )
+    pixel_fraction = proto.Field(
+        proto.FLOAT,
+        number=3,
+    )
 
 
 class DominantColorsAnnotation(proto.Message):
@@ -530,7 +729,11 @@ class DominantColorsAnnotation(proto.Message):
             fraction.
     """
 
-    colors = proto.RepeatedField(proto.MESSAGE, number=1, message="ColorInfo",)
+    colors = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="ColorInfo",
+    )
 
 
 class ImageProperties(proto.Message):
@@ -543,7 +746,9 @@ class ImageProperties(proto.Message):
     """
 
     dominant_colors = proto.Field(
-        proto.MESSAGE, number=1, message="DominantColorsAnnotation",
+        proto.MESSAGE,
+        number=1,
+        message="DominantColorsAnnotation",
     )
 
 
@@ -563,9 +768,19 @@ class CropHint(proto.Message):
             with respect to the original image.
     """
 
-    bounding_poly = proto.Field(proto.MESSAGE, number=1, message=geometry.BoundingPoly,)
-    confidence = proto.Field(proto.FLOAT, number=2,)
-    importance_fraction = proto.Field(proto.FLOAT, number=3,)
+    bounding_poly = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=geometry.BoundingPoly,
+    )
+    confidence = proto.Field(
+        proto.FLOAT,
+        number=2,
+    )
+    importance_fraction = proto.Field(
+        proto.FLOAT,
+        number=3,
+    )
 
 
 class CropHintsAnnotation(proto.Message):
@@ -577,7 +792,11 @@ class CropHintsAnnotation(proto.Message):
             Crop hint results.
     """
 
-    crop_hints = proto.RepeatedField(proto.MESSAGE, number=1, message="CropHint",)
+    crop_hints = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="CropHint",
+    )
 
 
 class CropHintsParams(proto.Message):
@@ -595,7 +814,10 @@ class CropHintsParams(proto.Message):
             provided after the 16th are ignored.
     """
 
-    aspect_ratios = proto.RepeatedField(proto.FLOAT, number=1,)
+    aspect_ratios = proto.RepeatedField(
+        proto.FLOAT,
+        number=1,
+    )
 
 
 class WebDetectionParams(proto.Message):
@@ -607,7 +829,10 @@ class WebDetectionParams(proto.Message):
             geo information in the image.
     """
 
-    include_geo_results = proto.Field(proto.BOOL, number=2,)
+    include_geo_results = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
 
 
 class TextDetectionParams(proto.Message):
@@ -621,7 +846,10 @@ class TextDetectionParams(proto.Message):
             include confidence score for TEXT_DETECTION as well.
     """
 
-    enable_text_detection_confidence_score = proto.Field(proto.BOOL, number=9,)
+    enable_text_detection_confidence_score = proto.Field(
+        proto.BOOL,
+        number=9,
+    )
 
 
 class ImageContext(proto.Message):
@@ -652,17 +880,34 @@ class ImageContext(proto.Message):
             text detection.
     """
 
-    lat_long_rect = proto.Field(proto.MESSAGE, number=1, message="LatLongRect",)
-    language_hints = proto.RepeatedField(proto.STRING, number=2,)
-    crop_hints_params = proto.Field(proto.MESSAGE, number=4, message="CropHintsParams",)
+    lat_long_rect = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="LatLongRect",
+    )
+    language_hints = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+    crop_hints_params = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="CropHintsParams",
+    )
     product_search_params = proto.Field(
-        proto.MESSAGE, number=5, message=product_search.ProductSearchParams,
+        proto.MESSAGE,
+        number=5,
+        message=product_search.ProductSearchParams,
     )
     web_detection_params = proto.Field(
-        proto.MESSAGE, number=6, message="WebDetectionParams",
+        proto.MESSAGE,
+        number=6,
+        message="WebDetectionParams",
     )
     text_detection_params = proto.Field(
-        proto.MESSAGE, number=12, message="TextDetectionParams",
+        proto.MESSAGE,
+        number=12,
+        message="TextDetectionParams",
     )
 
 
@@ -681,9 +926,21 @@ class AnnotateImageRequest(proto.Message):
             image.
     """
 
-    image = proto.Field(proto.MESSAGE, number=1, message="Image",)
-    features = proto.RepeatedField(proto.MESSAGE, number=2, message="Feature",)
-    image_context = proto.Field(proto.MESSAGE, number=3, message="ImageContext",)
+    image = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="Image",
+    )
+    features = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="Feature",
+    )
+    image_context = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="ImageContext",
+    )
 
 
 class ImageAnnotationContext(proto.Message):
@@ -700,8 +957,14 @@ class ImageAnnotationContext(proto.Message):
             produce the image.
     """
 
-    uri = proto.Field(proto.STRING, number=1,)
-    page_number = proto.Field(proto.INT32, number=2,)
+    uri = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_number = proto.Field(
+        proto.INT32,
+        number=2,
+    )
 
 
 class AnnotateImageResponse(proto.Message):
@@ -757,43 +1020,75 @@ class AnnotateImageResponse(proto.Message):
     """
 
     face_annotations = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="FaceAnnotation",
+        proto.MESSAGE,
+        number=1,
+        message="FaceAnnotation",
     )
     landmark_annotations = proto.RepeatedField(
-        proto.MESSAGE, number=2, message="EntityAnnotation",
+        proto.MESSAGE,
+        number=2,
+        message="EntityAnnotation",
     )
     logo_annotations = proto.RepeatedField(
-        proto.MESSAGE, number=3, message="EntityAnnotation",
+        proto.MESSAGE,
+        number=3,
+        message="EntityAnnotation",
     )
     label_annotations = proto.RepeatedField(
-        proto.MESSAGE, number=4, message="EntityAnnotation",
+        proto.MESSAGE,
+        number=4,
+        message="EntityAnnotation",
     )
     localized_object_annotations = proto.RepeatedField(
-        proto.MESSAGE, number=22, message="LocalizedObjectAnnotation",
+        proto.MESSAGE,
+        number=22,
+        message="LocalizedObjectAnnotation",
     )
     text_annotations = proto.RepeatedField(
-        proto.MESSAGE, number=5, message="EntityAnnotation",
+        proto.MESSAGE,
+        number=5,
+        message="EntityAnnotation",
     )
     full_text_annotation = proto.Field(
-        proto.MESSAGE, number=12, message=text_annotation.TextAnnotation,
+        proto.MESSAGE,
+        number=12,
+        message=text_annotation.TextAnnotation,
     )
     safe_search_annotation = proto.Field(
-        proto.MESSAGE, number=6, message="SafeSearchAnnotation",
+        proto.MESSAGE,
+        number=6,
+        message="SafeSearchAnnotation",
     )
     image_properties_annotation = proto.Field(
-        proto.MESSAGE, number=8, message="ImageProperties",
+        proto.MESSAGE,
+        number=8,
+        message="ImageProperties",
     )
     crop_hints_annotation = proto.Field(
-        proto.MESSAGE, number=11, message="CropHintsAnnotation",
+        proto.MESSAGE,
+        number=11,
+        message="CropHintsAnnotation",
     )
     web_detection = proto.Field(
-        proto.MESSAGE, number=13, message=gcv_web_detection.WebDetection,
+        proto.MESSAGE,
+        number=13,
+        message=gcv_web_detection.WebDetection,
     )
     product_search_results = proto.Field(
-        proto.MESSAGE, number=14, message=product_search.ProductSearchResults,
+        proto.MESSAGE,
+        number=14,
+        message=product_search.ProductSearchResults,
     )
-    error = proto.Field(proto.MESSAGE, number=9, message=status_pb2.Status,)
-    context = proto.Field(proto.MESSAGE, number=21, message="ImageAnnotationContext",)
+    error = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message=status_pb2.Status,
+    )
+    context = proto.Field(
+        proto.MESSAGE,
+        number=21,
+        message="ImageAnnotationContext",
+    )
 
 
 class BatchAnnotateImagesRequest(proto.Message):
@@ -820,9 +1115,14 @@ class BatchAnnotateImagesRequest(proto.Message):
     """
 
     requests = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="AnnotateImageRequest",
+        proto.MESSAGE,
+        number=1,
+        message="AnnotateImageRequest",
     )
-    parent = proto.Field(proto.STRING, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class BatchAnnotateImagesResponse(proto.Message):
@@ -835,7 +1135,9 @@ class BatchAnnotateImagesResponse(proto.Message):
     """
 
     responses = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="AnnotateImageResponse",
+        proto.MESSAGE,
+        number=1,
+        message="AnnotateImageResponse",
     )
 
 
@@ -869,10 +1171,25 @@ class AnnotateFileRequest(proto.Message):
             of the file.
     """
 
-    input_config = proto.Field(proto.MESSAGE, number=1, message="InputConfig",)
-    features = proto.RepeatedField(proto.MESSAGE, number=2, message="Feature",)
-    image_context = proto.Field(proto.MESSAGE, number=3, message="ImageContext",)
-    pages = proto.RepeatedField(proto.INT32, number=4,)
+    input_config = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="InputConfig",
+    )
+    features = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="Feature",
+    )
+    image_context = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="ImageContext",
+    )
+    pages = proto.RepeatedField(
+        proto.INT32,
+        number=4,
+    )
 
 
 class AnnotateFileResponse(proto.Message):
@@ -895,12 +1212,25 @@ class AnnotateFileResponse(proto.Message):
             The ``responses`` field will not be set in this case.
     """
 
-    input_config = proto.Field(proto.MESSAGE, number=1, message="InputConfig",)
-    responses = proto.RepeatedField(
-        proto.MESSAGE, number=2, message="AnnotateImageResponse",
+    input_config = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="InputConfig",
     )
-    total_pages = proto.Field(proto.INT32, number=3,)
-    error = proto.Field(proto.MESSAGE, number=4, message=status_pb2.Status,)
+    responses = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="AnnotateImageResponse",
+    )
+    total_pages = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    error = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=status_pb2.Status,
+    )
 
 
 class BatchAnnotateFilesRequest(proto.Message):
@@ -929,9 +1259,14 @@ class BatchAnnotateFilesRequest(proto.Message):
     """
 
     requests = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="AnnotateFileRequest",
+        proto.MESSAGE,
+        number=1,
+        message="AnnotateFileRequest",
     )
-    parent = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class BatchAnnotateFilesResponse(proto.Message):
@@ -946,7 +1281,9 @@ class BatchAnnotateFilesResponse(proto.Message):
     """
 
     responses = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="AnnotateFileResponse",
+        proto.MESSAGE,
+        number=1,
+        message="AnnotateFileResponse",
     )
 
 
@@ -966,10 +1303,26 @@ class AsyncAnnotateFileRequest(proto.Message):
             metadata (e.g. format).
     """
 
-    input_config = proto.Field(proto.MESSAGE, number=1, message="InputConfig",)
-    features = proto.RepeatedField(proto.MESSAGE, number=2, message="Feature",)
-    image_context = proto.Field(proto.MESSAGE, number=3, message="ImageContext",)
-    output_config = proto.Field(proto.MESSAGE, number=4, message="OutputConfig",)
+    input_config = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="InputConfig",
+    )
+    features = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="Feature",
+    )
+    image_context = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="ImageContext",
+    )
+    output_config = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="OutputConfig",
+    )
 
 
 class AsyncAnnotateFileResponse(proto.Message):
@@ -981,7 +1334,11 @@ class AsyncAnnotateFileResponse(proto.Message):
             AsyncAnnotateFileRequest.
     """
 
-    output_config = proto.Field(proto.MESSAGE, number=1, message="OutputConfig",)
+    output_config = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="OutputConfig",
+    )
 
 
 class AsyncBatchAnnotateImagesRequest(proto.Message):
@@ -1010,10 +1367,19 @@ class AsyncBatchAnnotateImagesRequest(proto.Message):
     """
 
     requests = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="AnnotateImageRequest",
+        proto.MESSAGE,
+        number=1,
+        message="AnnotateImageRequest",
     )
-    output_config = proto.Field(proto.MESSAGE, number=2, message="OutputConfig",)
-    parent = proto.Field(proto.STRING, number=4,)
+    output_config = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="OutputConfig",
+    )
+    parent = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class AsyncBatchAnnotateImagesResponse(proto.Message):
@@ -1025,7 +1391,11 @@ class AsyncBatchAnnotateImagesResponse(proto.Message):
             AsyncBatchAnnotateImagesRequest.
     """
 
-    output_config = proto.Field(proto.MESSAGE, number=1, message="OutputConfig",)
+    output_config = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="OutputConfig",
+    )
 
 
 class AsyncBatchAnnotateFilesRequest(proto.Message):
@@ -1052,9 +1422,14 @@ class AsyncBatchAnnotateFilesRequest(proto.Message):
     """
 
     requests = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="AsyncAnnotateFileRequest",
+        proto.MESSAGE,
+        number=1,
+        message="AsyncAnnotateFileRequest",
     )
-    parent = proto.Field(proto.STRING, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class AsyncBatchAnnotateFilesResponse(proto.Message):
@@ -1068,7 +1443,9 @@ class AsyncBatchAnnotateFilesResponse(proto.Message):
     """
 
     responses = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="AsyncAnnotateFileResponse",
+        proto.MESSAGE,
+        number=1,
+        message="AsyncAnnotateFileResponse",
     )
 
 
@@ -1093,9 +1470,19 @@ class InputConfig(proto.Message):
             are supported. Wildcards are not supported.
     """
 
-    gcs_source = proto.Field(proto.MESSAGE, number=1, message="GcsSource",)
-    content = proto.Field(proto.BYTES, number=3,)
-    mime_type = proto.Field(proto.STRING, number=2,)
+    gcs_source = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="GcsSource",
+    )
+    content = proto.Field(
+        proto.BYTES,
+        number=3,
+    )
+    mime_type = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class OutputConfig(proto.Message):
@@ -1119,8 +1506,15 @@ class OutputConfig(proto.Message):
             potential future support for other output configurations.
     """
 
-    gcs_destination = proto.Field(proto.MESSAGE, number=1, message="GcsDestination",)
-    batch_size = proto.Field(proto.INT32, number=2,)
+    gcs_destination = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="GcsDestination",
+    )
+    batch_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
 
 
 class GcsSource(proto.Message):
@@ -1134,7 +1528,10 @@ class GcsSource(proto.Message):
             Wildcards are not currently supported.
     """
 
-    uri = proto.Field(proto.STRING, number=1,)
+    uri = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class GcsDestination(proto.Message):
@@ -1171,7 +1568,10 @@ class GcsDestination(proto.Message):
             overflows into multiple sharded files.
     """
 
-    uri = proto.Field(proto.STRING, number=1,)
+    uri = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class OperationMetadata(proto.Message):
@@ -1195,9 +1595,21 @@ class OperationMetadata(proto.Message):
         DONE = 3
         CANCELLED = 4
 
-    state = proto.Field(proto.ENUM, number=1, enum=State,)
-    create_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,)
+    state = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=State,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

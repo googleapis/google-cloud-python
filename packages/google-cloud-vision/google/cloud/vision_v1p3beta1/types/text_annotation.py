@@ -20,7 +20,14 @@ from google.cloud.vision_v1p3beta1.types import geometry
 
 __protobuf__ = proto.module(
     package="google.cloud.vision.v1p3beta1",
-    manifest={"TextAnnotation", "Page", "Block", "Paragraph", "Word", "Symbol",},
+    manifest={
+        "TextAnnotation",
+        "Page",
+        "Block",
+        "Paragraph",
+        "Word",
+        "Symbol",
+    },
 )
 
 
@@ -53,8 +60,14 @@ class TextAnnotation(proto.Message):
                 Confidence of detected language. Range [0, 1].
         """
 
-        language_code = proto.Field(proto.STRING, number=1,)
-        confidence = proto.Field(proto.FLOAT, number=2,)
+        language_code = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        confidence = proto.Field(
+            proto.FLOAT,
+            number=2,
+        )
 
     class DetectedBreak(proto.Message):
         r"""Detected start or end of a structural component.
@@ -76,9 +89,14 @@ class TextAnnotation(proto.Message):
             LINE_BREAK = 5
 
         type_ = proto.Field(
-            proto.ENUM, number=1, enum="TextAnnotation.DetectedBreak.BreakType",
+            proto.ENUM,
+            number=1,
+            enum="TextAnnotation.DetectedBreak.BreakType",
         )
-        is_prefix = proto.Field(proto.BOOL, number=2,)
+        is_prefix = proto.Field(
+            proto.BOOL,
+            number=2,
+        )
 
     class TextProperty(proto.Message):
         r"""Additional information detected on the structural component.
@@ -92,14 +110,25 @@ class TextAnnotation(proto.Message):
         """
 
         detected_languages = proto.RepeatedField(
-            proto.MESSAGE, number=1, message="TextAnnotation.DetectedLanguage",
+            proto.MESSAGE,
+            number=1,
+            message="TextAnnotation.DetectedLanguage",
         )
         detected_break = proto.Field(
-            proto.MESSAGE, number=2, message="TextAnnotation.DetectedBreak",
+            proto.MESSAGE,
+            number=2,
+            message="TextAnnotation.DetectedBreak",
         )
 
-    pages = proto.RepeatedField(proto.MESSAGE, number=1, message="Page",)
-    text = proto.Field(proto.STRING, number=2,)
+    pages = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Page",
+    )
+    text = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class Page(proto.Message):
@@ -122,12 +151,27 @@ class Page(proto.Message):
     """
 
     property = proto.Field(
-        proto.MESSAGE, number=1, message="TextAnnotation.TextProperty",
+        proto.MESSAGE,
+        number=1,
+        message="TextAnnotation.TextProperty",
     )
-    width = proto.Field(proto.INT32, number=2,)
-    height = proto.Field(proto.INT32, number=3,)
-    blocks = proto.RepeatedField(proto.MESSAGE, number=4, message="Block",)
-    confidence = proto.Field(proto.FLOAT, number=5,)
+    width = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    height = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    blocks = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message="Block",
+    )
+    confidence = proto.Field(
+        proto.FLOAT,
+        number=5,
+    )
 
 
 class Block(proto.Message):
@@ -182,12 +226,29 @@ class Block(proto.Message):
         BARCODE = 5
 
     property = proto.Field(
-        proto.MESSAGE, number=1, message="TextAnnotation.TextProperty",
+        proto.MESSAGE,
+        number=1,
+        message="TextAnnotation.TextProperty",
     )
-    bounding_box = proto.Field(proto.MESSAGE, number=2, message=geometry.BoundingPoly,)
-    paragraphs = proto.RepeatedField(proto.MESSAGE, number=3, message="Paragraph",)
-    block_type = proto.Field(proto.ENUM, number=4, enum=BlockType,)
-    confidence = proto.Field(proto.FLOAT, number=5,)
+    bounding_box = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=geometry.BoundingPoly,
+    )
+    paragraphs = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message="Paragraph",
+    )
+    block_type = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=BlockType,
+    )
+    confidence = proto.Field(
+        proto.FLOAT,
+        number=5,
+    )
 
 
 class Paragraph(proto.Message):
@@ -218,11 +279,24 @@ class Paragraph(proto.Message):
     """
 
     property = proto.Field(
-        proto.MESSAGE, number=1, message="TextAnnotation.TextProperty",
+        proto.MESSAGE,
+        number=1,
+        message="TextAnnotation.TextProperty",
     )
-    bounding_box = proto.Field(proto.MESSAGE, number=2, message=geometry.BoundingPoly,)
-    words = proto.RepeatedField(proto.MESSAGE, number=3, message="Word",)
-    confidence = proto.Field(proto.FLOAT, number=4,)
+    bounding_box = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=geometry.BoundingPoly,
+    )
+    words = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message="Word",
+    )
+    confidence = proto.Field(
+        proto.FLOAT,
+        number=4,
+    )
 
 
 class Word(proto.Message):
@@ -252,11 +326,24 @@ class Word(proto.Message):
     """
 
     property = proto.Field(
-        proto.MESSAGE, number=1, message="TextAnnotation.TextProperty",
+        proto.MESSAGE,
+        number=1,
+        message="TextAnnotation.TextProperty",
     )
-    bounding_box = proto.Field(proto.MESSAGE, number=2, message=geometry.BoundingPoly,)
-    symbols = proto.RepeatedField(proto.MESSAGE, number=3, message="Symbol",)
-    confidence = proto.Field(proto.FLOAT, number=4,)
+    bounding_box = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=geometry.BoundingPoly,
+    )
+    symbols = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message="Symbol",
+    )
+    confidence = proto.Field(
+        proto.FLOAT,
+        number=4,
+    )
 
 
 class Symbol(proto.Message):
@@ -286,11 +373,23 @@ class Symbol(proto.Message):
     """
 
     property = proto.Field(
-        proto.MESSAGE, number=1, message="TextAnnotation.TextProperty",
+        proto.MESSAGE,
+        number=1,
+        message="TextAnnotation.TextProperty",
     )
-    bounding_box = proto.Field(proto.MESSAGE, number=2, message=geometry.BoundingPoly,)
-    text = proto.Field(proto.STRING, number=3,)
-    confidence = proto.Field(proto.FLOAT, number=4,)
+    bounding_box = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=geometry.BoundingPoly,
+    )
+    text = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    confidence = proto.Field(
+        proto.FLOAT,
+        number=4,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

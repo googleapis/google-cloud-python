@@ -94,7 +94,11 @@ def test__get_default_mtls_endpoint():
 
 
 @pytest.mark.parametrize(
-    "client_class", [ImageAnnotatorClient, ImageAnnotatorAsyncClient,]
+    "client_class",
+    [
+        ImageAnnotatorClient,
+        ImageAnnotatorAsyncClient,
+    ],
 )
 def test_image_annotator_client_from_service_account_info(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -136,7 +140,11 @@ def test_image_annotator_client_service_account_always_use_jwt(
 
 
 @pytest.mark.parametrize(
-    "client_class", [ImageAnnotatorClient, ImageAnnotatorAsyncClient,]
+    "client_class",
+    [
+        ImageAnnotatorClient,
+        ImageAnnotatorAsyncClient,
+    ],
 )
 def test_image_annotator_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -500,7 +508,9 @@ def test_image_annotator_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -644,11 +654,16 @@ def test_image_annotator_client_create_channel_credentials_file(
 
 
 @pytest.mark.parametrize(
-    "request_type", [image_annotator.BatchAnnotateImagesRequest, dict,]
+    "request_type",
+    [
+        image_annotator.BatchAnnotateImagesRequest,
+        dict,
+    ],
 )
 def test_batch_annotate_images(request_type, transport: str = "grpc"):
     client = ImageAnnotatorClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -676,7 +691,8 @@ def test_batch_annotate_images_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ImageAnnotatorClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -695,7 +711,8 @@ async def test_batch_annotate_images_async(
     request_type=image_annotator.BatchAnnotateImagesRequest,
 ):
     client = ImageAnnotatorAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -727,7 +744,9 @@ async def test_batch_annotate_images_async_from_dict():
 
 
 def test_batch_annotate_images_flattened():
-    client = ImageAnnotatorClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ImageAnnotatorClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -759,7 +778,9 @@ def test_batch_annotate_images_flattened():
 
 
 def test_batch_annotate_images_flattened_error():
-    client = ImageAnnotatorClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ImageAnnotatorClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -833,11 +854,16 @@ async def test_batch_annotate_images_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [image_annotator.AsyncBatchAnnotateFilesRequest, dict,]
+    "request_type",
+    [
+        image_annotator.AsyncBatchAnnotateFilesRequest,
+        dict,
+    ],
 )
 def test_async_batch_annotate_files(request_type, transport: str = "grpc"):
     client = ImageAnnotatorClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -865,7 +891,8 @@ def test_async_batch_annotate_files_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ImageAnnotatorClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -884,7 +911,8 @@ async def test_async_batch_annotate_files_async(
     request_type=image_annotator.AsyncBatchAnnotateFilesRequest,
 ):
     client = ImageAnnotatorAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -916,7 +944,9 @@ async def test_async_batch_annotate_files_async_from_dict():
 
 
 def test_async_batch_annotate_files_flattened():
-    client = ImageAnnotatorClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ImageAnnotatorClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -952,7 +982,9 @@ def test_async_batch_annotate_files_flattened():
 
 
 def test_async_batch_annotate_files_flattened_error():
-    client = ImageAnnotatorClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ImageAnnotatorClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1040,7 +1072,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = ImageAnnotatorClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -1060,7 +1093,10 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = ImageAnnotatorClient(client_options=options, transport=transport,)
+        client = ImageAnnotatorClient(
+            client_options=options,
+            transport=transport,
+        )
 
     # It is an error to provide an api_key and a credential.
     options = mock.Mock()
@@ -1076,7 +1112,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = ImageAnnotatorClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -1121,8 +1158,13 @@ def test_transport_adc(transport_class):
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
-    client = ImageAnnotatorClient(credentials=ga_credentials.AnonymousCredentials(),)
-    assert isinstance(client.transport, transports.ImageAnnotatorGrpcTransport,)
+    client = ImageAnnotatorClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    assert isinstance(
+        client.transport,
+        transports.ImageAnnotatorGrpcTransport,
+    )
 
 
 def test_image_annotator_base_transport_error():
@@ -1173,7 +1215,8 @@ def test_image_annotator_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.ImageAnnotatorTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -1343,7 +1386,8 @@ def test_image_annotator_grpc_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.ImageAnnotatorGrpcTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -1355,7 +1399,8 @@ def test_image_annotator_grpc_asyncio_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.ImageAnnotatorGrpcAsyncIOTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -1464,12 +1509,16 @@ def test_image_annotator_transport_channel_mtls_with_adc(transport_class):
 
 def test_image_annotator_grpc_lro_client():
     client = ImageAnnotatorClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
     transport = client.transport
 
     # Ensure that we have a api-core operations client.
-    assert isinstance(transport.operations_client, operations_v1.OperationsClient,)
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsClient,
+    )
 
     # Ensure that subsequent calls to the property send the exact same object.
     assert transport.operations_client is transport.operations_client
@@ -1477,12 +1526,16 @@ def test_image_annotator_grpc_lro_client():
 
 def test_image_annotator_grpc_lro_async_client():
     client = ImageAnnotatorAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     transport = client.transport
 
     # Ensure that we have a api-core operations client.
-    assert isinstance(transport.operations_client, operations_v1.OperationsAsyncClient,)
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsAsyncClient,
+    )
 
     # Ensure that subsequent calls to the property send the exact same object.
     assert transport.operations_client is transport.operations_client
@@ -1493,7 +1546,9 @@ def test_product_path():
     location = "clam"
     product = "whelk"
     expected = "projects/{project}/locations/{location}/products/{product}".format(
-        project=project, location=location, product=product,
+        project=project,
+        location=location,
+        product=product,
     )
     actual = ImageAnnotatorClient.product_path(project, location, product)
     assert expected == actual
@@ -1516,8 +1571,12 @@ def test_product_set_path():
     project = "cuttlefish"
     location = "mussel"
     product_set = "winkle"
-    expected = "projects/{project}/locations/{location}/productSets/{product_set}".format(
-        project=project, location=location, product_set=product_set,
+    expected = (
+        "projects/{project}/locations/{location}/productSets/{product_set}".format(
+            project=project,
+            location=location,
+            product_set=product_set,
+        )
     )
     actual = ImageAnnotatorClient.product_set_path(project, location, product_set)
     assert expected == actual
@@ -1558,7 +1617,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "whelk"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = ImageAnnotatorClient.common_folder_path(folder)
     assert expected == actual
 
@@ -1576,7 +1637,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "oyster"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = ImageAnnotatorClient.common_organization_path(organization)
     assert expected == actual
 
@@ -1594,7 +1657,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "cuttlefish"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = ImageAnnotatorClient.common_project_path(project)
     assert expected == actual
 
@@ -1614,7 +1679,8 @@ def test_common_location_path():
     project = "winkle"
     location = "nautilus"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = ImageAnnotatorClient.common_location_path(project, location)
     assert expected == actual
@@ -1639,7 +1705,8 @@ def test_client_with_default_client_info():
         transports.ImageAnnotatorTransport, "_prep_wrapped_messages"
     ) as prep:
         client = ImageAnnotatorClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -1648,7 +1715,8 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = ImageAnnotatorClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -1656,7 +1724,8 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = ImageAnnotatorAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     with mock.patch.object(
         type(getattr(client.transport, "grpc_channel")), "close"

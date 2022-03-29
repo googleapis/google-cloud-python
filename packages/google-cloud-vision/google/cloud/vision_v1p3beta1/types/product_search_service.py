@@ -108,14 +108,36 @@ class Product(proto.Message):
                 bytes.
         """
 
-        key = proto.Field(proto.STRING, number=1,)
-        value = proto.Field(proto.STRING, number=2,)
+        key = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        value = proto.Field(
+            proto.STRING,
+            number=2,
+        )
 
-    name = proto.Field(proto.STRING, number=1,)
-    display_name = proto.Field(proto.STRING, number=2,)
-    description = proto.Field(proto.STRING, number=3,)
-    product_category = proto.Field(proto.STRING, number=4,)
-    product_labels = proto.RepeatedField(proto.MESSAGE, number=5, message=KeyValue,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    product_category = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    product_labels = proto.RepeatedField(
+        proto.MESSAGE,
+        number=5,
+        message=KeyValue,
+    )
 
 
 class ProductSet(proto.Message):
@@ -152,10 +174,24 @@ class ProductSet(proto.Message):
             ProductSet.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    display_name = proto.Field(proto.STRING, number=2,)
-    index_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
-    index_error = proto.Field(proto.MESSAGE, number=4, message=status_pb2.Status,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    index_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    index_error = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=status_pb2.Status,
+    )
 
 
 class ReferenceImage(proto.Message):
@@ -189,10 +225,18 @@ class ReferenceImage(proto.Message):
             1:4 or less (i.e. 1:3 is ok; 1:5 is not).
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    uri = proto.Field(proto.STRING, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    uri = proto.Field(
+        proto.STRING,
+        number=2,
+    )
     bounding_polys = proto.RepeatedField(
-        proto.MESSAGE, number=3, message=geometry.BoundingPoly,
+        proto.MESSAGE,
+        number=3,
+        message=geometry.BoundingPoly,
     )
 
 
@@ -215,9 +259,19 @@ class CreateProductRequest(proto.Message):
             cannot contain the character ``/``.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    product = proto.Field(proto.MESSAGE, number=2, message="Product",)
-    product_id = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    product = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="Product",
+    )
+    product_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListProductsRequest(proto.Message):
@@ -237,9 +291,18 @@ class ListProductsRequest(proto.Message):
             if any.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListProductsResponse(proto.Message):
@@ -258,8 +321,15 @@ class ListProductsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    products = proto.RepeatedField(proto.MESSAGE, number=1, message="Product",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    products = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Product",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetProductRequest(proto.Message):
@@ -273,7 +343,10 @@ class GetProductRequest(proto.Message):
             ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class UpdateProductRequest(proto.Message):
@@ -291,9 +364,15 @@ class UpdateProductRequest(proto.Message):
             ``product_labels``, ``display_name``, and ``description``.
     """
 
-    product = proto.Field(proto.MESSAGE, number=1, message="Product",)
+    product = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="Product",
+    )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -308,7 +387,10 @@ class DeleteProductRequest(proto.Message):
             ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CreateProductSetRequest(proto.Message):
@@ -330,9 +412,19 @@ class CreateProductSetRequest(proto.Message):
             cannot contain the character ``/``.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    product_set = proto.Field(proto.MESSAGE, number=2, message="ProductSet",)
-    product_set_id = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    product_set = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="ProductSet",
+    )
+    product_set_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListProductSetsRequest(proto.Message):
@@ -352,9 +444,18 @@ class ListProductSetsRequest(proto.Message):
             if any.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListProductSetsResponse(proto.Message):
@@ -373,8 +474,15 @@ class ListProductSetsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    product_sets = proto.RepeatedField(proto.MESSAGE, number=1, message="ProductSet",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    product_sets = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="ProductSet",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetProductSetRequest(proto.Message):
@@ -388,7 +496,10 @@ class GetProductSetRequest(proto.Message):
             ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class UpdateProductSetRequest(proto.Message):
@@ -405,9 +516,15 @@ class UpdateProductSetRequest(proto.Message):
             ``display_name``.
     """
 
-    product_set = proto.Field(proto.MESSAGE, number=1, message="ProductSet",)
+    product_set = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="ProductSet",
+    )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -422,7 +539,10 @@ class DeleteProductSetRequest(proto.Message):
             ``projects/PROJECT_ID/locations/LOC_ID/productSets/PRODUCT_SET_ID``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CreateReferenceImageRequest(proto.Message):
@@ -446,9 +566,19 @@ class CreateReferenceImageRequest(proto.Message):
             characters long. It cannot contain the character ``/``.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    reference_image = proto.Field(proto.MESSAGE, number=2, message="ReferenceImage",)
-    reference_image_id = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    reference_image = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="ReferenceImage",
+    )
+    reference_image_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListReferenceImagesRequest(proto.Message):
@@ -472,9 +602,18 @@ class ListReferenceImagesRequest(proto.Message):
             Defaults to the first page if not specified.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListReferenceImagesResponse(proto.Message):
@@ -496,10 +635,18 @@ class ListReferenceImagesResponse(proto.Message):
         return self
 
     reference_images = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="ReferenceImage",
+        proto.MESSAGE,
+        number=1,
+        message="ReferenceImage",
     )
-    page_size = proto.Field(proto.INT32, number=2,)
-    next_page_token = proto.Field(proto.STRING, number=3,)
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class GetReferenceImageRequest(proto.Message):
@@ -514,7 +661,10 @@ class GetReferenceImageRequest(proto.Message):
             ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID/referenceImages/IMAGE_ID``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class DeleteReferenceImageRequest(proto.Message):
@@ -530,7 +680,10 @@ class DeleteReferenceImageRequest(proto.Message):
             ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID/referenceImages/IMAGE_ID``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class AddProductToProductSetRequest(proto.Message):
@@ -550,8 +703,14 @@ class AddProductToProductSetRequest(proto.Message):
             ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    product = proto.Field(proto.STRING, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    product = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class RemoveProductFromProductSetRequest(proto.Message):
@@ -571,8 +730,14 @@ class RemoveProductFromProductSetRequest(proto.Message):
             ``projects/PROJECT_ID/locations/LOC_ID/products/PRODUCT_ID``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    product = proto.Field(proto.STRING, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    product = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class ListProductsInProductSetRequest(proto.Message):
@@ -593,9 +758,18 @@ class ListProductsInProductSetRequest(proto.Message):
             if any.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListProductsInProductSetResponse(proto.Message):
@@ -614,8 +788,15 @@ class ListProductsInProductSetResponse(proto.Message):
     def raw_page(self):
         return self
 
-    products = proto.RepeatedField(proto.MESSAGE, number=1, message="Product",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    products = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Product",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class ImportProductSetsGcsSource(proto.Message):
@@ -686,7 +867,10 @@ class ImportProductSetsGcsSource(proto.Message):
             polygons.
     """
 
-    csv_file_uri = proto.Field(proto.STRING, number=1,)
+    csv_file_uri = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ImportProductSetsInputConfig(proto.Message):
@@ -704,7 +888,10 @@ class ImportProductSetsInputConfig(proto.Message):
     """
 
     gcs_source = proto.Field(
-        proto.MESSAGE, number=1, oneof="source", message="ImportProductSetsGcsSource",
+        proto.MESSAGE,
+        number=1,
+        oneof="source",
+        message="ImportProductSetsGcsSource",
     )
 
 
@@ -722,9 +909,14 @@ class ImportProductSetsRequest(proto.Message):
             requests.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     input_config = proto.Field(
-        proto.MESSAGE, number=2, message="ImportProductSetsInputConfig",
+        proto.MESSAGE,
+        number=2,
+        message="ImportProductSetsInputConfig",
     )
 
 
@@ -751,9 +943,15 @@ class ImportProductSetsResponse(proto.Message):
     """
 
     reference_images = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="ReferenceImage",
+        proto.MESSAGE,
+        number=1,
+        message="ReferenceImage",
     )
-    statuses = proto.RepeatedField(proto.MESSAGE, number=2, message=status_pb2.Status,)
+    statuses = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=status_pb2.Status,
+    )
 
 
 class BatchOperationMetadata(proto.Message):
@@ -785,9 +983,21 @@ class BatchOperationMetadata(proto.Message):
         FAILED = 3
         CANCELLED = 4
 
-    state = proto.Field(proto.ENUM, number=1, enum=State,)
-    submit_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    end_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
+    state = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=State,
+    )
+    submit_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

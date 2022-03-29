@@ -29,7 +29,9 @@ from google.cloud.vision_v1p1beta1.types import image_annotator
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-vision",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-vision",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
@@ -141,9 +143,9 @@ class ImageAnnotatorTransport(abc.ABC):
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

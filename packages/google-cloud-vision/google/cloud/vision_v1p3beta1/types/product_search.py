@@ -95,17 +95,46 @@ class ProductSearchParams(proto.Message):
             red OR brand = Google)" or "color: red".
     """
 
-    catalog_name = proto.Field(proto.STRING, number=1,)
-    category = proto.Field(proto.ENUM, number=2, enum="ProductSearchCategory",)
-    product_category = proto.Field(proto.STRING, number=5,)
-    normalized_bounding_poly = proto.Field(
-        proto.MESSAGE, number=3, message=geometry.NormalizedBoundingPoly,
+    catalog_name = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    bounding_poly = proto.Field(proto.MESSAGE, number=9, message=geometry.BoundingPoly,)
-    view = proto.Field(proto.ENUM, number=4, enum="ProductSearchResultsView",)
-    product_set = proto.Field(proto.STRING, number=6,)
-    product_categories = proto.RepeatedField(proto.STRING, number=7,)
-    filter = proto.Field(proto.STRING, number=8,)
+    category = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum="ProductSearchCategory",
+    )
+    product_category = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    normalized_bounding_poly = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=geometry.NormalizedBoundingPoly,
+    )
+    bounding_poly = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message=geometry.BoundingPoly,
+    )
+    view = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum="ProductSearchResultsView",
+    )
+    product_set = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    product_categories = proto.RepeatedField(
+        proto.STRING,
+        number=7,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=8,
+    )
 
 
 class ProductSearchResults(proto.Message):
@@ -147,9 +176,18 @@ class ProductSearchResults(proto.Message):
                 in the request.
         """
 
-        product_id = proto.Field(proto.STRING, number=1,)
-        image_uri = proto.Field(proto.STRING, number=2,)
-        score = proto.Field(proto.FLOAT, number=3,)
+        product_id = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        image_uri = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        score = proto.Field(
+            proto.FLOAT,
+            number=3,
+        )
 
     class Result(proto.Message):
         r"""Information about a product.
@@ -169,16 +207,43 @@ class ProductSearchResults(proto.Message):
         """
 
         product = proto.Field(
-            proto.MESSAGE, number=1, message=product_search_service.Product,
+            proto.MESSAGE,
+            number=1,
+            message=product_search_service.Product,
         )
-        score = proto.Field(proto.FLOAT, number=2,)
-        image = proto.Field(proto.STRING, number=3,)
+        score = proto.Field(
+            proto.FLOAT,
+            number=2,
+        )
+        image = proto.Field(
+            proto.STRING,
+            number=3,
+        )
 
-    category = proto.Field(proto.ENUM, number=1, enum="ProductSearchCategory",)
-    product_category = proto.Field(proto.STRING, number=4,)
-    index_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    products = proto.RepeatedField(proto.MESSAGE, number=3, message=ProductInfo,)
-    results = proto.RepeatedField(proto.MESSAGE, number=5, message=Result,)
+    category = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum="ProductSearchCategory",
+    )
+    product_category = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    index_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    products = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=ProductInfo,
+    )
+    results = proto.RepeatedField(
+        proto.MESSAGE,
+        number=5,
+        message=Result,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

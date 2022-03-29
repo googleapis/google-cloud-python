@@ -22,7 +22,10 @@ from google.protobuf import timestamp_pb2  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.vision.v1p4beta1",
-    manifest={"ProductSearchParams", "ProductSearchResults",},
+    manifest={
+        "ProductSearchParams",
+        "ProductSearchResults",
+    },
 )
 
 
@@ -67,10 +70,23 @@ class ProductSearchParams(proto.Message):
             instead of an '='.
     """
 
-    bounding_poly = proto.Field(proto.MESSAGE, number=9, message=geometry.BoundingPoly,)
-    product_set = proto.Field(proto.STRING, number=6,)
-    product_categories = proto.RepeatedField(proto.STRING, number=7,)
-    filter = proto.Field(proto.STRING, number=8,)
+    bounding_poly = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message=geometry.BoundingPoly,
+    )
+    product_set = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    product_categories = proto.RepeatedField(
+        proto.STRING,
+        number=7,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=8,
+    )
 
 
 class ProductSearchResults(proto.Message):
@@ -108,10 +124,18 @@ class ProductSearchResults(proto.Message):
         """
 
         product = proto.Field(
-            proto.MESSAGE, number=1, message=product_search_service.Product,
+            proto.MESSAGE,
+            number=1,
+            message=product_search_service.Product,
         )
-        score = proto.Field(proto.FLOAT, number=2,)
-        image = proto.Field(proto.STRING, number=3,)
+        score = proto.Field(
+            proto.FLOAT,
+            number=2,
+        )
+        image = proto.Field(
+            proto.STRING,
+            number=3,
+        )
 
     class ObjectAnnotation(proto.Message):
         r"""Prediction for what the object in the bounding box is.
@@ -130,10 +154,22 @@ class ProductSearchResults(proto.Message):
                 Score of the result. Range [0, 1].
         """
 
-        mid = proto.Field(proto.STRING, number=1,)
-        language_code = proto.Field(proto.STRING, number=2,)
-        name = proto.Field(proto.STRING, number=3,)
-        score = proto.Field(proto.FLOAT, number=4,)
+        mid = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        language_code = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        name = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+        score = proto.Field(
+            proto.FLOAT,
+            number=4,
+        )
 
     class GroupedResult(proto.Message):
         r"""Information about the products similar to a single product in
@@ -151,19 +187,35 @@ class ProductSearchResults(proto.Message):
         """
 
         bounding_poly = proto.Field(
-            proto.MESSAGE, number=1, message=geometry.BoundingPoly,
+            proto.MESSAGE,
+            number=1,
+            message=geometry.BoundingPoly,
         )
         results = proto.RepeatedField(
-            proto.MESSAGE, number=2, message="ProductSearchResults.Result",
+            proto.MESSAGE,
+            number=2,
+            message="ProductSearchResults.Result",
         )
         object_annotations = proto.RepeatedField(
-            proto.MESSAGE, number=3, message="ProductSearchResults.ObjectAnnotation",
+            proto.MESSAGE,
+            number=3,
+            message="ProductSearchResults.ObjectAnnotation",
         )
 
-    index_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    results = proto.RepeatedField(proto.MESSAGE, number=5, message=Result,)
+    index_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    results = proto.RepeatedField(
+        proto.MESSAGE,
+        number=5,
+        message=Result,
+    )
     product_grouped_results = proto.RepeatedField(
-        proto.MESSAGE, number=6, message=GroupedResult,
+        proto.MESSAGE,
+        number=6,
+        message=GroupedResult,
     )
 
 

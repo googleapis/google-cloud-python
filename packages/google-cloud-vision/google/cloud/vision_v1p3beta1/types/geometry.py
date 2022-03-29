@@ -40,8 +40,14 @@ class Vertex(proto.Message):
             Y coordinate.
     """
 
-    x = proto.Field(proto.INT32, number=1,)
-    y = proto.Field(proto.INT32, number=2,)
+    x = proto.Field(
+        proto.INT32,
+        number=1,
+    )
+    y = proto.Field(
+        proto.INT32,
+        number=2,
+    )
 
 
 class NormalizedVertex(proto.Message):
@@ -56,8 +62,14 @@ class NormalizedVertex(proto.Message):
             Y coordinate.
     """
 
-    x = proto.Field(proto.FLOAT, number=1,)
-    y = proto.Field(proto.FLOAT, number=2,)
+    x = proto.Field(
+        proto.FLOAT,
+        number=1,
+    )
+    y = proto.Field(
+        proto.FLOAT,
+        number=2,
+    )
 
 
 class BoundingPoly(proto.Message):
@@ -70,9 +82,15 @@ class BoundingPoly(proto.Message):
             The bounding polygon normalized vertices.
     """
 
-    vertices = proto.RepeatedField(proto.MESSAGE, number=1, message="Vertex",)
+    vertices = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Vertex",
+    )
     normalized_vertices = proto.RepeatedField(
-        proto.MESSAGE, number=2, message="NormalizedVertex",
+        proto.MESSAGE,
+        number=2,
+        message="NormalizedVertex",
     )
 
 
@@ -84,7 +102,11 @@ class NormalizedBoundingPoly(proto.Message):
             Normalized vertices of the bounding polygon.
     """
 
-    vertices = proto.RepeatedField(proto.MESSAGE, number=1, message="NormalizedVertex",)
+    vertices = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="NormalizedVertex",
+    )
 
 
 class Position(proto.Message):
@@ -102,9 +124,18 @@ class Position(proto.Message):
             Z coordinate (or depth).
     """
 
-    x = proto.Field(proto.FLOAT, number=1,)
-    y = proto.Field(proto.FLOAT, number=2,)
-    z = proto.Field(proto.FLOAT, number=3,)
+    x = proto.Field(
+        proto.FLOAT,
+        number=1,
+    )
+    y = proto.Field(
+        proto.FLOAT,
+        number=2,
+    )
+    z = proto.Field(
+        proto.FLOAT,
+        number=3,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

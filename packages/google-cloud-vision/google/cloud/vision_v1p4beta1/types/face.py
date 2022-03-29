@@ -18,7 +18,11 @@ import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.vision.v1p4beta1",
-    manifest={"FaceRecognitionParams", "Celebrity", "FaceRecognitionResult",},
+    manifest={
+        "FaceRecognitionParams",
+        "Celebrity",
+        "FaceRecognitionResult",
+    },
 )
 
 
@@ -35,7 +39,10 @@ class FaceRecognitionParams(proto.Message):
             Celebrities in the CelebritySets.
     """
 
-    celebrity_set = proto.RepeatedField(proto.STRING, number=1,)
+    celebrity_set = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
 
 
 class Celebrity(proto.Message):
@@ -51,9 +58,18 @@ class Celebrity(proto.Message):
             The Celebrity's description.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    display_name = proto.Field(proto.STRING, number=2,)
-    description = proto.Field(proto.STRING, number=3,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class FaceRecognitionResult(proto.Message):
@@ -67,8 +83,15 @@ class FaceRecognitionResult(proto.Message):
             Recognition confidence. Range [0, 1].
     """
 
-    celebrity = proto.Field(proto.MESSAGE, number=1, message="Celebrity",)
-    confidence = proto.Field(proto.FLOAT, number=2,)
+    celebrity = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="Celebrity",
+    )
+    confidence = proto.Field(
+        proto.FLOAT,
+        number=2,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

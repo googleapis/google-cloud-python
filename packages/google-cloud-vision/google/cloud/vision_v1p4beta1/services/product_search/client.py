@@ -60,7 +60,10 @@ class ProductSearchClientMeta(type):
     _transport_registry["grpc"] = ProductSearchGrpcTransport
     _transport_registry["grpc_asyncio"] = ProductSearchGrpcAsyncIOTransport
 
-    def get_transport_class(cls, label: str = None,) -> Type[ProductSearchTransport]:
+    def get_transport_class(
+        cls,
+        label: str = None,
+    ) -> Type[ProductSearchTransport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -185,10 +188,16 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         return self._transport
 
     @staticmethod
-    def product_path(project: str, location: str, product: str,) -> str:
+    def product_path(
+        project: str,
+        location: str,
+        product: str,
+    ) -> str:
         """Returns a fully-qualified product string."""
         return "projects/{project}/locations/{location}/products/{product}".format(
-            project=project, location=location, product=product,
+            project=project,
+            location=location,
+            product=product,
         )
 
     @staticmethod
@@ -201,10 +210,18 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def product_set_path(project: str, location: str, product_set: str,) -> str:
+    def product_set_path(
+        project: str,
+        location: str,
+        product_set: str,
+    ) -> str:
         """Returns a fully-qualified product_set string."""
-        return "projects/{project}/locations/{location}/productSets/{product_set}".format(
-            project=project, location=location, product_set=product_set,
+        return (
+            "projects/{project}/locations/{location}/productSets/{product_set}".format(
+                project=project,
+                location=location,
+                product_set=product_set,
+            )
         )
 
     @staticmethod
@@ -218,7 +235,10 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
     @staticmethod
     def reference_image_path(
-        project: str, location: str, product: str, reference_image: str,
+        project: str,
+        location: str,
+        product: str,
+        reference_image: str,
     ) -> str:
         """Returns a fully-qualified reference_image string."""
         return "projects/{project}/locations/{location}/products/{product}/referenceImages/{reference_image}".format(
@@ -238,7 +258,9 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_billing_account_path(billing_account: str,) -> str:
+    def common_billing_account_path(
+        billing_account: str,
+    ) -> str:
         """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
@@ -251,9 +273,13 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(folder: str,) -> str:
+    def common_folder_path(
+        folder: str,
+    ) -> str:
         """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(folder=folder,)
+        return "folders/{folder}".format(
+            folder=folder,
+        )
 
     @staticmethod
     def parse_common_folder_path(path: str) -> Dict[str, str]:
@@ -262,9 +288,13 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(organization: str,) -> str:
+    def common_organization_path(
+        organization: str,
+    ) -> str:
         """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(organization=organization,)
+        return "organizations/{organization}".format(
+            organization=organization,
+        )
 
     @staticmethod
     def parse_common_organization_path(path: str) -> Dict[str, str]:
@@ -273,9 +303,13 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(project: str,) -> str:
+    def common_project_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified project string."""
-        return "projects/{project}".format(project=project,)
+        return "projects/{project}".format(
+            project=project,
+        )
 
     @staticmethod
     def parse_common_project_path(path: str) -> Dict[str, str]:
@@ -284,10 +318,14 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(project: str, location: str,) -> str:
+    def common_location_path(
+        project: str,
+        location: str,
+    ) -> str:
         """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
-            project=project, location=location,
+            project=project,
+            location=location,
         )
 
     @staticmethod
@@ -578,7 +616,12 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -679,12 +722,20 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListProductSetsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -785,7 +836,12 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -900,7 +956,12 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -988,7 +1049,10 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def create_product(
@@ -1107,7 +1171,12 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1208,12 +1277,20 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListProductsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1309,7 +1386,12 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1428,7 +1510,12 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1518,7 +1605,10 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def create_reference_image(
@@ -1659,7 +1749,12 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1752,7 +1847,10 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def list_reference_images(
@@ -1853,12 +1951,20 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListReferenceImagesPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1958,7 +2064,12 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2072,7 +2183,10 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def remove_product_from_product_set(
@@ -2175,7 +2289,10 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def list_products_in_product_set(
@@ -2284,12 +2401,20 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListProductsInProductSetPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -2417,7 +2542,12 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -2561,7 +2691,12 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -2590,7 +2725,9 @@ class ProductSearchClient(metaclass=ProductSearchClientMeta):
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-vision",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-vision",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
