@@ -69,10 +69,22 @@ class ListServicesRequest(proto.Message):
             -  project:<project_id>
     """
 
-    producer_project_id = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=5,)
-    page_token = proto.Field(proto.STRING, number=6,)
-    consumer_id = proto.Field(proto.STRING, number=7,)
+    producer_project_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=5,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    consumer_id = proto.Field(
+        proto.STRING,
+        number=7,
+    )
 
 
 class ListServicesResponse(proto.Message):
@@ -92,9 +104,14 @@ class ListServicesResponse(proto.Message):
         return self
 
     services = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=resources.ManagedService,
+        proto.MESSAGE,
+        number=1,
+        message=resources.ManagedService,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetServiceRequest(proto.Message):
@@ -107,7 +124,10 @@ class GetServiceRequest(proto.Message):
             example: ``example.googleapis.com``.
     """
 
-    service_name = proto.Field(proto.STRING, number=1,)
+    service_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CreateServiceRequest(proto.Message):
@@ -119,7 +139,11 @@ class CreateServiceRequest(proto.Message):
             resource.
     """
 
-    service = proto.Field(proto.MESSAGE, number=1, message=resources.ManagedService,)
+    service = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=resources.ManagedService,
+    )
 
 
 class DeleteServiceRequest(proto.Message):
@@ -132,7 +156,10 @@ class DeleteServiceRequest(proto.Message):
             requirements. For example: ``example.googleapis.com``.
     """
 
-    service_name = proto.Field(proto.STRING, number=1,)
+    service_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class UndeleteServiceRequest(proto.Message):
@@ -145,7 +172,10 @@ class UndeleteServiceRequest(proto.Message):
             requirements. For example: ``example.googleapis.com``.
     """
 
-    service_name = proto.Field(proto.STRING, number=1,)
+    service_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class UndeleteServiceResponse(proto.Message):
@@ -156,7 +186,11 @@ class UndeleteServiceResponse(proto.Message):
             Revived service resource.
     """
 
-    service = proto.Field(proto.MESSAGE, number=1, message=resources.ManagedService,)
+    service = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=resources.ManagedService,
+    )
 
 
 class GetServiceConfigRequest(proto.Message):
@@ -182,9 +216,19 @@ class GetServiceConfigRequest(proto.Message):
         BASIC = 0
         FULL = 1
 
-    service_name = proto.Field(proto.STRING, number=1,)
-    config_id = proto.Field(proto.STRING, number=2,)
-    view = proto.Field(proto.ENUM, number=3, enum=ConfigView,)
+    service_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    config_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    view = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=ConfigView,
+    )
 
 
 class ListServiceConfigsRequest(proto.Message):
@@ -203,9 +247,18 @@ class ListServiceConfigsRequest(proto.Message):
             Maximum value is 100.
     """
 
-    service_name = proto.Field(proto.STRING, number=1,)
-    page_token = proto.Field(proto.STRING, number=2,)
-    page_size = proto.Field(proto.INT32, number=3,)
+    service_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=3,
+    )
 
 
 class ListServiceConfigsResponse(proto.Message):
@@ -223,9 +276,14 @@ class ListServiceConfigsResponse(proto.Message):
         return self
 
     service_configs = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=service_pb2.Service,
+        proto.MESSAGE,
+        number=1,
+        message=service_pb2.Service,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class CreateServiceConfigRequest(proto.Message):
@@ -240,8 +298,15 @@ class CreateServiceConfigRequest(proto.Message):
             Required. The service configuration resource.
     """
 
-    service_name = proto.Field(proto.STRING, number=1,)
-    service_config = proto.Field(proto.MESSAGE, number=2, message=service_pb2.Service,)
+    service_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    service_config = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=service_pb2.Service,
+    )
 
 
 class SubmitConfigSourceRequest(proto.Message):
@@ -262,11 +327,19 @@ class SubmitConfigSourceRequest(proto.Message):
             sources will NOT be persisted.
     """
 
-    service_name = proto.Field(proto.STRING, number=1,)
-    config_source = proto.Field(
-        proto.MESSAGE, number=2, message=resources.ConfigSource,
+    service_name = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    validate_only = proto.Field(proto.BOOL, number=3,)
+    config_source = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=resources.ConfigSource,
+    )
+    validate_only = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
 
 
 class SubmitConfigSourceResponse(proto.Message):
@@ -277,7 +350,11 @@ class SubmitConfigSourceResponse(proto.Message):
             The generated service configuration.
     """
 
-    service_config = proto.Field(proto.MESSAGE, number=1, message=service_pb2.Service,)
+    service_config = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=service_pb2.Service,
+    )
 
 
 class CreateServiceRolloutRequest(proto.Message):
@@ -293,8 +370,15 @@ class CreateServiceRolloutRequest(proto.Message):
             is output only.
     """
 
-    service_name = proto.Field(proto.STRING, number=1,)
-    rollout = proto.Field(proto.MESSAGE, number=2, message=resources.Rollout,)
+    service_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    rollout = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=resources.Rollout,
+    )
 
 
 class ListServiceRolloutsRequest(proto.Message):
@@ -323,10 +407,22 @@ class ListServiceRolloutsRequest(proto.Message):
             status=FAILED'
     """
 
-    service_name = proto.Field(proto.STRING, number=1,)
-    page_token = proto.Field(proto.STRING, number=2,)
-    page_size = proto.Field(proto.INT32, number=3,)
-    filter = proto.Field(proto.STRING, number=4,)
+    service_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class ListServiceRolloutsResponse(proto.Message):
@@ -343,8 +439,15 @@ class ListServiceRolloutsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    rollouts = proto.RepeatedField(proto.MESSAGE, number=1, message=resources.Rollout,)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    rollouts = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=resources.Rollout,
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetServiceRolloutRequest(proto.Message):
@@ -359,8 +462,14 @@ class GetServiceRolloutRequest(proto.Message):
             Required. The id of the rollout resource.
     """
 
-    service_name = proto.Field(proto.STRING, number=1,)
-    rollout_id = proto.Field(proto.STRING, number=2,)
+    service_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    rollout_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GenerateConfigReportRequest(proto.Message):
@@ -383,8 +492,16 @@ class GenerateConfigReportRequest(proto.Message):
             and [google.api.Service][google.api.Service]
     """
 
-    new_config = proto.Field(proto.MESSAGE, number=1, message=any_pb2.Any,)
-    old_config = proto.Field(proto.MESSAGE, number=2, message=any_pb2.Any,)
+    new_config = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=any_pb2.Any,
+    )
+    old_config = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=any_pb2.Any,
+    )
 
 
 class GenerateConfigReportResponse(proto.Message):
@@ -405,13 +522,23 @@ class GenerateConfigReportResponse(proto.Message):
             belongs to.
     """
 
-    service_name = proto.Field(proto.STRING, number=1,)
-    id = proto.Field(proto.STRING, number=2,)
+    service_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
     change_reports = proto.RepeatedField(
-        proto.MESSAGE, number=3, message=resources.ChangeReport,
+        proto.MESSAGE,
+        number=3,
+        message=resources.ChangeReport,
     )
     diagnostics = proto.RepeatedField(
-        proto.MESSAGE, number=4, message=resources.Diagnostic,
+        proto.MESSAGE,
+        number=4,
+        message=resources.Diagnostic,
     )
 
 

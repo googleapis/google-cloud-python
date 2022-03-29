@@ -48,8 +48,14 @@ class ManagedService(proto.Message):
             service.
     """
 
-    service_name = proto.Field(proto.STRING, number=2,)
-    producer_project_id = proto.Field(proto.STRING, number=3,)
+    service_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    producer_project_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class OperationMetadata(proto.Message):
@@ -91,13 +97,34 @@ class OperationMetadata(proto.Message):
                 The status code.
         """
 
-        description = proto.Field(proto.STRING, number=2,)
-        status = proto.Field(proto.ENUM, number=4, enum="OperationMetadata.Status",)
+        description = proto.Field(
+            proto.STRING,
+            number=2,
+        )
+        status = proto.Field(
+            proto.ENUM,
+            number=4,
+            enum="OperationMetadata.Status",
+        )
 
-    resource_names = proto.RepeatedField(proto.STRING, number=1,)
-    steps = proto.RepeatedField(proto.MESSAGE, number=2, message=Step,)
-    progress_percentage = proto.Field(proto.INT32, number=3,)
-    start_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
+    resource_names = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
+    steps = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=Step,
+    )
+    progress_percentage = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    start_time = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 class Diagnostic(proto.Message):
@@ -118,9 +145,19 @@ class Diagnostic(proto.Message):
         WARNING = 0
         ERROR = 1
 
-    location = proto.Field(proto.STRING, number=1,)
-    kind = proto.Field(proto.ENUM, number=2, enum=Kind,)
-    message = proto.Field(proto.STRING, number=3,)
+    location = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    kind = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=Kind,
+    )
+    message = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ConfigSource(proto.Message):
@@ -138,8 +175,15 @@ class ConfigSource(proto.Message):
             a service configuration (``google.api.Service``).
     """
 
-    id = proto.Field(proto.STRING, number=5,)
-    files = proto.RepeatedField(proto.MESSAGE, number=2, message="ConfigFile",)
+    id = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    files = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="ConfigFile",
+    )
 
 
 class ConfigFile(proto.Message):
@@ -165,9 +209,19 @@ class ConfigFile(proto.Message):
         FILE_DESCRIPTOR_SET_PROTO = 4
         PROTO_FILE = 6
 
-    file_path = proto.Field(proto.STRING, number=1,)
-    file_contents = proto.Field(proto.BYTES, number=3,)
-    file_type = proto.Field(proto.ENUM, number=4, enum=FileType,)
+    file_path = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    file_contents = proto.Field(
+        proto.BYTES,
+        number=3,
+    )
+    file_type = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=FileType,
+    )
 
 
 class ConfigRef(proto.Message):
@@ -180,7 +234,10 @@ class ConfigRef(proto.Message):
             name}/configs/{config id}".
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ChangeReport(proto.Message):
@@ -199,7 +256,9 @@ class ChangeReport(proto.Message):
     """
 
     config_changes = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=config_change_pb2.ConfigChange,
+        proto.MESSAGE,
+        number=1,
+        message=config_change_pb2.ConfigChange,
     )
 
 
@@ -305,7 +364,11 @@ class Rollout(proto.Message):
                 the sum must equal to 100.0.
         """
 
-        percentages = proto.MapField(proto.STRING, proto.DOUBLE, number=1,)
+        percentages = proto.MapField(
+            proto.STRING,
+            proto.DOUBLE,
+            number=1,
+        )
 
     class DeleteServiceStrategy(proto.Message):
         r"""Strategy used to delete a service. This strategy is a
@@ -314,17 +377,40 @@ class Rollout(proto.Message):
 
         """
 
-    rollout_id = proto.Field(proto.STRING, number=1,)
-    create_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    created_by = proto.Field(proto.STRING, number=3,)
-    status = proto.Field(proto.ENUM, number=4, enum=RolloutStatus,)
+    rollout_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    created_by = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    status = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=RolloutStatus,
+    )
     traffic_percent_strategy = proto.Field(
-        proto.MESSAGE, number=5, oneof="strategy", message=TrafficPercentStrategy,
+        proto.MESSAGE,
+        number=5,
+        oneof="strategy",
+        message=TrafficPercentStrategy,
     )
     delete_service_strategy = proto.Field(
-        proto.MESSAGE, number=200, oneof="strategy", message=DeleteServiceStrategy,
+        proto.MESSAGE,
+        number=200,
+        oneof="strategy",
+        message=DeleteServiceStrategy,
     )
-    service_name = proto.Field(proto.STRING, number=8,)
+    service_name = proto.Field(
+        proto.STRING,
+        number=8,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

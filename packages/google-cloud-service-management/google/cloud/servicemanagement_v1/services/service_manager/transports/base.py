@@ -130,19 +130,29 @@ class ServiceManagerTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.list_services: gapic_v1.method.wrap_method(
-                self.list_services, default_timeout=None, client_info=client_info,
+                self.list_services,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_service: gapic_v1.method.wrap_method(
-                self.get_service, default_timeout=None, client_info=client_info,
+                self.get_service,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.create_service: gapic_v1.method.wrap_method(
-                self.create_service, default_timeout=None, client_info=client_info,
+                self.create_service,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.delete_service: gapic_v1.method.wrap_method(
-                self.delete_service, default_timeout=None, client_info=client_info,
+                self.delete_service,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.undelete_service: gapic_v1.method.wrap_method(
-                self.undelete_service, default_timeout=None, client_info=client_info,
+                self.undelete_service,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_service_configs: gapic_v1.method.wrap_method(
                 self.list_service_configs,
@@ -150,7 +160,9 @@ class ServiceManagerTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.get_service_config: gapic_v1.method.wrap_method(
-                self.get_service_config, default_timeout=None, client_info=client_info,
+                self.get_service_config,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.create_service_config: gapic_v1.method.wrap_method(
                 self.create_service_config,
@@ -168,7 +180,9 @@ class ServiceManagerTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.get_service_rollout: gapic_v1.method.wrap_method(
-                self.get_service_rollout, default_timeout=None, client_info=client_info,
+                self.get_service_rollout,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.create_service_rollout: gapic_v1.method.wrap_method(
                 self.create_service_rollout,
@@ -185,9 +199,9 @@ class ServiceManagerTransport(abc.ABC):
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 
