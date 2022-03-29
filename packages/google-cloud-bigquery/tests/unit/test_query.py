@@ -432,11 +432,11 @@ class Test_ScalarQueryParameter(unittest.TestCase):
         self.assertEqual(param.value, 123)
 
     def test_ctor_w_scalar_query_parameter_type(self):
-        from google.cloud.bigquery import enums
+        from google.cloud.bigquery import query
 
         param = self._make_one(
             name="foo",
-            type_=enums.SqlParameterScalarTypes.BIGNUMERIC,
+            type_=query.SqlParameterScalarTypes.BIGNUMERIC,
             value=decimal.Decimal("123.456"),
         )
         self.assertEqual(param.name, "foo")

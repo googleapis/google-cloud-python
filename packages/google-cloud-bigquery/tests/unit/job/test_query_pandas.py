@@ -17,7 +17,12 @@ import copy
 import json
 
 import mock
+import pyarrow
 import pytest
+
+from google.cloud import bigquery_storage
+import google.cloud.bigquery_storage_v1.reader
+import google.cloud.bigquery_storage_v1.services.big_query_read.client
 
 try:
     import pandas
@@ -32,23 +37,15 @@ try:
 except (ImportError, AttributeError):  # pragma: NO COVER
     geopandas = None
 try:
-    from google.cloud import bigquery_storage
-except (ImportError, AttributeError):  # pragma: NO COVER
-    bigquery_storage = None
-try:
     from tqdm import tqdm
 except (ImportError, AttributeError):  # pragma: NO COVER
     tqdm = None
 
-from google.cloud.bigquery import _helpers
-
 from ..helpers import make_connection
-
 from .helpers import _make_client
 from .helpers import _make_job_resource
 
-
-pyarrow = _helpers.PYARROW_VERSIONS.try_import()
+pandas = pytest.importorskip("pandas")
 
 
 @pytest.fixture
@@ -92,10 +89,6 @@ def test__contains_order_by(query, expected):
         assert not mut._contains_order_by(query)
 
 
-@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
-@pytest.mark.skipif(
-    bigquery_storage is None, reason="Requires `google-cloud-bigquery-storage`"
-)
 @pytest.mark.parametrize(
     "query",
     (
@@ -116,7 +109,7 @@ def test_to_dataframe_bqstorage_preserve_order(query, table_read_options_kwarg):
     )
     job_resource["configuration"]["query"]["query"] = query
     job_resource["status"] = {"state": "DONE"}
-    get_query_results_resource = {
+    query_resource = {
         "jobComplete": True,
         "jobReference": {"projectId": "test-project", "jobId": "test-job"},
         "schema": {
@@ -127,25 +120,48 @@ def test_to_dataframe_bqstorage_preserve_order(query, table_read_options_kwarg):
         },
         "totalRows": "4",
     }
-    connection = make_connection(get_query_results_resource, job_resource)
+    stream_id = "projects/1/locations/2/sessions/3/streams/4"
+    name_array = pyarrow.array(
+        ["John", "Paul", "George", "Ringo"], type=pyarrow.string()
+    )
+    age_array = pyarrow.array([17, 24, 21, 15], type=pyarrow.int64())
+    arrow_schema = pyarrow.schema(
+        [
+            pyarrow.field("name", pyarrow.string(), True),
+            pyarrow.field("age", pyarrow.int64(), True),
+        ]
+    )
+    record_batch = pyarrow.RecordBatch.from_arrays(
+        [name_array, age_array], schema=arrow_schema
+    )
+    connection = make_connection(query_resource)
     client = _make_client(connection=connection)
     job = target_class.from_api_repr(job_resource, client)
     bqstorage_client = mock.create_autospec(bigquery_storage.BigQueryReadClient)
     session = bigquery_storage.types.ReadSession()
-    session.avro_schema.schema = json.dumps(
-        {
-            "type": "record",
-            "name": "__root__",
-            "fields": [
-                {"name": "name", "type": ["null", "string"]},
-                {"name": "age", "type": ["null", "long"]},
-            ],
-        }
+    session.arrow_schema.serialized_schema = arrow_schema.serialize().to_pybytes()
+    session.streams = [bigquery_storage.types.ReadStream(name=stream_id)]
+    reader = mock.create_autospec(
+        google.cloud.bigquery_storage_v1.reader.ReadRowsStream, instance=True
+    )
+    row_iterable = mock.create_autospec(
+        google.cloud.bigquery_storage_v1.reader.ReadRowsIterable, instance=True
+    )
+    page = mock.create_autospec(
+        google.cloud.bigquery_storage_v1.reader.ReadRowsPage, instance=True
+    )
+    page.to_arrow.return_value = record_batch
+    type(row_iterable).pages = mock.PropertyMock(return_value=[page])
+    reader.rows.return_value = row_iterable
+    bqstorage_client = mock.create_autospec(
+        bigquery_storage.BigQueryReadClient, instance=True
     )
     bqstorage_client.create_read_session.return_value = session
+    bqstorage_client.read_rows.return_value = reader
 
-    job.to_dataframe(bqstorage_client=bqstorage_client)
+    dataframe = job.to_dataframe(bqstorage_client=bqstorage_client)
 
+    assert len(dataframe) == 4
     destination_table = (
         "projects/{projectId}/datasets/{datasetId}/tables/{tableId}".format(
             **job_resource["configuration"]["query"]["destinationTable"]
@@ -163,7 +179,6 @@ def test_to_dataframe_bqstorage_preserve_order(query, table_read_options_kwarg):
     )
 
 
-@pytest.mark.skipif(pyarrow is None, reason="Requires `pyarrow`")
 def test_to_arrow():
     from google.cloud.bigquery.job import QueryJob as target_class
 
@@ -250,7 +265,6 @@ def test_to_arrow():
     ]
 
 
-@pytest.mark.skipif(pyarrow is None, reason="Requires `pyarrow`")
 def test_to_arrow_max_results_no_progress_bar():
     from google.cloud.bigquery import table
     from google.cloud.bigquery.job import QueryJob as target_class
@@ -286,7 +300,6 @@ def test_to_arrow_max_results_no_progress_bar():
     assert tbl.num_rows == 2
 
 
-@pytest.mark.skipif(pyarrow is None, reason="Requires `pyarrow`")
 @pytest.mark.skipif(tqdm is None, reason="Requires `tqdm`")
 def test_to_arrow_w_tqdm_w_query_plan():
     from google.cloud.bigquery import table
@@ -343,7 +356,6 @@ def test_to_arrow_w_tqdm_w_query_plan():
     )
 
 
-@pytest.mark.skipif(pyarrow is None, reason="Requires `pyarrow`")
 @pytest.mark.skipif(tqdm is None, reason="Requires `tqdm`")
 def test_to_arrow_w_tqdm_w_pending_status():
     from google.cloud.bigquery import table
@@ -396,7 +408,6 @@ def test_to_arrow_w_tqdm_w_pending_status():
     )
 
 
-@pytest.mark.skipif(pyarrow is None, reason="Requires `pyarrow`")
 @pytest.mark.skipif(tqdm is None, reason="Requires `tqdm`")
 def test_to_arrow_w_tqdm_wo_query_plan():
     from google.cloud.bigquery import table
@@ -480,7 +491,6 @@ def test_to_dataframe():
     assert list(df) == ["name", "age"]  # verify the column names
 
 
-@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
 def test_to_dataframe_ddl_query():
     from google.cloud.bigquery.job import QueryJob as target_class
 
@@ -500,10 +510,6 @@ def test_to_dataframe_ddl_query():
     assert len(df) == 0
 
 
-@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
-@pytest.mark.skipif(
-    bigquery_storage is None, reason="Requires `google-cloud-bigquery-storage`"
-)
 def test_to_dataframe_bqstorage(table_read_options_kwarg):
     from google.cloud.bigquery.job import QueryJob as target_class
 
@@ -519,25 +525,47 @@ def test_to_dataframe_bqstorage(table_read_options_kwarg):
             ]
         },
     }
+    stream_id = "projects/1/locations/2/sessions/3/streams/4"
+    name_array = pyarrow.array(
+        ["John", "Paul", "George", "Ringo"], type=pyarrow.string()
+    )
+    age_array = pyarrow.array([17, 24, 21, 15], type=pyarrow.int64())
+    arrow_schema = pyarrow.schema(
+        [
+            pyarrow.field("name", pyarrow.string(), True),
+            pyarrow.field("age", pyarrow.int64(), True),
+        ]
+    )
+    record_batch = pyarrow.RecordBatch.from_arrays(
+        [name_array, age_array], schema=arrow_schema
+    )
     connection = make_connection(query_resource)
     client = _make_client(connection=connection)
     job = target_class.from_api_repr(resource, client)
-    bqstorage_client = mock.create_autospec(bigquery_storage.BigQueryReadClient)
     session = bigquery_storage.types.ReadSession()
-    session.avro_schema.schema = json.dumps(
-        {
-            "type": "record",
-            "name": "__root__",
-            "fields": [
-                {"name": "name", "type": ["null", "string"]},
-                {"name": "age", "type": ["null", "long"]},
-            ],
-        }
+    session.arrow_schema.serialized_schema = arrow_schema.serialize().to_pybytes()
+    session.streams = [bigquery_storage.types.ReadStream(name=stream_id)]
+    reader = mock.create_autospec(
+        google.cloud.bigquery_storage_v1.reader.ReadRowsStream, instance=True
+    )
+    row_iterable = mock.create_autospec(
+        google.cloud.bigquery_storage_v1.reader.ReadRowsIterable, instance=True
+    )
+    page = mock.create_autospec(
+        google.cloud.bigquery_storage_v1.reader.ReadRowsPage, instance=True
+    )
+    page.to_arrow.return_value = record_batch
+    type(row_iterable).pages = mock.PropertyMock(return_value=[page])
+    reader.rows.return_value = row_iterable
+    bqstorage_client = mock.create_autospec(
+        bigquery_storage.BigQueryReadClient, instance=True
     )
     bqstorage_client.create_read_session.return_value = session
+    bqstorage_client.read_rows.return_value = reader
 
-    job.to_dataframe(bqstorage_client=bqstorage_client)
+    dataframe = job.to_dataframe(bqstorage_client=bqstorage_client)
 
+    assert len(dataframe) == 4
     destination_table = (
         "projects/{projectId}/datasets/{datasetId}/tables/{tableId}".format(
             **resource["configuration"]["query"]["destinationTable"]
@@ -553,12 +581,9 @@ def test_to_dataframe_bqstorage(table_read_options_kwarg):
         read_session=expected_session,
         max_stream_count=0,  # Use default number of streams for best performance.
     )
+    bqstorage_client.read_rows.assert_called_once_with(stream_id)
 
 
-@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
-@pytest.mark.skipif(
-    bigquery_storage is None, reason="Requires `google-cloud-bigquery-storage`"
-)
 def test_to_dataframe_bqstorage_no_pyarrow_compression():
     from google.cloud.bigquery.job import QueryJob as target_class
 
@@ -604,7 +629,6 @@ def test_to_dataframe_bqstorage_no_pyarrow_compression():
     )
 
 
-@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
 def test_to_dataframe_column_dtypes():
     from google.cloud.bigquery.job import QueryJob as target_class
 
@@ -656,16 +680,14 @@ def test_to_dataframe_column_dtypes():
     assert list(df) == exp_columns  # verify the column names
 
     assert df.start_timestamp.dtype.name == "datetime64[ns, UTC]"
-    assert df.seconds.dtype.name == "int64"
+    assert df.seconds.dtype.name == "Int64"
     assert df.miles.dtype.name == "float64"
     assert df.km.dtype.name == "float16"
     assert df.payment_type.dtype.name == "object"
-    assert df.complete.dtype.name == "bool"
-    assert df.date.dtype.name == "object"
+    assert df.complete.dtype.name == "boolean"
+    assert df.date.dtype.name == "dbdate"
 
 
-@pytest.mark.skipif(pyarrow is None, reason="Requires `pyarrow`")
-@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
 def test_to_dataframe_column_date_dtypes():
     from google.cloud.bigquery.job import QueryJob as target_class
 
@@ -688,16 +710,15 @@ def test_to_dataframe_column_date_dtypes():
     )
     client = _make_client(connection=connection)
     job = target_class.from_api_repr(begun_resource, client)
-    df = job.to_dataframe(date_as_object=False, create_bqstorage_client=False)
+    df = job.to_dataframe(create_bqstorage_client=False)
 
     assert isinstance(df, pandas.DataFrame)
     assert len(df) == 1  # verify the number of rows
     exp_columns = [field["name"] for field in query_resource["schema"]["fields"]]
     assert list(df) == exp_columns  # verify the column names
-    assert df.date.dtype.name == "datetime64[ns]"
+    assert df.date.dtype.name == "dbdate"
 
 
-@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
 @pytest.mark.skipif(tqdm is None, reason="Requires `tqdm`")
 @mock.patch("tqdm.tqdm")
 def test_to_dataframe_with_progress_bar(tqdm_mock):
@@ -729,7 +750,6 @@ def test_to_dataframe_with_progress_bar(tqdm_mock):
     tqdm_mock.assert_called()
 
 
-@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
 @pytest.mark.skipif(tqdm is None, reason="Requires `tqdm`")
 def test_to_dataframe_w_tqdm_pending():
     from google.cloud.bigquery import table
@@ -785,7 +805,6 @@ def test_to_dataframe_w_tqdm_pending():
     )
 
 
-@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
 @pytest.mark.skipif(tqdm is None, reason="Requires `tqdm`")
 def test_to_dataframe_w_tqdm():
     from google.cloud.bigquery import table
@@ -845,7 +864,6 @@ def test_to_dataframe_w_tqdm():
     )
 
 
-@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
 @pytest.mark.skipif(tqdm is None, reason="Requires `tqdm`")
 def test_to_dataframe_w_tqdm_max_results():
     from google.cloud.bigquery import table
@@ -957,7 +975,6 @@ def test_query_job_to_geodataframe_delegation(wait_for_query):
     dtypes = dict(xxx=numpy.dtype("int64"))
     progress_bar_type = "normal"
     create_bqstorage_client = False
-    date_as_object = False
     max_results = 42
     geography_column = "g"
 
@@ -966,7 +983,6 @@ def test_query_job_to_geodataframe_delegation(wait_for_query):
         dtypes=dtypes,
         progress_bar_type=progress_bar_type,
         create_bqstorage_client=create_bqstorage_client,
-        date_as_object=date_as_object,
         max_results=max_results,
         geography_column=geography_column,
     )
@@ -980,7 +996,6 @@ def test_query_job_to_geodataframe_delegation(wait_for_query):
         dtypes=dtypes,
         progress_bar_type=progress_bar_type,
         create_bqstorage_client=create_bqstorage_client,
-        date_as_object=date_as_object,
         geography_column=geography_column,
     )
     assert df is row_iterator.to_geodataframe.return_value

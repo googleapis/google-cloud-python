@@ -17,6 +17,7 @@
 from __future__ import absolute_import
 
 import copy
+from typing import Dict, Any
 
 import google.cloud._helpers  # type: ignore
 
@@ -27,7 +28,7 @@ from google.cloud.bigquery.table import TableReference
 from google.cloud.bigquery.encryption_configuration import EncryptionConfiguration
 
 
-def _get_table_reference(self, table_id):
+def _get_table_reference(self, table_id: str) -> TableReference:
     """Constructs a TableReference.
 
     Args:
@@ -143,8 +144,8 @@ class AccessEntry(object):
         >>> entry = AccessEntry(None, 'view', view)
     """
 
-    def __init__(self, role=None, entity_type=None, entity_id=None):
-        self._properties = {}
+    def __init__(self, role=None, entity_type=None, entity_id=None) -> None:
+        self._properties: Dict[str, Any] = {}
         if entity_type in ("view", "routine", "dataset"):
             if role is not None:
                 raise ValueError(
@@ -404,7 +405,7 @@ class Dataset(object):
         "default_encryption_configuration": "defaultEncryptionConfiguration",
     }
 
-    def __init__(self, dataset_ref):
+    def __init__(self, dataset_ref) -> None:
         if isinstance(dataset_ref, str):
             dataset_ref = DatasetReference.from_string(dataset_ref)
         self._properties = {"datasetReference": dataset_ref.to_api_repr(), "labels": {}}

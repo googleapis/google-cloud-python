@@ -13,7 +13,6 @@
 # limitations under the License.
 
 import base64
-import concurrent.futures
 import csv
 import datetime
 import decimal
@@ -27,22 +26,6 @@ import unittest
 import uuid
 from typing import Optional
 
-import psutil
-import pytest
-
-from . import helpers
-
-try:
-    from google.cloud import bigquery_storage
-except ImportError:  # pragma: NO COVER
-    bigquery_storage = None
-
-try:
-    import pyarrow
-    import pyarrow.types
-except ImportError:  # pragma: NO COVER
-    pyarrow = None
-
 from google.api_core.exceptions import PreconditionFailed
 from google.api_core.exceptions import BadRequest
 from google.api_core.exceptions import ClientError
@@ -54,20 +37,25 @@ from google.api_core.exceptions import ServiceUnavailable
 from google.api_core.exceptions import TooManyRequests
 from google.api_core.iam import Policy
 from google.cloud import bigquery
-from google.cloud import bigquery_v2
 from google.cloud.bigquery.dataset import Dataset
 from google.cloud.bigquery.dataset import DatasetReference
 from google.cloud.bigquery.table import Table
 from google.cloud._helpers import UTC
 from google.cloud.bigquery import dbapi, enums
+from google.cloud import bigquery_storage
 from google.cloud import storage
 from google.cloud.datacatalog_v1 import types as datacatalog_types
 from google.cloud.datacatalog_v1 import PolicyTagManagerClient
-
+import psutil
+import pytest
+import pyarrow
+import pyarrow.types
 from test_utils.retry import RetryErrors
 from test_utils.retry import RetryInstanceState
 from test_utils.retry import RetryResult
 from test_utils.system import unique_resource_id
+
+from . import helpers
 
 
 JOB_TIMEOUT = 120  # 2 minutes
@@ -703,64 +691,6 @@ class TestBigQuery(unittest.TestCase):
         page = next(iterator.pages)
         return list(page)
 
-    def _create_table_many_columns(self, rowcount):
-        # Generate a table of maximum width via CREATE TABLE AS SELECT.
-        # first column is named 'rowval', and has a value from 1..rowcount
-        # Subsequent column is named col_<N> and contains the value N*rowval,
-        # where N is between 1 and 9999 inclusive.
-        dsname = _make_dataset_id("wide_schema")
-        dataset = self.temp_dataset(dsname)
-        table_id = "many_columns"
-        table_ref = dataset.table(table_id)
-        self.to_delete.insert(0, table_ref)
-        colprojections = ",".join(
-            ["r * {} as col_{}".format(n, n) for n in range(1, 10000)]
-        )
-        sql = """
-            CREATE TABLE {}.{}
-            AS
-            SELECT
-                r as rowval,
-                {}
-            FROM
-              UNNEST(GENERATE_ARRAY(1,{},1)) as r
-            """.format(
-            dsname, table_id, colprojections, rowcount
-        )
-        query_job = Config.CLIENT.query(sql)
-        query_job.result()
-        self.assertEqual(query_job.statement_type, "CREATE_TABLE_AS_SELECT")
-        self.assertEqual(query_job.ddl_operation_performed, "CREATE")
-        self.assertEqual(query_job.ddl_target_table, table_ref)
-
-        return table_ref
-
-    def test_query_many_columns(self):
-        # Test working with the widest schema BigQuery supports, 10k columns.
-        row_count = 2
-        table_ref = self._create_table_many_columns(row_count)
-        rows = list(
-            Config.CLIENT.query(
-                "SELECT * FROM `{}.{}`".format(table_ref.dataset_id, table_ref.table_id)
-            )
-        )
-
-        self.assertEqual(len(rows), row_count)
-
-        # check field representations adhere to expected values.
-        correctwidth = 0
-        badvals = 0
-        for r in rows:
-            vals = r._xxx_values
-            rowval = vals[0]
-            if len(vals) == 10000:
-                correctwidth = correctwidth + 1
-            for n in range(1, 10000):
-                if vals[n] != rowval * (n):
-                    badvals = badvals + 1
-        self.assertEqual(correctwidth, row_count)
-        self.assertEqual(badvals, 0)
-
     def test_insert_rows_then_dump_table(self):
         NOW_SECONDS = 1448911495.484366
         NOW = datetime.datetime.utcfromtimestamp(NOW_SECONDS).replace(tzinfo=UTC)
@@ -1381,25 +1311,6 @@ class TestBigQuery(unittest.TestCase):
         with self.assertRaises(Exception):
             Config.CLIENT.query(good_query, job_config=bad_config).result()
 
-    def test_query_w_timeout(self):
-        job_config = bigquery.QueryJobConfig()
-        job_config.use_query_cache = False
-
-        query_job = Config.CLIENT.query(
-            "SELECT * FROM `bigquery-public-data.github_repos.commits`;",
-            job_id_prefix="test_query_w_timeout_",
-            location="US",
-            job_config=job_config,
-        )
-
-        with self.assertRaises(concurrent.futures.TimeoutError):
-            query_job.result(timeout=1)
-
-        # Even though the query takes >1 second, the call to getQueryResults
-        # should succeed.
-        self.assertFalse(query_job.done(timeout=1))
-        self.assertIsNotNone(Config.CLIENT.cancel_job(query_job))
-
     def test_query_w_page_size(self):
         page_size = 45
         query_job = Config.CLIENT.query(
@@ -1420,83 +1331,6 @@ class TestBigQuery(unittest.TestCase):
 
         self.assertEqual(result1.extra_params["startIndex"], start_index)
         self.assertEqual(len(list(result1)), total_rows - start_index)
-
-    def test_query_statistics(self):
-        """
-        A system test to exercise some of the extended query statistics.
-
-        Note:  We construct a query that should need at least three stages by
-        specifying a JOIN query.  Exact plan and stats are effectively
-        non-deterministic, so we're largely interested in confirming values
-        are present.
-        """
-
-        job_config = bigquery.QueryJobConfig()
-        job_config.use_query_cache = False
-
-        query_job = Config.CLIENT.query(
-            """
-            SELECT
-              COUNT(1)
-            FROM
-            (
-              SELECT
-                year,
-                wban_number
-              FROM `bigquery-public-data.samples.gsod`
-              LIMIT 1000
-            ) lside
-            INNER JOIN
-            (
-              SELECT
-                year,
-                state
-              FROM `bigquery-public-data.samples.natality`
-              LIMIT 1000
-            ) rside
-            ON
-            lside.year = rside.year
-            """,
-            location="US",
-            job_config=job_config,
-        )
-
-        # run the job to completion
-        query_job.result()
-
-        # Assert top-level stats
-        self.assertFalse(query_job.cache_hit)
-        self.assertIsNotNone(query_job.destination)
-        self.assertTrue(query_job.done)
-        self.assertFalse(query_job.dry_run)
-        self.assertIsNone(query_job.num_dml_affected_rows)
-        self.assertEqual(query_job.priority, "INTERACTIVE")
-        self.assertGreater(query_job.total_bytes_billed, 1)
-        self.assertGreater(query_job.total_bytes_processed, 1)
-        self.assertEqual(query_job.statement_type, "SELECT")
-        self.assertGreater(query_job.slot_millis, 1)
-
-        # Make assertions on the shape of the query plan.
-        plan = query_job.query_plan
-        self.assertGreaterEqual(len(plan), 3)
-        first_stage = plan[0]
-        self.assertIsNotNone(first_stage.start)
-        self.assertIsNotNone(first_stage.end)
-        self.assertIsNotNone(first_stage.entry_id)
-        self.assertIsNotNone(first_stage.name)
-        self.assertGreater(first_stage.parallel_inputs, 0)
-        self.assertGreater(first_stage.completed_parallel_inputs, 0)
-        self.assertGreater(first_stage.shuffle_output_bytes, 0)
-        self.assertEqual(first_stage.status, "COMPLETE")
-
-        # Query plan is a digraph.  Ensure it has inter-stage links,
-        # but not every stage has inputs.
-        stages_with_inputs = 0
-        for entry in plan:
-            if len(entry.input_stages) > 0:
-                stages_with_inputs = stages_with_inputs + 1
-        self.assertGreater(stages_with_inputs, 0)
-        self.assertGreater(len(plan), stages_with_inputs)
 
     def test_dml_statistics(self):
         table_schema = (
@@ -1639,10 +1473,6 @@ class TestBigQuery(unittest.TestCase):
         row_tuples = [r.values() for r in rows]
         self.assertEqual(row_tuples, [(5, "foo"), (6, "bar"), (7, "baz")])
 
-    @unittest.skipIf(
-        bigquery_storage is None, "Requires `google-cloud-bigquery-storage`"
-    )
-    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_dbapi_fetch_w_bqstorage_client_large_result_set(self):
         bqstorage_client = bigquery_storage.BigQueryReadClient(
             credentials=Config.CLIENT._credentials
@@ -1701,9 +1531,6 @@ class TestBigQuery(unittest.TestCase):
 
         self.assertEqual(list(rows), [])
 
-    @unittest.skipIf(
-        bigquery_storage is None, "Requires `google-cloud-bigquery-storage`"
-    )
     def test_dbapi_connection_does_not_leak_sockets(self):
         current_process = psutil.Process()
         conn_count_start = len(current_process.connections())
@@ -1793,207 +1620,6 @@ class TestBigQuery(unittest.TestCase):
             job_id="test_dbapi_w_dml_{}".format(str(uuid.uuid4())),
         )
         self.assertEqual(Config.CURSOR.rowcount, 1)
-
-    def test_query_w_query_params(self):
-        from google.cloud.bigquery.job import QueryJobConfig
-        from google.cloud.bigquery.query import ArrayQueryParameter
-        from google.cloud.bigquery.query import ScalarQueryParameter
-        from google.cloud.bigquery.query import ScalarQueryParameterType
-        from google.cloud.bigquery.query import StructQueryParameter
-        from google.cloud.bigquery.query import StructQueryParameterType
-
-        question = "What is the answer to life, the universe, and everything?"
-        question_param = ScalarQueryParameter(
-            name="question", type_="STRING", value=question
-        )
-        answer = 42
-        answer_param = ScalarQueryParameter(name="answer", type_="INT64", value=answer)
-        pi = 3.1415926
-        pi_param = ScalarQueryParameter(name="pi", type_="FLOAT64", value=pi)
-        pi_numeric = decimal.Decimal("3.141592654")
-        pi_numeric_param = ScalarQueryParameter(
-            name="pi_numeric_param", type_="NUMERIC", value=pi_numeric
-        )
-        bignum = decimal.Decimal("-{d38}.{d38}".format(d38="9" * 38))
-        bignum_param = ScalarQueryParameter(
-            name="bignum_param", type_="BIGNUMERIC", value=bignum
-        )
-        truthy = True
-        truthy_param = ScalarQueryParameter(name="truthy", type_="BOOL", value=truthy)
-        beef = b"DEADBEEF"
-        beef_param = ScalarQueryParameter(name="beef", type_="BYTES", value=beef)
-        naive = datetime.datetime(2016, 12, 5, 12, 41, 9)
-        naive_param = ScalarQueryParameter(name="naive", type_="DATETIME", value=naive)
-        naive_date_param = ScalarQueryParameter(
-            name="naive_date", type_="DATE", value=naive.date()
-        )
-        naive_time_param = ScalarQueryParameter(
-            name="naive_time", type_="TIME", value=naive.time()
-        )
-        zoned = naive.replace(tzinfo=UTC)
-        zoned_param = ScalarQueryParameter(name="zoned", type_="TIMESTAMP", value=zoned)
-        array_param = ArrayQueryParameter(
-            name="array_param", array_type="INT64", values=[1, 2]
-        )
-        struct_param = StructQueryParameter("hitchhiker", question_param, answer_param)
-        phred_name = "Phred Phlyntstone"
-        phred_name_param = ScalarQueryParameter(
-            name="name", type_="STRING", value=phred_name
-        )
-        phred_age = 32
-        phred_age_param = ScalarQueryParameter(
-            name="age", type_="INT64", value=phred_age
-        )
-        phred_param = StructQueryParameter(None, phred_name_param, phred_age_param)
-        bharney_name = "Bharney Rhubbyl"
-        bharney_name_param = ScalarQueryParameter(
-            name="name", type_="STRING", value=bharney_name
-        )
-        bharney_age = 31
-        bharney_age_param = ScalarQueryParameter(
-            name="age", type_="INT64", value=bharney_age
-        )
-        bharney_param = StructQueryParameter(
-            None, bharney_name_param, bharney_age_param
-        )
-        characters_param = ArrayQueryParameter(
-            name=None, array_type="RECORD", values=[phred_param, bharney_param]
-        )
-        empty_struct_array_param = ArrayQueryParameter(
-            name="empty_array_param",
-            values=[],
-            array_type=StructQueryParameterType(
-                ScalarQueryParameterType(name="foo", type_="INT64"),
-                ScalarQueryParameterType(name="bar", type_="STRING"),
-            ),
-        )
-        hero_param = StructQueryParameter("hero", phred_name_param, phred_age_param)
-        sidekick_param = StructQueryParameter(
-            "sidekick", bharney_name_param, bharney_age_param
-        )
-        roles_param = StructQueryParameter("roles", hero_param, sidekick_param)
-        friends_param = ArrayQueryParameter(
-            name="friends", array_type="STRING", values=[phred_name, bharney_name]
-        )
-        with_friends_param = StructQueryParameter(None, friends_param)
-        top_left_param = StructQueryParameter(
-            "top_left",
-            ScalarQueryParameter("x", "INT64", 12),
-            ScalarQueryParameter("y", "INT64", 102),
-        )
-        bottom_right_param = StructQueryParameter(
-            "bottom_right",
-            ScalarQueryParameter("x", "INT64", 22),
-            ScalarQueryParameter("y", "INT64", 92),
-        )
-        rectangle_param = StructQueryParameter(
-            "rectangle", top_left_param, bottom_right_param
-        )
-        examples = [
-            {
-                "sql": "SELECT @question",
-                "expected": question,
-                "query_parameters": [question_param],
-            },
-            {
-                "sql": "SELECT @answer",
-                "expected": answer,
-                "query_parameters": [answer_param],
-            },
-            {"sql": "SELECT @pi", "expected": pi, "query_parameters": [pi_param]},
-            {
-                "sql": "SELECT @pi_numeric_param",
-                "expected": pi_numeric,
-                "query_parameters": [pi_numeric_param],
-            },
-            {
-                "sql": "SELECT @truthy",
-                "expected": truthy,
-                "query_parameters": [truthy_param],
-            },
-            {"sql": "SELECT @beef", "expected": beef, "query_parameters": [beef_param]},
-            {
-                "sql": "SELECT @naive",
-                "expected": naive,
-                "query_parameters": [naive_param],
-            },
-            {
-                "sql": "SELECT @naive_date",
-                "expected": naive.date(),
-                "query_parameters": [naive_date_param],
-            },
-            {
-                "sql": "SELECT @naive_time",
-                "expected": naive.time(),
-                "query_parameters": [naive_time_param],
-            },
-            {
-                "sql": "SELECT @zoned",
-                "expected": zoned,
-                "query_parameters": [zoned_param],
-            },
-            {
-                "sql": "SELECT @array_param",
-                "expected": [1, 2],
-                "query_parameters": [array_param],
-            },
-            {
-                "sql": "SELECT (@hitchhiker.question, @hitchhiker.answer)",
-                "expected": ({"_field_1": question, "_field_2": answer}),
-                "query_parameters": [struct_param],
-            },
-            {
-                "sql": "SELECT "
-                "((@rectangle.bottom_right.x - @rectangle.top_left.x) "
-                "* (@rectangle.top_left.y - @rectangle.bottom_right.y))",
-                "expected": 100,
-                "query_parameters": [rectangle_param],
-            },
-            {
-                "sql": "SELECT ?",
-                "expected": [
-                    {"name": phred_name, "age": phred_age},
-                    {"name": bharney_name, "age": bharney_age},
-                ],
-                "query_parameters": [characters_param],
-            },
-            {
-                "sql": "SELECT @empty_array_param",
-                "expected": [],
-                "query_parameters": [empty_struct_array_param],
-            },
-            {
-                "sql": "SELECT @roles",
-                "expected": {
-                    "hero": {"name": phred_name, "age": phred_age},
-                    "sidekick": {"name": bharney_name, "age": bharney_age},
-                },
-                "query_parameters": [roles_param],
-            },
-            {
-                "sql": "SELECT ?",
-                "expected": {"friends": [phred_name, bharney_name]},
-                "query_parameters": [with_friends_param],
-            },
-            {
-                "sql": "SELECT @bignum_param",
-                "expected": bignum,
-                "query_parameters": [bignum_param],
-            },
-        ]
-
-        for example in examples:
-            jconfig = QueryJobConfig()
-            jconfig.query_parameters = example["query_parameters"]
-            query_job = Config.CLIENT.query(
-                example["sql"],
-                job_config=jconfig,
-                job_id_prefix="test_query_w_query_params",
-            )
-            rows = list(query_job.result())
-            self.assertEqual(len(rows), 1)
-            self.assertEqual(len(rows[0]), 1)
-            self.assertEqual(rows[0][0], example["expected"])
 
     def test_dbapi_w_query_parameters(self):
         examples = [
@@ -2194,8 +1820,8 @@ class TestBigQuery(unittest.TestCase):
     def test_create_routine(self):
         routine_name = "test_routine"
         dataset = self.temp_dataset(_make_dataset_id("create_routine"))
-        float64_type = bigquery_v2.types.StandardSqlDataType(
-            type_kind=bigquery_v2.types.StandardSqlDataType.TypeKind.FLOAT64
+        float64_type = bigquery.StandardSqlDataType(
+            type_kind=bigquery.StandardSqlTypeNames.FLOAT64
         )
         routine = bigquery.Routine(
             dataset.routine(routine_name),
@@ -2209,8 +1835,8 @@ class TestBigQuery(unittest.TestCase):
         routine.arguments = [
             bigquery.RoutineArgument(
                 name="arr",
-                data_type=bigquery_v2.types.StandardSqlDataType(
-                    type_kind=bigquery_v2.types.StandardSqlDataType.TypeKind.ARRAY,
+                data_type=bigquery.StandardSqlDataType(
+                    type_kind=bigquery.StandardSqlTypeNames.ARRAY,
                     array_element_type=float64_type,
                 ),
             )
@@ -2229,14 +1855,19 @@ class TestBigQuery(unittest.TestCase):
         assert rows[0].max_value == 100.0
 
     def test_create_tvf_routine(self):
-        from google.cloud.bigquery import Routine, RoutineArgument, RoutineType
+        from google.cloud.bigquery import (
+            Routine,
+            RoutineArgument,
+            RoutineType,
+            StandardSqlTypeNames,
+        )
 
-        StandardSqlDataType = bigquery_v2.types.StandardSqlDataType
-        StandardSqlField = bigquery_v2.types.StandardSqlField
-        StandardSqlTableType = bigquery_v2.types.StandardSqlTableType
+        StandardSqlDataType = bigquery.StandardSqlDataType
+        StandardSqlField = bigquery.StandardSqlField
+        StandardSqlTableType = bigquery.StandardSqlTableType
 
-        INT64 = StandardSqlDataType.TypeKind.INT64
-        STRING = StandardSqlDataType.TypeKind.STRING
+        INT64 = StandardSqlTypeNames.INT64
+        STRING = StandardSqlTypeNames.STRING
 
         client = Config.CLIENT
 
@@ -2367,10 +1998,6 @@ class TestBigQuery(unittest.TestCase):
             self.assertEqual(found[7], e_favtime)
             self.assertEqual(found[8], decimal.Decimal(expected["FavoriteNumber"]))
 
-    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
-    @unittest.skipIf(
-        bigquery_storage is None, "Requires `google-cloud-bigquery-storage`"
-    )
     def test_nested_table_to_arrow(self):
         from google.cloud.bigquery.job import SourceFormat
         from google.cloud.bigquery.job import WriteDisposition

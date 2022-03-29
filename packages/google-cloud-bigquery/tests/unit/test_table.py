@@ -21,19 +21,16 @@ import unittest
 import warnings
 
 import mock
+import pyarrow
+import pyarrow.types
 import pytest
 
 import google.api_core.exceptions
-from test_utils.imports import maybe_fail_import
 
-try:
-    from google.cloud import bigquery_storage
-    from google.cloud.bigquery_storage_v1.services.big_query_read.transports import (
-        grpc as big_query_read_grpc_transport,
-    )
-except ImportError:  # pragma: NO COVER
-    bigquery_storage = None
-    big_query_read_grpc_transport = None
+from google.cloud import bigquery_storage
+from google.cloud.bigquery_storage_v1.services.big_query_read.transports import (
+    grpc as big_query_read_grpc_transport,
+)
 
 try:
     import pandas
@@ -51,12 +48,6 @@ except (ImportError, AttributeError):  # pragma: NO COVER
     tqdm = None
 
 from google.cloud.bigquery.dataset import DatasetReference
-from google.cloud.bigquery import _helpers
-
-
-pyarrow = _helpers.PYARROW_VERSIONS.try_import()
-if pyarrow:
-    import pyarrow.types
 
 
 def _mock_client():
@@ -1827,26 +1818,12 @@ class Test_EmptyRowIterator(unittest.TestCase):
         row_iterator = self._make_one()
         self.assertEqual(row_iterator.total_rows, 0)
 
-    @mock.patch("google.cloud.bigquery.table.pyarrow", new=None)
-    def test_to_arrow_error_if_pyarrow_is_none(self):
-        row_iterator = self._make_one()
-        with self.assertRaises(ValueError):
-            row_iterator.to_arrow()
-
-    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_to_arrow(self):
         row_iterator = self._make_one()
         tbl = row_iterator.to_arrow()
         self.assertIsInstance(tbl, pyarrow.Table)
         self.assertEqual(tbl.num_rows, 0)
 
-    @mock.patch("google.cloud.bigquery.table.pyarrow", new=None)
-    def test_to_arrow_iterable_error_if_pyarrow_is_none(self):
-        row_iterator = self._make_one()
-        with self.assertRaises(ValueError):
-            row_iterator.to_arrow_iterable()
-
-    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_to_arrow_iterable(self):
         row_iterator = self._make_one()
         arrow_iter = row_iterator.to_arrow_iterable()
@@ -2128,49 +2105,6 @@ class TestRowIterator(unittest.TestCase):
         )
         self.assertFalse(result)
 
-    def test__validate_bqstorage_returns_false_if_missing_dependency(self):
-        iterator = self._make_one(first_page_response=None)  # not cached
-
-        def fail_bqstorage_import(name, globals, locals, fromlist, level):
-            # NOTE: *very* simplified, assuming a straightforward absolute import
-            return "bigquery_storage" in name or (
-                fromlist is not None and "bigquery_storage" in fromlist
-            )
-
-        no_bqstorage = maybe_fail_import(predicate=fail_bqstorage_import)
-
-        with no_bqstorage:
-            result = iterator._validate_bqstorage(
-                bqstorage_client=None, create_bqstorage_client=True
-            )
-
-        self.assertFalse(result)
-
-    @unittest.skipIf(
-        bigquery_storage is None, "Requires `google-cloud-bigquery-storage`"
-    )
-    def test__validate_bqstorage_returns_false_w_warning_if_obsolete_version(self):
-        from google.cloud.bigquery.exceptions import LegacyBigQueryStorageError
-
-        iterator = self._make_one(first_page_response=None)  # not cached
-
-        patcher = mock.patch(
-            "google.cloud.bigquery.table._helpers.BQ_STORAGE_VERSIONS.verify_version",
-            side_effect=LegacyBigQueryStorageError("BQ Storage too old"),
-        )
-        with patcher, warnings.catch_warnings(record=True) as warned:
-            result = iterator._validate_bqstorage(
-                bqstorage_client=None, create_bqstorage_client=True
-            )
-
-        self.assertFalse(result)
-
-        matching_warnings = [
-            warning for warning in warned if "BQ Storage too old" in str(warning)
-        ]
-        assert matching_warnings, "Obsolete dependency warning not raised."
-
-    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_to_arrow_iterable(self):
         from google.cloud.bigquery.schema import SchemaField
 
@@ -2271,29 +2205,6 @@ class TestRowIterator(unittest.TestCase):
             [[{"name": "Bepples Phlyntstone", "age": 0}, {"name": "Dino", "age": 4}]],
         )
 
-    @mock.patch("google.cloud.bigquery.table.pyarrow", new=None)
-    def test_to_arrow_iterable_error_if_pyarrow_is_none(self):
-        from google.cloud.bigquery.schema import SchemaField
-
-        schema = [
-            SchemaField("name", "STRING", mode="REQUIRED"),
-            SchemaField("age", "INTEGER", mode="REQUIRED"),
-        ]
-        rows = [
-            {"f": [{"v": "Phred Phlyntstone"}, {"v": "32"}]},
-            {"f": [{"v": "Bharney Rhubble"}, {"v": "33"}]},
-        ]
-        path = "/foo"
-        api_request = mock.Mock(return_value={"rows": rows})
-        row_iterator = self._make_one(_mock_client(), api_request, path, schema)
-
-        with pytest.raises(ValueError, match="pyarrow"):
-            row_iterator.to_arrow_iterable()
-
-    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
-    @unittest.skipIf(
-        bigquery_storage is None, "Requires `google-cloud-bigquery-storage`"
-    )
     def test_to_arrow_iterable_w_bqstorage(self):
         from google.cloud.bigquery import schema
         from google.cloud.bigquery import table as mut
@@ -2369,7 +2280,6 @@ class TestRowIterator(unittest.TestCase):
         # Don't close the client if it was passed in.
         bqstorage_client._transport.grpc_channel.close.assert_not_called()
 
-    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_to_arrow(self):
         from google.cloud.bigquery.schema import SchemaField
 
@@ -2451,7 +2361,6 @@ class TestRowIterator(unittest.TestCase):
             ],
         )
 
-    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_to_arrow_w_nulls(self):
         from google.cloud.bigquery.schema import SchemaField
 
@@ -2484,7 +2393,6 @@ class TestRowIterator(unittest.TestCase):
         self.assertEqual(names, ["Donkey", "Diddy", "Dixie", None])
         self.assertEqual(ages, [32, 29, None, 111])
 
-    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_to_arrow_w_unknown_type(self):
         from google.cloud.bigquery.schema import SchemaField
 
@@ -2527,7 +2435,6 @@ class TestRowIterator(unittest.TestCase):
         warning = warned[0]
         self.assertTrue("sport" in str(warning))
 
-    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_to_arrow_w_empty_table(self):
         from google.cloud.bigquery.schema import SchemaField
 
@@ -2566,10 +2473,6 @@ class TestRowIterator(unittest.TestCase):
         self.assertEqual(child_field.type.value_type[0].name, "name")
         self.assertEqual(child_field.type.value_type[1].name, "age")
 
-    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
-    @unittest.skipIf(
-        bigquery_storage is None, "Requires `google-cloud-bigquery-storage`"
-    )
     def test_to_arrow_max_results_w_explicit_bqstorage_client_warning(self):
         from google.cloud.bigquery.schema import SchemaField
 
@@ -2610,10 +2513,6 @@ class TestRowIterator(unittest.TestCase):
         )
         mock_client._ensure_bqstorage_client.assert_not_called()
 
-    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
-    @unittest.skipIf(
-        bigquery_storage is None, "Requires `google-cloud-bigquery-storage`"
-    )
     def test_to_arrow_max_results_w_create_bqstorage_client_no_warning(self):
         from google.cloud.bigquery.schema import SchemaField
 
@@ -2650,10 +2549,6 @@ class TestRowIterator(unittest.TestCase):
         self.assertFalse(matches)
         mock_client._ensure_bqstorage_client.assert_not_called()
 
-    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
-    @unittest.skipIf(
-        bigquery_storage is None, "Requires `google-cloud-bigquery-storage`"
-    )
     def test_to_arrow_w_bqstorage(self):
         from google.cloud.bigquery import schema
         from google.cloud.bigquery import table as mut
@@ -2731,10 +2626,6 @@ class TestRowIterator(unittest.TestCase):
         # Don't close the client if it was passed in.
         bqstorage_client._transport.grpc_channel.close.assert_not_called()
 
-    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
-    @unittest.skipIf(
-        bigquery_storage is None, "Requires `google-cloud-bigquery-storage`"
-    )
     def test_to_arrow_w_bqstorage_creates_client(self):
         from google.cloud.bigquery import schema
         from google.cloud.bigquery import table as mut
@@ -2762,7 +2653,6 @@ class TestRowIterator(unittest.TestCase):
         mock_client._ensure_bqstorage_client.assert_called_once()
         bqstorage_client._transport.grpc_channel.close.assert_called_once()
 
-    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_to_arrow_ensure_bqstorage_client_wo_bqstorage(self):
         from google.cloud.bigquery.schema import SchemaField
 
@@ -2789,10 +2679,6 @@ class TestRowIterator(unittest.TestCase):
         self.assertIsInstance(tbl, pyarrow.Table)
         self.assertEqual(tbl.num_rows, 2)
 
-    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
-    @unittest.skipIf(
-        bigquery_storage is None, "Requires `google-cloud-bigquery-storage`"
-    )
     def test_to_arrow_w_bqstorage_no_streams(self):
         from google.cloud.bigquery import schema
         from google.cloud.bigquery import table as mut
@@ -2829,7 +2715,6 @@ class TestRowIterator(unittest.TestCase):
         self.assertEqual(actual_table.schema[1].name, "colC")
         self.assertEqual(actual_table.schema[2].name, "colB")
 
-    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     @unittest.skipIf(tqdm is None, "Requires `tqdm`")
     @mock.patch("tqdm.tqdm_gui")
     @mock.patch("tqdm.tqdm_notebook")
@@ -2964,10 +2849,6 @@ class TestRowIterator(unittest.TestCase):
         self.assertEqual(df_2["age"][0], 33)
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
-    @unittest.skipIf(
-        bigquery_storage is None, "Requires `google-cloud-bigquery-storage`"
-    )
-    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_to_dataframe_iterable_w_bqstorage(self):
         from google.cloud.bigquery import schema
         from google.cloud.bigquery import table as mut
@@ -3036,10 +2917,6 @@ class TestRowIterator(unittest.TestCase):
         bqstorage_client._transport.grpc_channel.close.assert_not_called()
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
-    @unittest.skipIf(
-        bigquery_storage is None, "Requires `google-cloud-bigquery-storage`"
-    )
-    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_to_dataframe_iterable_w_bqstorage_max_results_warning(self):
         from google.cloud.bigquery import schema
         from google.cloud.bigquery import table as mut
@@ -3133,10 +3010,9 @@ class TestRowIterator(unittest.TestCase):
         self.assertEqual(len(df), 4)  # verify the number of rows
         self.assertEqual(list(df), ["name", "age"])  # verify the column names
         self.assertEqual(df.name.dtype.name, "object")
-        self.assertEqual(df.age.dtype.name, "int64")
+        self.assertEqual(df.age.dtype.name, "Int64")
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
-    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_to_dataframe_timestamp_out_of_pyarrow_bounds(self):
         from google.cloud.bigquery.schema import SchemaField
 
@@ -3164,7 +3040,6 @@ class TestRowIterator(unittest.TestCase):
         )
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
-    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_to_dataframe_datetime_out_of_pyarrow_bounds(self):
         from google.cloud.bigquery.schema import SchemaField
 
@@ -3380,7 +3255,7 @@ class TestRowIterator(unittest.TestCase):
                 self.assertTrue(row.isnull().all())
             else:
                 self.assertIsInstance(row.start_timestamp, pandas.Timestamp)
-                self.assertIsInstance(row.seconds, float)
+                self.assertIsInstance(row.seconds, int)
                 self.assertIsInstance(row.payment_type, str)
                 self.assertIsInstance(row.complete, bool)
                 self.assertIsInstance(row.date, datetime.date)
@@ -3427,12 +3302,42 @@ class TestRowIterator(unittest.TestCase):
         self.assertEqual(list(df), exp_columns)  # verify the column names
 
         self.assertEqual(df.start_timestamp.dtype.name, "datetime64[ns, UTC]")
-        self.assertEqual(df.seconds.dtype.name, "int64")
+        self.assertEqual(df.seconds.dtype.name, "Int64")
         self.assertEqual(df.miles.dtype.name, "float64")
         self.assertEqual(df.km.dtype.name, "float16")
         self.assertEqual(df.payment_type.dtype.name, "object")
-        self.assertEqual(df.complete.dtype.name, "bool")
-        self.assertEqual(df.date.dtype.name, "object")
+        self.assertEqual(df.complete.dtype.name, "boolean")
+        self.assertEqual(df.date.dtype.name, "dbdate")
+
+    @unittest.skipIf(pandas is None, "Requires `pandas`")
+    def test_to_dataframe_datetime_objects(self):
+        # When converting date or timestamp values to nanosecond
+        # precision, the result can be out of pyarrow bounds. To avoid
+        # the error when converting to Pandas, we use object type if
+        # necessary.
+
+        from google.cloud.bigquery.schema import SchemaField
+
+        schema = [
+            SchemaField("ts", "TIMESTAMP"),
+            SchemaField("date", "DATE"),
+        ]
+        row_data = [
+            ["-20000000000000000", "1111-01-01"],
+        ]
+        rows = [{"f": [{"v": field} for field in row]} for row in row_data]
+        path = "/foo"
+        api_request = mock.Mock(return_value={"rows": rows})
+        row_iterator = self._make_one(_mock_client(), api_request, path, schema)
+
+        df = row_iterator.to_dataframe(create_bqstorage_client=False)
+
+        self.assertIsInstance(df, pandas.DataFrame)
+        self.assertEqual(len(df), 1)  # verify the number of rows
+        self.assertEqual(df["ts"].dtype.name, "object")
+        self.assertEqual(df["date"].dtype.name, "object")
+        self.assertEqual(df["ts"][0].date(), datetime.date(1336, 3, 23))
+        self.assertEqual(df["date"][0], datetime.date(1111, 1, 1))
 
     @mock.patch("google.cloud.bigquery.table.pandas", new=None)
     def test_to_dataframe_error_if_pandas_is_none(self):
@@ -3580,9 +3485,6 @@ class TestRowIterator(unittest.TestCase):
         mock_client._ensure_bqstorage_client.assert_not_called()
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
-    @unittest.skipIf(
-        bigquery_storage is None, "Requires `google-cloud-bigquery-storage`"
-    )
     def test_to_dataframe_w_bqstorage_creates_client(self):
         from google.cloud.bigquery import schema
         from google.cloud.bigquery import table as mut
@@ -3611,9 +3513,6 @@ class TestRowIterator(unittest.TestCase):
         bqstorage_client._transport.grpc_channel.close.assert_called_once()
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
-    @unittest.skipIf(
-        bigquery_storage is None, "Requires `google-cloud-bigquery-storage`"
-    )
     def test_to_dataframe_w_bqstorage_no_streams(self):
         from google.cloud.bigquery import schema
         from google.cloud.bigquery import table as mut
@@ -3639,11 +3538,7 @@ class TestRowIterator(unittest.TestCase):
         self.assertEqual(list(got), column_names)
         self.assertTrue(got.empty)
 
-    @unittest.skipIf(
-        bigquery_storage is None, "Requires `google-cloud-bigquery-storage`"
-    )
     @unittest.skipIf(pandas is None, "Requires `pandas`")
-    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_to_dataframe_w_bqstorage_logs_session(self):
         from google.cloud.bigquery.table import Table
 
@@ -3665,10 +3560,6 @@ class TestRowIterator(unittest.TestCase):
         )
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
-    @unittest.skipIf(
-        bigquery_storage is None, "Requires `google-cloud-bigquery-storage`"
-    )
-    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_to_dataframe_w_bqstorage_empty_streams(self):
         from google.cloud.bigquery import schema
         from google.cloud.bigquery import table as mut
@@ -3720,10 +3611,6 @@ class TestRowIterator(unittest.TestCase):
         self.assertTrue(got.empty)
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
-    @unittest.skipIf(
-        bigquery_storage is None, "Requires `google-cloud-bigquery-storage`"
-    )
-    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_to_dataframe_w_bqstorage_nonempty(self):
         from google.cloud.bigquery import schema
         from google.cloud.bigquery import table as mut
@@ -3800,10 +3687,6 @@ class TestRowIterator(unittest.TestCase):
         bqstorage_client._transport.grpc_channel.close.assert_not_called()
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
-    @unittest.skipIf(
-        bigquery_storage is None, "Requires `google-cloud-bigquery-storage`"
-    )
-    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_to_dataframe_w_bqstorage_multiple_streams_return_unique_index(self):
         from google.cloud.bigquery import schema
         from google.cloud.bigquery import table as mut
@@ -3854,11 +3737,7 @@ class TestRowIterator(unittest.TestCase):
         self.assertTrue(got.index.is_unique)
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
-    @unittest.skipIf(
-        bigquery_storage is None, "Requires `google-cloud-bigquery-storage`"
-    )
     @unittest.skipIf(tqdm is None, "Requires `tqdm`")
-    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     @mock.patch("tqdm.tqdm")
     def test_to_dataframe_w_bqstorage_updates_progress_bar(self, tqdm_mock):
         from google.cloud.bigquery import schema
@@ -3933,10 +3812,6 @@ class TestRowIterator(unittest.TestCase):
         tqdm_mock().close.assert_called_once()
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
-    @unittest.skipIf(
-        bigquery_storage is None, "Requires `google-cloud-bigquery-storage`"
-    )
-    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_to_dataframe_w_bqstorage_exits_on_keyboardinterrupt(self):
         from google.cloud.bigquery import schema
         from google.cloud.bigquery import table as mut
@@ -4053,9 +3928,6 @@ class TestRowIterator(unittest.TestCase):
         self.assertTrue(df.index.is_unique)
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
-    @unittest.skipIf(
-        bigquery_storage is None, "Requires `google-cloud-bigquery-storage`"
-    )
     def test_to_dataframe_w_bqstorage_raises_auth_error(self):
         from google.cloud.bigquery import table as mut
 
@@ -4074,9 +3946,6 @@ class TestRowIterator(unittest.TestCase):
         with pytest.raises(google.api_core.exceptions.Forbidden):
             row_iterator.to_dataframe(bqstorage_client=bqstorage_client)
 
-    @unittest.skipIf(
-        bigquery_storage is None, "Requires `google-cloud-bigquery-storage`"
-    )
     def test_to_dataframe_w_bqstorage_partition(self):
         from google.cloud.bigquery import schema
         from google.cloud.bigquery import table as mut
@@ -4094,9 +3963,6 @@ class TestRowIterator(unittest.TestCase):
         with pytest.raises(ValueError):
             row_iterator.to_dataframe(bqstorage_client)
 
-    @unittest.skipIf(
-        bigquery_storage is None, "Requires `google-cloud-bigquery-storage`"
-    )
     def test_to_dataframe_w_bqstorage_snapshot(self):
         from google.cloud.bigquery import schema
         from google.cloud.bigquery import table as mut
@@ -4115,10 +3981,6 @@ class TestRowIterator(unittest.TestCase):
             row_iterator.to_dataframe(bqstorage_client)
 
     @unittest.skipIf(pandas is None, "Requires `pandas`")
-    @unittest.skipIf(
-        bigquery_storage is None, "Requires `google-cloud-bigquery-storage`"
-    )
-    @unittest.skipIf(pyarrow is None, "Requires `pyarrow`")
     def test_to_dataframe_concat_categorical_dtype_w_pyarrow(self):
         from google.cloud.bigquery import schema
         from google.cloud.bigquery import table as mut
@@ -4402,7 +4264,6 @@ class TestRowIterator(unittest.TestCase):
         dtypes = dict(xxx=numpy.dtype("int64"))
         progress_bar_type = "normal"
         create_bqstorage_client = False
-        date_as_object = False
         geography_column = "g"
 
         to_dataframe.return_value = pandas.DataFrame(
@@ -4417,7 +4278,6 @@ class TestRowIterator(unittest.TestCase):
             dtypes=dtypes,
             progress_bar_type=progress_bar_type,
             create_bqstorage_client=create_bqstorage_client,
-            date_as_object=date_as_object,
             geography_column=geography_column,
         )
 
@@ -4426,7 +4286,6 @@ class TestRowIterator(unittest.TestCase):
             dtypes,
             progress_bar_type,
             create_bqstorage_client,
-            date_as_object,
             geography_as_object=True,
         )
 
@@ -4824,9 +4683,6 @@ class TestTimePartitioning(unittest.TestCase):
         assert time_partitioning._properties["expirationMs"] is None
 
 
-@pytest.mark.skipif(
-    bigquery_storage is None, reason="Requires `google-cloud-bigquery-storage`"
-)
 @pytest.mark.parametrize(
     "table_path",
     (

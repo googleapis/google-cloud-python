@@ -17,24 +17,24 @@
 """Define resources for the BigQuery ML Models API."""
 
 import copy
-
-from google.protobuf import json_format
+import datetime
+import typing
+from typing import Any, Dict, Optional, Sequence, Union
 
 import google.cloud._helpers  # type: ignore
-from google.api_core import datetime_helpers  # type: ignore
 from google.cloud.bigquery import _helpers
-from google.cloud.bigquery_v2 import types
+from google.cloud.bigquery import standard_sql
 from google.cloud.bigquery.encryption_configuration import EncryptionConfiguration
 
 
-class Model(object):
+class Model:
     """Model represents a machine learning model resource.
 
     See
     https://cloud.google.com/bigquery/docs/reference/rest/v2/models
 
     Args:
-        model_ref (Union[google.cloud.bigquery.model.ModelReference, str]):
+        model_ref:
             A pointer to a model. If ``model_ref`` is a string, it must
             included a project ID, dataset ID, and model ID, each separated
             by ``.``.
@@ -51,11 +51,7 @@ class Model(object):
         "encryption_configuration": "encryptionConfiguration",
     }
 
-    def __init__(self, model_ref):
-        # Use _proto on read-only properties to use it's built-in type
-        # conversion.
-        self._proto = types.Model()._pb
-
+    def __init__(self, model_ref: Union["ModelReference", str, None]):
         # Use _properties on read-write properties to match the REST API
         # semantics. The BigQuery API makes a distinction between an unset
         # value, a null value, and a default value (0 or ""), but the protocol
@@ -66,198 +62,221 @@ class Model(object):
             model_ref = ModelReference.from_string(model_ref)
 
         if model_ref:
-            self._proto.model_reference.CopyFrom(model_ref._proto)
+            self._properties["modelReference"] = model_ref.to_api_repr()
 
     @property
-    def reference(self):
-        """A :class:`~google.cloud.bigquery.model.ModelReference` pointing to
-        this model.
-
-        Read-only.
-
-        Returns:
-            google.cloud.bigquery.model.ModelReference: pointer to this model.
-        """
-        ref = ModelReference()
-        ref._proto = self._proto.model_reference
-        return ref
-
-    @property
-    def project(self):
-        """str: Project bound to the model"""
-        return self.reference.project
-
-    @property
-    def dataset_id(self):
-        """str: ID of dataset containing the model."""
-        return self.reference.dataset_id
-
-    @property
-    def model_id(self):
-        """str: The model ID."""
-        return self.reference.model_id
-
-    @property
-    def path(self):
-        """str: URL path for the model's APIs."""
-        return self.reference.path
-
-    @property
-    def location(self):
-        """str: The geographic location where the model resides. This value
-        is inherited from the dataset.
+    def reference(self) -> Optional["ModelReference"]:
+        """A model reference pointing to this model.
 
         Read-only.
         """
-        return self._proto.location
+        resource = self._properties.get("modelReference")
+        if resource is None:
+            return None
+        else:
+            return ModelReference.from_api_repr(resource)
 
     @property
-    def etag(self):
-        """str: ETag for the model resource (:data:`None` until
-        set from the server).
+    def project(self) -> Optional[str]:
+        """Project bound to the model."""
+        ref = self.reference
+        return ref.project if ref is not None else None
+
+    @property
+    def dataset_id(self) -> Optional[str]:
+        """ID of dataset containing the model."""
+        ref = self.reference
+        return ref.dataset_id if ref is not None else None
+
+    @property
+    def model_id(self) -> Optional[str]:
+        """The model ID."""
+        ref = self.reference
+        return ref.model_id if ref is not None else None
+
+    @property
+    def path(self) -> Optional[str]:
+        """URL path for the model's APIs."""
+        ref = self.reference
+        return ref.path if ref is not None else None
+
+    @property
+    def location(self) -> Optional[str]:
+        """The geographic location where the model resides.
+
+        This value is inherited from the dataset.
 
         Read-only.
         """
-        return self._proto.etag
+        return typing.cast(Optional[str], self._properties.get("location"))
 
     @property
-    def created(self):
-        """Union[datetime.datetime, None]: Datetime at which the model was
-        created (:data:`None` until set from the server).
+    def etag(self) -> Optional[str]:
+        """ETag for the model resource (:data:`None` until set from the server).
 
         Read-only.
         """
-        value = self._proto.creation_time
-        if value is not None and value != 0:
+        return typing.cast(Optional[str], self._properties.get("etag"))
+
+    @property
+    def created(self) -> Optional[datetime.datetime]:
+        """Datetime at which the model was created (:data:`None` until set from the server).
+
+        Read-only.
+        """
+        value = typing.cast(Optional[float], self._properties.get("creationTime"))
+        if value is None:
+            return None
+        else:
             # value will be in milliseconds.
             return google.cloud._helpers._datetime_from_microseconds(
                 1000.0 * float(value)
             )
 
     @property
-    def modified(self):
-        """Union[datetime.datetime, None]: Datetime at which the model was last
-        modified (:data:`None` until set from the server).
+    def modified(self) -> Optional[datetime.datetime]:
+        """Datetime at which the model was last modified (:data:`None` until set from the server).
 
         Read-only.
         """
-        value = self._proto.last_modified_time
-        if value is not None and value != 0:
+        value = typing.cast(Optional[float], self._properties.get("lastModifiedTime"))
+        if value is None:
+            return None
+        else:
             # value will be in milliseconds.
             return google.cloud._helpers._datetime_from_microseconds(
                 1000.0 * float(value)
             )
 
     @property
-    def model_type(self):
-        """google.cloud.bigquery_v2.types.Model.ModelType: Type of the
-        model resource.
+    def model_type(self) -> str:
+        """Type of the model resource.
 
         Read-only.
-
-        The value is one of elements of the
-        :class:`~google.cloud.bigquery_v2.types.Model.ModelType`
-        enumeration.
         """
-        return self._proto.model_type
+        return typing.cast(
+            str, self._properties.get("modelType", "MODEL_TYPE_UNSPECIFIED")
+        )
 
     @property
-    def training_runs(self):
-        """Sequence[google.cloud.bigquery_v2.types.Model.TrainingRun]: Information
-        for all training runs in increasing order of start time.
+    def training_runs(self) -> Sequence[Dict[str, Any]]:
+        """Information for all training runs in increasing order of start time.
+
+        Dictionaries are in REST API format. See:
+        https://cloud.google.com/bigquery/docs/reference/rest/v2/models#trainingrun
 
         Read-only.
-
-        An iterable of :class:`~google.cloud.bigquery_v2.types.Model.TrainingRun`.
         """
-        return self._proto.training_runs
+        return typing.cast(
+            Sequence[Dict[str, Any]], self._properties.get("trainingRuns", [])
+        )
 
     @property
-    def feature_columns(self):
-        """Sequence[google.cloud.bigquery_v2.types.StandardSqlField]: Input
-        feature columns that were used to train this model.
+    def feature_columns(self) -> Sequence[standard_sql.StandardSqlField]:
+        """Input feature columns that were used to train this model.
 
         Read-only.
-
-        An iterable of :class:`~google.cloud.bigquery_v2.types.StandardSqlField`.
         """
-        return self._proto.feature_columns
+        resource: Sequence[Dict[str, Any]] = typing.cast(
+            Sequence[Dict[str, Any]], self._properties.get("featureColumns", [])
+        )
+        return [
+            standard_sql.StandardSqlField.from_api_repr(column) for column in resource
+        ]
 
     @property
-    def label_columns(self):
-        """Sequence[google.cloud.bigquery_v2.types.StandardSqlField]: Label
-        columns that were used to train this model. The output of the model
-        will have a ``predicted_`` prefix to these columns.
+    def label_columns(self) -> Sequence[standard_sql.StandardSqlField]:
+        """Label columns that were used to train this model.
+
+        The output of the model will have a ``predicted_`` prefix to these columns.
 
         Read-only.
-
-        An iterable of :class:`~google.cloud.bigquery_v2.types.StandardSqlField`.
         """
-        return self._proto.label_columns
+        resource: Sequence[Dict[str, Any]] = typing.cast(
+            Sequence[Dict[str, Any]], self._properties.get("labelColumns", [])
+        )
+        return [
+            standard_sql.StandardSqlField.from_api_repr(column) for column in resource
+        ]
 
     @property
-    def expires(self):
-        """Union[datetime.datetime, None]: The datetime when this model
-        expires. If not present, the model will persist indefinitely. Expired
-        models will be deleted and their storage reclaimed.
+    def best_trial_id(self) -> Optional[int]:
+        """The best trial_id across all training runs.
+
+        .. deprecated::
+            This property is deprecated!
+
+        Read-only.
         """
-        value = self._properties.get("expirationTime")
+        value = typing.cast(Optional[int], self._properties.get("bestTrialId"))
         if value is not None:
+            value = int(value)
+        return value
+
+    @property
+    def expires(self) -> Optional[datetime.datetime]:
+        """The datetime when this model expires.
+
+        If not present, the model will persist indefinitely. Expired models will be
+        deleted and their storage reclaimed.
+        """
+        value = typing.cast(Optional[float], self._properties.get("expirationTime"))
+        if value is None:
+            return None
+        else:
             # value will be in milliseconds.
             return google.cloud._helpers._datetime_from_microseconds(
                 1000.0 * float(value)
             )
 
     @expires.setter
-    def expires(self, value):
-        if value is not None:
-            value = str(google.cloud._helpers._millis_from_datetime(value))
-        self._properties["expirationTime"] = value
+    def expires(self, value: Optional[datetime.datetime]):
+        if value is None:
+            value_to_store: Optional[str] = None
+        else:
+            value_to_store = str(google.cloud._helpers._millis_from_datetime(value))
+        # TODO: Consider using typing.TypedDict when only Python 3.8+ is supported.
+        self._properties["expirationTime"] = value_to_store  # type: ignore
 
     @property
-    def description(self):
-        """Optional[str]: Description of the model (defaults to
-        :data:`None`).
-        """
-        return self._properties.get("description")
+    def description(self) -> Optional[str]:
+        """Description of the model (defaults to :data:`None`)."""
+        return typing.cast(Optional[str], self._properties.get("description"))
 
     @description.setter
-    def description(self, value):
-        self._properties["description"] = value
+    def description(self, value: Optional[str]):
+        # TODO: Consider using typing.TypedDict when only Python 3.8+ is supported.
+        self._properties["description"] = value  # type: ignore
 
     @property
-    def friendly_name(self):
-        """Optional[str]: Title of the table (defaults to :data:`None`).
-
-        Raises:
-            ValueError: For invalid value types.
-        """
-        return self._properties.get("friendlyName")
+    def friendly_name(self) -> Optional[str]:
+        """Title of the table (defaults to :data:`None`)."""
+        return typing.cast(Optional[str], self._properties.get("friendlyName"))
 
     @friendly_name.setter
-    def friendly_name(self, value):
-        self._properties["friendlyName"] = value
+    def friendly_name(self, value: Optional[str]):
+        # TODO: Consider using typing.TypedDict when only Python 3.8+ is supported.
+        self._properties["friendlyName"] = value  # type: ignore
 
     @property
-    def labels(self):
-        """Optional[Dict[str, str]]: Labels for the table.
+    def labels(self) -> Dict[str, str]:
+        """Labels for the table.
 
-        This method always returns a dict. To change a model's labels,
-        modify the dict, then call ``Client.update_model``. To delete a
-        label, set its value to :data:`None` before updating.
+        This method always returns a dict. To change a model's labels, modify the dict,
+        then call ``Client.update_model``. To delete a label, set its value to
+        :data:`None` before updating.
         """
         return self._properties.setdefault("labels", {})
 
     @labels.setter
-    def labels(self, value):
+    def labels(self, value: Optional[Dict[str, str]]):
         if value is None:
             value = {}
         self._properties["labels"] = value
 
     @property
-    def encryption_configuration(self):
-        """Optional[google.cloud.bigquery.encryption_configuration.EncryptionConfiguration]: Custom
-        encryption configuration for the model.
+    def encryption_configuration(self) -> Optional[EncryptionConfiguration]:
+        """Custom encryption configuration for the model.
 
         Custom encryption configuration (e.g., Cloud KMS keys) or :data:`None`
         if using default encryption.
@@ -269,50 +288,27 @@ class Model(object):
         prop = self._properties.get("encryptionConfiguration")
         if prop:
             prop = EncryptionConfiguration.from_api_repr(prop)
-        return prop
+        return typing.cast(Optional[EncryptionConfiguration], prop)
 
     @encryption_configuration.setter
-    def encryption_configuration(self, value):
-        api_repr = value
-        if value:
-            api_repr = value.to_api_repr()
+    def encryption_configuration(self, value: Optional[EncryptionConfiguration]):
+        api_repr = value.to_api_repr() if value else value
         self._properties["encryptionConfiguration"] = api_repr
 
     @classmethod
-    def from_api_repr(cls, resource: dict) -> "Model":
+    def from_api_repr(cls, resource: Dict[str, Any]) -> "Model":
         """Factory: construct a model resource given its API representation
 
         Args:
-            resource (Dict[str, object]):
+            resource:
                 Model resource representation from the API
 
         Returns:
-            google.cloud.bigquery.model.Model: Model parsed from ``resource``.
+            Model parsed from ``resource``.
         """
         this = cls(None)
-        # Keep a reference to the resource as a workaround to find unknown
-        # field values.
-        this._properties = resource
-
-        # Convert from millis-from-epoch to timestamp well-known type.
-        # TODO: Remove this hack once CL 238585470 hits prod.
         resource = copy.deepcopy(resource)
-        for training_run in resource.get("trainingRuns", ()):
-            start_time = training_run.get("startTime")
-            if not start_time or "-" in start_time:  # Already right format?
-                continue
-            start_time = datetime_helpers.from_microseconds(1e3 * float(start_time))
-            training_run["startTime"] = datetime_helpers.to_rfc3339(start_time)
-
-        try:
-            this._proto = json_format.ParseDict(
-                resource, types.Model()._pb, ignore_unknown_fields=True
-            )
-        except json_format.ParseError:
-            resource["modelType"] = "MODEL_TYPE_UNSPECIFIED"
-            this._proto = json_format.ParseDict(
-                resource, types.Model()._pb, ignore_unknown_fields=True
-            )
+        this._properties = resource
         return this
 
     def _build_resource(self, filter_fields):
@@ -320,18 +316,18 @@ class Model(object):
         return _helpers._build_resource_from_properties(self, filter_fields)
 
     def __repr__(self):
-        return "Model(reference={})".format(repr(self.reference))
+        return f"Model(reference={self.reference!r})"
 
-    def to_api_repr(self) -> dict:
+    def to_api_repr(self) -> Dict[str, Any]:
         """Construct the API resource representation of this model.
 
         Returns:
-            Dict[str, object]: Model reference represented as an API resource
+            Model reference represented as an API resource
         """
-        return json_format.MessageToDict(self._proto)
+        return copy.deepcopy(self._properties)
 
 
-class ModelReference(object):
+class ModelReference:
     """ModelReferences are pointers to models.
 
     See
@@ -339,73 +335,60 @@ class ModelReference(object):
     """
 
     def __init__(self):
-        self._proto = types.ModelReference()._pb
         self._properties = {}
 
     @property
     def project(self):
         """str: Project bound to the model"""
-        return self._proto.project_id
+        return self._properties.get("projectId")
 
     @property
     def dataset_id(self):
         """str: ID of dataset containing the model."""
-        return self._proto.dataset_id
+        return self._properties.get("datasetId")
 
     @property
     def model_id(self):
         """str: The model ID."""
-        return self._proto.model_id
+        return self._properties.get("modelId")
 
     @property
-    def path(self):
-        """str: URL path for the model's APIs."""
-        return "/projects/%s/datasets/%s/models/%s" % (
-            self._proto.project_id,
-            self._proto.dataset_id,
-            self._proto.model_id,
-        )
+    def path(self) -> str:
+        """URL path for the model's APIs."""
+        return f"/projects/{self.project}/datasets/{self.dataset_id}/models/{self.model_id}"
 
     @classmethod
-    def from_api_repr(cls, resource):
-        """Factory:  construct a model reference given its API representation
+    def from_api_repr(cls, resource: Dict[str, Any]) -> "ModelReference":
+        """Factory: construct a model reference given its API representation.
 
         Args:
-            resource (Dict[str, object]):
+            resource:
                 Model reference representation returned from the API
 
         Returns:
-            google.cloud.bigquery.model.ModelReference:
-                Model reference parsed from ``resource``.
+            Model reference parsed from ``resource``.
         """
         ref = cls()
-        # Keep a reference to the resource as a workaround to find unknown
-        # field values.
         ref._properties = resource
-        ref._proto = json_format.ParseDict(
-            resource, types.ModelReference()._pb, ignore_unknown_fields=True
-        )
-
         return ref
 
     @classmethod
     def from_string(
-        cls, model_id: str, default_project: str = None
+        cls, model_id: str, default_project: Optional[str] = None
     ) -> "ModelReference":
         """Construct a model reference from model ID string.
 
         Args:
-            model_id (str):
+            model_id:
                 A model ID in standard SQL format. If ``default_project``
                 is not specified, this must included a project ID, dataset
                 ID, and model ID, each separated by ``.``.
-            default_project (Optional[str]):
+            default_project:
                 The project ID to use when ``model_id`` does not include
                 a project ID.
 
         Returns:
-            google.cloud.bigquery.model.ModelReference:
-                Model reference parsed from ``model_id``.
+            Model reference parsed from ``model_id``.
 
         Raises:
             ValueError:
@@ -419,13 +402,13 @@ class ModelReference(object):
             {"projectId": proj, "datasetId": dset, "modelId": model}
         )
 
-    def to_api_repr(self) -> dict:
+    def to_api_repr(self) -> Dict[str, Any]:
         """Construct the API resource representation of this model reference.
 
         Returns:
-            Dict[str, object]: Model reference represented as an API resource
+            Model reference represented as an API resource.
         """
-        return json_format.MessageToDict(self._proto)
+        return copy.deepcopy(self._properties)
 
     def _key(self):
         """Unique key for this model.
@@ -437,7 +420,7 @@ class ModelReference(object):
     def __eq__(self, other):
         if not isinstance(other, ModelReference):
             return NotImplemented
-        return self._proto == other._proto
+        return self._properties == other._properties
 
     def __ne__(self, other):
         return not self == other

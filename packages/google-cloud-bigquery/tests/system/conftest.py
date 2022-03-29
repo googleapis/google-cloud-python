@@ -13,7 +13,9 @@
 # limitations under the License.
 
 import pathlib
+import random
 import re
+from typing import Tuple
 
 import pytest
 import test_utils.prefixer
@@ -26,6 +28,7 @@ from . import helpers
 prefixer = test_utils.prefixer.Prefixer("python-bigquery", "tests/system")
 
 DATA_DIR = pathlib.Path(__file__).parent.parent / "data"
+TOKYO_LOCATION = "asia-northeast1"
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -62,6 +65,16 @@ def dataset_id(bigquery_client):
     bigquery_client.delete_dataset(dataset_id, delete_contents=True, not_found_ok=True)
 
 
+@pytest.fixture(scope="session")
+def dataset_id_tokyo(bigquery_client: bigquery.Client, project_id: str):
+    dataset_id = prefixer.create_prefix() + "_tokyo"
+    dataset = bigquery.Dataset(f"{project_id}.{dataset_id}")
+    dataset.location = TOKYO_LOCATION
+    bigquery_client.create_dataset(dataset)
+    yield dataset_id
+    bigquery_client.delete_dataset(dataset_id, delete_contents=True, not_found_ok=True)
+
+
 @pytest.fixture()
 def dataset_client(bigquery_client, dataset_id):
     import google.cloud.bigquery.job
@@ -78,38 +91,64 @@ def table_id(dataset_id):
     return f"{dataset_id}.table_{helpers.temp_suffix()}"
 
 
-@pytest.fixture(scope="session")
-def scalars_table(bigquery_client: bigquery.Client, project_id: str, dataset_id: str):
+def load_scalars_table(
+    bigquery_client: bigquery.Client,
+    project_id: str,
+    dataset_id: str,
+    data_path: str = "scalars.jsonl",
+) -> str:
     schema = bigquery_client.schema_from_json(DATA_DIR / "scalars_schema.json")
+    table_id = data_path.replace(".", "_") + hex(random.randrange(1000000))
     job_config = bigquery.LoadJobConfig()
     job_config.schema = schema
     job_config.source_format = enums.SourceFormat.NEWLINE_DELIMITED_JSON
-    full_table_id = f"{project_id}.{dataset_id}.scalars"
-    with open(DATA_DIR / "scalars.jsonl", "rb") as data_file:
+    full_table_id = f"{project_id}.{dataset_id}.{table_id}"
+    with open(DATA_DIR / data_path, "rb") as data_file:
         job = bigquery_client.load_table_from_file(
             data_file, full_table_id, job_config=job_config
         )
     job.result()
+    return full_table_id
+
+
+@pytest.fixture(scope="session")
+def scalars_table(bigquery_client: bigquery.Client, project_id: str, dataset_id: str):
+    full_table_id = load_scalars_table(bigquery_client, project_id, dataset_id)
     yield full_table_id
-    bigquery_client.delete_table(full_table_id)
+    bigquery_client.delete_table(full_table_id, not_found_ok=True)
+
+
+@pytest.fixture(scope="session")
+def scalars_table_tokyo(
+    bigquery_client: bigquery.Client, project_id: str, dataset_id_tokyo: str
+):
+    full_table_id = load_scalars_table(bigquery_client, project_id, dataset_id_tokyo)
+    yield full_table_id
+    bigquery_client.delete_table(full_table_id, not_found_ok=True)
 
 
 @pytest.fixture(scope="session")
 def scalars_extreme_table(
     bigquery_client: bigquery.Client, project_id: str, dataset_id: str
 ):
-    schema = bigquery_client.schema_from_json(DATA_DIR / "scalars_schema.json")
-    job_config = bigquery.LoadJobConfig()
-    job_config.schema = schema
-    job_config.source_format = enums.SourceFormat.NEWLINE_DELIMITED_JSON
-    full_table_id = f"{project_id}.{dataset_id}.scalars_extreme"
-    with open(DATA_DIR / "scalars_extreme.jsonl", "rb") as data_file:
-        job = bigquery_client.load_table_from_file(
-            data_file, full_table_id, job_config=job_config
-        )
-    job.result()
+    full_table_id = load_scalars_table(
+        bigquery_client, project_id, dataset_id, data_path="scalars_extreme.jsonl"
+    )
     yield full_table_id
-    bigquery_client.delete_table(full_table_id)
+    bigquery_client.delete_table(full_table_id, not_found_ok=True)
+
+
+@pytest.fixture(scope="session", params=["US", TOKYO_LOCATION])
+def scalars_table_multi_location(
+    request, scalars_table: str, scalars_table_tokyo: str
+) -> Tuple[str, str]:
+    if request.param == "US":
+        full_table_id = scalars_table
+    elif request.param == TOKYO_LOCATION:
+        full_table_id = scalars_table_tokyo
+    else:
+        raise ValueError(f"got unexpected location: {request.param}")
+    return request.param, full_table_id
 
 
 @pytest.fixture

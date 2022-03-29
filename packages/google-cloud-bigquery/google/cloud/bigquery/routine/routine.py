@@ -16,12 +16,12 @@
 
 """Define resources for the BigQuery Routines API."""
 
-from google.protobuf import json_format
+from typing import Any, Dict, Optional
 
 import google.cloud._helpers  # type: ignore
 from google.cloud.bigquery import _helpers
-import google.cloud.bigquery_v2.types
-from google.cloud.bigquery_v2.types import StandardSqlTableType
+from google.cloud.bigquery.standard_sql import StandardSqlDataType
+from google.cloud.bigquery.standard_sql import StandardSqlTableType
 
 
 class RoutineType:
@@ -69,7 +69,7 @@ class Routine(object):
         "determinism_level": "determinismLevel",
     }
 
-    def __init__(self, routine_ref, **kwargs):
+    def __init__(self, routine_ref, **kwargs) -> None:
         if isinstance(routine_ref, str):
             routine_ref = RoutineReference.from_string(routine_ref)
 
@@ -190,7 +190,7 @@ class Routine(object):
 
     @property
     def return_type(self):
-        """google.cloud.bigquery_v2.types.StandardSqlDataType: Return type of
+        """google.cloud.bigquery.StandardSqlDataType: Return type of
         the routine.
 
         If absent, the return type is inferred from
@@ -206,22 +206,15 @@ class Routine(object):
         if not resource:
             return resource
 
-        output = google.cloud.bigquery_v2.types.StandardSqlDataType()
-        raw_protobuf = json_format.ParseDict(
-            resource, output._pb, ignore_unknown_fields=True
-        )
-        return type(output).wrap(raw_protobuf)
+        return StandardSqlDataType.from_api_repr(resource)
 
     @return_type.setter
-    def return_type(self, value):
-        if value:
-            resource = json_format.MessageToDict(value._pb)
-        else:
-            resource = None
+    def return_type(self, value: StandardSqlDataType):
+        resource = None if not value else value.to_api_repr()
         self._properties[self._PROPERTY_TO_API_FIELD["return_type"]] = resource
 
     @property
-    def return_table_type(self) -> StandardSqlTableType:
+    def return_table_type(self) -> Optional[StandardSqlTableType]:
         """The return type of a Table Valued Function (TVF) routine.
 
         .. versionadded:: 2.22.0
@@ -232,20 +225,14 @@ class Routine(object):
         if not resource:
             return resource
 
-        output = google.cloud.bigquery_v2.types.StandardSqlTableType()
-        raw_protobuf = json_format.ParseDict(
-            resource, output._pb, ignore_unknown_fields=True
-        )
-        return type(output).wrap(raw_protobuf)
+        return StandardSqlTableType.from_api_repr(resource)
 
     @return_table_type.setter
-    def return_table_type(self, value):
+    def return_table_type(self, value: Optional[StandardSqlTableType]):
         if not value:
             resource = None
         else:
-            resource = {
-                "columns": [json_format.MessageToDict(col._pb) for col in value.columns]
-            }
+            resource = value.to_api_repr()
 
         self._properties[self._PROPERTY_TO_API_FIELD["return_table_type"]] = resource
 
@@ -365,8 +352,8 @@ class RoutineArgument(object):
         "mode": "mode",
     }
 
-    def __init__(self, **kwargs):
-        self._properties = {}
+    def __init__(self, **kwargs) -> None:
+        self._properties: Dict[str, Any] = {}
         for property_name in kwargs:
             setattr(self, property_name, kwargs[property_name])
 
@@ -407,7 +394,7 @@ class RoutineArgument(object):
 
     @property
     def data_type(self):
-        """Optional[google.cloud.bigquery_v2.types.StandardSqlDataType]: Type
+        """Optional[google.cloud.bigquery.StandardSqlDataType]: Type
         of a variable, e.g., a function argument.
 
         See:
@@ -417,16 +404,12 @@ class RoutineArgument(object):
         if not resource:
             return resource
 
-        output = google.cloud.bigquery_v2.types.StandardSqlDataType()
-        raw_protobuf = json_format.ParseDict(
-            resource, output._pb, ignore_unknown_fields=True
-        )
-        return type(output).wrap(raw_protobuf)
+        return StandardSqlDataType.from_api_repr(resource)
 
     @data_type.setter
     def data_type(self, value):
         if value:
-            resource = json_format.MessageToDict(value._pb)
+            resource = value.to_api_repr()
         else:
             resource = None
         self._properties[self._PROPERTY_TO_API_FIELD["data_type"]] = resource

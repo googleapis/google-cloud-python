@@ -12,13 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import re
-
 import enum
-import itertools
-
-from google.cloud.bigquery_v2 import types as gapic_types
-from google.cloud.bigquery.query import ScalarQueryParameterType
 
 
 class AutoRowIDs(enum.Enum):
@@ -128,6 +122,45 @@ class QueryPriority(object):
     """Specifies batch priority."""
 
 
+class QueryApiMethod(str, enum.Enum):
+    """API method used to start the query. The default value is
+    :attr:`INSERT`.
+    """
+
+    INSERT = "INSERT"
+    """Submit a query job by using the `jobs.insert REST API method
+    <https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/insert>`_.
+
+    This supports all job configuration options.
+    """
+
+    QUERY = "QUERY"
+    """Submit a query job by using the `jobs.query REST API method
+    <https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query>`_.
+
+    Differences from ``INSERT``:
+
+    * Many parameters and job configuration options, including job ID and
+      destination table, cannot be used
+      with this API method. See the `jobs.query REST API documentation
+      <https://cloud.google.com/bigquery/docs/reference/rest/v2/jobs/query>`_ for
+      the complete list of supported configuration options.
+
+    * API blocks up to a specified timeout, waiting for the query to
+      finish.
+
+    * The full job resource (including job statistics) may not be available.
+      Call :meth:`~google.cloud.bigquery.job.QueryJob.reload` or
+      :meth:`~google.cloud.bigquery.client.Client.get_job` to get full job
+      statistics and configuration.
+
+    * :meth:`~google.cloud.bigquery.Client.query` can raise API exceptions if
+      the query fails, whereas the same errors don't appear until calling
+      :meth:`~google.cloud.bigquery.job.QueryJob.result` when the ``INSERT``
+      API method is used.
+    """
+
+
 class SchemaUpdateOption(object):
     """Specifies an update to the destination table schema as a side effect of
     a load job.
@@ -180,56 +213,27 @@ class KeyResultStatementKind:
     FIRST_SELECT = "FIRST_SELECT"
 
 
-_SQL_SCALAR_TYPES = frozenset(
-    (
-        "INT64",
-        "BOOL",
-        "FLOAT64",
-        "STRING",
-        "BYTES",
-        "TIMESTAMP",
-        "DATE",
-        "TIME",
-        "DATETIME",
-        "INTERVAL",
-        "GEOGRAPHY",
-        "NUMERIC",
-        "BIGNUMERIC",
-        "JSON",
-    )
-)
+class StandardSqlTypeNames(str, enum.Enum):
+    def _generate_next_value_(name, start, count, last_values):
+        return name
 
-_SQL_NONSCALAR_TYPES = frozenset(("TYPE_KIND_UNSPECIFIED", "ARRAY", "STRUCT"))
-
-
-def _make_sql_scalars_enum():
-    """Create an enum based on a gapic enum containing only SQL scalar types."""
-
-    new_enum = enum.Enum(
-        "StandardSqlDataTypes",
-        (
-            (member.name, member.value)
-            for member in gapic_types.StandardSqlDataType.TypeKind
-            if member.name in _SQL_SCALAR_TYPES
-        ),
-    )
-
-    # make sure the docstring for the new enum is also correct
-    orig_doc = gapic_types.StandardSqlDataType.TypeKind.__doc__
-    skip_pattern = re.compile(
-        "|".join(_SQL_NONSCALAR_TYPES)
-        + "|because a JSON object"  # the second description line of STRUCT member
-    )
-
-    new_doc = "\n".join(
-        itertools.filterfalse(skip_pattern.search, orig_doc.splitlines())
-    )
-    new_enum.__doc__ = "An Enum of scalar SQL types.\n" + new_doc
-
-    return new_enum
-
-
-StandardSqlDataTypes = _make_sql_scalars_enum()
+    TYPE_KIND_UNSPECIFIED = enum.auto()
+    INT64 = enum.auto()
+    BOOL = enum.auto()
+    FLOAT64 = enum.auto()
+    STRING = enum.auto()
+    BYTES = enum.auto()
+    TIMESTAMP = enum.auto()
+    DATE = enum.auto()
+    TIME = enum.auto()
+    DATETIME = enum.auto()
+    INTERVAL = enum.auto()
+    GEOGRAPHY = enum.auto()
+    NUMERIC = enum.auto()
+    BIGNUMERIC = enum.auto()
+    JSON = enum.auto()
+    ARRAY = enum.auto()
+    STRUCT = enum.auto()
 
 
 class EntityTypes(str, enum.Enum):
@@ -268,28 +272,6 @@ class SqlTypeNames(str, enum.Enum):
     TIME = "TIME"
     DATETIME = "DATETIME"
     INTERVAL = "INTERVAL"  # NOTE: not available in legacy types
-
-
-class SqlParameterScalarTypes:
-    """Supported scalar SQL query parameter types as type objects."""
-
-    BOOL = ScalarQueryParameterType("BOOL")
-    BOOLEAN = ScalarQueryParameterType("BOOL")
-    BIGDECIMAL = ScalarQueryParameterType("BIGNUMERIC")
-    BIGNUMERIC = ScalarQueryParameterType("BIGNUMERIC")
-    BYTES = ScalarQueryParameterType("BYTES")
-    DATE = ScalarQueryParameterType("DATE")
-    DATETIME = ScalarQueryParameterType("DATETIME")
-    DECIMAL = ScalarQueryParameterType("NUMERIC")
-    FLOAT = ScalarQueryParameterType("FLOAT64")
-    FLOAT64 = ScalarQueryParameterType("FLOAT64")
-    GEOGRAPHY = ScalarQueryParameterType("GEOGRAPHY")
-    INT64 = ScalarQueryParameterType("INT64")
-    INTEGER = ScalarQueryParameterType("INT64")
-    NUMERIC = ScalarQueryParameterType("NUMERIC")
-    STRING = ScalarQueryParameterType("STRING")
-    TIME = ScalarQueryParameterType("TIME")
-    TIMESTAMP = ScalarQueryParameterType("TIMESTAMP")
 
 
 class WriteDisposition(object):

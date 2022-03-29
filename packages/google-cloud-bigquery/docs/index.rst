@@ -30,7 +30,8 @@ API Reference
 Migration Guide
 ---------------
 
-See the guide below for instructions on migrating to the 2.x release of this library.
+See the guides below for instructions on migrating from older to newer *major* releases
+of this library (from ``1.x`` to ``2.x``, or from ``2.x`` to ``3.x``).
 
 .. toctree::
     :maxdepth: 2

@@ -57,26 +57,23 @@ import google.cloud._helpers  # type: ignore
 from google.cloud import exceptions  # pytype: disable=import-error
 from google.cloud.client import ClientWithProject  # type: ignore  # pytype: disable=import-error
 
-try:
-    from google.cloud.bigquery_storage_v1.services.big_query_read.client import (
-        DEFAULT_CLIENT_INFO as DEFAULT_BQSTORAGE_CLIENT_INFO,
-    )
-except ImportError:
-    DEFAULT_BQSTORAGE_CLIENT_INFO = None  # type: ignore
+from google.cloud.bigquery_storage_v1.services.big_query_read.client import (
+    DEFAULT_CLIENT_INFO as DEFAULT_BQSTORAGE_CLIENT_INFO,
+)
 
-from google.cloud.bigquery._helpers import _del_sub_prop
+from google.cloud.bigquery import _job_helpers
+from google.cloud.bigquery._job_helpers import make_job_id as _make_job_id
 from google.cloud.bigquery._helpers import _get_sub_prop
 from google.cloud.bigquery._helpers import _record_field_to_json
 from google.cloud.bigquery._helpers import _str_or_none
-from google.cloud.bigquery._helpers import BQ_STORAGE_VERSIONS
 from google.cloud.bigquery._helpers import _verify_job_config_type
 from google.cloud.bigquery._http import Connection
 from google.cloud.bigquery import _pandas_helpers
 from google.cloud.bigquery.dataset import Dataset
 from google.cloud.bigquery.dataset import DatasetListItem
 from google.cloud.bigquery.dataset import DatasetReference
+from google.cloud.bigquery import enums
 from google.cloud.bigquery.enums import AutoRowIDs
-from google.cloud.bigquery.exceptions import LegacyBigQueryStorageError
 from google.cloud.bigquery.opentelemetry_tracing import create_span
 from google.cloud.bigquery import job
 from google.cloud.bigquery.job import (
@@ -109,8 +106,6 @@ from google.cloud.bigquery.table import TableReference
 from google.cloud.bigquery.table import RowIterator
 from google.cloud.bigquery.format_options import ParquetOptions
 from google.cloud.bigquery import _helpers
-
-pyarrow = _helpers.PYARROW_VERSIONS.try_import()
 
 TimeoutType = Union[float, None]
 ResumableTimeoutType = Union[
@@ -145,7 +140,6 @@ _LIST_ROWS_FROM_QUERY_RESULTS_FIELDS = "jobReference,totalRows,pageToken,rows"
 # connection timeout before data can be downloaded.
 # https://github.com/googleapis/python-bigquery/issues/438
 _MIN_GET_QUERY_RESULTS_TIMEOUT = 120
-
 
 TIMEOUT_HEADER = "X-Server-Timeout"
 
@@ -212,7 +206,7 @@ class Client(ClientWithProject):
             to acquire default credentials.
     """
 
-    SCOPE = (
+    SCOPE = (  # type: ignore
         "https://www.googleapis.com/auth/bigquery",
         "https://www.googleapis.com/auth/cloud-platform",
     )
@@ -227,7 +221,7 @@ class Client(ClientWithProject):
         default_query_job_config=None,
         client_info=None,
         client_options=None,
-    ):
+    ) -> None:
         super(Client, self).__init__(
             project=project,
             credentials=credentials,
@@ -508,17 +502,10 @@ class Client(ClientWithProject):
     ) -> Optional["google.cloud.bigquery_storage.BigQueryReadClient"]:
         """Create a BigQuery Storage API client using this client's credentials.
 
-        If a client cannot be created due to a missing or outdated dependency
-        `google-cloud-bigquery-storage`, raise a warning and return ``None``.
-
-        If the `bqstorage_client` argument is not ``None``, still perform the version
-        check and return the argument back to the caller if the check passes. If it
-        fails, raise a warning and return ``None``.
-
         Args:
             bqstorage_client:
-                An existing BigQuery Storage client instance to check for version
-                compatibility. If ``None``, a new instance is created and returned.
+                An existing BigQuery Storage client instance. If ``None``, a new
+                instance is created and returned.
             client_options:
                 Custom options used with a new BigQuery Storage client instance if one
                 is created.
@@ -529,20 +516,7 @@ class Client(ClientWithProject):
         Returns:
             A BigQuery Storage API client.
         """
-        try:
-            from google.cloud import bigquery_storage
-        except ImportError:
-            warnings.warn(
-                "Cannot create BigQuery Storage client, the dependency "
-                "google-cloud-bigquery-storage is not installed."
-            )
-            return None
-
-        try:
-            BQ_STORAGE_VERSIONS.verify_version()
-        except LegacyBigQueryStorageError as exc:
-            warnings.warn(str(exc))
-            return None
+        from google.cloud import bigquery_storage
 
         if bqstorage_client is None:
             bqstorage_client = bigquery_storage.BigQueryReadClient(
@@ -1997,12 +1971,10 @@ class Client(ClientWithProject):
                 source_type=source_type,
             )
         elif "query" in job_config:
-            copy_config = copy.deepcopy(job_config)
-            _del_sub_prop(copy_config, ["query", "destinationTable"])
             query_job_config = google.cloud.bigquery.job.QueryJobConfig.from_api_repr(
-                copy_config
+                job_config
             )
-            query = _get_sub_prop(copy_config, ["query", "query"])
+            query = _get_sub_prop(job_config, ["query", "query"])
             return self.query(
                 query,
                 job_config=typing.cast(QueryJobConfig, query_job_config),
@@ -2520,7 +2492,7 @@ class Client(ClientWithProject):
                 :attr:`~google.cloud.bigquery.job.LoadJobConfig.schema` with
                 column names matching those of the dataframe. The BigQuery
                 schema is used to determine the correct data type conversion.
-                Indexes are not loaded. Requires the :mod:`pyarrow` library.
+                Indexes are not loaded.
 
                 By default, this method uses the parquet source format. To
                 override this, supply a value for
@@ -2554,9 +2526,6 @@ class Client(ClientWithProject):
             google.cloud.bigquery.job.LoadJob: A new load job.
 
         Raises:
-            ValueError:
-                If a usable parquet engine cannot be found. This method
-                requires :mod:`pyarrow` to be installed.
             TypeError:
                 If ``job_config`` is not an instance of :class:`~google.cloud.bigquery.job.LoadJobConfig`
                 class.
@@ -2593,10 +2562,6 @@ class Client(ClientWithProject):
                     job_config.source_format
                 )
             )
-
-        if pyarrow is None and job_config.source_format == job.SourceFormat.PARQUET:
-            # pyarrow is now the only supported  parquet engine.
-            raise ValueError("This method requires pyarrow to be installed")
 
         if location is None:
             location = self.location
@@ -2653,16 +2618,6 @@ class Client(ClientWithProject):
         try:
 
             if job_config.source_format == job.SourceFormat.PARQUET:
-                if _helpers.PYARROW_VERSIONS.is_bad_version:
-                    msg = (
-                        "Loading dataframe data in PARQUET format with pyarrow "
-                        f"{_helpers.PYARROW_VERSIONS.installed_version} can result in data "
-                        "corruption. It is therefore *strongly* advised to use a "
-                        "different pyarrow version or a different source format. "
-                        "See: https://github.com/googleapis/python-bigquery/issues/781"
-                    )
-                    warnings.warn(msg, category=RuntimeWarning)
-
                 if job_config.schema:
                     if parquet_compression == "snappy":  # adjust the default value
                         parquet_compression = parquet_compression.upper()
@@ -3247,6 +3202,7 @@ class Client(ClientWithProject):
         retry: retries.Retry = DEFAULT_RETRY,
         timeout: TimeoutType = DEFAULT_TIMEOUT,
         job_retry: retries.Retry = DEFAULT_JOB_RETRY,
+        api_method: Union[str, enums.QueryApiMethod] = enums.QueryApiMethod.INSERT,
     ) -> job.QueryJob:
         """Run a SQL query.
 
@@ -3298,6 +3254,11 @@ class Client(ClientWithProject):
                 called on the job returned. The ``job_retry``
                 specified here becomes the default ``job_retry`` for
                 ``result()``, where it can also be specified.
+            api_method (Union[str, enums.QueryApiMethod]):
+                Method with which to start the query job.
+
+                See :class:`google.cloud.bigquery.enums.QueryApiMethod` for
+                details on the difference between the query start methods.
 
         Returns:
             google.cloud.bigquery.job.QueryJob: A new query job instance.
@@ -3321,7 +3282,10 @@ class Client(ClientWithProject):
                 " provided."
             )
 
-        job_id_save = job_id
+        if job_id_given and api_method == enums.QueryApiMethod.QUERY:
+            raise TypeError(
+                "`job_id` was provided, but the 'QUERY' `api_method` was requested."
+            )
 
         if project is None:
             project = self.project
@@ -3352,50 +3316,32 @@ class Client(ClientWithProject):
 
         # Note that we haven't modified the original job_config (or
         # _default_query_job_config) up to this point.
-        job_config_save = job_config
-
-        def do_query():
-            # Make a copy now, so that original doesn't get changed by the process
-            # below and to facilitate retry
-            job_config = copy.deepcopy(job_config_save)
-
-            job_id = _make_job_id(job_id_save, job_id_prefix)
-            job_ref = job._JobReference(job_id, project=project, location=location)
-            query_job = job.QueryJob(job_ref, query, client=self, job_config=job_config)
-
-            try:
-                query_job._begin(retry=retry, timeout=timeout)
-            except core_exceptions.Conflict as create_exc:
-                # The thought is if someone is providing their own job IDs and they get
-                # their job ID generation wrong, this could end up returning results for
-                # the wrong query. We thus only try to recover if job ID was not given.
-                if job_id_given:
-                    raise create_exc
-
-                try:
-                    query_job = self.get_job(
-                        job_id,
-                        project=project,
-                        location=location,
-                        retry=retry,
-                        timeout=timeout,
-                    )
-                except core_exceptions.GoogleAPIError:  # (includes RetryError)
-                    raise create_exc
-                else:
-                    return query_job
-            else:
-                return query_job
-
-        future = do_query()
-        # The future might be in a failed state now, but if it's
-        # unrecoverable, we'll find out when we ask for it's result, at which
-        # point, we may retry.
-        if not job_id_given:
-            future._retry_do_query = do_query  # in case we have to retry later
-            future._job_retry = job_retry
-
-        return future
+        if api_method == enums.QueryApiMethod.QUERY:
+            return _job_helpers.query_jobs_query(
+                self,
+                query,
+                job_config,
+                location,
+                project,
+                retry,
+                timeout,
+                job_retry,
+            )
+        elif api_method == enums.QueryApiMethod.INSERT:
+            return _job_helpers.query_jobs_insert(
+                self,
+                query,
+                job_config,
+                job_id,
+                job_id_prefix,
+                location,
+                project,
+                retry,
+                timeout,
+                job_retry,
+            )
+        else:
+            raise ValueError(f"Got unexpected value for api_method: {repr(api_method)}")
 
     def insert_rows(
         self,
@@ -3522,7 +3468,9 @@ class Client(ClientWithProject):
         self,
         table: Union[Table, TableReference, TableListItem, str],
         json_rows: Sequence[Dict],
-        row_ids: Union[Iterable[str], AutoRowIDs, None] = AutoRowIDs.GENERATE_UUID,
+        row_ids: Union[
+            Iterable[Optional[str]], AutoRowIDs, None
+        ] = AutoRowIDs.GENERATE_UUID,
         skip_invalid_rows: bool = None,
         ignore_unknown_values: bool = None,
         template_suffix: str = None,
@@ -4066,24 +4014,6 @@ def _extract_job_reference(job, project=None, location=None):
         job_id = job
 
     return (project, location, job_id)
-
-
-def _make_job_id(job_id: Optional[str], prefix: Optional[str] = None) -> str:
-    """Construct an ID for a new job.
-
-    Args:
-        job_id: the user-provided job ID.
-        prefix: the user-provided prefix for a job ID.
-
-    Returns:
-        str: A job ID
-    """
-    if job_id is not None:
-        return job_id
-    elif prefix is not None:
-        return str(prefix) + str(uuid.uuid4())
-    else:
-        return str(uuid.uuid4())
 
 
 def _check_mode(stream):

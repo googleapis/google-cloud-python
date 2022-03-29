@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 
+import warnings
 
 from .types.encryption_config import EncryptionConfiguration
 from .types.model import DeleteModelRequest
@@ -28,6 +29,15 @@ from .types.standard_sql import StandardSqlField
 from .types.standard_sql import StandardSqlStructType
 from .types.standard_sql import StandardSqlTableType
 from .types.table_reference import TableReference
+
+
+_LEGACY_MSG = (
+    "Legacy proto-based types from bigquery_v2 are not maintained anymore, "
+    "use types defined in google.cloud.bigquery instead."
+)
+
+warnings.warn(_LEGACY_MSG, category=DeprecationWarning)
+
 
 __all__ = (
     "DeleteModelRequest",

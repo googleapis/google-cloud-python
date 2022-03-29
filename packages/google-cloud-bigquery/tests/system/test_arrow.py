@@ -16,15 +16,11 @@
 
 from typing import Optional
 
+import pyarrow
 import pytest
 
 from google.cloud import bigquery
 from google.cloud.bigquery import enums
-
-
-pyarrow = pytest.importorskip(
-    "pyarrow", minversion="3.0.0"
-)  # Needs decimal256 for BIGNUMERIC columns.
 
 
 @pytest.mark.parametrize(

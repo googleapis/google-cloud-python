@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from google.cloud import bigquery
+from google.cloud.bigquery.standard_sql import StandardSqlStructType
 from google.cloud.bigquery.schema import PolicyTagList
 import unittest
 
@@ -28,9 +30,9 @@ class TestSchemaField(unittest.TestCase):
 
     @staticmethod
     def _get_standard_sql_data_type_class():
-        from google.cloud.bigquery_v2 import types
+        from google.cloud.bigquery import standard_sql
 
-        return types.StandardSqlDataType
+        return standard_sql.StandardSqlDataType
 
     def _make_one(self, *args, **kw):
         return self._get_target_class()(*args, **kw)
@@ -226,18 +228,17 @@ class TestSchemaField(unittest.TestCase):
         self.assertEqual(schema_field.fields, fields)
 
     def test_to_standard_sql_simple_type(self):
-        sql_type = self._get_standard_sql_data_type_class()
         examples = (
             # a few legacy types
-            ("INTEGER", sql_type.TypeKind.INT64),
-            ("FLOAT", sql_type.TypeKind.FLOAT64),
-            ("BOOLEAN", sql_type.TypeKind.BOOL),
-            ("DATETIME", sql_type.TypeKind.DATETIME),
+            ("INTEGER", bigquery.StandardSqlTypeNames.INT64),
+            ("FLOAT", bigquery.StandardSqlTypeNames.FLOAT64),
+            ("BOOLEAN", bigquery.StandardSqlTypeNames.BOOL),
+            ("DATETIME", bigquery.StandardSqlTypeNames.DATETIME),
             # a few standard types
-            ("INT64", sql_type.TypeKind.INT64),
-            ("FLOAT64", sql_type.TypeKind.FLOAT64),
-            ("BOOL", sql_type.TypeKind.BOOL),
-            ("GEOGRAPHY", sql_type.TypeKind.GEOGRAPHY),
+            ("INT64", bigquery.StandardSqlTypeNames.INT64),
+            ("FLOAT64", bigquery.StandardSqlTypeNames.FLOAT64),
+            ("BOOL", bigquery.StandardSqlTypeNames.BOOL),
+            ("GEOGRAPHY", bigquery.StandardSqlTypeNames.GEOGRAPHY),
         )
         for legacy_type, standard_type in examples:
             field = self._make_one("some_field", legacy_type)
@@ -246,7 +247,7 @@ class TestSchemaField(unittest.TestCase):
             self.assertEqual(standard_field.type.type_kind, standard_type)
 
     def test_to_standard_sql_struct_type(self):
-        from google.cloud.bigquery_v2 import types
+        from google.cloud.bigquery import standard_sql
 
         # Expected result object:
         #
@@ -280,30 +281,39 @@ class TestSchemaField(unittest.TestCase):
         sql_type = self._get_standard_sql_data_type_class()
 
         # level 2 fields
-        sub_sub_field_date = types.StandardSqlField(
-            name="date_field", type=sql_type(type_kind=sql_type.TypeKind.DATE)
+        sub_sub_field_date = standard_sql.StandardSqlField(
+            name="date_field",
+            type=sql_type(type_kind=bigquery.StandardSqlTypeNames.DATE),
         )
-        sub_sub_field_time = types.StandardSqlField(
-            name="time_field", type=sql_type(type_kind=sql_type.TypeKind.TIME)
+        sub_sub_field_time = standard_sql.StandardSqlField(
+            name="time_field",
+            type=sql_type(type_kind=bigquery.StandardSqlTypeNames.TIME),
         )
 
         # level 1 fields
-        sub_field_struct = types.StandardSqlField(
-            name="last_used", type=sql_type(type_kind=sql_type.TypeKind.STRUCT)
+        sub_field_struct = standard_sql.StandardSqlField(
+            name="last_used",
+            type=sql_type(
+                type_kind=bigquery.StandardSqlTypeNames.STRUCT,
+                struct_type=standard_sql.StandardSqlStructType(
+                    fields=[sub_sub_field_date, sub_sub_field_time]
+                ),
+            ),
         )
-        sub_field_struct.type.struct_type.fields.extend(
-            [sub_sub_field_date, sub_sub_field_time]
-        )
-        sub_field_bytes = types.StandardSqlField(
-            name="image_content", type=sql_type(type_kind=sql_type.TypeKind.BYTES)
+        sub_field_bytes = standard_sql.StandardSqlField(
+            name="image_content",
+            type=sql_type(type_kind=bigquery.StandardSqlTypeNames.BYTES),
         )
 
         # level 0 (top level)
-        expected_result = types.StandardSqlField(
-            name="image_usage", type=sql_type(type_kind=sql_type.TypeKind.STRUCT)
-        )
-        expected_result.type.struct_type.fields.extend(
-            [sub_field_bytes, sub_field_struct]
+        expected_result = standard_sql.StandardSqlField(
+            name="image_usage",
+            type=sql_type(
+                type_kind=bigquery.StandardSqlTypeNames.STRUCT,
+                struct_type=standard_sql.StandardSqlStructType(
+                    fields=[sub_field_bytes, sub_field_struct]
+                ),
+            ),
         )
 
         # construct legacy SchemaField object
@@ -322,14 +332,16 @@ class TestSchemaField(unittest.TestCase):
             self.assertEqual(standard_field, expected_result)
 
     def test_to_standard_sql_array_type_simple(self):
-        from google.cloud.bigquery_v2 import types
+        from google.cloud.bigquery import standard_sql
 
         sql_type = self._get_standard_sql_data_type_class()
 
         # construct expected result object
-        expected_sql_type = sql_type(type_kind=sql_type.TypeKind.ARRAY)
-        expected_sql_type.array_element_type.type_kind = sql_type.TypeKind.INT64
-        expected_result = types.StandardSqlField(
+        expected_sql_type = sql_type(
+            type_kind=bigquery.StandardSqlTypeNames.ARRAY,
+            array_element_type=sql_type(type_kind=bigquery.StandardSqlTypeNames.INT64),
+        )
+        expected_result = standard_sql.StandardSqlField(
             name="valid_numbers", type=expected_sql_type
         )
 
@@ -340,27 +352,31 @@ class TestSchemaField(unittest.TestCase):
         self.assertEqual(standard_field, expected_result)
 
     def test_to_standard_sql_array_type_struct(self):
-        from google.cloud.bigquery_v2 import types
+        from google.cloud.bigquery import standard_sql
 
         sql_type = self._get_standard_sql_data_type_class()
 
         # define person STRUCT
-        name_field = types.StandardSqlField(
-            name="name", type=sql_type(type_kind=sql_type.TypeKind.STRING)
+        name_field = standard_sql.StandardSqlField(
+            name="name", type=sql_type(type_kind=bigquery.StandardSqlTypeNames.STRING)
         )
-        age_field = types.StandardSqlField(
-            name="age", type=sql_type(type_kind=sql_type.TypeKind.INT64)
+        age_field = standard_sql.StandardSqlField(
+            name="age", type=sql_type(type_kind=bigquery.StandardSqlTypeNames.INT64)
         )
-        person_struct = types.StandardSqlField(
-            name="person_info", type=sql_type(type_kind=sql_type.TypeKind.STRUCT)
+        person_struct = standard_sql.StandardSqlField(
+            name="person_info",
+            type=sql_type(
+                type_kind=bigquery.StandardSqlTypeNames.STRUCT,
+                struct_type=StandardSqlStructType(fields=[name_field, age_field]),
+            ),
         )
-        person_struct.type.struct_type.fields.extend([name_field, age_field])
 
         # define expected result - an ARRAY of person structs
         expected_sql_type = sql_type(
-            type_kind=sql_type.TypeKind.ARRAY, array_element_type=person_struct.type
+            type_kind=bigquery.StandardSqlTypeNames.ARRAY,
+            array_element_type=person_struct.type,
         )
-        expected_result = types.StandardSqlField(
+        expected_result = standard_sql.StandardSqlField(
             name="known_people", type=expected_sql_type
         )
 
@@ -375,14 +391,14 @@ class TestSchemaField(unittest.TestCase):
         self.assertEqual(standard_field, expected_result)
 
     def test_to_standard_sql_unknown_type(self):
-        sql_type = self._get_standard_sql_data_type_class()
         field = self._make_one("weird_field", "TROOLEAN")
 
         standard_field = field.to_standard_sql()
 
         self.assertEqual(standard_field.name, "weird_field")
         self.assertEqual(
-            standard_field.type.type_kind, sql_type.TypeKind.TYPE_KIND_UNSPECIFIED
+            standard_field.type.type_kind,
+            bigquery.StandardSqlTypeNames.TYPE_KIND_UNSPECIFIED,
         )
 
     def test___eq___wrong_type(self):
@@ -512,6 +528,11 @@ class TestSchemaField(unittest.TestCase):
     def test___repr__(self):
         field1 = self._make_one("field1", "STRING")
         expected = "SchemaField('field1', 'STRING', 'NULLABLE', None, (), None)"
+        self.assertEqual(repr(field1), expected)
+
+    def test___repr__type_not_set(self):
+        field1 = self._make_one("field1", field_type=None)
+        expected = "SchemaField('field1', None, 'NULLABLE', None, (), None)"
         self.assertEqual(repr(field1), expected)
 
     def test___repr__evaluable_no_policy_tags(self):

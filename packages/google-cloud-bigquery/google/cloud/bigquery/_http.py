@@ -52,8 +52,8 @@ class Connection(_http.JSONConnection):
         self._client_info.gapic_version = __version__
         self._client_info.client_library_version = __version__
 
-    API_VERSION = "v2"
+    API_VERSION = "v2"  # type: ignore
     """The version of the API, used in building the API call's URL."""
 
-    API_URL_TEMPLATE = "{api_base_url}/bigquery/{api_version}{path}"
+    API_URL_TEMPLATE = "{api_base_url}/bigquery/{api_version}{path}"  # type: ignore
     """A template for the URL of a particular API call."""

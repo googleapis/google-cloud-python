@@ -28,13 +28,13 @@ description = "Google BigQuery API client library"
 # 'Development Status :: 4 - Beta'
 # 'Development Status :: 5 - Production/Stable'
 release_status = "Development Status :: 5 - Production/Stable"
-pyarrow_dep = ["pyarrow >=3.0.0, <8.0dev"]
 dependencies = [
     "grpcio >= 1.38.1, < 2.0dev",  # https://github.com/googleapis/python-bigquery/issues/695
     # NOTE: Maintainers, please do not require google-api-core>=2.x.x
     # Until this issue is closed
     # https://github.com/googleapis/google-cloud-python/issues/10566
     "google-api-core[grpc] >= 1.31.5, <3.0.0dev,!=2.0.*,!=2.1.*,!=2.2.*,!=2.3.0",
+    "google-cloud-bigquery-storage >= 2.0.0, <3.0.0dev",
     "proto-plus >= 1.15.0",
     # NOTE: Maintainers, please do not require google-cloud-core>=2.x.x
     # Until this issue is closed
@@ -42,25 +42,17 @@ dependencies = [
     "google-cloud-core >= 1.4.1, <3.0.0dev",
     "google-resumable-media >= 0.6.0, < 3.0dev",
     "packaging >= 14.3",
-    "protobuf >= 3.12.0",
-    "python-dateutil >= 2.7.2, <3.0dev",
+    "proto-plus >= 1.10.0",  # For the legacy proto-based types.
+    "protobuf >= 3.12.0",  # For the legacy proto-based types.
+    "pyarrow >= 3.0.0, < 8.0dev",
     "requests >= 2.18.0, < 3.0.0dev",
 ]
 extras = {
-    "bqstorage": [
-        "google-cloud-bigquery-storage >= 2.0.0, <3.0.0dev",
-        # Due to an issue in pip's dependency resolver, the `grpc` extra is not
-        # installed, even though `google-cloud-bigquery-storage` specifies it
-        # as `google-api-core[grpc]`. We thus need to explicitly specify it here.
-        # See: https://github.com/googleapis/python-bigquery/issues/83 The
-        # grpc.Channel.close() method isn't added until 1.32.0.
-        # https://github.com/grpc/grpc/pull/15254
-        "grpcio >= 1.38.1, < 2.0dev",
-    ]
-    + pyarrow_dep,
+    # Keep the no-op bqstorage extra for backward compatibility.
+    # See: https://github.com/googleapis/python-bigquery/issues/757
+    "bqstorage": [],
+    "pandas": ["pandas>=1.0.0", "db-dtypes>=0.3.0,<2.0.0dev"],
     "geopandas": ["geopandas>=0.9.0, <1.0dev", "Shapely>=1.6.0, <2.0dev"],
-    "pandas": ["pandas>=0.24.2"] + pyarrow_dep,
-    "bignumeric_type": pyarrow_dep,
     "ipython": ["ipython>=7.0.1,!=8.1.0"],
     "tqdm": ["tqdm >= 4.7.4, <5.0.0dev"],
     "opentelemetry": [
@@ -73,11 +65,6 @@ extras = {
 all_extras = []
 
 for extra in extras:
-    # Exclude this extra from all to avoid overly strict dependencies on core
-    # libraries such as pyarrow.
-    # https://github.com/googleapis/python-bigquery/issues/563
-    if extra in {"bignumeric_type"}:
-        continue
     all_extras.extend(extras[extra])
 
 extras["all"] = all_extras

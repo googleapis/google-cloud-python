@@ -52,7 +52,7 @@ class CopyJobConfig(_JobConfig):
     the property name as the name of a keyword argument.
     """
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs) -> None:
         super(CopyJobConfig, self).__init__("copy", **kwargs)
 
     @property

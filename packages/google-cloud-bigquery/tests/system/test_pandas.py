@@ -25,17 +25,16 @@ import warnings
 import google.api_core.retry
 import pkg_resources
 import pytest
-import numpy
 
 from google.cloud import bigquery
+from google.cloud import bigquery_storage
+from google.cloud.bigquery import enums
+
 from . import helpers
 
 
-bigquery_storage = pytest.importorskip(
-    "google.cloud.bigquery_storage", minversion="2.0.0"
-)
 pandas = pytest.importorskip("pandas", minversion="0.23.0")
-pyarrow = pytest.importorskip("pyarrow", minversion="1.0.0")
+numpy = pytest.importorskip("numpy")
 
 
 PANDAS_INSTALLED_VERSION = pkg_resources.get_distribution("pandas").parsed_version
@@ -67,7 +66,7 @@ def test_load_table_from_dataframe_w_automatic_schema(bigquery_client, dataset_i
                 ).dt.tz_localize(datetime.timezone.utc),
             ),
             (
-                "dt_col",
+                "dt_col_no_tz",
                 pandas.Series(
                     [
                         datetime.datetime(2010, 1, 2, 3, 44, 50),
@@ -86,6 +85,28 @@ def test_load_table_from_dataframe_w_automatic_schema(bigquery_client, dataset_i
             ("uint8_col", pandas.Series([0, 1, 2], dtype="uint8")),
             ("uint16_col", pandas.Series([3, 4, 5], dtype="uint16")),
             ("uint32_col", pandas.Series([6, 7, 8], dtype="uint32")),
+            (
+                "date_col",
+                pandas.Series(
+                    [
+                        datetime.date(2010, 1, 2),
+                        datetime.date(2011, 2, 3),
+                        datetime.date(2012, 3, 14),
+                    ],
+                    dtype="dbdate",
+                ),
+            ),
+            (
+                "time_col",
+                pandas.Series(
+                    [
+                        datetime.time(3, 44, 50),
+                        datetime.time(14, 50, 59),
+                        datetime.time(15, 16),
+                    ],
+                    dtype="dbtime",
+                ),
+            ),
             ("array_bool_col", pandas.Series([[True], [False], [True]])),
             (
                 "array_ts_col",
@@ -110,7 +131,7 @@ def test_load_table_from_dataframe_w_automatic_schema(bigquery_client, dataset_i
                 ),
             ),
             (
-                "array_dt_col",
+                "array_dt_col_no_tz",
                 pandas.Series(
                     [
                         [datetime.datetime(2010, 1, 2, 3, 44, 50)],
@@ -176,9 +197,7 @@ def test_load_table_from_dataframe_w_automatic_schema(bigquery_client, dataset_i
     assert tuple(table.schema) == (
         bigquery.SchemaField("bool_col", "BOOLEAN"),
         bigquery.SchemaField("ts_col", "TIMESTAMP"),
-        # TODO: Update to DATETIME in V3
-        # https://github.com/googleapis/python-bigquery/issues/985
-        bigquery.SchemaField("dt_col", "TIMESTAMP"),
+        bigquery.SchemaField("dt_col_no_tz", "DATETIME"),
         bigquery.SchemaField("float32_col", "FLOAT"),
         bigquery.SchemaField("float64_col", "FLOAT"),
         bigquery.SchemaField("int8_col", "INTEGER"),
@@ -188,11 +207,11 @@ def test_load_table_from_dataframe_w_automatic_schema(bigquery_client, dataset_i
         bigquery.SchemaField("uint8_col", "INTEGER"),
         bigquery.SchemaField("uint16_col", "INTEGER"),
         bigquery.SchemaField("uint32_col", "INTEGER"),
+        bigquery.SchemaField("date_col", "DATE"),
+        bigquery.SchemaField("time_col", "TIME"),
         bigquery.SchemaField("array_bool_col", "BOOLEAN", mode="REPEATED"),
         bigquery.SchemaField("array_ts_col", "TIMESTAMP", mode="REPEATED"),
-        # TODO: Update to DATETIME in V3
-        # https://github.com/googleapis/python-bigquery/issues/985
-        bigquery.SchemaField("array_dt_col", "TIMESTAMP", mode="REPEATED"),
+        bigquery.SchemaField("array_dt_col_no_tz", "DATETIME", mode="REPEATED"),
         bigquery.SchemaField("array_float32_col", "FLOAT", mode="REPEATED"),
         bigquery.SchemaField("array_float64_col", "FLOAT", mode="REPEATED"),
         bigquery.SchemaField("array_int8_col", "INTEGER", mode="REPEATED"),
@@ -203,7 +222,84 @@ def test_load_table_from_dataframe_w_automatic_schema(bigquery_client, dataset_i
         bigquery.SchemaField("array_uint16_col", "INTEGER", mode="REPEATED"),
         bigquery.SchemaField("array_uint32_col", "INTEGER", mode="REPEATED"),
     )
-    assert table.num_rows == 3
+
+    assert numpy.array(
+        sorted(map(list, bigquery_client.list_rows(table)), key=lambda r: r[5]),
+        dtype="object",
+    ).transpose().tolist() == [
+        # bool_col
+        [True, False, True],
+        # ts_col
+        [
+            datetime.datetime(2010, 1, 2, 3, 44, 50, tzinfo=datetime.timezone.utc),
+            datetime.datetime(2011, 2, 3, 14, 50, 59, tzinfo=datetime.timezone.utc),
+            datetime.datetime(2012, 3, 14, 15, 16, tzinfo=datetime.timezone.utc),
+        ],
+        # dt_col_no_tz
+        [
+            datetime.datetime(2010, 1, 2, 3, 44, 50),
+            datetime.datetime(2011, 2, 3, 14, 50, 59),
+            datetime.datetime(2012, 3, 14, 15, 16),
+        ],
+        # float32_col
+        [1.0, 2.0, 3.0],
+        # float64_col
+        [4.0, 5.0, 6.0],
+        # int8_col
+        [-12, -11, -10],
+        # int16_col
+        [-9, -8, -7],
+        # int32_col
+        [-6, -5, -4],
+        # int64_col
+        [-3, -2, -1],
+        # uint8_col
+        [0, 1, 2],
+        # uint16_col
+        [3, 4, 5],
+        # uint32_col
+        [6, 7, 8],
+        # date_col
+        [
+            datetime.date(2010, 1, 2),
+            datetime.date(2011, 2, 3),
+            datetime.date(2012, 3, 14),
+        ],
+        # time_col
+        [datetime.time(3, 44, 50), datetime.time(14, 50, 59), datetime.time(15, 16)],
+        # array_bool_col
+        [[True], [False], [True]],
+        # array_ts_col
+        [
+            [datetime.datetime(2010, 1, 2, 3, 44, 50, tzinfo=datetime.timezone.utc)],
+            [datetime.datetime(2011, 2, 3, 14, 50, 59, tzinfo=datetime.timezone.utc)],
+            [datetime.datetime(2012, 3, 14, 15, 16, tzinfo=datetime.timezone.utc)],
+        ],
+        # array_dt_col
+        [
+            [datetime.datetime(2010, 1, 2, 3, 44, 50)],
+            [datetime.datetime(2011, 2, 3, 14, 50, 59)],
+            [datetime.datetime(2012, 3, 14, 15, 16)],
+        ],
+        # array_float32_col
+        [[1.0], [2.0], [3.0]],
+        # array_float64_col
+        [[4.0], [5.0], [6.0]],
+        # array_int8_col
+        [[-12], [-11], [-10]],
+        # array_int16_col
+        [[-9], [-8], [-7]],
+        # array_int32_col
+        [[-6], [-5], [-4]],
+        # array_int64_col
+        [[-3], [-2], [-1]],
+        # array_uint8_col
+        [[0], [1], [2]],
+        # array_uint16_col
+        [[3], [4], [5]],
+        # array_uint32_col
+        [[6], [7], [8]],
+    ]
 
 
 @pytest.mark.skipif(
@@ -660,7 +756,7 @@ def test_query_results_to_dataframe(bigquery_client):
     for _, row in df.iterrows():
         for col in column_names:
             # all the schema fields are nullable, so None is acceptable
-            if not row[col] is None:
+            if not pandas.isna(row[col]):
                 assert isinstance(row[col], exp_datatypes[col])
 
 
@@ -690,7 +786,7 @@ def test_query_results_to_dataframe_w_bqstorage(bigquery_client):
     for index, row in df.iterrows():
         for col in column_names:
             # all the schema fields are nullable, so None is acceptable
-            if not row[col] is None:
+            if not pandas.isna(row[col]):
                 assert isinstance(row[col], exp_datatypes[col])
 
 
@@ -701,6 +797,8 @@ def test_insert_rows_from_dataframe(bigquery_client, dataset_id):
         SF("int_col", "INTEGER", mode="REQUIRED"),
         SF("bool_col", "BOOLEAN", mode="REQUIRED"),
         SF("string_col", "STRING", mode="NULLABLE"),
+        SF("date_col", "DATE", mode="NULLABLE"),
+        SF("time_col", "TIME", mode="NULLABLE"),
     ]
 
     dataframe = pandas.DataFrame(
@@ -710,30 +808,40 @@ def test_insert_rows_from_dataframe(bigquery_client, dataset_id):
                 "bool_col": True,
                 "string_col": "my string",
                 "int_col": 10,
+                "date_col": datetime.date(2021, 1, 1),
+                "time_col": datetime.time(21, 1, 1),
             },
             {
                 "float_col": 2.22,
                 "bool_col": False,
                 "string_col": "another string",
                 "int_col": 20,
+                "date_col": datetime.date(2021, 1, 2),
+                "time_col": datetime.time(21, 1, 2),
             },
             {
                 "float_col": 3.33,
                 "bool_col": False,
                 "string_col": "another string",
                 "int_col": 30,
+                "date_col": datetime.date(2021, 1, 3),
+                "time_col": datetime.time(21, 1, 3),
             },
             {
                 "float_col": 4.44,
                 "bool_col": True,
                 "string_col": "another string",
                 "int_col": 40,
+                "date_col": datetime.date(2021, 1, 4),
+                "time_col": datetime.time(21, 1, 4),
             },
             {
                 "float_col": 5.55,
                 "bool_col": False,
                 "string_col": "another string",
                 "int_col": 50,
+                "date_col": datetime.date(2021, 1, 5),
+                "time_col": datetime.time(21, 1, 5),
             },
             {
                 "float_col": 6.66,
@@ -742,9 +850,13 @@ def test_insert_rows_from_dataframe(bigquery_client, dataset_id):
                 # NULL value indicator.
                 "string_col": float("NaN"),
                 "int_col": 60,
+                "date_col": datetime.date(2021, 1, 6),
+                "time_col": datetime.time(21, 1, 6),
             },
         ]
     )
+    dataframe["date_col"] = dataframe["date_col"].astype("dbdate")
+    dataframe["time_col"] = dataframe["time_col"].astype("dbtime")
 
     table_id = f"{bigquery_client.project}.{dataset_id}.test_insert_rows_from_dataframe"
     table_arg = bigquery.Table(table_id, schema=schema)
@@ -888,6 +1000,110 @@ def test_list_rows_max_results_w_bqstorage(bigquery_client):
         dataframe = row_iterator.to_dataframe(bqstorage_client=bqstorage_client)
 
     assert len(dataframe.index) == 100
+
+
+@pytest.mark.parametrize(
+    ("max_results",),
+    (
+        (None,),
+        (10,),
+    ),  # Use BQ Storage API.  # Use REST API.
+)
+def test_list_rows_nullable_scalars_dtypes(bigquery_client, scalars_table, max_results):
+    # TODO(GH#836): Avoid INTERVAL columns until they are supported by the
+    # BigQuery Storage API and pyarrow.
+    schema = [
+        bigquery.SchemaField("bool_col", enums.SqlTypeNames.BOOLEAN),
+        bigquery.SchemaField("bignumeric_col", enums.SqlTypeNames.BIGNUMERIC),
+        bigquery.SchemaField("bytes_col", enums.SqlTypeNames.BYTES),
+        bigquery.SchemaField("date_col", enums.SqlTypeNames.DATE),
+        bigquery.SchemaField("datetime_col", enums.SqlTypeNames.DATETIME),
+        bigquery.SchemaField("float64_col", enums.SqlTypeNames.FLOAT64),
+        bigquery.SchemaField("geography_col", enums.SqlTypeNames.GEOGRAPHY),
+        bigquery.SchemaField("int64_col", enums.SqlTypeNames.INT64),
+        bigquery.SchemaField("numeric_col", enums.SqlTypeNames.NUMERIC),
+        bigquery.SchemaField("string_col", enums.SqlTypeNames.STRING),
+        bigquery.SchemaField("time_col", enums.SqlTypeNames.TIME),
+        bigquery.SchemaField("timestamp_col", enums.SqlTypeNames.TIMESTAMP),
+    ]
+
+    df = bigquery_client.list_rows(
+        scalars_table,
+        max_results=max_results,
+        selected_fields=schema,
+    ).to_dataframe()
+
+    assert df.dtypes["bool_col"].name == "boolean"
+    assert df.dtypes["datetime_col"].name == "datetime64[ns]"
+    assert df.dtypes["float64_col"].name == "float64"
+    assert df.dtypes["int64_col"].name == "Int64"
+    assert df.dtypes["timestamp_col"].name == "datetime64[ns, UTC]"
+    assert df.dtypes["date_col"].name == "dbdate"
+    assert df.dtypes["time_col"].name == "dbtime"
+
+    # decimal.Decimal is used to avoid loss of precision.
+    assert df.dtypes["bignumeric_col"].name == "object"
+    assert df.dtypes["numeric_col"].name == "object"
+
+    # pandas uses Python string and bytes objects.
+    assert df.dtypes["bytes_col"].name == "object"
+    assert df.dtypes["string_col"].name == "object"
+
+
+@pytest.mark.parametrize(
+    ("max_results",),
+    (
+        (None,),
+        (10,),
+    ),  # Use BQ Storage API.  # Use REST API.
+)
+def test_list_rows_nullable_scalars_extreme_dtypes(
+    bigquery_client, scalars_extreme_table, max_results
+):
+    # TODO(GH#836): Avoid INTERVAL columns until they are supported by the
+    # BigQuery Storage API and pyarrow.
+    schema = [
+        bigquery.SchemaField("bool_col", enums.SqlTypeNames.BOOLEAN),
+        bigquery.SchemaField("bignumeric_col", enums.SqlTypeNames.BIGNUMERIC),
+        bigquery.SchemaField("bytes_col", enums.SqlTypeNames.BYTES),
+        bigquery.SchemaField("date_col", enums.SqlTypeNames.DATE),
+        bigquery.SchemaField("datetime_col", enums.SqlTypeNames.DATETIME),
+        bigquery.SchemaField("float64_col", enums.SqlTypeNames.FLOAT64),
+        bigquery.SchemaField("geography_col", enums.SqlTypeNames.GEOGRAPHY),
+        bigquery.SchemaField("int64_col", enums.SqlTypeNames.INT64),
+        bigquery.SchemaField("numeric_col", enums.SqlTypeNames.NUMERIC),
+        bigquery.SchemaField("string_col", enums.SqlTypeNames.STRING),
+        bigquery.SchemaField("time_col", enums.SqlTypeNames.TIME),
+        bigquery.SchemaField("timestamp_col", enums.SqlTypeNames.TIMESTAMP),
+    ]
+
+    df = bigquery_client.list_rows(
+        scalars_extreme_table,
+        max_results=max_results,
+        selected_fields=schema,
+    ).to_dataframe()
+
+    # Extreme values are out-of-bounds for pandas datetime64 values, which use
+    # nanosecond precision.  Values before 1677-09-21 and after 2262-04-11 must
+    # be represented with object.
+    # https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#timestamp-limitations
+    assert df.dtypes["date_col"].name == "object"
+    assert df.dtypes["datetime_col"].name == "object"
+    assert df.dtypes["timestamp_col"].name == "object"
+
+    # These pandas dtypes can handle the same ranges as BigQuery.
+    assert df.dtypes["bool_col"].name == "boolean"
+    assert df.dtypes["float64_col"].name == "float64"
+    assert df.dtypes["int64_col"].name == "Int64"
+    assert df.dtypes["time_col"].name == "dbtime"
+
+    # decimal.Decimal is used to avoid loss of precision.
+    assert df.dtypes["numeric_col"].name == "object"
+    assert df.dtypes["bignumeric_col"].name == "object"
+
+    # pandas uses Python string and bytes objects.
+    assert df.dtypes["bytes_col"].name == "object"
+    assert df.dtypes["string_col"].name == "object"
 
 
 def test_upload_time_and_datetime_56(bigquery_client, dataset_id):

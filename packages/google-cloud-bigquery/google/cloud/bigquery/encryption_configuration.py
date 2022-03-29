@@ -24,7 +24,7 @@ class EncryptionConfiguration(object):
         kms_key_name (str): resource ID of Cloud KMS key used for encryption
     """
 
-    def __init__(self, kms_key_name=None):
+    def __init__(self, kms_key_name=None) -> None:
         self._properties = {}
         if kms_key_name is not None:
             self._properties["kmsKeyName"] = kms_key_name

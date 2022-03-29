@@ -270,7 +270,7 @@ class QueryJobConfig(_JobConfig):
     the property name as the name of a keyword argument.
     """
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs) -> None:
         super(QueryJobConfig, self).__init__("query", **kwargs)
 
     @property
@@ -1107,7 +1107,7 @@ class QueryJob(_AsyncJob):
         return prop
 
     @property
-    def num_dml_affected_rows(self):
+    def num_dml_affected_rows(self) -> Optional[int]:
         """Return the number of DML rows affected by the job.
 
         See:
@@ -1537,7 +1537,7 @@ class QueryJob(_AsyncJob):
     def to_arrow(
         self,
         progress_bar_type: str = None,
-        bqstorage_client: "bigquery_storage.BigQueryReadClient" = None,
+        bqstorage_client: Optional["bigquery_storage.BigQueryReadClient"] = None,
         create_bqstorage_client: bool = True,
         max_results: Optional[int] = None,
     ) -> "pyarrow.Table":
@@ -1568,8 +1568,7 @@ class QueryJob(_AsyncJob):
                 BigQuery Storage API to fetch rows from BigQuery. This API
                 is a billable API.
 
-                This method requires the ``pyarrow`` and
-                ``google-cloud-bigquery-storage`` libraries.
+                This method requires ``google-cloud-bigquery-storage`` library.
 
                 Reading from a specific partition or snapshot is not
                 currently supported by this method.
@@ -1594,10 +1593,6 @@ class QueryJob(_AsyncJob):
                 headers from the query results. The column headers are derived
                 from the destination table's schema.
 
-        Raises:
-            ValueError:
-                If the :mod:`pyarrow` library cannot be imported.
-
         .. versionadded:: 1.17.0
         """
         query_result = wait_for_query(self, progress_bar_type, max_results=max_results)
@@ -1612,11 +1607,10 @@ class QueryJob(_AsyncJob):
     # that should only exist here in the QueryJob method.
     def to_dataframe(
         self,
-        bqstorage_client: "bigquery_storage.BigQueryReadClient" = None,
+        bqstorage_client: Optional["bigquery_storage.BigQueryReadClient"] = None,
         dtypes: Dict[str, Any] = None,
         progress_bar_type: str = None,
         create_bqstorage_client: bool = True,
-        date_as_object: bool = True,
         max_results: Optional[int] = None,
         geography_as_object: bool = False,
     ) -> "pandas.DataFrame":
@@ -1659,12 +1653,6 @@ class QueryJob(_AsyncJob):
 
                 .. versionadded:: 1.24.0
 
-            date_as_object (Optional[bool]):
-                If ``True`` (default), cast dates to objects. If ``False``, convert
-                to datetime64[ns] dtype.
-
-                .. versionadded:: 1.26.0
-
             max_results (Optional[int]):
                 Maximum number of rows to include in the result. No limit by default.
 
@@ -1698,7 +1686,6 @@ class QueryJob(_AsyncJob):
             dtypes=dtypes,
             progress_bar_type=progress_bar_type,
             create_bqstorage_client=create_bqstorage_client,
-            date_as_object=date_as_object,
             geography_as_object=geography_as_object,
         )
 
@@ -1711,7 +1698,6 @@ class QueryJob(_AsyncJob):
         dtypes: Dict[str, Any] = None,
         progress_bar_type: str = None,
         create_bqstorage_client: bool = True,
-        date_as_object: bool = True,
         max_results: Optional[int] = None,
         geography_column: Optional[str] = None,
     ) -> "geopandas.GeoDataFrame":
@@ -1754,12 +1740,6 @@ class QueryJob(_AsyncJob):
 
                 .. versionadded:: 1.24.0
 
-            date_as_object (Optional[bool]):
-                If ``True`` (default), cast dates to objects. If ``False``, convert
-                to datetime64[ns] dtype.
-
-                .. versionadded:: 1.26.0
-
             max_results (Optional[int]):
                 Maximum number of rows to include in the result. No limit by default.
 
@@ -1792,7 +1772,6 @@ class QueryJob(_AsyncJob):
             dtypes=dtypes,
             progress_bar_type=progress_bar_type,
             create_bqstorage_client=create_bqstorage_client,
-            date_as_object=date_as_object,
             geography_column=geography_column,
         )
 

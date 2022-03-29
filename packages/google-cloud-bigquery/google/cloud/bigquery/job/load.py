@@ -50,7 +50,7 @@ class LoadJobConfig(_JobConfig):
     :data:`True`.
     """
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs) -> None:
         super(LoadJobConfig, self).__init__("load", **kwargs)
 
     @property

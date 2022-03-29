@@ -19,7 +19,6 @@ import datetime
 import pytest
 
 import google.cloud._helpers
-from google.cloud.bigquery_v2 import types
 
 KMS_KEY_NAME = "projects/1/locations/us/keyRings/1/cryptoKeys/1"
 
@@ -95,11 +94,12 @@ def test_from_api_repr(target_class):
             },
             {
                 "trainingOptions": {"initialLearnRate": 0.25},
-                # Allow milliseconds since epoch format.
-                # TODO: Remove this hack once CL 238585470 hits prod.
-                "startTime": str(google.cloud._helpers._millis(expiration_time)),
+                "startTime": str(
+                    google.cloud._helpers._datetime_to_rfc3339(expiration_time)
+                ),
             },
         ],
+        "bestTrialId": "123",
         "featureColumns": [],
         "encryptionConfiguration": {"kmsKeyName": KMS_KEY_NAME},
     }
@@ -117,28 +117,23 @@ def test_from_api_repr(target_class):
     assert got.expires == expiration_time
     assert got.description == "A friendly description."
     assert got.friendly_name == "A friendly name."
-    assert got.model_type == types.Model.ModelType.LOGISTIC_REGRESSION
+    assert got.model_type == "LOGISTIC_REGRESSION"
     assert got.labels == {"greeting": "こんにちは"}
     assert got.encryption_configuration.kms_key_name == KMS_KEY_NAME
-    assert got.training_runs[0].training_options.initial_learn_rate == 1.0
+    assert got.best_trial_id == 123
+    assert got.training_runs[0]["trainingOptions"]["initialLearnRate"] == 1.0
     assert (
-        got.training_runs[0]
-        .start_time.ToDatetime()
-        .replace(tzinfo=google.cloud._helpers.UTC)
+        google.cloud._helpers._rfc3339_to_datetime(got.training_runs[0]["startTime"])
         == creation_time
     )
-    assert got.training_runs[1].training_options.initial_learn_rate == 0.5
+    assert got.training_runs[1]["trainingOptions"]["initialLearnRate"] == 0.5
     assert (
-        got.training_runs[1]
-        .start_time.ToDatetime()
-        .replace(tzinfo=google.cloud._helpers.UTC)
+        google.cloud._helpers._rfc3339_to_datetime(got.training_runs[1]["startTime"])
         == modified_time
     )
-    assert got.training_runs[2].training_options.initial_learn_rate == 0.25
+    assert got.training_runs[2]["trainingOptions"]["initialLearnRate"] == 0.25
     assert (
-        got.training_runs[2]
-        .start_time.ToDatetime()
-        .replace(tzinfo=google.cloud._helpers.UTC)
+        google.cloud._helpers._rfc3339_to_datetime(got.training_runs[2]["startTime"])
         == expiration_time
     )
 
@@ -155,19 +150,20 @@ def test_from_api_repr_w_minimal_resource(target_class):
     }
     got = target_class.from_api_repr(resource)
     assert got.reference == ModelReference.from_string("my-project.my_dataset.my_model")
-    assert got.location == ""
-    assert got.etag == ""
+    assert got.location is None
+    assert got.etag is None
     assert got.created is None
     assert got.modified is None
     assert got.expires is None
     assert got.description is None
     assert got.friendly_name is None
-    assert got.model_type == types.Model.ModelType.MODEL_TYPE_UNSPECIFIED
+    assert got.model_type == "MODEL_TYPE_UNSPECIFIED"
     assert got.labels == {}
     assert got.encryption_configuration is None
     assert len(got.training_runs) == 0
     assert len(got.feature_columns) == 0
     assert len(got.label_columns) == 0
+    assert got.best_trial_id is None
 
 
 def test_from_api_repr_w_unknown_fields(target_class):
@@ -183,7 +179,7 @@ def test_from_api_repr_w_unknown_fields(target_class):
     }
     got = target_class.from_api_repr(resource)
     assert got.reference == ModelReference.from_string("my-project.my_dataset.my_model")
-    assert got._properties is resource
+    assert got._properties == resource
 
 
 def test_from_api_repr_w_unknown_type(target_class):
@@ -195,12 +191,19 @@ def test_from_api_repr_w_unknown_type(target_class):
             "datasetId": "my_dataset",
             "modelId": "my_model",
         },
-        "modelType": "BE_A_GOOD_ROLE_MODEL",
+        "modelType": "BE_A_GOOD_ROLE_MODEL",  # This model type does not exist.
     }
     got = target_class.from_api_repr(resource)
     assert got.reference == ModelReference.from_string("my-project.my_dataset.my_model")
-    assert got.model_type == 0
-    assert got._properties is resource
+    assert got.model_type == "BE_A_GOOD_ROLE_MODEL"  # No checks for invalid types.
+    assert got._properties == resource
+
+
+def test_from_api_repr_w_missing_reference(target_class):
+    resource = {}
+    got = target_class.from_api_repr(resource)
+    assert got.reference is None
+    assert got._properties == resource
 
 
 @pytest.mark.parametrize(
@@ -268,6 +271,46 @@ def test_build_resource(object_under_test, resource, filter_fields, expected):
     object_under_test._properties = resource
     got = object_under_test._build_resource(filter_fields)
     assert got == expected
+
+
+def test_feature_columns(object_under_test):
+    from google.cloud.bigquery import standard_sql
+
+    object_under_test._properties["featureColumns"] = [
+        {"name": "col_1", "type": {"typeKind": "STRING"}},
+        {"name": "col_2", "type": {"typeKind": "FLOAT64"}},
+    ]
+    expected = [
+        standard_sql.StandardSqlField(
+            "col_1",
+            standard_sql.StandardSqlDataType(standard_sql.StandardSqlTypeNames.STRING),
+        ),
+        standard_sql.StandardSqlField(
+            "col_2",
+            standard_sql.StandardSqlDataType(standard_sql.StandardSqlTypeNames.FLOAT64),
+        ),
+    ]
+    assert object_under_test.feature_columns == expected
+
+
+def test_label_columns(object_under_test):
+    from google.cloud.bigquery import standard_sql
+
+    object_under_test._properties["labelColumns"] = [
+        {"name": "col_1", "type": {"typeKind": "STRING"}},
+        {"name": "col_2", "type": {"typeKind": "FLOAT64"}},
+    ]
+    expected = [
+        standard_sql.StandardSqlField(
+            "col_1",
+            standard_sql.StandardSqlDataType(standard_sql.StandardSqlTypeNames.STRING),
+        ),
+        standard_sql.StandardSqlField(
+            "col_2",
+            standard_sql.StandardSqlDataType(standard_sql.StandardSqlTypeNames.FLOAT64),
+        ),
+    ]
+    assert object_under_test.label_columns == expected
 
 
 def test_set_description(object_under_test):
@@ -338,8 +381,6 @@ def test_repr(target_class):
 
 
 def test_to_api_repr(target_class):
-    from google.protobuf import json_format
-
     model = target_class("my-proj.my_dset.my_model")
     resource = {
         "etag": "abcdefg",
@@ -374,8 +415,6 @@ def test_to_api_repr(target_class):
             "kmsKeyName": "projects/1/locations/us/keyRings/1/cryptoKeys/1"
         },
     }
-    model._proto = json_format.ParseDict(
-        resource, types.Model()._pb, ignore_unknown_fields=True
-    )
+    model._properties = resource
     got = model.to_api_repr()
     assert got == resource

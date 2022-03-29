@@ -15,7 +15,9 @@
 """Shared helper functions for connecting BigQuery and pandas."""
 
 import concurrent.futures
+from datetime import datetime
 import functools
+from itertools import islice
 import logging
 import queue
 import warnings
@@ -24,8 +26,17 @@ try:
     import pandas  # type: ignore
 except ImportError:  # pragma: NO COVER
     pandas = None
+    date_dtype_name = time_dtype_name = ""  # Use '' rather than None because pytype
 else:
     import numpy
+
+    from db_dtypes import DateDtype, TimeDtype  # type: ignore
+
+    date_dtype_name = DateDtype.name
+    time_dtype_name = TimeDtype.name
+
+import pyarrow  # type: ignore
+import pyarrow.parquet  # type: ignore
 
 try:
     # _BaseGeometry is used to detect shapely objevys in `bq_to_arrow_array`
@@ -67,9 +78,6 @@ from google.cloud.bigquery import _helpers
 from google.cloud.bigquery import schema
 
 
-pyarrow = _helpers.PYARROW_VERSIONS.try_import()
-
-
 _LOGGER = logging.getLogger(__name__)
 
 _PROGRESS_INTERVAL = 0.2  # Maximum time between download status checks, in seconds.
@@ -79,9 +87,7 @@ _MAX_QUEUE_SIZE_DEFAULT = object()  # max queue size sentinel for BQ Storage dow
 _PANDAS_DTYPE_TO_BQ = {
     "bool": "BOOLEAN",
     "datetime64[ns, UTC]": "TIMESTAMP",
-    # TODO: Update to DATETIME in V3
-    # https://github.com/googleapis/python-bigquery/issues/985
-    "datetime64[ns]": "TIMESTAMP",
+    "datetime64[ns]": "DATETIME",
     "float32": "FLOAT",
     "float64": "FLOAT",
     "int8": "INTEGER",
@@ -92,6 +98,8 @@ _PANDAS_DTYPE_TO_BQ = {
     "uint16": "INTEGER",
     "uint32": "INTEGER",
     "geometry": "GEOGRAPHY",
+    date_dtype_name: "DATE",
+    time_dtype_name: "TIME",
 }
 
 
@@ -127,63 +135,59 @@ def pyarrow_timestamp():
     return pyarrow.timestamp("us", tz="UTC")
 
 
-if pyarrow:
-    # This dictionary is duplicated in bigquery_storage/test/unite/test_reader.py
-    # When modifying it be sure to update it there as well.
-    BQ_TO_ARROW_SCALARS = {
-        "BIGNUMERIC": pyarrow_bignumeric,
-        "BOOL": pyarrow.bool_,
-        "BOOLEAN": pyarrow.bool_,
-        "BYTES": pyarrow.binary,
-        "DATE": pyarrow.date32,
-        "DATETIME": pyarrow_datetime,
-        "FLOAT": pyarrow.float64,
-        "FLOAT64": pyarrow.float64,
-        "GEOGRAPHY": pyarrow.string,
-        "INT64": pyarrow.int64,
-        "INTEGER": pyarrow.int64,
-        "NUMERIC": pyarrow_numeric,
-        "STRING": pyarrow.string,
-        "TIME": pyarrow_time,
-        "TIMESTAMP": pyarrow_timestamp,
-    }
-    ARROW_SCALAR_IDS_TO_BQ = {
-        # https://arrow.apache.org/docs/python/api/datatypes.html#type-classes
-        pyarrow.bool_().id: "BOOL",
-        pyarrow.int8().id: "INT64",
-        pyarrow.int16().id: "INT64",
-        pyarrow.int32().id: "INT64",
-        pyarrow.int64().id: "INT64",
-        pyarrow.uint8().id: "INT64",
-        pyarrow.uint16().id: "INT64",
-        pyarrow.uint32().id: "INT64",
-        pyarrow.uint64().id: "INT64",
-        pyarrow.float16().id: "FLOAT64",
-        pyarrow.float32().id: "FLOAT64",
-        pyarrow.float64().id: "FLOAT64",
-        pyarrow.time32("ms").id: "TIME",
-        pyarrow.time64("ns").id: "TIME",
-        pyarrow.timestamp("ns").id: "TIMESTAMP",
-        pyarrow.date32().id: "DATE",
-        pyarrow.date64().id: "DATETIME",  # because millisecond resolution
-        pyarrow.binary().id: "BYTES",
-        pyarrow.string().id: "STRING",  # also alias for pyarrow.utf8()
-        # The exact decimal's scale and precision are not important, as only
-        # the type ID matters, and it's the same for all decimal256 instances.
-        pyarrow.decimal128(38, scale=9).id: "NUMERIC",
-        pyarrow.decimal256(76, scale=38).id: "BIGNUMERIC",
-    }
-    BQ_FIELD_TYPE_TO_ARROW_FIELD_METADATA = {
-        "GEOGRAPHY": {
-            b"ARROW:extension:name": b"google:sqlType:geography",
-            b"ARROW:extension:metadata": b'{"encoding": "WKT"}',
-        },
-        "DATETIME": {b"ARROW:extension:name": b"google:sqlType:datetime"},
-    }
-
-else:  # pragma: NO COVER
-    BQ_TO_ARROW_SCALARS = {}  # pragma: NO COVER
-    ARROW_SCALAR_IDS_TO_BQ = {}  # pragma: NO_COVER
+# This dictionary is duplicated in bigquery_storage/test/unite/test_reader.py
+# When modifying it be sure to update it there as well.
+BQ_TO_ARROW_SCALARS = {
+    "BIGNUMERIC": pyarrow_bignumeric,
+    "BOOL": pyarrow.bool_,
+    "BOOLEAN": pyarrow.bool_,
+    "BYTES": pyarrow.binary,
+    "DATE": pyarrow.date32,
+    "DATETIME": pyarrow_datetime,
+    "FLOAT": pyarrow.float64,
+    "FLOAT64": pyarrow.float64,
+    "GEOGRAPHY": pyarrow.string,
+    "INT64": pyarrow.int64,
+    "INTEGER": pyarrow.int64,
+    "NUMERIC": pyarrow_numeric,
+    "STRING": pyarrow.string,
+    "TIME": pyarrow_time,
+    "TIMESTAMP": pyarrow_timestamp,
+}
+ARROW_SCALAR_IDS_TO_BQ = {
+    # https://arrow.apache.org/docs/python/api/datatypes.html#type-classes
+    pyarrow.bool_().id: "BOOL",
+    pyarrow.int8().id: "INT64",
+    pyarrow.int16().id: "INT64",
+    pyarrow.int32().id: "INT64",
+    pyarrow.int64().id: "INT64",
+    pyarrow.uint8().id: "INT64",
+    pyarrow.uint16().id: "INT64",
+    pyarrow.uint32().id: "INT64",
+    pyarrow.uint64().id: "INT64",
+    pyarrow.float16().id: "FLOAT64",
+    pyarrow.float32().id: "FLOAT64",
+    pyarrow.float64().id: "FLOAT64",
+    pyarrow.time32("ms").id: "TIME",
+    pyarrow.time64("ns").id: "TIME",
+    pyarrow.timestamp("ns").id: "TIMESTAMP",
+    pyarrow.date32().id: "DATE",
+    pyarrow.date64().id: "DATETIME",  # because millisecond resolution
+    pyarrow.binary().id: "BYTES",
+    pyarrow.string().id: "STRING",  # also alias for pyarrow.utf8()
+    # The exact scale and precision don't matter, see below.
+    pyarrow.decimal128(38, scale=9).id: "NUMERIC",
+    # The exact decimal's scale and precision are not important, as only
+    # the type ID matters, and it's the same for all decimal256 instances.
+    pyarrow.decimal256(76, scale=38).id: "BIGNUMERIC",
+}
+BQ_FIELD_TYPE_TO_ARROW_FIELD_METADATA = {
+    "GEOGRAPHY": {
+        b"ARROW:extension:name": b"google:sqlType:geography",
+        b"ARROW:extension:metadata": b'{"encoding": "WKT"}',
+    },
+    "DATETIME": {b"ARROW:extension:name": b"google:sqlType:datetime"},
+}
 
 
 def bq_to_arrow_struct_data_type(field):
@@ -259,6 +263,42 @@ def bq_to_arrow_schema(bq_schema):
             return None
         arrow_fields.append(arrow_field)
     return pyarrow.schema(arrow_fields)
+
+
+def default_types_mapper(date_as_object: bool = False):
+    """Create a mapping from pyarrow types to pandas types.
+
+    This overrides the pandas defaults to use null-safe extension types where
+    available.
+
+    See: https://arrow.apache.org/docs/python/api/datatypes.html for a list of
+    data types. See:
+    tests/unit/test__pandas_helpers.py::test_bq_to_arrow_data_type for
+    BigQuery to Arrow type mapping.
+
+    Note to google-cloud-bigquery developers: If you update the default dtypes,
+    also update the docs at docs/usage/pandas.rst.
+    """
+
+    def types_mapper(arrow_data_type):
+        if pyarrow.types.is_boolean(arrow_data_type):
+            return pandas.BooleanDtype()
+
+        elif (
+            # If date_as_object is True, we know some DATE columns are
+            # out-of-bounds of what is supported by pandas.
+            not date_as_object
+            and pyarrow.types.is_date(arrow_data_type)
+        ):
+            return DateDtype()
+
+        elif pyarrow.types.is_integer(arrow_data_type):
+            return pandas.Int64Dtype()
+
+        elif pyarrow.types.is_time(arrow_data_type):
+            return TimeDtype()
+
+    return types_mapper
 
 
 def bq_to_arrow_array(series, bq_field):
@@ -339,6 +379,36 @@ def _first_valid(series):
         return series.at[first_valid_index]
 
 
+def _first_array_valid(series):
+    """Return the first "meaningful" element from the array series.
+
+    Here, "meaningful" means the first non-None element in one of the arrays that can
+    be used for type detextion.
+    """
+    first_valid_index = series.first_valid_index()
+    if first_valid_index is None:
+        return None
+
+    valid_array = series.at[first_valid_index]
+    valid_item = next((item for item in valid_array if not pandas.isna(item)), None)
+
+    if valid_item is not None:
+        return valid_item
+
+    # Valid item is None because all items in the "valid" array are invalid. Try
+    # to find a true valid array manually.
+    for array in islice(series, first_valid_index + 1, None):
+        try:
+            array_iter = iter(array)
+        except TypeError:
+            continue  # Not an array, apparently, e.g. None, thus skip.
+        valid_item = next((item for item in array_iter if not pandas.isna(item)), None)
+        if valid_item is not None:
+            break
+
+    return valid_item
+
+
 def dataframe_to_bq_schema(dataframe, bq_schema):
     """Convert a pandas DataFrame schema to a BigQuery schema.
 
@@ -404,13 +474,6 @@ def dataframe_to_bq_schema(dataframe, bq_schema):
     # If schema detection was not successful for all columns, also try with
     # pyarrow, if available.
     if unknown_type_fields:
-        if not pyarrow:
-            msg = "Could not determine the type of columns: {}".format(
-                ", ".join(field.name for field in unknown_type_fields)
-            )
-            warnings.warn(msg)
-            return None  # We cannot detect the schema in full.
-
         # The augment_schema() helper itself will also issue unknown type
         # warnings if detection still fails for any of the fields.
         bq_schema_out = augment_schema(dataframe, bq_schema_out)
@@ -449,6 +512,19 @@ def augment_schema(dataframe, current_bq_schema):
             # `pyarrow.ListType`
             detected_mode = "REPEATED"
             detected_type = ARROW_SCALAR_IDS_TO_BQ.get(arrow_table.values.type.id)
+
+            # For timezone-naive datetimes, pyarrow assumes the UTC timezone and adds
+            # it to such datetimes, causing them to be recognized as TIMESTAMP type.
+            # We thus additionally check the actual data to see if we need to overrule
+            # that and choose DATETIME instead.
+            # Note that this should only be needed for datetime values inside a list,
+            # since scalar datetime values have a proper Pandas dtype that allows
+            # distinguishing between timezone-naive and timezone-aware values before
+            # even requiring the additional schema augment logic in this method.
+            if detected_type == "TIMESTAMP":
+                valid_item = _first_array_valid(dataframe[field.name])
+                if isinstance(valid_item, datetime) and valid_item.tzinfo is None:
+                    detected_type = "DATETIME"
         else:
             detected_mode = field.mode
             detected_type = ARROW_SCALAR_IDS_TO_BQ.get(arrow_table.type.id)
@@ -572,8 +648,6 @@ def dataframe_to_parquet(
 
             This argument is ignored for ``pyarrow`` versions earlier than ``4.0.0``.
     """
-    pyarrow = _helpers.PYARROW_VERSIONS.try_import(raise_if_error=True)
-
     import pyarrow.parquet  # type: ignore
 
     kwargs = (
