@@ -91,7 +91,13 @@ def test__get_default_mtls_endpoint():
     assert VmMigrationClient._get_default_mtls_endpoint(non_googleapi) == non_googleapi
 
 
-@pytest.mark.parametrize("client_class", [VmMigrationClient, VmMigrationAsyncClient,])
+@pytest.mark.parametrize(
+    "client_class",
+    [
+        VmMigrationClient,
+        VmMigrationAsyncClient,
+    ],
+)
 def test_vm_migration_client_from_service_account_info(client_class):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
@@ -131,7 +137,13 @@ def test_vm_migration_client_service_account_always_use_jwt(
         use_jwt.assert_not_called()
 
 
-@pytest.mark.parametrize("client_class", [VmMigrationClient, VmMigrationAsyncClient,])
+@pytest.mark.parametrize(
+    "client_class",
+    [
+        VmMigrationClient,
+        VmMigrationAsyncClient,
+    ],
+)
 def test_vm_migration_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
@@ -486,7 +498,9 @@ def test_vm_migration_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -614,10 +628,17 @@ def test_vm_migration_client_create_channel_credentials_file(
         )
 
 
-@pytest.mark.parametrize("request_type", [vmmigration.ListSourcesRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.ListSourcesRequest,
+        dict,
+    ],
+)
 def test_list_sources(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -628,7 +649,8 @@ def test_list_sources(request_type, transport: str = "grpc"):
     with mock.patch.object(type(client.transport.list_sources), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = vmmigration.ListSourcesResponse(
-            next_page_token="next_page_token_value", unreachable=["unreachable_value"],
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
         )
         response = client.list_sources(request)
 
@@ -647,7 +669,8 @@ def test_list_sources_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -663,7 +686,8 @@ async def test_list_sources_async(
     transport: str = "grpc_asyncio", request_type=vmmigration.ListSourcesRequest
 ):
     client = VmMigrationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -698,7 +722,9 @@ async def test_list_sources_async_from_dict():
 
 
 def test_list_sources_field_headers():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -718,12 +744,17 @@ def test_list_sources_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_list_sources_field_headers_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -745,11 +776,16 @@ async def test_list_sources_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_sources_flattened():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_sources), "__call__") as call:
@@ -757,7 +793,9 @@ def test_list_sources_flattened():
         call.return_value = vmmigration.ListSourcesResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_sources(parent="parent_value",)
+        client.list_sources(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -769,19 +807,24 @@ def test_list_sources_flattened():
 
 
 def test_list_sources_flattened_error():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_sources(
-            vmmigration.ListSourcesRequest(), parent="parent_value",
+            vmmigration.ListSourcesRequest(),
+            parent="parent_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_list_sources_flattened_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_sources), "__call__") as call:
@@ -793,7 +836,9 @@ async def test_list_sources_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_sources(parent="parent_value",)
+        response = await client.list_sources(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -806,19 +851,23 @@ async def test_list_sources_flattened_async():
 
 @pytest.mark.asyncio
 async def test_list_sources_flattened_error_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_sources(
-            vmmigration.ListSourcesRequest(), parent="parent_value",
+            vmmigration.ListSourcesRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_sources_pager(transport_name: str = "grpc"):
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -833,12 +882,21 @@ def test_list_sources_pager(transport_name: str = "grpc"):
                 ],
                 next_page_token="abc",
             ),
-            vmmigration.ListSourcesResponse(sources=[], next_page_token="def",),
             vmmigration.ListSourcesResponse(
-                sources=[vmmigration.Source(),], next_page_token="ghi",
+                sources=[],
+                next_page_token="def",
             ),
             vmmigration.ListSourcesResponse(
-                sources=[vmmigration.Source(), vmmigration.Source(),],
+                sources=[
+                    vmmigration.Source(),
+                ],
+                next_page_token="ghi",
+            ),
+            vmmigration.ListSourcesResponse(
+                sources=[
+                    vmmigration.Source(),
+                    vmmigration.Source(),
+                ],
             ),
             RuntimeError,
         )
@@ -858,7 +916,8 @@ def test_list_sources_pager(transport_name: str = "grpc"):
 
 def test_list_sources_pages(transport_name: str = "grpc"):
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -873,12 +932,21 @@ def test_list_sources_pages(transport_name: str = "grpc"):
                 ],
                 next_page_token="abc",
             ),
-            vmmigration.ListSourcesResponse(sources=[], next_page_token="def",),
             vmmigration.ListSourcesResponse(
-                sources=[vmmigration.Source(),], next_page_token="ghi",
+                sources=[],
+                next_page_token="def",
             ),
             vmmigration.ListSourcesResponse(
-                sources=[vmmigration.Source(), vmmigration.Source(),],
+                sources=[
+                    vmmigration.Source(),
+                ],
+                next_page_token="ghi",
+            ),
+            vmmigration.ListSourcesResponse(
+                sources=[
+                    vmmigration.Source(),
+                    vmmigration.Source(),
+                ],
             ),
             RuntimeError,
         )
@@ -889,7 +957,9 @@ def test_list_sources_pages(transport_name: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_list_sources_async_pager():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -905,16 +975,27 @@ async def test_list_sources_async_pager():
                 ],
                 next_page_token="abc",
             ),
-            vmmigration.ListSourcesResponse(sources=[], next_page_token="def",),
             vmmigration.ListSourcesResponse(
-                sources=[vmmigration.Source(),], next_page_token="ghi",
+                sources=[],
+                next_page_token="def",
             ),
             vmmigration.ListSourcesResponse(
-                sources=[vmmigration.Source(), vmmigration.Source(),],
+                sources=[
+                    vmmigration.Source(),
+                ],
+                next_page_token="ghi",
+            ),
+            vmmigration.ListSourcesResponse(
+                sources=[
+                    vmmigration.Source(),
+                    vmmigration.Source(),
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.list_sources(request={},)
+        async_pager = await client.list_sources(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -926,7 +1007,9 @@ async def test_list_sources_async_pager():
 
 @pytest.mark.asyncio
 async def test_list_sources_async_pages():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -942,12 +1025,21 @@ async def test_list_sources_async_pages():
                 ],
                 next_page_token="abc",
             ),
-            vmmigration.ListSourcesResponse(sources=[], next_page_token="def",),
             vmmigration.ListSourcesResponse(
-                sources=[vmmigration.Source(),], next_page_token="ghi",
+                sources=[],
+                next_page_token="def",
             ),
             vmmigration.ListSourcesResponse(
-                sources=[vmmigration.Source(), vmmigration.Source(),],
+                sources=[
+                    vmmigration.Source(),
+                ],
+                next_page_token="ghi",
+            ),
+            vmmigration.ListSourcesResponse(
+                sources=[
+                    vmmigration.Source(),
+                    vmmigration.Source(),
+                ],
             ),
             RuntimeError,
         )
@@ -958,10 +1050,17 @@ async def test_list_sources_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [vmmigration.GetSourceRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.GetSourceRequest,
+        dict,
+    ],
+)
 def test_get_source(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -993,7 +1092,8 @@ def test_get_source_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1009,7 +1109,8 @@ async def test_get_source_async(
     transport: str = "grpc_asyncio", request_type=vmmigration.GetSourceRequest
 ):
     client = VmMigrationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1020,7 +1121,10 @@ async def test_get_source_async(
     with mock.patch.object(type(client.transport.get_source), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            vmmigration.Source(name="name_value", description="description_value",)
+            vmmigration.Source(
+                name="name_value",
+                description="description_value",
+            )
         )
         response = await client.get_source(request)
 
@@ -1041,7 +1145,9 @@ async def test_get_source_async_from_dict():
 
 
 def test_get_source_field_headers():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1061,12 +1167,17 @@ def test_get_source_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_get_source_field_headers_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1086,11 +1197,16 @@ async def test_get_source_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_source_flattened():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_source), "__call__") as call:
@@ -1098,7 +1214,9 @@ def test_get_source_flattened():
         call.return_value = vmmigration.Source()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_source(name="name_value",)
+        client.get_source(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1110,19 +1228,24 @@ def test_get_source_flattened():
 
 
 def test_get_source_flattened_error():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_source(
-            vmmigration.GetSourceRequest(), name="name_value",
+            vmmigration.GetSourceRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_get_source_flattened_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_source), "__call__") as call:
@@ -1132,7 +1255,9 @@ async def test_get_source_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(vmmigration.Source())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_source(name="name_value",)
+        response = await client.get_source(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1145,20 +1270,30 @@ async def test_get_source_flattened_async():
 
 @pytest.mark.asyncio
 async def test_get_source_flattened_error_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_source(
-            vmmigration.GetSourceRequest(), name="name_value",
+            vmmigration.GetSourceRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [vmmigration.CreateSourceRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.CreateSourceRequest,
+        dict,
+    ],
+)
 def test_create_source(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1184,7 +1319,8 @@ def test_create_source_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1200,7 +1336,8 @@ async def test_create_source_async(
     transport: str = "grpc_asyncio", request_type=vmmigration.CreateSourceRequest
 ):
     client = VmMigrationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1230,7 +1367,9 @@ async def test_create_source_async_from_dict():
 
 
 def test_create_source_field_headers():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1250,12 +1389,17 @@ def test_create_source_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_create_source_field_headers_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1277,11 +1421,16 @@ async def test_create_source_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_source_flattened():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_source), "__call__") as call:
@@ -1315,7 +1464,9 @@ def test_create_source_flattened():
 
 
 def test_create_source_flattened_error():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1332,7 +1483,9 @@ def test_create_source_flattened_error():
 
 @pytest.mark.asyncio
 async def test_create_source_flattened_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_source), "__call__") as call:
@@ -1371,7 +1524,9 @@ async def test_create_source_flattened_async():
 
 @pytest.mark.asyncio
 async def test_create_source_flattened_error_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1386,10 +1541,17 @@ async def test_create_source_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [vmmigration.UpdateSourceRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.UpdateSourceRequest,
+        dict,
+    ],
+)
 def test_update_source(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1415,7 +1577,8 @@ def test_update_source_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1431,7 +1594,8 @@ async def test_update_source_async(
     transport: str = "grpc_asyncio", request_type=vmmigration.UpdateSourceRequest
 ):
     client = VmMigrationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1461,7 +1625,9 @@ async def test_update_source_async_from_dict():
 
 
 def test_update_source_field_headers():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1481,12 +1647,17 @@ def test_update_source_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "source.name=source.name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "source.name=source.name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_update_source_field_headers_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1508,11 +1679,16 @@ async def test_update_source_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "source.name=source.name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "source.name=source.name/value",
+    ) in kw["metadata"]
 
 
 def test_update_source_flattened():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_source), "__call__") as call:
@@ -1542,7 +1718,9 @@ def test_update_source_flattened():
 
 
 def test_update_source_flattened_error():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1558,7 +1736,9 @@ def test_update_source_flattened_error():
 
 @pytest.mark.asyncio
 async def test_update_source_flattened_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_source), "__call__") as call:
@@ -1593,7 +1773,9 @@ async def test_update_source_flattened_async():
 
 @pytest.mark.asyncio
 async def test_update_source_flattened_error_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1607,10 +1789,17 @@ async def test_update_source_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [vmmigration.DeleteSourceRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.DeleteSourceRequest,
+        dict,
+    ],
+)
 def test_delete_source(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1636,7 +1825,8 @@ def test_delete_source_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1652,7 +1842,8 @@ async def test_delete_source_async(
     transport: str = "grpc_asyncio", request_type=vmmigration.DeleteSourceRequest
 ):
     client = VmMigrationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1682,7 +1873,9 @@ async def test_delete_source_async_from_dict():
 
 
 def test_delete_source_field_headers():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1702,12 +1895,17 @@ def test_delete_source_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_delete_source_field_headers_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1729,11 +1927,16 @@ async def test_delete_source_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_source_flattened():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_source), "__call__") as call:
@@ -1741,7 +1944,9 @@ def test_delete_source_flattened():
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_source(name="name_value",)
+        client.delete_source(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1753,19 +1958,24 @@ def test_delete_source_flattened():
 
 
 def test_delete_source_flattened_error():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_source(
-            vmmigration.DeleteSourceRequest(), name="name_value",
+            vmmigration.DeleteSourceRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_delete_source_flattened_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_source), "__call__") as call:
@@ -1777,7 +1987,9 @@ async def test_delete_source_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_source(name="name_value",)
+        response = await client.delete_source(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1790,20 +2002,30 @@ async def test_delete_source_flattened_async():
 
 @pytest.mark.asyncio
 async def test_delete_source_flattened_error_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_source(
-            vmmigration.DeleteSourceRequest(), name="name_value",
+            vmmigration.DeleteSourceRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [vmmigration.FetchInventoryRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.FetchInventoryRequest,
+        dict,
+    ],
+)
 def test_fetch_inventory(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1833,7 +2055,8 @@ def test_fetch_inventory_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1849,7 +2072,8 @@ async def test_fetch_inventory_async(
     transport: str = "grpc_asyncio", request_type=vmmigration.FetchInventoryRequest
 ):
     client = VmMigrationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1879,7 +2103,9 @@ async def test_fetch_inventory_async_from_dict():
 
 
 def test_fetch_inventory_field_headers():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1899,12 +2125,17 @@ def test_fetch_inventory_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "source=source/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "source=source/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_fetch_inventory_field_headers_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1926,11 +2157,16 @@ async def test_fetch_inventory_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "source=source/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "source=source/value",
+    ) in kw["metadata"]
 
 
 def test_fetch_inventory_flattened():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.fetch_inventory), "__call__") as call:
@@ -1938,7 +2174,9 @@ def test_fetch_inventory_flattened():
         call.return_value = vmmigration.FetchInventoryResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.fetch_inventory(source="source_value",)
+        client.fetch_inventory(
+            source="source_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1950,19 +2188,24 @@ def test_fetch_inventory_flattened():
 
 
 def test_fetch_inventory_flattened_error():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.fetch_inventory(
-            vmmigration.FetchInventoryRequest(), source="source_value",
+            vmmigration.FetchInventoryRequest(),
+            source="source_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_fetch_inventory_flattened_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.fetch_inventory), "__call__") as call:
@@ -1974,7 +2217,9 @@ async def test_fetch_inventory_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.fetch_inventory(source="source_value",)
+        response = await client.fetch_inventory(
+            source="source_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1987,22 +2232,30 @@ async def test_fetch_inventory_flattened_async():
 
 @pytest.mark.asyncio
 async def test_fetch_inventory_flattened_error_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.fetch_inventory(
-            vmmigration.FetchInventoryRequest(), source="source_value",
+            vmmigration.FetchInventoryRequest(),
+            source="source_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [vmmigration.ListUtilizationReportsRequest, dict,]
+    "request_type",
+    [
+        vmmigration.ListUtilizationReportsRequest,
+        dict,
+    ],
 )
 def test_list_utilization_reports(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2015,7 +2268,8 @@ def test_list_utilization_reports(request_type, transport: str = "grpc"):
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = vmmigration.ListUtilizationReportsResponse(
-            next_page_token="next_page_token_value", unreachable=["unreachable_value"],
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
         )
         response = client.list_utilization_reports(request)
 
@@ -2034,7 +2288,8 @@ def test_list_utilization_reports_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2053,7 +2308,8 @@ async def test_list_utilization_reports_async(
     request_type=vmmigration.ListUtilizationReportsRequest,
 ):
     client = VmMigrationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2090,7 +2346,9 @@ async def test_list_utilization_reports_async_from_dict():
 
 
 def test_list_utilization_reports_field_headers():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2112,12 +2370,17 @@ def test_list_utilization_reports_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_list_utilization_reports_field_headers_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2141,11 +2404,16 @@ async def test_list_utilization_reports_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_utilization_reports_flattened():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2155,7 +2423,9 @@ def test_list_utilization_reports_flattened():
         call.return_value = vmmigration.ListUtilizationReportsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_utilization_reports(parent="parent_value",)
+        client.list_utilization_reports(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2167,19 +2437,24 @@ def test_list_utilization_reports_flattened():
 
 
 def test_list_utilization_reports_flattened_error():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_utilization_reports(
-            vmmigration.ListUtilizationReportsRequest(), parent="parent_value",
+            vmmigration.ListUtilizationReportsRequest(),
+            parent="parent_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_list_utilization_reports_flattened_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2193,7 +2468,9 @@ async def test_list_utilization_reports_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_utilization_reports(parent="parent_value",)
+        response = await client.list_utilization_reports(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2206,19 +2483,23 @@ async def test_list_utilization_reports_flattened_async():
 
 @pytest.mark.asyncio
 async def test_list_utilization_reports_flattened_error_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_utilization_reports(
-            vmmigration.ListUtilizationReportsRequest(), parent="parent_value",
+            vmmigration.ListUtilizationReportsRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_utilization_reports_pager(transport_name: str = "grpc"):
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2236,10 +2517,13 @@ def test_list_utilization_reports_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             vmmigration.ListUtilizationReportsResponse(
-                utilization_reports=[], next_page_token="def",
+                utilization_reports=[],
+                next_page_token="def",
             ),
             vmmigration.ListUtilizationReportsResponse(
-                utilization_reports=[vmmigration.UtilizationReport(),],
+                utilization_reports=[
+                    vmmigration.UtilizationReport(),
+                ],
                 next_page_token="ghi",
             ),
             vmmigration.ListUtilizationReportsResponse(
@@ -2266,7 +2550,8 @@ def test_list_utilization_reports_pager(transport_name: str = "grpc"):
 
 def test_list_utilization_reports_pages(transport_name: str = "grpc"):
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2284,10 +2569,13 @@ def test_list_utilization_reports_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             vmmigration.ListUtilizationReportsResponse(
-                utilization_reports=[], next_page_token="def",
+                utilization_reports=[],
+                next_page_token="def",
             ),
             vmmigration.ListUtilizationReportsResponse(
-                utilization_reports=[vmmigration.UtilizationReport(),],
+                utilization_reports=[
+                    vmmigration.UtilizationReport(),
+                ],
                 next_page_token="ghi",
             ),
             vmmigration.ListUtilizationReportsResponse(
@@ -2305,7 +2593,9 @@ def test_list_utilization_reports_pages(transport_name: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_list_utilization_reports_async_pager():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2324,10 +2614,13 @@ async def test_list_utilization_reports_async_pager():
                 next_page_token="abc",
             ),
             vmmigration.ListUtilizationReportsResponse(
-                utilization_reports=[], next_page_token="def",
+                utilization_reports=[],
+                next_page_token="def",
             ),
             vmmigration.ListUtilizationReportsResponse(
-                utilization_reports=[vmmigration.UtilizationReport(),],
+                utilization_reports=[
+                    vmmigration.UtilizationReport(),
+                ],
                 next_page_token="ghi",
             ),
             vmmigration.ListUtilizationReportsResponse(
@@ -2338,7 +2631,9 @@ async def test_list_utilization_reports_async_pager():
             ),
             RuntimeError,
         )
-        async_pager = await client.list_utilization_reports(request={},)
+        async_pager = await client.list_utilization_reports(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -2350,7 +2645,9 @@ async def test_list_utilization_reports_async_pager():
 
 @pytest.mark.asyncio
 async def test_list_utilization_reports_async_pages():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2369,10 +2666,13 @@ async def test_list_utilization_reports_async_pages():
                 next_page_token="abc",
             ),
             vmmigration.ListUtilizationReportsResponse(
-                utilization_reports=[], next_page_token="def",
+                utilization_reports=[],
+                next_page_token="def",
             ),
             vmmigration.ListUtilizationReportsResponse(
-                utilization_reports=[vmmigration.UtilizationReport(),],
+                utilization_reports=[
+                    vmmigration.UtilizationReport(),
+                ],
                 next_page_token="ghi",
             ),
             vmmigration.ListUtilizationReportsResponse(
@@ -2391,11 +2691,16 @@ async def test_list_utilization_reports_async_pages():
 
 
 @pytest.mark.parametrize(
-    "request_type", [vmmigration.GetUtilizationReportRequest, dict,]
+    "request_type",
+    [
+        vmmigration.GetUtilizationReportRequest,
+        dict,
+    ],
 )
 def test_get_utilization_report(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2434,7 +2739,8 @@ def test_get_utilization_report_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2453,7 +2759,8 @@ async def test_get_utilization_report_async(
     request_type=vmmigration.GetUtilizationReportRequest,
 ):
     client = VmMigrationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2496,7 +2803,9 @@ async def test_get_utilization_report_async_from_dict():
 
 
 def test_get_utilization_report_field_headers():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2518,12 +2827,17 @@ def test_get_utilization_report_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_get_utilization_report_field_headers_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2547,11 +2861,16 @@ async def test_get_utilization_report_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_utilization_report_flattened():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2561,7 +2880,9 @@ def test_get_utilization_report_flattened():
         call.return_value = vmmigration.UtilizationReport()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_utilization_report(name="name_value",)
+        client.get_utilization_report(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2573,19 +2894,24 @@ def test_get_utilization_report_flattened():
 
 
 def test_get_utilization_report_flattened_error():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_utilization_report(
-            vmmigration.GetUtilizationReportRequest(), name="name_value",
+            vmmigration.GetUtilizationReportRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_get_utilization_report_flattened_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2599,7 +2925,9 @@ async def test_get_utilization_report_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_utilization_report(name="name_value",)
+        response = await client.get_utilization_report(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2612,22 +2940,30 @@ async def test_get_utilization_report_flattened_async():
 
 @pytest.mark.asyncio
 async def test_get_utilization_report_flattened_error_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_utilization_report(
-            vmmigration.GetUtilizationReportRequest(), name="name_value",
+            vmmigration.GetUtilizationReportRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [vmmigration.CreateUtilizationReportRequest, dict,]
+    "request_type",
+    [
+        vmmigration.CreateUtilizationReportRequest,
+        dict,
+    ],
 )
 def test_create_utilization_report(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2655,7 +2991,8 @@ def test_create_utilization_report_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2674,7 +3011,8 @@ async def test_create_utilization_report_async(
     request_type=vmmigration.CreateUtilizationReportRequest,
 ):
     client = VmMigrationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2706,7 +3044,9 @@ async def test_create_utilization_report_async_from_dict():
 
 
 def test_create_utilization_report_field_headers():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2728,12 +3068,17 @@ def test_create_utilization_report_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_create_utilization_report_field_headers_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2757,11 +3102,16 @@ async def test_create_utilization_report_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_utilization_report_flattened():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2793,7 +3143,9 @@ def test_create_utilization_report_flattened():
 
 
 def test_create_utilization_report_flattened_error():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2808,7 +3160,9 @@ def test_create_utilization_report_flattened_error():
 
 @pytest.mark.asyncio
 async def test_create_utilization_report_flattened_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2845,7 +3199,9 @@ async def test_create_utilization_report_flattened_async():
 
 @pytest.mark.asyncio
 async def test_create_utilization_report_flattened_error_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2859,11 +3215,16 @@ async def test_create_utilization_report_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [vmmigration.DeleteUtilizationReportRequest, dict,]
+    "request_type",
+    [
+        vmmigration.DeleteUtilizationReportRequest,
+        dict,
+    ],
 )
 def test_delete_utilization_report(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2891,7 +3252,8 @@ def test_delete_utilization_report_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2910,7 +3272,8 @@ async def test_delete_utilization_report_async(
     request_type=vmmigration.DeleteUtilizationReportRequest,
 ):
     client = VmMigrationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2942,7 +3305,9 @@ async def test_delete_utilization_report_async_from_dict():
 
 
 def test_delete_utilization_report_field_headers():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2964,12 +3329,17 @@ def test_delete_utilization_report_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_delete_utilization_report_field_headers_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2993,11 +3363,16 @@ async def test_delete_utilization_report_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_utilization_report_flattened():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3007,7 +3382,9 @@ def test_delete_utilization_report_flattened():
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_utilization_report(name="name_value",)
+        client.delete_utilization_report(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3019,19 +3396,24 @@ def test_delete_utilization_report_flattened():
 
 
 def test_delete_utilization_report_flattened_error():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_utilization_report(
-            vmmigration.DeleteUtilizationReportRequest(), name="name_value",
+            vmmigration.DeleteUtilizationReportRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_delete_utilization_report_flattened_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3045,7 +3427,9 @@ async def test_delete_utilization_report_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_utilization_report(name="name_value",)
+        response = await client.delete_utilization_report(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3058,22 +3442,30 @@ async def test_delete_utilization_report_flattened_async():
 
 @pytest.mark.asyncio
 async def test_delete_utilization_report_flattened_error_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_utilization_report(
-            vmmigration.DeleteUtilizationReportRequest(), name="name_value",
+            vmmigration.DeleteUtilizationReportRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [vmmigration.ListDatacenterConnectorsRequest, dict,]
+    "request_type",
+    [
+        vmmigration.ListDatacenterConnectorsRequest,
+        dict,
+    ],
 )
 def test_list_datacenter_connectors(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3086,7 +3478,8 @@ def test_list_datacenter_connectors(request_type, transport: str = "grpc"):
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = vmmigration.ListDatacenterConnectorsResponse(
-            next_page_token="next_page_token_value", unreachable=["unreachable_value"],
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
         )
         response = client.list_datacenter_connectors(request)
 
@@ -3105,7 +3498,8 @@ def test_list_datacenter_connectors_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3124,7 +3518,8 @@ async def test_list_datacenter_connectors_async(
     request_type=vmmigration.ListDatacenterConnectorsRequest,
 ):
     client = VmMigrationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3161,7 +3556,9 @@ async def test_list_datacenter_connectors_async_from_dict():
 
 
 def test_list_datacenter_connectors_field_headers():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3183,12 +3580,17 @@ def test_list_datacenter_connectors_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_list_datacenter_connectors_field_headers_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3212,11 +3614,16 @@ async def test_list_datacenter_connectors_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_datacenter_connectors_flattened():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3226,7 +3633,9 @@ def test_list_datacenter_connectors_flattened():
         call.return_value = vmmigration.ListDatacenterConnectorsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_datacenter_connectors(parent="parent_value",)
+        client.list_datacenter_connectors(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3238,19 +3647,24 @@ def test_list_datacenter_connectors_flattened():
 
 
 def test_list_datacenter_connectors_flattened_error():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_datacenter_connectors(
-            vmmigration.ListDatacenterConnectorsRequest(), parent="parent_value",
+            vmmigration.ListDatacenterConnectorsRequest(),
+            parent="parent_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_list_datacenter_connectors_flattened_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3264,7 +3678,9 @@ async def test_list_datacenter_connectors_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_datacenter_connectors(parent="parent_value",)
+        response = await client.list_datacenter_connectors(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3277,19 +3693,23 @@ async def test_list_datacenter_connectors_flattened_async():
 
 @pytest.mark.asyncio
 async def test_list_datacenter_connectors_flattened_error_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_datacenter_connectors(
-            vmmigration.ListDatacenterConnectorsRequest(), parent="parent_value",
+            vmmigration.ListDatacenterConnectorsRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_datacenter_connectors_pager(transport_name: str = "grpc"):
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3307,10 +3727,13 @@ def test_list_datacenter_connectors_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             vmmigration.ListDatacenterConnectorsResponse(
-                datacenter_connectors=[], next_page_token="def",
+                datacenter_connectors=[],
+                next_page_token="def",
             ),
             vmmigration.ListDatacenterConnectorsResponse(
-                datacenter_connectors=[vmmigration.DatacenterConnector(),],
+                datacenter_connectors=[
+                    vmmigration.DatacenterConnector(),
+                ],
                 next_page_token="ghi",
             ),
             vmmigration.ListDatacenterConnectorsResponse(
@@ -3337,7 +3760,8 @@ def test_list_datacenter_connectors_pager(transport_name: str = "grpc"):
 
 def test_list_datacenter_connectors_pages(transport_name: str = "grpc"):
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3355,10 +3779,13 @@ def test_list_datacenter_connectors_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             vmmigration.ListDatacenterConnectorsResponse(
-                datacenter_connectors=[], next_page_token="def",
+                datacenter_connectors=[],
+                next_page_token="def",
             ),
             vmmigration.ListDatacenterConnectorsResponse(
-                datacenter_connectors=[vmmigration.DatacenterConnector(),],
+                datacenter_connectors=[
+                    vmmigration.DatacenterConnector(),
+                ],
                 next_page_token="ghi",
             ),
             vmmigration.ListDatacenterConnectorsResponse(
@@ -3376,7 +3803,9 @@ def test_list_datacenter_connectors_pages(transport_name: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_list_datacenter_connectors_async_pager():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3395,10 +3824,13 @@ async def test_list_datacenter_connectors_async_pager():
                 next_page_token="abc",
             ),
             vmmigration.ListDatacenterConnectorsResponse(
-                datacenter_connectors=[], next_page_token="def",
+                datacenter_connectors=[],
+                next_page_token="def",
             ),
             vmmigration.ListDatacenterConnectorsResponse(
-                datacenter_connectors=[vmmigration.DatacenterConnector(),],
+                datacenter_connectors=[
+                    vmmigration.DatacenterConnector(),
+                ],
                 next_page_token="ghi",
             ),
             vmmigration.ListDatacenterConnectorsResponse(
@@ -3409,7 +3841,9 @@ async def test_list_datacenter_connectors_async_pager():
             ),
             RuntimeError,
         )
-        async_pager = await client.list_datacenter_connectors(request={},)
+        async_pager = await client.list_datacenter_connectors(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -3421,7 +3855,9 @@ async def test_list_datacenter_connectors_async_pager():
 
 @pytest.mark.asyncio
 async def test_list_datacenter_connectors_async_pages():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3440,10 +3876,13 @@ async def test_list_datacenter_connectors_async_pages():
                 next_page_token="abc",
             ),
             vmmigration.ListDatacenterConnectorsResponse(
-                datacenter_connectors=[], next_page_token="def",
+                datacenter_connectors=[],
+                next_page_token="def",
             ),
             vmmigration.ListDatacenterConnectorsResponse(
-                datacenter_connectors=[vmmigration.DatacenterConnector(),],
+                datacenter_connectors=[
+                    vmmigration.DatacenterConnector(),
+                ],
                 next_page_token="ghi",
             ),
             vmmigration.ListDatacenterConnectorsResponse(
@@ -3462,11 +3901,16 @@ async def test_list_datacenter_connectors_async_pages():
 
 
 @pytest.mark.parametrize(
-    "request_type", [vmmigration.GetDatacenterConnectorRequest, dict,]
+    "request_type",
+    [
+        vmmigration.GetDatacenterConnectorRequest,
+        dict,
+    ],
 )
 def test_get_datacenter_connector(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3507,7 +3951,8 @@ def test_get_datacenter_connector_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3526,7 +3971,8 @@ async def test_get_datacenter_connector_async(
     request_type=vmmigration.GetDatacenterConnectorRequest,
 ):
     client = VmMigrationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3571,7 +4017,9 @@ async def test_get_datacenter_connector_async_from_dict():
 
 
 def test_get_datacenter_connector_field_headers():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3593,12 +4041,17 @@ def test_get_datacenter_connector_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_get_datacenter_connector_field_headers_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3622,11 +4075,16 @@ async def test_get_datacenter_connector_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_datacenter_connector_flattened():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3636,7 +4094,9 @@ def test_get_datacenter_connector_flattened():
         call.return_value = vmmigration.DatacenterConnector()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_datacenter_connector(name="name_value",)
+        client.get_datacenter_connector(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3648,19 +4108,24 @@ def test_get_datacenter_connector_flattened():
 
 
 def test_get_datacenter_connector_flattened_error():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_datacenter_connector(
-            vmmigration.GetDatacenterConnectorRequest(), name="name_value",
+            vmmigration.GetDatacenterConnectorRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_get_datacenter_connector_flattened_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3674,7 +4139,9 @@ async def test_get_datacenter_connector_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_datacenter_connector(name="name_value",)
+        response = await client.get_datacenter_connector(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3687,22 +4154,30 @@ async def test_get_datacenter_connector_flattened_async():
 
 @pytest.mark.asyncio
 async def test_get_datacenter_connector_flattened_error_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_datacenter_connector(
-            vmmigration.GetDatacenterConnectorRequest(), name="name_value",
+            vmmigration.GetDatacenterConnectorRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [vmmigration.CreateDatacenterConnectorRequest, dict,]
+    "request_type",
+    [
+        vmmigration.CreateDatacenterConnectorRequest,
+        dict,
+    ],
 )
 def test_create_datacenter_connector(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3730,7 +4205,8 @@ def test_create_datacenter_connector_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3749,7 +4225,8 @@ async def test_create_datacenter_connector_async(
     request_type=vmmigration.CreateDatacenterConnectorRequest,
 ):
     client = VmMigrationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3781,7 +4258,9 @@ async def test_create_datacenter_connector_async_from_dict():
 
 
 def test_create_datacenter_connector_field_headers():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3803,12 +4282,17 @@ def test_create_datacenter_connector_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_create_datacenter_connector_field_headers_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3832,11 +4316,16 @@ async def test_create_datacenter_connector_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_datacenter_connector_flattened():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3872,7 +4361,9 @@ def test_create_datacenter_connector_flattened():
 
 
 def test_create_datacenter_connector_flattened_error():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -3889,7 +4380,9 @@ def test_create_datacenter_connector_flattened_error():
 
 @pytest.mark.asyncio
 async def test_create_datacenter_connector_flattened_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3930,7 +4423,9 @@ async def test_create_datacenter_connector_flattened_async():
 
 @pytest.mark.asyncio
 async def test_create_datacenter_connector_flattened_error_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -3946,11 +4441,16 @@ async def test_create_datacenter_connector_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [vmmigration.DeleteDatacenterConnectorRequest, dict,]
+    "request_type",
+    [
+        vmmigration.DeleteDatacenterConnectorRequest,
+        dict,
+    ],
 )
 def test_delete_datacenter_connector(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3978,7 +4478,8 @@ def test_delete_datacenter_connector_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3997,7 +4498,8 @@ async def test_delete_datacenter_connector_async(
     request_type=vmmigration.DeleteDatacenterConnectorRequest,
 ):
     client = VmMigrationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4029,7 +4531,9 @@ async def test_delete_datacenter_connector_async_from_dict():
 
 
 def test_delete_datacenter_connector_field_headers():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -4051,12 +4555,17 @@ def test_delete_datacenter_connector_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_delete_datacenter_connector_field_headers_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -4080,11 +4589,16 @@ async def test_delete_datacenter_connector_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_datacenter_connector_flattened():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4094,7 +4608,9 @@ def test_delete_datacenter_connector_flattened():
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_datacenter_connector(name="name_value",)
+        client.delete_datacenter_connector(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -4106,19 +4622,24 @@ def test_delete_datacenter_connector_flattened():
 
 
 def test_delete_datacenter_connector_flattened_error():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_datacenter_connector(
-            vmmigration.DeleteDatacenterConnectorRequest(), name="name_value",
+            vmmigration.DeleteDatacenterConnectorRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_delete_datacenter_connector_flattened_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4132,7 +4653,9 @@ async def test_delete_datacenter_connector_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_datacenter_connector(name="name_value",)
+        response = await client.delete_datacenter_connector(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -4145,20 +4668,30 @@ async def test_delete_datacenter_connector_flattened_async():
 
 @pytest.mark.asyncio
 async def test_delete_datacenter_connector_flattened_error_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_datacenter_connector(
-            vmmigration.DeleteDatacenterConnectorRequest(), name="name_value",
+            vmmigration.DeleteDatacenterConnectorRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [vmmigration.CreateMigratingVmRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.CreateMigratingVmRequest,
+        dict,
+    ],
+)
 def test_create_migrating_vm(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4186,7 +4719,8 @@ def test_create_migrating_vm_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4204,7 +4738,8 @@ async def test_create_migrating_vm_async(
     transport: str = "grpc_asyncio", request_type=vmmigration.CreateMigratingVmRequest
 ):
     client = VmMigrationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4236,7 +4771,9 @@ async def test_create_migrating_vm_async_from_dict():
 
 
 def test_create_migrating_vm_field_headers():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -4258,12 +4795,17 @@ def test_create_migrating_vm_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_create_migrating_vm_field_headers_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -4287,11 +4829,16 @@ async def test_create_migrating_vm_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_migrating_vm_flattened():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4331,7 +4878,9 @@ def test_create_migrating_vm_flattened():
 
 
 def test_create_migrating_vm_flattened_error():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -4350,7 +4899,9 @@ def test_create_migrating_vm_flattened_error():
 
 @pytest.mark.asyncio
 async def test_create_migrating_vm_flattened_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4395,7 +4946,9 @@ async def test_create_migrating_vm_flattened_async():
 
 @pytest.mark.asyncio
 async def test_create_migrating_vm_flattened_error_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -4412,10 +4965,17 @@ async def test_create_migrating_vm_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [vmmigration.ListMigratingVmsRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.ListMigratingVmsRequest,
+        dict,
+    ],
+)
 def test_list_migrating_vms(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4428,7 +4988,8 @@ def test_list_migrating_vms(request_type, transport: str = "grpc"):
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = vmmigration.ListMigratingVmsResponse(
-            next_page_token="next_page_token_value", unreachable=["unreachable_value"],
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
         )
         response = client.list_migrating_vms(request)
 
@@ -4447,7 +5008,8 @@ def test_list_migrating_vms_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4465,7 +5027,8 @@ async def test_list_migrating_vms_async(
     transport: str = "grpc_asyncio", request_type=vmmigration.ListMigratingVmsRequest
 ):
     client = VmMigrationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4502,7 +5065,9 @@ async def test_list_migrating_vms_async_from_dict():
 
 
 def test_list_migrating_vms_field_headers():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -4524,12 +5089,17 @@ def test_list_migrating_vms_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_list_migrating_vms_field_headers_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -4553,11 +5123,16 @@ async def test_list_migrating_vms_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_migrating_vms_flattened():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4567,7 +5142,9 @@ def test_list_migrating_vms_flattened():
         call.return_value = vmmigration.ListMigratingVmsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_migrating_vms(parent="parent_value",)
+        client.list_migrating_vms(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -4579,19 +5156,24 @@ def test_list_migrating_vms_flattened():
 
 
 def test_list_migrating_vms_flattened_error():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_migrating_vms(
-            vmmigration.ListMigratingVmsRequest(), parent="parent_value",
+            vmmigration.ListMigratingVmsRequest(),
+            parent="parent_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_list_migrating_vms_flattened_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4605,7 +5187,9 @@ async def test_list_migrating_vms_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_migrating_vms(parent="parent_value",)
+        response = await client.list_migrating_vms(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -4618,19 +5202,23 @@ async def test_list_migrating_vms_flattened_async():
 
 @pytest.mark.asyncio
 async def test_list_migrating_vms_flattened_error_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_migrating_vms(
-            vmmigration.ListMigratingVmsRequest(), parent="parent_value",
+            vmmigration.ListMigratingVmsRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_migrating_vms_pager(transport_name: str = "grpc"):
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4648,13 +5236,20 @@ def test_list_migrating_vms_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             vmmigration.ListMigratingVmsResponse(
-                migrating_vms=[], next_page_token="def",
+                migrating_vms=[],
+                next_page_token="def",
             ),
             vmmigration.ListMigratingVmsResponse(
-                migrating_vms=[vmmigration.MigratingVm(),], next_page_token="ghi",
+                migrating_vms=[
+                    vmmigration.MigratingVm(),
+                ],
+                next_page_token="ghi",
             ),
             vmmigration.ListMigratingVmsResponse(
-                migrating_vms=[vmmigration.MigratingVm(), vmmigration.MigratingVm(),],
+                migrating_vms=[
+                    vmmigration.MigratingVm(),
+                    vmmigration.MigratingVm(),
+                ],
             ),
             RuntimeError,
         )
@@ -4674,7 +5269,8 @@ def test_list_migrating_vms_pager(transport_name: str = "grpc"):
 
 def test_list_migrating_vms_pages(transport_name: str = "grpc"):
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4692,13 +5288,20 @@ def test_list_migrating_vms_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             vmmigration.ListMigratingVmsResponse(
-                migrating_vms=[], next_page_token="def",
+                migrating_vms=[],
+                next_page_token="def",
             ),
             vmmigration.ListMigratingVmsResponse(
-                migrating_vms=[vmmigration.MigratingVm(),], next_page_token="ghi",
+                migrating_vms=[
+                    vmmigration.MigratingVm(),
+                ],
+                next_page_token="ghi",
             ),
             vmmigration.ListMigratingVmsResponse(
-                migrating_vms=[vmmigration.MigratingVm(), vmmigration.MigratingVm(),],
+                migrating_vms=[
+                    vmmigration.MigratingVm(),
+                    vmmigration.MigratingVm(),
+                ],
             ),
             RuntimeError,
         )
@@ -4709,7 +5312,9 @@ def test_list_migrating_vms_pages(transport_name: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_list_migrating_vms_async_pager():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4728,17 +5333,26 @@ async def test_list_migrating_vms_async_pager():
                 next_page_token="abc",
             ),
             vmmigration.ListMigratingVmsResponse(
-                migrating_vms=[], next_page_token="def",
+                migrating_vms=[],
+                next_page_token="def",
             ),
             vmmigration.ListMigratingVmsResponse(
-                migrating_vms=[vmmigration.MigratingVm(),], next_page_token="ghi",
+                migrating_vms=[
+                    vmmigration.MigratingVm(),
+                ],
+                next_page_token="ghi",
             ),
             vmmigration.ListMigratingVmsResponse(
-                migrating_vms=[vmmigration.MigratingVm(), vmmigration.MigratingVm(),],
+                migrating_vms=[
+                    vmmigration.MigratingVm(),
+                    vmmigration.MigratingVm(),
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.list_migrating_vms(request={},)
+        async_pager = await client.list_migrating_vms(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -4750,7 +5364,9 @@ async def test_list_migrating_vms_async_pager():
 
 @pytest.mark.asyncio
 async def test_list_migrating_vms_async_pages():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4769,13 +5385,20 @@ async def test_list_migrating_vms_async_pages():
                 next_page_token="abc",
             ),
             vmmigration.ListMigratingVmsResponse(
-                migrating_vms=[], next_page_token="def",
+                migrating_vms=[],
+                next_page_token="def",
             ),
             vmmigration.ListMigratingVmsResponse(
-                migrating_vms=[vmmigration.MigratingVm(),], next_page_token="ghi",
+                migrating_vms=[
+                    vmmigration.MigratingVm(),
+                ],
+                next_page_token="ghi",
             ),
             vmmigration.ListMigratingVmsResponse(
-                migrating_vms=[vmmigration.MigratingVm(), vmmigration.MigratingVm(),],
+                migrating_vms=[
+                    vmmigration.MigratingVm(),
+                    vmmigration.MigratingVm(),
+                ],
             ),
             RuntimeError,
         )
@@ -4786,10 +5409,17 @@ async def test_list_migrating_vms_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [vmmigration.GetMigratingVmRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.GetMigratingVmRequest,
+        dict,
+    ],
+)
 def test_get_migrating_vm(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4831,7 +5461,8 @@ def test_get_migrating_vm_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4847,7 +5478,8 @@ async def test_get_migrating_vm_async(
     transport: str = "grpc_asyncio", request_type=vmmigration.GetMigratingVmRequest
 ):
     client = VmMigrationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4890,7 +5522,9 @@ async def test_get_migrating_vm_async_from_dict():
 
 
 def test_get_migrating_vm_field_headers():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -4910,12 +5544,17 @@ def test_get_migrating_vm_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_get_migrating_vm_field_headers_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -4937,11 +5576,16 @@ async def test_get_migrating_vm_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_migrating_vm_flattened():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_migrating_vm), "__call__") as call:
@@ -4949,7 +5593,9 @@ def test_get_migrating_vm_flattened():
         call.return_value = vmmigration.MigratingVm()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_migrating_vm(name="name_value",)
+        client.get_migrating_vm(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -4961,19 +5607,24 @@ def test_get_migrating_vm_flattened():
 
 
 def test_get_migrating_vm_flattened_error():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_migrating_vm(
-            vmmigration.GetMigratingVmRequest(), name="name_value",
+            vmmigration.GetMigratingVmRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_get_migrating_vm_flattened_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_migrating_vm), "__call__") as call:
@@ -4985,7 +5636,9 @@ async def test_get_migrating_vm_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_migrating_vm(name="name_value",)
+        response = await client.get_migrating_vm(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -4998,20 +5651,30 @@ async def test_get_migrating_vm_flattened_async():
 
 @pytest.mark.asyncio
 async def test_get_migrating_vm_flattened_error_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_migrating_vm(
-            vmmigration.GetMigratingVmRequest(), name="name_value",
+            vmmigration.GetMigratingVmRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [vmmigration.UpdateMigratingVmRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.UpdateMigratingVmRequest,
+        dict,
+    ],
+)
 def test_update_migrating_vm(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5039,7 +5702,8 @@ def test_update_migrating_vm_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5057,7 +5721,8 @@ async def test_update_migrating_vm_async(
     transport: str = "grpc_asyncio", request_type=vmmigration.UpdateMigratingVmRequest
 ):
     client = VmMigrationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5089,7 +5754,9 @@ async def test_update_migrating_vm_async_from_dict():
 
 
 def test_update_migrating_vm_field_headers():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -5119,7 +5786,9 @@ def test_update_migrating_vm_field_headers():
 
 @pytest.mark.asyncio
 async def test_update_migrating_vm_field_headers_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -5150,7 +5819,9 @@ async def test_update_migrating_vm_field_headers_async():
 
 
 def test_update_migrating_vm_flattened():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5186,7 +5857,9 @@ def test_update_migrating_vm_flattened():
 
 
 def test_update_migrating_vm_flattened_error():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -5204,7 +5877,9 @@ def test_update_migrating_vm_flattened_error():
 
 @pytest.mark.asyncio
 async def test_update_migrating_vm_flattened_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5245,7 +5920,9 @@ async def test_update_migrating_vm_flattened_async():
 
 @pytest.mark.asyncio
 async def test_update_migrating_vm_flattened_error_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -5261,10 +5938,17 @@ async def test_update_migrating_vm_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [vmmigration.DeleteMigratingVmRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.DeleteMigratingVmRequest,
+        dict,
+    ],
+)
 def test_delete_migrating_vm(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5292,7 +5976,8 @@ def test_delete_migrating_vm_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5310,7 +5995,8 @@ async def test_delete_migrating_vm_async(
     transport: str = "grpc_asyncio", request_type=vmmigration.DeleteMigratingVmRequest
 ):
     client = VmMigrationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5342,7 +6028,9 @@ async def test_delete_migrating_vm_async_from_dict():
 
 
 def test_delete_migrating_vm_field_headers():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -5364,12 +6052,17 @@ def test_delete_migrating_vm_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_delete_migrating_vm_field_headers_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -5393,11 +6086,16 @@ async def test_delete_migrating_vm_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_migrating_vm_flattened():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5407,7 +6105,9 @@ def test_delete_migrating_vm_flattened():
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_migrating_vm(name="name_value",)
+        client.delete_migrating_vm(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -5419,19 +6119,24 @@ def test_delete_migrating_vm_flattened():
 
 
 def test_delete_migrating_vm_flattened_error():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_migrating_vm(
-            vmmigration.DeleteMigratingVmRequest(), name="name_value",
+            vmmigration.DeleteMigratingVmRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_delete_migrating_vm_flattened_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5445,7 +6150,9 @@ async def test_delete_migrating_vm_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_migrating_vm(name="name_value",)
+        response = await client.delete_migrating_vm(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -5458,20 +6165,30 @@ async def test_delete_migrating_vm_flattened_async():
 
 @pytest.mark.asyncio
 async def test_delete_migrating_vm_flattened_error_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_migrating_vm(
-            vmmigration.DeleteMigratingVmRequest(), name="name_value",
+            vmmigration.DeleteMigratingVmRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [vmmigration.StartMigrationRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.StartMigrationRequest,
+        dict,
+    ],
+)
 def test_start_migration(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5497,7 +6214,8 @@ def test_start_migration_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5513,7 +6231,8 @@ async def test_start_migration_async(
     transport: str = "grpc_asyncio", request_type=vmmigration.StartMigrationRequest
 ):
     client = VmMigrationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5543,7 +6262,9 @@ async def test_start_migration_async_from_dict():
 
 
 def test_start_migration_field_headers():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -5563,14 +6284,17 @@ def test_start_migration_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "migrating_vm=migrating_vm/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "migrating_vm=migrating_vm/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_start_migration_field_headers_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -5592,13 +6316,16 @@ async def test_start_migration_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "migrating_vm=migrating_vm/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "migrating_vm=migrating_vm/value",
+    ) in kw["metadata"]
 
 
 def test_start_migration_flattened():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.start_migration), "__call__") as call:
@@ -5606,7 +6333,9 @@ def test_start_migration_flattened():
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.start_migration(migrating_vm="migrating_vm_value",)
+        client.start_migration(
+            migrating_vm="migrating_vm_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -5618,19 +6347,24 @@ def test_start_migration_flattened():
 
 
 def test_start_migration_flattened_error():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.start_migration(
-            vmmigration.StartMigrationRequest(), migrating_vm="migrating_vm_value",
+            vmmigration.StartMigrationRequest(),
+            migrating_vm="migrating_vm_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_start_migration_flattened_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.start_migration), "__call__") as call:
@@ -5642,7 +6376,9 @@ async def test_start_migration_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.start_migration(migrating_vm="migrating_vm_value",)
+        response = await client.start_migration(
+            migrating_vm="migrating_vm_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -5655,20 +6391,30 @@ async def test_start_migration_flattened_async():
 
 @pytest.mark.asyncio
 async def test_start_migration_flattened_error_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.start_migration(
-            vmmigration.StartMigrationRequest(), migrating_vm="migrating_vm_value",
+            vmmigration.StartMigrationRequest(),
+            migrating_vm="migrating_vm_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [vmmigration.ResumeMigrationRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.ResumeMigrationRequest,
+        dict,
+    ],
+)
 def test_resume_migration(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5694,7 +6440,8 @@ def test_resume_migration_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5710,7 +6457,8 @@ async def test_resume_migration_async(
     transport: str = "grpc_asyncio", request_type=vmmigration.ResumeMigrationRequest
 ):
     client = VmMigrationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5740,7 +6488,9 @@ async def test_resume_migration_async_from_dict():
 
 
 def test_resume_migration_field_headers():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -5760,14 +6510,17 @@ def test_resume_migration_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "migrating_vm=migrating_vm/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "migrating_vm=migrating_vm/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_resume_migration_field_headers_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -5789,15 +6542,23 @@ async def test_resume_migration_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "migrating_vm=migrating_vm/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "migrating_vm=migrating_vm/value",
+    ) in kw["metadata"]
 
 
-@pytest.mark.parametrize("request_type", [vmmigration.PauseMigrationRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.PauseMigrationRequest,
+        dict,
+    ],
+)
 def test_pause_migration(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5823,7 +6584,8 @@ def test_pause_migration_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5839,7 +6601,8 @@ async def test_pause_migration_async(
     transport: str = "grpc_asyncio", request_type=vmmigration.PauseMigrationRequest
 ):
     client = VmMigrationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5869,7 +6632,9 @@ async def test_pause_migration_async_from_dict():
 
 
 def test_pause_migration_field_headers():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -5889,14 +6654,17 @@ def test_pause_migration_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "migrating_vm=migrating_vm/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "migrating_vm=migrating_vm/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_pause_migration_field_headers_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -5918,15 +6686,23 @@ async def test_pause_migration_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "migrating_vm=migrating_vm/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "migrating_vm=migrating_vm/value",
+    ) in kw["metadata"]
 
 
-@pytest.mark.parametrize("request_type", [vmmigration.FinalizeMigrationRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.FinalizeMigrationRequest,
+        dict,
+    ],
+)
 def test_finalize_migration(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5954,7 +6730,8 @@ def test_finalize_migration_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5972,7 +6749,8 @@ async def test_finalize_migration_async(
     transport: str = "grpc_asyncio", request_type=vmmigration.FinalizeMigrationRequest
 ):
     client = VmMigrationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -6004,7 +6782,9 @@ async def test_finalize_migration_async_from_dict():
 
 
 def test_finalize_migration_field_headers():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -6026,14 +6806,17 @@ def test_finalize_migration_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "migrating_vm=migrating_vm/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "migrating_vm=migrating_vm/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_finalize_migration_field_headers_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -6057,13 +6840,16 @@ async def test_finalize_migration_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "migrating_vm=migrating_vm/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "migrating_vm=migrating_vm/value",
+    ) in kw["metadata"]
 
 
 def test_finalize_migration_flattened():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6073,7 +6859,9 @@ def test_finalize_migration_flattened():
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.finalize_migration(migrating_vm="migrating_vm_value",)
+        client.finalize_migration(
+            migrating_vm="migrating_vm_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -6085,19 +6873,24 @@ def test_finalize_migration_flattened():
 
 
 def test_finalize_migration_flattened_error():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.finalize_migration(
-            vmmigration.FinalizeMigrationRequest(), migrating_vm="migrating_vm_value",
+            vmmigration.FinalizeMigrationRequest(),
+            migrating_vm="migrating_vm_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_finalize_migration_flattened_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6111,7 +6904,9 @@ async def test_finalize_migration_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.finalize_migration(migrating_vm="migrating_vm_value",)
+        response = await client.finalize_migration(
+            migrating_vm="migrating_vm_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -6124,20 +6919,30 @@ async def test_finalize_migration_flattened_async():
 
 @pytest.mark.asyncio
 async def test_finalize_migration_flattened_error_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.finalize_migration(
-            vmmigration.FinalizeMigrationRequest(), migrating_vm="migrating_vm_value",
+            vmmigration.FinalizeMigrationRequest(),
+            migrating_vm="migrating_vm_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [vmmigration.CreateCloneJobRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.CreateCloneJobRequest,
+        dict,
+    ],
+)
 def test_create_clone_job(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -6163,7 +6968,8 @@ def test_create_clone_job_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6179,7 +6985,8 @@ async def test_create_clone_job_async(
     transport: str = "grpc_asyncio", request_type=vmmigration.CreateCloneJobRequest
 ):
     client = VmMigrationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -6209,7 +7016,9 @@ async def test_create_clone_job_async_from_dict():
 
 
 def test_create_clone_job_field_headers():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -6229,12 +7038,17 @@ def test_create_clone_job_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_create_clone_job_field_headers_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -6256,11 +7070,16 @@ async def test_create_clone_job_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_clone_job_flattened():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_clone_job), "__call__") as call:
@@ -6298,7 +7117,9 @@ def test_create_clone_job_flattened():
 
 
 def test_create_clone_job_flattened_error():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -6317,7 +7138,9 @@ def test_create_clone_job_flattened_error():
 
 @pytest.mark.asyncio
 async def test_create_clone_job_flattened_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_clone_job), "__call__") as call:
@@ -6360,7 +7183,9 @@ async def test_create_clone_job_flattened_async():
 
 @pytest.mark.asyncio
 async def test_create_clone_job_flattened_error_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -6377,10 +7202,17 @@ async def test_create_clone_job_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [vmmigration.CancelCloneJobRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.CancelCloneJobRequest,
+        dict,
+    ],
+)
 def test_cancel_clone_job(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -6406,7 +7238,8 @@ def test_cancel_clone_job_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6422,7 +7255,8 @@ async def test_cancel_clone_job_async(
     transport: str = "grpc_asyncio", request_type=vmmigration.CancelCloneJobRequest
 ):
     client = VmMigrationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -6452,7 +7286,9 @@ async def test_cancel_clone_job_async_from_dict():
 
 
 def test_cancel_clone_job_field_headers():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -6472,12 +7308,17 @@ def test_cancel_clone_job_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_cancel_clone_job_field_headers_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -6499,11 +7340,16 @@ async def test_cancel_clone_job_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_cancel_clone_job_flattened():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.cancel_clone_job), "__call__") as call:
@@ -6511,7 +7357,9 @@ def test_cancel_clone_job_flattened():
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.cancel_clone_job(name="name_value",)
+        client.cancel_clone_job(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -6523,19 +7371,24 @@ def test_cancel_clone_job_flattened():
 
 
 def test_cancel_clone_job_flattened_error():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.cancel_clone_job(
-            vmmigration.CancelCloneJobRequest(), name="name_value",
+            vmmigration.CancelCloneJobRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_cancel_clone_job_flattened_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.cancel_clone_job), "__call__") as call:
@@ -6547,7 +7400,9 @@ async def test_cancel_clone_job_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.cancel_clone_job(name="name_value",)
+        response = await client.cancel_clone_job(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -6560,20 +7415,30 @@ async def test_cancel_clone_job_flattened_async():
 
 @pytest.mark.asyncio
 async def test_cancel_clone_job_flattened_error_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.cancel_clone_job(
-            vmmigration.CancelCloneJobRequest(), name="name_value",
+            vmmigration.CancelCloneJobRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [vmmigration.ListCloneJobsRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.ListCloneJobsRequest,
+        dict,
+    ],
+)
 def test_list_clone_jobs(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -6584,7 +7449,8 @@ def test_list_clone_jobs(request_type, transport: str = "grpc"):
     with mock.patch.object(type(client.transport.list_clone_jobs), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = vmmigration.ListCloneJobsResponse(
-            next_page_token="next_page_token_value", unreachable=["unreachable_value"],
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
         )
         response = client.list_clone_jobs(request)
 
@@ -6603,7 +7469,8 @@ def test_list_clone_jobs_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6619,7 +7486,8 @@ async def test_list_clone_jobs_async(
     transport: str = "grpc_asyncio", request_type=vmmigration.ListCloneJobsRequest
 ):
     client = VmMigrationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -6654,7 +7522,9 @@ async def test_list_clone_jobs_async_from_dict():
 
 
 def test_list_clone_jobs_field_headers():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -6674,12 +7544,17 @@ def test_list_clone_jobs_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_list_clone_jobs_field_headers_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -6701,11 +7576,16 @@ async def test_list_clone_jobs_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_clone_jobs_flattened():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_clone_jobs), "__call__") as call:
@@ -6713,7 +7593,9 @@ def test_list_clone_jobs_flattened():
         call.return_value = vmmigration.ListCloneJobsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_clone_jobs(parent="parent_value",)
+        client.list_clone_jobs(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -6725,19 +7607,24 @@ def test_list_clone_jobs_flattened():
 
 
 def test_list_clone_jobs_flattened_error():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_clone_jobs(
-            vmmigration.ListCloneJobsRequest(), parent="parent_value",
+            vmmigration.ListCloneJobsRequest(),
+            parent="parent_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_list_clone_jobs_flattened_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_clone_jobs), "__call__") as call:
@@ -6749,7 +7636,9 @@ async def test_list_clone_jobs_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_clone_jobs(parent="parent_value",)
+        response = await client.list_clone_jobs(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -6762,19 +7651,23 @@ async def test_list_clone_jobs_flattened_async():
 
 @pytest.mark.asyncio
 async def test_list_clone_jobs_flattened_error_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_clone_jobs(
-            vmmigration.ListCloneJobsRequest(), parent="parent_value",
+            vmmigration.ListCloneJobsRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_clone_jobs_pager(transport_name: str = "grpc"):
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6789,12 +7682,21 @@ def test_list_clone_jobs_pager(transport_name: str = "grpc"):
                 ],
                 next_page_token="abc",
             ),
-            vmmigration.ListCloneJobsResponse(clone_jobs=[], next_page_token="def",),
             vmmigration.ListCloneJobsResponse(
-                clone_jobs=[vmmigration.CloneJob(),], next_page_token="ghi",
+                clone_jobs=[],
+                next_page_token="def",
             ),
             vmmigration.ListCloneJobsResponse(
-                clone_jobs=[vmmigration.CloneJob(), vmmigration.CloneJob(),],
+                clone_jobs=[
+                    vmmigration.CloneJob(),
+                ],
+                next_page_token="ghi",
+            ),
+            vmmigration.ListCloneJobsResponse(
+                clone_jobs=[
+                    vmmigration.CloneJob(),
+                    vmmigration.CloneJob(),
+                ],
             ),
             RuntimeError,
         )
@@ -6814,7 +7716,8 @@ def test_list_clone_jobs_pager(transport_name: str = "grpc"):
 
 def test_list_clone_jobs_pages(transport_name: str = "grpc"):
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6829,12 +7732,21 @@ def test_list_clone_jobs_pages(transport_name: str = "grpc"):
                 ],
                 next_page_token="abc",
             ),
-            vmmigration.ListCloneJobsResponse(clone_jobs=[], next_page_token="def",),
             vmmigration.ListCloneJobsResponse(
-                clone_jobs=[vmmigration.CloneJob(),], next_page_token="ghi",
+                clone_jobs=[],
+                next_page_token="def",
             ),
             vmmigration.ListCloneJobsResponse(
-                clone_jobs=[vmmigration.CloneJob(), vmmigration.CloneJob(),],
+                clone_jobs=[
+                    vmmigration.CloneJob(),
+                ],
+                next_page_token="ghi",
+            ),
+            vmmigration.ListCloneJobsResponse(
+                clone_jobs=[
+                    vmmigration.CloneJob(),
+                    vmmigration.CloneJob(),
+                ],
             ),
             RuntimeError,
         )
@@ -6845,7 +7757,9 @@ def test_list_clone_jobs_pages(transport_name: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_list_clone_jobs_async_pager():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6861,16 +7775,27 @@ async def test_list_clone_jobs_async_pager():
                 ],
                 next_page_token="abc",
             ),
-            vmmigration.ListCloneJobsResponse(clone_jobs=[], next_page_token="def",),
             vmmigration.ListCloneJobsResponse(
-                clone_jobs=[vmmigration.CloneJob(),], next_page_token="ghi",
+                clone_jobs=[],
+                next_page_token="def",
             ),
             vmmigration.ListCloneJobsResponse(
-                clone_jobs=[vmmigration.CloneJob(), vmmigration.CloneJob(),],
+                clone_jobs=[
+                    vmmigration.CloneJob(),
+                ],
+                next_page_token="ghi",
+            ),
+            vmmigration.ListCloneJobsResponse(
+                clone_jobs=[
+                    vmmigration.CloneJob(),
+                    vmmigration.CloneJob(),
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.list_clone_jobs(request={},)
+        async_pager = await client.list_clone_jobs(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -6882,7 +7807,9 @@ async def test_list_clone_jobs_async_pager():
 
 @pytest.mark.asyncio
 async def test_list_clone_jobs_async_pages():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6898,12 +7825,21 @@ async def test_list_clone_jobs_async_pages():
                 ],
                 next_page_token="abc",
             ),
-            vmmigration.ListCloneJobsResponse(clone_jobs=[], next_page_token="def",),
             vmmigration.ListCloneJobsResponse(
-                clone_jobs=[vmmigration.CloneJob(),], next_page_token="ghi",
+                clone_jobs=[],
+                next_page_token="def",
             ),
             vmmigration.ListCloneJobsResponse(
-                clone_jobs=[vmmigration.CloneJob(), vmmigration.CloneJob(),],
+                clone_jobs=[
+                    vmmigration.CloneJob(),
+                ],
+                next_page_token="ghi",
+            ),
+            vmmigration.ListCloneJobsResponse(
+                clone_jobs=[
+                    vmmigration.CloneJob(),
+                    vmmigration.CloneJob(),
+                ],
             ),
             RuntimeError,
         )
@@ -6914,10 +7850,17 @@ async def test_list_clone_jobs_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [vmmigration.GetCloneJobRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.GetCloneJobRequest,
+        dict,
+    ],
+)
 def test_get_clone_job(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -6951,7 +7894,8 @@ def test_get_clone_job_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6967,7 +7911,8 @@ async def test_get_clone_job_async(
     transport: str = "grpc_asyncio", request_type=vmmigration.GetCloneJobRequest
 ):
     client = VmMigrationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -6979,7 +7924,8 @@ async def test_get_clone_job_async(
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
             vmmigration.CloneJob(
-                name="name_value", state=vmmigration.CloneJob.State.PENDING,
+                name="name_value",
+                state=vmmigration.CloneJob.State.PENDING,
             )
         )
         response = await client.get_clone_job(request)
@@ -7001,7 +7947,9 @@ async def test_get_clone_job_async_from_dict():
 
 
 def test_get_clone_job_field_headers():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -7021,12 +7969,17 @@ def test_get_clone_job_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_get_clone_job_field_headers_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -7048,11 +8001,16 @@ async def test_get_clone_job_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_clone_job_flattened():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_clone_job), "__call__") as call:
@@ -7060,7 +8018,9 @@ def test_get_clone_job_flattened():
         call.return_value = vmmigration.CloneJob()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_clone_job(name="name_value",)
+        client.get_clone_job(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -7072,19 +8032,24 @@ def test_get_clone_job_flattened():
 
 
 def test_get_clone_job_flattened_error():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_clone_job(
-            vmmigration.GetCloneJobRequest(), name="name_value",
+            vmmigration.GetCloneJobRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_get_clone_job_flattened_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_clone_job), "__call__") as call:
@@ -7096,7 +8061,9 @@ async def test_get_clone_job_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_clone_job(name="name_value",)
+        response = await client.get_clone_job(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -7109,20 +8076,30 @@ async def test_get_clone_job_flattened_async():
 
 @pytest.mark.asyncio
 async def test_get_clone_job_flattened_error_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_clone_job(
-            vmmigration.GetCloneJobRequest(), name="name_value",
+            vmmigration.GetCloneJobRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [vmmigration.CreateCutoverJobRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.CreateCutoverJobRequest,
+        dict,
+    ],
+)
 def test_create_cutover_job(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -7150,7 +8127,8 @@ def test_create_cutover_job_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7168,7 +8146,8 @@ async def test_create_cutover_job_async(
     transport: str = "grpc_asyncio", request_type=vmmigration.CreateCutoverJobRequest
 ):
     client = VmMigrationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -7200,7 +8179,9 @@ async def test_create_cutover_job_async_from_dict():
 
 
 def test_create_cutover_job_field_headers():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -7222,12 +8203,17 @@ def test_create_cutover_job_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_create_cutover_job_field_headers_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -7251,11 +8237,16 @@ async def test_create_cutover_job_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_cutover_job_flattened():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7295,7 +8286,9 @@ def test_create_cutover_job_flattened():
 
 
 def test_create_cutover_job_flattened_error():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -7314,7 +8307,9 @@ def test_create_cutover_job_flattened_error():
 
 @pytest.mark.asyncio
 async def test_create_cutover_job_flattened_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7359,7 +8354,9 @@ async def test_create_cutover_job_flattened_async():
 
 @pytest.mark.asyncio
 async def test_create_cutover_job_flattened_error_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -7376,10 +8373,17 @@ async def test_create_cutover_job_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [vmmigration.CancelCutoverJobRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.CancelCutoverJobRequest,
+        dict,
+    ],
+)
 def test_cancel_cutover_job(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -7407,7 +8411,8 @@ def test_cancel_cutover_job_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7425,7 +8430,8 @@ async def test_cancel_cutover_job_async(
     transport: str = "grpc_asyncio", request_type=vmmigration.CancelCutoverJobRequest
 ):
     client = VmMigrationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -7457,7 +8463,9 @@ async def test_cancel_cutover_job_async_from_dict():
 
 
 def test_cancel_cutover_job_field_headers():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -7479,12 +8487,17 @@ def test_cancel_cutover_job_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_cancel_cutover_job_field_headers_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -7508,11 +8521,16 @@ async def test_cancel_cutover_job_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_cancel_cutover_job_flattened():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7522,7 +8540,9 @@ def test_cancel_cutover_job_flattened():
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.cancel_cutover_job(name="name_value",)
+        client.cancel_cutover_job(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -7534,19 +8554,24 @@ def test_cancel_cutover_job_flattened():
 
 
 def test_cancel_cutover_job_flattened_error():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.cancel_cutover_job(
-            vmmigration.CancelCutoverJobRequest(), name="name_value",
+            vmmigration.CancelCutoverJobRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_cancel_cutover_job_flattened_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7560,7 +8585,9 @@ async def test_cancel_cutover_job_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.cancel_cutover_job(name="name_value",)
+        response = await client.cancel_cutover_job(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -7573,20 +8600,30 @@ async def test_cancel_cutover_job_flattened_async():
 
 @pytest.mark.asyncio
 async def test_cancel_cutover_job_flattened_error_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.cancel_cutover_job(
-            vmmigration.CancelCutoverJobRequest(), name="name_value",
+            vmmigration.CancelCutoverJobRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [vmmigration.ListCutoverJobsRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.ListCutoverJobsRequest,
+        dict,
+    ],
+)
 def test_list_cutover_jobs(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -7599,7 +8636,8 @@ def test_list_cutover_jobs(request_type, transport: str = "grpc"):
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = vmmigration.ListCutoverJobsResponse(
-            next_page_token="next_page_token_value", unreachable=["unreachable_value"],
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
         )
         response = client.list_cutover_jobs(request)
 
@@ -7618,7 +8656,8 @@ def test_list_cutover_jobs_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7636,7 +8675,8 @@ async def test_list_cutover_jobs_async(
     transport: str = "grpc_asyncio", request_type=vmmigration.ListCutoverJobsRequest
 ):
     client = VmMigrationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -7673,7 +8713,9 @@ async def test_list_cutover_jobs_async_from_dict():
 
 
 def test_list_cutover_jobs_field_headers():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -7695,12 +8737,17 @@ def test_list_cutover_jobs_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_list_cutover_jobs_field_headers_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -7724,11 +8771,16 @@ async def test_list_cutover_jobs_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_cutover_jobs_flattened():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7738,7 +8790,9 @@ def test_list_cutover_jobs_flattened():
         call.return_value = vmmigration.ListCutoverJobsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_cutover_jobs(parent="parent_value",)
+        client.list_cutover_jobs(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -7750,19 +8804,24 @@ def test_list_cutover_jobs_flattened():
 
 
 def test_list_cutover_jobs_flattened_error():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_cutover_jobs(
-            vmmigration.ListCutoverJobsRequest(), parent="parent_value",
+            vmmigration.ListCutoverJobsRequest(),
+            parent="parent_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_list_cutover_jobs_flattened_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7776,7 +8835,9 @@ async def test_list_cutover_jobs_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_cutover_jobs(parent="parent_value",)
+        response = await client.list_cutover_jobs(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -7789,19 +8850,23 @@ async def test_list_cutover_jobs_flattened_async():
 
 @pytest.mark.asyncio
 async def test_list_cutover_jobs_flattened_error_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_cutover_jobs(
-            vmmigration.ListCutoverJobsRequest(), parent="parent_value",
+            vmmigration.ListCutoverJobsRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_cutover_jobs_pager(transport_name: str = "grpc"):
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7819,13 +8884,20 @@ def test_list_cutover_jobs_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             vmmigration.ListCutoverJobsResponse(
-                cutover_jobs=[], next_page_token="def",
+                cutover_jobs=[],
+                next_page_token="def",
             ),
             vmmigration.ListCutoverJobsResponse(
-                cutover_jobs=[vmmigration.CutoverJob(),], next_page_token="ghi",
+                cutover_jobs=[
+                    vmmigration.CutoverJob(),
+                ],
+                next_page_token="ghi",
             ),
             vmmigration.ListCutoverJobsResponse(
-                cutover_jobs=[vmmigration.CutoverJob(), vmmigration.CutoverJob(),],
+                cutover_jobs=[
+                    vmmigration.CutoverJob(),
+                    vmmigration.CutoverJob(),
+                ],
             ),
             RuntimeError,
         )
@@ -7845,7 +8917,8 @@ def test_list_cutover_jobs_pager(transport_name: str = "grpc"):
 
 def test_list_cutover_jobs_pages(transport_name: str = "grpc"):
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -7863,13 +8936,20 @@ def test_list_cutover_jobs_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             vmmigration.ListCutoverJobsResponse(
-                cutover_jobs=[], next_page_token="def",
+                cutover_jobs=[],
+                next_page_token="def",
             ),
             vmmigration.ListCutoverJobsResponse(
-                cutover_jobs=[vmmigration.CutoverJob(),], next_page_token="ghi",
+                cutover_jobs=[
+                    vmmigration.CutoverJob(),
+                ],
+                next_page_token="ghi",
             ),
             vmmigration.ListCutoverJobsResponse(
-                cutover_jobs=[vmmigration.CutoverJob(), vmmigration.CutoverJob(),],
+                cutover_jobs=[
+                    vmmigration.CutoverJob(),
+                    vmmigration.CutoverJob(),
+                ],
             ),
             RuntimeError,
         )
@@ -7880,7 +8960,9 @@ def test_list_cutover_jobs_pages(transport_name: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_list_cutover_jobs_async_pager():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7899,17 +8981,26 @@ async def test_list_cutover_jobs_async_pager():
                 next_page_token="abc",
             ),
             vmmigration.ListCutoverJobsResponse(
-                cutover_jobs=[], next_page_token="def",
+                cutover_jobs=[],
+                next_page_token="def",
             ),
             vmmigration.ListCutoverJobsResponse(
-                cutover_jobs=[vmmigration.CutoverJob(),], next_page_token="ghi",
+                cutover_jobs=[
+                    vmmigration.CutoverJob(),
+                ],
+                next_page_token="ghi",
             ),
             vmmigration.ListCutoverJobsResponse(
-                cutover_jobs=[vmmigration.CutoverJob(), vmmigration.CutoverJob(),],
+                cutover_jobs=[
+                    vmmigration.CutoverJob(),
+                    vmmigration.CutoverJob(),
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.list_cutover_jobs(request={},)
+        async_pager = await client.list_cutover_jobs(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -7921,7 +9012,9 @@ async def test_list_cutover_jobs_async_pager():
 
 @pytest.mark.asyncio
 async def test_list_cutover_jobs_async_pages():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -7940,13 +9033,20 @@ async def test_list_cutover_jobs_async_pages():
                 next_page_token="abc",
             ),
             vmmigration.ListCutoverJobsResponse(
-                cutover_jobs=[], next_page_token="def",
+                cutover_jobs=[],
+                next_page_token="def",
             ),
             vmmigration.ListCutoverJobsResponse(
-                cutover_jobs=[vmmigration.CutoverJob(),], next_page_token="ghi",
+                cutover_jobs=[
+                    vmmigration.CutoverJob(),
+                ],
+                next_page_token="ghi",
             ),
             vmmigration.ListCutoverJobsResponse(
-                cutover_jobs=[vmmigration.CutoverJob(), vmmigration.CutoverJob(),],
+                cutover_jobs=[
+                    vmmigration.CutoverJob(),
+                    vmmigration.CutoverJob(),
+                ],
             ),
             RuntimeError,
         )
@@ -7957,10 +9057,17 @@ async def test_list_cutover_jobs_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [vmmigration.GetCutoverJobRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.GetCutoverJobRequest,
+        dict,
+    ],
+)
 def test_get_cutover_job(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -7998,7 +9105,8 @@ def test_get_cutover_job_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8014,7 +9122,8 @@ async def test_get_cutover_job_async(
     transport: str = "grpc_asyncio", request_type=vmmigration.GetCutoverJobRequest
 ):
     client = VmMigrationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -8053,7 +9162,9 @@ async def test_get_cutover_job_async_from_dict():
 
 
 def test_get_cutover_job_field_headers():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -8073,12 +9184,17 @@ def test_get_cutover_job_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_get_cutover_job_field_headers_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -8100,11 +9216,16 @@ async def test_get_cutover_job_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_cutover_job_flattened():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_cutover_job), "__call__") as call:
@@ -8112,7 +9233,9 @@ def test_get_cutover_job_flattened():
         call.return_value = vmmigration.CutoverJob()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_cutover_job(name="name_value",)
+        client.get_cutover_job(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -8124,19 +9247,24 @@ def test_get_cutover_job_flattened():
 
 
 def test_get_cutover_job_flattened_error():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_cutover_job(
-            vmmigration.GetCutoverJobRequest(), name="name_value",
+            vmmigration.GetCutoverJobRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_get_cutover_job_flattened_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_cutover_job), "__call__") as call:
@@ -8148,7 +9276,9 @@ async def test_get_cutover_job_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_cutover_job(name="name_value",)
+        response = await client.get_cutover_job(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -8161,20 +9291,30 @@ async def test_get_cutover_job_flattened_async():
 
 @pytest.mark.asyncio
 async def test_get_cutover_job_flattened_error_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_cutover_job(
-            vmmigration.GetCutoverJobRequest(), name="name_value",
+            vmmigration.GetCutoverJobRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [vmmigration.ListGroupsRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.ListGroupsRequest,
+        dict,
+    ],
+)
 def test_list_groups(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -8185,7 +9325,8 @@ def test_list_groups(request_type, transport: str = "grpc"):
     with mock.patch.object(type(client.transport.list_groups), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = vmmigration.ListGroupsResponse(
-            next_page_token="next_page_token_value", unreachable=["unreachable_value"],
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
         )
         response = client.list_groups(request)
 
@@ -8204,7 +9345,8 @@ def test_list_groups_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8220,7 +9362,8 @@ async def test_list_groups_async(
     transport: str = "grpc_asyncio", request_type=vmmigration.ListGroupsRequest
 ):
     client = VmMigrationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -8255,7 +9398,9 @@ async def test_list_groups_async_from_dict():
 
 
 def test_list_groups_field_headers():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -8275,12 +9420,17 @@ def test_list_groups_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_list_groups_field_headers_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -8302,11 +9452,16 @@ async def test_list_groups_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_groups_flattened():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_groups), "__call__") as call:
@@ -8314,7 +9469,9 @@ def test_list_groups_flattened():
         call.return_value = vmmigration.ListGroupsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_groups(parent="parent_value",)
+        client.list_groups(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -8326,19 +9483,24 @@ def test_list_groups_flattened():
 
 
 def test_list_groups_flattened_error():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_groups(
-            vmmigration.ListGroupsRequest(), parent="parent_value",
+            vmmigration.ListGroupsRequest(),
+            parent="parent_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_list_groups_flattened_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_groups), "__call__") as call:
@@ -8350,7 +9512,9 @@ async def test_list_groups_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_groups(parent="parent_value",)
+        response = await client.list_groups(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -8363,19 +9527,23 @@ async def test_list_groups_flattened_async():
 
 @pytest.mark.asyncio
 async def test_list_groups_flattened_error_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_groups(
-            vmmigration.ListGroupsRequest(), parent="parent_value",
+            vmmigration.ListGroupsRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_groups_pager(transport_name: str = "grpc"):
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8383,15 +9551,28 @@ def test_list_groups_pager(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             vmmigration.ListGroupsResponse(
-                groups=[vmmigration.Group(), vmmigration.Group(), vmmigration.Group(),],
+                groups=[
+                    vmmigration.Group(),
+                    vmmigration.Group(),
+                    vmmigration.Group(),
+                ],
                 next_page_token="abc",
             ),
-            vmmigration.ListGroupsResponse(groups=[], next_page_token="def",),
             vmmigration.ListGroupsResponse(
-                groups=[vmmigration.Group(),], next_page_token="ghi",
+                groups=[],
+                next_page_token="def",
             ),
             vmmigration.ListGroupsResponse(
-                groups=[vmmigration.Group(), vmmigration.Group(),],
+                groups=[
+                    vmmigration.Group(),
+                ],
+                next_page_token="ghi",
+            ),
+            vmmigration.ListGroupsResponse(
+                groups=[
+                    vmmigration.Group(),
+                    vmmigration.Group(),
+                ],
             ),
             RuntimeError,
         )
@@ -8411,7 +9592,8 @@ def test_list_groups_pager(transport_name: str = "grpc"):
 
 def test_list_groups_pages(transport_name: str = "grpc"):
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8419,15 +9601,28 @@ def test_list_groups_pages(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             vmmigration.ListGroupsResponse(
-                groups=[vmmigration.Group(), vmmigration.Group(), vmmigration.Group(),],
+                groups=[
+                    vmmigration.Group(),
+                    vmmigration.Group(),
+                    vmmigration.Group(),
+                ],
                 next_page_token="abc",
             ),
-            vmmigration.ListGroupsResponse(groups=[], next_page_token="def",),
             vmmigration.ListGroupsResponse(
-                groups=[vmmigration.Group(),], next_page_token="ghi",
+                groups=[],
+                next_page_token="def",
             ),
             vmmigration.ListGroupsResponse(
-                groups=[vmmigration.Group(), vmmigration.Group(),],
+                groups=[
+                    vmmigration.Group(),
+                ],
+                next_page_token="ghi",
+            ),
+            vmmigration.ListGroupsResponse(
+                groups=[
+                    vmmigration.Group(),
+                    vmmigration.Group(),
+                ],
             ),
             RuntimeError,
         )
@@ -8438,7 +9633,9 @@ def test_list_groups_pages(transport_name: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_list_groups_async_pager():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8447,19 +9644,34 @@ async def test_list_groups_async_pager():
         # Set the response to a series of pages.
         call.side_effect = (
             vmmigration.ListGroupsResponse(
-                groups=[vmmigration.Group(), vmmigration.Group(), vmmigration.Group(),],
+                groups=[
+                    vmmigration.Group(),
+                    vmmigration.Group(),
+                    vmmigration.Group(),
+                ],
                 next_page_token="abc",
             ),
-            vmmigration.ListGroupsResponse(groups=[], next_page_token="def",),
             vmmigration.ListGroupsResponse(
-                groups=[vmmigration.Group(),], next_page_token="ghi",
+                groups=[],
+                next_page_token="def",
             ),
             vmmigration.ListGroupsResponse(
-                groups=[vmmigration.Group(), vmmigration.Group(),],
+                groups=[
+                    vmmigration.Group(),
+                ],
+                next_page_token="ghi",
+            ),
+            vmmigration.ListGroupsResponse(
+                groups=[
+                    vmmigration.Group(),
+                    vmmigration.Group(),
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.list_groups(request={},)
+        async_pager = await client.list_groups(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -8471,7 +9683,9 @@ async def test_list_groups_async_pager():
 
 @pytest.mark.asyncio
 async def test_list_groups_async_pages():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -8480,15 +9694,28 @@ async def test_list_groups_async_pages():
         # Set the response to a series of pages.
         call.side_effect = (
             vmmigration.ListGroupsResponse(
-                groups=[vmmigration.Group(), vmmigration.Group(), vmmigration.Group(),],
+                groups=[
+                    vmmigration.Group(),
+                    vmmigration.Group(),
+                    vmmigration.Group(),
+                ],
                 next_page_token="abc",
             ),
-            vmmigration.ListGroupsResponse(groups=[], next_page_token="def",),
             vmmigration.ListGroupsResponse(
-                groups=[vmmigration.Group(),], next_page_token="ghi",
+                groups=[],
+                next_page_token="def",
             ),
             vmmigration.ListGroupsResponse(
-                groups=[vmmigration.Group(), vmmigration.Group(),],
+                groups=[
+                    vmmigration.Group(),
+                ],
+                next_page_token="ghi",
+            ),
+            vmmigration.ListGroupsResponse(
+                groups=[
+                    vmmigration.Group(),
+                    vmmigration.Group(),
+                ],
             ),
             RuntimeError,
         )
@@ -8499,10 +9726,17 @@ async def test_list_groups_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [vmmigration.GetGroupRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.GetGroupRequest,
+        dict,
+    ],
+)
 def test_get_group(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -8535,7 +9769,8 @@ def test_get_group_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8551,7 +9786,8 @@ async def test_get_group_async(
     transport: str = "grpc_asyncio", request_type=vmmigration.GetGroupRequest
 ):
     client = VmMigrationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -8588,7 +9824,9 @@ async def test_get_group_async_from_dict():
 
 
 def test_get_group_field_headers():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -8608,12 +9846,17 @@ def test_get_group_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_get_group_field_headers_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -8633,11 +9876,16 @@ async def test_get_group_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_group_flattened():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_group), "__call__") as call:
@@ -8645,7 +9893,9 @@ def test_get_group_flattened():
         call.return_value = vmmigration.Group()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_group(name="name_value",)
+        client.get_group(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -8657,19 +9907,24 @@ def test_get_group_flattened():
 
 
 def test_get_group_flattened_error():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_group(
-            vmmigration.GetGroupRequest(), name="name_value",
+            vmmigration.GetGroupRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_get_group_flattened_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_group), "__call__") as call:
@@ -8679,7 +9934,9 @@ async def test_get_group_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(vmmigration.Group())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_group(name="name_value",)
+        response = await client.get_group(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -8692,20 +9949,30 @@ async def test_get_group_flattened_async():
 
 @pytest.mark.asyncio
 async def test_get_group_flattened_error_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_group(
-            vmmigration.GetGroupRequest(), name="name_value",
+            vmmigration.GetGroupRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [vmmigration.CreateGroupRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.CreateGroupRequest,
+        dict,
+    ],
+)
 def test_create_group(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -8731,7 +9998,8 @@ def test_create_group_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8747,7 +10015,8 @@ async def test_create_group_async(
     transport: str = "grpc_asyncio", request_type=vmmigration.CreateGroupRequest
 ):
     client = VmMigrationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -8777,7 +10046,9 @@ async def test_create_group_async_from_dict():
 
 
 def test_create_group_field_headers():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -8797,12 +10068,17 @@ def test_create_group_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_create_group_field_headers_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -8824,11 +10100,16 @@ async def test_create_group_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_group_flattened():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_group), "__call__") as call:
@@ -8858,7 +10139,9 @@ def test_create_group_flattened():
 
 
 def test_create_group_flattened_error():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -8873,7 +10156,9 @@ def test_create_group_flattened_error():
 
 @pytest.mark.asyncio
 async def test_create_group_flattened_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_group), "__call__") as call:
@@ -8908,7 +10193,9 @@ async def test_create_group_flattened_async():
 
 @pytest.mark.asyncio
 async def test_create_group_flattened_error_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -8921,10 +10208,17 @@ async def test_create_group_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [vmmigration.UpdateGroupRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.UpdateGroupRequest,
+        dict,
+    ],
+)
 def test_update_group(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -8950,7 +10244,8 @@ def test_update_group_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -8966,7 +10261,8 @@ async def test_update_group_async(
     transport: str = "grpc_asyncio", request_type=vmmigration.UpdateGroupRequest
 ):
     client = VmMigrationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -8996,7 +10292,9 @@ async def test_update_group_async_from_dict():
 
 
 def test_update_group_field_headers():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -9016,12 +10314,17 @@ def test_update_group_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "group.name=group.name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "group.name=group.name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_update_group_field_headers_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -9043,11 +10346,16 @@ async def test_update_group_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "group.name=group.name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "group.name=group.name/value",
+    ) in kw["metadata"]
 
 
 def test_update_group_flattened():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_group), "__call__") as call:
@@ -9073,7 +10381,9 @@ def test_update_group_flattened():
 
 
 def test_update_group_flattened_error():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -9087,7 +10397,9 @@ def test_update_group_flattened_error():
 
 @pytest.mark.asyncio
 async def test_update_group_flattened_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_group), "__call__") as call:
@@ -9118,7 +10430,9 @@ async def test_update_group_flattened_async():
 
 @pytest.mark.asyncio
 async def test_update_group_flattened_error_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -9130,10 +10444,17 @@ async def test_update_group_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [vmmigration.DeleteGroupRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.DeleteGroupRequest,
+        dict,
+    ],
+)
 def test_delete_group(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -9159,7 +10480,8 @@ def test_delete_group_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9175,7 +10497,8 @@ async def test_delete_group_async(
     transport: str = "grpc_asyncio", request_type=vmmigration.DeleteGroupRequest
 ):
     client = VmMigrationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -9205,7 +10528,9 @@ async def test_delete_group_async_from_dict():
 
 
 def test_delete_group_field_headers():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -9225,12 +10550,17 @@ def test_delete_group_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_delete_group_field_headers_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -9252,11 +10582,16 @@ async def test_delete_group_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_group_flattened():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_group), "__call__") as call:
@@ -9264,7 +10599,9 @@ def test_delete_group_flattened():
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_group(name="name_value",)
+        client.delete_group(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -9276,19 +10613,24 @@ def test_delete_group_flattened():
 
 
 def test_delete_group_flattened_error():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_group(
-            vmmigration.DeleteGroupRequest(), name="name_value",
+            vmmigration.DeleteGroupRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_delete_group_flattened_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_group), "__call__") as call:
@@ -9300,7 +10642,9 @@ async def test_delete_group_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_group(name="name_value",)
+        response = await client.delete_group(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -9313,20 +10657,30 @@ async def test_delete_group_flattened_async():
 
 @pytest.mark.asyncio
 async def test_delete_group_flattened_error_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_group(
-            vmmigration.DeleteGroupRequest(), name="name_value",
+            vmmigration.DeleteGroupRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [vmmigration.AddGroupMigrationRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.AddGroupMigrationRequest,
+        dict,
+    ],
+)
 def test_add_group_migration(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -9354,7 +10708,8 @@ def test_add_group_migration_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9372,7 +10727,8 @@ async def test_add_group_migration_async(
     transport: str = "grpc_asyncio", request_type=vmmigration.AddGroupMigrationRequest
 ):
     client = VmMigrationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -9404,7 +10760,9 @@ async def test_add_group_migration_async_from_dict():
 
 
 def test_add_group_migration_field_headers():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -9426,12 +10784,17 @@ def test_add_group_migration_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "group=group/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "group=group/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_add_group_migration_field_headers_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -9455,11 +10818,16 @@ async def test_add_group_migration_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "group=group/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "group=group/value",
+    ) in kw["metadata"]
 
 
 def test_add_group_migration_flattened():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9469,7 +10837,9 @@ def test_add_group_migration_flattened():
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.add_group_migration(group="group_value",)
+        client.add_group_migration(
+            group="group_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -9481,19 +10851,24 @@ def test_add_group_migration_flattened():
 
 
 def test_add_group_migration_flattened_error():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.add_group_migration(
-            vmmigration.AddGroupMigrationRequest(), group="group_value",
+            vmmigration.AddGroupMigrationRequest(),
+            group="group_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_add_group_migration_flattened_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9507,7 +10882,9 @@ async def test_add_group_migration_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.add_group_migration(group="group_value",)
+        response = await client.add_group_migration(
+            group="group_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -9520,22 +10897,30 @@ async def test_add_group_migration_flattened_async():
 
 @pytest.mark.asyncio
 async def test_add_group_migration_flattened_error_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.add_group_migration(
-            vmmigration.AddGroupMigrationRequest(), group="group_value",
+            vmmigration.AddGroupMigrationRequest(),
+            group="group_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [vmmigration.RemoveGroupMigrationRequest, dict,]
+    "request_type",
+    [
+        vmmigration.RemoveGroupMigrationRequest,
+        dict,
+    ],
 )
 def test_remove_group_migration(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -9563,7 +10948,8 @@ def test_remove_group_migration_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9582,7 +10968,8 @@ async def test_remove_group_migration_async(
     request_type=vmmigration.RemoveGroupMigrationRequest,
 ):
     client = VmMigrationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -9614,7 +11001,9 @@ async def test_remove_group_migration_async_from_dict():
 
 
 def test_remove_group_migration_field_headers():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -9636,12 +11025,17 @@ def test_remove_group_migration_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "group=group/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "group=group/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_remove_group_migration_field_headers_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -9665,11 +11059,16 @@ async def test_remove_group_migration_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "group=group/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "group=group/value",
+    ) in kw["metadata"]
 
 
 def test_remove_group_migration_flattened():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9679,7 +11078,9 @@ def test_remove_group_migration_flattened():
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.remove_group_migration(group="group_value",)
+        client.remove_group_migration(
+            group="group_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -9691,19 +11092,24 @@ def test_remove_group_migration_flattened():
 
 
 def test_remove_group_migration_flattened_error():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.remove_group_migration(
-            vmmigration.RemoveGroupMigrationRequest(), group="group_value",
+            vmmigration.RemoveGroupMigrationRequest(),
+            group="group_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_remove_group_migration_flattened_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9717,7 +11123,9 @@ async def test_remove_group_migration_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.remove_group_migration(group="group_value",)
+        response = await client.remove_group_migration(
+            group="group_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -9730,20 +11138,30 @@ async def test_remove_group_migration_flattened_async():
 
 @pytest.mark.asyncio
 async def test_remove_group_migration_flattened_error_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.remove_group_migration(
-            vmmigration.RemoveGroupMigrationRequest(), group="group_value",
+            vmmigration.RemoveGroupMigrationRequest(),
+            group="group_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [vmmigration.ListTargetProjectsRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.ListTargetProjectsRequest,
+        dict,
+    ],
+)
 def test_list_target_projects(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -9756,7 +11174,8 @@ def test_list_target_projects(request_type, transport: str = "grpc"):
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = vmmigration.ListTargetProjectsResponse(
-            next_page_token="next_page_token_value", unreachable=["unreachable_value"],
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
         )
         response = client.list_target_projects(request)
 
@@ -9775,7 +11194,8 @@ def test_list_target_projects_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9793,7 +11213,8 @@ async def test_list_target_projects_async(
     transport: str = "grpc_asyncio", request_type=vmmigration.ListTargetProjectsRequest
 ):
     client = VmMigrationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -9830,7 +11251,9 @@ async def test_list_target_projects_async_from_dict():
 
 
 def test_list_target_projects_field_headers():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -9852,12 +11275,17 @@ def test_list_target_projects_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_list_target_projects_field_headers_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -9881,11 +11309,16 @@ async def test_list_target_projects_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_target_projects_flattened():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9895,7 +11328,9 @@ def test_list_target_projects_flattened():
         call.return_value = vmmigration.ListTargetProjectsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_target_projects(parent="parent_value",)
+        client.list_target_projects(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -9907,19 +11342,24 @@ def test_list_target_projects_flattened():
 
 
 def test_list_target_projects_flattened_error():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_target_projects(
-            vmmigration.ListTargetProjectsRequest(), parent="parent_value",
+            vmmigration.ListTargetProjectsRequest(),
+            parent="parent_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_list_target_projects_flattened_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -9933,7 +11373,9 @@ async def test_list_target_projects_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_target_projects(parent="parent_value",)
+        response = await client.list_target_projects(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -9946,19 +11388,23 @@ async def test_list_target_projects_flattened_async():
 
 @pytest.mark.asyncio
 async def test_list_target_projects_flattened_error_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_target_projects(
-            vmmigration.ListTargetProjectsRequest(), parent="parent_value",
+            vmmigration.ListTargetProjectsRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_target_projects_pager(transport_name: str = "grpc"):
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -9976,10 +11422,14 @@ def test_list_target_projects_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             vmmigration.ListTargetProjectsResponse(
-                target_projects=[], next_page_token="def",
+                target_projects=[],
+                next_page_token="def",
             ),
             vmmigration.ListTargetProjectsResponse(
-                target_projects=[vmmigration.TargetProject(),], next_page_token="ghi",
+                target_projects=[
+                    vmmigration.TargetProject(),
+                ],
+                next_page_token="ghi",
             ),
             vmmigration.ListTargetProjectsResponse(
                 target_projects=[
@@ -10005,7 +11455,8 @@ def test_list_target_projects_pager(transport_name: str = "grpc"):
 
 def test_list_target_projects_pages(transport_name: str = "grpc"):
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10023,10 +11474,14 @@ def test_list_target_projects_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             vmmigration.ListTargetProjectsResponse(
-                target_projects=[], next_page_token="def",
+                target_projects=[],
+                next_page_token="def",
             ),
             vmmigration.ListTargetProjectsResponse(
-                target_projects=[vmmigration.TargetProject(),], next_page_token="ghi",
+                target_projects=[
+                    vmmigration.TargetProject(),
+                ],
+                next_page_token="ghi",
             ),
             vmmigration.ListTargetProjectsResponse(
                 target_projects=[
@@ -10043,7 +11498,9 @@ def test_list_target_projects_pages(transport_name: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_list_target_projects_async_pager():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10062,10 +11519,14 @@ async def test_list_target_projects_async_pager():
                 next_page_token="abc",
             ),
             vmmigration.ListTargetProjectsResponse(
-                target_projects=[], next_page_token="def",
+                target_projects=[],
+                next_page_token="def",
             ),
             vmmigration.ListTargetProjectsResponse(
-                target_projects=[vmmigration.TargetProject(),], next_page_token="ghi",
+                target_projects=[
+                    vmmigration.TargetProject(),
+                ],
+                next_page_token="ghi",
             ),
             vmmigration.ListTargetProjectsResponse(
                 target_projects=[
@@ -10075,7 +11536,9 @@ async def test_list_target_projects_async_pager():
             ),
             RuntimeError,
         )
-        async_pager = await client.list_target_projects(request={},)
+        async_pager = await client.list_target_projects(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -10087,7 +11550,9 @@ async def test_list_target_projects_async_pager():
 
 @pytest.mark.asyncio
 async def test_list_target_projects_async_pages():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10106,10 +11571,14 @@ async def test_list_target_projects_async_pages():
                 next_page_token="abc",
             ),
             vmmigration.ListTargetProjectsResponse(
-                target_projects=[], next_page_token="def",
+                target_projects=[],
+                next_page_token="def",
             ),
             vmmigration.ListTargetProjectsResponse(
-                target_projects=[vmmigration.TargetProject(),], next_page_token="ghi",
+                target_projects=[
+                    vmmigration.TargetProject(),
+                ],
+                next_page_token="ghi",
             ),
             vmmigration.ListTargetProjectsResponse(
                 target_projects=[
@@ -10126,10 +11595,17 @@ async def test_list_target_projects_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [vmmigration.GetTargetProjectRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        vmmigration.GetTargetProjectRequest,
+        dict,
+    ],
+)
 def test_get_target_project(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -10142,7 +11618,9 @@ def test_get_target_project(request_type, transport: str = "grpc"):
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = vmmigration.TargetProject(
-            name="name_value", project="project_value", description="description_value",
+            name="name_value",
+            project="project_value",
+            description="description_value",
         )
         response = client.get_target_project(request)
 
@@ -10162,7 +11640,8 @@ def test_get_target_project_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10180,7 +11659,8 @@ async def test_get_target_project_async(
     transport: str = "grpc_asyncio", request_type=vmmigration.GetTargetProjectRequest
 ):
     client = VmMigrationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -10219,7 +11699,9 @@ async def test_get_target_project_async_from_dict():
 
 
 def test_get_target_project_field_headers():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -10241,12 +11723,17 @@ def test_get_target_project_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_get_target_project_field_headers_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -10270,11 +11757,16 @@ async def test_get_target_project_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_target_project_flattened():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10284,7 +11776,9 @@ def test_get_target_project_flattened():
         call.return_value = vmmigration.TargetProject()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_target_project(name="name_value",)
+        client.get_target_project(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -10296,19 +11790,24 @@ def test_get_target_project_flattened():
 
 
 def test_get_target_project_flattened_error():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_target_project(
-            vmmigration.GetTargetProjectRequest(), name="name_value",
+            vmmigration.GetTargetProjectRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_get_target_project_flattened_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10322,7 +11821,9 @@ async def test_get_target_project_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_target_project(name="name_value",)
+        response = await client.get_target_project(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -10335,22 +11836,30 @@ async def test_get_target_project_flattened_async():
 
 @pytest.mark.asyncio
 async def test_get_target_project_flattened_error_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_target_project(
-            vmmigration.GetTargetProjectRequest(), name="name_value",
+            vmmigration.GetTargetProjectRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [vmmigration.CreateTargetProjectRequest, dict,]
+    "request_type",
+    [
+        vmmigration.CreateTargetProjectRequest,
+        dict,
+    ],
 )
 def test_create_target_project(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -10378,7 +11887,8 @@ def test_create_target_project_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10396,7 +11906,8 @@ async def test_create_target_project_async(
     transport: str = "grpc_asyncio", request_type=vmmigration.CreateTargetProjectRequest
 ):
     client = VmMigrationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -10428,7 +11939,9 @@ async def test_create_target_project_async_from_dict():
 
 
 def test_create_target_project_field_headers():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -10450,12 +11963,17 @@ def test_create_target_project_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_create_target_project_field_headers_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -10479,11 +11997,16 @@ async def test_create_target_project_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_target_project_flattened():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10515,7 +12038,9 @@ def test_create_target_project_flattened():
 
 
 def test_create_target_project_flattened_error():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -10530,7 +12055,9 @@ def test_create_target_project_flattened_error():
 
 @pytest.mark.asyncio
 async def test_create_target_project_flattened_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10567,7 +12094,9 @@ async def test_create_target_project_flattened_async():
 
 @pytest.mark.asyncio
 async def test_create_target_project_flattened_error_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -10581,11 +12110,16 @@ async def test_create_target_project_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [vmmigration.UpdateTargetProjectRequest, dict,]
+    "request_type",
+    [
+        vmmigration.UpdateTargetProjectRequest,
+        dict,
+    ],
 )
 def test_update_target_project(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -10613,7 +12147,8 @@ def test_update_target_project_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10631,7 +12166,8 @@ async def test_update_target_project_async(
     transport: str = "grpc_asyncio", request_type=vmmigration.UpdateTargetProjectRequest
 ):
     client = VmMigrationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -10663,7 +12199,9 @@ async def test_update_target_project_async_from_dict():
 
 
 def test_update_target_project_field_headers():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -10693,7 +12231,9 @@ def test_update_target_project_field_headers():
 
 @pytest.mark.asyncio
 async def test_update_target_project_field_headers_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -10724,7 +12264,9 @@ async def test_update_target_project_field_headers_async():
 
 
 def test_update_target_project_flattened():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10752,7 +12294,9 @@ def test_update_target_project_flattened():
 
 
 def test_update_target_project_flattened_error():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -10766,7 +12310,9 @@ def test_update_target_project_flattened_error():
 
 @pytest.mark.asyncio
 async def test_update_target_project_flattened_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10799,7 +12345,9 @@ async def test_update_target_project_flattened_async():
 
 @pytest.mark.asyncio
 async def test_update_target_project_flattened_error_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -10812,11 +12360,16 @@ async def test_update_target_project_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [vmmigration.DeleteTargetProjectRequest, dict,]
+    "request_type",
+    [
+        vmmigration.DeleteTargetProjectRequest,
+        dict,
+    ],
 )
 def test_delete_target_project(request_type, transport: str = "grpc"):
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -10844,7 +12397,8 @@ def test_delete_target_project_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -10862,7 +12416,8 @@ async def test_delete_target_project_async(
     transport: str = "grpc_asyncio", request_type=vmmigration.DeleteTargetProjectRequest
 ):
     client = VmMigrationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -10894,7 +12449,9 @@ async def test_delete_target_project_async_from_dict():
 
 
 def test_delete_target_project_field_headers():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -10916,12 +12473,17 @@ def test_delete_target_project_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_delete_target_project_field_headers_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -10945,11 +12507,16 @@ async def test_delete_target_project_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_target_project_flattened():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10959,7 +12526,9 @@ def test_delete_target_project_flattened():
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_target_project(name="name_value",)
+        client.delete_target_project(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -10971,19 +12540,24 @@ def test_delete_target_project_flattened():
 
 
 def test_delete_target_project_flattened_error():
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_target_project(
-            vmmigration.DeleteTargetProjectRequest(), name="name_value",
+            vmmigration.DeleteTargetProjectRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_delete_target_project_flattened_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -10997,7 +12571,9 @@ async def test_delete_target_project_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_target_project(name="name_value",)
+        response = await client.delete_target_project(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -11010,13 +12586,16 @@ async def test_delete_target_project_flattened_async():
 
 @pytest.mark.asyncio
 async def test_delete_target_project_flattened_error_async():
-    client = VmMigrationAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = VmMigrationAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_target_project(
-            vmmigration.DeleteTargetProjectRequest(), name="name_value",
+            vmmigration.DeleteTargetProjectRequest(),
+            name="name_value",
         )
 
 
@@ -11027,7 +12606,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = VmMigrationClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -11047,7 +12627,10 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = VmMigrationClient(client_options=options, transport=transport,)
+        client = VmMigrationClient(
+            client_options=options,
+            transport=transport,
+        )
 
     # It is an error to provide an api_key and a credential.
     options = mock.Mock()
@@ -11063,7 +12646,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = VmMigrationClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -11093,7 +12677,10 @@ def test_transport_get_channel():
 
 @pytest.mark.parametrize(
     "transport_class",
-    [transports.VmMigrationGrpcTransport, transports.VmMigrationGrpcAsyncIOTransport,],
+    [
+        transports.VmMigrationGrpcTransport,
+        transports.VmMigrationGrpcAsyncIOTransport,
+    ],
 )
 def test_transport_adc(transport_class):
     # Test default credentials are used if not provided.
@@ -11105,8 +12692,13 @@ def test_transport_adc(transport_class):
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
-    client = VmMigrationClient(credentials=ga_credentials.AnonymousCredentials(),)
-    assert isinstance(client.transport, transports.VmMigrationGrpcTransport,)
+    client = VmMigrationClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    assert isinstance(
+        client.transport,
+        transports.VmMigrationGrpcTransport,
+    )
 
 
 def test_vm_migration_base_transport_error():
@@ -11198,7 +12790,8 @@ def test_vm_migration_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.VmMigrationTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -11233,7 +12826,10 @@ def test_vm_migration_auth_adc():
 
 @pytest.mark.parametrize(
     "transport_class",
-    [transports.VmMigrationGrpcTransport, transports.VmMigrationGrpcAsyncIOTransport,],
+    [
+        transports.VmMigrationGrpcTransport,
+        transports.VmMigrationGrpcAsyncIOTransport,
+    ],
 )
 def test_vm_migration_transport_auth_adc(transport_class):
     # If credentials and host are not provided, the transport class should use
@@ -11350,7 +12946,8 @@ def test_vm_migration_grpc_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.VmMigrationGrpcTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -11362,7 +12959,8 @@ def test_vm_migration_grpc_asyncio_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.VmMigrationGrpcAsyncIOTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -11463,12 +13061,16 @@ def test_vm_migration_transport_channel_mtls_with_adc(transport_class):
 
 def test_vm_migration_grpc_lro_client():
     client = VmMigrationClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
     transport = client.transport
 
     # Ensure that we have a api-core operations client.
-    assert isinstance(transport.operations_client, operations_v1.OperationsClient,)
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsClient,
+    )
 
     # Ensure that subsequent calls to the property send the exact same object.
     assert transport.operations_client is transport.operations_client
@@ -11476,12 +13078,16 @@ def test_vm_migration_grpc_lro_client():
 
 def test_vm_migration_grpc_lro_async_client():
     client = VmMigrationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     transport = client.transport
 
     # Ensure that we have a api-core operations client.
-    assert isinstance(transport.operations_client, operations_v1.OperationsAsyncClient,)
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsAsyncClient,
+    )
 
     # Ensure that subsequent calls to the property send the exact same object.
     assert transport.operations_client is transport.operations_client
@@ -11591,7 +13197,9 @@ def test_group_path():
     location = "nudibranch"
     group = "cuttlefish"
     expected = "projects/{project}/locations/{location}/groups/{group}".format(
-        project=project, location=location, group=group,
+        project=project,
+        location=location,
+        group=group,
     )
     actual = VmMigrationClient.group_path(project, location, group)
     assert expected == actual
@@ -11616,7 +13224,10 @@ def test_migrating_vm_path():
     source = "squid"
     migrating_vm = "clam"
     expected = "projects/{project}/locations/{location}/sources/{source}/migratingVms/{migrating_vm}".format(
-        project=project, location=location, source=source, migrating_vm=migrating_vm,
+        project=project,
+        location=location,
+        source=source,
+        migrating_vm=migrating_vm,
     )
     actual = VmMigrationClient.migrating_vm_path(
         project, location, source, migrating_vm
@@ -11643,7 +13254,9 @@ def test_source_path():
     location = "mussel"
     source = "winkle"
     expected = "projects/{project}/locations/{location}/sources/{source}".format(
-        project=project, location=location, source=source,
+        project=project,
+        location=location,
+        source=source,
     )
     actual = VmMigrationClient.source_path(project, location, source)
     assert expected == actual
@@ -11667,7 +13280,9 @@ def test_target_project_path():
     location = "clam"
     target_project = "whelk"
     expected = "projects/{project}/locations/{location}/targetProjects/{target_project}".format(
-        project=project, location=location, target_project=target_project,
+        project=project,
+        location=location,
+        target_project=target_project,
     )
     actual = VmMigrationClient.target_project_path(project, location, target_project)
     assert expected == actual
@@ -11739,7 +13354,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "oyster"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = VmMigrationClient.common_folder_path(folder)
     assert expected == actual
 
@@ -11757,7 +13374,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "cuttlefish"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = VmMigrationClient.common_organization_path(organization)
     assert expected == actual
 
@@ -11775,7 +13394,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "winkle"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = VmMigrationClient.common_project_path(project)
     assert expected == actual
 
@@ -11795,7 +13416,8 @@ def test_common_location_path():
     project = "scallop"
     location = "abalone"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = VmMigrationClient.common_location_path(project, location)
     assert expected == actual
@@ -11820,7 +13442,8 @@ def test_client_with_default_client_info():
         transports.VmMigrationTransport, "_prep_wrapped_messages"
     ) as prep:
         client = VmMigrationClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -11829,7 +13452,8 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = VmMigrationClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -11837,7 +13461,8 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = VmMigrationAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     with mock.patch.object(
         type(getattr(client.transport, "grpc_channel")), "close"

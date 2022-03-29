@@ -158,8 +158,15 @@ class ReplicationCycle(proto.Message):
             cycle.
     """
 
-    start_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
-    progress_percent = proto.Field(proto.INT32, number=5,)
+    start_time = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    progress_percent = proto.Field(
+        proto.INT32,
+        number=5,
+    )
 
 
 class ReplicationSync(proto.Message):
@@ -173,7 +180,9 @@ class ReplicationSync(proto.Message):
     """
 
     last_sync_time = proto.Field(
-        proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
     )
 
 
@@ -258,24 +267,71 @@ class MigratingVm(proto.Message):
         oneof="target_vm_defaults",
         message="ComputeEngineTargetDefaults",
     )
-    name = proto.Field(proto.STRING, number=1,)
-    source_vm_id = proto.Field(proto.STRING, number=2,)
-    display_name = proto.Field(proto.STRING, number=18,)
-    description = proto.Field(proto.STRING, number=3,)
-    policy = proto.Field(proto.MESSAGE, number=8, message="SchedulePolicy",)
-    create_time = proto.Field(proto.MESSAGE, number=9, message=timestamp_pb2.Timestamp,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    source_vm_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=18,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    policy = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message="SchedulePolicy",
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message=timestamp_pb2.Timestamp,
+    )
     update_time = proto.Field(
-        proto.MESSAGE, number=10, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=10,
+        message=timestamp_pb2.Timestamp,
     )
-    last_sync = proto.Field(proto.MESSAGE, number=11, message="ReplicationSync",)
-    state = proto.Field(proto.ENUM, number=23, enum=State,)
-    state_time = proto.Field(proto.MESSAGE, number=22, message=timestamp_pb2.Timestamp,)
+    last_sync = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message="ReplicationSync",
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=23,
+        enum=State,
+    )
+    state_time = proto.Field(
+        proto.MESSAGE,
+        number=22,
+        message=timestamp_pb2.Timestamp,
+    )
     current_sync_info = proto.Field(
-        proto.MESSAGE, number=13, message="ReplicationCycle",
+        proto.MESSAGE,
+        number=13,
+        message="ReplicationCycle",
     )
-    group = proto.Field(proto.STRING, number=15,)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=16,)
-    error = proto.Field(proto.MESSAGE, number=19, message=status_pb2.Status,)
+    group = proto.Field(
+        proto.STRING,
+        number=15,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=16,
+    )
+    error = proto.Field(
+        proto.MESSAGE,
+        number=19,
+        message=status_pb2.Status,
+    )
 
 
 class CloneJob(proto.Message):
@@ -333,11 +389,30 @@ class CloneJob(proto.Message):
         oneof="target_vm_details",
         message="ComputeEngineTargetDetails",
     )
-    create_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
-    name = proto.Field(proto.STRING, number=3,)
-    state = proto.Field(proto.ENUM, number=12, enum=State,)
-    state_time = proto.Field(proto.MESSAGE, number=14, message=timestamp_pb2.Timestamp,)
-    error = proto.Field(proto.MESSAGE, number=17, message=status_pb2.Status,)
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    name = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=12,
+        enum=State,
+    )
+    state_time = proto.Field(
+        proto.MESSAGE,
+        number=14,
+        message=timestamp_pb2.Timestamp,
+    )
+    error = proto.Field(
+        proto.MESSAGE,
+        number=17,
+        message=status_pb2.Status,
+    )
 
 
 class CutoverJob(proto.Message):
@@ -393,13 +468,38 @@ class CutoverJob(proto.Message):
         oneof="target_vm_details",
         message="ComputeEngineTargetDetails",
     )
-    create_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
-    name = proto.Field(proto.STRING, number=3,)
-    state = proto.Field(proto.ENUM, number=5, enum=State,)
-    state_time = proto.Field(proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,)
-    progress_percent = proto.Field(proto.INT32, number=13,)
-    error = proto.Field(proto.MESSAGE, number=9, message=status_pb2.Status,)
-    state_message = proto.Field(proto.STRING, number=10,)
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    name = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum=State,
+    )
+    state_time = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
+    )
+    progress_percent = proto.Field(
+        proto.INT32,
+        number=13,
+    )
+    error = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message=status_pb2.Status,
+    )
+    state_message = proto.Field(
+        proto.STRING,
+        number=10,
+    )
 
 
 class CreateCloneJobRequest(proto.Message):
@@ -432,10 +532,23 @@ class CreateCloneJobRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    clone_job_id = proto.Field(proto.STRING, number=2,)
-    clone_job = proto.Field(proto.MESSAGE, number=3, message="CloneJob",)
-    request_id = proto.Field(proto.STRING, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    clone_job_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    clone_job = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="CloneJob",
+    )
+    request_id = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class CancelCloneJobRequest(proto.Message):
@@ -446,12 +559,14 @@ class CancelCloneJobRequest(proto.Message):
             Required. The clone job id
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CancelCloneJobResponse(proto.Message):
-    r"""Response message for 'CancelCloneJob' request.
-    """
+    r"""Response message for 'CancelCloneJob' request."""
 
 
 class ListCloneJobsRequest(proto.Message):
@@ -481,11 +596,26 @@ class ListCloneJobsRequest(proto.Message):
             Optional. the order by fields for the result.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    filter = proto.Field(proto.STRING, number=4,)
-    order_by = proto.Field(proto.STRING, number=5,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class ListCloneJobsResponse(proto.Message):
@@ -507,9 +637,19 @@ class ListCloneJobsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    clone_jobs = proto.RepeatedField(proto.MESSAGE, number=1, message="CloneJob",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
-    unreachable = proto.RepeatedField(proto.STRING, number=3,)
+    clone_jobs = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="CloneJob",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 class GetCloneJobRequest(proto.Message):
@@ -520,7 +660,10 @@ class GetCloneJobRequest(proto.Message):
             Required. The name of the CloneJob.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class Source(proto.Message):
@@ -548,13 +691,34 @@ class Source(proto.Message):
     """
 
     vmware = proto.Field(
-        proto.MESSAGE, number=10, oneof="source_details", message="VmwareSourceDetails",
+        proto.MESSAGE,
+        number=10,
+        oneof="source_details",
+        message="VmwareSourceDetails",
     )
-    name = proto.Field(proto.STRING, number=1,)
-    create_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=4,)
-    description = proto.Field(proto.STRING, number=6,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=4,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=6,
+    )
 
 
 class VmwareSourceDetails(proto.Message):
@@ -576,10 +740,22 @@ class VmwareSourceDetails(proto.Message):
             for the vcenter.
     """
 
-    username = proto.Field(proto.STRING, number=1,)
-    password = proto.Field(proto.STRING, number=2,)
-    vcenter_ip = proto.Field(proto.STRING, number=3,)
-    thumbprint = proto.Field(proto.STRING, number=4,)
+    username = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    password = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    vcenter_ip = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    thumbprint = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class DatacenterConnector(proto.Message):
@@ -633,16 +809,51 @@ class DatacenterConnector(proto.Message):
         FAILED = 3
         ACTIVE = 4
 
-    create_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    name = proto.Field(proto.STRING, number=3,)
-    registration_id = proto.Field(proto.STRING, number=12,)
-    service_account = proto.Field(proto.STRING, number=5,)
-    version = proto.Field(proto.STRING, number=6,)
-    bucket = proto.Field(proto.STRING, number=10,)
-    state = proto.Field(proto.ENUM, number=7, enum=State,)
-    state_time = proto.Field(proto.MESSAGE, number=8, message=timestamp_pb2.Timestamp,)
-    error = proto.Field(proto.MESSAGE, number=11, message=status_pb2.Status,)
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    name = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    registration_id = proto.Field(
+        proto.STRING,
+        number=12,
+    )
+    service_account = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    version = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    bucket = proto.Field(
+        proto.STRING,
+        number=10,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=7,
+        enum=State,
+    )
+    state_time = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=timestamp_pb2.Timestamp,
+    )
+    error = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message=status_pb2.Status,
+    )
 
 
 class ListSourcesRequest(proto.Message):
@@ -672,11 +883,26 @@ class ListSourcesRequest(proto.Message):
             Optional. the order by fields for the result.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    filter = proto.Field(proto.STRING, number=4,)
-    order_by = proto.Field(proto.STRING, number=5,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class ListSourcesResponse(proto.Message):
@@ -698,9 +924,19 @@ class ListSourcesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    sources = proto.RepeatedField(proto.MESSAGE, number=1, message="Source",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
-    unreachable = proto.RepeatedField(proto.STRING, number=3,)
+    sources = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Source",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 class GetSourceRequest(proto.Message):
@@ -711,7 +947,10 @@ class GetSourceRequest(proto.Message):
             Required. The Source name.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CreateSourceRequest(proto.Message):
@@ -744,10 +983,23 @@ class CreateSourceRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    source_id = proto.Field(proto.STRING, number=2,)
-    source = proto.Field(proto.MESSAGE, number=3, message="Source",)
-    request_id = proto.Field(proto.STRING, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    source_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    source = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="Source",
+    )
+    request_id = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class UpdateSourceRequest(proto.Message):
@@ -784,10 +1036,19 @@ class UpdateSourceRequest(proto.Message):
     """
 
     update_mask = proto.Field(
-        proto.MESSAGE, number=1, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=1,
+        message=field_mask_pb2.FieldMask,
     )
-    source = proto.Field(proto.MESSAGE, number=2, message="Source",)
-    request_id = proto.Field(proto.STRING, number=3,)
+    source = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="Source",
+    )
+    request_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class DeleteSourceRequest(proto.Message):
@@ -816,8 +1077,14 @@ class DeleteSourceRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    request_id = proto.Field(proto.STRING, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    request_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class FetchInventoryRequest(proto.Message):
@@ -833,8 +1100,14 @@ class FetchInventoryRequest(proto.Message):
             Using this flag will make the call slower.
     """
 
-    source = proto.Field(proto.STRING, number=1,)
-    force_refresh = proto.Field(proto.BOOL, number=2,)
+    source = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    force_refresh = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
 
 
 class VmwareVmDetails(proto.Message):
@@ -889,18 +1162,56 @@ class VmwareVmDetails(proto.Message):
         EFI = 1
         BIOS = 2
 
-    vm_id = proto.Field(proto.STRING, number=1,)
-    datacenter_id = proto.Field(proto.STRING, number=2,)
-    datacenter_description = proto.Field(proto.STRING, number=3,)
-    uuid = proto.Field(proto.STRING, number=4,)
-    display_name = proto.Field(proto.STRING, number=5,)
-    power_state = proto.Field(proto.ENUM, number=6, enum=PowerState,)
-    cpu_count = proto.Field(proto.INT32, number=7,)
-    memory_mb = proto.Field(proto.INT32, number=8,)
-    disk_count = proto.Field(proto.INT32, number=9,)
-    committed_storage_mb = proto.Field(proto.INT64, number=12,)
-    guest_description = proto.Field(proto.STRING, number=11,)
-    boot_option = proto.Field(proto.ENUM, number=13, enum=BootOption,)
+    vm_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    datacenter_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    datacenter_description = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    uuid = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    power_state = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum=PowerState,
+    )
+    cpu_count = proto.Field(
+        proto.INT32,
+        number=7,
+    )
+    memory_mb = proto.Field(
+        proto.INT32,
+        number=8,
+    )
+    disk_count = proto.Field(
+        proto.INT32,
+        number=9,
+    )
+    committed_storage_mb = proto.Field(
+        proto.INT64,
+        number=12,
+    )
+    guest_description = proto.Field(
+        proto.STRING,
+        number=11,
+    )
+    boot_option = proto.Field(
+        proto.ENUM,
+        number=13,
+        enum=BootOption,
+    )
 
 
 class VmwareVmsDetails(proto.Message):
@@ -911,7 +1222,11 @@ class VmwareVmsDetails(proto.Message):
             The details of the vmware VMs.
     """
 
-    details = proto.RepeatedField(proto.MESSAGE, number=1, message="VmwareVmDetails",)
+    details = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="VmwareVmDetails",
+    )
 
 
 class FetchInventoryResponse(proto.Message):
@@ -934,9 +1249,16 @@ class FetchInventoryResponse(proto.Message):
     """
 
     vmware_vms = proto.Field(
-        proto.MESSAGE, number=1, oneof="SourceVms", message="VmwareVmsDetails",
+        proto.MESSAGE,
+        number=1,
+        oneof="SourceVms",
+        message="VmwareVmsDetails",
     )
-    update_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 class UtilizationReport(proto.Message):
@@ -992,18 +1314,53 @@ class UtilizationReport(proto.Message):
         MONTH = 2
         YEAR = 3
 
-    name = proto.Field(proto.STRING, number=1,)
-    display_name = proto.Field(proto.STRING, number=2,)
-    state = proto.Field(proto.ENUM, number=3, enum=State,)
-    state_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
-    error = proto.Field(proto.MESSAGE, number=5, message=status_pb2.Status,)
-    create_time = proto.Field(proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,)
-    time_frame = proto.Field(proto.ENUM, number=7, enum=TimeFrame,)
-    frame_end_time = proto.Field(
-        proto.MESSAGE, number=8, message=timestamp_pb2.Timestamp,
+    name = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    vm_count = proto.Field(proto.INT32, number=9,)
-    vms = proto.RepeatedField(proto.MESSAGE, number=10, message="VmUtilizationInfo",)
+    display_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=State,
+    )
+    state_time = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    error = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=status_pb2.Status,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
+    )
+    time_frame = proto.Field(
+        proto.ENUM,
+        number=7,
+        enum=TimeFrame,
+    )
+    frame_end_time = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=timestamp_pb2.Timestamp,
+    )
+    vm_count = proto.Field(
+        proto.INT32,
+        number=9,
+    )
+    vms = proto.RepeatedField(
+        proto.MESSAGE,
+        number=10,
+        message="VmUtilizationInfo",
+    )
 
 
 class VmUtilizationInfo(proto.Message):
@@ -1024,10 +1381,20 @@ class VmUtilizationInfo(proto.Message):
     """
 
     vmware_vm_details = proto.Field(
-        proto.MESSAGE, number=1, oneof="VmDetails", message="VmwareVmDetails",
+        proto.MESSAGE,
+        number=1,
+        oneof="VmDetails",
+        message="VmwareVmDetails",
     )
-    vm_id = proto.Field(proto.STRING, number=3,)
-    utilization = proto.Field(proto.MESSAGE, number=2, message="VmUtilizationMetrics",)
+    vm_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    utilization = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="VmUtilizationMetrics",
+    )
 
 
 class VmUtilizationMetrics(proto.Message):
@@ -1057,14 +1424,38 @@ class VmUtilizationMetrics(proto.Message):
             per second.
     """
 
-    cpu_max_percent = proto.Field(proto.INT32, number=9,)
-    cpu_average_percent = proto.Field(proto.INT32, number=10,)
-    memory_max_percent = proto.Field(proto.INT32, number=11,)
-    memory_average_percent = proto.Field(proto.INT32, number=12,)
-    disk_io_rate_max_kbps = proto.Field(proto.INT64, number=13,)
-    disk_io_rate_average_kbps = proto.Field(proto.INT64, number=14,)
-    network_throughput_max_kbps = proto.Field(proto.INT64, number=15,)
-    network_throughput_average_kbps = proto.Field(proto.INT64, number=16,)
+    cpu_max_percent = proto.Field(
+        proto.INT32,
+        number=9,
+    )
+    cpu_average_percent = proto.Field(
+        proto.INT32,
+        number=10,
+    )
+    memory_max_percent = proto.Field(
+        proto.INT32,
+        number=11,
+    )
+    memory_average_percent = proto.Field(
+        proto.INT32,
+        number=12,
+    )
+    disk_io_rate_max_kbps = proto.Field(
+        proto.INT64,
+        number=13,
+    )
+    disk_io_rate_average_kbps = proto.Field(
+        proto.INT64,
+        number=14,
+    )
+    network_throughput_max_kbps = proto.Field(
+        proto.INT64,
+        number=15,
+    )
+    network_throughput_average_kbps = proto.Field(
+        proto.INT64,
+        number=16,
+    )
 
 
 class ListUtilizationReportsRequest(proto.Message):
@@ -1096,12 +1487,31 @@ class ListUtilizationReportsRequest(proto.Message):
             Optional. the order by fields for the result.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    view = proto.Field(proto.ENUM, number=2, enum="UtilizationReportView",)
-    page_size = proto.Field(proto.INT32, number=3,)
-    page_token = proto.Field(proto.STRING, number=4,)
-    filter = proto.Field(proto.STRING, number=5,)
-    order_by = proto.Field(proto.STRING, number=6,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    view = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum="UtilizationReportView",
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    order_by = proto.Field(
+        proto.STRING,
+        number=6,
+    )
 
 
 class ListUtilizationReportsResponse(proto.Message):
@@ -1124,10 +1534,18 @@ class ListUtilizationReportsResponse(proto.Message):
         return self
 
     utilization_reports = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="UtilizationReport",
+        proto.MESSAGE,
+        number=1,
+        message="UtilizationReport",
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
-    unreachable = proto.RepeatedField(proto.STRING, number=3,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 class GetUtilizationReportRequest(proto.Message):
@@ -1141,8 +1559,15 @@ class GetUtilizationReportRequest(proto.Message):
             Defaults to FULL
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    view = proto.Field(proto.ENUM, number=2, enum="UtilizationReportView",)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    view = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum="UtilizationReportView",
+    )
 
 
 class CreateUtilizationReportRequest(proto.Message):
@@ -1180,12 +1605,23 @@ class CreateUtilizationReportRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    utilization_report = proto.Field(
-        proto.MESSAGE, number=2, message="UtilizationReport",
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    utilization_report_id = proto.Field(proto.STRING, number=3,)
-    request_id = proto.Field(proto.STRING, number=4,)
+    utilization_report = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="UtilizationReport",
+    )
+    utilization_report_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    request_id = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class DeleteUtilizationReportRequest(proto.Message):
@@ -1214,8 +1650,14 @@ class DeleteUtilizationReportRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    request_id = proto.Field(proto.STRING, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    request_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class ListDatacenterConnectorsResponse(proto.Message):
@@ -1238,10 +1680,18 @@ class ListDatacenterConnectorsResponse(proto.Message):
         return self
 
     datacenter_connectors = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="DatacenterConnector",
+        proto.MESSAGE,
+        number=1,
+        message="DatacenterConnector",
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
-    unreachable = proto.RepeatedField(proto.STRING, number=3,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 class GetDatacenterConnectorRequest(proto.Message):
@@ -1253,7 +1703,10 @@ class GetDatacenterConnectorRequest(proto.Message):
             DatacenterConnector.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CreateDatacenterConnectorRequest(proto.Message):
@@ -1289,12 +1742,23 @@ class CreateDatacenterConnectorRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    datacenter_connector_id = proto.Field(proto.STRING, number=2,)
-    datacenter_connector = proto.Field(
-        proto.MESSAGE, number=3, message="DatacenterConnector",
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    request_id = proto.Field(proto.STRING, number=4,)
+    datacenter_connector_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    datacenter_connector = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="DatacenterConnector",
+    )
+    request_id = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class DeleteDatacenterConnectorRequest(proto.Message):
@@ -1323,8 +1787,14 @@ class DeleteDatacenterConnectorRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    request_id = proto.Field(proto.STRING, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    request_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class ListDatacenterConnectorsRequest(proto.Message):
@@ -1354,11 +1824,26 @@ class ListDatacenterConnectorsRequest(proto.Message):
             Optional. the order by fields for the result.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    filter = proto.Field(proto.STRING, number=4,)
-    order_by = proto.Field(proto.STRING, number=5,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class ComputeEngineTargetDefaults(proto.Message):
@@ -1410,26 +1895,78 @@ class ComputeEngineTargetDefaults(proto.Message):
             VM.
     """
 
-    vm_name = proto.Field(proto.STRING, number=1,)
-    target_project = proto.Field(proto.STRING, number=2,)
-    zone = proto.Field(proto.STRING, number=3,)
-    machine_type_series = proto.Field(proto.STRING, number=4,)
-    machine_type = proto.Field(proto.STRING, number=5,)
-    network_tags = proto.RepeatedField(proto.STRING, number=6,)
+    vm_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    target_project = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    zone = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    machine_type_series = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    machine_type = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    network_tags = proto.RepeatedField(
+        proto.STRING,
+        number=6,
+    )
     network_interfaces = proto.RepeatedField(
-        proto.MESSAGE, number=7, message="NetworkInterface",
+        proto.MESSAGE,
+        number=7,
+        message="NetworkInterface",
     )
-    service_account = proto.Field(proto.STRING, number=8,)
-    disk_type = proto.Field(proto.ENUM, number=9, enum="ComputeEngineDiskType",)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=10,)
-    license_type = proto.Field(proto.ENUM, number=11, enum="ComputeEngineLicenseType",)
-    applied_license = proto.Field(proto.MESSAGE, number=12, message="AppliedLicense",)
+    service_account = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    disk_type = proto.Field(
+        proto.ENUM,
+        number=9,
+        enum="ComputeEngineDiskType",
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=10,
+    )
+    license_type = proto.Field(
+        proto.ENUM,
+        number=11,
+        enum="ComputeEngineLicenseType",
+    )
+    applied_license = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        message="AppliedLicense",
+    )
     compute_scheduling = proto.Field(
-        proto.MESSAGE, number=13, message="ComputeScheduling",
+        proto.MESSAGE,
+        number=13,
+        message="ComputeScheduling",
     )
-    secure_boot = proto.Field(proto.BOOL, number=14,)
-    boot_option = proto.Field(proto.ENUM, number=15, enum="ComputeEngineBootOption",)
-    metadata = proto.MapField(proto.STRING, proto.STRING, number=16,)
+    secure_boot = proto.Field(
+        proto.BOOL,
+        number=14,
+    )
+    boot_option = proto.Field(
+        proto.ENUM,
+        number=15,
+        enum="ComputeEngineBootOption",
+    )
+    metadata = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=16,
+    )
 
 
 class ComputeEngineTargetDetails(proto.Message):
@@ -1478,26 +2015,78 @@ class ComputeEngineTargetDetails(proto.Message):
             VM.
     """
 
-    vm_name = proto.Field(proto.STRING, number=1,)
-    project = proto.Field(proto.STRING, number=2,)
-    zone = proto.Field(proto.STRING, number=3,)
-    machine_type_series = proto.Field(proto.STRING, number=4,)
-    machine_type = proto.Field(proto.STRING, number=5,)
-    network_tags = proto.RepeatedField(proto.STRING, number=6,)
+    vm_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    project = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    zone = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    machine_type_series = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    machine_type = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    network_tags = proto.RepeatedField(
+        proto.STRING,
+        number=6,
+    )
     network_interfaces = proto.RepeatedField(
-        proto.MESSAGE, number=7, message="NetworkInterface",
+        proto.MESSAGE,
+        number=7,
+        message="NetworkInterface",
     )
-    service_account = proto.Field(proto.STRING, number=8,)
-    disk_type = proto.Field(proto.ENUM, number=9, enum="ComputeEngineDiskType",)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=10,)
-    license_type = proto.Field(proto.ENUM, number=11, enum="ComputeEngineLicenseType",)
-    applied_license = proto.Field(proto.MESSAGE, number=12, message="AppliedLicense",)
+    service_account = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    disk_type = proto.Field(
+        proto.ENUM,
+        number=9,
+        enum="ComputeEngineDiskType",
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=10,
+    )
+    license_type = proto.Field(
+        proto.ENUM,
+        number=11,
+        enum="ComputeEngineLicenseType",
+    )
+    applied_license = proto.Field(
+        proto.MESSAGE,
+        number=12,
+        message="AppliedLicense",
+    )
     compute_scheduling = proto.Field(
-        proto.MESSAGE, number=13, message="ComputeScheduling",
+        proto.MESSAGE,
+        number=13,
+        message="ComputeScheduling",
     )
-    secure_boot = proto.Field(proto.BOOL, number=14,)
-    boot_option = proto.Field(proto.ENUM, number=15, enum="ComputeEngineBootOption",)
-    metadata = proto.MapField(proto.STRING, proto.STRING, number=16,)
+    secure_boot = proto.Field(
+        proto.BOOL,
+        number=14,
+    )
+    boot_option = proto.Field(
+        proto.ENUM,
+        number=15,
+        enum="ComputeEngineBootOption",
+    )
+    metadata = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=16,
+    )
 
 
 class NetworkInterface(proto.Message):
@@ -1516,10 +2105,22 @@ class NetworkInterface(proto.Message):
             The external IP to define in the NIC.
     """
 
-    network = proto.Field(proto.STRING, number=1,)
-    subnetwork = proto.Field(proto.STRING, number=2,)
-    internal_ip = proto.Field(proto.STRING, number=3,)
-    external_ip = proto.Field(proto.STRING, number=4,)
+    network = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    subnetwork = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    internal_ip = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    external_ip = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class AppliedLicense(proto.Message):
@@ -1542,8 +2143,15 @@ class AppliedLicense(proto.Message):
         PAYG = 2
         BYOL = 3
 
-    type_ = proto.Field(proto.ENUM, number=1, enum=Type,)
-    os_license = proto.Field(proto.STRING, number=2,)
+    type_ = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Type,
+    )
+    os_license = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class SchedulingNodeAffinity(proto.Message):
@@ -1570,9 +2178,19 @@ class SchedulingNodeAffinity(proto.Message):
         IN = 1
         NOT_IN = 2
 
-    key = proto.Field(proto.STRING, number=1,)
-    operator = proto.Field(proto.ENUM, number=2, enum=Operator,)
-    values = proto.RepeatedField(proto.STRING, number=3,)
+    key = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    operator = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=Operator,
+    )
+    values = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ComputeScheduling(proto.Message):
@@ -1616,12 +2234,25 @@ class ComputeScheduling(proto.Message):
         AUTOMATIC_RESTART = 1
         NO_AUTOMATIC_RESTART = 2
 
-    on_host_maintenance = proto.Field(proto.ENUM, number=1, enum=OnHostMaintenance,)
-    restart_type = proto.Field(proto.ENUM, number=5, enum=RestartType,)
-    node_affinities = proto.RepeatedField(
-        proto.MESSAGE, number=3, message="SchedulingNodeAffinity",
+    on_host_maintenance = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=OnHostMaintenance,
     )
-    min_node_cpus = proto.Field(proto.INT32, number=4,)
+    restart_type = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum=RestartType,
+    )
+    node_affinities = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message="SchedulingNodeAffinity",
+    )
+    min_node_cpus = proto.Field(
+        proto.INT32,
+        number=4,
+    )
 
 
 class SchedulePolicy(proto.Message):
@@ -1638,8 +2269,15 @@ class SchedulePolicy(proto.Message):
             fully function on Compute Engine.
     """
 
-    idle_duration = proto.Field(proto.MESSAGE, number=1, message=duration_pb2.Duration,)
-    skip_os_adaptation = proto.Field(proto.BOOL, number=2,)
+    idle_duration = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=duration_pb2.Duration,
+    )
+    skip_os_adaptation = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
 
 
 class CreateMigratingVmRequest(proto.Message):
@@ -1672,10 +2310,23 @@ class CreateMigratingVmRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    migrating_vm_id = proto.Field(proto.STRING, number=2,)
-    migrating_vm = proto.Field(proto.MESSAGE, number=3, message="MigratingVm",)
-    request_id = proto.Field(proto.STRING, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    migrating_vm_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    migrating_vm = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="MigratingVm",
+    )
+    request_id = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class ListMigratingVmsRequest(proto.Message):
@@ -1706,11 +2357,26 @@ class ListMigratingVmsRequest(proto.Message):
             Optional. the order by fields for the result.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    filter = proto.Field(proto.STRING, number=4,)
-    order_by = proto.Field(proto.STRING, number=5,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class ListMigratingVmsResponse(proto.Message):
@@ -1733,9 +2399,19 @@ class ListMigratingVmsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    migrating_vms = proto.RepeatedField(proto.MESSAGE, number=1, message="MigratingVm",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
-    unreachable = proto.RepeatedField(proto.STRING, number=3,)
+    migrating_vms = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="MigratingVm",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 class GetMigratingVmRequest(proto.Message):
@@ -1746,7 +2422,10 @@ class GetMigratingVmRequest(proto.Message):
             Required. The name of the MigratingVm.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class UpdateMigratingVmRequest(proto.Message):
@@ -1783,10 +2462,19 @@ class UpdateMigratingVmRequest(proto.Message):
     """
 
     update_mask = proto.Field(
-        proto.MESSAGE, number=1, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=1,
+        message=field_mask_pb2.FieldMask,
     )
-    migrating_vm = proto.Field(proto.MESSAGE, number=2, message="MigratingVm",)
-    request_id = proto.Field(proto.STRING, number=3,)
+    migrating_vm = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="MigratingVm",
+    )
+    request_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class DeleteMigratingVmRequest(proto.Message):
@@ -1797,7 +2485,10 @@ class DeleteMigratingVmRequest(proto.Message):
             Required. The name of the MigratingVm.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class StartMigrationRequest(proto.Message):
@@ -1808,12 +2499,14 @@ class StartMigrationRequest(proto.Message):
             Required. The name of the MigratingVm.
     """
 
-    migrating_vm = proto.Field(proto.STRING, number=1,)
+    migrating_vm = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class StartMigrationResponse(proto.Message):
-    r"""Response message for 'StartMigration' request.
-    """
+    r"""Response message for 'StartMigration' request."""
 
 
 class PauseMigrationRequest(proto.Message):
@@ -1824,12 +2517,14 @@ class PauseMigrationRequest(proto.Message):
             Required. The name of the MigratingVm.
     """
 
-    migrating_vm = proto.Field(proto.STRING, number=1,)
+    migrating_vm = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class PauseMigrationResponse(proto.Message):
-    r"""Response message for 'PauseMigration' request.
-    """
+    r"""Response message for 'PauseMigration' request."""
 
 
 class ResumeMigrationRequest(proto.Message):
@@ -1840,12 +2535,14 @@ class ResumeMigrationRequest(proto.Message):
             Required. The name of the MigratingVm.
     """
 
-    migrating_vm = proto.Field(proto.STRING, number=1,)
+    migrating_vm = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ResumeMigrationResponse(proto.Message):
-    r"""Response message for 'ResumeMigration' request.
-    """
+    r"""Response message for 'ResumeMigration' request."""
 
 
 class FinalizeMigrationRequest(proto.Message):
@@ -1856,12 +2553,14 @@ class FinalizeMigrationRequest(proto.Message):
             Required. The name of the MigratingVm.
     """
 
-    migrating_vm = proto.Field(proto.STRING, number=1,)
+    migrating_vm = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class FinalizeMigrationResponse(proto.Message):
-    r"""Response message for 'FinalizeMigration' request.
-    """
+    r"""Response message for 'FinalizeMigration' request."""
 
 
 class TargetProject(proto.Message):
@@ -1886,11 +2585,28 @@ class TargetProject(proto.Message):
             resource was updated.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    project = proto.Field(proto.STRING, number=2,)
-    description = proto.Field(proto.STRING, number=3,)
-    create_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    project = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 class GetTargetProjectRequest(proto.Message):
@@ -1901,7 +2617,10 @@ class GetTargetProjectRequest(proto.Message):
             Required. The TargetProject name.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListTargetProjectsRequest(proto.Message):
@@ -1931,11 +2650,26 @@ class ListTargetProjectsRequest(proto.Message):
             Optional. the order by fields for the result.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    filter = proto.Field(proto.STRING, number=4,)
-    order_by = proto.Field(proto.STRING, number=5,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class ListTargetProjectsResponse(proto.Message):
@@ -1958,10 +2692,18 @@ class ListTargetProjectsResponse(proto.Message):
         return self
 
     target_projects = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="TargetProject",
+        proto.MESSAGE,
+        number=1,
+        message="TargetProject",
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
-    unreachable = proto.RepeatedField(proto.STRING, number=3,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 class CreateTargetProjectRequest(proto.Message):
@@ -1994,10 +2736,23 @@ class CreateTargetProjectRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    target_project_id = proto.Field(proto.STRING, number=2,)
-    target_project = proto.Field(proto.MESSAGE, number=3, message="TargetProject",)
-    request_id = proto.Field(proto.STRING, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    target_project_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    target_project = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="TargetProject",
+    )
+    request_id = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class UpdateTargetProjectRequest(proto.Message):
@@ -2034,10 +2789,19 @@ class UpdateTargetProjectRequest(proto.Message):
     """
 
     update_mask = proto.Field(
-        proto.MESSAGE, number=1, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=1,
+        message=field_mask_pb2.FieldMask,
     )
-    target_project = proto.Field(proto.MESSAGE, number=2, message="TargetProject",)
-    request_id = proto.Field(proto.STRING, number=3,)
+    target_project = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="TargetProject",
+    )
+    request_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class DeleteTargetProjectRequest(proto.Message):
@@ -2066,8 +2830,14 @@ class DeleteTargetProjectRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    request_id = proto.Field(proto.STRING, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    request_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class Group(proto.Message):
@@ -2088,11 +2858,28 @@ class Group(proto.Message):
             group which can be updated.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    create_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
-    description = proto.Field(proto.STRING, number=4,)
-    display_name = proto.Field(proto.STRING, number=5,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class ListGroupsRequest(proto.Message):
@@ -2122,11 +2909,26 @@ class ListGroupsRequest(proto.Message):
             Optional. the order by fields for the result.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    filter = proto.Field(proto.STRING, number=4,)
-    order_by = proto.Field(proto.STRING, number=5,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class ListGroupsResponse(proto.Message):
@@ -2148,9 +2950,19 @@ class ListGroupsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    groups = proto.RepeatedField(proto.MESSAGE, number=1, message="Group",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
-    unreachable = proto.RepeatedField(proto.STRING, number=3,)
+    groups = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Group",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 class GetGroupRequest(proto.Message):
@@ -2161,7 +2973,10 @@ class GetGroupRequest(proto.Message):
             Required. The group name.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CreateGroupRequest(proto.Message):
@@ -2194,10 +3009,23 @@ class CreateGroupRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    group_id = proto.Field(proto.STRING, number=2,)
-    group = proto.Field(proto.MESSAGE, number=3, message="Group",)
-    request_id = proto.Field(proto.STRING, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    group_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    group = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="Group",
+    )
+    request_id = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class UpdateGroupRequest(proto.Message):
@@ -2234,10 +3062,19 @@ class UpdateGroupRequest(proto.Message):
     """
 
     update_mask = proto.Field(
-        proto.MESSAGE, number=1, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=1,
+        message=field_mask_pb2.FieldMask,
     )
-    group = proto.Field(proto.MESSAGE, number=2, message="Group",)
-    request_id = proto.Field(proto.STRING, number=3,)
+    group = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="Group",
+    )
+    request_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class DeleteGroupRequest(proto.Message):
@@ -2266,8 +3103,14 @@ class DeleteGroupRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    request_id = proto.Field(proto.STRING, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    request_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class AddGroupMigrationRequest(proto.Message):
@@ -2281,13 +3124,18 @@ class AddGroupMigrationRequest(proto.Message):
             The full path name of the MigratingVm to add.
     """
 
-    group = proto.Field(proto.STRING, number=1,)
-    migrating_vm = proto.Field(proto.STRING, number=2,)
+    group = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    migrating_vm = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class AddGroupMigrationResponse(proto.Message):
-    r"""Response message for 'AddGroupMigration' request.
-    """
+    r"""Response message for 'AddGroupMigration' request."""
 
 
 class RemoveGroupMigrationRequest(proto.Message):
@@ -2300,13 +3148,18 @@ class RemoveGroupMigrationRequest(proto.Message):
             The MigratingVm to remove.
     """
 
-    group = proto.Field(proto.STRING, number=1,)
-    migrating_vm = proto.Field(proto.STRING, number=2,)
+    group = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    migrating_vm = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class RemoveGroupMigrationResponse(proto.Message):
-    r"""Response message for 'RemoveMigration' request.
-    """
+    r"""Response message for 'RemoveMigration' request."""
 
 
 class CreateCutoverJobRequest(proto.Message):
@@ -2339,10 +3192,23 @@ class CreateCutoverJobRequest(proto.Message):
             (00000000-0000-0000-0000-000000000000).
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    cutover_job_id = proto.Field(proto.STRING, number=2,)
-    cutover_job = proto.Field(proto.MESSAGE, number=3, message="CutoverJob",)
-    request_id = proto.Field(proto.STRING, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    cutover_job_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    cutover_job = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="CutoverJob",
+    )
+    request_id = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class CancelCutoverJobRequest(proto.Message):
@@ -2353,12 +3219,14 @@ class CancelCutoverJobRequest(proto.Message):
             Required. The cutover job id
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CancelCutoverJobResponse(proto.Message):
-    r"""Response message for 'CancelCutoverJob' request.
-    """
+    r"""Response message for 'CancelCutoverJob' request."""
 
 
 class ListCutoverJobsRequest(proto.Message):
@@ -2388,11 +3256,26 @@ class ListCutoverJobsRequest(proto.Message):
             Optional. the order by fields for the result.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    filter = proto.Field(proto.STRING, number=4,)
-    order_by = proto.Field(proto.STRING, number=5,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class ListCutoverJobsResponse(proto.Message):
@@ -2415,9 +3298,19 @@ class ListCutoverJobsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    cutover_jobs = proto.RepeatedField(proto.MESSAGE, number=1, message="CutoverJob",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
-    unreachable = proto.RepeatedField(proto.STRING, number=3,)
+    cutover_jobs = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="CutoverJob",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 class GetCutoverJobRequest(proto.Message):
@@ -2428,7 +3321,10 @@ class GetCutoverJobRequest(proto.Message):
             Required. The name of the CutoverJob.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class OperationMetadata(proto.Message):
@@ -2461,13 +3357,36 @@ class OperationMetadata(proto.Message):
             operation.
     """
 
-    create_time = proto.Field(proto.MESSAGE, number=1, message=timestamp_pb2.Timestamp,)
-    end_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    target = proto.Field(proto.STRING, number=3,)
-    verb = proto.Field(proto.STRING, number=4,)
-    status_message = proto.Field(proto.STRING, number=5,)
-    requested_cancellation = proto.Field(proto.BOOL, number=6,)
-    api_version = proto.Field(proto.STRING, number=7,)
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=timestamp_pb2.Timestamp,
+    )
+    end_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    target = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    verb = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    status_message = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    requested_cancellation = proto.Field(
+        proto.BOOL,
+        number=6,
+    )
+    api_version = proto.Field(
+        proto.STRING,
+        number=7,
+    )
 
 
 class MigrationError(proto.Message):
@@ -2502,17 +3421,31 @@ class MigrationError(proto.Message):
         CUTOVER_ERROR = 7
         UTILIZATION_REPORT_ERROR = 8
 
-    code = proto.Field(proto.ENUM, number=1, enum=ErrorCode,)
+    code = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=ErrorCode,
+    )
     error_message = proto.Field(
-        proto.MESSAGE, number=2, message=error_details_pb2.LocalizedMessage,
+        proto.MESSAGE,
+        number=2,
+        message=error_details_pb2.LocalizedMessage,
     )
     action_item = proto.Field(
-        proto.MESSAGE, number=3, message=error_details_pb2.LocalizedMessage,
+        proto.MESSAGE,
+        number=3,
+        message=error_details_pb2.LocalizedMessage,
     )
     help_links = proto.RepeatedField(
-        proto.MESSAGE, number=4, message=error_details_pb2.Help.Link,
+        proto.MESSAGE,
+        number=4,
+        message=error_details_pb2.Help.Link,
     )
-    error_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
+    error_time = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

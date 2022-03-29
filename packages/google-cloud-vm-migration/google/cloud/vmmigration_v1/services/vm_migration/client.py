@@ -59,7 +59,10 @@ class VmMigrationClientMeta(type):
     _transport_registry["grpc"] = VmMigrationGrpcTransport
     _transport_registry["grpc_asyncio"] = VmMigrationGrpcAsyncIOTransport
 
-    def get_transport_class(cls, label: str = None,) -> Type[VmMigrationTransport]:
+    def get_transport_class(
+        cls,
+        label: str = None,
+    ) -> Type[VmMigrationTransport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -165,7 +168,11 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
     @staticmethod
     def clone_job_path(
-        project: str, location: str, source: str, migrating_vm: str, clone_job: str,
+        project: str,
+        location: str,
+        source: str,
+        migrating_vm: str,
+        clone_job: str,
     ) -> str:
         """Returns a fully-qualified clone_job string."""
         return "projects/{project}/locations/{location}/sources/{source}/migratingVms/{migrating_vm}/cloneJobs/{clone_job}".format(
@@ -187,7 +194,11 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
     @staticmethod
     def cutover_job_path(
-        project: str, location: str, source: str, migrating_vm: str, cutover_job: str,
+        project: str,
+        location: str,
+        source: str,
+        migrating_vm: str,
+        cutover_job: str,
     ) -> str:
         """Returns a fully-qualified cutover_job string."""
         return "projects/{project}/locations/{location}/sources/{source}/migratingVms/{migrating_vm}/cutoverJobs/{cutover_job}".format(
@@ -209,7 +220,10 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
     @staticmethod
     def datacenter_connector_path(
-        project: str, location: str, source: str, datacenter_connector: str,
+        project: str,
+        location: str,
+        source: str,
+        datacenter_connector: str,
     ) -> str:
         """Returns a fully-qualified datacenter_connector string."""
         return "projects/{project}/locations/{location}/sources/{source}/datacenterConnectors/{datacenter_connector}".format(
@@ -229,10 +243,16 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def group_path(project: str, location: str, group: str,) -> str:
+    def group_path(
+        project: str,
+        location: str,
+        group: str,
+    ) -> str:
         """Returns a fully-qualified group string."""
         return "projects/{project}/locations/{location}/groups/{group}".format(
-            project=project, location=location, group=group,
+            project=project,
+            location=location,
+            group=group,
         )
 
     @staticmethod
@@ -246,7 +266,10 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
     @staticmethod
     def migrating_vm_path(
-        project: str, location: str, source: str, migrating_vm: str,
+        project: str,
+        location: str,
+        source: str,
+        migrating_vm: str,
     ) -> str:
         """Returns a fully-qualified migrating_vm string."""
         return "projects/{project}/locations/{location}/sources/{source}/migratingVms/{migrating_vm}".format(
@@ -266,10 +289,16 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def source_path(project: str, location: str, source: str,) -> str:
+    def source_path(
+        project: str,
+        location: str,
+        source: str,
+    ) -> str:
         """Returns a fully-qualified source string."""
         return "projects/{project}/locations/{location}/sources/{source}".format(
-            project=project, location=location, source=source,
+            project=project,
+            location=location,
+            source=source,
         )
 
     @staticmethod
@@ -282,10 +311,16 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def target_project_path(project: str, location: str, target_project: str,) -> str:
+    def target_project_path(
+        project: str,
+        location: str,
+        target_project: str,
+    ) -> str:
         """Returns a fully-qualified target_project string."""
         return "projects/{project}/locations/{location}/targetProjects/{target_project}".format(
-            project=project, location=location, target_project=target_project,
+            project=project,
+            location=location,
+            target_project=target_project,
         )
 
     @staticmethod
@@ -299,7 +334,10 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
     @staticmethod
     def utilization_report_path(
-        project: str, location: str, source: str, utilization_report: str,
+        project: str,
+        location: str,
+        source: str,
+        utilization_report: str,
     ) -> str:
         """Returns a fully-qualified utilization_report string."""
         return "projects/{project}/locations/{location}/sources/{source}/utilizationReports/{utilization_report}".format(
@@ -319,7 +357,9 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_billing_account_path(billing_account: str,) -> str:
+    def common_billing_account_path(
+        billing_account: str,
+    ) -> str:
         """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
@@ -332,9 +372,13 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(folder: str,) -> str:
+    def common_folder_path(
+        folder: str,
+    ) -> str:
         """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(folder=folder,)
+        return "folders/{folder}".format(
+            folder=folder,
+        )
 
     @staticmethod
     def parse_common_folder_path(path: str) -> Dict[str, str]:
@@ -343,9 +387,13 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(organization: str,) -> str:
+    def common_organization_path(
+        organization: str,
+    ) -> str:
         """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(organization=organization,)
+        return "organizations/{organization}".format(
+            organization=organization,
+        )
 
     @staticmethod
     def parse_common_organization_path(path: str) -> Dict[str, str]:
@@ -354,9 +402,13 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(project: str,) -> str:
+    def common_project_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified project string."""
-        return "projects/{project}".format(project=project,)
+        return "projects/{project}".format(
+            project=project,
+        )
 
     @staticmethod
     def parse_common_project_path(path: str) -> Dict[str, str]:
@@ -365,10 +417,14 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(project: str, location: str,) -> str:
+    def common_location_path(
+        project: str,
+        location: str,
+    ) -> str:
         """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
-            project=project, location=location,
+            project=project,
+            location=location,
         )
 
     @staticmethod
@@ -632,12 +688,20 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListSourcesPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -728,7 +792,12 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -839,7 +908,12 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -956,7 +1030,12 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1069,7 +1148,12 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1172,7 +1256,12 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1267,12 +1356,20 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListUtilizationReportsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1364,7 +1461,12 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1486,7 +1588,12 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1603,7 +1710,12 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1708,12 +1820,20 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListDatacenterConnectorsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1808,7 +1928,12 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1931,7 +2056,12 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -2048,7 +2178,12 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -2167,7 +2302,12 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -2270,12 +2410,20 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListMigratingVmsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -2367,7 +2515,12 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2476,7 +2629,12 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -2591,7 +2749,12 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -2701,7 +2864,12 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -2793,7 +2961,12 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -2883,7 +3056,12 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -2993,7 +3171,12 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -3124,7 +3307,12 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -3227,7 +3415,12 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -3330,12 +3523,20 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListCloneJobsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -3436,7 +3637,12 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -3552,7 +3758,12 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -3655,7 +3866,12 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -3758,12 +3974,20 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListCutoverJobsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -3856,7 +4080,12 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -3951,12 +4180,20 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListGroupsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -4046,7 +4283,12 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -4157,7 +4399,12 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -4274,7 +4521,12 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -4387,7 +4639,12 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -4492,7 +4749,12 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -4595,7 +4857,12 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -4702,12 +4969,20 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListTargetProjectsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -4801,7 +5076,12 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -4916,7 +5196,12 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -5037,7 +5322,12 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -5154,7 +5444,12 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(

@@ -123,22 +123,34 @@ class VmMigrationTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.list_sources: gapic_v1.method.wrap_method(
-                self.list_sources, default_timeout=None, client_info=client_info,
+                self.list_sources,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_source: gapic_v1.method.wrap_method(
-                self.get_source, default_timeout=None, client_info=client_info,
+                self.get_source,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.create_source: gapic_v1.method.wrap_method(
-                self.create_source, default_timeout=900.0, client_info=client_info,
+                self.create_source,
+                default_timeout=900.0,
+                client_info=client_info,
             ),
             self.update_source: gapic_v1.method.wrap_method(
-                self.update_source, default_timeout=None, client_info=client_info,
+                self.update_source,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.delete_source: gapic_v1.method.wrap_method(
-                self.delete_source, default_timeout=None, client_info=client_info,
+                self.delete_source,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.fetch_inventory: gapic_v1.method.wrap_method(
-                self.fetch_inventory, default_timeout=300.0, client_info=client_info,
+                self.fetch_inventory,
+                default_timeout=300.0,
+                client_info=client_info,
             ),
             self.list_utilization_reports: gapic_v1.method.wrap_method(
                 self.list_utilization_reports,
@@ -181,73 +193,119 @@ class VmMigrationTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.create_migrating_vm: gapic_v1.method.wrap_method(
-                self.create_migrating_vm, default_timeout=None, client_info=client_info,
+                self.create_migrating_vm,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_migrating_vms: gapic_v1.method.wrap_method(
-                self.list_migrating_vms, default_timeout=None, client_info=client_info,
+                self.list_migrating_vms,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_migrating_vm: gapic_v1.method.wrap_method(
-                self.get_migrating_vm, default_timeout=None, client_info=client_info,
+                self.get_migrating_vm,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.update_migrating_vm: gapic_v1.method.wrap_method(
-                self.update_migrating_vm, default_timeout=None, client_info=client_info,
+                self.update_migrating_vm,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.delete_migrating_vm: gapic_v1.method.wrap_method(
-                self.delete_migrating_vm, default_timeout=None, client_info=client_info,
+                self.delete_migrating_vm,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.start_migration: gapic_v1.method.wrap_method(
-                self.start_migration, default_timeout=None, client_info=client_info,
+                self.start_migration,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.resume_migration: gapic_v1.method.wrap_method(
-                self.resume_migration, default_timeout=None, client_info=client_info,
+                self.resume_migration,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.pause_migration: gapic_v1.method.wrap_method(
-                self.pause_migration, default_timeout=None, client_info=client_info,
+                self.pause_migration,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.finalize_migration: gapic_v1.method.wrap_method(
-                self.finalize_migration, default_timeout=None, client_info=client_info,
+                self.finalize_migration,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.create_clone_job: gapic_v1.method.wrap_method(
-                self.create_clone_job, default_timeout=None, client_info=client_info,
+                self.create_clone_job,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.cancel_clone_job: gapic_v1.method.wrap_method(
-                self.cancel_clone_job, default_timeout=None, client_info=client_info,
+                self.cancel_clone_job,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_clone_jobs: gapic_v1.method.wrap_method(
-                self.list_clone_jobs, default_timeout=None, client_info=client_info,
+                self.list_clone_jobs,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_clone_job: gapic_v1.method.wrap_method(
-                self.get_clone_job, default_timeout=None, client_info=client_info,
+                self.get_clone_job,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.create_cutover_job: gapic_v1.method.wrap_method(
-                self.create_cutover_job, default_timeout=None, client_info=client_info,
+                self.create_cutover_job,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.cancel_cutover_job: gapic_v1.method.wrap_method(
-                self.cancel_cutover_job, default_timeout=None, client_info=client_info,
+                self.cancel_cutover_job,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_cutover_jobs: gapic_v1.method.wrap_method(
-                self.list_cutover_jobs, default_timeout=None, client_info=client_info,
+                self.list_cutover_jobs,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_cutover_job: gapic_v1.method.wrap_method(
-                self.get_cutover_job, default_timeout=None, client_info=client_info,
+                self.get_cutover_job,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_groups: gapic_v1.method.wrap_method(
-                self.list_groups, default_timeout=None, client_info=client_info,
+                self.list_groups,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_group: gapic_v1.method.wrap_method(
-                self.get_group, default_timeout=None, client_info=client_info,
+                self.get_group,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.create_group: gapic_v1.method.wrap_method(
-                self.create_group, default_timeout=None, client_info=client_info,
+                self.create_group,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.update_group: gapic_v1.method.wrap_method(
-                self.update_group, default_timeout=None, client_info=client_info,
+                self.update_group,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.delete_group: gapic_v1.method.wrap_method(
-                self.delete_group, default_timeout=None, client_info=client_info,
+                self.delete_group,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.add_group_migration: gapic_v1.method.wrap_method(
-                self.add_group_migration, default_timeout=None, client_info=client_info,
+                self.add_group_migration,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.remove_group_migration: gapic_v1.method.wrap_method(
                 self.remove_group_migration,
@@ -260,7 +318,9 @@ class VmMigrationTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.get_target_project: gapic_v1.method.wrap_method(
-                self.get_target_project, default_timeout=None, client_info=client_info,
+                self.get_target_project,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.create_target_project: gapic_v1.method.wrap_method(
                 self.create_target_project,
@@ -282,9 +342,9 @@ class VmMigrationTransport(abc.ABC):
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 
