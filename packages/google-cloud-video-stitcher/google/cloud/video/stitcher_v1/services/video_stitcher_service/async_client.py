@@ -358,7 +358,12 @@ class VideoStitcherServiceAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -455,12 +460,20 @@ class VideoStitcherServiceAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.
         response = pagers.ListCdnKeysAsyncPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -554,7 +567,12 @@ class VideoStitcherServiceAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -637,7 +655,10 @@ class VideoStitcherServiceAsyncClient:
 
         # Send the request.
         await rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     async def update_cdn_key(
@@ -741,7 +762,12 @@ class VideoStitcherServiceAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -848,7 +874,12 @@ class VideoStitcherServiceAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -939,7 +970,12 @@ class VideoStitcherServiceAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1036,12 +1072,20 @@ class VideoStitcherServiceAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.
         response = pagers.ListVodStitchDetailsAsyncPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1135,7 +1179,12 @@ class VideoStitcherServiceAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1232,12 +1281,20 @@ class VideoStitcherServiceAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.
         response = pagers.ListVodAdTagDetailsAsyncPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1331,7 +1388,12 @@ class VideoStitcherServiceAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1427,12 +1489,20 @@ class VideoStitcherServiceAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.
         response = pagers.ListLiveAdTagDetailsAsyncPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1525,7 +1595,12 @@ class VideoStitcherServiceAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1637,7 +1712,12 @@ class VideoStitcherServiceAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1733,12 +1813,20 @@ class VideoStitcherServiceAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__aiter__` convenience method.
         response = pagers.ListSlatesAsyncPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1828,7 +1916,12 @@ class VideoStitcherServiceAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1928,7 +2021,12 @@ class VideoStitcherServiceAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2011,7 +2109,10 @@ class VideoStitcherServiceAsyncClient:
 
         # Send the request.
         await rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     async def create_live_session(
@@ -2117,7 +2218,12 @@ class VideoStitcherServiceAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2205,7 +2311,12 @@ class VideoStitcherServiceAsyncClient:
         )
 
         # Send the request.
-        response = await rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response

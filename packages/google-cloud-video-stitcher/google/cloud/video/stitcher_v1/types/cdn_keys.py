@@ -18,7 +18,11 @@ import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.video.stitcher.v1",
-    manifest={"CdnKey", "GoogleCdnKey", "AkamaiCdnKey",},
+    manifest={
+        "CdnKey",
+        "GoogleCdnKey",
+        "AkamaiCdnKey",
+    },
 )
 
 
@@ -52,13 +56,25 @@ class CdnKey(proto.Message):
     """
 
     google_cdn_key = proto.Field(
-        proto.MESSAGE, number=5, oneof="cdn_key_config", message="GoogleCdnKey",
+        proto.MESSAGE,
+        number=5,
+        oneof="cdn_key_config",
+        message="GoogleCdnKey",
     )
     akamai_cdn_key = proto.Field(
-        proto.MESSAGE, number=6, oneof="cdn_key_config", message="AkamaiCdnKey",
+        proto.MESSAGE,
+        number=6,
+        oneof="cdn_key_config",
+        message="AkamaiCdnKey",
     )
-    name = proto.Field(proto.STRING, number=1,)
-    hostname = proto.Field(proto.STRING, number=4,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    hostname = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class GoogleCdnKey(proto.Message):
@@ -72,8 +88,14 @@ class GoogleCdnKey(proto.Message):
             The public name of the Google Cloud CDN key.
     """
 
-    private_key = proto.Field(proto.BYTES, number=1,)
-    key_name = proto.Field(proto.STRING, number=2,)
+    private_key = proto.Field(
+        proto.BYTES,
+        number=1,
+    )
+    key_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class AkamaiCdnKey(proto.Message):
@@ -85,7 +107,10 @@ class AkamaiCdnKey(proto.Message):
             configuration.
     """
 
-    token_key = proto.Field(proto.BYTES, number=1,)
+    token_key = proto.Field(
+        proto.BYTES,
+        number=1,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

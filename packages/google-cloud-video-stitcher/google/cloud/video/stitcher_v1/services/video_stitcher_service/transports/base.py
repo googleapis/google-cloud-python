@@ -127,25 +127,39 @@ class VideoStitcherServiceTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.create_cdn_key: gapic_v1.method.wrap_method(
-                self.create_cdn_key, default_timeout=60.0, client_info=client_info,
+                self.create_cdn_key,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.list_cdn_keys: gapic_v1.method.wrap_method(
-                self.list_cdn_keys, default_timeout=60.0, client_info=client_info,
+                self.list_cdn_keys,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.get_cdn_key: gapic_v1.method.wrap_method(
-                self.get_cdn_key, default_timeout=60.0, client_info=client_info,
+                self.get_cdn_key,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.delete_cdn_key: gapic_v1.method.wrap_method(
-                self.delete_cdn_key, default_timeout=60.0, client_info=client_info,
+                self.delete_cdn_key,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.update_cdn_key: gapic_v1.method.wrap_method(
-                self.update_cdn_key, default_timeout=60.0, client_info=client_info,
+                self.update_cdn_key,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.create_vod_session: gapic_v1.method.wrap_method(
-                self.create_vod_session, default_timeout=60.0, client_info=client_info,
+                self.create_vod_session,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.get_vod_session: gapic_v1.method.wrap_method(
-                self.get_vod_session, default_timeout=60.0, client_info=client_info,
+                self.get_vod_session,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.list_vod_stitch_details: gapic_v1.method.wrap_method(
                 self.list_vod_stitch_details,
@@ -178,34 +192,48 @@ class VideoStitcherServiceTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.create_slate: gapic_v1.method.wrap_method(
-                self.create_slate, default_timeout=60.0, client_info=client_info,
+                self.create_slate,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.list_slates: gapic_v1.method.wrap_method(
-                self.list_slates, default_timeout=60.0, client_info=client_info,
+                self.list_slates,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.get_slate: gapic_v1.method.wrap_method(
-                self.get_slate, default_timeout=60.0, client_info=client_info,
+                self.get_slate,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.update_slate: gapic_v1.method.wrap_method(
-                self.update_slate, default_timeout=60.0, client_info=client_info,
+                self.update_slate,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.delete_slate: gapic_v1.method.wrap_method(
-                self.delete_slate, default_timeout=60.0, client_info=client_info,
+                self.delete_slate,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.create_live_session: gapic_v1.method.wrap_method(
-                self.create_live_session, default_timeout=60.0, client_info=client_info,
+                self.create_live_session,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.get_live_session: gapic_v1.method.wrap_method(
-                self.get_live_session, default_timeout=60.0, client_info=client_info,
+                self.get_live_session,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
         }
 
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

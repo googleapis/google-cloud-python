@@ -21,7 +21,10 @@ from google.protobuf import struct_pb2  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.video.stitcher.v1",
-    manifest={"VodStitchDetail", "AdStitchDetail",},
+    manifest={
+        "VodStitchDetail",
+        "AdStitchDetail",
+    },
 )
 
 
@@ -39,9 +42,14 @@ class VodStitchDetail(proto.Message):
             fetched ad playlist.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     ad_stitch_details = proto.RepeatedField(
-        proto.MESSAGE, number=3, message="AdStitchDetail",
+        proto.MESSAGE,
+        number=3,
+        message="AdStitchDetail",
     )
 
 
@@ -65,14 +73,28 @@ class AdStitchDetail(proto.Message):
             file for the ad.
     """
 
-    ad_break_id = proto.Field(proto.STRING, number=1,)
-    ad_id = proto.Field(proto.STRING, number=2,)
-    ad_time_offset = proto.Field(
-        proto.MESSAGE, number=3, message=duration_pb2.Duration,
+    ad_break_id = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    skip_reason = proto.Field(proto.STRING, number=4,)
+    ad_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    ad_time_offset = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=duration_pb2.Duration,
+    )
+    skip_reason = proto.Field(
+        proto.STRING,
+        number=4,
+    )
     media = proto.MapField(
-        proto.STRING, proto.MESSAGE, number=5, message=struct_pb2.Value,
+        proto.STRING,
+        proto.MESSAGE,
+        number=5,
+        message=struct_pb2.Value,
     )
 
 

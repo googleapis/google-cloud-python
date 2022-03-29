@@ -99,7 +99,11 @@ def test__get_default_mtls_endpoint():
 
 
 @pytest.mark.parametrize(
-    "client_class", [VideoStitcherServiceClient, VideoStitcherServiceAsyncClient,]
+    "client_class",
+    [
+        VideoStitcherServiceClient,
+        VideoStitcherServiceAsyncClient,
+    ],
 )
 def test_video_stitcher_service_client_from_service_account_info(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -141,7 +145,11 @@ def test_video_stitcher_service_client_service_account_always_use_jwt(
 
 
 @pytest.mark.parametrize(
-    "client_class", [VideoStitcherServiceClient, VideoStitcherServiceAsyncClient,]
+    "client_class",
+    [
+        VideoStitcherServiceClient,
+        VideoStitcherServiceAsyncClient,
+    ],
 )
 def test_video_stitcher_service_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -523,7 +531,9 @@ def test_video_stitcher_service_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -664,11 +674,16 @@ def test_video_stitcher_service_client_create_channel_credentials_file(
 
 
 @pytest.mark.parametrize(
-    "request_type", [video_stitcher_service.CreateCdnKeyRequest, dict,]
+    "request_type",
+    [
+        video_stitcher_service.CreateCdnKeyRequest,
+        dict,
+    ],
 )
 def test_create_cdn_key(request_type, transport: str = "grpc"):
     client = VideoStitcherServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -700,7 +715,8 @@ def test_create_cdn_key_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = VideoStitcherServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -717,7 +733,8 @@ async def test_create_cdn_key_async(
     request_type=video_stitcher_service.CreateCdnKeyRequest,
 ):
     client = VideoStitcherServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -728,7 +745,10 @@ async def test_create_cdn_key_async(
     with mock.patch.object(type(client.transport.create_cdn_key), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            cdn_keys.CdnKey(name="name_value", hostname="hostname_value",)
+            cdn_keys.CdnKey(
+                name="name_value",
+                hostname="hostname_value",
+            )
         )
         response = await client.create_cdn_key(request)
 
@@ -771,7 +791,10 @@ def test_create_cdn_key_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -798,7 +821,10 @@ async def test_create_cdn_key_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_cdn_key_flattened():
@@ -914,11 +940,16 @@ async def test_create_cdn_key_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [video_stitcher_service.ListCdnKeysRequest, dict,]
+    "request_type",
+    [
+        video_stitcher_service.ListCdnKeysRequest,
+        dict,
+    ],
 )
 def test_list_cdn_keys(request_type, transport: str = "grpc"):
     client = VideoStitcherServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -929,7 +960,8 @@ def test_list_cdn_keys(request_type, transport: str = "grpc"):
     with mock.patch.object(type(client.transport.list_cdn_keys), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = video_stitcher_service.ListCdnKeysResponse(
-            next_page_token="next_page_token_value", unreachable=["unreachable_value"],
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
         )
         response = client.list_cdn_keys(request)
 
@@ -948,7 +980,8 @@ def test_list_cdn_keys_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = VideoStitcherServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -965,7 +998,8 @@ async def test_list_cdn_keys_async(
     request_type=video_stitcher_service.ListCdnKeysRequest,
 ):
     client = VideoStitcherServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1022,7 +1056,10 @@ def test_list_cdn_keys_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1051,7 +1088,10 @@ async def test_list_cdn_keys_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_cdn_keys_flattened():
@@ -1065,7 +1105,9 @@ def test_list_cdn_keys_flattened():
         call.return_value = video_stitcher_service.ListCdnKeysResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_cdn_keys(parent="parent_value",)
+        client.list_cdn_keys(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1085,7 +1127,8 @@ def test_list_cdn_keys_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_cdn_keys(
-            video_stitcher_service.ListCdnKeysRequest(), parent="parent_value",
+            video_stitcher_service.ListCdnKeysRequest(),
+            parent="parent_value",
         )
 
 
@@ -1105,7 +1148,9 @@ async def test_list_cdn_keys_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_cdn_keys(parent="parent_value",)
+        response = await client.list_cdn_keys(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1126,13 +1171,15 @@ async def test_list_cdn_keys_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_cdn_keys(
-            video_stitcher_service.ListCdnKeysRequest(), parent="parent_value",
+            video_stitcher_service.ListCdnKeysRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_cdn_keys_pager(transport_name: str = "grpc"):
     client = VideoStitcherServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1140,17 +1187,28 @@ def test_list_cdn_keys_pager(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             video_stitcher_service.ListCdnKeysResponse(
-                cdn_keys=[cdn_keys.CdnKey(), cdn_keys.CdnKey(), cdn_keys.CdnKey(),],
+                cdn_keys=[
+                    cdn_keys.CdnKey(),
+                    cdn_keys.CdnKey(),
+                    cdn_keys.CdnKey(),
+                ],
                 next_page_token="abc",
             ),
             video_stitcher_service.ListCdnKeysResponse(
-                cdn_keys=[], next_page_token="def",
+                cdn_keys=[],
+                next_page_token="def",
             ),
             video_stitcher_service.ListCdnKeysResponse(
-                cdn_keys=[cdn_keys.CdnKey(),], next_page_token="ghi",
+                cdn_keys=[
+                    cdn_keys.CdnKey(),
+                ],
+                next_page_token="ghi",
             ),
             video_stitcher_service.ListCdnKeysResponse(
-                cdn_keys=[cdn_keys.CdnKey(), cdn_keys.CdnKey(),],
+                cdn_keys=[
+                    cdn_keys.CdnKey(),
+                    cdn_keys.CdnKey(),
+                ],
             ),
             RuntimeError,
         )
@@ -1170,7 +1228,8 @@ def test_list_cdn_keys_pager(transport_name: str = "grpc"):
 
 def test_list_cdn_keys_pages(transport_name: str = "grpc"):
     client = VideoStitcherServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1178,17 +1237,28 @@ def test_list_cdn_keys_pages(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             video_stitcher_service.ListCdnKeysResponse(
-                cdn_keys=[cdn_keys.CdnKey(), cdn_keys.CdnKey(), cdn_keys.CdnKey(),],
+                cdn_keys=[
+                    cdn_keys.CdnKey(),
+                    cdn_keys.CdnKey(),
+                    cdn_keys.CdnKey(),
+                ],
                 next_page_token="abc",
             ),
             video_stitcher_service.ListCdnKeysResponse(
-                cdn_keys=[], next_page_token="def",
+                cdn_keys=[],
+                next_page_token="def",
             ),
             video_stitcher_service.ListCdnKeysResponse(
-                cdn_keys=[cdn_keys.CdnKey(),], next_page_token="ghi",
+                cdn_keys=[
+                    cdn_keys.CdnKey(),
+                ],
+                next_page_token="ghi",
             ),
             video_stitcher_service.ListCdnKeysResponse(
-                cdn_keys=[cdn_keys.CdnKey(), cdn_keys.CdnKey(),],
+                cdn_keys=[
+                    cdn_keys.CdnKey(),
+                    cdn_keys.CdnKey(),
+                ],
             ),
             RuntimeError,
         )
@@ -1210,21 +1280,34 @@ async def test_list_cdn_keys_async_pager():
         # Set the response to a series of pages.
         call.side_effect = (
             video_stitcher_service.ListCdnKeysResponse(
-                cdn_keys=[cdn_keys.CdnKey(), cdn_keys.CdnKey(), cdn_keys.CdnKey(),],
+                cdn_keys=[
+                    cdn_keys.CdnKey(),
+                    cdn_keys.CdnKey(),
+                    cdn_keys.CdnKey(),
+                ],
                 next_page_token="abc",
             ),
             video_stitcher_service.ListCdnKeysResponse(
-                cdn_keys=[], next_page_token="def",
+                cdn_keys=[],
+                next_page_token="def",
             ),
             video_stitcher_service.ListCdnKeysResponse(
-                cdn_keys=[cdn_keys.CdnKey(),], next_page_token="ghi",
+                cdn_keys=[
+                    cdn_keys.CdnKey(),
+                ],
+                next_page_token="ghi",
             ),
             video_stitcher_service.ListCdnKeysResponse(
-                cdn_keys=[cdn_keys.CdnKey(), cdn_keys.CdnKey(),],
+                cdn_keys=[
+                    cdn_keys.CdnKey(),
+                    cdn_keys.CdnKey(),
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.list_cdn_keys(request={},)
+        async_pager = await client.list_cdn_keys(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -1247,17 +1330,28 @@ async def test_list_cdn_keys_async_pages():
         # Set the response to a series of pages.
         call.side_effect = (
             video_stitcher_service.ListCdnKeysResponse(
-                cdn_keys=[cdn_keys.CdnKey(), cdn_keys.CdnKey(), cdn_keys.CdnKey(),],
+                cdn_keys=[
+                    cdn_keys.CdnKey(),
+                    cdn_keys.CdnKey(),
+                    cdn_keys.CdnKey(),
+                ],
                 next_page_token="abc",
             ),
             video_stitcher_service.ListCdnKeysResponse(
-                cdn_keys=[], next_page_token="def",
+                cdn_keys=[],
+                next_page_token="def",
             ),
             video_stitcher_service.ListCdnKeysResponse(
-                cdn_keys=[cdn_keys.CdnKey(),], next_page_token="ghi",
+                cdn_keys=[
+                    cdn_keys.CdnKey(),
+                ],
+                next_page_token="ghi",
             ),
             video_stitcher_service.ListCdnKeysResponse(
-                cdn_keys=[cdn_keys.CdnKey(), cdn_keys.CdnKey(),],
+                cdn_keys=[
+                    cdn_keys.CdnKey(),
+                    cdn_keys.CdnKey(),
+                ],
             ),
             RuntimeError,
         )
@@ -1269,11 +1363,16 @@ async def test_list_cdn_keys_async_pages():
 
 
 @pytest.mark.parametrize(
-    "request_type", [video_stitcher_service.GetCdnKeyRequest, dict,]
+    "request_type",
+    [
+        video_stitcher_service.GetCdnKeyRequest,
+        dict,
+    ],
 )
 def test_get_cdn_key(request_type, transport: str = "grpc"):
     client = VideoStitcherServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1305,7 +1404,8 @@ def test_get_cdn_key_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = VideoStitcherServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1322,7 +1422,8 @@ async def test_get_cdn_key_async(
     request_type=video_stitcher_service.GetCdnKeyRequest,
 ):
     client = VideoStitcherServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1333,7 +1434,10 @@ async def test_get_cdn_key_async(
     with mock.patch.object(type(client.transport.get_cdn_key), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            cdn_keys.CdnKey(name="name_value", hostname="hostname_value",)
+            cdn_keys.CdnKey(
+                name="name_value",
+                hostname="hostname_value",
+            )
         )
         response = await client.get_cdn_key(request)
 
@@ -1376,7 +1480,10 @@ def test_get_cdn_key_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1403,7 +1510,10 @@ async def test_get_cdn_key_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_cdn_key_flattened():
@@ -1417,7 +1527,9 @@ def test_get_cdn_key_flattened():
         call.return_value = cdn_keys.CdnKey()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_cdn_key(name="name_value",)
+        client.get_cdn_key(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1437,7 +1549,8 @@ def test_get_cdn_key_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_cdn_key(
-            video_stitcher_service.GetCdnKeyRequest(), name="name_value",
+            video_stitcher_service.GetCdnKeyRequest(),
+            name="name_value",
         )
 
 
@@ -1455,7 +1568,9 @@ async def test_get_cdn_key_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(cdn_keys.CdnKey())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_cdn_key(name="name_value",)
+        response = await client.get_cdn_key(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1476,16 +1591,22 @@ async def test_get_cdn_key_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_cdn_key(
-            video_stitcher_service.GetCdnKeyRequest(), name="name_value",
+            video_stitcher_service.GetCdnKeyRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [video_stitcher_service.DeleteCdnKeyRequest, dict,]
+    "request_type",
+    [
+        video_stitcher_service.DeleteCdnKeyRequest,
+        dict,
+    ],
 )
 def test_delete_cdn_key(request_type, transport: str = "grpc"):
     client = VideoStitcherServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1511,7 +1632,8 @@ def test_delete_cdn_key_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = VideoStitcherServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1528,7 +1650,8 @@ async def test_delete_cdn_key_async(
     request_type=video_stitcher_service.DeleteCdnKeyRequest,
 ):
     client = VideoStitcherServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1578,7 +1701,10 @@ def test_delete_cdn_key_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1605,7 +1731,10 @@ async def test_delete_cdn_key_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_cdn_key_flattened():
@@ -1619,7 +1748,9 @@ def test_delete_cdn_key_flattened():
         call.return_value = None
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_cdn_key(name="name_value",)
+        client.delete_cdn_key(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1639,7 +1770,8 @@ def test_delete_cdn_key_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_cdn_key(
-            video_stitcher_service.DeleteCdnKeyRequest(), name="name_value",
+            video_stitcher_service.DeleteCdnKeyRequest(),
+            name="name_value",
         )
 
 
@@ -1657,7 +1789,9 @@ async def test_delete_cdn_key_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_cdn_key(name="name_value",)
+        response = await client.delete_cdn_key(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1678,16 +1812,22 @@ async def test_delete_cdn_key_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_cdn_key(
-            video_stitcher_service.DeleteCdnKeyRequest(), name="name_value",
+            video_stitcher_service.DeleteCdnKeyRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [video_stitcher_service.UpdateCdnKeyRequest, dict,]
+    "request_type",
+    [
+        video_stitcher_service.UpdateCdnKeyRequest,
+        dict,
+    ],
 )
 def test_update_cdn_key(request_type, transport: str = "grpc"):
     client = VideoStitcherServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1719,7 +1859,8 @@ def test_update_cdn_key_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = VideoStitcherServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1736,7 +1877,8 @@ async def test_update_cdn_key_async(
     request_type=video_stitcher_service.UpdateCdnKeyRequest,
 ):
     client = VideoStitcherServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1747,7 +1889,10 @@ async def test_update_cdn_key_async(
     with mock.patch.object(type(client.transport.update_cdn_key), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            cdn_keys.CdnKey(name="name_value", hostname="hostname_value",)
+            cdn_keys.CdnKey(
+                name="name_value",
+                hostname="hostname_value",
+            )
         )
         response = await client.update_cdn_key(request)
 
@@ -1790,9 +1935,10 @@ def test_update_cdn_key_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "cdn_key.name=cdn_key.name/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "cdn_key.name=cdn_key.name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1819,9 +1965,10 @@ async def test_update_cdn_key_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "cdn_key.name=cdn_key.name/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "cdn_key.name=cdn_key.name/value",
+    ) in kw["metadata"]
 
 
 def test_update_cdn_key_flattened():
@@ -1927,11 +2074,16 @@ async def test_update_cdn_key_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [video_stitcher_service.CreateVodSessionRequest, dict,]
+    "request_type",
+    [
+        video_stitcher_service.CreateVodSessionRequest,
+        dict,
+    ],
 )
 def test_create_vod_session(request_type, transport: str = "grpc"):
     client = VideoStitcherServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1970,7 +2122,8 @@ def test_create_vod_session_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = VideoStitcherServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1989,7 +2142,8 @@ async def test_create_vod_session_async(
     request_type=video_stitcher_service.CreateVodSessionRequest,
 ):
     client = VideoStitcherServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2056,7 +2210,10 @@ def test_create_vod_session_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2085,7 +2242,10 @@ async def test_create_vod_session_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_vod_session_flattened():
@@ -2102,7 +2262,8 @@ def test_create_vod_session_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.create_vod_session(
-            parent="parent_value", vod_session=sessions.VodSession(name="name_value"),
+            parent="parent_value",
+            vod_session=sessions.VodSession(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -2149,7 +2310,8 @@ async def test_create_vod_session_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.create_vod_session(
-            parent="parent_value", vod_session=sessions.VodSession(name="name_value"),
+            parent="parent_value",
+            vod_session=sessions.VodSession(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -2181,11 +2343,16 @@ async def test_create_vod_session_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [video_stitcher_service.GetVodSessionRequest, dict,]
+    "request_type",
+    [
+        video_stitcher_service.GetVodSessionRequest,
+        dict,
+    ],
 )
 def test_get_vod_session(request_type, transport: str = "grpc"):
     client = VideoStitcherServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2222,7 +2389,8 @@ def test_get_vod_session_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = VideoStitcherServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2239,7 +2407,8 @@ async def test_get_vod_session_async(
     request_type=video_stitcher_service.GetVodSessionRequest,
 ):
     client = VideoStitcherServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2302,7 +2471,10 @@ def test_get_vod_session_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2329,7 +2501,10 @@ async def test_get_vod_session_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_vod_session_flattened():
@@ -2343,7 +2518,9 @@ def test_get_vod_session_flattened():
         call.return_value = sessions.VodSession()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_vod_session(name="name_value",)
+        client.get_vod_session(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2363,7 +2540,8 @@ def test_get_vod_session_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_vod_session(
-            video_stitcher_service.GetVodSessionRequest(), name="name_value",
+            video_stitcher_service.GetVodSessionRequest(),
+            name="name_value",
         )
 
 
@@ -2381,7 +2559,9 @@ async def test_get_vod_session_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(sessions.VodSession())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_vod_session(name="name_value",)
+        response = await client.get_vod_session(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2402,16 +2582,22 @@ async def test_get_vod_session_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_vod_session(
-            video_stitcher_service.GetVodSessionRequest(), name="name_value",
+            video_stitcher_service.GetVodSessionRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [video_stitcher_service.ListVodStitchDetailsRequest, dict,]
+    "request_type",
+    [
+        video_stitcher_service.ListVodStitchDetailsRequest,
+        dict,
+    ],
 )
 def test_list_vod_stitch_details(request_type, transport: str = "grpc"):
     client = VideoStitcherServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2442,7 +2628,8 @@ def test_list_vod_stitch_details_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = VideoStitcherServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2461,7 +2648,8 @@ async def test_list_vod_stitch_details_async(
     request_type=video_stitcher_service.ListVodStitchDetailsRequest,
 ):
     client = VideoStitcherServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2520,7 +2708,10 @@ def test_list_vod_stitch_details_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2551,7 +2742,10 @@ async def test_list_vod_stitch_details_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_vod_stitch_details_flattened():
@@ -2567,7 +2761,9 @@ def test_list_vod_stitch_details_flattened():
         call.return_value = video_stitcher_service.ListVodStitchDetailsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_vod_stitch_details(parent="parent_value",)
+        client.list_vod_stitch_details(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2587,7 +2783,8 @@ def test_list_vod_stitch_details_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_vod_stitch_details(
-            video_stitcher_service.ListVodStitchDetailsRequest(), parent="parent_value",
+            video_stitcher_service.ListVodStitchDetailsRequest(),
+            parent="parent_value",
         )
 
 
@@ -2609,7 +2806,9 @@ async def test_list_vod_stitch_details_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_vod_stitch_details(parent="parent_value",)
+        response = await client.list_vod_stitch_details(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2630,13 +2829,15 @@ async def test_list_vod_stitch_details_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_vod_stitch_details(
-            video_stitcher_service.ListVodStitchDetailsRequest(), parent="parent_value",
+            video_stitcher_service.ListVodStitchDetailsRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_vod_stitch_details_pager(transport_name: str = "grpc"):
     client = VideoStitcherServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2654,10 +2855,13 @@ def test_list_vod_stitch_details_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             video_stitcher_service.ListVodStitchDetailsResponse(
-                vod_stitch_details=[], next_page_token="def",
+                vod_stitch_details=[],
+                next_page_token="def",
             ),
             video_stitcher_service.ListVodStitchDetailsResponse(
-                vod_stitch_details=[stitch_details.VodStitchDetail(),],
+                vod_stitch_details=[
+                    stitch_details.VodStitchDetail(),
+                ],
                 next_page_token="ghi",
             ),
             video_stitcher_service.ListVodStitchDetailsResponse(
@@ -2684,7 +2888,8 @@ def test_list_vod_stitch_details_pager(transport_name: str = "grpc"):
 
 def test_list_vod_stitch_details_pages(transport_name: str = "grpc"):
     client = VideoStitcherServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2702,10 +2907,13 @@ def test_list_vod_stitch_details_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             video_stitcher_service.ListVodStitchDetailsResponse(
-                vod_stitch_details=[], next_page_token="def",
+                vod_stitch_details=[],
+                next_page_token="def",
             ),
             video_stitcher_service.ListVodStitchDetailsResponse(
-                vod_stitch_details=[stitch_details.VodStitchDetail(),],
+                vod_stitch_details=[
+                    stitch_details.VodStitchDetail(),
+                ],
                 next_page_token="ghi",
             ),
             video_stitcher_service.ListVodStitchDetailsResponse(
@@ -2744,10 +2952,13 @@ async def test_list_vod_stitch_details_async_pager():
                 next_page_token="abc",
             ),
             video_stitcher_service.ListVodStitchDetailsResponse(
-                vod_stitch_details=[], next_page_token="def",
+                vod_stitch_details=[],
+                next_page_token="def",
             ),
             video_stitcher_service.ListVodStitchDetailsResponse(
-                vod_stitch_details=[stitch_details.VodStitchDetail(),],
+                vod_stitch_details=[
+                    stitch_details.VodStitchDetail(),
+                ],
                 next_page_token="ghi",
             ),
             video_stitcher_service.ListVodStitchDetailsResponse(
@@ -2758,7 +2969,9 @@ async def test_list_vod_stitch_details_async_pager():
             ),
             RuntimeError,
         )
-        async_pager = await client.list_vod_stitch_details(request={},)
+        async_pager = await client.list_vod_stitch_details(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -2791,10 +3004,13 @@ async def test_list_vod_stitch_details_async_pages():
                 next_page_token="abc",
             ),
             video_stitcher_service.ListVodStitchDetailsResponse(
-                vod_stitch_details=[], next_page_token="def",
+                vod_stitch_details=[],
+                next_page_token="def",
             ),
             video_stitcher_service.ListVodStitchDetailsResponse(
-                vod_stitch_details=[stitch_details.VodStitchDetail(),],
+                vod_stitch_details=[
+                    stitch_details.VodStitchDetail(),
+                ],
                 next_page_token="ghi",
             ),
             video_stitcher_service.ListVodStitchDetailsResponse(
@@ -2813,11 +3029,16 @@ async def test_list_vod_stitch_details_async_pages():
 
 
 @pytest.mark.parametrize(
-    "request_type", [video_stitcher_service.GetVodStitchDetailRequest, dict,]
+    "request_type",
+    [
+        video_stitcher_service.GetVodStitchDetailRequest,
+        dict,
+    ],
 )
 def test_get_vod_stitch_detail(request_type, transport: str = "grpc"):
     client = VideoStitcherServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2829,7 +3050,9 @@ def test_get_vod_stitch_detail(request_type, transport: str = "grpc"):
         type(client.transport.get_vod_stitch_detail), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = stitch_details.VodStitchDetail(name="name_value",)
+        call.return_value = stitch_details.VodStitchDetail(
+            name="name_value",
+        )
         response = client.get_vod_stitch_detail(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -2846,7 +3069,8 @@ def test_get_vod_stitch_detail_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = VideoStitcherServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2865,7 +3089,8 @@ async def test_get_vod_stitch_detail_async(
     request_type=video_stitcher_service.GetVodStitchDetailRequest,
 ):
     client = VideoStitcherServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2878,7 +3103,9 @@ async def test_get_vod_stitch_detail_async(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            stitch_details.VodStitchDetail(name="name_value",)
+            stitch_details.VodStitchDetail(
+                name="name_value",
+            )
         )
         response = await client.get_vod_stitch_detail(request)
 
@@ -2922,7 +3149,10 @@ def test_get_vod_stitch_detail_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2953,7 +3183,10 @@ async def test_get_vod_stitch_detail_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_vod_stitch_detail_flattened():
@@ -2969,7 +3202,9 @@ def test_get_vod_stitch_detail_flattened():
         call.return_value = stitch_details.VodStitchDetail()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_vod_stitch_detail(name="name_value",)
+        client.get_vod_stitch_detail(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2989,7 +3224,8 @@ def test_get_vod_stitch_detail_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_vod_stitch_detail(
-            video_stitcher_service.GetVodStitchDetailRequest(), name="name_value",
+            video_stitcher_service.GetVodStitchDetailRequest(),
+            name="name_value",
         )
 
 
@@ -3011,7 +3247,9 @@ async def test_get_vod_stitch_detail_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_vod_stitch_detail(name="name_value",)
+        response = await client.get_vod_stitch_detail(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3032,16 +3270,22 @@ async def test_get_vod_stitch_detail_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_vod_stitch_detail(
-            video_stitcher_service.GetVodStitchDetailRequest(), name="name_value",
+            video_stitcher_service.GetVodStitchDetailRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [video_stitcher_service.ListVodAdTagDetailsRequest, dict,]
+    "request_type",
+    [
+        video_stitcher_service.ListVodAdTagDetailsRequest,
+        dict,
+    ],
 )
 def test_list_vod_ad_tag_details(request_type, transport: str = "grpc"):
     client = VideoStitcherServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3072,7 +3316,8 @@ def test_list_vod_ad_tag_details_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = VideoStitcherServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3091,7 +3336,8 @@ async def test_list_vod_ad_tag_details_async(
     request_type=video_stitcher_service.ListVodAdTagDetailsRequest,
 ):
     client = VideoStitcherServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3150,7 +3396,10 @@ def test_list_vod_ad_tag_details_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -3181,7 +3430,10 @@ async def test_list_vod_ad_tag_details_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_vod_ad_tag_details_flattened():
@@ -3197,7 +3449,9 @@ def test_list_vod_ad_tag_details_flattened():
         call.return_value = video_stitcher_service.ListVodAdTagDetailsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_vod_ad_tag_details(parent="parent_value",)
+        client.list_vod_ad_tag_details(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3217,7 +3471,8 @@ def test_list_vod_ad_tag_details_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_vod_ad_tag_details(
-            video_stitcher_service.ListVodAdTagDetailsRequest(), parent="parent_value",
+            video_stitcher_service.ListVodAdTagDetailsRequest(),
+            parent="parent_value",
         )
 
 
@@ -3239,7 +3494,9 @@ async def test_list_vod_ad_tag_details_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_vod_ad_tag_details(parent="parent_value",)
+        response = await client.list_vod_ad_tag_details(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3260,13 +3517,15 @@ async def test_list_vod_ad_tag_details_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_vod_ad_tag_details(
-            video_stitcher_service.ListVodAdTagDetailsRequest(), parent="parent_value",
+            video_stitcher_service.ListVodAdTagDetailsRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_vod_ad_tag_details_pager(transport_name: str = "grpc"):
     client = VideoStitcherServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3284,10 +3543,13 @@ def test_list_vod_ad_tag_details_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             video_stitcher_service.ListVodAdTagDetailsResponse(
-                vod_ad_tag_details=[], next_page_token="def",
+                vod_ad_tag_details=[],
+                next_page_token="def",
             ),
             video_stitcher_service.ListVodAdTagDetailsResponse(
-                vod_ad_tag_details=[ad_tag_details.VodAdTagDetail(),],
+                vod_ad_tag_details=[
+                    ad_tag_details.VodAdTagDetail(),
+                ],
                 next_page_token="ghi",
             ),
             video_stitcher_service.ListVodAdTagDetailsResponse(
@@ -3314,7 +3576,8 @@ def test_list_vod_ad_tag_details_pager(transport_name: str = "grpc"):
 
 def test_list_vod_ad_tag_details_pages(transport_name: str = "grpc"):
     client = VideoStitcherServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3332,10 +3595,13 @@ def test_list_vod_ad_tag_details_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             video_stitcher_service.ListVodAdTagDetailsResponse(
-                vod_ad_tag_details=[], next_page_token="def",
+                vod_ad_tag_details=[],
+                next_page_token="def",
             ),
             video_stitcher_service.ListVodAdTagDetailsResponse(
-                vod_ad_tag_details=[ad_tag_details.VodAdTagDetail(),],
+                vod_ad_tag_details=[
+                    ad_tag_details.VodAdTagDetail(),
+                ],
                 next_page_token="ghi",
             ),
             video_stitcher_service.ListVodAdTagDetailsResponse(
@@ -3374,10 +3640,13 @@ async def test_list_vod_ad_tag_details_async_pager():
                 next_page_token="abc",
             ),
             video_stitcher_service.ListVodAdTagDetailsResponse(
-                vod_ad_tag_details=[], next_page_token="def",
+                vod_ad_tag_details=[],
+                next_page_token="def",
             ),
             video_stitcher_service.ListVodAdTagDetailsResponse(
-                vod_ad_tag_details=[ad_tag_details.VodAdTagDetail(),],
+                vod_ad_tag_details=[
+                    ad_tag_details.VodAdTagDetail(),
+                ],
                 next_page_token="ghi",
             ),
             video_stitcher_service.ListVodAdTagDetailsResponse(
@@ -3388,7 +3657,9 @@ async def test_list_vod_ad_tag_details_async_pager():
             ),
             RuntimeError,
         )
-        async_pager = await client.list_vod_ad_tag_details(request={},)
+        async_pager = await client.list_vod_ad_tag_details(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -3421,10 +3692,13 @@ async def test_list_vod_ad_tag_details_async_pages():
                 next_page_token="abc",
             ),
             video_stitcher_service.ListVodAdTagDetailsResponse(
-                vod_ad_tag_details=[], next_page_token="def",
+                vod_ad_tag_details=[],
+                next_page_token="def",
             ),
             video_stitcher_service.ListVodAdTagDetailsResponse(
-                vod_ad_tag_details=[ad_tag_details.VodAdTagDetail(),],
+                vod_ad_tag_details=[
+                    ad_tag_details.VodAdTagDetail(),
+                ],
                 next_page_token="ghi",
             ),
             video_stitcher_service.ListVodAdTagDetailsResponse(
@@ -3443,11 +3717,16 @@ async def test_list_vod_ad_tag_details_async_pages():
 
 
 @pytest.mark.parametrize(
-    "request_type", [video_stitcher_service.GetVodAdTagDetailRequest, dict,]
+    "request_type",
+    [
+        video_stitcher_service.GetVodAdTagDetailRequest,
+        dict,
+    ],
 )
 def test_get_vod_ad_tag_detail(request_type, transport: str = "grpc"):
     client = VideoStitcherServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3459,7 +3738,9 @@ def test_get_vod_ad_tag_detail(request_type, transport: str = "grpc"):
         type(client.transport.get_vod_ad_tag_detail), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = ad_tag_details.VodAdTagDetail(name="name_value",)
+        call.return_value = ad_tag_details.VodAdTagDetail(
+            name="name_value",
+        )
         response = client.get_vod_ad_tag_detail(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -3476,7 +3757,8 @@ def test_get_vod_ad_tag_detail_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = VideoStitcherServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3495,7 +3777,8 @@ async def test_get_vod_ad_tag_detail_async(
     request_type=video_stitcher_service.GetVodAdTagDetailRequest,
 ):
     client = VideoStitcherServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3508,7 +3791,9 @@ async def test_get_vod_ad_tag_detail_async(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            ad_tag_details.VodAdTagDetail(name="name_value",)
+            ad_tag_details.VodAdTagDetail(
+                name="name_value",
+            )
         )
         response = await client.get_vod_ad_tag_detail(request)
 
@@ -3552,7 +3837,10 @@ def test_get_vod_ad_tag_detail_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -3583,7 +3871,10 @@ async def test_get_vod_ad_tag_detail_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_vod_ad_tag_detail_flattened():
@@ -3599,7 +3890,9 @@ def test_get_vod_ad_tag_detail_flattened():
         call.return_value = ad_tag_details.VodAdTagDetail()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_vod_ad_tag_detail(name="name_value",)
+        client.get_vod_ad_tag_detail(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3619,7 +3912,8 @@ def test_get_vod_ad_tag_detail_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_vod_ad_tag_detail(
-            video_stitcher_service.GetVodAdTagDetailRequest(), name="name_value",
+            video_stitcher_service.GetVodAdTagDetailRequest(),
+            name="name_value",
         )
 
 
@@ -3641,7 +3935,9 @@ async def test_get_vod_ad_tag_detail_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_vod_ad_tag_detail(name="name_value",)
+        response = await client.get_vod_ad_tag_detail(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3662,16 +3958,22 @@ async def test_get_vod_ad_tag_detail_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_vod_ad_tag_detail(
-            video_stitcher_service.GetVodAdTagDetailRequest(), name="name_value",
+            video_stitcher_service.GetVodAdTagDetailRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [video_stitcher_service.ListLiveAdTagDetailsRequest, dict,]
+    "request_type",
+    [
+        video_stitcher_service.ListLiveAdTagDetailsRequest,
+        dict,
+    ],
 )
 def test_list_live_ad_tag_details(request_type, transport: str = "grpc"):
     client = VideoStitcherServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3702,7 +4004,8 @@ def test_list_live_ad_tag_details_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = VideoStitcherServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3721,7 +4024,8 @@ async def test_list_live_ad_tag_details_async(
     request_type=video_stitcher_service.ListLiveAdTagDetailsRequest,
 ):
     client = VideoStitcherServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3780,7 +4084,10 @@ def test_list_live_ad_tag_details_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -3811,7 +4118,10 @@ async def test_list_live_ad_tag_details_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_live_ad_tag_details_flattened():
@@ -3827,7 +4137,9 @@ def test_list_live_ad_tag_details_flattened():
         call.return_value = video_stitcher_service.ListLiveAdTagDetailsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_live_ad_tag_details(parent="parent_value",)
+        client.list_live_ad_tag_details(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3847,7 +4159,8 @@ def test_list_live_ad_tag_details_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_live_ad_tag_details(
-            video_stitcher_service.ListLiveAdTagDetailsRequest(), parent="parent_value",
+            video_stitcher_service.ListLiveAdTagDetailsRequest(),
+            parent="parent_value",
         )
 
 
@@ -3869,7 +4182,9 @@ async def test_list_live_ad_tag_details_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_live_ad_tag_details(parent="parent_value",)
+        response = await client.list_live_ad_tag_details(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3890,13 +4205,15 @@ async def test_list_live_ad_tag_details_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_live_ad_tag_details(
-            video_stitcher_service.ListLiveAdTagDetailsRequest(), parent="parent_value",
+            video_stitcher_service.ListLiveAdTagDetailsRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_live_ad_tag_details_pager(transport_name: str = "grpc"):
     client = VideoStitcherServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3914,10 +4231,13 @@ def test_list_live_ad_tag_details_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             video_stitcher_service.ListLiveAdTagDetailsResponse(
-                live_ad_tag_details=[], next_page_token="def",
+                live_ad_tag_details=[],
+                next_page_token="def",
             ),
             video_stitcher_service.ListLiveAdTagDetailsResponse(
-                live_ad_tag_details=[ad_tag_details.LiveAdTagDetail(),],
+                live_ad_tag_details=[
+                    ad_tag_details.LiveAdTagDetail(),
+                ],
                 next_page_token="ghi",
             ),
             video_stitcher_service.ListLiveAdTagDetailsResponse(
@@ -3944,7 +4264,8 @@ def test_list_live_ad_tag_details_pager(transport_name: str = "grpc"):
 
 def test_list_live_ad_tag_details_pages(transport_name: str = "grpc"):
     client = VideoStitcherServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3962,10 +4283,13 @@ def test_list_live_ad_tag_details_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             video_stitcher_service.ListLiveAdTagDetailsResponse(
-                live_ad_tag_details=[], next_page_token="def",
+                live_ad_tag_details=[],
+                next_page_token="def",
             ),
             video_stitcher_service.ListLiveAdTagDetailsResponse(
-                live_ad_tag_details=[ad_tag_details.LiveAdTagDetail(),],
+                live_ad_tag_details=[
+                    ad_tag_details.LiveAdTagDetail(),
+                ],
                 next_page_token="ghi",
             ),
             video_stitcher_service.ListLiveAdTagDetailsResponse(
@@ -4004,10 +4328,13 @@ async def test_list_live_ad_tag_details_async_pager():
                 next_page_token="abc",
             ),
             video_stitcher_service.ListLiveAdTagDetailsResponse(
-                live_ad_tag_details=[], next_page_token="def",
+                live_ad_tag_details=[],
+                next_page_token="def",
             ),
             video_stitcher_service.ListLiveAdTagDetailsResponse(
-                live_ad_tag_details=[ad_tag_details.LiveAdTagDetail(),],
+                live_ad_tag_details=[
+                    ad_tag_details.LiveAdTagDetail(),
+                ],
                 next_page_token="ghi",
             ),
             video_stitcher_service.ListLiveAdTagDetailsResponse(
@@ -4018,7 +4345,9 @@ async def test_list_live_ad_tag_details_async_pager():
             ),
             RuntimeError,
         )
-        async_pager = await client.list_live_ad_tag_details(request={},)
+        async_pager = await client.list_live_ad_tag_details(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -4051,10 +4380,13 @@ async def test_list_live_ad_tag_details_async_pages():
                 next_page_token="abc",
             ),
             video_stitcher_service.ListLiveAdTagDetailsResponse(
-                live_ad_tag_details=[], next_page_token="def",
+                live_ad_tag_details=[],
+                next_page_token="def",
             ),
             video_stitcher_service.ListLiveAdTagDetailsResponse(
-                live_ad_tag_details=[ad_tag_details.LiveAdTagDetail(),],
+                live_ad_tag_details=[
+                    ad_tag_details.LiveAdTagDetail(),
+                ],
                 next_page_token="ghi",
             ),
             video_stitcher_service.ListLiveAdTagDetailsResponse(
@@ -4073,11 +4405,16 @@ async def test_list_live_ad_tag_details_async_pages():
 
 
 @pytest.mark.parametrize(
-    "request_type", [video_stitcher_service.GetLiveAdTagDetailRequest, dict,]
+    "request_type",
+    [
+        video_stitcher_service.GetLiveAdTagDetailRequest,
+        dict,
+    ],
 )
 def test_get_live_ad_tag_detail(request_type, transport: str = "grpc"):
     client = VideoStitcherServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4089,7 +4426,9 @@ def test_get_live_ad_tag_detail(request_type, transport: str = "grpc"):
         type(client.transport.get_live_ad_tag_detail), "__call__"
     ) as call:
         # Designate an appropriate return value for the call.
-        call.return_value = ad_tag_details.LiveAdTagDetail(name="name_value",)
+        call.return_value = ad_tag_details.LiveAdTagDetail(
+            name="name_value",
+        )
         response = client.get_live_ad_tag_detail(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -4106,7 +4445,8 @@ def test_get_live_ad_tag_detail_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = VideoStitcherServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4125,7 +4465,8 @@ async def test_get_live_ad_tag_detail_async(
     request_type=video_stitcher_service.GetLiveAdTagDetailRequest,
 ):
     client = VideoStitcherServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4138,7 +4479,9 @@ async def test_get_live_ad_tag_detail_async(
     ) as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            ad_tag_details.LiveAdTagDetail(name="name_value",)
+            ad_tag_details.LiveAdTagDetail(
+                name="name_value",
+            )
         )
         response = await client.get_live_ad_tag_detail(request)
 
@@ -4182,7 +4525,10 @@ def test_get_live_ad_tag_detail_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -4213,7 +4559,10 @@ async def test_get_live_ad_tag_detail_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_live_ad_tag_detail_flattened():
@@ -4229,7 +4578,9 @@ def test_get_live_ad_tag_detail_flattened():
         call.return_value = ad_tag_details.LiveAdTagDetail()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_live_ad_tag_detail(name="name_value",)
+        client.get_live_ad_tag_detail(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -4249,7 +4600,8 @@ def test_get_live_ad_tag_detail_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_live_ad_tag_detail(
-            video_stitcher_service.GetLiveAdTagDetailRequest(), name="name_value",
+            video_stitcher_service.GetLiveAdTagDetailRequest(),
+            name="name_value",
         )
 
 
@@ -4271,7 +4623,9 @@ async def test_get_live_ad_tag_detail_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_live_ad_tag_detail(name="name_value",)
+        response = await client.get_live_ad_tag_detail(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -4292,16 +4646,22 @@ async def test_get_live_ad_tag_detail_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_live_ad_tag_detail(
-            video_stitcher_service.GetLiveAdTagDetailRequest(), name="name_value",
+            video_stitcher_service.GetLiveAdTagDetailRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [video_stitcher_service.CreateSlateRequest, dict,]
+    "request_type",
+    [
+        video_stitcher_service.CreateSlateRequest,
+        dict,
+    ],
 )
 def test_create_slate(request_type, transport: str = "grpc"):
     client = VideoStitcherServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4311,7 +4671,10 @@ def test_create_slate(request_type, transport: str = "grpc"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_slate), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = slates.Slate(name="name_value", uri="uri_value",)
+        call.return_value = slates.Slate(
+            name="name_value",
+            uri="uri_value",
+        )
         response = client.create_slate(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -4329,7 +4692,8 @@ def test_create_slate_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = VideoStitcherServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4346,7 +4710,8 @@ async def test_create_slate_async(
     request_type=video_stitcher_service.CreateSlateRequest,
 ):
     client = VideoStitcherServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4357,7 +4722,10 @@ async def test_create_slate_async(
     with mock.patch.object(type(client.transport.create_slate), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            slates.Slate(name="name_value", uri="uri_value",)
+            slates.Slate(
+                name="name_value",
+                uri="uri_value",
+            )
         )
         response = await client.create_slate(request)
 
@@ -4400,7 +4768,10 @@ def test_create_slate_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -4427,7 +4798,10 @@ async def test_create_slate_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_slate_flattened():
@@ -4531,11 +4905,16 @@ async def test_create_slate_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [video_stitcher_service.ListSlatesRequest, dict,]
+    "request_type",
+    [
+        video_stitcher_service.ListSlatesRequest,
+        dict,
+    ],
 )
 def test_list_slates(request_type, transport: str = "grpc"):
     client = VideoStitcherServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4546,7 +4925,8 @@ def test_list_slates(request_type, transport: str = "grpc"):
     with mock.patch.object(type(client.transport.list_slates), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = video_stitcher_service.ListSlatesResponse(
-            next_page_token="next_page_token_value", unreachable=["unreachable_value"],
+            next_page_token="next_page_token_value",
+            unreachable=["unreachable_value"],
         )
         response = client.list_slates(request)
 
@@ -4565,7 +4945,8 @@ def test_list_slates_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = VideoStitcherServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4582,7 +4963,8 @@ async def test_list_slates_async(
     request_type=video_stitcher_service.ListSlatesRequest,
 ):
     client = VideoStitcherServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4639,7 +5021,10 @@ def test_list_slates_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -4668,7 +5053,10 @@ async def test_list_slates_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_slates_flattened():
@@ -4682,7 +5070,9 @@ def test_list_slates_flattened():
         call.return_value = video_stitcher_service.ListSlatesResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_slates(parent="parent_value",)
+        client.list_slates(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -4702,7 +5092,8 @@ def test_list_slates_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_slates(
-            video_stitcher_service.ListSlatesRequest(), parent="parent_value",
+            video_stitcher_service.ListSlatesRequest(),
+            parent="parent_value",
         )
 
 
@@ -4722,7 +5113,9 @@ async def test_list_slates_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_slates(parent="parent_value",)
+        response = await client.list_slates(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -4743,13 +5136,15 @@ async def test_list_slates_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_slates(
-            video_stitcher_service.ListSlatesRequest(), parent="parent_value",
+            video_stitcher_service.ListSlatesRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_slates_pager(transport_name: str = "grpc"):
     client = VideoStitcherServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4757,17 +5152,28 @@ def test_list_slates_pager(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             video_stitcher_service.ListSlatesResponse(
-                slates=[slates.Slate(), slates.Slate(), slates.Slate(),],
+                slates=[
+                    slates.Slate(),
+                    slates.Slate(),
+                    slates.Slate(),
+                ],
                 next_page_token="abc",
             ),
             video_stitcher_service.ListSlatesResponse(
-                slates=[], next_page_token="def",
+                slates=[],
+                next_page_token="def",
             ),
             video_stitcher_service.ListSlatesResponse(
-                slates=[slates.Slate(),], next_page_token="ghi",
+                slates=[
+                    slates.Slate(),
+                ],
+                next_page_token="ghi",
             ),
             video_stitcher_service.ListSlatesResponse(
-                slates=[slates.Slate(), slates.Slate(),],
+                slates=[
+                    slates.Slate(),
+                    slates.Slate(),
+                ],
             ),
             RuntimeError,
         )
@@ -4787,7 +5193,8 @@ def test_list_slates_pager(transport_name: str = "grpc"):
 
 def test_list_slates_pages(transport_name: str = "grpc"):
     client = VideoStitcherServiceClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4795,17 +5202,28 @@ def test_list_slates_pages(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             video_stitcher_service.ListSlatesResponse(
-                slates=[slates.Slate(), slates.Slate(), slates.Slate(),],
+                slates=[
+                    slates.Slate(),
+                    slates.Slate(),
+                    slates.Slate(),
+                ],
                 next_page_token="abc",
             ),
             video_stitcher_service.ListSlatesResponse(
-                slates=[], next_page_token="def",
+                slates=[],
+                next_page_token="def",
             ),
             video_stitcher_service.ListSlatesResponse(
-                slates=[slates.Slate(),], next_page_token="ghi",
+                slates=[
+                    slates.Slate(),
+                ],
+                next_page_token="ghi",
             ),
             video_stitcher_service.ListSlatesResponse(
-                slates=[slates.Slate(), slates.Slate(),],
+                slates=[
+                    slates.Slate(),
+                    slates.Slate(),
+                ],
             ),
             RuntimeError,
         )
@@ -4827,21 +5245,34 @@ async def test_list_slates_async_pager():
         # Set the response to a series of pages.
         call.side_effect = (
             video_stitcher_service.ListSlatesResponse(
-                slates=[slates.Slate(), slates.Slate(), slates.Slate(),],
+                slates=[
+                    slates.Slate(),
+                    slates.Slate(),
+                    slates.Slate(),
+                ],
                 next_page_token="abc",
             ),
             video_stitcher_service.ListSlatesResponse(
-                slates=[], next_page_token="def",
+                slates=[],
+                next_page_token="def",
             ),
             video_stitcher_service.ListSlatesResponse(
-                slates=[slates.Slate(),], next_page_token="ghi",
+                slates=[
+                    slates.Slate(),
+                ],
+                next_page_token="ghi",
             ),
             video_stitcher_service.ListSlatesResponse(
-                slates=[slates.Slate(), slates.Slate(),],
+                slates=[
+                    slates.Slate(),
+                    slates.Slate(),
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.list_slates(request={},)
+        async_pager = await client.list_slates(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -4864,17 +5295,28 @@ async def test_list_slates_async_pages():
         # Set the response to a series of pages.
         call.side_effect = (
             video_stitcher_service.ListSlatesResponse(
-                slates=[slates.Slate(), slates.Slate(), slates.Slate(),],
+                slates=[
+                    slates.Slate(),
+                    slates.Slate(),
+                    slates.Slate(),
+                ],
                 next_page_token="abc",
             ),
             video_stitcher_service.ListSlatesResponse(
-                slates=[], next_page_token="def",
+                slates=[],
+                next_page_token="def",
             ),
             video_stitcher_service.ListSlatesResponse(
-                slates=[slates.Slate(),], next_page_token="ghi",
+                slates=[
+                    slates.Slate(),
+                ],
+                next_page_token="ghi",
             ),
             video_stitcher_service.ListSlatesResponse(
-                slates=[slates.Slate(), slates.Slate(),],
+                slates=[
+                    slates.Slate(),
+                    slates.Slate(),
+                ],
             ),
             RuntimeError,
         )
@@ -4886,11 +5328,16 @@ async def test_list_slates_async_pages():
 
 
 @pytest.mark.parametrize(
-    "request_type", [video_stitcher_service.GetSlateRequest, dict,]
+    "request_type",
+    [
+        video_stitcher_service.GetSlateRequest,
+        dict,
+    ],
 )
 def test_get_slate(request_type, transport: str = "grpc"):
     client = VideoStitcherServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4900,7 +5347,10 @@ def test_get_slate(request_type, transport: str = "grpc"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_slate), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = slates.Slate(name="name_value", uri="uri_value",)
+        call.return_value = slates.Slate(
+            name="name_value",
+            uri="uri_value",
+        )
         response = client.get_slate(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -4918,7 +5368,8 @@ def test_get_slate_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = VideoStitcherServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4934,7 +5385,8 @@ async def test_get_slate_async(
     transport: str = "grpc_asyncio", request_type=video_stitcher_service.GetSlateRequest
 ):
     client = VideoStitcherServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4945,7 +5397,10 @@ async def test_get_slate_async(
     with mock.patch.object(type(client.transport.get_slate), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            slates.Slate(name="name_value", uri="uri_value",)
+            slates.Slate(
+                name="name_value",
+                uri="uri_value",
+            )
         )
         response = await client.get_slate(request)
 
@@ -4988,7 +5443,10 @@ def test_get_slate_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -5015,7 +5473,10 @@ async def test_get_slate_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_slate_flattened():
@@ -5029,7 +5490,9 @@ def test_get_slate_flattened():
         call.return_value = slates.Slate()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_slate(name="name_value",)
+        client.get_slate(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -5049,7 +5512,8 @@ def test_get_slate_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_slate(
-            video_stitcher_service.GetSlateRequest(), name="name_value",
+            video_stitcher_service.GetSlateRequest(),
+            name="name_value",
         )
 
 
@@ -5067,7 +5531,9 @@ async def test_get_slate_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(slates.Slate())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_slate(name="name_value",)
+        response = await client.get_slate(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -5088,16 +5554,22 @@ async def test_get_slate_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_slate(
-            video_stitcher_service.GetSlateRequest(), name="name_value",
+            video_stitcher_service.GetSlateRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [video_stitcher_service.UpdateSlateRequest, dict,]
+    "request_type",
+    [
+        video_stitcher_service.UpdateSlateRequest,
+        dict,
+    ],
 )
 def test_update_slate(request_type, transport: str = "grpc"):
     client = VideoStitcherServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5107,7 +5579,10 @@ def test_update_slate(request_type, transport: str = "grpc"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_slate), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = slates.Slate(name="name_value", uri="uri_value",)
+        call.return_value = slates.Slate(
+            name="name_value",
+            uri="uri_value",
+        )
         response = client.update_slate(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -5125,7 +5600,8 @@ def test_update_slate_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = VideoStitcherServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5142,7 +5618,8 @@ async def test_update_slate_async(
     request_type=video_stitcher_service.UpdateSlateRequest,
 ):
     client = VideoStitcherServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5153,7 +5630,10 @@ async def test_update_slate_async(
     with mock.patch.object(type(client.transport.update_slate), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            slates.Slate(name="name_value", uri="uri_value",)
+            slates.Slate(
+                name="name_value",
+                uri="uri_value",
+            )
         )
         response = await client.update_slate(request)
 
@@ -5196,7 +5676,10 @@ def test_update_slate_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "slate.name=slate.name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "slate.name=slate.name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -5223,7 +5706,10 @@ async def test_update_slate_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "slate.name=slate.name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "slate.name=slate.name/value",
+    ) in kw["metadata"]
 
 
 def test_update_slate_flattened():
@@ -5317,11 +5803,16 @@ async def test_update_slate_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [video_stitcher_service.DeleteSlateRequest, dict,]
+    "request_type",
+    [
+        video_stitcher_service.DeleteSlateRequest,
+        dict,
+    ],
 )
 def test_delete_slate(request_type, transport: str = "grpc"):
     client = VideoStitcherServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5347,7 +5838,8 @@ def test_delete_slate_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = VideoStitcherServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5364,7 +5856,8 @@ async def test_delete_slate_async(
     request_type=video_stitcher_service.DeleteSlateRequest,
 ):
     client = VideoStitcherServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5414,7 +5907,10 @@ def test_delete_slate_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -5441,7 +5937,10 @@ async def test_delete_slate_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_slate_flattened():
@@ -5455,7 +5954,9 @@ def test_delete_slate_flattened():
         call.return_value = None
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_slate(name="name_value",)
+        client.delete_slate(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -5475,7 +5976,8 @@ def test_delete_slate_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_slate(
-            video_stitcher_service.DeleteSlateRequest(), name="name_value",
+            video_stitcher_service.DeleteSlateRequest(),
+            name="name_value",
         )
 
 
@@ -5493,7 +5995,9 @@ async def test_delete_slate_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_slate(name="name_value",)
+        response = await client.delete_slate(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -5514,16 +6018,22 @@ async def test_delete_slate_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_slate(
-            video_stitcher_service.DeleteSlateRequest(), name="name_value",
+            video_stitcher_service.DeleteSlateRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [video_stitcher_service.CreateLiveSessionRequest, dict,]
+    "request_type",
+    [
+        video_stitcher_service.CreateLiveSessionRequest,
+        dict,
+    ],
 )
 def test_create_live_session(request_type, transport: str = "grpc"):
     client = VideoStitcherServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5566,7 +6076,8 @@ def test_create_live_session_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = VideoStitcherServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5585,7 +6096,8 @@ async def test_create_live_session_async(
     request_type=video_stitcher_service.CreateLiveSessionRequest,
 ):
     client = VideoStitcherServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5656,7 +6168,10 @@ def test_create_live_session_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -5687,7 +6202,10 @@ async def test_create_live_session_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_live_session_flattened():
@@ -5704,7 +6222,8 @@ def test_create_live_session_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.create_live_session(
-            parent="parent_value", live_session=sessions.LiveSession(name="name_value"),
+            parent="parent_value",
+            live_session=sessions.LiveSession(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -5753,7 +6272,8 @@ async def test_create_live_session_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.create_live_session(
-            parent="parent_value", live_session=sessions.LiveSession(name="name_value"),
+            parent="parent_value",
+            live_session=sessions.LiveSession(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -5785,11 +6305,16 @@ async def test_create_live_session_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [video_stitcher_service.GetLiveSessionRequest, dict,]
+    "request_type",
+    [
+        video_stitcher_service.GetLiveSessionRequest,
+        dict,
+    ],
 )
 def test_get_live_session(request_type, transport: str = "grpc"):
     client = VideoStitcherServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5830,7 +6355,8 @@ def test_get_live_session_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = VideoStitcherServiceClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5847,7 +6373,8 @@ async def test_get_live_session_async(
     request_type=video_stitcher_service.GetLiveSessionRequest,
 ):
     client = VideoStitcherServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5914,7 +6441,10 @@ def test_get_live_session_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -5943,7 +6473,10 @@ async def test_get_live_session_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_live_session_flattened():
@@ -5957,7 +6490,9 @@ def test_get_live_session_flattened():
         call.return_value = sessions.LiveSession()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_live_session(name="name_value",)
+        client.get_live_session(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -5977,7 +6512,8 @@ def test_get_live_session_flattened_error():
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_live_session(
-            video_stitcher_service.GetLiveSessionRequest(), name="name_value",
+            video_stitcher_service.GetLiveSessionRequest(),
+            name="name_value",
         )
 
 
@@ -5997,7 +6533,9 @@ async def test_get_live_session_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_live_session(name="name_value",)
+        response = await client.get_live_session(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -6018,7 +6556,8 @@ async def test_get_live_session_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_live_session(
-            video_stitcher_service.GetLiveSessionRequest(), name="name_value",
+            video_stitcher_service.GetLiveSessionRequest(),
+            name="name_value",
         )
 
 
@@ -6029,7 +6568,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = VideoStitcherServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -6050,7 +6590,8 @@ def test_credentials_transport_error():
     options.api_key = "api_key"
     with pytest.raises(ValueError):
         client = VideoStitcherServiceClient(
-            client_options=options, transport=transport,
+            client_options=options,
+            transport=transport,
         )
 
     # It is an error to provide an api_key and a credential.
@@ -6067,7 +6608,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = VideoStitcherServiceClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -6115,7 +6657,10 @@ def test_transport_grpc_default():
     client = VideoStitcherServiceClient(
         credentials=ga_credentials.AnonymousCredentials(),
     )
-    assert isinstance(client.transport, transports.VideoStitcherServiceGrpcTransport,)
+    assert isinstance(
+        client.transport,
+        transports.VideoStitcherServiceGrpcTransport,
+    )
 
 
 def test_video_stitcher_service_base_transport_error():
@@ -6179,7 +6724,8 @@ def test_video_stitcher_service_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.VideoStitcherServiceTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -6339,7 +6885,8 @@ def test_video_stitcher_service_grpc_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.VideoStitcherServiceGrpcTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -6351,7 +6898,8 @@ def test_video_stitcher_service_grpc_asyncio_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.VideoStitcherServiceGrpcAsyncIOTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -6463,7 +7011,9 @@ def test_cdn_key_path():
     location = "clam"
     cdn_key = "whelk"
     expected = "projects/{project}/locations/{location}/cdnKeys/{cdn_key}".format(
-        project=project, location=location, cdn_key=cdn_key,
+        project=project,
+        location=location,
+        cdn_key=cdn_key,
     )
     actual = VideoStitcherServiceClient.cdn_key_path(project, location, cdn_key)
     assert expected == actual
@@ -6517,8 +7067,12 @@ def test_live_session_path():
     project = "whelk"
     location = "octopus"
     live_session = "oyster"
-    expected = "projects/{project}/locations/{location}/liveSessions/{live_session}".format(
-        project=project, location=location, live_session=live_session,
+    expected = (
+        "projects/{project}/locations/{location}/liveSessions/{live_session}".format(
+            project=project,
+            location=location,
+            live_session=live_session,
+        )
     )
     actual = VideoStitcherServiceClient.live_session_path(
         project, location, live_session
@@ -6544,7 +7098,9 @@ def test_slate_path():
     location = "nautilus"
     slate = "scallop"
     expected = "projects/{project}/locations/{location}/slates/{slate}".format(
-        project=project, location=location, slate=slate,
+        project=project,
+        location=location,
+        slate=slate,
     )
     actual = VideoStitcherServiceClient.slate_path(project, location, slate)
     assert expected == actual
@@ -6598,8 +7154,12 @@ def test_vod_session_path():
     project = "scallop"
     location = "abalone"
     vod_session = "squid"
-    expected = "projects/{project}/locations/{location}/vodSessions/{vod_session}".format(
-        project=project, location=location, vod_session=vod_session,
+    expected = (
+        "projects/{project}/locations/{location}/vodSessions/{vod_session}".format(
+            project=project,
+            location=location,
+            vod_session=vod_session,
+        )
     )
     actual = VideoStitcherServiceClient.vod_session_path(project, location, vod_session)
     assert expected == actual
@@ -6671,7 +7231,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "whelk"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = VideoStitcherServiceClient.common_folder_path(folder)
     assert expected == actual
 
@@ -6689,7 +7251,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "oyster"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = VideoStitcherServiceClient.common_organization_path(organization)
     assert expected == actual
 
@@ -6707,7 +7271,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "cuttlefish"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = VideoStitcherServiceClient.common_project_path(project)
     assert expected == actual
 
@@ -6727,7 +7293,8 @@ def test_common_location_path():
     project = "winkle"
     location = "nautilus"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = VideoStitcherServiceClient.common_location_path(project, location)
     assert expected == actual
@@ -6752,7 +7319,8 @@ def test_client_with_default_client_info():
         transports.VideoStitcherServiceTransport, "_prep_wrapped_messages"
     ) as prep:
         client = VideoStitcherServiceClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -6761,7 +7329,8 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = VideoStitcherServiceClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -6769,7 +7338,8 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = VideoStitcherServiceAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     with mock.patch.object(
         type(getattr(client.transport, "grpc_channel")), "close"

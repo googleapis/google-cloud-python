@@ -42,8 +42,15 @@ class LiveAdTagDetail(proto.Message):
             A list of ad requests.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    ad_requests = proto.RepeatedField(proto.MESSAGE, number=2, message="AdRequest",)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    ad_requests = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="AdRequest",
+    )
 
 
 class VodAdTagDetail(proto.Message):
@@ -58,8 +65,15 @@ class VodAdTagDetail(proto.Message):
             A list of ad requests for one ad tag.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    ad_requests = proto.RepeatedField(proto.MESSAGE, number=2, message="AdRequest",)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    ad_requests = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="AdRequest",
+    )
 
 
 class AdRequest(proto.Message):
@@ -77,10 +91,19 @@ class AdRequest(proto.Message):
             request.
     """
 
-    uri = proto.Field(proto.STRING, number=1,)
-    request_metadata = proto.Field(proto.MESSAGE, number=2, message="RequestMetadata",)
+    uri = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    request_metadata = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="RequestMetadata",
+    )
     response_metadata = proto.Field(
-        proto.MESSAGE, number=3, message="ResponseMetadata",
+        proto.MESSAGE,
+        number=3,
+        message="ResponseMetadata",
     )
 
 
@@ -92,7 +115,11 @@ class RequestMetadata(proto.Message):
             The HTTP headers of the ad request.
     """
 
-    headers = proto.Field(proto.MESSAGE, number=1, message=struct_pb2.Struct,)
+    headers = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=struct_pb2.Struct,
+    )
 
 
 class ResponseMetadata(proto.Message):
@@ -114,12 +141,32 @@ class ResponseMetadata(proto.Message):
             The body of the response.
     """
 
-    error = proto.Field(proto.STRING, number=1,)
-    headers = proto.Field(proto.MESSAGE, number=2, message=struct_pb2.Struct,)
-    status_code = proto.Field(proto.STRING, number=3,)
-    size_bytes = proto.Field(proto.INT32, number=4,)
-    duration = proto.Field(proto.MESSAGE, number=5, message=duration_pb2.Duration,)
-    body = proto.Field(proto.STRING, number=6,)
+    error = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    headers = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=struct_pb2.Struct,
+    )
+    status_code = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    size_bytes = proto.Field(
+        proto.INT32,
+        number=4,
+    )
+    duration = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=duration_pb2.Duration,
+    )
+    body = proto.Field(
+        proto.STRING,
+        number=6,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

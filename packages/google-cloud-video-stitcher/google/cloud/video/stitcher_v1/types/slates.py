@@ -17,7 +17,10 @@ import proto  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.video.stitcher.v1", manifest={"Slate",},
+    package="google.cloud.video.stitcher.v1",
+    manifest={
+        "Slate",
+    },
 )
 
 
@@ -34,8 +37,14 @@ class Slate(proto.Message):
             least one audio track.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    uri = proto.Field(proto.STRING, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    uri = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

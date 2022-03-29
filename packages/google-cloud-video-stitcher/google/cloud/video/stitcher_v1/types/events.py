@@ -19,7 +19,11 @@ from google.protobuf import duration_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.video.stitcher.v1", manifest={"Event", "ProgressEvent",},
+    package="google.cloud.video.stitcher.v1",
+    manifest={
+        "Event",
+        "ProgressEvent",
+    },
 )
 
 
@@ -65,10 +69,24 @@ class Event(proto.Message):
         SKIP = 26
         ACCEPT_INVITATION = 27
 
-    type_ = proto.Field(proto.ENUM, number=1, enum=EventType,)
-    uri = proto.Field(proto.STRING, number=2,)
-    id = proto.Field(proto.STRING, number=3,)
-    offset = proto.Field(proto.MESSAGE, number=4, message=duration_pb2.Duration,)
+    type_ = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=EventType,
+    )
+    uri = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    offset = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=duration_pb2.Duration,
+    )
 
 
 class ProgressEvent(proto.Message):
@@ -88,8 +106,16 @@ class ProgressEvent(proto.Message):
             ``COMPLETE``, ``PROGRESS``.
     """
 
-    time_offset = proto.Field(proto.MESSAGE, number=1, message=duration_pb2.Duration,)
-    events = proto.RepeatedField(proto.MESSAGE, number=2, message="Event",)
+    time_offset = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=duration_pb2.Duration,
+    )
+    events = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="Event",
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

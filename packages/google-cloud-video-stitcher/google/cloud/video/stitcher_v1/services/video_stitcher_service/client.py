@@ -62,7 +62,8 @@ class VideoStitcherServiceClientMeta(type):
     _transport_registry["grpc_asyncio"] = VideoStitcherServiceGrpcAsyncIOTransport
 
     def get_transport_class(
-        cls, label: str = None,
+        cls,
+        label: str = None,
     ) -> Type[VideoStitcherServiceTransport]:
         """Returns an appropriate transport class.
 
@@ -173,10 +174,16 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
         return self._transport
 
     @staticmethod
-    def cdn_key_path(project: str, location: str, cdn_key: str,) -> str:
+    def cdn_key_path(
+        project: str,
+        location: str,
+        cdn_key: str,
+    ) -> str:
         """Returns a fully-qualified cdn_key string."""
         return "projects/{project}/locations/{location}/cdnKeys/{cdn_key}".format(
-            project=project, location=location, cdn_key=cdn_key,
+            project=project,
+            location=location,
+            cdn_key=cdn_key,
         )
 
     @staticmethod
@@ -190,7 +197,10 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
 
     @staticmethod
     def live_ad_tag_detail_path(
-        project: str, location: str, live_session: str, live_ad_tag_detail: str,
+        project: str,
+        location: str,
+        live_session: str,
+        live_ad_tag_detail: str,
     ) -> str:
         """Returns a fully-qualified live_ad_tag_detail string."""
         return "projects/{project}/locations/{location}/liveSessions/{live_session}/liveAdTagDetails/{live_ad_tag_detail}".format(
@@ -210,10 +220,16 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def live_session_path(project: str, location: str, live_session: str,) -> str:
+    def live_session_path(
+        project: str,
+        location: str,
+        live_session: str,
+    ) -> str:
         """Returns a fully-qualified live_session string."""
         return "projects/{project}/locations/{location}/liveSessions/{live_session}".format(
-            project=project, location=location, live_session=live_session,
+            project=project,
+            location=location,
+            live_session=live_session,
         )
 
     @staticmethod
@@ -226,10 +242,16 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def slate_path(project: str, location: str, slate: str,) -> str:
+    def slate_path(
+        project: str,
+        location: str,
+        slate: str,
+    ) -> str:
         """Returns a fully-qualified slate string."""
         return "projects/{project}/locations/{location}/slates/{slate}".format(
-            project=project, location=location, slate=slate,
+            project=project,
+            location=location,
+            slate=slate,
         )
 
     @staticmethod
@@ -243,7 +265,10 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
 
     @staticmethod
     def vod_ad_tag_detail_path(
-        project: str, location: str, vod_session: str, vod_ad_tag_detail: str,
+        project: str,
+        location: str,
+        vod_session: str,
+        vod_ad_tag_detail: str,
     ) -> str:
         """Returns a fully-qualified vod_ad_tag_detail string."""
         return "projects/{project}/locations/{location}/vodSessions/{vod_session}/vodAdTagDetails/{vod_ad_tag_detail}".format(
@@ -263,10 +288,18 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def vod_session_path(project: str, location: str, vod_session: str,) -> str:
+    def vod_session_path(
+        project: str,
+        location: str,
+        vod_session: str,
+    ) -> str:
         """Returns a fully-qualified vod_session string."""
-        return "projects/{project}/locations/{location}/vodSessions/{vod_session}".format(
-            project=project, location=location, vod_session=vod_session,
+        return (
+            "projects/{project}/locations/{location}/vodSessions/{vod_session}".format(
+                project=project,
+                location=location,
+                vod_session=vod_session,
+            )
         )
 
     @staticmethod
@@ -280,7 +313,10 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
 
     @staticmethod
     def vod_stitch_detail_path(
-        project: str, location: str, vod_session: str, vod_stitch_detail: str,
+        project: str,
+        location: str,
+        vod_session: str,
+        vod_stitch_detail: str,
     ) -> str:
         """Returns a fully-qualified vod_stitch_detail string."""
         return "projects/{project}/locations/{location}/vodSessions/{vod_session}/vodStitchDetails/{vod_stitch_detail}".format(
@@ -300,7 +336,9 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_billing_account_path(billing_account: str,) -> str:
+    def common_billing_account_path(
+        billing_account: str,
+    ) -> str:
         """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
@@ -313,9 +351,13 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(folder: str,) -> str:
+    def common_folder_path(
+        folder: str,
+    ) -> str:
         """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(folder=folder,)
+        return "folders/{folder}".format(
+            folder=folder,
+        )
 
     @staticmethod
     def parse_common_folder_path(path: str) -> Dict[str, str]:
@@ -324,9 +366,13 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(organization: str,) -> str:
+    def common_organization_path(
+        organization: str,
+    ) -> str:
         """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(organization=organization,)
+        return "organizations/{organization}".format(
+            organization=organization,
+        )
 
     @staticmethod
     def parse_common_organization_path(path: str) -> Dict[str, str]:
@@ -335,9 +381,13 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(project: str,) -> str:
+    def common_project_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified project string."""
-        return "projects/{project}".format(project=project,)
+        return "projects/{project}".format(
+            project=project,
+        )
 
     @staticmethod
     def parse_common_project_path(path: str) -> Dict[str, str]:
@@ -346,10 +396,14 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(project: str, location: str,) -> str:
+    def common_location_path(
+        project: str,
+        location: str,
+    ) -> str:
         """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
-            project=project, location=location,
+            project=project,
+            location=location,
         )
 
     @staticmethod
@@ -639,7 +693,12 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -736,12 +795,20 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListCdnKeysPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -835,7 +902,12 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -918,7 +990,10 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def update_cdn_key(
@@ -1022,7 +1097,12 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1129,7 +1209,12 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1220,7 +1305,12 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1317,12 +1407,20 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListVodStitchDetailsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1416,7 +1514,12 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1513,12 +1616,20 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListVodAdTagDetailsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1612,7 +1723,12 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1708,12 +1824,20 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListLiveAdTagDetailsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1806,7 +1930,12 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1918,7 +2047,12 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2014,12 +2148,20 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListSlatesPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -2109,7 +2251,12 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2209,7 +2356,12 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2292,7 +2444,10 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def create_live_session(
@@ -2398,7 +2553,12 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2486,7 +2646,12 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response

@@ -81,14 +81,41 @@ class VodSession(proto.Message):
             the manifest.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    interstitials = proto.Field(proto.MESSAGE, number=2, message="Interstitials",)
-    play_uri = proto.Field(proto.STRING, number=4,)
-    source_uri = proto.Field(proto.STRING, number=5,)
-    ad_tag_uri = proto.Field(proto.STRING, number=6,)
-    ad_tag_macro_map = proto.MapField(proto.STRING, proto.STRING, number=7,)
-    client_ad_tracking = proto.Field(proto.BOOL, number=8,)
-    manifest_options = proto.Field(proto.MESSAGE, number=9, message="ManifestOptions",)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    interstitials = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="Interstitials",
+    )
+    play_uri = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    source_uri = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    ad_tag_uri = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    ad_tag_macro_map = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=7,
+    )
+    client_ad_tracking = proto.Field(
+        proto.BOOL,
+        number=8,
+    )
+    manifest_options = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message="ManifestOptions",
+    )
 
 
 class Interstitials(proto.Message):
@@ -103,9 +130,15 @@ class Interstitials(proto.Message):
     """
 
     ad_breaks = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="VodSessionAdBreak",
+        proto.MESSAGE,
+        number=1,
+        message="VodSessionAdBreak",
     )
-    session_content = proto.Field(proto.MESSAGE, number=2, message="VodSessionContent",)
+    session_content = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="VodSessionContent",
+    )
 
 
 class VodSessionAd(proto.Message):
@@ -126,12 +159,20 @@ class VodSessionAd(proto.Message):
             ``CLOSE_LINEAR``, ``SKIP``.
     """
 
-    duration = proto.Field(proto.MESSAGE, number=1, message=duration_pb2.Duration,)
+    duration = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=duration_pb2.Duration,
+    )
     companion_ads = proto.Field(
-        proto.MESSAGE, number=2, message=companions.CompanionAds,
+        proto.MESSAGE,
+        number=2,
+        message=companions.CompanionAds,
     )
     activity_events = proto.RepeatedField(
-        proto.MESSAGE, number=3, message=events.Event,
+        proto.MESSAGE,
+        number=3,
+        message=events.Event,
     )
 
 
@@ -144,7 +185,11 @@ class VodSessionContent(proto.Message):
             including the ads stitched in.
     """
 
-    duration = proto.Field(proto.MESSAGE, number=1, message=duration_pb2.Duration,)
+    duration = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=duration_pb2.Duration,
+    )
 
 
 class VodSessionAdBreak(proto.Message):
@@ -166,14 +211,24 @@ class VodSessionAdBreak(proto.Message):
     """
 
     progress_events = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=events.ProgressEvent,
+        proto.MESSAGE,
+        number=1,
+        message=events.ProgressEvent,
     )
-    ads = proto.RepeatedField(proto.MESSAGE, number=2, message="VodSessionAd",)
+    ads = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="VodSessionAd",
+    )
     end_time_offset = proto.Field(
-        proto.MESSAGE, number=3, message=duration_pb2.Duration,
+        proto.MESSAGE,
+        number=3,
+        message=duration_pb2.Duration,
     )
     start_time_offset = proto.Field(
-        proto.MESSAGE, number=4, message=duration_pb2.Duration,
+        proto.MESSAGE,
+        number=4,
+        message=duration_pb2.Duration,
     )
 
 
@@ -246,16 +301,51 @@ class LiveSession(proto.Message):
         COMPLETE_POD = 2
         CUT_CURRENT = 3
 
-    name = proto.Field(proto.STRING, number=1,)
-    play_uri = proto.Field(proto.STRING, number=2,)
-    source_uri = proto.Field(proto.STRING, number=3,)
-    default_ad_tag_id = proto.Field(proto.STRING, number=4,)
-    ad_tag_map = proto.MapField(proto.STRING, proto.MESSAGE, number=5, message="AdTag",)
-    ad_tag_macros = proto.MapField(proto.STRING, proto.STRING, number=6,)
-    client_ad_tracking = proto.Field(proto.BOOL, number=7,)
-    default_slate_id = proto.Field(proto.STRING, number=8,)
-    stitching_policy = proto.Field(proto.ENUM, number=9, enum=StitchingPolicy,)
-    manifest_options = proto.Field(proto.MESSAGE, number=10, message="ManifestOptions",)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    play_uri = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    source_uri = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    default_ad_tag_id = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    ad_tag_map = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=5,
+        message="AdTag",
+    )
+    ad_tag_macros = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=6,
+    )
+    client_ad_tracking = proto.Field(
+        proto.BOOL,
+        number=7,
+    )
+    default_slate_id = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    stitching_policy = proto.Field(
+        proto.ENUM,
+        number=9,
+        enum=StitchingPolicy,
+    )
+    manifest_options = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message="ManifestOptions",
+    )
 
 
 class AdTag(proto.Message):
@@ -266,7 +356,10 @@ class AdTag(proto.Message):
             Ad tag URI template.
     """
 
-    uri = proto.Field(proto.STRING, number=1,)
+    uri = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ManifestOptions(proto.Message):
@@ -290,9 +383,15 @@ class ManifestOptions(proto.Message):
         DESCENDING = 2
 
     include_renditions = proto.RepeatedField(
-        proto.MESSAGE, number=1, message="RenditionFilter",
+        proto.MESSAGE,
+        number=1,
+        message="RenditionFilter",
     )
-    bitrate_order = proto.Field(proto.ENUM, number=2, enum=OrderPolicy,)
+    bitrate_order = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=OrderPolicy,
+    )
 
 
 class RenditionFilter(proto.Message):
@@ -308,8 +407,14 @@ class RenditionFilter(proto.Message):
             renditions with the exact value will match.
     """
 
-    bitrate_bps = proto.Field(proto.INT32, number=1,)
-    codecs = proto.Field(proto.STRING, number=2,)
+    bitrate_bps = proto.Field(
+        proto.INT32,
+        number=1,
+    )
+    codecs = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

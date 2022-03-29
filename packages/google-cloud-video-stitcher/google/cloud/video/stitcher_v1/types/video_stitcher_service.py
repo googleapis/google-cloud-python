@@ -76,9 +76,19 @@ class CreateCdnKeyRequest(proto.Message):
             maximum.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    cdn_key = proto.Field(proto.MESSAGE, number=2, message=gcvs_cdn_keys.CdnKey,)
-    cdn_key_id = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    cdn_key = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=gcvs_cdn_keys.CdnKey,
+    )
+    cdn_key_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListCdnKeysRequest(proto.Message):
@@ -102,11 +112,26 @@ class ListCdnKeysRequest(proto.Message):
             Hint for how to order the results
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    filter = proto.Field(proto.STRING, number=4,)
-    order_by = proto.Field(proto.STRING, number=5,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class ListCdnKeysResponse(proto.Message):
@@ -127,10 +152,18 @@ class ListCdnKeysResponse(proto.Message):
         return self
 
     cdn_keys = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=gcvs_cdn_keys.CdnKey,
+        proto.MESSAGE,
+        number=1,
+        message=gcvs_cdn_keys.CdnKey,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
-    unreachable = proto.RepeatedField(proto.STRING, number=3,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 class GetCdnKeyRequest(proto.Message):
@@ -143,7 +176,10 @@ class GetCdnKeyRequest(proto.Message):
             ``projects/{project}/locations/{location}/cdnKeys/{id}``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class DeleteCdnKeyRequest(proto.Message):
@@ -156,7 +192,10 @@ class DeleteCdnKeyRequest(proto.Message):
             ``projects/{project_number}/locations/{location}/cdnKeys/{id}``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class UpdateCdnKeyRequest(proto.Message):
@@ -172,9 +211,15 @@ class UpdateCdnKeyRequest(proto.Message):
             https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask
     """
 
-    cdn_key = proto.Field(proto.MESSAGE, number=1, message=gcvs_cdn_keys.CdnKey,)
+    cdn_key = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=gcvs_cdn_keys.CdnKey,
+    )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -190,8 +235,15 @@ class CreateVodSessionRequest(proto.Message):
             Required. Parameters for creating a session.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    vod_session = proto.Field(proto.MESSAGE, number=2, message=sessions.VodSession,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    vod_session = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=sessions.VodSession,
+    )
 
 
 class GetVodSessionRequest(proto.Message):
@@ -204,7 +256,10 @@ class GetVodSessionRequest(proto.Message):
             ``projects/{project_number}/locations/{location}/vodSessions/{id}``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListVodStitchDetailsRequest(proto.Message):
@@ -223,9 +278,18 @@ class ListVodStitchDetailsRequest(proto.Message):
             request, if any.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListVodStitchDetailsResponse(proto.Message):
@@ -244,9 +308,14 @@ class ListVodStitchDetailsResponse(proto.Message):
         return self
 
     vod_stitch_details = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=stitch_details.VodStitchDetail,
+        proto.MESSAGE,
+        number=1,
+        message=stitch_details.VodStitchDetail,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetVodStitchDetailRequest(proto.Message):
@@ -259,7 +328,10 @@ class GetVodStitchDetailRequest(proto.Message):
             ``projects/{project}/locations/{location}/vodSessions/{vod_session_id}/vodStitchDetails/{id}``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListVodAdTagDetailsRequest(proto.Message):
@@ -277,9 +349,18 @@ class ListVodAdTagDetailsRequest(proto.Message):
             request, if any.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListVodAdTagDetailsResponse(proto.Message):
@@ -298,9 +379,14 @@ class ListVodAdTagDetailsResponse(proto.Message):
         return self
 
     vod_ad_tag_details = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=ad_tag_details.VodAdTagDetail,
+        proto.MESSAGE,
+        number=1,
+        message=ad_tag_details.VodAdTagDetail,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetVodAdTagDetailRequest(proto.Message):
@@ -313,7 +399,10 @@ class GetVodAdTagDetailRequest(proto.Message):
             ``projects/{project}/locations/{location}/vodSessions/{vod_session_id}/vodAdTagDetails/{vod_ad_tag_detail}``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListLiveAdTagDetailsRequest(proto.Message):
@@ -331,9 +420,18 @@ class ListLiveAdTagDetailsRequest(proto.Message):
             List request.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListLiveAdTagDetailsResponse(proto.Message):
@@ -352,9 +450,14 @@ class ListLiveAdTagDetailsResponse(proto.Message):
         return self
 
     live_ad_tag_details = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=ad_tag_details.LiveAdTagDetail,
+        proto.MESSAGE,
+        number=1,
+        message=ad_tag_details.LiveAdTagDetail,
     )
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetLiveAdTagDetailRequest(proto.Message):
@@ -366,7 +469,10 @@ class GetLiveAdTagDetailRequest(proto.Message):
             ``projects/{project}/locations/{location}/liveSessions/{live_session}/liveAdTagDetails/{live_ad_tag_detail}``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CreateSlateRequest(proto.Message):
@@ -387,9 +493,19 @@ class CreateSlateRequest(proto.Message):
             Required. The slate to create.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    slate_id = proto.Field(proto.STRING, number=2,)
-    slate = proto.Field(proto.MESSAGE, number=3, message=gcvs_slates.Slate,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    slate_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    slate = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=gcvs_slates.Slate,
+    )
 
 
 class GetSlateRequest(proto.Message):
@@ -402,7 +518,10 @@ class GetSlateRequest(proto.Message):
             ``projects/{project_number}/locations/{location}/slates/{id}``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListSlatesRequest(proto.Message):
@@ -425,11 +544,26 @@ class ListSlatesRequest(proto.Message):
             Hint for how to order the results
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    filter = proto.Field(proto.STRING, number=4,)
-    order_by = proto.Field(proto.STRING, number=5,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    order_by = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class ListSlatesResponse(proto.Message):
@@ -449,9 +583,19 @@ class ListSlatesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    slates = proto.RepeatedField(proto.MESSAGE, number=1, message=gcvs_slates.Slate,)
-    next_page_token = proto.Field(proto.STRING, number=2,)
-    unreachable = proto.RepeatedField(proto.STRING, number=3,)
+    slates = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=gcvs_slates.Slate,
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    unreachable = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
 
 
 class UpdateSlateRequest(proto.Message):
@@ -465,9 +609,15 @@ class UpdateSlateRequest(proto.Message):
             fields which should be updated.
     """
 
-    slate = proto.Field(proto.MESSAGE, number=1, message=gcvs_slates.Slate,)
+    slate = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=gcvs_slates.Slate,
+    )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -481,7 +631,10 @@ class DeleteSlateRequest(proto.Message):
             ``projects/{project_number}/locations/{location}/slates/{id}``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CreateLiveSessionRequest(proto.Message):
@@ -506,8 +659,15 @@ class CreateLiveSessionRequest(proto.Message):
             session.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    live_session = proto.Field(proto.MESSAGE, number=2, message=sessions.LiveSession,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    live_session = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=sessions.LiveSession,
+    )
 
 
 class GetLiveSessionRequest(proto.Message):
@@ -519,7 +679,10 @@ class GetLiveSessionRequest(proto.Message):
             ``projects/{project_number}/locations/{location}/liveSessions/{id}``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

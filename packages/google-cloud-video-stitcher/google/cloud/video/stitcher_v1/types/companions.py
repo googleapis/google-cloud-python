@@ -50,8 +50,16 @@ class CompanionAds(proto.Message):
         ANY = 2
         NONE = 3
 
-    display_requirement = proto.Field(proto.ENUM, number=1, enum=DisplayRequirement,)
-    companions = proto.RepeatedField(proto.MESSAGE, number=2, message="Companion",)
+    display_requirement = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=DisplayRequirement,
+    )
+    companions = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="Companion",
+    )
 
 
 class Companion(proto.Message):
@@ -109,23 +117,60 @@ class Companion(proto.Message):
     """
 
     iframe_ad_resource = proto.Field(
-        proto.MESSAGE, number=10, oneof="ad_resource", message="IframeAdResource",
+        proto.MESSAGE,
+        number=10,
+        oneof="ad_resource",
+        message="IframeAdResource",
     )
     static_ad_resource = proto.Field(
-        proto.MESSAGE, number=11, oneof="ad_resource", message="StaticAdResource",
+        proto.MESSAGE,
+        number=11,
+        oneof="ad_resource",
+        message="StaticAdResource",
     )
     html_ad_resource = proto.Field(
-        proto.MESSAGE, number=12, oneof="ad_resource", message="HtmlAdResource",
+        proto.MESSAGE,
+        number=12,
+        oneof="ad_resource",
+        message="HtmlAdResource",
     )
-    api_framework = proto.Field(proto.STRING, number=1,)
-    height_px = proto.Field(proto.INT32, number=2,)
-    width_px = proto.Field(proto.INT32, number=3,)
-    asset_height_px = proto.Field(proto.INT32, number=4,)
-    expanded_height_px = proto.Field(proto.INT32, number=5,)
-    asset_width_px = proto.Field(proto.INT32, number=6,)
-    expanded_width_px = proto.Field(proto.INT32, number=7,)
-    ad_slot_id = proto.Field(proto.STRING, number=8,)
-    events = proto.RepeatedField(proto.MESSAGE, number=9, message=gcvs_events.Event,)
+    api_framework = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    height_px = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    width_px = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    asset_height_px = proto.Field(
+        proto.INT32,
+        number=4,
+    )
+    expanded_height_px = proto.Field(
+        proto.INT32,
+        number=5,
+    )
+    asset_width_px = proto.Field(
+        proto.INT32,
+        number=6,
+    )
+    expanded_width_px = proto.Field(
+        proto.INT32,
+        number=7,
+    )
+    ad_slot_id = proto.Field(
+        proto.STRING,
+        number=8,
+    )
+    events = proto.RepeatedField(
+        proto.MESSAGE,
+        number=9,
+        message=gcvs_events.Event,
+    )
 
 
 class HtmlAdResource(proto.Message):
@@ -136,7 +181,10 @@ class HtmlAdResource(proto.Message):
             The HTML to display for the ad resource.
     """
 
-    html_source = proto.Field(proto.STRING, number=1,)
+    html_source = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class IframeAdResource(proto.Message):
@@ -148,7 +196,10 @@ class IframeAdResource(proto.Message):
             ad resource.
     """
 
-    uri = proto.Field(proto.STRING, number=1,)
+    uri = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class StaticAdResource(proto.Message):
@@ -161,8 +212,14 @@ class StaticAdResource(proto.Message):
             Describes the MIME type of the ad resource.
     """
 
-    uri = proto.Field(proto.STRING, number=1,)
-    creative_type = proto.Field(proto.STRING, number=2,)
+    uri = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    creative_type = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
