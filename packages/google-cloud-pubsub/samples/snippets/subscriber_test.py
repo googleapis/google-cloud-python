@@ -58,6 +58,13 @@ def publisher_client() -> Generator[pubsub_v1.PublisherClient, None, None]:
 
 
 @pytest.fixture(scope="module")
+def regional_publisher_client() -> Generator[pubsub_v1.PublisherClient, None, None]:
+    client_options = {"api_endpoint": "us-east1-pubsub.googleapis.com:443"}
+    publisher = pubsub_v1.PublisherClient(client_options=client_options)
+    yield publisher
+
+
+@pytest.fixture(scope="module")
 def topic(publisher_client: pubsub_v1.PublisherClient) -> Generator[str, None, None]:
     topic_path = publisher_client.topic_path(PROJECT_ID, TOPIC)
 
@@ -697,33 +704,22 @@ def test_receive_with_blocking_shutdown(
 
 
 def test_receive_messages_with_exactly_once_delivery_enabled(
-    publisher_client: pubsub_v1.PublisherClient,
+    regional_publisher_client: pubsub_v1.PublisherClient,
     exactly_once_delivery_topic: str,
     subscription_eod: str,
     capsys: CaptureFixture[str],
 ) -> None:
 
-    typed_backoff = cast(
-        Callable[[C], C], backoff.on_exception(backoff.expo, Unknown, max_time=60),
+    message_ids = _publish_messages(regional_publisher_client, exactly_once_delivery_topic)
+
+    subscriber.receive_messages_with_exactly_once_delivery_enabled(
+        PROJECT_ID, SUBSCRIPTION_EOD, 10
     )
 
-    @typed_backoff
-    def eventually_consistent_test() -> None:
-        message_ids = _publish_messages(publisher_client, exactly_once_delivery_topic)
-
-        subscriber.receive_messages_with_exactly_once_delivery_enabled(
-            PROJECT_ID, SUBSCRIPTION_EOD, 10
-        )
-
-        out, _ = capsys.readouterr()
-        assert "Listening" in out
-        assert subscription_eod in out
-        assert "Received" in out
-        assert "Ack" in out
-        for message_id in message_ids:
-            assert message_id in out
-
-    eventually_consistent_test()
+    out, _ = capsys.readouterr()
+    assert subscription_eod in out
+    for message_id in message_ids:
+        assert message_id in out
 
 
 def test_listen_for_errors(
