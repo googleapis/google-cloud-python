@@ -51,16 +51,16 @@ _ATTRIBUTECONTEXT_REQUEST_HEADERSENTRY = _ATTRIBUTECONTEXT_REQUEST.nested_types_
     "HeadersEntry"
 ]
 _ATTRIBUTECONTEXT_RESPONSE = _ATTRIBUTECONTEXT.nested_types_by_name["Response"]
-_ATTRIBUTECONTEXT_RESPONSE_HEADERSENTRY = _ATTRIBUTECONTEXT_RESPONSE.nested_types_by_name[
-    "HeadersEntry"
-]
+_ATTRIBUTECONTEXT_RESPONSE_HEADERSENTRY = (
+    _ATTRIBUTECONTEXT_RESPONSE.nested_types_by_name["HeadersEntry"]
+)
 _ATTRIBUTECONTEXT_RESOURCE = _ATTRIBUTECONTEXT.nested_types_by_name["Resource"]
-_ATTRIBUTECONTEXT_RESOURCE_LABELSENTRY = _ATTRIBUTECONTEXT_RESOURCE.nested_types_by_name[
-    "LabelsEntry"
-]
-_ATTRIBUTECONTEXT_RESOURCE_ANNOTATIONSENTRY = _ATTRIBUTECONTEXT_RESOURCE.nested_types_by_name[
-    "AnnotationsEntry"
-]
+_ATTRIBUTECONTEXT_RESOURCE_LABELSENTRY = (
+    _ATTRIBUTECONTEXT_RESOURCE.nested_types_by_name["LabelsEntry"]
+)
+_ATTRIBUTECONTEXT_RESOURCE_ANNOTATIONSENTRY = (
+    _ATTRIBUTECONTEXT_RESOURCE.nested_types_by_name["AnnotationsEntry"]
+)
 AttributeContext = _reflection.GeneratedProtocolMessageType(
     "AttributeContext",
     (_message.Message,),

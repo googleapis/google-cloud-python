@@ -46,9 +46,9 @@ _MONITOREDRESOURCE_LABELSENTRY = _MONITOREDRESOURCE.nested_types_by_name["Labels
 _MONITOREDRESOURCEMETADATA = DESCRIPTOR.message_types_by_name[
     "MonitoredResourceMetadata"
 ]
-_MONITOREDRESOURCEMETADATA_USERLABELSENTRY = _MONITOREDRESOURCEMETADATA.nested_types_by_name[
-    "UserLabelsEntry"
-]
+_MONITOREDRESOURCEMETADATA_USERLABELSENTRY = (
+    _MONITOREDRESOURCEMETADATA.nested_types_by_name["UserLabelsEntry"]
+)
 MonitoredResourceDescriptor = _reflection.GeneratedProtocolMessageType(
     "MonitoredResourceDescriptor",
     (_message.Message,),

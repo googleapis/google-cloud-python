@@ -38,13 +38,13 @@ _GAPICMETADATA_SERVICESENTRY = _GAPICMETADATA.nested_types_by_name["ServicesEntr
 _GAPICMETADATA_SERVICEFORTRANSPORT = _GAPICMETADATA.nested_types_by_name[
     "ServiceForTransport"
 ]
-_GAPICMETADATA_SERVICEFORTRANSPORT_CLIENTSENTRY = _GAPICMETADATA_SERVICEFORTRANSPORT.nested_types_by_name[
-    "ClientsEntry"
-]
+_GAPICMETADATA_SERVICEFORTRANSPORT_CLIENTSENTRY = (
+    _GAPICMETADATA_SERVICEFORTRANSPORT.nested_types_by_name["ClientsEntry"]
+)
 _GAPICMETADATA_SERVICEASCLIENT = _GAPICMETADATA.nested_types_by_name["ServiceAsClient"]
-_GAPICMETADATA_SERVICEASCLIENT_RPCSENTRY = _GAPICMETADATA_SERVICEASCLIENT.nested_types_by_name[
-    "RpcsEntry"
-]
+_GAPICMETADATA_SERVICEASCLIENT_RPCSENTRY = (
+    _GAPICMETADATA_SERVICEASCLIENT.nested_types_by_name["RpcsEntry"]
+)
 _GAPICMETADATA_METHODLIST = _GAPICMETADATA.nested_types_by_name["MethodList"]
 GapicMetadata = _reflection.GeneratedProtocolMessageType(
     "GapicMetadata",

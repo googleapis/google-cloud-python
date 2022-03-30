@@ -18,7 +18,7 @@ from pathlib import Path
 
 import nox
 
-BLACK_VERSION = "black==19.3b0"
+BLACK_VERSION = "black==22.3.0"
 
 
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
