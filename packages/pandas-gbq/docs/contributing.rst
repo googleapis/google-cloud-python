@@ -14,7 +14,7 @@ All contributions, bug reports, bug fixes, documentation improvements,
 enhancements and ideas are welcome.
 
 If you are simply looking to start working with the *pandas-gbq* codebase, navigate to the
-`GitHub "issues" tab <https://github.com/pydata/pandas-gbq/issues>`_ and start looking through
+`GitHub "issues" tab <https://github.com/googleapis/python-bigquery-pandas/issues>`_ and start looking through
 interesting issues.
 
 Or maybe through using *pandas-gbq* you have an idea of your own or are looking for something
@@ -71,7 +71,7 @@ It can very quickly become overwhelming, but sticking to the guidelines below wi
 straightforward and mostly trouble free.  As always, if you are having difficulties please
 feel free to ask for help.
 
-The code is hosted on `GitHub <https://www.github.com/pydata/pandas-gbq>`_. To
+The code is hosted on `GitHub <https://www.github.com/googleapis/python-bigquery-pandas>`_. To
 contribute you will need to sign up for a `free GitHub account
 <https://github.com/signup/free>`_. We use `Git <http://git-scm.com/>`_ for
 version control to allow many people to work together on the project.
@@ -95,12 +95,12 @@ Forking
 -------
 
 You will need your own fork to work on the code. Go to the `pandas-gbq project
-page <https://github.com/pydata/pandas-gbq>`_ and hit the ``Fork`` button. You will
+page <https://github.com/googleapis/python-bigquery-pandas>`_ and hit the ``Fork`` button. You will
 want to clone your fork to your machine::
 
     git clone git@github.com:your-user-name/pandas-gbq.git pandas-gbq-yourname
     cd pandas-gbq-yourname
-    git remote add upstream git://github.com/pydata/pandas-gbq.git
+    git remote add upstream git://github.com/googleapis/python-bigquery-pandas.git
 
 This creates the directory `pandas-gbq-yourname` and connects your repository to
 the upstream (main project) *pandas-gbq* repository.
@@ -153,10 +153,10 @@ Create a new conda environment and install the necessary dependencies
 .. code-block:: shell
 
    $ conda create -n my-env --channel conda-forge  \
+         db-dtypes \
          pandas \
-         google-auth-oauthlib \
-         google-api-python-client \
-         google-auth-httplib2
+         pydata-google-auth \
+         google-cloud-bigquery
    $ source activate my-env
 
 Install pandas-gbq in development mode
@@ -307,7 +307,7 @@ Integration tests are skipped in pull requests because the credentials that
 are required for running Google BigQuery integration tests are
 `configured in the CircleCI web interface
 <https://circleci.com/docs/2.0/env-vars/#setting-an-environment-variable-in-a-project>`_
-and are only accessible from the pydata/pandas-gbq repository. The
+and are only accessible from the googleapis/python-bigquery-pandas repository. The
 credentials won't be available on forks of pandas-gbq. Here are the steps to
 run gbq integration tests on a forked repository:
 
@@ -327,8 +327,8 @@ run gbq integration tests on a forked repository:
    sensitive data and you do not want their contents being exposed in build
    logs.
 #. Your branch should be tested automatically once it is pushed. You can check
-   the status by visiting your Travis branches page which exists at the
-   following location: https://circleci.com/gh/your-username/pandas-gbq .
+   the status by visiting your Circle CI branches page which exists at the
+   following location: https://circleci.com/gh/your-username/python-bigquery-pandas.
    Click on a build job for your branch.
 
 Documenting your code
@@ -374,16 +374,17 @@ Doing 'git status' again should give something like::
     #
 
 Finally, commit your changes to your local repository with an explanatory message.  *pandas-gbq*
-uses a convention for commit message prefixes and layout.  Here are
-some common prefixes along with general guidelines for when to use them:
+uses `conventional commit message prefixes
+<https://www.conventionalcommits.org/en/v1.0.0/>`_ and layout.  Here are some
+common prefixes along with general guidelines for when to use them:
 
-    * ENH: Enhancement, new functionality
-    * BUG: Bug fix
-    * DOC: Additions/updates to documentation
-    * TST: Additions/updates to tests
-    * BLD: Updates to the build process/scripts
-    * PERF: Performance improvement
-    * CLN: Code cleanup
+    * feat: Enhancement, new functionality
+    * fix: Bug fix, performance improvement
+    * doc: Additions/updates to documentation
+    * deps: Change to package dependencies
+    * test: Additions/updates to tests
+    * chore: Updates to the build process/scripts
+    * refactor: Code cleanup
 
 The following defines how a commit message should be structured.  Please reference the
 relevant GitHub issues in your commit message using GH1234 or #1234.  Either style
@@ -441,8 +442,8 @@ like::
 
     origin  git@github.com:yourname/pandas-gbq.git (fetch)
     origin  git@github.com:yourname/pandas-gbq.git (push)
-    upstream        git://github.com/pydata/pandas-gbq.git (fetch)
-    upstream        git://github.com/pydata/pandas-gbq.git (push)
+    upstream        git://github.com/googleapis/python-bigquery-pandas.git (fetch)
+    upstream        git://github.com/googleapis/python-bigquery-pandas.git (push)
 
 Now your code is on GitHub, but it is not yet a part of the *pandas-gbq* project.  For that to
 happen, a pull request needs to be submitted on GitHub.
