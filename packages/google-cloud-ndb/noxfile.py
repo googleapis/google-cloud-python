@@ -106,7 +106,7 @@ def lint(session):
     Returns a failure if the linters find linting errors or sufficiently
     serious code quality issues.
     """
-    session.install("flake8", BLACK_VERSION)
+    session.install("flake8", BLACK_VERSION, "click<8.1.0")
     run_black(session, use_check=True)
     session.run("flake8", "google", "tests")
 
@@ -114,7 +114,7 @@ def lint(session):
 @nox.session(py=DEFAULT_INTERPRETER)
 def blacken(session):
     # Install all dependencies.
-    session.install(BLACK_VERSION)
+    session.install(BLACK_VERSION, "click<8.1.0")
     # Run ``black``.
     run_black(session)
 
