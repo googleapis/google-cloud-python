@@ -41,8 +41,14 @@ class TranslationDatasetMetadata(proto.Message):
             target language.
     """
 
-    source_language_code = proto.Field(proto.STRING, number=1,)
-    target_language_code = proto.Field(proto.STRING, number=2,)
+    source_language_code = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    target_language_code = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class TranslationEvaluationMetrics(proto.Message):
@@ -55,8 +61,14 @@ class TranslationEvaluationMetrics(proto.Message):
             Output only. BLEU score for base model.
     """
 
-    bleu_score = proto.Field(proto.DOUBLE, number=1,)
-    base_bleu_score = proto.Field(proto.DOUBLE, number=2,)
+    bleu_score = proto.Field(
+        proto.DOUBLE,
+        number=1,
+    )
+    base_bleu_score = proto.Field(
+        proto.DOUBLE,
+        number=2,
+    )
 
 
 class TranslationModelMetadata(proto.Message):
@@ -77,9 +89,18 @@ class TranslationModelMetadata(proto.Message):
             language code) that is used for training.
     """
 
-    base_model = proto.Field(proto.STRING, number=1,)
-    source_language_code = proto.Field(proto.STRING, number=2,)
-    target_language_code = proto.Field(proto.STRING, number=3,)
+    base_model = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    source_language_code = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    target_language_code = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class TranslationAnnotation(proto.Message):
@@ -91,7 +112,9 @@ class TranslationAnnotation(proto.Message):
     """
 
     translated_content = proto.Field(
-        proto.MESSAGE, number=1, message=data_items.TextSnippet,
+        proto.MESSAGE,
+        number=1,
+        message=data_items.TextSnippet,
     )
 
 

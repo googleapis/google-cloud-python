@@ -19,7 +19,10 @@ from google.protobuf import duration_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.automl.v1beta1", manifest={"TimeSegment",},
+    package="google.cloud.automl.v1beta1",
+    manifest={
+        "TimeSegment",
+    },
 )
 
 
@@ -39,10 +42,14 @@ class TimeSegment(proto.Message):
     """
 
     start_time_offset = proto.Field(
-        proto.MESSAGE, number=1, message=duration_pb2.Duration,
+        proto.MESSAGE,
+        number=1,
+        message=duration_pb2.Duration,
     )
     end_time_offset = proto.Field(
-        proto.MESSAGE, number=2, message=duration_pb2.Duration,
+        proto.MESSAGE,
+        number=2,
+        message=duration_pb2.Duration,
     )
 
 

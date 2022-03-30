@@ -17,7 +17,10 @@ import proto  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.automl.v1beta1", manifest={"AnnotationSpec",},
+    package="google.cloud.automl.v1beta1",
+    manifest={
+        "AnnotationSpec",
+    },
 )
 
 
@@ -38,9 +41,18 @@ class AnnotationSpec(proto.Message):
             parent dataset labeled by the annotation spec.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    display_name = proto.Field(proto.STRING, number=2,)
-    example_count = proto.Field(proto.INT32, number=9,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    example_count = proto.Field(
+        proto.INT32,
+        number=9,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

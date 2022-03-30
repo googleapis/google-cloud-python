@@ -17,7 +17,10 @@ import proto  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.automl.v1beta1", manifest={"DoubleRange",},
+    package="google.cloud.automl.v1beta1",
+    manifest={
+        "DoubleRange",
+    },
 )
 
 
@@ -31,8 +34,14 @@ class DoubleRange(proto.Message):
             End of the range, exclusive.
     """
 
-    start = proto.Field(proto.DOUBLE, number=1,)
-    end = proto.Field(proto.DOUBLE, number=2,)
+    start = proto.Field(
+        proto.DOUBLE,
+        number=1,
+    )
+    end = proto.Field(
+        proto.DOUBLE,
+        number=2,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

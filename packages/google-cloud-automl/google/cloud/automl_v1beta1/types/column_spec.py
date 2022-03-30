@@ -20,7 +20,10 @@ from google.cloud.automl_v1beta1.types import data_types
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.automl.v1beta1", manifest={"ColumnSpec",},
+    package="google.cloud.automl.v1beta1",
+    manifest={
+        "ColumnSpec",
+    },
 )
 
 
@@ -71,19 +74,43 @@ class ColumnSpec(proto.Message):
                 column.
         """
 
-        column_spec_id = proto.Field(proto.STRING, number=1,)
+        column_spec_id = proto.Field(
+            proto.STRING,
+            number=1,
+        )
         correlation_stats = proto.Field(
-            proto.MESSAGE, number=2, message=gca_data_stats.CorrelationStats,
+            proto.MESSAGE,
+            number=2,
+            message=gca_data_stats.CorrelationStats,
         )
 
-    name = proto.Field(proto.STRING, number=1,)
-    data_type = proto.Field(proto.MESSAGE, number=2, message=data_types.DataType,)
-    display_name = proto.Field(proto.STRING, number=3,)
-    data_stats = proto.Field(proto.MESSAGE, number=4, message=gca_data_stats.DataStats,)
-    top_correlated_columns = proto.RepeatedField(
-        proto.MESSAGE, number=5, message=CorrelatedColumn,
+    name = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    etag = proto.Field(proto.STRING, number=6,)
+    data_type = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=data_types.DataType,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    data_stats = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=gca_data_stats.DataStats,
+    )
+    top_correlated_columns = proto.RepeatedField(
+        proto.MESSAGE,
+        number=5,
+        message=CorrelatedColumn,
+    )
+    etag = proto.Field(
+        proto.STRING,
+        number=6,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

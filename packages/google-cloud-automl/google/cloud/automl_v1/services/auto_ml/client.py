@@ -73,7 +73,10 @@ class AutoMlClientMeta(type):
     _transport_registry["grpc"] = AutoMlGrpcTransport
     _transport_registry["grpc_asyncio"] = AutoMlGrpcAsyncIOTransport
 
-    def get_transport_class(cls, label: str = None,) -> Type[AutoMlTransport]:
+    def get_transport_class(
+        cls,
+        label: str = None,
+    ) -> Type[AutoMlTransport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -194,7 +197,10 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
 
     @staticmethod
     def annotation_spec_path(
-        project: str, location: str, dataset: str, annotation_spec: str,
+        project: str,
+        location: str,
+        dataset: str,
+        annotation_spec: str,
     ) -> str:
         """Returns a fully-qualified annotation_spec string."""
         return "projects/{project}/locations/{location}/datasets/{dataset}/annotationSpecs/{annotation_spec}".format(
@@ -214,10 +220,16 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def dataset_path(project: str, location: str, dataset: str,) -> str:
+    def dataset_path(
+        project: str,
+        location: str,
+        dataset: str,
+    ) -> str:
         """Returns a fully-qualified dataset string."""
         return "projects/{project}/locations/{location}/datasets/{dataset}".format(
-            project=project, location=location, dataset=dataset,
+            project=project,
+            location=location,
+            dataset=dataset,
         )
 
     @staticmethod
@@ -230,10 +242,16 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def model_path(project: str, location: str, model: str,) -> str:
+    def model_path(
+        project: str,
+        location: str,
+        model: str,
+    ) -> str:
         """Returns a fully-qualified model string."""
         return "projects/{project}/locations/{location}/models/{model}".format(
-            project=project, location=location, model=model,
+            project=project,
+            location=location,
+            model=model,
         )
 
     @staticmethod
@@ -247,7 +265,10 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
 
     @staticmethod
     def model_evaluation_path(
-        project: str, location: str, model: str, model_evaluation: str,
+        project: str,
+        location: str,
+        model: str,
+        model_evaluation: str,
     ) -> str:
         """Returns a fully-qualified model_evaluation string."""
         return "projects/{project}/locations/{location}/models/{model}/modelEvaluations/{model_evaluation}".format(
@@ -267,7 +288,9 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_billing_account_path(billing_account: str,) -> str:
+    def common_billing_account_path(
+        billing_account: str,
+    ) -> str:
         """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
@@ -280,9 +303,13 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(folder: str,) -> str:
+    def common_folder_path(
+        folder: str,
+    ) -> str:
         """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(folder=folder,)
+        return "folders/{folder}".format(
+            folder=folder,
+        )
 
     @staticmethod
     def parse_common_folder_path(path: str) -> Dict[str, str]:
@@ -291,9 +318,13 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(organization: str,) -> str:
+    def common_organization_path(
+        organization: str,
+    ) -> str:
         """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(organization=organization,)
+        return "organizations/{organization}".format(
+            organization=organization,
+        )
 
     @staticmethod
     def parse_common_organization_path(path: str) -> Dict[str, str]:
@@ -302,9 +333,13 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(project: str,) -> str:
+    def common_project_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified project string."""
-        return "projects/{project}".format(project=project,)
+        return "projects/{project}".format(
+            project=project,
+        )
 
     @staticmethod
     def parse_common_project_path(path: str) -> Dict[str, str]:
@@ -313,10 +348,14 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(project: str, location: str,) -> str:
+    def common_location_path(
+        project: str,
+        location: str,
+    ) -> str:
         """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
-            project=project, location=location,
+            project=project,
+            location=location,
         )
 
     @staticmethod
@@ -594,7 +633,12 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -694,7 +738,12 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -788,12 +837,20 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListDatasetsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -902,7 +959,12 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1014,7 +1076,12 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1155,7 +1222,12 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1288,7 +1360,12 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1384,7 +1461,12 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1495,7 +1577,12 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1591,7 +1678,12 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1685,12 +1777,20 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListModelsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1802,7 +1902,12 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1911,7 +2016,12 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2032,7 +2142,12 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -2156,7 +2271,12 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -2295,7 +2415,12 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -2391,7 +2516,12 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2510,12 +2640,20 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListModelEvaluationsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -2537,7 +2675,9 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-automl",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-automl",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()

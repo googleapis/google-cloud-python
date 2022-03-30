@@ -20,7 +20,10 @@ from google.cloud.automl_v1beta1.types import text_segment as gca_text_segment
 
 __protobuf__ = proto.module(
     package="google.cloud.automl.v1beta1",
-    manifest={"TextExtractionAnnotation", "TextExtractionEvaluationMetrics",},
+    manifest={
+        "TextExtractionAnnotation",
+        "TextExtractionEvaluationMetrics",
+    },
 )
 
 
@@ -48,7 +51,10 @@ class TextExtractionAnnotation(proto.Message):
         oneof="annotation",
         message=gca_text_segment.TextSegment,
     )
-    score = proto.Field(proto.FLOAT, number=1,)
+    score = proto.Field(
+        proto.FLOAT,
+        number=1,
+    )
 
 
 class TextExtractionEvaluationMetrics(proto.Message):
@@ -84,14 +90,31 @@ class TextExtractionEvaluationMetrics(proto.Message):
                 precision.
         """
 
-        confidence_threshold = proto.Field(proto.FLOAT, number=1,)
-        recall = proto.Field(proto.FLOAT, number=3,)
-        precision = proto.Field(proto.FLOAT, number=4,)
-        f1_score = proto.Field(proto.FLOAT, number=5,)
+        confidence_threshold = proto.Field(
+            proto.FLOAT,
+            number=1,
+        )
+        recall = proto.Field(
+            proto.FLOAT,
+            number=3,
+        )
+        precision = proto.Field(
+            proto.FLOAT,
+            number=4,
+        )
+        f1_score = proto.Field(
+            proto.FLOAT,
+            number=5,
+        )
 
-    au_prc = proto.Field(proto.FLOAT, number=1,)
+    au_prc = proto.Field(
+        proto.FLOAT,
+        number=1,
+    )
     confidence_metrics_entries = proto.RepeatedField(
-        proto.MESSAGE, number=2, message=ConfidenceMetricsEntry,
+        proto.MESSAGE,
+        number=2,
+        message=ConfidenceMetricsEntry,
     )
 
 

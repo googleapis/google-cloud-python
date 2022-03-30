@@ -19,7 +19,10 @@ from google.cloud.automl_v1beta1.types import io
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.automl.v1beta1", manifest={"TableSpec",},
+    package="google.cloud.automl.v1beta1",
+    manifest={
+        "TableSpec",
+    },
 )
 
 
@@ -70,15 +73,35 @@ class TableSpec(proto.Message):
             happens.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    time_column_spec_id = proto.Field(proto.STRING, number=2,)
-    row_count = proto.Field(proto.INT64, number=3,)
-    valid_row_count = proto.Field(proto.INT64, number=4,)
-    column_count = proto.Field(proto.INT64, number=7,)
-    input_configs = proto.RepeatedField(
-        proto.MESSAGE, number=5, message=io.InputConfig,
+    name = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    etag = proto.Field(proto.STRING, number=6,)
+    time_column_spec_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    row_count = proto.Field(
+        proto.INT64,
+        number=3,
+    )
+    valid_row_count = proto.Field(
+        proto.INT64,
+        number=4,
+    )
+    column_count = proto.Field(
+        proto.INT64,
+        number=7,
+    )
+    input_configs = proto.RepeatedField(
+        proto.MESSAGE,
+        number=5,
+        message=io.InputConfig,
+    )
+    etag = proto.Field(
+        proto.STRING,
+        number=6,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

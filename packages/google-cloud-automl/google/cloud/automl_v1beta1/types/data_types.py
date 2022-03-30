@@ -18,7 +18,11 @@ import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.automl.v1beta1",
-    manifest={"TypeCode", "DataType", "StructType",},
+    manifest={
+        "TypeCode",
+        "DataType",
+        "StructType",
+    },
 )
 
 
@@ -90,14 +94,31 @@ class DataType(proto.Message):
     """
 
     list_element_type = proto.Field(
-        proto.MESSAGE, number=2, oneof="details", message="DataType",
+        proto.MESSAGE,
+        number=2,
+        oneof="details",
+        message="DataType",
     )
     struct_type = proto.Field(
-        proto.MESSAGE, number=3, oneof="details", message="StructType",
+        proto.MESSAGE,
+        number=3,
+        oneof="details",
+        message="StructType",
     )
-    time_format = proto.Field(proto.STRING, number=5, oneof="details",)
-    type_code = proto.Field(proto.ENUM, number=1, enum="TypeCode",)
-    nullable = proto.Field(proto.BOOL, number=4,)
+    time_format = proto.Field(
+        proto.STRING,
+        number=5,
+        oneof="details",
+    )
+    type_code = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum="TypeCode",
+    )
+    nullable = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
 
 
 class StructType(proto.Message):
@@ -112,7 +133,12 @@ class StructType(proto.Message):
             mutable.
     """
 
-    fields = proto.MapField(proto.STRING, proto.MESSAGE, number=1, message="DataType",)
+    fields = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=1,
+        message="DataType",
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

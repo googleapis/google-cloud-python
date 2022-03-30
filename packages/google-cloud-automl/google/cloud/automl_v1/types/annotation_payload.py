@@ -23,7 +23,10 @@ from google.cloud.automl_v1.types import translation as gca_translation
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.automl.v1", manifest={"AnnotationPayload",},
+    package="google.cloud.automl.v1",
+    manifest={
+        "AnnotationPayload",
+    },
 )
 
 
@@ -106,8 +109,14 @@ class AnnotationPayload(proto.Message):
         oneof="detail",
         message=gca_text_sentiment.TextSentimentAnnotation,
     )
-    annotation_spec_id = proto.Field(proto.STRING, number=1,)
-    display_name = proto.Field(proto.STRING, number=5,)
+    annotation_spec_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

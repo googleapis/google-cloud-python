@@ -17,7 +17,10 @@ import proto  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.automl.v1beta1", manifest={"TextSegment",},
+    package="google.cloud.automl.v1beta1",
+    manifest={
+        "TextSegment",
+    },
 )
 
 
@@ -39,9 +42,18 @@ class TextSegment(proto.Message):
             is NOT included in the text segment.
     """
 
-    content = proto.Field(proto.STRING, number=3,)
-    start_offset = proto.Field(proto.INT64, number=1,)
-    end_offset = proto.Field(proto.INT64, number=2,)
+    content = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    start_offset = proto.Field(
+        proto.INT64,
+        number=1,
+    )
+    end_offset = proto.Field(
+        proto.INT64,
+        number=2,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

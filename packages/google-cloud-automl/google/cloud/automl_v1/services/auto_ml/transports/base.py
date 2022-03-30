@@ -37,7 +37,9 @@ from google.longrunning import operations_pb2  # type: ignore
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-automl",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-automl",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
@@ -127,7 +129,9 @@ class AutoMlTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.create_dataset: gapic_v1.method.wrap_method(
-                self.create_dataset, default_timeout=5.0, client_info=client_info,
+                self.create_dataset,
+                default_timeout=5.0,
+                client_info=client_info,
             ),
             self.get_dataset: gapic_v1.method.wrap_method(
                 self.get_dataset,
@@ -160,7 +164,9 @@ class AutoMlTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.update_dataset: gapic_v1.method.wrap_method(
-                self.update_dataset, default_timeout=5.0, client_info=client_info,
+                self.update_dataset,
+                default_timeout=5.0,
+                client_info=client_info,
             ),
             self.delete_dataset: gapic_v1.method.wrap_method(
                 self.delete_dataset,
@@ -178,10 +184,14 @@ class AutoMlTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.import_data: gapic_v1.method.wrap_method(
-                self.import_data, default_timeout=5.0, client_info=client_info,
+                self.import_data,
+                default_timeout=5.0,
+                client_info=client_info,
             ),
             self.export_data: gapic_v1.method.wrap_method(
-                self.export_data, default_timeout=5.0, client_info=client_info,
+                self.export_data,
+                default_timeout=5.0,
+                client_info=client_info,
             ),
             self.get_annotation_spec: gapic_v1.method.wrap_method(
                 self.get_annotation_spec,
@@ -199,7 +209,9 @@ class AutoMlTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.create_model: gapic_v1.method.wrap_method(
-                self.create_model, default_timeout=5.0, client_info=client_info,
+                self.create_model,
+                default_timeout=5.0,
+                client_info=client_info,
             ),
             self.get_model: gapic_v1.method.wrap_method(
                 self.get_model,
@@ -247,16 +259,24 @@ class AutoMlTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.update_model: gapic_v1.method.wrap_method(
-                self.update_model, default_timeout=5.0, client_info=client_info,
+                self.update_model,
+                default_timeout=5.0,
+                client_info=client_info,
             ),
             self.deploy_model: gapic_v1.method.wrap_method(
-                self.deploy_model, default_timeout=5.0, client_info=client_info,
+                self.deploy_model,
+                default_timeout=5.0,
+                client_info=client_info,
             ),
             self.undeploy_model: gapic_v1.method.wrap_method(
-                self.undeploy_model, default_timeout=5.0, client_info=client_info,
+                self.undeploy_model,
+                default_timeout=5.0,
+                client_info=client_info,
             ),
             self.export_model: gapic_v1.method.wrap_method(
-                self.export_model, default_timeout=5.0, client_info=client_info,
+                self.export_model,
+                default_timeout=5.0,
+                client_info=client_info,
             ),
             self.get_model_evaluation: gapic_v1.method.wrap_method(
                 self.get_model_evaluation,
@@ -293,9 +313,9 @@ class AutoMlTransport(abc.ABC):
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

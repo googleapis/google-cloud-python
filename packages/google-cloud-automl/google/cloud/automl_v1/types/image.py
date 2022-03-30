@@ -40,13 +40,14 @@ class ImageClassificationDatasetMetadata(proto.Message):
     """
 
     classification_type = proto.Field(
-        proto.ENUM, number=1, enum=classification.ClassificationType,
+        proto.ENUM,
+        number=1,
+        enum=classification.ClassificationType,
     )
 
 
 class ImageObjectDetectionDatasetMetadata(proto.Message):
-    r"""Dataset metadata specific to image object detection.
-    """
+    r"""Dataset metadata specific to image object detection."""
 
 
 class ImageClassificationModelMetadata(proto.Message):
@@ -142,13 +143,34 @@ class ImageClassificationModelMetadata(proto.Message):
             handle online prediction QPS as given in the node_qps field.
     """
 
-    base_model_id = proto.Field(proto.STRING, number=1,)
-    train_budget_milli_node_hours = proto.Field(proto.INT64, number=16,)
-    train_cost_milli_node_hours = proto.Field(proto.INT64, number=17,)
-    stop_reason = proto.Field(proto.STRING, number=5,)
-    model_type = proto.Field(proto.STRING, number=7,)
-    node_qps = proto.Field(proto.DOUBLE, number=13,)
-    node_count = proto.Field(proto.INT64, number=14,)
+    base_model_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    train_budget_milli_node_hours = proto.Field(
+        proto.INT64,
+        number=16,
+    )
+    train_cost_milli_node_hours = proto.Field(
+        proto.INT64,
+        number=17,
+    )
+    stop_reason = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    model_type = proto.Field(
+        proto.STRING,
+        number=7,
+    )
+    node_qps = proto.Field(
+        proto.DOUBLE,
+        number=13,
+    )
+    node_count = proto.Field(
+        proto.INT64,
+        number=14,
+    )
 
 
 class ImageObjectDetectionModelMetadata(proto.Message):
@@ -226,12 +248,30 @@ class ImageObjectDetectionModelMetadata(proto.Message):
             budget.
     """
 
-    model_type = proto.Field(proto.STRING, number=1,)
-    node_count = proto.Field(proto.INT64, number=3,)
-    node_qps = proto.Field(proto.DOUBLE, number=4,)
-    stop_reason = proto.Field(proto.STRING, number=5,)
-    train_budget_milli_node_hours = proto.Field(proto.INT64, number=6,)
-    train_cost_milli_node_hours = proto.Field(proto.INT64, number=7,)
+    model_type = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    node_count = proto.Field(
+        proto.INT64,
+        number=3,
+    )
+    node_qps = proto.Field(
+        proto.DOUBLE,
+        number=4,
+    )
+    stop_reason = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    train_budget_milli_node_hours = proto.Field(
+        proto.INT64,
+        number=6,
+    )
+    train_cost_milli_node_hours = proto.Field(
+        proto.INT64,
+        number=7,
+    )
 
 
 class ImageClassificationModelDeploymentMetadata(proto.Message):
@@ -246,7 +286,10 @@ class ImageClassificationModelDeploymentMetadata(proto.Message):
             Must be between 1 and 100, inclusive on both ends.
     """
 
-    node_count = proto.Field(proto.INT64, number=1,)
+    node_count = proto.Field(
+        proto.INT64,
+        number=1,
+    )
 
 
 class ImageObjectDetectionModelDeploymentMetadata(proto.Message):
@@ -261,7 +304,10 @@ class ImageObjectDetectionModelDeploymentMetadata(proto.Message):
             Must be between 1 and 100, inclusive on both ends.
     """
 
-    node_count = proto.Field(proto.INT64, number=1,)
+    node_count = proto.Field(
+        proto.INT64,
+        number=1,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

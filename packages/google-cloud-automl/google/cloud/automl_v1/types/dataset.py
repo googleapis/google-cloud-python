@@ -21,7 +21,12 @@ from google.cloud.automl_v1.types import translation
 from google.protobuf import timestamp_pb2  # type: ignore
 
 
-__protobuf__ = proto.module(package="google.cloud.automl.v1", manifest={"Dataset",},)
+__protobuf__ = proto.module(
+    package="google.cloud.automl.v1",
+    manifest={
+        "Dataset",
+    },
+)
 
 
 class Dataset(proto.Message):
@@ -136,15 +141,36 @@ class Dataset(proto.Message):
         oneof="dataset_metadata",
         message=text.TextSentimentDatasetMetadata,
     )
-    name = proto.Field(proto.STRING, number=1,)
-    display_name = proto.Field(proto.STRING, number=2,)
-    description = proto.Field(proto.STRING, number=3,)
-    example_count = proto.Field(proto.INT32, number=21,)
-    create_time = proto.Field(
-        proto.MESSAGE, number=14, message=timestamp_pb2.Timestamp,
+    name = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    etag = proto.Field(proto.STRING, number=17,)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=39,)
+    display_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    example_count = proto.Field(
+        proto.INT32,
+        number=21,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=14,
+        message=timestamp_pb2.Timestamp,
+    )
+    etag = proto.Field(
+        proto.STRING,
+        number=17,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=39,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

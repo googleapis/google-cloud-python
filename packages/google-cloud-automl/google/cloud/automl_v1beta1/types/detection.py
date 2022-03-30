@@ -44,8 +44,15 @@ class ImageObjectDetectionAnnotation(proto.Message):
             positivity confidence.
     """
 
-    bounding_box = proto.Field(proto.MESSAGE, number=1, message=geometry.BoundingPoly,)
-    score = proto.Field(proto.FLOAT, number=2,)
+    bounding_box = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=geometry.BoundingPoly,
+    )
+    score = proto.Field(
+        proto.FLOAT,
+        number=2,
+    )
 
 
 class VideoObjectTrackingAnnotation(proto.Message):
@@ -79,10 +86,24 @@ class VideoObjectTrackingAnnotation(proto.Message):
             changed to 1).
     """
 
-    instance_id = proto.Field(proto.STRING, number=1,)
-    time_offset = proto.Field(proto.MESSAGE, number=2, message=duration_pb2.Duration,)
-    bounding_box = proto.Field(proto.MESSAGE, number=3, message=geometry.BoundingPoly,)
-    score = proto.Field(proto.FLOAT, number=4,)
+    instance_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    time_offset = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=duration_pb2.Duration,
+    )
+    bounding_box = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=geometry.BoundingPoly,
+    )
+    score = proto.Field(
+        proto.FLOAT,
+        number=4,
+    )
 
 
 class BoundingBoxMetricsEntry(proto.Message):
@@ -123,15 +144,35 @@ class BoundingBoxMetricsEntry(proto.Message):
                 precision.
         """
 
-        confidence_threshold = proto.Field(proto.FLOAT, number=1,)
-        recall = proto.Field(proto.FLOAT, number=2,)
-        precision = proto.Field(proto.FLOAT, number=3,)
-        f1_score = proto.Field(proto.FLOAT, number=4,)
+        confidence_threshold = proto.Field(
+            proto.FLOAT,
+            number=1,
+        )
+        recall = proto.Field(
+            proto.FLOAT,
+            number=2,
+        )
+        precision = proto.Field(
+            proto.FLOAT,
+            number=3,
+        )
+        f1_score = proto.Field(
+            proto.FLOAT,
+            number=4,
+        )
 
-    iou_threshold = proto.Field(proto.FLOAT, number=1,)
-    mean_average_precision = proto.Field(proto.FLOAT, number=2,)
+    iou_threshold = proto.Field(
+        proto.FLOAT,
+        number=1,
+    )
+    mean_average_precision = proto.Field(
+        proto.FLOAT,
+        number=2,
+    )
     confidence_metrics_entries = proto.RepeatedField(
-        proto.MESSAGE, number=3, message=ConfidenceMetricsEntry,
+        proto.MESSAGE,
+        number=3,
+        message=ConfidenceMetricsEntry,
     )
 
 
@@ -156,11 +197,19 @@ class ImageObjectDetectionEvaluationMetrics(proto.Message):
             bounding_box_metrics_entries.
     """
 
-    evaluated_bounding_box_count = proto.Field(proto.INT32, number=1,)
-    bounding_box_metrics_entries = proto.RepeatedField(
-        proto.MESSAGE, number=2, message="BoundingBoxMetricsEntry",
+    evaluated_bounding_box_count = proto.Field(
+        proto.INT32,
+        number=1,
     )
-    bounding_box_mean_average_precision = proto.Field(proto.FLOAT, number=3,)
+    bounding_box_metrics_entries = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="BoundingBoxMetricsEntry",
+    )
+    bounding_box_mean_average_precision = proto.Field(
+        proto.FLOAT,
+        number=3,
+    )
 
 
 class VideoObjectTrackingEvaluationMetrics(proto.Message):
@@ -189,12 +238,23 @@ class VideoObjectTrackingEvaluationMetrics(proto.Message):
             bounding_box_metrics_entries.
     """
 
-    evaluated_frame_count = proto.Field(proto.INT32, number=1,)
-    evaluated_bounding_box_count = proto.Field(proto.INT32, number=2,)
-    bounding_box_metrics_entries = proto.RepeatedField(
-        proto.MESSAGE, number=4, message="BoundingBoxMetricsEntry",
+    evaluated_frame_count = proto.Field(
+        proto.INT32,
+        number=1,
     )
-    bounding_box_mean_average_precision = proto.Field(proto.FLOAT, number=6,)
+    evaluated_bounding_box_count = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    bounding_box_metrics_entries = proto.RepeatedField(
+        proto.MESSAGE,
+        number=4,
+        message="BoundingBoxMetricsEntry",
+    )
+    bounding_box_mean_average_precision = proto.Field(
+        proto.FLOAT,
+        number=6,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

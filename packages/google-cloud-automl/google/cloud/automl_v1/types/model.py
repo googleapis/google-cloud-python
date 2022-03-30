@@ -21,7 +21,12 @@ from google.cloud.automl_v1.types import translation
 from google.protobuf import timestamp_pb2  # type: ignore
 
 
-__protobuf__ = proto.module(package="google.cloud.automl.v1", manifest={"Model",},)
+__protobuf__ = proto.module(
+    package="google.cloud.automl.v1",
+    manifest={
+        "Model",
+    },
+)
 
 
 class Model(proto.Message):
@@ -141,16 +146,42 @@ class Model(proto.Message):
         oneof="model_metadata",
         message=text.TextSentimentModelMetadata,
     )
-    name = proto.Field(proto.STRING, number=1,)
-    display_name = proto.Field(proto.STRING, number=2,)
-    dataset_id = proto.Field(proto.STRING, number=3,)
-    create_time = proto.Field(proto.MESSAGE, number=7, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(
-        proto.MESSAGE, number=11, message=timestamp_pb2.Timestamp,
+    name = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    deployment_state = proto.Field(proto.ENUM, number=8, enum=DeploymentState,)
-    etag = proto.Field(proto.STRING, number=10,)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=34,)
+    display_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    dataset_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        message=timestamp_pb2.Timestamp,
+    )
+    deployment_state = proto.Field(
+        proto.ENUM,
+        number=8,
+        enum=DeploymentState,
+    )
+    etag = proto.Field(
+        proto.STRING,
+        number=10,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=34,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

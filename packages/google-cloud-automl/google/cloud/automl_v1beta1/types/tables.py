@@ -102,15 +102,32 @@ class TablesDatasetMetadata(proto.Message):
             effort basis.
     """
 
-    primary_table_spec_id = proto.Field(proto.STRING, number=1,)
-    target_column_spec_id = proto.Field(proto.STRING, number=2,)
-    weight_column_spec_id = proto.Field(proto.STRING, number=3,)
-    ml_use_column_spec_id = proto.Field(proto.STRING, number=4,)
+    primary_table_spec_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    target_column_spec_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    weight_column_spec_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    ml_use_column_spec_id = proto.Field(
+        proto.STRING,
+        number=4,
+    )
     target_column_correlations = proto.MapField(
-        proto.STRING, proto.MESSAGE, number=6, message=data_stats.CorrelationStats,
+        proto.STRING,
+        proto.MESSAGE,
+        number=6,
+        message=data_stats.CorrelationStats,
     )
     stats_update_time = proto.Field(
-        proto.MESSAGE, number=7, message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=7,
+        message=timestamp_pb2.Timestamp,
     )
 
 
@@ -232,24 +249,46 @@ class TablesModelMetadata(proto.Message):
     """
 
     optimization_objective_recall_value = proto.Field(
-        proto.FLOAT, number=17, oneof="additional_optimization_objective_config",
+        proto.FLOAT,
+        number=17,
+        oneof="additional_optimization_objective_config",
     )
     optimization_objective_precision_value = proto.Field(
-        proto.FLOAT, number=18, oneof="additional_optimization_objective_config",
+        proto.FLOAT,
+        number=18,
+        oneof="additional_optimization_objective_config",
     )
     target_column_spec = proto.Field(
-        proto.MESSAGE, number=2, message=column_spec.ColumnSpec,
+        proto.MESSAGE,
+        number=2,
+        message=column_spec.ColumnSpec,
     )
     input_feature_column_specs = proto.RepeatedField(
-        proto.MESSAGE, number=3, message=column_spec.ColumnSpec,
+        proto.MESSAGE,
+        number=3,
+        message=column_spec.ColumnSpec,
     )
-    optimization_objective = proto.Field(proto.STRING, number=4,)
+    optimization_objective = proto.Field(
+        proto.STRING,
+        number=4,
+    )
     tables_model_column_info = proto.RepeatedField(
-        proto.MESSAGE, number=5, message="TablesModelColumnInfo",
+        proto.MESSAGE,
+        number=5,
+        message="TablesModelColumnInfo",
     )
-    train_budget_milli_node_hours = proto.Field(proto.INT64, number=6,)
-    train_cost_milli_node_hours = proto.Field(proto.INT64, number=7,)
-    disable_early_stopping = proto.Field(proto.BOOL, number=12,)
+    train_budget_milli_node_hours = proto.Field(
+        proto.INT64,
+        number=6,
+    )
+    train_cost_milli_node_hours = proto.Field(
+        proto.INT64,
+        number=7,
+    )
+    disable_early_stopping = proto.Field(
+        proto.BOOL,
+        number=12,
+    )
 
 
 class TablesAnnotation(proto.Message):
@@ -306,15 +345,29 @@ class TablesAnnotation(proto.Message):
             baseline example for the argmax class.
     """
 
-    score = proto.Field(proto.FLOAT, number=1,)
+    score = proto.Field(
+        proto.FLOAT,
+        number=1,
+    )
     prediction_interval = proto.Field(
-        proto.MESSAGE, number=4, message=ranges.DoubleRange,
+        proto.MESSAGE,
+        number=4,
+        message=ranges.DoubleRange,
     )
-    value = proto.Field(proto.MESSAGE, number=2, message=struct_pb2.Value,)
+    value = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=struct_pb2.Value,
+    )
     tables_model_column_info = proto.RepeatedField(
-        proto.MESSAGE, number=3, message="TablesModelColumnInfo",
+        proto.MESSAGE,
+        number=3,
+        message="TablesModelColumnInfo",
     )
-    baseline_score = proto.Field(proto.FLOAT, number=5,)
+    baseline_score = proto.Field(
+        proto.FLOAT,
+        number=5,
+    )
 
 
 class TablesModelColumnInfo(proto.Message):
@@ -350,9 +403,18 @@ class TablesModelColumnInfo(proto.Message):
             values are computed using the Sampled Shapley method.
     """
 
-    column_spec_name = proto.Field(proto.STRING, number=1,)
-    column_display_name = proto.Field(proto.STRING, number=2,)
-    feature_importance = proto.Field(proto.FLOAT, number=3,)
+    column_spec_name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    column_display_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    feature_importance = proto.Field(
+        proto.FLOAT,
+        number=3,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

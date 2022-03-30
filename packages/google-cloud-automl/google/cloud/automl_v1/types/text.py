@@ -40,7 +40,9 @@ class TextClassificationDatasetMetadata(proto.Message):
     """
 
     classification_type = proto.Field(
-        proto.ENUM, number=1, enum=classification.ClassificationType,
+        proto.ENUM,
+        number=1,
+        enum=classification.ClassificationType,
     )
 
 
@@ -54,18 +56,18 @@ class TextClassificationModelMetadata(proto.Message):
     """
 
     classification_type = proto.Field(
-        proto.ENUM, number=3, enum=classification.ClassificationType,
+        proto.ENUM,
+        number=3,
+        enum=classification.ClassificationType,
     )
 
 
 class TextExtractionDatasetMetadata(proto.Message):
-    r"""Dataset metadata that is specific to text extraction
-    """
+    r"""Dataset metadata that is specific to text extraction"""
 
 
 class TextExtractionModelMetadata(proto.Message):
-    r"""Model metadata that is specific to text extraction.
-    """
+    r"""Model metadata that is specific to text extraction."""
 
 
 class TextSentimentDatasetMetadata(proto.Message):
@@ -82,12 +84,14 @@ class TextSentimentDatasetMetadata(proto.Message):
             and 10 (inclusive).
     """
 
-    sentiment_max = proto.Field(proto.INT32, number=1,)
+    sentiment_max = proto.Field(
+        proto.INT32,
+        number=1,
+    )
 
 
 class TextSentimentModelMetadata(proto.Message):
-    r"""Model metadata that is specific to text sentiment.
-    """
+    r"""Model metadata that is specific to text sentiment."""
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

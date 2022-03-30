@@ -736,9 +736,16 @@ class InputConfig(proto.Message):
     """
 
     gcs_source = proto.Field(
-        proto.MESSAGE, number=1, oneof="source", message="GcsSource",
+        proto.MESSAGE,
+        number=1,
+        oneof="source",
+        message="GcsSource",
     )
-    params = proto.MapField(proto.STRING, proto.STRING, number=2,)
+    params = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=2,
+    )
 
 
 class BatchPredictInputConfig(proto.Message):
@@ -1081,7 +1088,10 @@ class BatchPredictInputConfig(proto.Message):
     """
 
     gcs_source = proto.Field(
-        proto.MESSAGE, number=1, oneof="source", message="GcsSource",
+        proto.MESSAGE,
+        number=1,
+        oneof="source",
+        message="GcsSource",
     )
 
 
@@ -1099,7 +1109,11 @@ class DocumentInputConfig(proto.Message):
             Supported extensions: .PDF.
     """
 
-    gcs_source = proto.Field(proto.MESSAGE, number=1, message="GcsSource",)
+    gcs_source = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="GcsSource",
+    )
 
 
 class OutputConfig(proto.Message):
@@ -1145,7 +1159,10 @@ class OutputConfig(proto.Message):
     """
 
     gcs_destination = proto.Field(
-        proto.MESSAGE, number=1, oneof="destination", message="GcsDestination",
+        proto.MESSAGE,
+        number=1,
+        oneof="destination",
+        message="GcsDestination",
     )
 
 
@@ -1418,7 +1435,10 @@ class BatchPredictOutputConfig(proto.Message):
     """
 
     gcs_destination = proto.Field(
-        proto.MESSAGE, number=1, oneof="destination", message="GcsDestination",
+        proto.MESSAGE,
+        number=1,
+        oneof="destination",
+        message="GcsDestination",
     )
 
 
@@ -1491,10 +1511,20 @@ class ModelExportOutputConfig(proto.Message):
     """
 
     gcs_destination = proto.Field(
-        proto.MESSAGE, number=1, oneof="destination", message="GcsDestination",
+        proto.MESSAGE,
+        number=1,
+        oneof="destination",
+        message="GcsDestination",
     )
-    model_format = proto.Field(proto.STRING, number=4,)
-    params = proto.MapField(proto.STRING, proto.STRING, number=2,)
+    model_format = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    params = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=2,
+    )
 
 
 class GcsSource(proto.Message):
@@ -1508,7 +1538,10 @@ class GcsSource(proto.Message):
             -  Full object path, e.g. gs://bucket/directory/object.csv
     """
 
-    input_uris = proto.RepeatedField(proto.STRING, number=1,)
+    input_uris = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
 
 
 class GcsDestination(proto.Message):
@@ -1525,7 +1558,10 @@ class GcsDestination(proto.Message):
                is created if it doesn't exist.
     """
 
-    output_uri_prefix = proto.Field(proto.STRING, number=1,)
+    output_uri_prefix = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

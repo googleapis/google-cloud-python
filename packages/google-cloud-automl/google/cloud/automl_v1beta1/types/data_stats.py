@@ -76,26 +76,53 @@ class DataStats(proto.Message):
     """
 
     float64_stats = proto.Field(
-        proto.MESSAGE, number=3, oneof="stats", message="Float64Stats",
+        proto.MESSAGE,
+        number=3,
+        oneof="stats",
+        message="Float64Stats",
     )
     string_stats = proto.Field(
-        proto.MESSAGE, number=4, oneof="stats", message="StringStats",
+        proto.MESSAGE,
+        number=4,
+        oneof="stats",
+        message="StringStats",
     )
     timestamp_stats = proto.Field(
-        proto.MESSAGE, number=5, oneof="stats", message="TimestampStats",
+        proto.MESSAGE,
+        number=5,
+        oneof="stats",
+        message="TimestampStats",
     )
     array_stats = proto.Field(
-        proto.MESSAGE, number=6, oneof="stats", message="ArrayStats",
+        proto.MESSAGE,
+        number=6,
+        oneof="stats",
+        message="ArrayStats",
     )
     struct_stats = proto.Field(
-        proto.MESSAGE, number=7, oneof="stats", message="StructStats",
+        proto.MESSAGE,
+        number=7,
+        oneof="stats",
+        message="StructStats",
     )
     category_stats = proto.Field(
-        proto.MESSAGE, number=8, oneof="stats", message="CategoryStats",
+        proto.MESSAGE,
+        number=8,
+        oneof="stats",
+        message="CategoryStats",
     )
-    distinct_value_count = proto.Field(proto.INT64, number=1,)
-    null_value_count = proto.Field(proto.INT64, number=2,)
-    valid_value_count = proto.Field(proto.INT64, number=9,)
+    distinct_value_count = proto.Field(
+        proto.INT64,
+        number=1,
+    )
+    null_value_count = proto.Field(
+        proto.INT64,
+        number=2,
+    )
+    valid_value_count = proto.Field(
+        proto.INT64,
+        number=9,
+    )
 
 
 class Float64Stats(proto.Message):
@@ -134,15 +161,35 @@ class Float64Stats(proto.Message):
                 bucket, i.e. are between min and max values.
         """
 
-        min_ = proto.Field(proto.DOUBLE, number=1,)
-        max_ = proto.Field(proto.DOUBLE, number=2,)
-        count = proto.Field(proto.INT64, number=3,)
+        min_ = proto.Field(
+            proto.DOUBLE,
+            number=1,
+        )
+        max_ = proto.Field(
+            proto.DOUBLE,
+            number=2,
+        )
+        count = proto.Field(
+            proto.INT64,
+            number=3,
+        )
 
-    mean = proto.Field(proto.DOUBLE, number=1,)
-    standard_deviation = proto.Field(proto.DOUBLE, number=2,)
-    quantiles = proto.RepeatedField(proto.DOUBLE, number=3,)
+    mean = proto.Field(
+        proto.DOUBLE,
+        number=1,
+    )
+    standard_deviation = proto.Field(
+        proto.DOUBLE,
+        number=2,
+    )
+    quantiles = proto.RepeatedField(
+        proto.DOUBLE,
+        number=3,
+    )
     histogram_buckets = proto.RepeatedField(
-        proto.MESSAGE, number=4, message=HistogramBucket,
+        proto.MESSAGE,
+        number=4,
+        message=HistogramBucket,
     )
 
 
@@ -166,11 +213,19 @@ class StringStats(proto.Message):
                 the series.
         """
 
-        value = proto.Field(proto.STRING, number=1,)
-        count = proto.Field(proto.INT64, number=2,)
+        value = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        count = proto.Field(
+            proto.INT64,
+            number=2,
+        )
 
     top_unigram_stats = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=UnigramStats,
+        proto.MESSAGE,
+        number=1,
+        message=UnigramStats,
     )
 
 
@@ -196,10 +251,17 @@ class TimestampStats(proto.Message):
                 ``5`` means May).
         """
 
-        buckets = proto.MapField(proto.INT32, proto.INT64, number=1,)
+        buckets = proto.MapField(
+            proto.INT32,
+            proto.INT64,
+            number=1,
+        )
 
     granular_stats = proto.MapField(
-        proto.STRING, proto.MESSAGE, number=1, message=GranularStats,
+        proto.STRING,
+        proto.MESSAGE,
+        number=1,
+        message=GranularStats,
     )
 
 
@@ -213,7 +275,11 @@ class ArrayStats(proto.Message):
             depends on the element type of the array.
     """
 
-    member_stats = proto.Field(proto.MESSAGE, number=2, message="DataStats",)
+    member_stats = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="DataStats",
+    )
 
 
 class StructStats(proto.Message):
@@ -227,7 +293,10 @@ class StructStats(proto.Message):
     """
 
     field_stats = proto.MapField(
-        proto.STRING, proto.MESSAGE, number=1, message="DataStats",
+        proto.STRING,
+        proto.MESSAGE,
+        number=1,
+        message="DataStats",
     )
 
 
@@ -252,11 +321,19 @@ class CategoryStats(proto.Message):
                 the series.
         """
 
-        value = proto.Field(proto.STRING, number=1,)
-        count = proto.Field(proto.INT64, number=2,)
+        value = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        count = proto.Field(
+            proto.INT64,
+            number=2,
+        )
 
     top_category_stats = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=SingleCategoryStats,
+        proto.MESSAGE,
+        number=1,
+        message=SingleCategoryStats,
     )
 
 
@@ -271,7 +348,10 @@ class CorrelationStats(proto.Message):
             measure.
     """
 
-    cramers_v = proto.Field(proto.DOUBLE, number=1,)
+    cramers_v = proto.Field(
+        proto.DOUBLE,
+        number=1,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

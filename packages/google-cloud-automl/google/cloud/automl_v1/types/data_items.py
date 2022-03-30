@@ -50,8 +50,15 @@ class Image(proto.Message):
             Output only. HTTP URI to the thumbnail image.
     """
 
-    image_bytes = proto.Field(proto.BYTES, number=1, oneof="data",)
-    thumbnail_uri = proto.Field(proto.STRING, number=4,)
+    image_bytes = proto.Field(
+        proto.BYTES,
+        number=1,
+        oneof="data",
+    )
+    thumbnail_uri = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class TextSnippet(proto.Message):
@@ -73,9 +80,18 @@ class TextSnippet(proto.Message):
             the content.
     """
 
-    content = proto.Field(proto.STRING, number=1,)
-    mime_type = proto.Field(proto.STRING, number=2,)
-    content_uri = proto.Field(proto.STRING, number=4,)
+    content = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    mime_type = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    content_uri = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class DocumentDimensions(proto.Message):
@@ -99,9 +115,19 @@ class DocumentDimensions(proto.Message):
         CENTIMETER = 2
         POINT = 3
 
-    unit = proto.Field(proto.ENUM, number=1, enum=DocumentDimensionUnit,)
-    width = proto.Field(proto.FLOAT, number=2,)
-    height = proto.Field(proto.FLOAT, number=3,)
+    unit = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=DocumentDimensionUnit,
+    )
+    width = proto.Field(
+        proto.FLOAT,
+        number=2,
+    )
+    height = proto.Field(
+        proto.FLOAT,
+        number=3,
+    )
 
 
 class Document(proto.Message):
@@ -167,23 +193,49 @@ class Document(proto.Message):
             TABLE_CELL = 9
 
         text_segment = proto.Field(
-            proto.MESSAGE, number=1, message=gca_text_segment.TextSegment,
+            proto.MESSAGE,
+            number=1,
+            message=gca_text_segment.TextSegment,
         )
-        page_number = proto.Field(proto.INT32, number=2,)
+        page_number = proto.Field(
+            proto.INT32,
+            number=2,
+        )
         bounding_poly = proto.Field(
-            proto.MESSAGE, number=3, message=geometry.BoundingPoly,
+            proto.MESSAGE,
+            number=3,
+            message=geometry.BoundingPoly,
         )
         text_segment_type = proto.Field(
-            proto.ENUM, number=4, enum="Document.Layout.TextSegmentType",
+            proto.ENUM,
+            number=4,
+            enum="Document.Layout.TextSegmentType",
         )
 
-    input_config = proto.Field(proto.MESSAGE, number=1, message=io.DocumentInputConfig,)
-    document_text = proto.Field(proto.MESSAGE, number=2, message="TextSnippet",)
-    layout = proto.RepeatedField(proto.MESSAGE, number=3, message=Layout,)
-    document_dimensions = proto.Field(
-        proto.MESSAGE, number=4, message="DocumentDimensions",
+    input_config = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=io.DocumentInputConfig,
     )
-    page_count = proto.Field(proto.INT32, number=5,)
+    document_text = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="TextSnippet",
+    )
+    layout = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=Layout,
+    )
+    document_dimensions = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message="DocumentDimensions",
+    )
+    page_count = proto.Field(
+        proto.INT32,
+        number=5,
+    )
 
 
 class ExamplePayload(proto.Message):
@@ -211,12 +263,23 @@ class ExamplePayload(proto.Message):
             This field is a member of `oneof`_ ``payload``.
     """
 
-    image = proto.Field(proto.MESSAGE, number=1, oneof="payload", message="Image",)
+    image = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="payload",
+        message="Image",
+    )
     text_snippet = proto.Field(
-        proto.MESSAGE, number=2, oneof="payload", message="TextSnippet",
+        proto.MESSAGE,
+        number=2,
+        oneof="payload",
+        message="TextSnippet",
     )
     document = proto.Field(
-        proto.MESSAGE, number=4, oneof="payload", message="Document",
+        proto.MESSAGE,
+        number=4,
+        oneof="payload",
+        message="Document",
     )
 
 

@@ -17,7 +17,11 @@ import proto  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.automl.v1", manifest={"NormalizedVertex", "BoundingPoly",},
+    package="google.cloud.automl.v1",
+    manifest={
+        "NormalizedVertex",
+        "BoundingPoly",
+    },
 )
 
 
@@ -36,8 +40,14 @@ class NormalizedVertex(proto.Message):
             Required. Vertical coordinate.
     """
 
-    x = proto.Field(proto.FLOAT, number=1,)
-    y = proto.Field(proto.FLOAT, number=2,)
+    x = proto.Field(
+        proto.FLOAT,
+        number=1,
+    )
+    y = proto.Field(
+        proto.FLOAT,
+        number=2,
+    )
 
 
 class BoundingPoly(proto.Message):
@@ -52,7 +62,9 @@ class BoundingPoly(proto.Message):
     """
 
     normalized_vertices = proto.RepeatedField(
-        proto.MESSAGE, number=2, message="NormalizedVertex",
+        proto.MESSAGE,
+        number=2,
+        message="NormalizedVertex",
     )
 
 

@@ -17,7 +17,10 @@ import proto  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.automl.v1beta1", manifest={"RegressionEvaluationMetrics",},
+    package="google.cloud.automl.v1beta1",
+    manifest={
+        "RegressionEvaluationMetrics",
+    },
 )
 
 
@@ -39,11 +42,26 @@ class RegressionEvaluationMetrics(proto.Message):
             Output only. Root mean squared log error.
     """
 
-    root_mean_squared_error = proto.Field(proto.FLOAT, number=1,)
-    mean_absolute_error = proto.Field(proto.FLOAT, number=2,)
-    mean_absolute_percentage_error = proto.Field(proto.FLOAT, number=3,)
-    r_squared = proto.Field(proto.FLOAT, number=4,)
-    root_mean_squared_log_error = proto.Field(proto.FLOAT, number=5,)
+    root_mean_squared_error = proto.Field(
+        proto.FLOAT,
+        number=1,
+    )
+    mean_absolute_error = proto.Field(
+        proto.FLOAT,
+        number=2,
+    )
+    mean_absolute_percentage_error = proto.Field(
+        proto.FLOAT,
+        number=3,
+    )
+    r_squared = proto.Field(
+        proto.FLOAT,
+        number=4,
+    )
+    root_mean_squared_log_error = proto.Field(
+        proto.FLOAT,
+        number=5,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

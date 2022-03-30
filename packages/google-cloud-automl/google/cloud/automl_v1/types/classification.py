@@ -47,7 +47,10 @@ class ClassificationAnnotation(proto.Message):
             negative or 1 for positive.
     """
 
-    score = proto.Field(proto.FLOAT, number=1,)
+    score = proto.Field(
+        proto.FLOAT,
+        number=1,
+    )
 
 
 class ClassificationEvaluationMetrics(proto.Message):
@@ -147,20 +150,62 @@ class ClassificationEvaluationMetrics(proto.Message):
                 they would not match a ground truth label.
         """
 
-        confidence_threshold = proto.Field(proto.FLOAT, number=1,)
-        position_threshold = proto.Field(proto.INT32, number=14,)
-        recall = proto.Field(proto.FLOAT, number=2,)
-        precision = proto.Field(proto.FLOAT, number=3,)
-        false_positive_rate = proto.Field(proto.FLOAT, number=8,)
-        f1_score = proto.Field(proto.FLOAT, number=4,)
-        recall_at1 = proto.Field(proto.FLOAT, number=5,)
-        precision_at1 = proto.Field(proto.FLOAT, number=6,)
-        false_positive_rate_at1 = proto.Field(proto.FLOAT, number=9,)
-        f1_score_at1 = proto.Field(proto.FLOAT, number=7,)
-        true_positive_count = proto.Field(proto.INT64, number=10,)
-        false_positive_count = proto.Field(proto.INT64, number=11,)
-        false_negative_count = proto.Field(proto.INT64, number=12,)
-        true_negative_count = proto.Field(proto.INT64, number=13,)
+        confidence_threshold = proto.Field(
+            proto.FLOAT,
+            number=1,
+        )
+        position_threshold = proto.Field(
+            proto.INT32,
+            number=14,
+        )
+        recall = proto.Field(
+            proto.FLOAT,
+            number=2,
+        )
+        precision = proto.Field(
+            proto.FLOAT,
+            number=3,
+        )
+        false_positive_rate = proto.Field(
+            proto.FLOAT,
+            number=8,
+        )
+        f1_score = proto.Field(
+            proto.FLOAT,
+            number=4,
+        )
+        recall_at1 = proto.Field(
+            proto.FLOAT,
+            number=5,
+        )
+        precision_at1 = proto.Field(
+            proto.FLOAT,
+            number=6,
+        )
+        false_positive_rate_at1 = proto.Field(
+            proto.FLOAT,
+            number=9,
+        )
+        f1_score_at1 = proto.Field(
+            proto.FLOAT,
+            number=7,
+        )
+        true_positive_count = proto.Field(
+            proto.INT64,
+            number=10,
+        )
+        false_positive_count = proto.Field(
+            proto.INT64,
+            number=11,
+        )
+        false_negative_count = proto.Field(
+            proto.INT64,
+            number=12,
+        )
+        true_negative_count = proto.Field(
+            proto.INT64,
+            number=13,
+        )
 
     class ConfusionMatrix(proto.Message):
         r"""Confusion matrix of the model running the classification.
@@ -202,24 +247,51 @@ class ClassificationEvaluationMetrics(proto.Message):
                     field.
             """
 
-            example_count = proto.RepeatedField(proto.INT32, number=1,)
+            example_count = proto.RepeatedField(
+                proto.INT32,
+                number=1,
+            )
 
-        annotation_spec_id = proto.RepeatedField(proto.STRING, number=1,)
-        display_name = proto.RepeatedField(proto.STRING, number=3,)
+        annotation_spec_id = proto.RepeatedField(
+            proto.STRING,
+            number=1,
+        )
+        display_name = proto.RepeatedField(
+            proto.STRING,
+            number=3,
+        )
         row = proto.RepeatedField(
             proto.MESSAGE,
             number=2,
             message="ClassificationEvaluationMetrics.ConfusionMatrix.Row",
         )
 
-    au_prc = proto.Field(proto.FLOAT, number=1,)
-    au_roc = proto.Field(proto.FLOAT, number=6,)
-    log_loss = proto.Field(proto.FLOAT, number=7,)
-    confidence_metrics_entry = proto.RepeatedField(
-        proto.MESSAGE, number=3, message=ConfidenceMetricsEntry,
+    au_prc = proto.Field(
+        proto.FLOAT,
+        number=1,
     )
-    confusion_matrix = proto.Field(proto.MESSAGE, number=4, message=ConfusionMatrix,)
-    annotation_spec_id = proto.RepeatedField(proto.STRING, number=5,)
+    au_roc = proto.Field(
+        proto.FLOAT,
+        number=6,
+    )
+    log_loss = proto.Field(
+        proto.FLOAT,
+        number=7,
+    )
+    confidence_metrics_entry = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=ConfidenceMetricsEntry,
+    )
+    confusion_matrix = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=ConfusionMatrix,
+    )
+    annotation_spec_id = proto.RepeatedField(
+        proto.STRING,
+        number=5,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

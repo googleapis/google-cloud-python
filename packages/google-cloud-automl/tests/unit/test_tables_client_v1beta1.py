@@ -1721,7 +1721,8 @@ class TestTablesClient(object):
         )
         with patch_prediction_client as MockPredictionClient:
             automl_v1beta1.TablesClient(
-                credentials=credentials_mock, client_info=client_info_mock,
+                credentials=credentials_mock,
+                client_info=client_info_mock,
             )
         _, prediction_client_kwargs = MockPredictionClient.call_args
         assert "client_info" in prediction_client_kwargs

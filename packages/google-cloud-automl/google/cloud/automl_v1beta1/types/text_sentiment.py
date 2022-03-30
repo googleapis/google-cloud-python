@@ -20,7 +20,10 @@ from google.cloud.automl_v1beta1.types import classification
 
 __protobuf__ = proto.module(
     package="google.cloud.automl.v1beta1",
-    manifest={"TextSentimentAnnotation", "TextSentimentEvaluationMetrics",},
+    manifest={
+        "TextSentimentAnnotation",
+        "TextSentimentEvaluationMetrics",
+    },
 )
 
 
@@ -47,7 +50,10 @@ class TextSentimentAnnotation(proto.Message):
             Analysis API.
     """
 
-    sentiment = proto.Field(proto.INT32, number=1,)
+    sentiment = proto.Field(
+        proto.INT32,
+        number=1,
+    )
 
 
 class TextSentimentEvaluationMetrics(proto.Message):
@@ -87,19 +93,43 @@ class TextSentimentEvaluationMetrics(proto.Message):
             this evaluation. Deprecated .
     """
 
-    precision = proto.Field(proto.FLOAT, number=1,)
-    recall = proto.Field(proto.FLOAT, number=2,)
-    f1_score = proto.Field(proto.FLOAT, number=3,)
-    mean_absolute_error = proto.Field(proto.FLOAT, number=4,)
-    mean_squared_error = proto.Field(proto.FLOAT, number=5,)
-    linear_kappa = proto.Field(proto.FLOAT, number=6,)
-    quadratic_kappa = proto.Field(proto.FLOAT, number=7,)
+    precision = proto.Field(
+        proto.FLOAT,
+        number=1,
+    )
+    recall = proto.Field(
+        proto.FLOAT,
+        number=2,
+    )
+    f1_score = proto.Field(
+        proto.FLOAT,
+        number=3,
+    )
+    mean_absolute_error = proto.Field(
+        proto.FLOAT,
+        number=4,
+    )
+    mean_squared_error = proto.Field(
+        proto.FLOAT,
+        number=5,
+    )
+    linear_kappa = proto.Field(
+        proto.FLOAT,
+        number=6,
+    )
+    quadratic_kappa = proto.Field(
+        proto.FLOAT,
+        number=7,
+    )
     confusion_matrix = proto.Field(
         proto.MESSAGE,
         number=8,
         message=classification.ClassificationEvaluationMetrics.ConfusionMatrix,
     )
-    annotation_spec_id = proto.RepeatedField(proto.STRING, number=9,)
+    annotation_spec_id = proto.RepeatedField(
+        proto.STRING,
+        number=9,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

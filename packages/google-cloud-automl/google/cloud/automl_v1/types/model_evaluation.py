@@ -24,7 +24,10 @@ from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.automl.v1", manifest={"ModelEvaluation",},
+    package="google.cloud.automl.v1",
+    manifest={
+        "ModelEvaluation",
+    },
 )
 
 
@@ -134,11 +137,27 @@ class ModelEvaluation(proto.Message):
         oneof="metrics",
         message=text_extraction.TextExtractionEvaluationMetrics,
     )
-    name = proto.Field(proto.STRING, number=1,)
-    annotation_spec_id = proto.Field(proto.STRING, number=2,)
-    display_name = proto.Field(proto.STRING, number=15,)
-    create_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
-    evaluated_example_count = proto.Field(proto.INT32, number=6,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    annotation_spec_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=15,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+    evaluated_example_count = proto.Field(
+        proto.INT32,
+        number=6,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

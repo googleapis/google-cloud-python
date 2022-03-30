@@ -103,7 +103,10 @@ class OperationMetadata(proto.Message):
     """
 
     delete_details = proto.Field(
-        proto.MESSAGE, number=8, oneof="details", message="DeleteOperationMetadata",
+        proto.MESSAGE,
+        number=8,
+        oneof="details",
+        message="DeleteOperationMetadata",
     )
     deploy_model_details = proto.Field(
         proto.MESSAGE,
@@ -153,42 +156,49 @@ class OperationMetadata(proto.Message):
         oneof="details",
         message="ExportModelOperationMetadata",
     )
-    progress_percent = proto.Field(proto.INT32, number=13,)
-    partial_failures = proto.RepeatedField(
-        proto.MESSAGE, number=2, message=status_pb2.Status,
+    progress_percent = proto.Field(
+        proto.INT32,
+        number=13,
     )
-    create_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
+    partial_failures = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=status_pb2.Status,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 class DeleteOperationMetadata(proto.Message):
-    r"""Details of operations that perform deletes of any entities.
-    """
+    r"""Details of operations that perform deletes of any entities."""
 
 
 class DeployModelOperationMetadata(proto.Message):
-    r"""Details of DeployModel operation.
-    """
+    r"""Details of DeployModel operation."""
 
 
 class UndeployModelOperationMetadata(proto.Message):
-    r"""Details of UndeployModel operation.
-    """
+    r"""Details of UndeployModel operation."""
 
 
 class CreateDatasetOperationMetadata(proto.Message):
-    r"""Details of CreateDataset operation.
-    """
+    r"""Details of CreateDataset operation."""
 
 
 class CreateModelOperationMetadata(proto.Message):
-    r"""Details of CreateModel operation.
-    """
+    r"""Details of CreateModel operation."""
 
 
 class ImportDataOperationMetadata(proto.Message):
-    r"""Details of ImportData operation.
-    """
+    r"""Details of ImportData operation."""
 
 
 class ExportDataOperationMetadata(proto.Message):
@@ -217,10 +227,16 @@ class ExportDataOperationMetadata(proto.Message):
         """
 
         gcs_output_directory = proto.Field(
-            proto.STRING, number=1, oneof="output_location",
+            proto.STRING,
+            number=1,
+            oneof="output_location",
         )
 
-    output_info = proto.Field(proto.MESSAGE, number=1, message=ExportDataOutputInfo,)
+    output_info = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=ExportDataOutputInfo,
+    )
 
 
 class BatchPredictOperationMetadata(proto.Message):
@@ -252,13 +268,21 @@ class BatchPredictOperationMetadata(proto.Message):
         """
 
         gcs_output_directory = proto.Field(
-            proto.STRING, number=1, oneof="output_location",
+            proto.STRING,
+            number=1,
+            oneof="output_location",
         )
 
     input_config = proto.Field(
-        proto.MESSAGE, number=1, message=io.BatchPredictInputConfig,
+        proto.MESSAGE,
+        number=1,
+        message=io.BatchPredictInputConfig,
     )
-    output_info = proto.Field(proto.MESSAGE, number=2, message=BatchPredictOutputInfo,)
+    output_info = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=BatchPredictOutputInfo,
+    )
 
 
 class ExportModelOperationMetadata(proto.Message):
@@ -281,9 +305,16 @@ class ExportModelOperationMetadata(proto.Message):
                 exported.
         """
 
-        gcs_output_directory = proto.Field(proto.STRING, number=1,)
+        gcs_output_directory = proto.Field(
+            proto.STRING,
+            number=1,
+        )
 
-    output_info = proto.Field(proto.MESSAGE, number=2, message=ExportModelOutputInfo,)
+    output_info = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=ExportModelOutputInfo,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

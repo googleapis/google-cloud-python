@@ -366,12 +366,22 @@ class InputConfig(proto.Message):
     """
 
     gcs_source = proto.Field(
-        proto.MESSAGE, number=1, oneof="source", message="GcsSource",
+        proto.MESSAGE,
+        number=1,
+        oneof="source",
+        message="GcsSource",
     )
     bigquery_source = proto.Field(
-        proto.MESSAGE, number=3, oneof="source", message="BigQuerySource",
+        proto.MESSAGE,
+        number=3,
+        oneof="source",
+        message="BigQuerySource",
     )
-    params = proto.MapField(proto.STRING, proto.STRING, number=2,)
+    params = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=2,
+    )
 
 
 class BatchPredictInputConfig(proto.Message):
@@ -547,10 +557,16 @@ class BatchPredictInputConfig(proto.Message):
     """
 
     gcs_source = proto.Field(
-        proto.MESSAGE, number=1, oneof="source", message="GcsSource",
+        proto.MESSAGE,
+        number=1,
+        oneof="source",
+        message="GcsSource",
     )
     bigquery_source = proto.Field(
-        proto.MESSAGE, number=2, oneof="source", message="BigQuerySource",
+        proto.MESSAGE,
+        number=2,
+        oneof="source",
+        message="BigQuerySource",
     )
 
 
@@ -566,7 +582,11 @@ class DocumentInputConfig(proto.Message):
             Supported extensions: .PDF.
     """
 
-    gcs_source = proto.Field(proto.MESSAGE, number=1, message="GcsSource",)
+    gcs_source = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="GcsSource",
+    )
 
 
 class OutputConfig(proto.Message):
@@ -621,10 +641,16 @@ class OutputConfig(proto.Message):
     """
 
     gcs_destination = proto.Field(
-        proto.MESSAGE, number=1, oneof="destination", message="GcsDestination",
+        proto.MESSAGE,
+        number=1,
+        oneof="destination",
+        message="GcsDestination",
     )
     bigquery_destination = proto.Field(
-        proto.MESSAGE, number=2, oneof="destination", message="BigQueryDestination",
+        proto.MESSAGE,
+        number=2,
+        oneof="destination",
+        message="BigQueryDestination",
     )
 
 
@@ -937,10 +963,16 @@ class BatchPredictOutputConfig(proto.Message):
     """
 
     gcs_destination = proto.Field(
-        proto.MESSAGE, number=1, oneof="destination", message="GcsDestination",
+        proto.MESSAGE,
+        number=1,
+        oneof="destination",
+        message="GcsDestination",
     )
     bigquery_destination = proto.Field(
-        proto.MESSAGE, number=2, oneof="destination", message="BigQueryDestination",
+        proto.MESSAGE,
+        number=2,
+        oneof="destination",
+        message="BigQueryDestination",
     )
 
 
@@ -1045,13 +1077,26 @@ class ModelExportOutputConfig(proto.Message):
     """
 
     gcs_destination = proto.Field(
-        proto.MESSAGE, number=1, oneof="destination", message="GcsDestination",
+        proto.MESSAGE,
+        number=1,
+        oneof="destination",
+        message="GcsDestination",
     )
     gcr_destination = proto.Field(
-        proto.MESSAGE, number=3, oneof="destination", message="GcrDestination",
+        proto.MESSAGE,
+        number=3,
+        oneof="destination",
+        message="GcrDestination",
     )
-    model_format = proto.Field(proto.STRING, number=4,)
-    params = proto.MapField(proto.STRING, proto.STRING, number=2,)
+    model_format = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    params = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=2,
+    )
 
 
 class ExportEvaluatedExamplesOutputConfig(proto.Message):
@@ -1096,7 +1141,10 @@ class ExportEvaluatedExamplesOutputConfig(proto.Message):
     """
 
     bigquery_destination = proto.Field(
-        proto.MESSAGE, number=2, oneof="destination", message="BigQueryDestination",
+        proto.MESSAGE,
+        number=2,
+        oneof="destination",
+        message="BigQueryDestination",
     )
 
 
@@ -1111,7 +1159,10 @@ class GcsSource(proto.Message):
             -  Full object path, e.g. gs://bucket/directory/object.csv
     """
 
-    input_uris = proto.RepeatedField(proto.STRING, number=1,)
+    input_uris = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
 
 
 class BigQuerySource(proto.Message):
@@ -1125,7 +1176,10 @@ class BigQuerySource(proto.Message):
             -  BigQuery path e.g. bq://projectId.bqDatasetId.bqTableId
     """
 
-    input_uri = proto.Field(proto.STRING, number=1,)
+    input_uri = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class GcsDestination(proto.Message):
@@ -1142,7 +1196,10 @@ class GcsDestination(proto.Message):
                is created if it doesn't exist.
     """
 
-    output_uri_prefix = proto.Field(proto.STRING, number=1,)
+    output_uri_prefix = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class BigQueryDestination(proto.Message):
@@ -1156,7 +1213,10 @@ class BigQueryDestination(proto.Message):
             -  BigQuery path e.g. bq://projectId
     """
 
-    output_uri = proto.Field(proto.STRING, number=1,)
+    output_uri = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class GcrDestination(proto.Message):
@@ -1178,7 +1238,10 @@ class GcrDestination(proto.Message):
             project.
     """
 
-    output_uri = proto.Field(proto.STRING, number=1,)
+    output_uri = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
