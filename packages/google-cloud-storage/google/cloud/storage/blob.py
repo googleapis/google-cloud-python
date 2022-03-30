@@ -87,11 +87,11 @@ from google.cloud.storage.fileio import BlobWriter
 
 
 _API_ACCESS_ENDPOINT = "https://storage.googleapis.com"
-_DEFAULT_CONTENT_TYPE = u"application/octet-stream"
-_DOWNLOAD_URL_TEMPLATE = u"{hostname}/download/storage/v1{path}?alt=media"
-_BASE_UPLOAD_TEMPLATE = u"{hostname}/upload/storage/v1{bucket_path}/o?uploadType="
-_MULTIPART_URL_TEMPLATE = _BASE_UPLOAD_TEMPLATE + u"multipart"
-_RESUMABLE_URL_TEMPLATE = _BASE_UPLOAD_TEMPLATE + u"resumable"
+_DEFAULT_CONTENT_TYPE = "application/octet-stream"
+_DOWNLOAD_URL_TEMPLATE = "{hostname}/download/storage/v1{path}?alt=media"
+_BASE_UPLOAD_TEMPLATE = "{hostname}/upload/storage/v1{bucket_path}/o?uploadType="
+_MULTIPART_URL_TEMPLATE = _BASE_UPLOAD_TEMPLATE + "multipart"
+_RESUMABLE_URL_TEMPLATE = _BASE_UPLOAD_TEMPLATE + "resumable"
 # NOTE: "acl" is also writeable but we defer ACL management to
 #       the classes in the google.cloud.storage.acl module.
 _CONTENT_TYPE_FIELD = "contentType"
@@ -4459,7 +4459,7 @@ def _raise_from_invalid_response(error):
     else:
         error_message = str(error)
 
-    message = u"{method} {url}: {error}".format(
+    message = "{method} {url}: {error}".format(
         method=response.request.method, url=response.request.url, error=error_message
     )
 

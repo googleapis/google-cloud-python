@@ -392,7 +392,8 @@ class Test_IAMConfiguration(unittest.TestCase):
         bucket = self._make_bucket()
 
         config = self._make_one(
-            bucket, public_access_prevention=PUBLIC_ACCESS_PREVENTION_ENFORCED,
+            bucket,
+            public_access_prevention=PUBLIC_ACCESS_PREVENTION_ENFORCED,
         )
 
         self.assertIs(config.bucket, bucket)
@@ -1200,7 +1201,9 @@ class Test_Bucket(unittest.TestCase):
         retry = mock.Mock(spec=[])
 
         iterator = bucket.list_notifications(
-            client=other_client, timeout=timeout, retry=retry,
+            client=other_client,
+            timeout=timeout,
+            retry=retry,
         )
 
         self.assertIs(iterator, other_client._list_resource.return_value)
@@ -1209,7 +1212,10 @@ class Test_Bucket(unittest.TestCase):
         expected_path = "/b/{}/notificationConfigs".format(bucket_name)
         expected_item_to_value = _item_to_notification
         other_client._list_resource.assert_called_once_with(
-            expected_path, expected_item_to_value, timeout=timeout, retry=retry,
+            expected_path,
+            expected_item_to_value,
+            timeout=timeout,
+            retry=retry,
         )
 
     def test_get_notification_miss_w_defaults(self):
@@ -1262,7 +1268,9 @@ class Test_Bucket(unittest.TestCase):
         bucket = self._make_one(client=client, name=name, user_project=user_project)
 
         notification = bucket.get_notification(
-            notification_id=notification_id, timeout=timeout, retry=retry,
+            notification_id=notification_id,
+            timeout=timeout,
+            retry=retry,
         )
 
         self.assertIsInstance(notification, BucketNotification)
@@ -1311,7 +1319,8 @@ class Test_Bucket(unittest.TestCase):
         bucket = self._make_one(client=None, name=name)
 
         result = bucket.delete(
-            client=client, if_metageneration_match=metageneration_number,
+            client=client,
+            if_metageneration_match=metageneration_number,
         )
 
         self.assertIsNone(result)
@@ -1348,7 +1357,11 @@ class Test_Bucket(unittest.TestCase):
         )
 
         bucket.delete_blobs.assert_called_once_with(
-            [], on_error=mock.ANY, client=client, timeout=timeout, retry=retry,
+            [],
+            on_error=mock.ANY,
+            client=client,
+            timeout=timeout,
+            retry=retry,
         )
 
         expected_query_params = {"userProject": user_project}
@@ -1595,7 +1608,8 @@ class Test_Bucket(unittest.TestCase):
 
         with self.assertRaises(ValueError):
             bucket.delete_blobs(
-                [blob_name, blob_name2], if_generation_not_match=[generation_number],
+                [blob_name, blob_name2],
+                if_generation_not_match=[generation_number],
             )
 
         bucket.delete_blob.assert_not_called()
@@ -1895,7 +1909,10 @@ class Test_Bucket(unittest.TestCase):
         timeout = 42
 
         new_blob = source.copy_blob(
-            blob, dest, source_generation=generation, timeout=timeout,
+            blob,
+            dest,
+            source_generation=generation,
+            timeout=timeout,
         )
 
         self.assertIs(new_blob.bucket, dest)

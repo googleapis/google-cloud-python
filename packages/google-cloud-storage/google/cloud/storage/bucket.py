@@ -1383,7 +1383,10 @@ class Bucket(_PropertyMixin):
         client = self._require_client(client)
         path = self.path + "/notificationConfigs"
         iterator = client._list_resource(
-            path, _item_to_notification, timeout=timeout, retry=retry,
+            path,
+            _item_to_notification,
+            timeout=timeout,
+            retry=retry,
         )
         iterator.bucket = self
         return iterator
@@ -2952,7 +2955,8 @@ class Bucket(_PropertyMixin):
             for blob in blobs:
                 blob.acl.all().grant_read()
                 blob.acl.save(
-                    client=client, timeout=timeout,
+                    client=client,
+                    timeout=timeout,
                 )
 
     def make_private(

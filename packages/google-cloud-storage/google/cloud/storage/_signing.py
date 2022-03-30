@@ -109,7 +109,7 @@ def get_expiration_seconds_v2(expiration):
     # If it's a datetime, convert to a timestamp.
     if isinstance(expiration, datetime.datetime):
         micros = _helpers._microseconds_from_datetime(expiration)
-        expiration = micros // 10 ** 6
+        expiration = micros // 10**6
 
     if not isinstance(expiration, int):
         raise TypeError(

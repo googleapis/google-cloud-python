@@ -108,7 +108,9 @@ def listable_bucket(storage_client, listable_bucket_name, file_data):
 
     for filename in _listable_filenames[1:]:
         _helpers.retry_bad_copy(bucket.copy_blob)(
-            source_blob, bucket, filename,
+            source_blob,
+            bucket,
+            filename,
         )
 
     yield bucket

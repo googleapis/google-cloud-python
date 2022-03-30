@@ -18,7 +18,10 @@ from .test_blob import _check_blob_hash
 
 
 def test_blobwriter_and_blobreader(
-    shared_bucket, blobs_to_delete, file_data, service_account,
+    shared_bucket,
+    blobs_to_delete,
+    file_data,
+    service_account,
 ):
     blob = shared_bucket.blob("LargeFile")
 
@@ -49,12 +52,14 @@ def test_blobwriter_and_blobreader(
 
 
 def test_blobwriter_and_blobreader_text_mode(
-    shared_bucket, blobs_to_delete, service_account,
+    shared_bucket,
+    blobs_to_delete,
+    service_account,
 ):
     blob = shared_bucket.blob("MultibyteTextFile")
 
     # Construct a multibyte text_data sample file.
-    base_multibyte_text_string = u"abcde あいうえお line: "
+    base_multibyte_text_string = "abcde あいうえお line: "
     text_data = "\n".join([base_multibyte_text_string + str(x) for x in range(100)])
 
     # Test text BlobWriter works.

@@ -176,7 +176,9 @@ class Test_PropertyMixin(unittest.TestCase):
         derived._changes = object()
         derived.client = client
 
-        derived.reload(if_etag_match=etag,)
+        derived.reload(
+            if_etag_match=etag,
+        )
 
         self.assertEqual(derived._properties, response)
         self.assertEqual(derived._changes, set())
@@ -453,7 +455,8 @@ class Test_PropertyMixin(unittest.TestCase):
         timeout = 42
 
         derived.update(
-            if_metageneration_not_match=generation_number, timeout=timeout,
+            if_metageneration_not_match=generation_number,
+            timeout=timeout,
         )
 
         self.assertEqual(derived._properties, {"foo": "Foo"})

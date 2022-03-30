@@ -28,7 +28,10 @@ _key_name_format = "projects/{}/locations/{}/keyRings/{}/cryptoKeys/{}"
 
 def _kms_key_name(client, bucket, key_name):
     return _key_name_format.format(
-        client.project, bucket.location.lower(), keyring_name, key_name,
+        client.project,
+        bucket.location.lower(),
+        keyring_name,
+        key_name,
     )
 
 
@@ -127,7 +130,11 @@ def test_blob_w_explicit_kms_key_name(
 
 @_helpers.retry_failures
 def test_bucket_w_default_kms_key_name(
-    kms_bucket, blobs_to_delete, kms_key_name, alt_kms_key_name, file_data,
+    kms_bucket,
+    blobs_to_delete,
+    kms_key_name,
+    alt_kms_key_name,
+    file_data,
 ):
     blob_name = "default-kms-key-name"
     override_blob_name = "override-default-kms-key-name"
@@ -183,7 +190,10 @@ def test_bucket_w_default_kms_key_name(
 
 
 def test_blob_rewrite_rotate_csek_to_cmek(
-    kms_bucket, blobs_to_delete, kms_key_name, file_data,
+    kms_bucket,
+    blobs_to_delete,
+    kms_key_name,
+    file_data,
 ):
     blob_name = "rotating-keys"
     source_key = os.urandom(32)
@@ -216,7 +226,10 @@ def test_blob_rewrite_rotate_csek_to_cmek(
 
 
 def test_blob_upload_w_bucket_cmek_enabled(
-    kms_bucket, blobs_to_delete, kms_key_name, file_data,
+    kms_bucket,
+    blobs_to_delete,
+    kms_key_name,
+    file_data,
 ):
     blob_name = "test-blob"
     payload = b"DEADBEEF"

@@ -678,7 +678,9 @@ class Test_generate_signed_url_v4(unittest.TestCase):
         credentials = _make_credentials(signer_email=signer_email)
         credentials.sign_bytes.return_value = b"DEADBEEF"
         self._call_fut(
-            credentials, resource=resource, expiration=datetime.timedelta(days=5),
+            credentials,
+            resource=resource,
+            expiration=datetime.timedelta(days=5),
         )
 
     def test_with_service_account_email_and_signer_email(self):
@@ -873,8 +875,10 @@ def test_conformance_blob(test_data):
 
         # For the VIRTUAL_HOSTED_STYLE
         else:
-            _API_ACCESS_ENDPOINT = "{scheme}://{bucket_name}.storage.googleapis.com".format(
-                scheme=test_data["scheme"], bucket_name=test_data["bucket"]
+            _API_ACCESS_ENDPOINT = (
+                "{scheme}://{bucket_name}.storage.googleapis.com".format(
+                    scheme=test_data["scheme"], bucket_name=test_data["bucket"]
+                )
             )
         resource = "/{}".format(test_data["object"])
         _run_conformance_test(resource, test_data, _API_ACCESS_ENDPOINT)

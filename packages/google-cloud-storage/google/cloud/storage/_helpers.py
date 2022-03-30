@@ -69,7 +69,8 @@ def _get_storage_host():
 
 def _get_environ_project():
     return os.getenv(
-        environment_vars.PROJECT, os.getenv(environment_vars.LEGACY_PROJECT),
+        environment_vars.PROJECT,
+        os.getenv(environment_vars.LEGACY_PROJECT),
     )
 
 

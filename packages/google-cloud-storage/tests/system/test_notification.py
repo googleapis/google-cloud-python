@@ -70,7 +70,10 @@ def notification_topic(storage_client, publisher_client, topic_path, no_mtls):
 
 
 def test_notification_create_minimal(
-    storage_client, buckets_to_delete, topic_name, notification_topic,
+    storage_client,
+    buckets_to_delete,
+    topic_name,
+    notification_topic,
 ):
     bucket_name = _helpers.unique_name("notification-minimal")
     bucket = _helpers.retry_429_503(storage_client.create_bucket)(bucket_name)
@@ -126,7 +129,11 @@ def test_notification_create_explicit(
 
 
 def test_notification_create_w_user_project(
-    storage_client, buckets_to_delete, topic_name, notification_topic, user_project,
+    storage_client,
+    buckets_to_delete,
+    topic_name,
+    notification_topic,
+    user_project,
 ):
     bucket_name = _helpers.unique_name("notification-w-up")
     bucket = _helpers.retry_429_503(storage_client.create_bucket)(bucket_name)

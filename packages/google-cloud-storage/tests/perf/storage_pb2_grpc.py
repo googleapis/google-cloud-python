@@ -11,9 +11,9 @@ class StorageBenchWrapperStub(object):
     def __init__(self, channel):
         """Constructor.
 
-    Args:
-      channel: A grpc.Channel.
-    """
+        Args:
+          channel: A grpc.Channel.
+        """
         self.Write = channel.unary_unary(
             "/storage_bench.StorageBenchWrapper/Write",
             request_serializer=storage__pb2.ObjectWrite.SerializeToString,
@@ -31,15 +31,13 @@ class StorageBenchWrapperServicer(object):
     pass
 
     def Write(self, request, context):
-        """Performs an upload from a specific object.
-    """
+        """Performs an upload from a specific object."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")
 
     def Read(self, request, context):
-        """Read a specific object.
-    """
+        """Read a specific object."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details("Method not implemented!")
         raise NotImplementedError("Method not implemented!")

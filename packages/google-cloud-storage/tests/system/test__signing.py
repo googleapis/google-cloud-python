@@ -50,7 +50,9 @@ def _create_signed_list_blobs_url_helper(
 
 def test_create_signed_list_blobs_url_v2(storage_client, signing_bucket, no_mtls):
     _create_signed_list_blobs_url_helper(
-        storage_client, signing_bucket, version="v2",
+        storage_client,
+        signing_bucket,
+        version="v2",
     )
 
 
@@ -61,13 +63,18 @@ def test_create_signed_list_blobs_url_v2_w_expiration(
     delta = datetime.timedelta(seconds=10)
 
     _create_signed_list_blobs_url_helper(
-        storage_client, signing_bucket, expiration=now + delta, version="v2",
+        storage_client,
+        signing_bucket,
+        expiration=now + delta,
+        version="v2",
     )
 
 
 def test_create_signed_list_blobs_url_v4(storage_client, signing_bucket, no_mtls):
     _create_signed_list_blobs_url_helper(
-        storage_client, signing_bucket, version="v4",
+        storage_client,
+        signing_bucket,
+        version="v4",
     )
 
 
@@ -77,7 +84,10 @@ def test_create_signed_list_blobs_url_v4_w_expiration(
     now = datetime.datetime.utcnow()
     delta = datetime.timedelta(seconds=10)
     _create_signed_list_blobs_url_helper(
-        storage_client, signing_bucket, expiration=now + delta, version="v4",
+        storage_client,
+        signing_bucket,
+        expiration=now + delta,
+        version="v4",
     )
 
 
@@ -135,7 +145,9 @@ def test_create_signed_read_url_v2(storage_client, signing_bucket, no_mtls):
 
 def test_create_signed_read_url_v4(storage_client, signing_bucket, no_mtls):
     _create_signed_read_url_helper(
-        storage_client, signing_bucket, version="v4",
+        storage_client,
+        signing_bucket,
+        version="v4",
     )
 
 
@@ -180,7 +192,7 @@ def test_create_signed_read_url_v2_w_non_ascii_name(
     _create_signed_read_url_helper(
         storage_client,
         signing_bucket,
-        blob_name=u"Caf\xe9.txt",
+        blob_name="Caf\xe9.txt",
         payload=b"Test signed URL for blob w/ non-ASCII name",
     )
 
@@ -191,7 +203,7 @@ def test_create_signed_read_url_v4_w_non_ascii_name(
     _create_signed_read_url_helper(
         storage_client,
         signing_bucket,
-        blob_name=u"Caf\xe9.txt",
+        blob_name="Caf\xe9.txt",
         payload=b"Test signed URL for blob w/ non-ASCII name",
         version="v4",
     )
@@ -276,7 +288,10 @@ def _create_signed_delete_url_helper(client, bucket, version="v2", expiration=No
     blob.upload_from_string(b"DELETE ME!")
 
     signed_delete_url = blob.generate_signed_url(
-        expiration=expiration, method="DELETE", client=client, version=version,
+        expiration=expiration,
+        method="DELETE",
+        client=client,
+        version=version,
     )
 
     response = requests.request("DELETE", signed_delete_url)
@@ -303,7 +318,10 @@ def _create_signed_resumable_upload_url_helper(
 
     # Initiate the upload using a signed URL.
     signed_resumable_upload_url = blob.generate_signed_url(
-        expiration=expiration, method="RESUMABLE", client=client, version=version,
+        expiration=expiration,
+        method="RESUMABLE",
+        client=client,
+        version=version,
     )
 
     post_headers = {"x-goog-resumable": "start"}
@@ -327,7 +345,10 @@ def _create_signed_resumable_upload_url_helper(
 
     # Finally, delete the blob using a signed URL.
     signed_delete_url = blob.generate_signed_url(
-        expiration=expiration, method="DELETE", client=client, version=version,
+        expiration=expiration,
+        method="DELETE",
+        client=client,
+        version=version,
     )
 
     delete_response = requests.delete(signed_delete_url)
@@ -336,13 +357,17 @@ def _create_signed_resumable_upload_url_helper(
 
 def test_create_signed_resumable_upload_url_v2(storage_client, signing_bucket, no_mtls):
     _create_signed_resumable_upload_url_helper(
-        storage_client, signing_bucket, version="v2",
+        storage_client,
+        signing_bucket,
+        version="v2",
     )
 
 
 def test_create_signed_resumable_upload_url_v4(storage_client, signing_bucket, no_mtls):
     _create_signed_resumable_upload_url_helper(
-        storage_client, signing_bucket, version="v4",
+        storage_client,
+        signing_bucket,
+        version="v4",
     )
 
 

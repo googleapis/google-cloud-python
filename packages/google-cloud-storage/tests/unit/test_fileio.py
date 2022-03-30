@@ -25,7 +25,7 @@ from google.cloud.storage.retry import DEFAULT_RETRY
 
 TEST_TEXT_DATA = string.ascii_lowercase + "\n" + string.ascii_uppercase + "\n"
 TEST_BINARY_DATA = TEST_TEXT_DATA.encode("utf-8")
-TEST_MULTIBYTE_TEXT_DATA = u"あいうえおかきくけこさしすせそたちつてと"
+TEST_MULTIBYTE_TEXT_DATA = "あいうえおかきくけこさしすせそたちつてと"
 PLAIN_CONTENT_TYPE = "text/plain"
 NUM_RETRIES = 2
 
@@ -397,7 +397,9 @@ class TestBlobWriterBinary(unittest.TestCase, _BlobWriterBase):
         self.assertEqual(upload.transmit_next_chunk.call_count, 5)
 
         mock_warn.assert_called_once_with(
-            _NUM_RETRIES_MESSAGE, DeprecationWarning, stacklevel=2,
+            _NUM_RETRIES_MESSAGE,
+            DeprecationWarning,
+            stacklevel=2,
         )
 
     def test_flush_fails(self):
@@ -428,7 +430,9 @@ class TestBlobWriterBinary(unittest.TestCase, _BlobWriterBase):
             # gives us more control over close() for test purposes.
             chunk_size = 8  # Note: Real upload requires a multiple of 256KiB.
             writer = self._make_blob_writer(
-                blob, chunk_size=chunk_size, content_type=PLAIN_CONTENT_TYPE,
+                blob,
+                chunk_size=chunk_size,
+                content_type=PLAIN_CONTENT_TYPE,
             )
 
         # The transmit_next_chunk method must actually consume bytes from the
@@ -609,7 +613,9 @@ class TestBlobWriterBinary(unittest.TestCase, _BlobWriterBase):
         )
 
         mock_warn.assert_called_once_with(
-            _NUM_RETRIES_MESSAGE, DeprecationWarning, stacklevel=2,
+            _NUM_RETRIES_MESSAGE,
+            DeprecationWarning,
+            stacklevel=2,
         )
 
     @mock.patch("warnings.warn")
@@ -926,8 +932,8 @@ class TestBlobWriterText(unittest.TestCase, _BlobWriterBase):
 
         # The transmit_next_chunk method must actually consume bytes from the
         # sliding buffer for the flush() feature to work properly.
-        upload.transmit_next_chunk.side_effect = lambda _: unwrapped_writer._buffer.read(
-            chunk_size
+        upload.transmit_next_chunk.side_effect = (
+            lambda _: unwrapped_writer._buffer.read(chunk_size)
         )
 
         # Write under chunk_size. This should be buffered and the upload not
@@ -951,5 +957,7 @@ class TestBlobWriterText(unittest.TestCase, _BlobWriterBase):
         upload.transmit_next_chunk.assert_called_with(transport)
 
         mock_warn.assert_called_once_with(
-            _NUM_RETRIES_MESSAGE, DeprecationWarning, stacklevel=2,
+            _NUM_RETRIES_MESSAGE,
+            DeprecationWarning,
+            stacklevel=2,
         )

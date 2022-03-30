@@ -577,9 +577,9 @@ class Test__unpack_batch_response(unittest.TestCase):
         self.assertEqual(len(result), 3)
 
         self.assertEqual(result[0].status_code, http.client.OK)
-        self.assertEqual(result[0].json(), {u"bar": 2, u"foo": 1})
+        self.assertEqual(result[0].json(), {"bar": 2, "foo": 1})
         self.assertEqual(result[1].status_code, http.client.OK)
-        self.assertEqual(result[1].json(), {u"foo": 1, u"bar": 3})
+        self.assertEqual(result[1].json(), {"foo": 1, "bar": 3})
         self.assertEqual(result[2].status_code, http.client.NO_CONTENT)
 
     def test_bytes_headers(self):
@@ -588,7 +588,7 @@ class Test__unpack_batch_response(unittest.TestCase):
         self._unpack_helper(RESPONSE, CONTENT)
 
     def test_unicode_headers(self):
-        RESPONSE = {"content-type": u'multipart/mixed; boundary="DEADBEEF="'}
+        RESPONSE = {"content-type": 'multipart/mixed; boundary="DEADBEEF="'}
         CONTENT = _THREE_PART_MIME_RESPONSE
         self._unpack_helper(RESPONSE, CONTENT)
 

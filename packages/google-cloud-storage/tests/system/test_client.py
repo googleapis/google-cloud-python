@@ -33,7 +33,8 @@ def test_anonymous_client_access_to_public_bucket():
     anonymous_client = Client.create_anonymous_client()
     bucket = anonymous_client.bucket(public_bucket)
     (blob,) = _helpers.retry_429_503(anonymous_client.list_blobs)(
-        bucket, max_results=1,
+        bucket,
+        max_results=1,
     )
     with tempfile.TemporaryFile() as stream:
         _helpers.retry_429_503(blob.download_to_file)(stream)
@@ -85,7 +86,10 @@ def test_list_buckets(storage_client, buckets_to_delete):
 
 
 def test_download_blob_to_file_w_uri(
-    storage_client, shared_bucket, blobs_to_delete, service_account,
+    storage_client,
+    shared_bucket,
+    blobs_to_delete,
+    service_account,
 ):
     blob = shared_bucket.blob("MyBuffer")
     payload = b"Hello World"
@@ -106,7 +110,10 @@ def test_download_blob_to_file_w_uri(
 
 
 def test_download_blob_to_file_w_etag(
-    storage_client, shared_bucket, blobs_to_delete, service_account,
+    storage_client,
+    shared_bucket,
+    blobs_to_delete,
+    service_account,
 ):
     filename = "kittens"
     blob = shared_bucket.blob(filename)
@@ -140,6 +147,8 @@ def test_download_blob_to_file_w_etag(
 
     buffer = io.BytesIO()
     storage_client.download_blob_to_file(
-        "gs://" + shared_bucket.name + "/" + filename, buffer, if_etag_match=blob.etag,
+        "gs://" + shared_bucket.name + "/" + filename,
+        buffer,
+        if_etag_match=blob.etag,
     )
     assert buffer.getvalue() == payload
