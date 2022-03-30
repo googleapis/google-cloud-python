@@ -53,12 +53,16 @@ class TestDecimal(TransactionTestCase):
         Tests model object creation with Author model.
         """
         author_kent = Author(
-            first_name="Arthur", last_name="Kent", rating=Decimal("4.1"),
+            first_name="Arthur",
+            last_name="Kent",
+            rating=Decimal("4.1"),
         )
         author_kent.save()
         qs1 = Author.objects.filter(rating__gte=3).values("rating")
         self.assertValuesEqual(
-            qs1, [Decimal("4.1")], self.rating_transform,
+            qs1,
+            [Decimal("4.1")],
+            self.rating_transform,
         )
         # Delete data from Author table.
         Author.objects.all().delete()
@@ -94,7 +98,9 @@ class TestDecimal(TransactionTestCase):
         Tests decimal object update.
         """
         author_kent = Author(
-            first_name="Arthur", last_name="Kent", rating=Decimal("4.1"),
+            first_name="Arthur",
+            last_name="Kent",
+            rating=Decimal("4.1"),
         )
         author_kent.save()
         author_kent.rating = Decimal("4.2")
@@ -103,7 +109,9 @@ class TestDecimal(TransactionTestCase):
             "rating"
         )
         self.assertValuesEqual(
-            qs1, [Decimal("4.2")], self.rating_transform,
+            qs1,
+            [Decimal("4.2")],
+            self.rating_transform,
         )
         # Delete data from Author table.
         Author.objects.all().delete()

@@ -157,7 +157,8 @@ class TestUtils(SpannerSimpleTestClass):
             cursor=cursor, table_name="Table_1"
         )
         self.assertEqual(
-            primary_key, "PK_column",
+            primary_key,
+            "PK_column",
         )
 
     def test_get_primary_key_column_returns_none(self):
@@ -174,7 +175,9 @@ class TestUtils(SpannerSimpleTestClass):
         primary_key = db_introspection.get_primary_key_column(
             cursor=cursor, table_name="Table_1"
         )
-        self.assertIsNone(primary_key,)
+        self.assertIsNone(
+            primary_key,
+        )
 
     def test_get_constraints(self):
         """

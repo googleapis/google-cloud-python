@@ -401,7 +401,9 @@ class DatabaseSchemaEditor(BaseDatabaseSchemaEditor):
             "index": "|".join(index.fields),
         }
         with trace_call(
-            "CloudSpannerDjango.add_index", self.connection, trace_attributes,
+            "CloudSpannerDjango.add_index",
+            self.connection,
+            trace_attributes,
         ):
             super().add_index(model, index)
 

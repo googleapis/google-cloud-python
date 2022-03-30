@@ -39,7 +39,9 @@ class TestQueries(TransactionTestCase):
         Inserting data into the model and retrieving it.
         """
         author_kent = Author(
-            first_name="Arthur", last_name="Kent", rating=Decimal("4.1"),
+            first_name="Arthur",
+            last_name="Kent",
+            rating=Decimal("4.1"),
         )
         author_kent.save()
         qs1 = Author.objects.all().values("first_name", "last_name")

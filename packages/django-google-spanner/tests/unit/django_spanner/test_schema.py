@@ -129,7 +129,10 @@ class TestUtils(SpannerSimpleTestClass):
             )
             self.assertSpanAttributes(
                 "CloudSpannerDjango.delete_model",
-                attributes=dict(BASE_ATTRIBUTES, model_name="tests_author",),
+                attributes=dict(
+                    BASE_ATTRIBUTES,
+                    model_name="tests_author",
+                ),
                 span=span_list[1],
             )
 
@@ -168,7 +171,9 @@ class TestUtils(SpannerSimpleTestClass):
             self.assertSpanAttributes(
                 "CloudSpannerDjango.remove_field",
                 attributes=dict(
-                    BASE_ATTRIBUTES, model_name="tests_author", field="num",
+                    BASE_ATTRIBUTES,
+                    model_name="tests_author",
+                    field="num",
                 ),
                 span=span_list[0],
             )
@@ -216,7 +221,9 @@ class TestUtils(SpannerSimpleTestClass):
             self.assertSpanAttributes(
                 "CloudSpannerDjango.remove_field",
                 attributes=dict(
-                    BASE_ATTRIBUTES, model_name="tests_author", field="num",
+                    BASE_ATTRIBUTES,
+                    model_name="tests_author",
+                    field="num",
                 ),
                 span=span_list[1],
             )
@@ -266,7 +273,9 @@ class TestUtils(SpannerSimpleTestClass):
             self.assertSpanAttributes(
                 "CloudSpannerDjango.add_index",
                 attributes=dict(
-                    BASE_ATTRIBUTES, model_name="tests_author", index="num",
+                    BASE_ATTRIBUTES,
+                    model_name="tests_author",
+                    index="num",
                 ),
                 span=span_list[0],
             )

@@ -87,7 +87,10 @@ class DjangoBenchmarkTest:
     @measure_execution_time
     def insert_one_row_with_fetch_after(self):
         author_kent = Author(
-            id=2, first_name="Pete", last_name="Allison", rating="2.1",
+            id=2,
+            first_name="Pete",
+            last_name="Allison",
+            rating="2.1",
         )
         author_kent.save()
         last_name = Author.objects.get(pk=author_kent.id).last_name

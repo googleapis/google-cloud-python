@@ -81,7 +81,9 @@ class TestUtils(SpannerSimpleTestClass):
         """
         Tests cot function on a column.
         """
-        q1 = Author.objects.values("num").annotate(num_cot=Cot("num"),)
+        q1 = Author.objects.values("num").annotate(
+            num_cot=Cot("num"),
+        )
         compiler = SQLCompiler(q1.query, self.connection, "default")
         sql_query, params = compiler.query.as_sql(compiler, self.connection)
         self.assertEqual(
@@ -95,7 +97,9 @@ class TestUtils(SpannerSimpleTestClass):
         """
         Tests degrees function on a column.
         """
-        q1 = Author.objects.values("num").annotate(num_degrees=Degrees("num"),)
+        q1 = Author.objects.values("num").annotate(
+            num_degrees=Degrees("num"),
+        )
         compiler = SQLCompiler(q1.query, self.connection, "default")
         sql_query, params = compiler.query.as_sql(compiler, self.connection)
         self.assertEqual(
@@ -188,7 +192,8 @@ class TestUtils(SpannerSimpleTestClass):
                 + "= (3.141592653589793)"
             )
         self.assertEqual(
-            sql_query, expected_sql,
+            sql_query,
+            expected_sql,
         )
         self.assertEqual(params, ())
 
