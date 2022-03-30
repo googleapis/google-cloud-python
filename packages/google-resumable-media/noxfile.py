@@ -22,7 +22,7 @@ import nox
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
 SYSTEM_TEST_ENV_VARS = ("GOOGLE_APPLICATION_CREDENTIALS",)
-BLACK_VERSION = "black==20.8b1"
+BLACK_VERSION = "black==22.3.0"
 GOOGLE_AUTH = "google-auth >= 1.22.0, < 3.0dev"
 
 DEFAULT_PYTHON_VERSION = "3.8"

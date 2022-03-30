@@ -195,8 +195,8 @@ class Test_wait_and_retry(object):
         sleep_mock.assert_any_call(2.625)
         sleep_mock.assert_any_call(4.375)
 
-    @mock.patch(u"time.sleep")
-    @mock.patch(u"random.randint")
+    @mock.patch("time.sleep")
+    @mock.patch("random.randint")
     def test_success_with_retry_chunked_encoding_error(self, randint_mock, sleep_mock):
         randint_mock.side_effect = [125, 625, 375]
 
@@ -226,8 +226,8 @@ class Test_wait_and_retry(object):
         sleep_mock.assert_any_call(1.125)
         sleep_mock.assert_any_call(2.625)
 
-    @mock.patch(u"time.sleep")
-    @mock.patch(u"random.randint")
+    @mock.patch("time.sleep")
+    @mock.patch("random.randint")
     def test_success_with_retry_client_timeout(self, randint_mock, sleep_mock):
         randint_mock.side_effect = [125, 625, 375]
 
