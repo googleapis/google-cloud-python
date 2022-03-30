@@ -553,7 +553,9 @@ class Test__from_any_pb(unittest.TestCase):
         out_message = self._call_fut(date_pb2.Date, in_message_any)
         self.assertEqual(in_message, out_message)
 
-    def test_failure(self,):
+    def test_failure(
+        self,
+    ):
         from google.protobuf import any_pb2
         from google.type import date_pb2
         from google.type import timeofday_pb2
@@ -636,7 +638,7 @@ class Test__timedelta_to_duration_pb(unittest.TestCase):
         result = self._call_fut(timedelta_val)
         self.assertIsInstance(result, duration_pb2.Duration)
         self.assertEqual(result.seconds, seconds - 1)
-        self.assertEqual(result.nanos, 10 ** 9 + 1000 * microseconds)
+        self.assertEqual(result.nanos, 10**9 + 1000 * microseconds)
 
     def test_with_negative_seconds(self):
         import datetime
@@ -648,7 +650,7 @@ class Test__timedelta_to_duration_pb(unittest.TestCase):
         result = self._call_fut(timedelta_val)
         self.assertIsInstance(result, duration_pb2.Duration)
         self.assertEqual(result.seconds, seconds + 1)
-        self.assertEqual(result.nanos, -(10 ** 9 - 1000 * microseconds))
+        self.assertEqual(result.nanos, -(10**9 - 1000 * microseconds))
 
 
 class Test__duration_pb_to_timedelta(unittest.TestCase):

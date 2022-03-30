@@ -234,7 +234,8 @@ class Test_ClientProjectMixin(unittest.TestCase):
         environ = {}
         patch_env = mock.patch("os.environ", new=environ)
         patch_default = mock.patch(
-            "google.cloud.client._determine_default_project", return_value=None,
+            "google.cloud.client._determine_default_project",
+            return_value=None,
         )
         with patch_env:
             with patch_default as patched:
@@ -268,7 +269,8 @@ class Test_ClientProjectMixin(unittest.TestCase):
     def test_ctor_w_explicit_project(self):
         explicit_project = "explicit-project-456"
         patch_default = mock.patch(
-            "google.cloud.client._determine_default_project", return_value=None,
+            "google.cloud.client._determine_default_project",
+            return_value=None,
         )
         with patch_default as patched:
             client = self._make_one(project=explicit_project)
@@ -280,7 +282,8 @@ class Test_ClientProjectMixin(unittest.TestCase):
     def test_ctor_w_explicit_project_bytes(self):
         explicit_project = b"explicit-project-456"
         patch_default = mock.patch(
-            "google.cloud.client._determine_default_project", return_value=None,
+            "google.cloud.client._determine_default_project",
+            return_value=None,
         )
         with patch_default as patched:
             client = self._make_one(project=explicit_project)
@@ -292,7 +295,8 @@ class Test_ClientProjectMixin(unittest.TestCase):
     def test_ctor_w_explicit_project_invalid(self):
         explicit_project = object()
         patch_default = mock.patch(
-            "google.cloud.client._determine_default_project", return_value=None,
+            "google.cloud.client._determine_default_project",
+            return_value=None,
         )
         with patch_default as patched:
             with self.assertRaises(ValueError):
@@ -331,7 +335,8 @@ class Test_ClientProjectMixin(unittest.TestCase):
         project = "credentials-project-456"
         credentials = self._make_credentials(project_id=project)
         patch_default = mock.patch(
-            "google.cloud.client._determine_default_project", return_value=None,
+            "google.cloud.client._determine_default_project",
+            return_value=None,
         )
         with patch_default as patched:
             client = self._make_one(credentials=credentials)

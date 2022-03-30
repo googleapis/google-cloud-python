@@ -85,13 +85,11 @@ class _LocalStack(Local):
         self._stack = []
 
     def __iter__(self):
-        """Iterate the stack in LIFO order.
-        """
+        """Iterate the stack in LIFO order."""
         return iter(reversed(self._stack))
 
     def push(self, resource):
-        """Push a resource onto our stack.
-        """
+        """Push a resource onto our stack."""
         self._stack.append(resource)
 
     def pop(self):
@@ -284,7 +282,7 @@ def _rfc3339_nanos_to_datetime(dt_str):
         micros = 0
     else:
         scale = 9 - len(fraction)
-        nanos = int(fraction) * (10 ** scale)
+        nanos = int(fraction) * (10**scale)
         micros = nanos // 1000
     return bare_seconds.replace(microsecond=micros, tzinfo=UTC)
 
@@ -416,8 +414,8 @@ def _datetime_to_pb_timestamp(when):
     :returns: A timestamp protobuf corresponding to the object.
     """
     ms_value = _microseconds_from_datetime(when)
-    seconds, micros = divmod(ms_value, 10 ** 6)
-    nanos = micros * 10 ** 3
+    seconds, micros = divmod(ms_value, 10**6)
+    nanos = micros * 10**3
     return timestamp_pb2.Timestamp(seconds=seconds, nanos=nanos)
 
 

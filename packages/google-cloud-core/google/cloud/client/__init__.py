@@ -209,7 +209,8 @@ class Client(_ClientFactoryMixin):
         """
         if self._http_internal is None:
             self._http_internal = google.auth.transport.requests.AuthorizedSession(
-                self._credentials, refresh_timeout=_CREDENTIALS_REFRESH_TIMEOUT,
+                self._credentials,
+                refresh_timeout=_CREDENTIALS_REFRESH_TIMEOUT,
             )
             self._http_internal.configure_mtls_channel(self._client_cert_source)
         return self._http_internal
@@ -254,7 +255,8 @@ class _ClientProjectMixin(object):
         # https://github.com/googleapis/python-cloud-core/issues/27
         if project is None:
             project = os.getenv(
-                environment_vars.PROJECT, os.getenv(environment_vars.LEGACY_PROJECT),
+                environment_vars.PROJECT,
+                os.getenv(environment_vars.LEGACY_PROJECT),
             )
 
         # Project set on explicit credentials overrides discovery from
