@@ -24,16 +24,25 @@ import warnings
 
 try:
     import pandas  # type: ignore
-except ImportError:  # pragma: NO COVER
+
+    pandas_import_exception = None
+except ImportError as exc:  # pragma: NO COVER
     pandas = None
-    date_dtype_name = time_dtype_name = ""  # Use '' rather than None because pytype
+    pandas_import_exception = exc
 else:
     import numpy
 
-    from db_dtypes import DateDtype, TimeDtype  # type: ignore
+try:
+    import db_dtypes  # type: ignore
 
-    date_dtype_name = DateDtype.name
-    time_dtype_name = TimeDtype.name
+    date_dtype_name = db_dtypes.DateDtype.name
+    time_dtype_name = db_dtypes.TimeDtype.name
+    db_dtypes_import_exception = None
+except ImportError as exc:  # pragma: NO COVER
+    db_dtypes = None
+    db_dtypes_import_exception = exc
+    date_dtype_name = time_dtype_name = ""  # Use '' rather than None because pytype
+
 
 import pyarrow  # type: ignore
 import pyarrow.parquet  # type: ignore
@@ -83,6 +92,9 @@ _LOGGER = logging.getLogger(__name__)
 _PROGRESS_INTERVAL = 0.2  # Maximum time between download status checks, in seconds.
 
 _MAX_QUEUE_SIZE_DEFAULT = object()  # max queue size sentinel for BQ Storage downloads
+
+_NO_PANDAS_ERROR = "Please install the 'pandas' package to use this function."
+_NO_DB_TYPES_ERROR = "Please install the 'db-dtypes' package to use this function."
 
 _PANDAS_DTYPE_TO_BQ = {
     "bool": "BOOLEAN",
@@ -290,13 +302,13 @@ def default_types_mapper(date_as_object: bool = False):
             not date_as_object
             and pyarrow.types.is_date(arrow_data_type)
         ):
-            return DateDtype()
+            return db_dtypes.DateDtype()
 
         elif pyarrow.types.is_integer(arrow_data_type):
             return pandas.Int64Dtype()
 
         elif pyarrow.types.is_time(arrow_data_type):
-            return TimeDtype()
+            return db_dtypes.TimeDtype()
 
     return types_mapper
 
@@ -970,3 +982,10 @@ def dataframe_to_json_generator(dataframe):
             output[column] = value
 
         yield output
+
+
+def verify_pandas_imports():
+    if pandas is None:
+        raise ValueError(_NO_PANDAS_ERROR) from pandas_import_exception
+    if db_dtypes is None:
+        raise ValueError(_NO_DB_TYPES_ERROR) from db_dtypes_import_exception

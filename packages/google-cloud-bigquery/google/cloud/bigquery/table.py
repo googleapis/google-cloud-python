@@ -28,8 +28,6 @@ try:
     import pandas  # type: ignore
 except ImportError:  # pragma: NO COVER
     pandas = None
-else:
-    import db_dtypes  # type: ignore # noqa
 
 import pyarrow  # type: ignore
 
@@ -69,10 +67,6 @@ if typing.TYPE_CHECKING:  # pragma: NO COVER
     from google.cloud.bigquery.dataset import DatasetReference
 
 
-_NO_PANDAS_ERROR = (
-    "The pandas library is not installed, please install "
-    "pandas to use the to_dataframe() function."
-)
 _NO_GEOPANDAS_ERROR = (
     "The geopandas library is not installed, please install "
     "geopandas to use the to_geodataframe() function."
@@ -1818,8 +1812,8 @@ class RowIterator(HTTPIterator):
             ValueError:
                 If the :mod:`pandas` library cannot be imported.
         """
-        if pandas is None:
-            raise ValueError(_NO_PANDAS_ERROR)
+        _pandas_helpers.verify_pandas_imports()
+
         if dtypes is None:
             dtypes = {}
 
@@ -1928,8 +1922,8 @@ class RowIterator(HTTPIterator):
                 :mod:`shapely` library cannot be imported.
 
         """
-        if pandas is None:
-            raise ValueError(_NO_PANDAS_ERROR)
+        _pandas_helpers.verify_pandas_imports()
+
         if geography_as_object and shapely is None:
             raise ValueError(_NO_SHAPELY_ERROR)
 
@@ -2181,8 +2175,7 @@ class _EmptyRowIterator(RowIterator):
         Returns:
             pandas.DataFrame: An empty :class:`~pandas.DataFrame`.
         """
-        if pandas is None:
-            raise ValueError(_NO_PANDAS_ERROR)
+        _pandas_helpers.verify_pandas_imports()
         return pandas.DataFrame()
 
     def to_geodataframe(
@@ -2238,8 +2231,7 @@ class _EmptyRowIterator(RowIterator):
             ValueError:
                 If the :mod:`pandas` library cannot be imported.
         """
-        if pandas is None:
-            raise ValueError(_NO_PANDAS_ERROR)
+        _pandas_helpers.verify_pandas_imports()
         return iter((pandas.DataFrame(),))
 
     def to_arrow_iterable(

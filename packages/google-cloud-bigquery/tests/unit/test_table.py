@@ -1836,7 +1836,7 @@ class Test_EmptyRowIterator(unittest.TestCase):
         self.assertEqual(record_batch.num_rows, 0)
         self.assertEqual(record_batch.num_columns, 0)
 
-    @mock.patch("google.cloud.bigquery.table.pandas", new=None)
+    @mock.patch("google.cloud.bigquery._pandas_helpers.pandas", new=None)
     def test_to_dataframe_error_if_pandas_is_none(self):
         row_iterator = self._make_one()
         with self.assertRaises(ValueError):
@@ -1849,7 +1849,7 @@ class Test_EmptyRowIterator(unittest.TestCase):
         self.assertIsInstance(df, pandas.DataFrame)
         self.assertEqual(len(df), 0)  # verify the number of rows
 
-    @mock.patch("google.cloud.bigquery.table.pandas", new=None)
+    @mock.patch("google.cloud.bigquery._pandas_helpers.pandas", new=None)
     def test_to_dataframe_iterable_error_if_pandas_is_none(self):
         row_iterator = self._make_one()
         with self.assertRaises(ValueError):
@@ -2967,7 +2967,7 @@ class TestRowIterator(unittest.TestCase):
         assert isinstance(dataframes[0], pandas.DataFrame)
         assert isinstance(dataframes[1], pandas.DataFrame)
 
-    @mock.patch("google.cloud.bigquery.table.pandas", new=None)
+    @mock.patch("google.cloud.bigquery._pandas_helpers.pandas", new=None)
     def test_to_dataframe_iterable_error_if_pandas_is_none(self):
         from google.cloud.bigquery.schema import SchemaField
 
@@ -3339,7 +3339,7 @@ class TestRowIterator(unittest.TestCase):
         self.assertEqual(df["ts"][0].date(), datetime.date(1336, 3, 23))
         self.assertEqual(df["date"][0], datetime.date(1111, 1, 1))
 
-    @mock.patch("google.cloud.bigquery.table.pandas", new=None)
+    @mock.patch("google.cloud.bigquery._pandas_helpers.pandas", new=None)
     def test_to_dataframe_error_if_pandas_is_none(self):
         from google.cloud.bigquery.schema import SchemaField
 

@@ -1751,3 +1751,16 @@ def test_bq_to_arrow_field_metadata(module_under_test, field_type, metadata):
         ).metadata
         == metadata
     )
+
+
+def test_verify_pandas_imports_no_pandas(module_under_test, monkeypatch):
+    monkeypatch.setattr(module_under_test, "pandas", None)
+    with pytest.raises(ValueError, match="Please install the 'pandas' package"):
+        module_under_test.verify_pandas_imports()
+
+
+@pytest.mark.skipif(pandas is None, reason="Requires `pandas`")
+def test_verify_pandas_imports_no_db_dtypes(module_under_test, monkeypatch):
+    monkeypatch.setattr(module_under_test, "db_dtypes", None)
+    with pytest.raises(ValueError, match="Please install the 'db-dtypes' package"):
+        module_under_test.verify_pandas_imports()
