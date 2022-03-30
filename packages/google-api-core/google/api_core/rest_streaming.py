@@ -48,8 +48,7 @@ class ResponseIterator:
         self._escape_next = False
 
     def cancel(self):
-        """Cancel existing streaming operation.
-        """
+        """Cancel existing streaming operation."""
         self._response.close()
 
     def _process_chunk(self, chunk: str):

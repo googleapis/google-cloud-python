@@ -239,26 +239,26 @@ def validate(tmpl, path):
 
 def transcode(http_options, **request_kwargs):
     """Transcodes a grpc request pattern into a proper HTTP request following the rules outlined here,
-       https://github.com/googleapis/googleapis/blob/master/google/api/http.proto#L44-L312
+    https://github.com/googleapis/googleapis/blob/master/google/api/http.proto#L44-L312
 
-        Args:
-            http_options (list(dict)): A list of dicts which consist of these keys,
-                'method'    (str): The http method
-                'uri'       (str): The path template
-                'body'      (str): The body field name (optional)
-                (This is a simplified representation of the proto option `google.api.http`)
+     Args:
+         http_options (list(dict)): A list of dicts which consist of these keys,
+             'method'    (str): The http method
+             'uri'       (str): The path template
+             'body'      (str): The body field name (optional)
+             (This is a simplified representation of the proto option `google.api.http`)
 
-            request_kwargs (dict) : A dict representing the request object
+         request_kwargs (dict) : A dict representing the request object
 
-        Returns:
-            dict: The transcoded request with these keys,
-                'method'        (str)   : The http method
-                'uri'           (str)   : The expanded uri
-                'body'          (dict)  : A dict representing the body (optional)
-                'query_params'  (dict)  : A dict mapping query parameter variables and values
+     Returns:
+         dict: The transcoded request with these keys,
+             'method'        (str)   : The http method
+             'uri'           (str)   : The expanded uri
+             'body'          (dict)  : A dict representing the body (optional)
+             'query_params'  (dict)  : A dict mapping query parameter variables and values
 
-        Raises:
-            ValueError: If the request does not match the given template.
+     Raises:
+         ValueError: If the request does not match the given template.
     """
     for http_option in http_options:
         request = {}

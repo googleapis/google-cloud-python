@@ -21,7 +21,7 @@ import shutil
 import nox  # pytype: disable=import-error
 
 
-BLACK_VERSION = "black==19.10b0"
+BLACK_VERSION = "black==22.3.0"
 BLACK_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
 # Black and flake8 clash on the syntax for ignoring flake8's F401 in this file.
 BLACK_EXCLUDES = ["--exclude", "^/google/api_core/operations_v1/__init__.py"]
@@ -64,7 +64,10 @@ def lint(session):
     session.install("flake8", "flake8-import-order", BLACK_VERSION)
     session.install(".")
     session.run(
-        "black", "--check", *BLACK_EXCLUDES, *BLACK_PATHS,
+        "black",
+        "--check",
+        *BLACK_EXCLUDES,
+        *BLACK_PATHS,
     )
     session.run("flake8", "google", "tests")
 

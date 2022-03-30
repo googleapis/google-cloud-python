@@ -83,7 +83,10 @@ class ResponseMock(requests.Response):
             return x.decode("utf-8")
 
     def __init__(
-        self, responses: List[proto.Message], response_cls, random_split=False,
+        self,
+        responses: List[proto.Message],
+        response_cls,
+        random_split=False,
     ):
         super().__init__()
         self._responses = responses
@@ -105,7 +108,8 @@ class ResponseMock(requests.Response):
 
     def iter_content(self, *args, **kwargs):
         return self._ResponseItr(
-            self._parse_responses(self._responses), random_split=self._random_split,
+            self._parse_responses(self._responses),
+            random_split=self._random_split,
         )
 
 

@@ -59,7 +59,9 @@ def make_extended_operation(responses=None):
     refresh.responses = client_operations_responses
     cancel = mock.Mock(spec=["__call__"])
     extended_operation_future = extended_operation.ExtendedOperation.make(
-        refresh, cancel, client_operations_responses[0],
+        refresh,
+        cancel,
+        client_operations_responses[0],
     )
 
     return extended_operation_future, refresh, cancel

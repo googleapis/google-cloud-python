@@ -98,7 +98,8 @@ def test_constructor_with_api_key():
 def test_constructor_with_both_api_key_and_credentials_file():
     with pytest.raises(ValueError):
         client_options.ClientOptions(
-            api_key="api-key", credentials_file="path/to/credentials.json",
+            api_key="api-key",
+            credentials_file="path/to/credentials.json",
         )
 
 

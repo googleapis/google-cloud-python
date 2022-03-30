@@ -505,7 +505,8 @@ class TestHTTPIterator(object):
                 assert list(next(items_iter)) == [
                     dict(name=str(i))
                     for i in range(
-                        ipage * page_size, min((ipage + 1) * page_size, n_results),
+                        ipage * page_size,
+                        min((ipage + 1) * page_size, n_results),
                     )
                 ]
         else:

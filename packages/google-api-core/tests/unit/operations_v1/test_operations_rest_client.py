@@ -399,7 +399,9 @@ def test_operations_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options)
@@ -513,10 +515,12 @@ def test_list_operations_rest_pager():
                 next_page_token="abc",
             ),
             operations_pb2.ListOperationsResponse(
-                operations=[], next_page_token="def",
+                operations=[],
+                next_page_token="def",
             ),
             operations_pb2.ListOperationsResponse(
-                operations=[operations_pb2.Operation()], next_page_token="ghi",
+                operations=[operations_pb2.Operation()],
+                next_page_token="ghi",
             ),
             operations_pb2.ListOperationsResponse(
                 operations=[operations_pb2.Operation(), operations_pb2.Operation()],
@@ -553,7 +557,9 @@ def test_get_operation_rest(
     with mock.patch.object(Session, "request") as req:
         # Designate an appropriate value for the returned response.
         return_value = operations_pb2.Operation(
-            name="operations/sample1", done=True, error=status_pb2.Status(code=411),
+            name="operations/sample1",
+            done=True,
+            error=status_pb2.Status(code=411),
         )
 
         # Wrap the value into a proper Response obj
@@ -679,7 +685,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         AbstractOperationsClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -698,7 +705,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         AbstractOperationsClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -765,7 +773,8 @@ def test_operations_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transports.OperationsTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -792,7 +801,9 @@ def test_operations_auth_adc():
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         AbstractOperationsClient()
         adc.assert_called_once_with(
-            scopes=None, default_scopes=(), quota_project_id=None,
+            scopes=None,
+            default_scopes=(),
+            quota_project_id=None,
         )
 
 
@@ -849,7 +860,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "whelk"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = AbstractOperationsClient.common_folder_path(folder)
     assert expected == actual
 
@@ -867,7 +880,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "oyster"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = AbstractOperationsClient.common_organization_path(organization)
     assert expected == actual
 
@@ -885,7 +900,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "cuttlefish"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = AbstractOperationsClient.common_project_path(project)
     assert expected == actual
 
@@ -905,7 +922,8 @@ def test_common_location_path():
     project = "winkle"
     location = "nautilus"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = AbstractOperationsClient.common_location_path(project, location)
     assert expected == actual
@@ -930,7 +948,8 @@ def test_client_withDEFAULT_CLIENT_INFO():
         transports.OperationsTransport, "_prep_wrapped_messages"
     ) as prep:
         AbstractOperationsClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -939,6 +958,7 @@ def test_client_withDEFAULT_CLIENT_INFO():
     ) as prep:
         transport_class = AbstractOperationsClient.get_transport_class()
         transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)

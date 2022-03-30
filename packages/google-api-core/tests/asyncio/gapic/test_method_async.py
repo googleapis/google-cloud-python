@@ -162,7 +162,8 @@ async def test_wrap_method_with_default_retry_and_timeout_using_sentinel(unused_
     )
 
     result = await wrapped_method(
-        retry=gapic_v1.method_async.DEFAULT, timeout=gapic_v1.method_async.DEFAULT,
+        retry=gapic_v1.method_async.DEFAULT,
+        timeout=gapic_v1.method_async.DEFAULT,
     )
 
     assert result == 42

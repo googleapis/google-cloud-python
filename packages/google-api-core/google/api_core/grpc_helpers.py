@@ -246,7 +246,9 @@ def _create_composite_credentials(
 
     # Create the metadata plugin for inserting the authorization header.
     metadata_plugin = google.auth.transport.grpc.AuthMetadataPlugin(
-        credentials, request, default_host=default_host,
+        credentials,
+        request,
+        default_host=default_host,
     )
 
     # Create a set of grpc.CallCredentials using the metadata plugin.

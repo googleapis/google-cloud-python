@@ -202,7 +202,7 @@ class GoogleAPICallError(GoogleAPIError, metaclass=_GoogleAPICallErrorMeta):
 
         Returns:
             Sequence[Any]: A list of structured objects from error_details.proto
-       """
+        """
         return list(self._details)
 
     @property
@@ -490,7 +490,9 @@ def from_http_response(response):
     error_info = error_info[0] if error_info else None
 
     message = "{method} {url}: {error}".format(
-        method=response.request.method, url=response.request.url, error=error_message,
+        method=response.request.method,
+        url=response.request.url,
+        error=error_message,
     )
 
     exception = from_http_status(

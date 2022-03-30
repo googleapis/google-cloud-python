@@ -151,7 +151,7 @@ def from_rfc3339(value):
         micros = 0
     else:
         scale = 9 - len(fraction)
-        nanos = int(fraction) * (10 ** scale)
+        nanos = int(fraction) * (10**scale)
         micros = nanos // 1000
 
     return bare_seconds.replace(microsecond=micros, tzinfo=datetime.timezone.utc)
@@ -245,7 +245,7 @@ class DatetimeWithNanoseconds(datetime.datetime):
             nanos = 0
         else:
             scale = 9 - len(fraction)
-            nanos = int(fraction) * (10 ** scale)
+            nanos = int(fraction) * (10**scale)
         return cls(
             bare.year,
             bare.month,
