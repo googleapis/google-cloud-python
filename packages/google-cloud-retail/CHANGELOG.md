@@ -1,5 +1,25 @@
 # Changelog
 
+## [1.5.0](https://github.com/googleapis/python-retail/compare/v1.4.1...v1.5.0) (2022-03-30)
+
+
+### Features
+
+* add new AddLocalInventories and RemoveLocalInventories APIs ([8d61976](https://github.com/googleapis/python-retail/commit/8d619760c771750d55de09fd32deb7e05bf75c8c))
+* allow search users to skip validation for invalid boost specs ([8d61976](https://github.com/googleapis/python-retail/commit/8d619760c771750d55de09fd32deb7e05bf75c8c))
+* search returns applied control ids in the response ([8d61976](https://github.com/googleapis/python-retail/commit/8d619760c771750d55de09fd32deb7e05bf75c8c))
+* support search personalization ([8d61976](https://github.com/googleapis/python-retail/commit/8d619760c771750d55de09fd32deb7e05bf75c8c))
+* users cannot switch to empty default branch unless force override ([8d61976](https://github.com/googleapis/python-retail/commit/8d619760c771750d55de09fd32deb7e05bf75c8c))
+
+
+### Documentation
+
+* deprecate request_id in ImportProductsRequest ([8d61976](https://github.com/googleapis/python-retail/commit/8d619760c771750d55de09fd32deb7e05bf75c8c))
+* deprecate search dynamic_facet_spec and suggest to config on cloud console ([8d61976](https://github.com/googleapis/python-retail/commit/8d619760c771750d55de09fd32deb7e05bf75c8c))
+* keep the API doc up-to-date with recent changes ([8d61976](https://github.com/googleapis/python-retail/commit/8d619760c771750d55de09fd32deb7e05bf75c8c))
+* suggest search users not to send IP and use hashed user id ([8d61976](https://github.com/googleapis/python-retail/commit/8d619760c771750d55de09fd32deb7e05bf75c8c))
+* users can self enroll retail search feature on cloud console ([8d61976](https://github.com/googleapis/python-retail/commit/8d619760c771750d55de09fd32deb7e05bf75c8c))
+
 ### [1.4.1](https://github.com/googleapis/python-retail/compare/v1.4.0...v1.4.1) (2022-03-05)
 
 
