@@ -80,9 +80,13 @@ class Field:
     @utils.cached_property
     def ident(self) -> metadata.FieldIdentifier:
         """Return the identifier to be used in templates."""
+        mapping: Union[None, Tuple[Field, Field]] = None
+        if self.map:
+            mapping = (self.type.fields["key"], self.type.fields["value"])
         return metadata.FieldIdentifier(
             ident=self.type.ident,
             repeated=self.repeated,
+            mapping=mapping,
         )
 
     @property

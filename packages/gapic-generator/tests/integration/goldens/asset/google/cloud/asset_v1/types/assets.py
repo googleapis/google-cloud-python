@@ -428,7 +428,7 @@ class ResourceSearchResult(proto.Message):
 
             -  use a field query. Example: ``location:us-west*``
             -  use a free text query. Example: ``us-west*``
-        labels (Sequence[google.cloud.asset_v1.types.ResourceSearchResult.LabelsEntry]):
+        labels (Mapping[str, str]):
             Labels associated with this resource. See `Labelling and
             grouping GCP
             resources <https://cloud.google.com/blog/products/gcp/labelling-and-grouping-your-google-cloud-platform-resources>`__
@@ -724,7 +724,7 @@ class IamPolicySearchResult(proto.Message):
         r"""Explanation about the IAM policy search result.
 
         Attributes:
-            matched_permissions (Sequence[google.cloud.asset_v1.types.IamPolicySearchResult.Explanation.MatchedPermissionsEntry]):
+            matched_permissions (Mapping[str, google.cloud.asset_v1.types.IamPolicySearchResult.Explanation.Permissions]):
                 The map from roles to their included permissions that match
                 the permission query (i.e., a query containing
                 ``policy.role.permissions:``). Example: if query

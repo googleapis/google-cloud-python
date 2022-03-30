@@ -475,7 +475,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
             *,
             log_name: str = None,
             resource: monitored_resource_pb2.MonitoredResource = None,
-            labels: Sequence[logging.WriteLogEntriesRequest.LabelsEntry] = None,
+            labels: Mapping[str, str] = None,
             entries: Sequence[log_entry.LogEntry] = None,
             retry: OptionalRetry = gapic_v1.method.DEFAULT,
             timeout: float = None,
@@ -559,7 +559,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
                 This corresponds to the ``resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            labels (Sequence[google.cloud.logging_v2.types.WriteLogEntriesRequest.LabelsEntry]):
+            labels (Mapping[str, str]):
                 Optional. Default labels that are added to the
                 ``labels`` field of all log entries in ``entries``. If a
                 log entry already has a label with the same key as a

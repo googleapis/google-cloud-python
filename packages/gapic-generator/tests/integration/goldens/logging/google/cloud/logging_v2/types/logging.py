@@ -106,7 +106,7 @@ class WriteLogEntriesRequest(proto.Message):
                     "zone": "us-central1-a", "instance_id": "00000000000000000000" }}
 
             See [LogEntry][google.logging.v2.LogEntry].
-        labels (Sequence[google.cloud.logging_v2.types.WriteLogEntriesRequest.LabelsEntry]):
+        labels (Mapping[str, str]):
             Optional. Default labels that are added to the ``labels``
             field of all log entries in ``entries``. If a log entry
             already has a label with the same key as a label in this
@@ -196,7 +196,7 @@ class WriteLogEntriesPartialErrors(proto.Message):
     r"""Error details for WriteLogEntries with partial success.
 
     Attributes:
-        log_entry_errors (Sequence[google.cloud.logging_v2.types.WriteLogEntriesPartialErrors.LogEntryErrorsEntry]):
+        log_entry_errors (Mapping[int, google.rpc.status_pb2.Status]):
             When ``WriteLogEntriesRequest.partial_success`` is true,
             records the error status for entries that were not written
             due to a permanent error, keyed by the entry's zero-based

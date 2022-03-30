@@ -86,6 +86,46 @@ def test_not_repeated():
     assert not field.repeated
 
 
+def test_map():
+    entry_msg = make_message(
+        name='SquidEntry',
+        fields=(
+            make_field(name='key', type='TYPE_STRING'),
+            make_field(name='value', type='TYPE_STRING'),
+        ),
+        options=descriptor_pb2.MessageOptions(map_entry=True),
+    )
+    field = make_field(
+        name='squids',
+        type_name='mollusc.SquidEntry',
+        message=entry_msg,
+        label=3,
+        type='TYPE_MESSAGE',
+    )
+
+    assert field.map
+
+
+def test_ident_map():
+    entry_msg = make_message(
+        name='SquidEntry',
+        fields=(
+            make_field(name='key', type='TYPE_STRING'),
+            make_field(name='value', type='TYPE_STRING'),
+        ),
+        options=descriptor_pb2.MessageOptions(map_entry=True),
+    )
+    field = make_field(
+        name='squids',
+        type_name='mollusc.SquidEntry',
+        message=entry_msg,
+        label=3,
+        type='TYPE_MESSAGE',
+    )
+
+    assert str(field.ident) == "Mapping[str, str]"
+
+
 def test_required():
     field = make_field()
     field.options.Extensions[field_behavior_pb2.field_behavior].append(
@@ -108,6 +148,25 @@ def test_ident_sphinx_repeated():
     REP = descriptor_pb2.FieldDescriptorProto.Label.Value('LABEL_REPEATED')
     field = make_field(type='TYPE_BOOL', label=REP)
     assert field.ident.sphinx == 'Sequence[bool]'
+
+
+def test_ident_sphinx_map():
+    entry_msg = make_message(
+        name='SquidEntry',
+        fields=(
+            make_field(name='key', type='TYPE_STRING'),
+            make_field(name='value', type='TYPE_STRING'),
+        ),
+        options=descriptor_pb2.MessageOptions(map_entry=True),
+    )
+    field = make_field(
+        name='squids',
+        type_name='mollusc.SquidEntry',
+        message=entry_msg,
+        label=3,
+        type='TYPE_MESSAGE',
+    )
+    assert field.ident.sphinx == 'Mapping[str, str]'
 
 
 def test_resource_reference():
