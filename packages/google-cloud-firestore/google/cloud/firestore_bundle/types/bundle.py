@@ -55,11 +55,21 @@ class BundledQuery(proto.Message):
         FIRST = 0
         LAST = 1
 
-    parent = proto.Field(proto.STRING, number=1,)
-    structured_query = proto.Field(
-        proto.MESSAGE, number=2, oneof="query_type", message=query_pb2.StructuredQuery,
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    limit_type = proto.Field(proto.ENUM, number=3, enum=LimitType,)
+    structured_query = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="query_type",
+        message=query_pb2.StructuredQuery,
+    )
+    limit_type = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=LimitType,
+    )
 
 
 class NamedQuery(proto.Message):
@@ -82,9 +92,20 @@ class NamedQuery(proto.Message):
             client SDKs.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    bundled_query = proto.Field(proto.MESSAGE, number=2, message="BundledQuery",)
-    read_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    bundled_query = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="BundledQuery",
+    )
+    read_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 class BundledDocumentMetadata(proto.Message):
@@ -103,10 +124,23 @@ class BundledDocumentMetadata(proto.Message):
             this document matches to.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    read_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    exists = proto.Field(proto.BOOL, number=3,)
-    queries = proto.RepeatedField(proto.STRING, number=4,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    read_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    exists = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+    queries = proto.RepeatedField(
+        proto.STRING,
+        number=4,
+    )
 
 
 class BundleMetadata(proto.Message):
@@ -127,11 +161,27 @@ class BundleMetadata(proto.Message):
             ``BundleMetadata``.
     """
 
-    id = proto.Field(proto.STRING, number=1,)
-    create_time = proto.Field(proto.MESSAGE, number=2, message=timestamp_pb2.Timestamp,)
-    version = proto.Field(proto.UINT32, number=3,)
-    total_documents = proto.Field(proto.UINT32, number=4,)
-    total_bytes = proto.Field(proto.UINT64, number=5,)
+    id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
+    )
+    version = proto.Field(
+        proto.UINT32,
+        number=3,
+    )
+    total_documents = proto.Field(
+        proto.UINT32,
+        number=4,
+    )
+    total_bytes = proto.Field(
+        proto.UINT64,
+        number=5,
+    )
 
 
 class BundleElement(proto.Message):
@@ -164,10 +214,16 @@ class BundleElement(proto.Message):
     """
 
     metadata = proto.Field(
-        proto.MESSAGE, number=1, oneof="element_type", message="BundleMetadata",
+        proto.MESSAGE,
+        number=1,
+        oneof="element_type",
+        message="BundleMetadata",
     )
     named_query = proto.Field(
-        proto.MESSAGE, number=2, oneof="element_type", message="NamedQuery",
+        proto.MESSAGE,
+        number=2,
+        oneof="element_type",
+        message="NamedQuery",
     )
     document_metadata = proto.Field(
         proto.MESSAGE,
@@ -176,7 +232,10 @@ class BundleElement(proto.Message):
         message="BundledDocumentMetadata",
     )
     document = proto.Field(
-        proto.MESSAGE, number=4, oneof="element_type", message=document_pb2.Document,
+        proto.MESSAGE,
+        number=4,
+        oneof="element_type",
+        message=document_pb2.Document,
     )
 
 

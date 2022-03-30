@@ -249,7 +249,10 @@ class Watch(object):
 
     @classmethod
     def for_document(
-        cls, document_ref, snapshot_callback, document_snapshot_cls,
+        cls,
+        document_ref,
+        snapshot_callback,
+        document_snapshot_cls,
     ):
         """
         Creates a watch snapshot listener for a document. snapshot_callback
@@ -518,7 +521,8 @@ class Watch(object):
                 # First, shut down current stream
                 _LOGGER.info("Filter mismatch -- restarting stream.")
                 thread = threading.Thread(
-                    name=_RPC_ERROR_THREAD_NAME, target=self.close,
+                    name=_RPC_ERROR_THREAD_NAME,
+                    target=self.close,
                 )
                 thread.start()
                 thread.join()  # wait for shutdown to complete

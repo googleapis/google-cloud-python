@@ -177,13 +177,22 @@ def test_query_chunkify_w_chunksize_lt_limit():
         for index in range(5)
     ]
     responses1 = [
-        RunQueryResponse(document=Document(name=doc_id),) for doc_id in doc_ids[:2]
+        RunQueryResponse(
+            document=Document(name=doc_id),
+        )
+        for doc_id in doc_ids[:2]
     ]
     responses2 = [
-        RunQueryResponse(document=Document(name=doc_id),) for doc_id in doc_ids[2:4]
+        RunQueryResponse(
+            document=Document(name=doc_id),
+        )
+        for doc_id in doc_ids[2:4]
     ]
     responses3 = [
-        RunQueryResponse(document=Document(name=doc_id),) for doc_id in doc_ids[4:]
+        RunQueryResponse(
+            document=Document(name=doc_id),
+        )
+        for doc_id in doc_ids[4:]
     ]
     firestore_api.run_query.side_effect = [
         iter(responses1),
@@ -213,7 +222,10 @@ def test_query_chunkify_w_chunksize_gt_limit():
         for index in range(5)
     ]
     responses = [
-        RunQueryResponse(document=Document(name=doc_id),) for doc_id in doc_ids
+        RunQueryResponse(
+            document=Document(name=doc_id),
+        )
+        for doc_id in doc_ids
     ]
     firestore_api.run_query.return_value = iter(responses)
     client._firestore_api_internal = firestore_api
@@ -539,7 +551,10 @@ _not_passed = object()
 
 
 def _query_stream_w_retriable_exc_helper(
-    retry=_not_passed, timeout=None, transaction=None, expect_retry=True,
+    retry=_not_passed,
+    timeout=None,
+    transaction=None,
+    expect_retry=True,
 ):
     from google.api_core import exceptions
     from google.api_core import gapic_v1
@@ -718,7 +733,8 @@ def _collection_group_get_partitions_helper(retry=None, timeout=None):
     # Verify the mock call.
     parent_path, _ = parent._parent_info()
     partition_query = _make_collection_group(
-        parent, orders=(query._make_order("__name__", query.ASCENDING),),
+        parent,
+        orders=(query._make_order("__name__", query.ASCENDING),),
     )
     firestore_api.partition_query.assert_called_once_with(
         request={

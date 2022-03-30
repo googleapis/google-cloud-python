@@ -22,7 +22,7 @@ def _make_value_list(*args, **kwargs):
 
 
 def test__valuelist_ctor_w_non_list_non_tuple():
-    invalid_values = (None, u"phred", b"DEADBEEF", 123, {}, object())
+    invalid_values = (None, "phred", b"DEADBEEF", 123, {}, object())
     for invalid_value in invalid_values:
         with pytest.raises(ValueError):
             _make_value_list(invalid_value)
@@ -74,7 +74,8 @@ def _make_numeric_value(*args, **kwargs):
 
 
 @pytest.mark.parametrize(
-    "invalid_value", [(None, u"phred", b"DEADBEEF", [], {}, object())],
+    "invalid_value",
+    [(None, "phred", b"DEADBEEF", [], {}, object())],
 )
 def test__numericvalue_ctor_w_invalid_types(invalid_value):
     with pytest.raises(ValueError):

@@ -447,7 +447,9 @@ async def _get_helper(
     kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
 
     snapshot = await document_reference.get(
-        field_paths=field_paths, transaction=transaction, **kwargs,
+        field_paths=field_paths,
+        transaction=transaction,
+        **kwargs,
     )
 
     assert snapshot.reference is document_reference

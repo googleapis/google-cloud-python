@@ -71,7 +71,9 @@ class BulkWriteBatch(BaseBatch):
 
         _api = self._client._firestore_api
         save_response: BatchWriteResponse = _api.batch_write(
-            request=request, metadata=self._client._rpc_metadata, **kwargs,
+            request=request,
+            metadata=self._client._rpc_metadata,
+            **kwargs,
         )
 
         self._write_pbs = []

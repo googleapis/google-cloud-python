@@ -27,9 +27,9 @@ def test_order_compare_across_heterogenous_values():
     from google.cloud.firestore_v1.order import Order
 
     # Constants used to represent min/max values of storage types.
-    int_max_value = 2 ** 31 - 1
-    int_min_value = -(2 ** 31)
-    float_min_value = 1.175494351 ** -38
+    int_max_value = 2**31 - 1
+    int_min_value = -(2**31)
+    float_min_value = 1.175494351**-38
     float_nan = float("nan")
     inf = float("inf")
 

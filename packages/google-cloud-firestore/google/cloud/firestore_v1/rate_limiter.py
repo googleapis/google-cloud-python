@@ -173,5 +173,6 @@ class RateLimiter:
 
                 # Add the number of provisioned tokens, capped at the maximum size.
                 self._available_tokens = min(
-                    self._maximum_tokens, self._available_tokens + new_tokens,
+                    self._maximum_tokens,
+                    self._available_tokens + new_tokens,
                 )

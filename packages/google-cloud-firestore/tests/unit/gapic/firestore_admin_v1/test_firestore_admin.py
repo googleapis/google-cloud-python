@@ -102,7 +102,11 @@ def test__get_default_mtls_endpoint():
 
 
 @pytest.mark.parametrize(
-    "client_class", [FirestoreAdminClient, FirestoreAdminAsyncClient,]
+    "client_class",
+    [
+        FirestoreAdminClient,
+        FirestoreAdminAsyncClient,
+    ],
 )
 def test_firestore_admin_client_from_service_account_info(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -144,7 +148,11 @@ def test_firestore_admin_client_service_account_always_use_jwt(
 
 
 @pytest.mark.parametrize(
-    "client_class", [FirestoreAdminClient, FirestoreAdminAsyncClient,]
+    "client_class",
+    [
+        FirestoreAdminClient,
+        FirestoreAdminAsyncClient,
+    ],
 )
 def test_firestore_admin_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -508,7 +516,9 @@ def test_firestore_admin_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -651,10 +661,17 @@ def test_firestore_admin_client_create_channel_credentials_file(
         )
 
 
-@pytest.mark.parametrize("request_type", [firestore_admin.CreateIndexRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        firestore_admin.CreateIndexRequest,
+        dict,
+    ],
+)
 def test_create_index(request_type, transport: str = "grpc"):
     client = FirestoreAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -680,7 +697,8 @@ def test_create_index_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = FirestoreAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -696,7 +714,8 @@ async def test_create_index_async(
     transport: str = "grpc_asyncio", request_type=firestore_admin.CreateIndexRequest
 ):
     client = FirestoreAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -726,7 +745,9 @@ async def test_create_index_async_from_dict():
 
 
 def test_create_index_field_headers():
-    client = FirestoreAdminClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -746,7 +767,10 @@ def test_create_index_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -775,11 +799,16 @@ async def test_create_index_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_index_flattened():
-    client = FirestoreAdminClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_index), "__call__") as call:
@@ -788,7 +817,8 @@ def test_create_index_flattened():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         client.create_index(
-            parent="parent_value", index=gfa_index.Index(name="name_value"),
+            parent="parent_value",
+            index=gfa_index.Index(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -804,7 +834,9 @@ def test_create_index_flattened():
 
 
 def test_create_index_flattened_error():
-    client = FirestoreAdminClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -833,7 +865,8 @@ async def test_create_index_flattened_async():
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
         response = await client.create_index(
-            parent="parent_value", index=gfa_index.Index(name="name_value"),
+            parent="parent_value",
+            index=gfa_index.Index(name="name_value"),
         )
 
         # Establish that the underlying call was made with the expected
@@ -864,10 +897,17 @@ async def test_create_index_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [firestore_admin.ListIndexesRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        firestore_admin.ListIndexesRequest,
+        dict,
+    ],
+)
 def test_list_indexes(request_type, transport: str = "grpc"):
     client = FirestoreAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -896,7 +936,8 @@ def test_list_indexes_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = FirestoreAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -912,7 +953,8 @@ async def test_list_indexes_async(
     transport: str = "grpc_asyncio", request_type=firestore_admin.ListIndexesRequest
 ):
     client = FirestoreAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -945,7 +987,9 @@ async def test_list_indexes_async_from_dict():
 
 
 def test_list_indexes_field_headers():
-    client = FirestoreAdminClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -965,7 +1009,10 @@ def test_list_indexes_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -994,11 +1041,16 @@ async def test_list_indexes_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_indexes_flattened():
-    client = FirestoreAdminClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_indexes), "__call__") as call:
@@ -1006,7 +1058,9 @@ def test_list_indexes_flattened():
         call.return_value = firestore_admin.ListIndexesResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_indexes(parent="parent_value",)
+        client.list_indexes(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1018,13 +1072,16 @@ def test_list_indexes_flattened():
 
 
 def test_list_indexes_flattened_error():
-    client = FirestoreAdminClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_indexes(
-            firestore_admin.ListIndexesRequest(), parent="parent_value",
+            firestore_admin.ListIndexesRequest(),
+            parent="parent_value",
         )
 
 
@@ -1044,7 +1101,9 @@ async def test_list_indexes_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_indexes(parent="parent_value",)
+        response = await client.list_indexes(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1065,13 +1124,15 @@ async def test_list_indexes_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_indexes(
-            firestore_admin.ListIndexesRequest(), parent="parent_value",
+            firestore_admin.ListIndexesRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_indexes_pager(transport_name: str = "grpc"):
     client = FirestoreAdminClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1079,15 +1140,28 @@ def test_list_indexes_pager(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             firestore_admin.ListIndexesResponse(
-                indexes=[index.Index(), index.Index(), index.Index(),],
+                indexes=[
+                    index.Index(),
+                    index.Index(),
+                    index.Index(),
+                ],
                 next_page_token="abc",
             ),
-            firestore_admin.ListIndexesResponse(indexes=[], next_page_token="def",),
             firestore_admin.ListIndexesResponse(
-                indexes=[index.Index(),], next_page_token="ghi",
+                indexes=[],
+                next_page_token="def",
             ),
             firestore_admin.ListIndexesResponse(
-                indexes=[index.Index(), index.Index(),],
+                indexes=[
+                    index.Index(),
+                ],
+                next_page_token="ghi",
+            ),
+            firestore_admin.ListIndexesResponse(
+                indexes=[
+                    index.Index(),
+                    index.Index(),
+                ],
             ),
             RuntimeError,
         )
@@ -1107,7 +1181,8 @@ def test_list_indexes_pager(transport_name: str = "grpc"):
 
 def test_list_indexes_pages(transport_name: str = "grpc"):
     client = FirestoreAdminClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1115,15 +1190,28 @@ def test_list_indexes_pages(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             firestore_admin.ListIndexesResponse(
-                indexes=[index.Index(), index.Index(), index.Index(),],
+                indexes=[
+                    index.Index(),
+                    index.Index(),
+                    index.Index(),
+                ],
                 next_page_token="abc",
             ),
-            firestore_admin.ListIndexesResponse(indexes=[], next_page_token="def",),
             firestore_admin.ListIndexesResponse(
-                indexes=[index.Index(),], next_page_token="ghi",
+                indexes=[],
+                next_page_token="def",
             ),
             firestore_admin.ListIndexesResponse(
-                indexes=[index.Index(), index.Index(),],
+                indexes=[
+                    index.Index(),
+                ],
+                next_page_token="ghi",
+            ),
+            firestore_admin.ListIndexesResponse(
+                indexes=[
+                    index.Index(),
+                    index.Index(),
+                ],
             ),
             RuntimeError,
         )
@@ -1134,7 +1222,9 @@ def test_list_indexes_pages(transport_name: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_list_indexes_async_pager():
-    client = FirestoreAdminAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = FirestoreAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1143,19 +1233,34 @@ async def test_list_indexes_async_pager():
         # Set the response to a series of pages.
         call.side_effect = (
             firestore_admin.ListIndexesResponse(
-                indexes=[index.Index(), index.Index(), index.Index(),],
+                indexes=[
+                    index.Index(),
+                    index.Index(),
+                    index.Index(),
+                ],
                 next_page_token="abc",
             ),
-            firestore_admin.ListIndexesResponse(indexes=[], next_page_token="def",),
             firestore_admin.ListIndexesResponse(
-                indexes=[index.Index(),], next_page_token="ghi",
+                indexes=[],
+                next_page_token="def",
             ),
             firestore_admin.ListIndexesResponse(
-                indexes=[index.Index(), index.Index(),],
+                indexes=[
+                    index.Index(),
+                ],
+                next_page_token="ghi",
+            ),
+            firestore_admin.ListIndexesResponse(
+                indexes=[
+                    index.Index(),
+                    index.Index(),
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.list_indexes(request={},)
+        async_pager = await client.list_indexes(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -1167,7 +1272,9 @@ async def test_list_indexes_async_pager():
 
 @pytest.mark.asyncio
 async def test_list_indexes_async_pages():
-    client = FirestoreAdminAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = FirestoreAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1176,15 +1283,28 @@ async def test_list_indexes_async_pages():
         # Set the response to a series of pages.
         call.side_effect = (
             firestore_admin.ListIndexesResponse(
-                indexes=[index.Index(), index.Index(), index.Index(),],
+                indexes=[
+                    index.Index(),
+                    index.Index(),
+                    index.Index(),
+                ],
                 next_page_token="abc",
             ),
-            firestore_admin.ListIndexesResponse(indexes=[], next_page_token="def",),
             firestore_admin.ListIndexesResponse(
-                indexes=[index.Index(),], next_page_token="ghi",
+                indexes=[],
+                next_page_token="def",
             ),
             firestore_admin.ListIndexesResponse(
-                indexes=[index.Index(), index.Index(),],
+                indexes=[
+                    index.Index(),
+                ],
+                next_page_token="ghi",
+            ),
+            firestore_admin.ListIndexesResponse(
+                indexes=[
+                    index.Index(),
+                    index.Index(),
+                ],
             ),
             RuntimeError,
         )
@@ -1195,10 +1315,17 @@ async def test_list_indexes_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [firestore_admin.GetIndexRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        firestore_admin.GetIndexRequest,
+        dict,
+    ],
+)
 def test_get_index(request_type, transport: str = "grpc"):
     client = FirestoreAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1231,7 +1358,8 @@ def test_get_index_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = FirestoreAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1247,7 +1375,8 @@ async def test_get_index_async(
     transport: str = "grpc_asyncio", request_type=firestore_admin.GetIndexRequest
 ):
     client = FirestoreAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1284,7 +1413,9 @@ async def test_get_index_async_from_dict():
 
 
 def test_get_index_field_headers():
-    client = FirestoreAdminClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1304,7 +1435,10 @@ def test_get_index_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1331,11 +1465,16 @@ async def test_get_index_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_index_flattened():
-    client = FirestoreAdminClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_index), "__call__") as call:
@@ -1343,7 +1482,9 @@ def test_get_index_flattened():
         call.return_value = index.Index()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_index(name="name_value",)
+        client.get_index(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1355,13 +1496,16 @@ def test_get_index_flattened():
 
 
 def test_get_index_flattened_error():
-    client = FirestoreAdminClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_index(
-            firestore_admin.GetIndexRequest(), name="name_value",
+            firestore_admin.GetIndexRequest(),
+            name="name_value",
         )
 
 
@@ -1379,7 +1523,9 @@ async def test_get_index_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(index.Index())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_index(name="name_value",)
+        response = await client.get_index(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1400,14 +1546,22 @@ async def test_get_index_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_index(
-            firestore_admin.GetIndexRequest(), name="name_value",
+            firestore_admin.GetIndexRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [firestore_admin.DeleteIndexRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        firestore_admin.DeleteIndexRequest,
+        dict,
+    ],
+)
 def test_delete_index(request_type, transport: str = "grpc"):
     client = FirestoreAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1433,7 +1587,8 @@ def test_delete_index_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = FirestoreAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1449,7 +1604,8 @@ async def test_delete_index_async(
     transport: str = "grpc_asyncio", request_type=firestore_admin.DeleteIndexRequest
 ):
     client = FirestoreAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1477,7 +1633,9 @@ async def test_delete_index_async_from_dict():
 
 
 def test_delete_index_field_headers():
-    client = FirestoreAdminClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1497,7 +1655,10 @@ def test_delete_index_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1524,11 +1685,16 @@ async def test_delete_index_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_index_flattened():
-    client = FirestoreAdminClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_index), "__call__") as call:
@@ -1536,7 +1702,9 @@ def test_delete_index_flattened():
         call.return_value = None
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_index(name="name_value",)
+        client.delete_index(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1548,13 +1716,16 @@ def test_delete_index_flattened():
 
 
 def test_delete_index_flattened_error():
-    client = FirestoreAdminClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_index(
-            firestore_admin.DeleteIndexRequest(), name="name_value",
+            firestore_admin.DeleteIndexRequest(),
+            name="name_value",
         )
 
 
@@ -1572,7 +1743,9 @@ async def test_delete_index_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_index(name="name_value",)
+        response = await client.delete_index(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1593,14 +1766,22 @@ async def test_delete_index_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_index(
-            firestore_admin.DeleteIndexRequest(), name="name_value",
+            firestore_admin.DeleteIndexRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [firestore_admin.GetFieldRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        firestore_admin.GetFieldRequest,
+        dict,
+    ],
+)
 def test_get_field(request_type, transport: str = "grpc"):
     client = FirestoreAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1610,7 +1791,9 @@ def test_get_field(request_type, transport: str = "grpc"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_field), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = field.Field(name="name_value",)
+        call.return_value = field.Field(
+            name="name_value",
+        )
         response = client.get_field(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -1627,7 +1810,8 @@ def test_get_field_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = FirestoreAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1643,7 +1827,8 @@ async def test_get_field_async(
     transport: str = "grpc_asyncio", request_type=firestore_admin.GetFieldRequest
 ):
     client = FirestoreAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1654,7 +1839,9 @@ async def test_get_field_async(
     with mock.patch.object(type(client.transport.get_field), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            field.Field(name="name_value",)
+            field.Field(
+                name="name_value",
+            )
         )
         response = await client.get_field(request)
 
@@ -1674,7 +1861,9 @@ async def test_get_field_async_from_dict():
 
 
 def test_get_field_field_headers():
-    client = FirestoreAdminClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1694,7 +1883,10 @@ def test_get_field_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1721,11 +1913,16 @@ async def test_get_field_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_field_flattened():
-    client = FirestoreAdminClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_field), "__call__") as call:
@@ -1733,7 +1930,9 @@ def test_get_field_flattened():
         call.return_value = field.Field()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_field(name="name_value",)
+        client.get_field(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1745,13 +1944,16 @@ def test_get_field_flattened():
 
 
 def test_get_field_flattened_error():
-    client = FirestoreAdminClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_field(
-            firestore_admin.GetFieldRequest(), name="name_value",
+            firestore_admin.GetFieldRequest(),
+            name="name_value",
         )
 
 
@@ -1769,7 +1971,9 @@ async def test_get_field_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(field.Field())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_field(name="name_value",)
+        response = await client.get_field(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1790,14 +1994,22 @@ async def test_get_field_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_field(
-            firestore_admin.GetFieldRequest(), name="name_value",
+            firestore_admin.GetFieldRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [firestore_admin.UpdateFieldRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        firestore_admin.UpdateFieldRequest,
+        dict,
+    ],
+)
 def test_update_field(request_type, transport: str = "grpc"):
     client = FirestoreAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1823,7 +2035,8 @@ def test_update_field_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = FirestoreAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1839,7 +2052,8 @@ async def test_update_field_async(
     transport: str = "grpc_asyncio", request_type=firestore_admin.UpdateFieldRequest
 ):
     client = FirestoreAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1869,7 +2083,9 @@ async def test_update_field_async_from_dict():
 
 
 def test_update_field_field_headers():
-    client = FirestoreAdminClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1889,7 +2105,10 @@ def test_update_field_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "field.name=field.name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "field.name=field.name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1918,11 +2137,16 @@ async def test_update_field_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "field.name=field.name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "field.name=field.name/value",
+    ) in kw["metadata"]
 
 
 def test_update_field_flattened():
-    client = FirestoreAdminClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_field), "__call__") as call:
@@ -1930,7 +2154,9 @@ def test_update_field_flattened():
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.update_field(field=gfa_field.Field(name="name_value"),)
+        client.update_field(
+            field=gfa_field.Field(name="name_value"),
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1942,7 +2168,9 @@ def test_update_field_flattened():
 
 
 def test_update_field_flattened_error():
-    client = FirestoreAdminClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1969,7 +2197,9 @@ async def test_update_field_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.update_field(field=gfa_field.Field(name="name_value"),)
+        response = await client.update_field(
+            field=gfa_field.Field(name="name_value"),
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1995,10 +2225,17 @@ async def test_update_field_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [firestore_admin.ListFieldsRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        firestore_admin.ListFieldsRequest,
+        dict,
+    ],
+)
 def test_list_fields(request_type, transport: str = "grpc"):
     client = FirestoreAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2027,7 +2264,8 @@ def test_list_fields_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = FirestoreAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2043,7 +2281,8 @@ async def test_list_fields_async(
     transport: str = "grpc_asyncio", request_type=firestore_admin.ListFieldsRequest
 ):
     client = FirestoreAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2054,7 +2293,9 @@ async def test_list_fields_async(
     with mock.patch.object(type(client.transport.list_fields), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            firestore_admin.ListFieldsResponse(next_page_token="next_page_token_value",)
+            firestore_admin.ListFieldsResponse(
+                next_page_token="next_page_token_value",
+            )
         )
         response = await client.list_fields(request)
 
@@ -2074,7 +2315,9 @@ async def test_list_fields_async_from_dict():
 
 
 def test_list_fields_field_headers():
-    client = FirestoreAdminClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2094,7 +2337,10 @@ def test_list_fields_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2123,11 +2369,16 @@ async def test_list_fields_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_fields_flattened():
-    client = FirestoreAdminClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_fields), "__call__") as call:
@@ -2135,7 +2386,9 @@ def test_list_fields_flattened():
         call.return_value = firestore_admin.ListFieldsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_fields(parent="parent_value",)
+        client.list_fields(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2147,13 +2400,16 @@ def test_list_fields_flattened():
 
 
 def test_list_fields_flattened_error():
-    client = FirestoreAdminClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_fields(
-            firestore_admin.ListFieldsRequest(), parent="parent_value",
+            firestore_admin.ListFieldsRequest(),
+            parent="parent_value",
         )
 
 
@@ -2173,7 +2429,9 @@ async def test_list_fields_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_fields(parent="parent_value",)
+        response = await client.list_fields(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2194,13 +2452,15 @@ async def test_list_fields_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_fields(
-            firestore_admin.ListFieldsRequest(), parent="parent_value",
+            firestore_admin.ListFieldsRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_fields_pager(transport_name: str = "grpc"):
     client = FirestoreAdminClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2208,14 +2468,29 @@ def test_list_fields_pager(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             firestore_admin.ListFieldsResponse(
-                fields=[field.Field(), field.Field(), field.Field(),],
+                fields=[
+                    field.Field(),
+                    field.Field(),
+                    field.Field(),
+                ],
                 next_page_token="abc",
             ),
-            firestore_admin.ListFieldsResponse(fields=[], next_page_token="def",),
             firestore_admin.ListFieldsResponse(
-                fields=[field.Field(),], next_page_token="ghi",
+                fields=[],
+                next_page_token="def",
             ),
-            firestore_admin.ListFieldsResponse(fields=[field.Field(), field.Field(),],),
+            firestore_admin.ListFieldsResponse(
+                fields=[
+                    field.Field(),
+                ],
+                next_page_token="ghi",
+            ),
+            firestore_admin.ListFieldsResponse(
+                fields=[
+                    field.Field(),
+                    field.Field(),
+                ],
+            ),
             RuntimeError,
         )
 
@@ -2234,7 +2509,8 @@ def test_list_fields_pager(transport_name: str = "grpc"):
 
 def test_list_fields_pages(transport_name: str = "grpc"):
     client = FirestoreAdminClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2242,14 +2518,29 @@ def test_list_fields_pages(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             firestore_admin.ListFieldsResponse(
-                fields=[field.Field(), field.Field(), field.Field(),],
+                fields=[
+                    field.Field(),
+                    field.Field(),
+                    field.Field(),
+                ],
                 next_page_token="abc",
             ),
-            firestore_admin.ListFieldsResponse(fields=[], next_page_token="def",),
             firestore_admin.ListFieldsResponse(
-                fields=[field.Field(),], next_page_token="ghi",
+                fields=[],
+                next_page_token="def",
             ),
-            firestore_admin.ListFieldsResponse(fields=[field.Field(), field.Field(),],),
+            firestore_admin.ListFieldsResponse(
+                fields=[
+                    field.Field(),
+                ],
+                next_page_token="ghi",
+            ),
+            firestore_admin.ListFieldsResponse(
+                fields=[
+                    field.Field(),
+                    field.Field(),
+                ],
+            ),
             RuntimeError,
         )
         pages = list(client.list_fields(request={}).pages)
@@ -2259,7 +2550,9 @@ def test_list_fields_pages(transport_name: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_list_fields_async_pager():
-    client = FirestoreAdminAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = FirestoreAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2268,17 +2561,34 @@ async def test_list_fields_async_pager():
         # Set the response to a series of pages.
         call.side_effect = (
             firestore_admin.ListFieldsResponse(
-                fields=[field.Field(), field.Field(), field.Field(),],
+                fields=[
+                    field.Field(),
+                    field.Field(),
+                    field.Field(),
+                ],
                 next_page_token="abc",
             ),
-            firestore_admin.ListFieldsResponse(fields=[], next_page_token="def",),
             firestore_admin.ListFieldsResponse(
-                fields=[field.Field(),], next_page_token="ghi",
+                fields=[],
+                next_page_token="def",
             ),
-            firestore_admin.ListFieldsResponse(fields=[field.Field(), field.Field(),],),
+            firestore_admin.ListFieldsResponse(
+                fields=[
+                    field.Field(),
+                ],
+                next_page_token="ghi",
+            ),
+            firestore_admin.ListFieldsResponse(
+                fields=[
+                    field.Field(),
+                    field.Field(),
+                ],
+            ),
             RuntimeError,
         )
-        async_pager = await client.list_fields(request={},)
+        async_pager = await client.list_fields(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -2290,7 +2600,9 @@ async def test_list_fields_async_pager():
 
 @pytest.mark.asyncio
 async def test_list_fields_async_pages():
-    client = FirestoreAdminAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = FirestoreAdminAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2299,14 +2611,29 @@ async def test_list_fields_async_pages():
         # Set the response to a series of pages.
         call.side_effect = (
             firestore_admin.ListFieldsResponse(
-                fields=[field.Field(), field.Field(), field.Field(),],
+                fields=[
+                    field.Field(),
+                    field.Field(),
+                    field.Field(),
+                ],
                 next_page_token="abc",
             ),
-            firestore_admin.ListFieldsResponse(fields=[], next_page_token="def",),
             firestore_admin.ListFieldsResponse(
-                fields=[field.Field(),], next_page_token="ghi",
+                fields=[],
+                next_page_token="def",
             ),
-            firestore_admin.ListFieldsResponse(fields=[field.Field(), field.Field(),],),
+            firestore_admin.ListFieldsResponse(
+                fields=[
+                    field.Field(),
+                ],
+                next_page_token="ghi",
+            ),
+            firestore_admin.ListFieldsResponse(
+                fields=[
+                    field.Field(),
+                    field.Field(),
+                ],
+            ),
             RuntimeError,
         )
         pages = []
@@ -2317,11 +2644,16 @@ async def test_list_fields_async_pages():
 
 
 @pytest.mark.parametrize(
-    "request_type", [firestore_admin.ExportDocumentsRequest, dict,]
+    "request_type",
+    [
+        firestore_admin.ExportDocumentsRequest,
+        dict,
+    ],
 )
 def test_export_documents(request_type, transport: str = "grpc"):
     client = FirestoreAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2347,7 +2679,8 @@ def test_export_documents_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = FirestoreAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2363,7 +2696,8 @@ async def test_export_documents_async(
     transport: str = "grpc_asyncio", request_type=firestore_admin.ExportDocumentsRequest
 ):
     client = FirestoreAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2393,7 +2727,9 @@ async def test_export_documents_async_from_dict():
 
 
 def test_export_documents_field_headers():
-    client = FirestoreAdminClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2413,7 +2749,10 @@ def test_export_documents_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2442,11 +2781,16 @@ async def test_export_documents_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_export_documents_flattened():
-    client = FirestoreAdminClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.export_documents), "__call__") as call:
@@ -2454,7 +2798,9 @@ def test_export_documents_flattened():
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.export_documents(name="name_value",)
+        client.export_documents(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2466,13 +2812,16 @@ def test_export_documents_flattened():
 
 
 def test_export_documents_flattened_error():
-    client = FirestoreAdminClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.export_documents(
-            firestore_admin.ExportDocumentsRequest(), name="name_value",
+            firestore_admin.ExportDocumentsRequest(),
+            name="name_value",
         )
 
 
@@ -2492,7 +2841,9 @@ async def test_export_documents_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.export_documents(name="name_value",)
+        response = await client.export_documents(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2513,16 +2864,22 @@ async def test_export_documents_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.export_documents(
-            firestore_admin.ExportDocumentsRequest(), name="name_value",
+            firestore_admin.ExportDocumentsRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [firestore_admin.ImportDocumentsRequest, dict,]
+    "request_type",
+    [
+        firestore_admin.ImportDocumentsRequest,
+        dict,
+    ],
 )
 def test_import_documents(request_type, transport: str = "grpc"):
     client = FirestoreAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2548,7 +2905,8 @@ def test_import_documents_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = FirestoreAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2564,7 +2922,8 @@ async def test_import_documents_async(
     transport: str = "grpc_asyncio", request_type=firestore_admin.ImportDocumentsRequest
 ):
     client = FirestoreAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2594,7 +2953,9 @@ async def test_import_documents_async_from_dict():
 
 
 def test_import_documents_field_headers():
-    client = FirestoreAdminClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2614,7 +2975,10 @@ def test_import_documents_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2643,11 +3007,16 @@ async def test_import_documents_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_import_documents_flattened():
-    client = FirestoreAdminClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.import_documents), "__call__") as call:
@@ -2655,7 +3024,9 @@ def test_import_documents_flattened():
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.import_documents(name="name_value",)
+        client.import_documents(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2667,13 +3038,16 @@ def test_import_documents_flattened():
 
 
 def test_import_documents_flattened_error():
-    client = FirestoreAdminClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.import_documents(
-            firestore_admin.ImportDocumentsRequest(), name="name_value",
+            firestore_admin.ImportDocumentsRequest(),
+            name="name_value",
         )
 
 
@@ -2693,7 +3067,9 @@ async def test_import_documents_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.import_documents(name="name_value",)
+        response = await client.import_documents(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2714,14 +3090,22 @@ async def test_import_documents_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.import_documents(
-            firestore_admin.ImportDocumentsRequest(), name="name_value",
+            firestore_admin.ImportDocumentsRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [firestore_admin.GetDatabaseRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        firestore_admin.GetDatabaseRequest,
+        dict,
+    ],
+)
 def test_get_database(request_type, transport: str = "grpc"):
     client = FirestoreAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2758,7 +3142,8 @@ def test_get_database_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = FirestoreAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2774,7 +3159,8 @@ async def test_get_database_async(
     transport: str = "grpc_asyncio", request_type=firestore_admin.GetDatabaseRequest
 ):
     client = FirestoreAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2815,7 +3201,9 @@ async def test_get_database_async_from_dict():
 
 
 def test_get_database_field_headers():
-    client = FirestoreAdminClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2835,7 +3223,10 @@ def test_get_database_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2862,11 +3253,16 @@ async def test_get_database_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_database_flattened():
-    client = FirestoreAdminClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_database), "__call__") as call:
@@ -2874,7 +3270,9 @@ def test_get_database_flattened():
         call.return_value = database.Database()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_database(name="name_value",)
+        client.get_database(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2886,13 +3284,16 @@ def test_get_database_flattened():
 
 
 def test_get_database_flattened_error():
-    client = FirestoreAdminClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_database(
-            firestore_admin.GetDatabaseRequest(), name="name_value",
+            firestore_admin.GetDatabaseRequest(),
+            name="name_value",
         )
 
 
@@ -2910,7 +3311,9 @@ async def test_get_database_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(database.Database())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_database(name="name_value",)
+        response = await client.get_database(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2931,14 +3334,22 @@ async def test_get_database_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_database(
-            firestore_admin.GetDatabaseRequest(), name="name_value",
+            firestore_admin.GetDatabaseRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [firestore_admin.ListDatabasesRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        firestore_admin.ListDatabasesRequest,
+        dict,
+    ],
+)
 def test_list_databases(request_type, transport: str = "grpc"):
     client = FirestoreAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2964,7 +3375,8 @@ def test_list_databases_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = FirestoreAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2980,7 +3392,8 @@ async def test_list_databases_async(
     transport: str = "grpc_asyncio", request_type=firestore_admin.ListDatabasesRequest
 ):
     client = FirestoreAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3010,7 +3423,9 @@ async def test_list_databases_async_from_dict():
 
 
 def test_list_databases_field_headers():
-    client = FirestoreAdminClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3030,7 +3445,10 @@ def test_list_databases_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -3059,11 +3477,16 @@ async def test_list_databases_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_databases_flattened():
-    client = FirestoreAdminClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_databases), "__call__") as call:
@@ -3071,7 +3494,9 @@ def test_list_databases_flattened():
         call.return_value = firestore_admin.ListDatabasesResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_databases(parent="parent_value",)
+        client.list_databases(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3083,13 +3508,16 @@ def test_list_databases_flattened():
 
 
 def test_list_databases_flattened_error():
-    client = FirestoreAdminClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_databases(
-            firestore_admin.ListDatabasesRequest(), parent="parent_value",
+            firestore_admin.ListDatabasesRequest(),
+            parent="parent_value",
         )
 
 
@@ -3109,7 +3537,9 @@ async def test_list_databases_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_databases(parent="parent_value",)
+        response = await client.list_databases(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3130,14 +3560,22 @@ async def test_list_databases_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_databases(
-            firestore_admin.ListDatabasesRequest(), parent="parent_value",
+            firestore_admin.ListDatabasesRequest(),
+            parent="parent_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [firestore_admin.UpdateDatabaseRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        firestore_admin.UpdateDatabaseRequest,
+        dict,
+    ],
+)
 def test_update_database(request_type, transport: str = "grpc"):
     client = FirestoreAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3163,7 +3601,8 @@ def test_update_database_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = FirestoreAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3179,7 +3618,8 @@ async def test_update_database_async(
     transport: str = "grpc_asyncio", request_type=firestore_admin.UpdateDatabaseRequest
 ):
     client = FirestoreAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3209,7 +3649,9 @@ async def test_update_database_async_from_dict():
 
 
 def test_update_database_field_headers():
-    client = FirestoreAdminClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3229,9 +3671,10 @@ def test_update_database_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "database.name=database.name/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "database.name=database.name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -3260,13 +3703,16 @@ async def test_update_database_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "database.name=database.name/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "database.name=database.name/value",
+    ) in kw["metadata"]
 
 
 def test_update_database_flattened():
-    client = FirestoreAdminClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_database), "__call__") as call:
@@ -3292,7 +3738,9 @@ def test_update_database_flattened():
 
 
 def test_update_database_flattened_error():
-    client = FirestoreAdminClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -3360,7 +3808,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = FirestoreAdminClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -3380,7 +3829,10 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = FirestoreAdminClient(client_options=options, transport=transport,)
+        client = FirestoreAdminClient(
+            client_options=options,
+            transport=transport,
+        )
 
     # It is an error to provide an api_key and a credential.
     options = mock.Mock()
@@ -3396,7 +3848,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = FirestoreAdminClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -3441,8 +3894,13 @@ def test_transport_adc(transport_class):
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
-    client = FirestoreAdminClient(credentials=ga_credentials.AnonymousCredentials(),)
-    assert isinstance(client.transport, transports.FirestoreAdminGrpcTransport,)
+    client = FirestoreAdminClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    assert isinstance(
+        client.transport,
+        transports.FirestoreAdminGrpcTransport,
+    )
 
 
 def test_firestore_admin_base_transport_error():
@@ -3503,7 +3961,8 @@ def test_firestore_admin_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.FirestoreAdminTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -3673,7 +4132,8 @@ def test_firestore_admin_grpc_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.FirestoreAdminGrpcTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -3685,7 +4145,8 @@ def test_firestore_admin_grpc_asyncio_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.FirestoreAdminGrpcAsyncIOTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -3794,12 +4255,16 @@ def test_firestore_admin_transport_channel_mtls_with_adc(transport_class):
 
 def test_firestore_admin_grpc_lro_client():
     client = FirestoreAdminClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
     transport = client.transport
 
     # Ensure that we have a api-core operations client.
-    assert isinstance(transport.operations_client, operations_v1.OperationsClient,)
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsClient,
+    )
 
     # Ensure that subsequent calls to the property send the exact same object.
     assert transport.operations_client is transport.operations_client
@@ -3807,12 +4272,16 @@ def test_firestore_admin_grpc_lro_client():
 
 def test_firestore_admin_grpc_lro_async_client():
     client = FirestoreAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     transport = client.transport
 
     # Ensure that we have a api-core operations client.
-    assert isinstance(transport.operations_client, operations_v1.OperationsAsyncClient,)
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsAsyncClient,
+    )
 
     # Ensure that subsequent calls to the property send the exact same object.
     assert transport.operations_client is transport.operations_client
@@ -3822,8 +4291,12 @@ def test_collection_group_path():
     project = "squid"
     database = "clam"
     collection = "whelk"
-    expected = "projects/{project}/databases/{database}/collectionGroups/{collection}".format(
-        project=project, database=database, collection=collection,
+    expected = (
+        "projects/{project}/databases/{database}/collectionGroups/{collection}".format(
+            project=project,
+            database=database,
+            collection=collection,
+        )
     )
     actual = FirestoreAdminClient.collection_group_path(project, database, collection)
     assert expected == actual
@@ -3846,7 +4319,8 @@ def test_database_path():
     project = "cuttlefish"
     database = "mussel"
     expected = "projects/{project}/databases/{database}".format(
-        project=project, database=database,
+        project=project,
+        database=database,
     )
     actual = FirestoreAdminClient.database_path(project, database)
     assert expected == actual
@@ -3870,7 +4344,10 @@ def test_field_path():
     collection = "squid"
     field = "clam"
     expected = "projects/{project}/databases/{database}/collectionGroups/{collection}/fields/{field}".format(
-        project=project, database=database, collection=collection, field=field,
+        project=project,
+        database=database,
+        collection=collection,
+        field=field,
     )
     actual = FirestoreAdminClient.field_path(project, database, collection, field)
     assert expected == actual
@@ -3896,7 +4373,10 @@ def test_index_path():
     collection = "winkle"
     index = "nautilus"
     expected = "projects/{project}/databases/{database}/collectionGroups/{collection}/indexes/{index}".format(
-        project=project, database=database, collection=collection, index=index,
+        project=project,
+        database=database,
+        collection=collection,
+        index=index,
     )
     actual = FirestoreAdminClient.index_path(project, database, collection, index)
     assert expected == actual
@@ -3938,7 +4418,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "oyster"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = FirestoreAdminClient.common_folder_path(folder)
     assert expected == actual
 
@@ -3956,7 +4438,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "cuttlefish"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = FirestoreAdminClient.common_organization_path(organization)
     assert expected == actual
 
@@ -3974,7 +4458,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "winkle"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = FirestoreAdminClient.common_project_path(project)
     assert expected == actual
 
@@ -3994,7 +4480,8 @@ def test_common_location_path():
     project = "scallop"
     location = "abalone"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = FirestoreAdminClient.common_location_path(project, location)
     assert expected == actual
@@ -4019,7 +4506,8 @@ def test_client_with_default_client_info():
         transports.FirestoreAdminTransport, "_prep_wrapped_messages"
     ) as prep:
         client = FirestoreAdminClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -4028,7 +4516,8 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = FirestoreAdminClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -4036,7 +4525,8 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = FirestoreAdminAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     with mock.patch.object(
         type(getattr(client.transport, "grpc_channel")), "close"

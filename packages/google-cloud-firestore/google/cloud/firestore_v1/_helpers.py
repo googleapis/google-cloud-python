@@ -476,7 +476,7 @@ def get_field_value(document_data, field_path) -> Any:
 
 
 class DocumentExtractor(object):
-    """ Break document data up into actual data and transforms.
+    """Break document data up into actual data and transforms.
 
     Handle special values such as ``DELETE_FIELD``, ``SERVER_TIMESTAMP``.
 
@@ -720,8 +720,7 @@ def pbs_for_set_no_merge(document_path, document_data) -> List[types.write.Write
 
 
 class DocumentExtractorForMerge(DocumentExtractor):
-    """ Break document data up into actual data and transforms.
-    """
+    """Break document data up into actual data and transforms."""
 
     def __init__(self, document_data) -> None:
         super(DocumentExtractorForMerge, self).__init__(document_data)
@@ -874,8 +873,7 @@ def pbs_for_set_with_merge(
 
 
 class DocumentExtractorForUpdate(DocumentExtractor):
-    """ Break document data up into actual data and transforms.
-    """
+    """Break document data up into actual data and transforms."""
 
     def __init__(self, document_data) -> None:
         super(DocumentExtractorForUpdate, self).__init__(document_data)
@@ -1134,7 +1132,8 @@ def build_timestamp(
 
 
 def compare_timestamps(
-    ts1: Union[Timestamp, datetime.datetime], ts2: Union[Timestamp, datetime.datetime],
+    ts1: Union[Timestamp, datetime.datetime],
+    ts2: Union[Timestamp, datetime.datetime],
 ) -> int:
     ts1 = build_timestamp(ts1) if not isinstance(ts1, Timestamp) else ts1
     ts2 = build_timestamp(ts2) if not isinstance(ts2, Timestamp) else ts2
@@ -1234,7 +1233,9 @@ def deserialize_bundle(
 
     # Now, finally add the metadata element
     bundle._add_bundle_element(
-        metadata_bundle_element, client=client, type="metadata",  # type: ignore
+        metadata_bundle_element,
+        client=client,
+        type="metadata",  # type: ignore
     )
 
     return bundle
@@ -1295,7 +1296,9 @@ def _get_documents_from_bundle(
 
 
 def _get_document_from_bundle(
-    bundle, *, document_id: str,
+    bundle,
+    *,
+    document_id: str,
 ) -> Optional["google.cloud.firestore.DocumentSnapshot"]:  # type: ignore
     bundled_doc = bundle.documents.get(document_id)
     if bundled_doc:

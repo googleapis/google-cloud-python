@@ -82,7 +82,7 @@ def test_basewritebatch_set():
 
     reference = client.document("another", "one")
     field = "zapzap"
-    value = u"meadows and flowers"
+    value = "meadows and flowers"
     document_data = {field: value}
     ret_val = batch.set(reference, document_data)
     assert ret_val is None
@@ -105,7 +105,7 @@ def test_basewritebatch_set_merge():
 
     reference = client.document("another", "one")
     field = "zapzap"
-    value = u"meadows and flowers"
+    value = "meadows and flowers"
     document_data = {field: value}
     ret_val = batch.set(reference, document_data, merge=True)
     assert ret_val is None
@@ -130,7 +130,7 @@ def test_basewritebatch_update():
 
     reference = client.document("cats", "cradle")
     field_path = "head.foot"
-    value = u"knees toes shoulders"
+    value = "knees toes shoulders"
     field_updates = {field_path: value}
 
     ret_val = batch.update(reference, field_updates)
@@ -139,7 +139,8 @@ def test_basewritebatch_update():
     map_pb = document.MapValue(fields={"foot": _value_pb(string_value=value)})
     new_write_pb = write.Write(
         update=document.Document(
-            name=reference._document_path, fields={"head": _value_pb(map_value=map_pb)},
+            name=reference._document_path,
+            fields={"head": _value_pb(map_value=map_pb)},
         ),
         update_mask=common.DocumentMask(field_paths=[field_path]),
         current_document=common.Precondition(exists=True),

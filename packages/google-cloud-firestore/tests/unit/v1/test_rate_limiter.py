@@ -23,7 +23,10 @@ fake_now = datetime.datetime.utcnow()
 
 
 def now_plus_n(seconds: int = 0, microseconds: int = 0) -> datetime.timedelta:
-    return fake_now + datetime.timedelta(seconds=seconds, microseconds=microseconds,)
+    return fake_now + datetime.timedelta(
+        seconds=seconds,
+        microseconds=microseconds,
+    )
 
 
 @mock.patch("google.cloud.firestore_v1.rate_limiter.utcnow")
@@ -73,7 +76,8 @@ def test_rate_limiter_phase_length(mocked_now):
     assert ramp.take_tokens() == 0
     # Advance the clock 1 phase
     mocked_now.return_value = now_plus_n(
-        seconds=rate_limiter.default_phase_length, microseconds=1,
+        seconds=rate_limiter.default_phase_length,
+        microseconds=1,
     )
     for _ in range(round(rate_limiter.default_initial_tokens * 3 / 2)):
         assert ramp.take_tokens()
@@ -94,7 +98,8 @@ def test_rate_limiter_idle_phase_length(mocked_now):
     assert ramp.take_tokens() == 0
     # Advance the clock 1 phase
     mocked_now.return_value = now_plus_n(
-        seconds=rate_limiter.default_phase_length, microseconds=1,
+        seconds=rate_limiter.default_phase_length,
+        microseconds=1,
     )
     for _ in range(round(rate_limiter.default_initial_tokens)):
         assert ramp.take_tokens() == 1
@@ -116,7 +121,8 @@ def test_take_batch_size(mocked_now):
     assert ramp.take_tokens(page_size, allow_less=True) == 15
     # Advance the clock 1 phase
     mocked_now.return_value = now_plus_n(
-        seconds=rate_limiter.default_phase_length, microseconds=1,
+        seconds=rate_limiter.default_phase_length,
+        microseconds=1,
     )
     ramp._check_phase()
     assert ramp._maximum_tokens == 750
@@ -140,7 +146,8 @@ def test_phase_progress(mocked_now):
 
     # Advance the clock 1 phase
     mocked_now.return_value = now_plus_n(
-        seconds=rate_limiter.default_phase_length, microseconds=1,
+        seconds=rate_limiter.default_phase_length,
+        microseconds=1,
     )
     ramp.take_tokens()
     assert ramp._phase == 1
@@ -148,7 +155,8 @@ def test_phase_progress(mocked_now):
 
     # Advance the clock another phase
     mocked_now.return_value = now_plus_n(
-        seconds=rate_limiter.default_phase_length * 2, microseconds=1,
+        seconds=rate_limiter.default_phase_length * 2,
+        microseconds=1,
     )
     ramp.take_tokens()
     assert ramp._phase == 2
@@ -156,7 +164,8 @@ def test_phase_progress(mocked_now):
 
     # Advance the clock another ms and the phase should not advance
     mocked_now.return_value = now_plus_n(
-        seconds=rate_limiter.default_phase_length * 2, microseconds=2,
+        seconds=rate_limiter.default_phase_length * 2,
+        microseconds=2,
     )
     ramp.take_tokens()
     assert ramp._phase == 2
@@ -169,14 +178,17 @@ def test_global_max_tokens(mocked_now):
 
     mocked_now.return_value = fake_now
 
-    ramp = rate_limiter.RateLimiter(global_max_tokens=499,)
+    ramp = rate_limiter.RateLimiter(
+        global_max_tokens=499,
+    )
     assert ramp._phase == 0
     assert ramp._maximum_tokens == 499
     ramp.take_tokens()
 
     # Advance the clock 1 phase
     mocked_now.return_value = now_plus_n(
-        seconds=rate_limiter.default_phase_length, microseconds=1,
+        seconds=rate_limiter.default_phase_length,
+        microseconds=1,
     )
     ramp.take_tokens()
     assert ramp._phase == 1
@@ -184,7 +196,8 @@ def test_global_max_tokens(mocked_now):
 
     # Advance the clock another phase
     mocked_now.return_value = now_plus_n(
-        seconds=rate_limiter.default_phase_length * 2, microseconds=1,
+        seconds=rate_limiter.default_phase_length * 2,
+        microseconds=1,
     )
     ramp.take_tokens()
     assert ramp._phase == 2
@@ -192,7 +205,8 @@ def test_global_max_tokens(mocked_now):
 
     # Advance the clock another ms and the phase should not advance
     mocked_now.return_value = now_plus_n(
-        seconds=rate_limiter.default_phase_length * 2, microseconds=2,
+        seconds=rate_limiter.default_phase_length * 2,
+        microseconds=2,
     )
     ramp.take_tokens()
     assert ramp._phase == 2

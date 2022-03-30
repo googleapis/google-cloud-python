@@ -169,7 +169,9 @@ class AsyncBulkWriterMixin:
                 should_retry: bool = self._error_callback(
                     # BulkWriteFailure
                     BulkWriteFailure(
-                        operation=operation, code=status.code, message=status.message,
+                        operation=operation,
+                        code=status.code,
+                        message=status.message,
                     ),
                     # BulkWriter
                     self,
@@ -179,12 +181,13 @@ class AsyncBulkWriterMixin:
                     self._retry_operation(operation)
 
     def _retry_operation(
-        self, operation: "BulkWriterOperation",
+        self,
+        operation: "BulkWriterOperation",
     ) -> concurrent.futures.Future:
 
         delay: int = 0
         if self._options.retry == BulkRetry.exponential:
-            delay = operation.attempts ** 2  # pragma: NO COVER
+            delay = operation.attempts**2  # pragma: NO COVER
         elif self._options.retry == BulkRetry.linear:
             delay = operation.attempts
 
@@ -195,7 +198,8 @@ class AsyncBulkWriterMixin:
         # able to do this because `OperationRetry` instances are entirely sortable
         # by their `run_at` value.
         bisect.insort(
-            self._retries, OperationRetry(operation=operation, run_at=run_at),
+            self._retries,
+            OperationRetry(operation=operation, run_at=run_at),
         )
 
     def _send(self, batch: BulkWriteBatch) -> BatchWriteResponse:
@@ -313,7 +317,9 @@ class BulkWriter(AsyncBulkWriterMixin):
 
     @staticmethod
     def _default_on_batch(
-        batch: BulkWriteBatch, response: BatchWriteResponse, bulk_writer: "BulkWriter",
+        batch: BulkWriteBatch,
+        response: BatchWriteResponse,
+        bulk_writer: "BulkWriter",
     ) -> None:
         pass
 
@@ -527,7 +533,10 @@ class BulkWriter(AsyncBulkWriterMixin):
             return True
 
     def create(
-        self, reference: BaseDocumentReference, document_data: Dict, attempts: int = 0,
+        self,
+        reference: BaseDocumentReference,
+        document_data: Dict,
+        attempts: int = 0,
     ) -> None:
         """Adds a `create` pb to the in-progress batch.
 
@@ -553,7 +562,9 @@ class BulkWriter(AsyncBulkWriterMixin):
 
         self._operations.append(
             BulkWriterCreateOperation(
-                reference=reference, document_data=document_data, attempts=attempts,
+                reference=reference,
+                document_data=document_data,
+                attempts=attempts,
             ),
         )
         self._operations_document_paths.append(reference._document_path)
@@ -590,7 +601,9 @@ class BulkWriter(AsyncBulkWriterMixin):
 
         self._operations.append(
             BulkWriterDeleteOperation(
-                reference=reference, option=option, attempts=attempts,
+                reference=reference,
+                option=option,
+                attempts=attempts,
             ),
         )
         self._operations_document_paths.append(reference._document_path)
@@ -730,11 +743,15 @@ class BulkWriterOperation:
         assert isinstance(batch, BulkWriteBatch)
         if isinstance(self, BulkWriterCreateOperation):
             return batch.create(
-                reference=self.reference, document_data=self.document_data,
+                reference=self.reference,
+                document_data=self.document_data,
             )
 
         if isinstance(self, BulkWriterDeleteOperation):
-            return batch.delete(reference=self.reference, option=self.option,)
+            return batch.delete(
+                reference=self.reference,
+                option=self.option,
+            )
 
         if isinstance(self, BulkWriterSetOperation):
             return batch.set(
@@ -874,7 +891,6 @@ try:
         option: Optional[_helpers.WriteOption]
         attempts: int = 0
 
-
 except ImportError:
 
     # Note: When support for Python 3.6 is dropped and `dataclasses` is reliably
@@ -921,7 +937,9 @@ except ImportError:
         the future."""
 
         def __init__(
-            self, operation: BulkWriterOperation, run_at: datetime.datetime,
+            self,
+            operation: BulkWriterOperation,
+            run_at: datetime.datetime,
         ):
             self.operation = operation
             self.run_at = run_at

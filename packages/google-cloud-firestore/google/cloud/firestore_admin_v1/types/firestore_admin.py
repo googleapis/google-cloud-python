@@ -54,7 +54,10 @@ class ListDatabasesRequest(proto.Message):
             ``projects/{project_id}``
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListDatabasesResponse(proto.Message):
@@ -66,7 +69,9 @@ class ListDatabasesResponse(proto.Message):
     """
 
     databases = proto.RepeatedField(
-        proto.MESSAGE, number=1, message=gfa_database.Database,
+        proto.MESSAGE,
+        number=1,
+        message=gfa_database.Database,
     )
 
 
@@ -80,7 +85,10 @@ class GetDatabaseRequest(proto.Message):
             ``projects/{project_id}/databases/{database_id}``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class UpdateDatabaseRequest(proto.Message):
@@ -94,15 +102,20 @@ class UpdateDatabaseRequest(proto.Message):
             The list of fields to be updated.
     """
 
-    database = proto.Field(proto.MESSAGE, number=1, message=gfa_database.Database,)
+    database = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=gfa_database.Database,
+    )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 
 class UpdateDatabaseMetadata(proto.Message):
-    r"""Metadata related to the update database operation.
-    """
+    r"""Metadata related to the update database operation."""
 
 
 class CreateIndexRequest(proto.Message):
@@ -117,8 +130,15 @@ class CreateIndexRequest(proto.Message):
             Required. The composite index to create.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    index = proto.Field(proto.MESSAGE, number=2, message=gfa_index.Index,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    index = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=gfa_index.Index,
+    )
 
 
 class ListIndexesRequest(proto.Message):
@@ -139,10 +159,22 @@ class ListIndexesRequest(proto.Message):
             that may be used to get the next page of results.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    filter = proto.Field(proto.STRING, number=2,)
-    page_size = proto.Field(proto.INT32, number=3,)
-    page_token = proto.Field(proto.STRING, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class ListIndexesResponse(proto.Message):
@@ -162,8 +194,15 @@ class ListIndexesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    indexes = proto.RepeatedField(proto.MESSAGE, number=1, message=gfa_index.Index,)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    indexes = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=gfa_index.Index,
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetIndexRequest(proto.Message):
@@ -176,7 +215,10 @@ class GetIndexRequest(proto.Message):
             ``projects/{project_id}/databases/{database_id}/collectionGroups/{collection_id}/indexes/{index_id}``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class DeleteIndexRequest(proto.Message):
@@ -189,7 +231,10 @@ class DeleteIndexRequest(proto.Message):
             ``projects/{project_id}/databases/{database_id}/collectionGroups/{collection_id}/indexes/{index_id}``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class UpdateFieldRequest(proto.Message):
@@ -205,9 +250,15 @@ class UpdateFieldRequest(proto.Message):
             in the field.
     """
 
-    field = proto.Field(proto.MESSAGE, number=1, message=gfa_field.Field,)
+    field = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=gfa_field.Field,
+    )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -221,7 +272,10 @@ class GetFieldRequest(proto.Message):
             ``projects/{project_id}/databases/{database_id}/collectionGroups/{collection_id}/fields/{field_id}``
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListFieldsRequest(proto.Message):
@@ -248,10 +302,22 @@ class ListFieldsRequest(proto.Message):
             that may be used to get the next page of results.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    filter = proto.Field(proto.STRING, number=2,)
-    page_size = proto.Field(proto.INT32, number=3,)
-    page_token = proto.Field(proto.STRING, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class ListFieldsResponse(proto.Message):
@@ -271,8 +337,15 @@ class ListFieldsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    fields = proto.RepeatedField(proto.MESSAGE, number=1, message=gfa_field.Field,)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    fields = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=gfa_field.Field,
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class ExportDocumentsRequest(proto.Message):
@@ -298,9 +371,18 @@ class ExportDocumentsRequest(proto.Message):
             generated based on the start time.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    collection_ids = proto.RepeatedField(proto.STRING, number=2,)
-    output_uri_prefix = proto.Field(proto.STRING, number=3,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    collection_ids = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+    output_uri_prefix = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ImportDocumentsRequest(proto.Message):
@@ -321,9 +403,18 @@ class ImportDocumentsRequest(proto.Message):
             [google.firestore.admin.v1.ExportDocumentsResponse.output_uri_prefix][google.firestore.admin.v1.ExportDocumentsResponse.output_uri_prefix].
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    collection_ids = proto.RepeatedField(proto.STRING, number=2,)
-    input_uri_prefix = proto.Field(proto.STRING, number=3,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    collection_ids = proto.RepeatedField(
+        proto.STRING,
+        number=2,
+    )
+    input_uri_prefix = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

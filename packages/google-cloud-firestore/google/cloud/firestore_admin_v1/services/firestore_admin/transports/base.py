@@ -130,7 +130,9 @@ class FirestoreAdminTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.create_index: gapic_v1.method.wrap_method(
-                self.create_index, default_timeout=60.0, client_info=client_info,
+                self.create_index,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.list_indexes: gapic_v1.method.wrap_method(
                 self.list_indexes,
@@ -197,7 +199,9 @@ class FirestoreAdminTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.update_field: gapic_v1.method.wrap_method(
-                self.update_field, default_timeout=60.0, client_info=client_info,
+                self.update_field,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.list_fields: gapic_v1.method.wrap_method(
                 self.list_fields,
@@ -216,28 +220,38 @@ class FirestoreAdminTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.export_documents: gapic_v1.method.wrap_method(
-                self.export_documents, default_timeout=60.0, client_info=client_info,
+                self.export_documents,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.import_documents: gapic_v1.method.wrap_method(
-                self.import_documents, default_timeout=60.0, client_info=client_info,
+                self.import_documents,
+                default_timeout=60.0,
+                client_info=client_info,
             ),
             self.get_database: gapic_v1.method.wrap_method(
-                self.get_database, default_timeout=None, client_info=client_info,
+                self.get_database,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_databases: gapic_v1.method.wrap_method(
-                self.list_databases, default_timeout=None, client_info=client_info,
+                self.list_databases,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.update_database: gapic_v1.method.wrap_method(
-                self.update_database, default_timeout=None, client_info=client_info,
+                self.update_database,
+                default_timeout=None,
+                client_info=client_info,
             ),
         }
 
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

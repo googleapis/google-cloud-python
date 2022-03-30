@@ -35,7 +35,8 @@ def make_test_credentials() -> google.auth.credentials.Credentials:  # type: ign
 
 def make_client(project_name: typing.Optional[str] = None) -> Client:
     return Client(
-        project=project_name or "project-project", credentials=make_test_credentials(),
+        project=project_name or "project-project",
+        credentials=make_test_credentials(),
     )
 
 

@@ -250,11 +250,15 @@ class AsyncQuery(BaseQuery):
             The next document that fulfills the query.
         """
         request, expected_prefix, kwargs = self._prep_stream(
-            transaction, retry, timeout,
+            transaction,
+            retry,
+            timeout,
         )
 
         response_iterator = await self._client._firestore_api.run_query(
-            request=request, metadata=self._client._rpc_metadata, **kwargs,
+            request=request,
+            metadata=self._client._rpc_metadata,
+            **kwargs,
         )
 
         async for response in response_iterator:
@@ -345,7 +349,9 @@ class AsyncCollectionGroup(AsyncQuery, BaseCollectionGroup):
         """
         request, kwargs = self._prep_get_partitions(partition_count, retry, timeout)
         pager = await self._client._firestore_api.partition_query(
-            request=request, metadata=self._client._rpc_metadata, **kwargs,
+            request=request,
+            metadata=self._client._rpc_metadata,
+            **kwargs,
         )
 
         start_at = None

@@ -300,7 +300,9 @@ def _transaction_get_all_helper(retry=None, timeout=None):
     result = transaction.get_all([ref1, ref2], **kwargs)
 
     client.get_all.assert_called_once_with(
-        [ref1, ref2], transaction=transaction, **kwargs,
+        [ref1, ref2],
+        transaction=transaction,
+        **kwargs,
     )
     assert result is client.get_all.return_value
 

@@ -116,7 +116,8 @@ class FirestoreBundle:
             # equivalent to:
             #   `if snapshot.read_time > original_document.snapshot.read_time`
             or _helpers.compare_timestamps(
-                snapshot.read_time, original_document.snapshot.read_time,
+                snapshot.read_time,
+                original_document.snapshot.read_time,
             )
             >= 0
         )
@@ -202,15 +203,22 @@ class FirestoreBundle:
         return _read_time
 
     def _save_named_query(
-        self, name: str, query: BaseQuery, read_time: datetime.datetime,
+        self,
+        name: str,
+        query: BaseQuery,
+        read_time: datetime.datetime,
     ) -> None:
         self.named_queries[name] = self._build_named_query(
-            name=name, snapshot=query, read_time=read_time,
+            name=name,
+            snapshot=query,
+            read_time=read_time,
         )
         self._update_last_read_time(read_time)
 
     async def _process_async_query(
-        self, snapshot: AsyncQuery, query_name: str,
+        self,
+        snapshot: AsyncQuery,
+        query_name: str,
     ) -> datetime.datetime:
         doc: DocumentSnapshot
         _read_time = datetime.datetime.min.replace(tzinfo=UTC)
@@ -222,7 +230,10 @@ class FirestoreBundle:
         return _read_time
 
     def _build_named_query(
-        self, name: str, snapshot: BaseQuery, read_time: datetime.datetime,
+        self,
+        name: str,
+        snapshot: BaseQuery,
+        read_time: datetime.datetime,
     ) -> NamedQuery:
         return NamedQuery(
             name=name,
@@ -334,7 +345,9 @@ class FirestoreBundle:
             )
             document_count += 1
             buffer += self._compile_bundle_element(
-                BundleElement(document=bundled_document.snapshot._to_protobuf()._pb,)
+                BundleElement(
+                    document=bundled_document.snapshot._to_protobuf()._pb,
+                )
             )
 
         metadata: BundleElement = BundleElement(
@@ -364,7 +377,9 @@ class _BundledDocument:
     of a document to be bundled."""
 
     def __init__(
-        self, snapshot: DocumentSnapshot, metadata: BundledDocumentMetadata,
+        self,
+        snapshot: DocumentSnapshot,
+        metadata: BundledDocumentMetadata,
     ) -> None:
         self.snapshot = snapshot
         self.metadata = metadata

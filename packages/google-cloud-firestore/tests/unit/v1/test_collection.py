@@ -296,7 +296,9 @@ def test_get_w_retry_timeout(query_class):
 
     assert get_response is query_instance.get.return_value
     query_instance.get.assert_called_once_with(
-        transaction=None, retry=retry, timeout=timeout,
+        transaction=None,
+        retry=retry,
+        timeout=timeout,
     )
 
 
@@ -338,7 +340,9 @@ def test_stream_w_retry_timeout(query_class):
     query_instance = query_class.return_value
     assert stream_response is query_instance.stream.return_value
     query_instance.stream.assert_called_once_with(
-        transaction=None, retry=retry, timeout=timeout,
+        transaction=None,
+        retry=retry,
+        timeout=timeout,
     )
 
 

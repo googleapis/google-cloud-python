@@ -179,7 +179,19 @@ class _BaseBulkWriterTests:
         bw.flush()
         # Full batches with 20 items should have been sent 5 times, and a 1-item
         # batch should have been sent once.
-        self._verify_bw_activity(bw, [(20, 5,), (1, 1,)])
+        self._verify_bw_activity(
+            bw,
+            [
+                (
+                    20,
+                    5,
+                ),
+                (
+                    1,
+                    1,
+                ),
+            ],
+        )
 
     def test_basebulkwriter_delete_calls_send_correctly(self):
         client = self._make_client()
@@ -189,7 +201,19 @@ class _BaseBulkWriterTests:
         bw.flush()
         # Full batches with 20 items should have been sent 5 times, and a 1-item
         # batch should have been sent once.
-        self._verify_bw_activity(bw, [(20, 5,), (1, 1,)])
+        self._verify_bw_activity(
+            bw,
+            [
+                (
+                    20,
+                    5,
+                ),
+                (
+                    1,
+                    1,
+                ),
+            ],
+        )
 
     def test_basebulkwriter_delete_separates_batch(self):
         client = self._make_client()
@@ -199,7 +223,15 @@ class _BaseBulkWriterTests:
         bw.delete(ref)
         bw.flush()
         # Consecutive batches each with 1 operation should have been sent
-        self._verify_bw_activity(bw, [(1, 2,)])
+        self._verify_bw_activity(
+            bw,
+            [
+                (
+                    1,
+                    2,
+                )
+            ],
+        )
 
     def test_basebulkwriter_set_calls_send_correctly(self):
         client = self._make_client()
@@ -209,7 +241,19 @@ class _BaseBulkWriterTests:
         bw.flush()
         # Full batches with 20 items should have been sent 5 times, and a 1-item
         # batch should have been sent once.
-        self._verify_bw_activity(bw, [(20, 5,), (1, 1,)])
+        self._verify_bw_activity(
+            bw,
+            [
+                (
+                    20,
+                    5,
+                ),
+                (
+                    1,
+                    1,
+                ),
+            ],
+        )
 
     def test_basebulkwriter_update_calls_send_correctly(self):
         client = self._make_client()
@@ -219,7 +263,19 @@ class _BaseBulkWriterTests:
         bw.flush()
         # Full batches with 20 items should have been sent 5 times, and a 1-item
         # batch should have been sent once.
-        self._verify_bw_activity(bw, [(20, 5,), (1, 1,)])
+        self._verify_bw_activity(
+            bw,
+            [
+                (
+                    20,
+                    5,
+                ),
+                (
+                    1,
+                    1,
+                ),
+            ],
+        )
 
     def test_basebulkwriter_update_separates_batch(self):
         client = self._make_client()
@@ -230,7 +286,15 @@ class _BaseBulkWriterTests:
         bw.flush()
         # Full batches with 20 items should have been sent 5 times, and a 1-item
         # batch should have been sent once.
-        self._verify_bw_activity(bw, [(1, 2,)])
+        self._verify_bw_activity(
+            bw,
+            [
+                (
+                    1,
+                    2,
+                )
+            ],
+        )
 
     def test_basebulkwriter_invokes_success_callbacks_successfully(self):
         from google.cloud.firestore_v1.base_document import BaseDocumentReference
@@ -314,7 +378,8 @@ class _BaseBulkWriterTests:
 
         client = self._make_client()
         bw = _make_no_send_bulk_writer(
-            client, options=BulkWriterOptions(retry=BulkRetry.immediate),
+            client,
+            options=BulkWriterOptions(retry=BulkRetry.immediate),
         )
         # First document in each batch will "fail"
         bw._fail_indices = [0]
@@ -356,7 +421,8 @@ class _BaseBulkWriterTests:
 
         client = self._make_client()
         bw = _make_no_send_bulk_writer(
-            client, options=BulkWriterOptions(retry=BulkRetry.immediate),
+            client,
+            options=BulkWriterOptions(retry=BulkRetry.immediate),
         )
         bw._attempts = 0
 
@@ -380,7 +446,8 @@ class _BaseBulkWriterTests:
 
         client = self._make_client()
         bw = _make_no_send_bulk_writer(
-            client, options=BulkWriterOptions(retry=BulkRetry.immediate),
+            client,
+            options=BulkWriterOptions(retry=BulkRetry.immediate),
         )
         # First document in each batch will "fail"
         bw._fail_indices = [0]
@@ -424,7 +491,8 @@ class _BaseBulkWriterTests:
 
         client = self._make_client()
         bw = _make_no_send_bulk_writer(
-            client, options=BulkWriterOptions(retry=BulkRetry.immediate),
+            client,
+            options=BulkWriterOptions(retry=BulkRetry.immediate),
         )
         # First document in each batch will "fail"
         bw._fail_indices = [0]
@@ -454,7 +522,8 @@ class _BaseBulkWriterTests:
 
         client = self._make_client()
         bw = _make_no_send_bulk_writer(
-            client, options=BulkWriterOptions(retry=BulkRetry.immediate),
+            client,
+            options=BulkWriterOptions(retry=BulkRetry.immediate),
         )
         # First document in each batch will "fail"
         bw._fail_indices = [0]
@@ -484,7 +553,8 @@ class _BaseBulkWriterTests:
 
         client = self._make_client()
         bw = _make_no_send_bulk_writer(
-            client, options=BulkWriterOptions(retry=BulkRetry.immediate),
+            client,
+            options=BulkWriterOptions(retry=BulkRetry.immediate),
         )
         # First document in each batch will "fail"
         bw._fail_indices = [0]
@@ -514,7 +584,8 @@ class _BaseBulkWriterTests:
 
         client = self._make_client()
         bw = _make_no_send_bulk_writer(
-            client, options=BulkWriterOptions(retry=BulkRetry.immediate),
+            client,
+            options=BulkWriterOptions(retry=BulkRetry.immediate),
         )
         # First document in each batch will "fail"
         bw._fail_indices = [0]
@@ -550,7 +621,19 @@ class _BaseBulkWriterTests:
         bw.flush()
         # Full batches with 20 items should have been sent 5 times, and a 1-item
         # batch should have been sent once.
-        self._verify_bw_activity(bw, [(20, 5,), (1, 1,)])
+        self._verify_bw_activity(
+            bw,
+            [
+                (
+                    20,
+                    5,
+                ),
+                (
+                    1,
+                    1,
+                ),
+            ],
+        )
 
     def test_basebulkwriter_separates_same_document(self):
         client = self._make_client()
@@ -560,7 +643,15 @@ class _BaseBulkWriterTests:
         bw.flush()
         # Seeing the same document twice should lead to separate batches
         # Expect to have sent 1-item batches twice.
-        self._verify_bw_activity(bw, [(1, 2,)])
+        self._verify_bw_activity(
+            bw,
+            [
+                (
+                    1,
+                    2,
+                )
+            ],
+        )
 
     def test_basebulkwriter_separates_same_document_different_operation(self):
         client = self._make_client()
@@ -571,7 +662,15 @@ class _BaseBulkWriterTests:
         bw.flush()
         # Seeing the same document twice should lead to separate batches.
         # Expect to have sent 1-item batches twice.
-        self._verify_bw_activity(bw, [(1, 2,)])
+        self._verify_bw_activity(
+            bw,
+            [
+                (
+                    1,
+                    2,
+                )
+            ],
+        )
 
     def test_basebulkwriter_ensure_sending_repeatedly_callable(self):
         client = self._make_client()
@@ -591,7 +690,15 @@ class _BaseBulkWriterTests:
         bw = _make_no_send_bulk_writer(client)
         bw.create(_get_document_reference(client), {"whatever": "you want"})
         bw.flush()
-        self._verify_bw_activity(bw, [(1, 1,)])
+        self._verify_bw_activity(
+            bw,
+            [
+                (
+                    1,
+                    1,
+                )
+            ],
+        )
 
     def test_basebulkwriter_flush_sends_all_queued_batches(self):
         client = self._make_client()
@@ -601,7 +708,15 @@ class _BaseBulkWriterTests:
             bw._queued_batches.append(bw._operations)
             bw._reset_operations()
         bw.flush()
-        self._verify_bw_activity(bw, [(1, 2,)])
+        self._verify_bw_activity(
+            bw,
+            [
+                (
+                    1,
+                    2,
+                )
+            ],
+        )
 
     def test_basebulkwriter_cannot_add_after_close(self):
         client = self._make_client()

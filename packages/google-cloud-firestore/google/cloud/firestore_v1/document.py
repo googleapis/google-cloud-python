@@ -352,7 +352,9 @@ class DocumentReference(BaseDocumentReference):
         request, kwargs = self._prep_delete(option, retry, timeout)
 
         commit_response = self._client._firestore_api.commit(
-            request=request, metadata=self._client._rpc_metadata, **kwargs,
+            request=request,
+            metadata=self._client._rpc_metadata,
+            **kwargs,
         )
 
         return commit_response.commit_time
@@ -399,7 +401,9 @@ class DocumentReference(BaseDocumentReference):
         request, kwargs = self._prep_batch_get(field_paths, transaction, retry, timeout)
 
         response_iter = self._client._firestore_api.batch_get_documents(
-            request=request, metadata=self._client._rpc_metadata, **kwargs,
+            request=request,
+            metadata=self._client._rpc_metadata,
+            **kwargs,
         )
 
         get_doc_response = next(response_iter, None)
@@ -451,7 +455,9 @@ class DocumentReference(BaseDocumentReference):
         request, kwargs = self._prep_collections(page_size, retry, timeout)
 
         iterator = self._client._firestore_api.list_collection_ids(
-            request=request, metadata=self._client._rpc_metadata, **kwargs,
+            request=request,
+            metadata=self._client._rpc_metadata,
+            **kwargs,
         )
 
         for collection_id in iterator:

@@ -25,7 +25,7 @@ import nox
 
 
 PYTYPE_VERSION = "pytype==2020.7.24"
-BLACK_VERSION = "black==19.10b0"
+BLACK_VERSION = "black==22.3.0"
 BLACK_PATHS = ["docs", "google", "tests", "noxfile.py", "setup.py"]
 
 DEFAULT_PYTHON_VERSION = "3.8"
@@ -60,7 +60,9 @@ def lint(session):
     """
     session.install("flake8", BLACK_VERSION)
     session.run(
-        "black", "--check", *BLACK_PATHS,
+        "black",
+        "--check",
+        *BLACK_PATHS,
     )
     session.run("flake8", "google", "tests")
 
@@ -70,7 +72,8 @@ def blacken(session):
     """Run black. Format code to uniform standard."""
     session.install(BLACK_VERSION)
     session.run(
-        "black", *BLACK_PATHS,
+        "black",
+        *BLACK_PATHS,
     )
 
 
@@ -78,7 +81,9 @@ def blacken(session):
 def pytype(session):
     """Verify type hints are pytype compatible."""
     session.install(PYTYPE_VERSION)
-    session.run("pytype",)
+    session.run(
+        "pytype",
+    )
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
@@ -157,7 +162,13 @@ def system_emulated(session):
 
     # Currently, CI/CD doesn't have beta component of gcloud.
     subprocess.call(
-        ["gcloud", "components", "install", "beta", "cloud-firestore-emulator",]
+        [
+            "gcloud",
+            "components",
+            "install",
+            "beta",
+            "cloud-firestore-emulator",
+        ]
     )
 
     hostport = "localhost:8789"

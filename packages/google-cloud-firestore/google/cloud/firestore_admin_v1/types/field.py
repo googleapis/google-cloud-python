@@ -18,7 +18,12 @@ import proto  # type: ignore
 from google.cloud.firestore_admin_v1.types import index
 
 
-__protobuf__ = proto.module(package="google.firestore.admin.v1", manifest={"Field",},)
+__protobuf__ = proto.module(
+    package="google.firestore.admin.v1",
+    manifest={
+        "Field",
+    },
+)
 
 
 class Field(proto.Message):
@@ -86,13 +91,33 @@ class Field(proto.Message):
                 will be ``false``.
         """
 
-        indexes = proto.RepeatedField(proto.MESSAGE, number=1, message=index.Index,)
-        uses_ancestor_config = proto.Field(proto.BOOL, number=2,)
-        ancestor_field = proto.Field(proto.STRING, number=3,)
-        reverting = proto.Field(proto.BOOL, number=4,)
+        indexes = proto.RepeatedField(
+            proto.MESSAGE,
+            number=1,
+            message=index.Index,
+        )
+        uses_ancestor_config = proto.Field(
+            proto.BOOL,
+            number=2,
+        )
+        ancestor_field = proto.Field(
+            proto.STRING,
+            number=3,
+        )
+        reverting = proto.Field(
+            proto.BOOL,
+            number=4,
+        )
 
-    name = proto.Field(proto.STRING, number=1,)
-    index_config = proto.Field(proto.MESSAGE, number=2, message=IndexConfig,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    index_config = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=IndexConfig,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

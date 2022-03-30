@@ -40,7 +40,8 @@ def _commit_helper(retry=None, timeout=None):
     firestore_api = mock.Mock(spec=["commit"])
     timestamp = timestamp_pb2.Timestamp(seconds=1234567, nanos=123456798)
     commit_response = firestore.CommitResponse(
-        write_results=[write.WriteResult(), write.WriteResult()], commit_time=timestamp,
+        write_results=[write.WriteResult(), write.WriteResult()],
+        commit_time=timestamp,
     )
     firestore_api.commit.return_value = commit_response
     kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
@@ -98,7 +99,8 @@ def test_writebatch_as_context_mgr_wo_error():
     firestore_api = mock.Mock(spec=["commit"])
     timestamp = timestamp_pb2.Timestamp(seconds=1234567, nanos=123456798)
     commit_response = firestore.CommitResponse(
-        write_results=[write.WriteResult(), write.WriteResult()], commit_time=timestamp,
+        write_results=[write.WriteResult(), write.WriteResult()],
+        commit_time=timestamp,
     )
     firestore_api.commit.return_value = commit_response
     client = _make_client()

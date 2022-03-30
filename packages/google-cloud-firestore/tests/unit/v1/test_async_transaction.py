@@ -295,7 +295,9 @@ async def _get_all_helper(retry=None, timeout=None):
     result = await transaction.get_all([ref1, ref2], **kwargs)
 
     client.get_all.assert_called_once_with(
-        [ref1, ref2], transaction=transaction, **kwargs,
+        [ref1, ref2],
+        transaction=transaction,
+        **kwargs,
     )
     assert result is client.get_all.return_value
 
@@ -353,10 +355,14 @@ async def _get_w_query_helper(retry=None, timeout=None):
     query.stream = AsyncMock()
     kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
 
-    result = await transaction.get(query, **kwargs,)
+    result = await transaction.get(
+        query,
+        **kwargs,
+    )
 
     query.stream.assert_called_once_with(
-        transaction=transaction, **kwargs,
+        transaction=transaction,
+        **kwargs,
     )
     assert result is query.stream.return_value
 

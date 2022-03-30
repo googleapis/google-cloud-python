@@ -260,14 +260,18 @@ class Client(BaseClient):
         )
 
         response_iterator = self._firestore_api.batch_get_documents(
-            request=request, metadata=self._rpc_metadata, **kwargs,
+            request=request,
+            metadata=self._rpc_metadata,
+            **kwargs,
         )
 
         for get_doc_response in response_iterator:
             yield _parse_batch_get(get_doc_response, reference_map, self)
 
     def collections(
-        self, retry: retries.Retry = gapic_v1.method.DEFAULT, timeout: float = None,
+        self,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
     ) -> Generator[Any, Any, None]:
         """List top-level collections of the client's database.
 
@@ -284,7 +288,9 @@ class Client(BaseClient):
         request, kwargs = self._prep_collections(retry, timeout)
 
         iterator = self._firestore_api.list_collection_ids(
-            request=request, metadata=self._rpc_metadata, **kwargs,
+            request=request,
+            metadata=self._rpc_metadata,
+            **kwargs,
         )
 
         for collection_id in iterator:
@@ -321,7 +327,11 @@ class Client(BaseClient):
         if bulk_writer is None:
             bulk_writer or self.bulk_writer()
 
-        return self._recursive_delete(reference, bulk_writer, chunk_size=chunk_size,)
+        return self._recursive_delete(
+            reference,
+            bulk_writer,
+            chunk_size=chunk_size,
+        )
 
     def _recursive_delete(
         self,
@@ -351,7 +361,10 @@ class Client(BaseClient):
             col_ref: CollectionReference
             for col_ref in reference.collections():
                 num_deleted += self._recursive_delete(
-                    col_ref, bulk_writer, chunk_size=chunk_size, depth=depth + 1,
+                    col_ref,
+                    bulk_writer,
+                    chunk_size=chunk_size,
+                    depth=depth + 1,
                 )
             num_deleted += 1
             bulk_writer.delete(reference)

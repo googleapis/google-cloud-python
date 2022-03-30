@@ -99,7 +99,8 @@ class _CollectionQueryMixin:
         data: typing.Optional[typing.List[typing.Dict]] = None,
     ) -> base_query.BaseQuery:
         return self._bundled_collection_helper(
-            document_ids=document_ids, data=data,
+            document_ids=document_ids,
+            data=data,
         )._query()
 
 
@@ -453,7 +454,9 @@ class TestBundleBuilder(_CollectionQueryMixin):
         from google.cloud.firestore_bundle import FirestoreBundle
         from google.cloud.firestore_v1 import _helpers
 
-        query = self._bundled_query_helper(data=[{"binary_data": b"\x0f"}],)
+        query = self._bundled_query_helper(
+            data=[{"binary_data": b"\x0f"}],
+        )
         bundle = FirestoreBundle("test")
         bundle.add_named_query("asdf", query)
         serialized = bundle.build()

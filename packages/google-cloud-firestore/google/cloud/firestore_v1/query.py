@@ -210,11 +210,15 @@ class Query(BaseQuery):
     def _get_stream_iterator(self, transaction, retry, timeout):
         """Helper method for :meth:`stream`."""
         request, expected_prefix, kwargs = self._prep_stream(
-            transaction, retry, timeout,
+            transaction,
+            retry,
+            timeout,
         )
 
         response_iterator = self._client._firestore_api.run_query(
-            request=request, metadata=self._client._rpc_metadata, **kwargs,
+            request=request,
+            metadata=self._client._rpc_metadata,
+            **kwargs,
         )
 
         return response_iterator, expected_prefix
@@ -267,7 +271,9 @@ class Query(BaseQuery):
             The next document that fulfills the query.
         """
         response_iterator, expected_prefix = self._get_stream_iterator(
-            transaction, retry, timeout,
+            transaction,
+            retry,
+            timeout,
         )
 
         last_snapshot = None
@@ -279,7 +285,9 @@ class Query(BaseQuery):
                 if self._retry_query_after_exception(exc, retry, transaction):
                     new_query = self.start_after(last_snapshot)
                     response_iterator, _ = new_query._get_stream_iterator(
-                        transaction, retry, timeout,
+                        transaction,
+                        retry,
+                        timeout,
                     )
                     continue
                 else:
@@ -408,7 +416,9 @@ class CollectionGroup(Query, BaseCollectionGroup):
         request, kwargs = self._prep_get_partitions(partition_count, retry, timeout)
 
         pager = self._client._firestore_api.partition_query(
-            request=request, metadata=self._client._rpc_metadata, **kwargs,
+            request=request,
+            metadata=self._client._rpc_metadata,
+            **kwargs,
         )
 
         start_at = None

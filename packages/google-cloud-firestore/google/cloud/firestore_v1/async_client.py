@@ -275,14 +275,18 @@ class AsyncClient(BaseClient):
         )
 
         response_iterator = await self._firestore_api.batch_get_documents(
-            request=request, metadata=self._rpc_metadata, **kwargs,
+            request=request,
+            metadata=self._rpc_metadata,
+            **kwargs,
         )
 
         async for get_doc_response in response_iterator:
             yield _parse_batch_get(get_doc_response, reference_map, self)
 
     async def collections(
-        self, retry: retries.Retry = gapic_v1.method.DEFAULT, timeout: float = None,
+        self,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
     ) -> AsyncGenerator[AsyncCollectionReference, Any]:
         """List top-level collections of the client's database.
 
@@ -298,7 +302,9 @@ class AsyncClient(BaseClient):
         """
         request, kwargs = self._prep_collections(retry, timeout)
         iterator = await self._firestore_api.list_collection_ids(
-            request=request, metadata=self._rpc_metadata, **kwargs,
+            request=request,
+            metadata=self._rpc_metadata,
+            **kwargs,
         )
 
         async for collection_id in iterator:
@@ -335,7 +341,9 @@ class AsyncClient(BaseClient):
             bulk_writer = self.bulk_writer()
 
         return await self._recursive_delete(
-            reference, bulk_writer=bulk_writer, chunk_size=chunk_size,
+            reference,
+            bulk_writer=bulk_writer,
+            chunk_size=chunk_size,
         )
 
     async def _recursive_delete(

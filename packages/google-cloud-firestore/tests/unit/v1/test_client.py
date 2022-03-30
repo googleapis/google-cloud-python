@@ -240,7 +240,9 @@ def _collections_helper(retry=None, timeout=None):
 
     base_path = client._database_string + "/documents"
     firestore_api.list_collection_ids.assert_called_once_with(
-        request={"parent": base_path}, metadata=client._rpc_metadata, **kwargs,
+        request={"parent": base_path},
+        metadata=client._rpc_metadata,
+        **kwargs,
     )
 
 
@@ -306,7 +308,11 @@ def _get_all_helper(num_snapshots=2, txn_id=None, retry=None, timeout=None):
         kwargs["transaction"] = transaction
 
     snapshots = _invoke_get_all(
-        client, documents, responses, field_paths=field_paths, **kwargs,
+        client,
+        documents,
+        responses,
+        field_paths=field_paths,
+        **kwargs,
     )
 
     assert len(snapshots) == num_snapshots

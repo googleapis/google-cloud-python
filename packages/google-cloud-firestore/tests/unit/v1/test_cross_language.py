@@ -118,7 +118,8 @@ def _run_testcase(testcase, call, firestore_api, client):
         }
 
         firestore_api.commit.assert_called_once_with(
-            request=expected_request, metadata=client._rpc_metadata,
+            request=expected_request,
+            metadata=client._rpc_metadata,
         )
 
 
@@ -157,7 +158,8 @@ def test_get_testprotos(test_proto):
     }
 
     firestore_api.batch_get_documents.assert_called_once_with(
-        request=expected_request, metadata=client._rpc_metadata,
+        request=expected_request,
+        metadata=client._rpc_metadata,
     )
 
 

@@ -807,12 +807,18 @@ class BaseQuery(object):
         return query.StructuredQuery(**query_kwargs)
 
     def get(
-        self, transaction=None, retry: retries.Retry = None, timeout: float = None,
+        self,
+        transaction=None,
+        retry: retries.Retry = None,
+        timeout: float = None,
     ) -> Iterable[DocumentSnapshot]:
         raise NotImplementedError
 
     def _prep_stream(
-        self, transaction=None, retry: retries.Retry = None, timeout: float = None,
+        self,
+        transaction=None,
+        retry: retries.Retry = None,
+        timeout: float = None,
     ) -> Tuple[dict, str, dict]:
         """Shared setup for async / sync :meth:`stream`"""
         if self._limit_to_last:
@@ -832,7 +838,10 @@ class BaseQuery(object):
         return request, expected_prefix, kwargs
 
     def stream(
-        self, transaction=None, retry: retries.Retry = None, timeout: float = None,
+        self,
+        transaction=None,
+        retry: retries.Retry = None,
+        timeout: float = None,
     ) -> Generator[document.DocumentSnapshot, Any, None]:
         raise NotImplementedError
 
@@ -1123,7 +1132,8 @@ class BaseCollectionGroup(BaseQuery):
 
     _PARTITION_QUERY_ORDER = (
         BaseQuery._make_order(
-            field_path_module.FieldPath.document_id(), BaseQuery.ASCENDING,
+            field_path_module.FieldPath.document_id(),
+            BaseQuery.ASCENDING,
         ),
     )
 
@@ -1175,7 +1185,10 @@ class BaseCollectionGroup(BaseQuery):
         raise NotImplementedError
 
     def _prep_get_partitions(
-        self, partition_count, retry: retries.Retry = None, timeout: float = None,
+        self,
+        partition_count,
+        retry: retries.Retry = None,
+        timeout: float = None,
     ) -> Tuple[dict, dict]:
         self._validate_partition_query()
         parent_path, expected_prefix = self._parent._parent_info()
@@ -1197,7 +1210,10 @@ class BaseCollectionGroup(BaseQuery):
         return request, kwargs
 
     def get_partitions(
-        self, partition_count, retry: retries.Retry = None, timeout: float = None,
+        self,
+        partition_count,
+        retry: retries.Retry = None,
+        timeout: float = None,
     ) -> NoReturn:
         raise NotImplementedError
 
@@ -1222,7 +1238,7 @@ class QueryPartition:
             Cursor for first query result after the last result included in the
             partition. If `None`, the partition runs to the end of the result set.
 
-        """
+    """
 
     def __init__(self, query, start_at, end_at):
         self._query = query

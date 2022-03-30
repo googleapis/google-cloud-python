@@ -16,7 +16,12 @@
 import proto  # type: ignore
 
 
-__protobuf__ = proto.module(package="google.firestore.admin.v1", manifest={"Index",},)
+__protobuf__ = proto.module(
+    package="google.firestore.admin.v1",
+    manifest={
+        "Index",
+    },
+)
 
 
 class Index(proto.Message):
@@ -118,9 +123,15 @@ class Index(proto.Message):
             ARRAY_CONFIG_UNSPECIFIED = 0
             CONTAINS = 1
 
-        field_path = proto.Field(proto.STRING, number=1,)
+        field_path = proto.Field(
+            proto.STRING,
+            number=1,
+        )
         order = proto.Field(
-            proto.ENUM, number=2, oneof="value_mode", enum="Index.IndexField.Order",
+            proto.ENUM,
+            number=2,
+            oneof="value_mode",
+            enum="Index.IndexField.Order",
         )
         array_config = proto.Field(
             proto.ENUM,
@@ -129,10 +140,25 @@ class Index(proto.Message):
             enum="Index.IndexField.ArrayConfig",
         )
 
-    name = proto.Field(proto.STRING, number=1,)
-    query_scope = proto.Field(proto.ENUM, number=2, enum=QueryScope,)
-    fields = proto.RepeatedField(proto.MESSAGE, number=3, message=IndexField,)
-    state = proto.Field(proto.ENUM, number=4, enum=State,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    query_scope = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=QueryScope,
+    )
+    fields = proto.RepeatedField(
+        proto.MESSAGE,
+        number=3,
+        message=IndexField,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=State,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

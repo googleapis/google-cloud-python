@@ -22,7 +22,12 @@ from google.type import latlng_pb2  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.firestore.v1",
-    manifest={"Document", "Value", "ArrayValue", "MapValue",},
+    manifest={
+        "Document",
+        "Value",
+        "ArrayValue",
+        "MapValue",
+    },
 )
 
 
@@ -77,10 +82,26 @@ class Document(proto.Message):
             ``read_time`` of a query.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    fields = proto.MapField(proto.STRING, proto.MESSAGE, number=2, message="Value",)
-    create_time = proto.Field(proto.MESSAGE, number=3, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    fields = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=2,
+        message="Value",
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 class Value(proto.Message):
@@ -155,25 +176,64 @@ class Value(proto.Message):
     """
 
     null_value = proto.Field(
-        proto.ENUM, number=11, oneof="value_type", enum=struct_pb2.NullValue,
+        proto.ENUM,
+        number=11,
+        oneof="value_type",
+        enum=struct_pb2.NullValue,
     )
-    boolean_value = proto.Field(proto.BOOL, number=1, oneof="value_type",)
-    integer_value = proto.Field(proto.INT64, number=2, oneof="value_type",)
-    double_value = proto.Field(proto.DOUBLE, number=3, oneof="value_type",)
+    boolean_value = proto.Field(
+        proto.BOOL,
+        number=1,
+        oneof="value_type",
+    )
+    integer_value = proto.Field(
+        proto.INT64,
+        number=2,
+        oneof="value_type",
+    )
+    double_value = proto.Field(
+        proto.DOUBLE,
+        number=3,
+        oneof="value_type",
+    )
     timestamp_value = proto.Field(
-        proto.MESSAGE, number=10, oneof="value_type", message=timestamp_pb2.Timestamp,
+        proto.MESSAGE,
+        number=10,
+        oneof="value_type",
+        message=timestamp_pb2.Timestamp,
     )
-    string_value = proto.Field(proto.STRING, number=17, oneof="value_type",)
-    bytes_value = proto.Field(proto.BYTES, number=18, oneof="value_type",)
-    reference_value = proto.Field(proto.STRING, number=5, oneof="value_type",)
+    string_value = proto.Field(
+        proto.STRING,
+        number=17,
+        oneof="value_type",
+    )
+    bytes_value = proto.Field(
+        proto.BYTES,
+        number=18,
+        oneof="value_type",
+    )
+    reference_value = proto.Field(
+        proto.STRING,
+        number=5,
+        oneof="value_type",
+    )
     geo_point_value = proto.Field(
-        proto.MESSAGE, number=8, oneof="value_type", message=latlng_pb2.LatLng,
+        proto.MESSAGE,
+        number=8,
+        oneof="value_type",
+        message=latlng_pb2.LatLng,
     )
     array_value = proto.Field(
-        proto.MESSAGE, number=9, oneof="value_type", message="ArrayValue",
+        proto.MESSAGE,
+        number=9,
+        oneof="value_type",
+        message="ArrayValue",
     )
     map_value = proto.Field(
-        proto.MESSAGE, number=6, oneof="value_type", message="MapValue",
+        proto.MESSAGE,
+        number=6,
+        oneof="value_type",
+        message="MapValue",
     )
 
 
@@ -185,7 +245,11 @@ class ArrayValue(proto.Message):
             Values in the array.
     """
 
-    values = proto.RepeatedField(proto.MESSAGE, number=1, message="Value",)
+    values = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Value",
+    )
 
 
 class MapValue(proto.Message):
@@ -202,7 +266,12 @@ class MapValue(proto.Message):
             bytes and cannot be empty.
     """
 
-    fields = proto.MapField(proto.STRING, proto.MESSAGE, number=1, message="Value",)
+    fields = proto.MapField(
+        proto.STRING,
+        proto.MESSAGE,
+        number=1,
+        message="Value",
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

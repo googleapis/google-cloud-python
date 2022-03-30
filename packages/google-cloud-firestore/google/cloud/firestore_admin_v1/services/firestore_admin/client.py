@@ -66,7 +66,10 @@ class FirestoreAdminClientMeta(type):
     _transport_registry["grpc"] = FirestoreAdminGrpcTransport
     _transport_registry["grpc_asyncio"] = FirestoreAdminGrpcAsyncIOTransport
 
-    def get_transport_class(cls, label: str = None,) -> Type[FirestoreAdminTransport]:
+    def get_transport_class(
+        cls,
+        label: str = None,
+    ) -> Type[FirestoreAdminTransport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -202,10 +205,16 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
         return self._transport
 
     @staticmethod
-    def collection_group_path(project: str, database: str, collection: str,) -> str:
+    def collection_group_path(
+        project: str,
+        database: str,
+        collection: str,
+    ) -> str:
         """Returns a fully-qualified collection_group string."""
         return "projects/{project}/databases/{database}/collectionGroups/{collection}".format(
-            project=project, database=database, collection=collection,
+            project=project,
+            database=database,
+            collection=collection,
         )
 
     @staticmethod
@@ -218,10 +227,14 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def database_path(project: str, database: str,) -> str:
+    def database_path(
+        project: str,
+        database: str,
+    ) -> str:
         """Returns a fully-qualified database string."""
         return "projects/{project}/databases/{database}".format(
-            project=project, database=database,
+            project=project,
+            database=database,
         )
 
     @staticmethod
@@ -231,10 +244,18 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def field_path(project: str, database: str, collection: str, field: str,) -> str:
+    def field_path(
+        project: str,
+        database: str,
+        collection: str,
+        field: str,
+    ) -> str:
         """Returns a fully-qualified field string."""
         return "projects/{project}/databases/{database}/collectionGroups/{collection}/fields/{field}".format(
-            project=project, database=database, collection=collection, field=field,
+            project=project,
+            database=database,
+            collection=collection,
+            field=field,
         )
 
     @staticmethod
@@ -247,10 +268,18 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def index_path(project: str, database: str, collection: str, index: str,) -> str:
+    def index_path(
+        project: str,
+        database: str,
+        collection: str,
+        index: str,
+    ) -> str:
         """Returns a fully-qualified index string."""
         return "projects/{project}/databases/{database}/collectionGroups/{collection}/indexes/{index}".format(
-            project=project, database=database, collection=collection, index=index,
+            project=project,
+            database=database,
+            collection=collection,
+            index=index,
         )
 
     @staticmethod
@@ -263,7 +292,9 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_billing_account_path(billing_account: str,) -> str:
+    def common_billing_account_path(
+        billing_account: str,
+    ) -> str:
         """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
@@ -276,9 +307,13 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(folder: str,) -> str:
+    def common_folder_path(
+        folder: str,
+    ) -> str:
         """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(folder=folder,)
+        return "folders/{folder}".format(
+            folder=folder,
+        )
 
     @staticmethod
     def parse_common_folder_path(path: str) -> Dict[str, str]:
@@ -287,9 +322,13 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(organization: str,) -> str:
+    def common_organization_path(
+        organization: str,
+    ) -> str:
         """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(organization=organization,)
+        return "organizations/{organization}".format(
+            organization=organization,
+        )
 
     @staticmethod
     def parse_common_organization_path(path: str) -> Dict[str, str]:
@@ -298,9 +337,13 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(project: str,) -> str:
+    def common_project_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified project string."""
-        return "projects/{project}".format(project=project,)
+        return "projects/{project}".format(
+            project=project,
+        )
 
     @staticmethod
     def parse_common_project_path(path: str) -> Dict[str, str]:
@@ -309,10 +352,14 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(project: str, location: str,) -> str:
+    def common_location_path(
+        project: str,
+        location: str,
+    ) -> str:
         """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
-            project=project, location=location,
+            project=project,
+            location=location,
         )
 
     @staticmethod
@@ -592,7 +639,12 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = gac_operation.from_gapic(
@@ -694,12 +746,20 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListIndexesPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -791,7 +851,12 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -873,7 +938,10 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def get_field(
@@ -964,7 +1032,12 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1084,7 +1157,12 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = gac_operation.from_gapic(
@@ -1195,12 +1273,20 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListFieldsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1314,7 +1400,12 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = gac_operation.from_gapic(
@@ -1436,7 +1527,12 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = gac_operation.from_gapic(
@@ -1536,7 +1632,12 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1624,7 +1725,12 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1729,7 +1835,12 @@ class FirestoreAdminClient(metaclass=FirestoreAdminClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = gac_operation.from_gapic(

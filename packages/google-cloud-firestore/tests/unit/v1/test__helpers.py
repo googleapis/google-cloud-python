@@ -213,7 +213,7 @@ def test_encode_value_w_datetime_wo_nanos():
 def test_encode_value_w_string():
     from google.cloud.firestore_v1._helpers import encode_value
 
-    value = u"\u2018left quote, right quote\u2019"
+    value = "\u2018left quote, right quote\u2019"
     result = encode_value(value)
     expected = _value_pb(string_value=value)
     assert result == expected
@@ -312,11 +312,11 @@ def test_encode_dict_w_many_types():
         "baz": 981,
         "quux": 2.875,
         "quuz": dt_val,
-        "corge": u"\N{snowman}",
+        "corge": "\N{snowman}",
         "grault": b"\xe2\x98\x83",
         "wibble": document,
-        "garply": [u"fork", 4.0],
-        "waldo": {"fred": u"zap", "thud": False},
+        "garply": ["fork", 4.0],
+        "waldo": {"fred": "zap", "thud": False},
     }
     encoded_dict = encode_dict(values_dict)
     expected_dict = {
@@ -327,18 +327,18 @@ def test_encode_dict_w_many_types():
         "quuz": _value_pb(
             timestamp_value=timestamp_pb2.Timestamp(seconds=dt_seconds, nanos=dt_nanos)
         ),
-        "corge": _value_pb(string_value=u"\N{snowman}"),
+        "corge": _value_pb(string_value="\N{snowman}"),
         "grault": _value_pb(bytes_value=b"\xe2\x98\x83"),
         "wibble": _value_pb(reference_value=document._document_path),
         "garply": _value_pb(
             array_value=ArrayValue(
-                values=[_value_pb(string_value=u"fork"), _value_pb(double_value=4.0)]
+                values=[_value_pb(string_value="fork"), _value_pb(double_value=4.0)]
             )
         ),
         "waldo": _value_pb(
             map_value=MapValue(
                 fields={
-                    "fred": _value_pb(string_value=u"zap"),
+                    "fred": _value_pb(string_value="zap"),
                     "thud": _value_pb(boolean_value=False),
                 }
             )
@@ -510,7 +510,7 @@ def test_decode_value_w_datetime():
 def test_decode_value_w_unicode():
     from google.cloud.firestore_v1._helpers import decode_value
 
-    unicode_val = u"zorgon"
+    unicode_val = "zorgon"
     value = _value_pb(string_value=unicode_val)
     assert decode_value(value, mock.sentinel.client) == unicode_val
 
@@ -528,7 +528,7 @@ def test_decode_value_w_reference():
     from google.cloud.firestore_v1._helpers import decode_value
 
     client = _make_client()
-    path = (u"then", u"there-was-one")
+    path = ("then", "there-was-one")
     document = client.document(*path)
     ref_string = document._document_path
     value = _value_pb(reference_value=ref_string)
@@ -571,7 +571,7 @@ def test_decode_value_w_map():
     from google.cloud.firestore_v1._helpers import decode_value
 
     sub_value1 = _value_pb(integer_value=187680)
-    sub_value2 = _value_pb(string_value=u"how low can you go?")
+    sub_value2 = _value_pb(string_value="how low can you go?")
     map_pb = document.MapValue(fields={"first": sub_value1, "second": sub_value2})
     value = _value_pb(map_value=map_pb)
 
@@ -587,7 +587,7 @@ def test_decode_value_w_nested_map():
     from google.cloud.firestore_v1._helpers import decode_value
 
     actual_value1 = 1009876
-    actual_value2 = u"hey you guys"
+    actual_value2 = "hey you guys"
     actual_value3 = 90.875
     map_pb1 = document.MapValue(
         fields={
@@ -663,17 +663,17 @@ def test_decode_dict_w_many_types():
         "quuz": _value_pb(
             timestamp_value=timestamp_pb2.Timestamp(seconds=dt_seconds, nanos=dt_nanos)
         ),
-        "corge": _value_pb(string_value=u"\N{snowman}"),
+        "corge": _value_pb(string_value="\N{snowman}"),
         "grault": _value_pb(bytes_value=b"\xe2\x98\x83"),
         "garply": _value_pb(
             array_value=ArrayValue(
-                values=[_value_pb(string_value=u"fork"), _value_pb(double_value=4.0)]
+                values=[_value_pb(string_value="fork"), _value_pb(double_value=4.0)]
             )
         ),
         "waldo": _value_pb(
             map_value=MapValue(
                 fields={
-                    "fred": _value_pb(string_value=u"zap"),
+                    "fred": _value_pb(string_value="zap"),
                     "thud": _value_pb(boolean_value=False),
                 }
             )
@@ -686,10 +686,10 @@ def test_decode_dict_w_many_types():
         "baz": 981,
         "quux": 2.875,
         "quuz": dt_val,
-        "corge": u"\N{snowman}",
+        "corge": "\N{snowman}",
         "grault": b"\xe2\x98\x83",
-        "garply": [u"fork", 4.0],
-        "waldo": {"fred": u"zap", "thud": False},
+        "garply": ["fork", 4.0],
+        "waldo": {"fred": "zap", "thud": False},
         "a.b.c": False,
     }
     assert decode_dict(value_fields, mock.sentinel.client) == expected
@@ -698,8 +698,8 @@ def test_decode_dict_w_many_types():
 def _dummy_ref_string(collection_id):
     from google.cloud.firestore_v1.client import DEFAULT_DATABASE
 
-    project = u"bazzzz"
-    return u"projects/{}/databases/{}/documents/{}".format(
+    project = "bazzzz"
+    return "projects/{}/databases/{}/documents/{}".format(
         project, DEFAULT_DATABASE, collection_id
     )
 
@@ -1659,7 +1659,7 @@ def __pbs_for_create_helper(do_transform=False, empty_val=False):
     from google.cloud.firestore_v1.transforms import SERVER_TIMESTAMP
     from google.cloud.firestore_v1._helpers import pbs_for_create
 
-    document_path = _make_ref_string(u"little", u"town", u"of", u"ham")
+    document_path = _make_ref_string("little", "town", "of", "ham")
     document_data = {"cheese": 1.5, "crackers": True}
 
     if do_transform:
@@ -1723,7 +1723,7 @@ def _add_field_transforms_for_set_no_merge(update_pb, fields):
 def test__pbs_for_set_w_empty_document():
     from google.cloud.firestore_v1._helpers import pbs_for_set_no_merge
 
-    document_path = _make_ref_string(u"little", u"town", u"of", u"ham")
+    document_path = _make_ref_string("little", "town", "of", "ham")
     document_data = {}
 
     write_pbs = pbs_for_set_no_merge(document_path, document_data)
@@ -1737,7 +1737,7 @@ def test__pbs_for_set_w_only_server_timestamp():
     from google.cloud.firestore_v1.transforms import SERVER_TIMESTAMP
     from google.cloud.firestore_v1._helpers import pbs_for_set_no_merge
 
-    document_path = _make_ref_string(u"little", u"town", u"of", u"ham")
+    document_path = _make_ref_string("little", "town", "of", "ham")
     document_data = {"butter": SERVER_TIMESTAMP}
 
     write_pbs = pbs_for_set_no_merge(document_path, document_data)
@@ -1752,7 +1752,7 @@ def _pbs_for_set_no_merge_helper(do_transform=False, empty_val=False):
     from google.cloud.firestore_v1.transforms import SERVER_TIMESTAMP
     from google.cloud.firestore_v1._helpers import pbs_for_set_no_merge
 
-    document_path = _make_ref_string(u"little", u"town", u"of", u"ham")
+    document_path = _make_ref_string("little", "town", "of", "ham")
     document_data = {"cheese": 1.5, "crackers": True}
 
     if do_transform:
@@ -2023,7 +2023,7 @@ def _update_document_mask(update_pb, field_paths):
 def test__pbs_for_set_with_merge_w_merge_true_wo_transform():
     from google.cloud.firestore_v1._helpers import pbs_for_set_with_merge
 
-    document_path = _make_ref_string(u"little", u"town", u"of", u"ham")
+    document_path = _make_ref_string("little", "town", "of", "ham")
     document_data = {"cheese": 1.5, "crackers": True}
 
     write_pbs = pbs_for_set_with_merge(document_path, document_data, merge=True)
@@ -2037,7 +2037,7 @@ def test__pbs_for_set_with_merge_w_merge_true_wo_transform():
 def test__pbs_for_set_with_merge_w_merge_field_wo_transform():
     from google.cloud.firestore_v1._helpers import pbs_for_set_with_merge
 
-    document_path = _make_ref_string(u"little", u"town", u"of", u"ham")
+    document_path = _make_ref_string("little", "town", "of", "ham")
     document_data = {"cheese": 1.5, "crackers": True}
 
     write_pbs = pbs_for_set_with_merge(document_path, document_data, merge=["cheese"])
@@ -2054,7 +2054,7 @@ def test__pbs_for_set_with_merge_w_merge_true_w_only_transform():
     from google.cloud.firestore_v1.transforms import SERVER_TIMESTAMP
     from google.cloud.firestore_v1._helpers import pbs_for_set_with_merge
 
-    document_path = _make_ref_string(u"little", u"town", u"of", u"ham")
+    document_path = _make_ref_string("little", "town", "of", "ham")
     document_data = {"butter": SERVER_TIMESTAMP}
 
     write_pbs = pbs_for_set_with_merge(document_path, document_data, merge=True)
@@ -2070,7 +2070,7 @@ def test__pbs_for_set_with_merge_w_merge_true_w_transform():
     from google.cloud.firestore_v1.transforms import SERVER_TIMESTAMP
     from google.cloud.firestore_v1._helpers import pbs_for_set_with_merge
 
-    document_path = _make_ref_string(u"little", u"town", u"of", u"ham")
+    document_path = _make_ref_string("little", "town", "of", "ham")
     update_data = {"cheese": 1.5, "crackers": True}
     document_data = update_data.copy()
     document_data["butter"] = SERVER_TIMESTAMP
@@ -2088,7 +2088,7 @@ def test__pbs_for_set_with_merge_w_merge_field_w_transform():
     from google.cloud.firestore_v1.transforms import SERVER_TIMESTAMP
     from google.cloud.firestore_v1._helpers import pbs_for_set_with_merge
 
-    document_path = _make_ref_string(u"little", u"town", u"of", u"ham")
+    document_path = _make_ref_string("little", "town", "of", "ham")
     update_data = {"cheese": 1.5, "crackers": True}
     document_data = update_data.copy()
     document_data["butter"] = SERVER_TIMESTAMP
@@ -2110,7 +2110,7 @@ def test__pbs_for_set_with_merge_w_merge_field_w_transform_masking_simple():
     from google.cloud.firestore_v1.transforms import SERVER_TIMESTAMP
     from google.cloud.firestore_v1._helpers import pbs_for_set_with_merge
 
-    document_path = _make_ref_string(u"little", u"town", u"of", u"ham")
+    document_path = _make_ref_string("little", "town", "of", "ham")
     update_data = {"cheese": 1.5, "crackers": True}
     document_data = update_data.copy()
     document_data["butter"] = {"pecan": SERVER_TIMESTAMP}
@@ -2130,7 +2130,7 @@ def test__pbs_for_set_with_merge_w_merge_field_w_transform_parent():
     from google.cloud.firestore_v1.transforms import SERVER_TIMESTAMP
     from google.cloud.firestore_v1._helpers import pbs_for_set_with_merge
 
-    document_path = _make_ref_string(u"little", u"town", u"of", u"ham")
+    document_path = _make_ref_string("little", "town", "of", "ham")
     update_data = {"cheese": 1.5, "crackers": True}
     document_data = update_data.copy()
     document_data["butter"] = {"popcorn": "yum", "pecan": SERVER_TIMESTAMP}
@@ -2221,7 +2221,7 @@ def _pbs_for_update_helper(option=None, do_transform=False, **write_kwargs):
     from google.cloud.firestore_v1.types import write
     from google.cloud.firestore_v1._helpers import pbs_for_update
 
-    document_path = _make_ref_string(u"toy", u"car", u"onion", u"garlic")
+    document_path = _make_ref_string("toy", "car", "onion", "garlic")
     field_path1 = "bitez.yum"
     value = b"\x00\x01"
     field_path2 = "blog.internet"
@@ -2286,7 +2286,7 @@ def _pb_for_delete_helper(option=None, **write_kwargs):
     from google.cloud.firestore_v1.types import write
     from google.cloud.firestore_v1._helpers import pb_for_delete
 
-    document_path = _make_ref_string(u"chicken", u"philly", u"one", u"two")
+    document_path = _make_ref_string("chicken", "philly", "one", "two")
     write_pb = pb_for_delete(document_path, option)
 
     expected_pb = write.Write(delete=document_path, **write_kwargs)
@@ -2366,7 +2366,7 @@ def test_get_transaction_id_w_good_transaction():
 def test_metadata_with_prefix():
     from google.cloud.firestore_v1._helpers import metadata_with_prefix
 
-    database_string = u"projects/prahj/databases/dee-bee"
+    database_string = "projects/prahj/databases/dee-bee"
     metadata = metadata_with_prefix(database_string)
 
     assert metadata == [("google-cloud-resource-prefix", database_string)]
@@ -2559,7 +2559,7 @@ def _make_ref_string(project, database, *path):
     from google.cloud.firestore_v1 import _helpers
 
     doc_rel_path = _helpers.DOCUMENT_PATH_DELIMITER.join(path)
-    return u"projects/{}/databases/{}/documents/{}".format(
+    return "projects/{}/databases/{}/documents/{}".format(
         project, database, doc_rel_path
     )
 

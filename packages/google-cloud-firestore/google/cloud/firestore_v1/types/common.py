@@ -20,7 +20,11 @@ from google.protobuf import timestamp_pb2  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.firestore.v1",
-    manifest={"DocumentMask", "Precondition", "TransactionOptions",},
+    manifest={
+        "DocumentMask",
+        "Precondition",
+        "TransactionOptions",
+    },
 )
 
 
@@ -38,7 +42,10 @@ class DocumentMask(proto.Message):
             field path syntax reference.
     """
 
-    field_paths = proto.RepeatedField(proto.STRING, number=1,)
+    field_paths = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
 
 
 class Precondition(proto.Message):
@@ -66,7 +73,11 @@ class Precondition(proto.Message):
             This field is a member of `oneof`_ ``condition_type``.
     """
 
-    exists = proto.Field(proto.BOOL, number=1, oneof="condition_type",)
+    exists = proto.Field(
+        proto.BOOL,
+        number=1,
+        oneof="condition_type",
+    )
     update_time = proto.Field(
         proto.MESSAGE,
         number=2,
@@ -107,7 +118,10 @@ class TransactionOptions(proto.Message):
                 An optional transaction to retry.
         """
 
-        retry_transaction = proto.Field(proto.BYTES, number=1,)
+        retry_transaction = proto.Field(
+            proto.BYTES,
+            number=1,
+        )
 
     class ReadOnly(proto.Message):
         r"""Options for a transaction that can only be used to read
@@ -131,8 +145,18 @@ class TransactionOptions(proto.Message):
             message=timestamp_pb2.Timestamp,
         )
 
-    read_only = proto.Field(proto.MESSAGE, number=2, oneof="mode", message=ReadOnly,)
-    read_write = proto.Field(proto.MESSAGE, number=3, oneof="mode", message=ReadWrite,)
+    read_only = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="mode",
+        message=ReadOnly,
+    )
+    read_write = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        oneof="mode",
+        message=ReadWrite,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

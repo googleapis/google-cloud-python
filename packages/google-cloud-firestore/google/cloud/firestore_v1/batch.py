@@ -57,7 +57,9 @@ class WriteBatch(BaseWriteBatch):
         request, kwargs = self._prep_commit(retry, timeout)
 
         commit_response = self._client._firestore_api.commit(
-            request=request, metadata=self._client._rpc_metadata, **kwargs,
+            request=request,
+            metadata=self._client._rpc_metadata,
+            **kwargs,
         )
 
         self._write_pbs = []

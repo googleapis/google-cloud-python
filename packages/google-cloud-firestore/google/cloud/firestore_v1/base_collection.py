@@ -178,7 +178,10 @@ class BaseCollectionReference(object):
         raise NotImplementedError
 
     def _prep_list_documents(
-        self, page_size: int = None, retry: retries.Retry = None, timeout: float = None,
+        self,
+        page_size: int = None,
+        retry: retries.Retry = None,
+        timeout: float = None,
     ) -> Tuple[dict, dict]:
         """Shared setup for async / sync :method:`list_documents`"""
         parent, _ = self._parent_info()
@@ -197,7 +200,10 @@ class BaseCollectionReference(object):
         return request, kwargs
 
     def list_documents(
-        self, page_size: int = None, retry: retries.Retry = None, timeout: float = None,
+        self,
+        page_size: int = None,
+        retry: retries.Retry = None,
+        timeout: float = None,
     ) -> Union[
         Generator[DocumentReference, Any, Any], AsyncGenerator[DocumentReference, Any]
     ]:
@@ -438,7 +444,9 @@ class BaseCollectionReference(object):
         return query.end_at(document_fields)
 
     def _prep_get_or_stream(
-        self, retry: retries.Retry = None, timeout: float = None,
+        self,
+        retry: retries.Retry = None,
+        timeout: float = None,
     ) -> Tuple[Any, dict]:
         """Shared setup for async / sync :meth:`get` / :meth:`stream`"""
         query = self._query()

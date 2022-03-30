@@ -102,7 +102,10 @@ class CollectionReference(BaseCollectionReference):
                 If ``document_id`` is provided and the document already exists.
         """
         document_ref, kwargs = self._prep_add(
-            document_data, document_id, retry, timeout,
+            document_data,
+            document_id,
+            retry,
+            timeout,
         )
         write_result = document_ref.create(document_data, **kwargs)
         return write_result.update_time, document_ref
@@ -133,7 +136,9 @@ class CollectionReference(BaseCollectionReference):
         request, kwargs = self._prep_list_documents(page_size, retry, timeout)
 
         iterator = self._client._firestore_api.list_documents(
-            request=request, metadata=self._client._rpc_metadata, **kwargs,
+            request=request,
+            metadata=self._client._rpc_metadata,
+            **kwargs,
         )
         return (_item_to_document_ref(self, i) for i in iterator)
 

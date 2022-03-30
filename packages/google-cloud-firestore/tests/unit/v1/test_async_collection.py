@@ -171,7 +171,9 @@ async def _add_helper(retry=None, timeout=None):
     kwargs = _helpers.make_retry_timeout_kwargs(retry, timeout)
 
     update_time, document_ref = await collection.add(
-        document_data, document_id=doc_id, **kwargs,
+        document_data,
+        document_id=doc_id,
+        **kwargs,
     )
 
     # Verify the response and the mocks.
@@ -223,7 +225,9 @@ async def test_asynccollectionreference_chunkify():
             f"documents/my-collection/{index}"
         )
         results.append(
-            firestore.RunQueryResponse(document=document.Document(name=name),),
+            firestore.RunQueryResponse(
+                document=document.Document(name=name),
+            ),
         )
 
     chunks = [
@@ -280,7 +284,11 @@ async def _list_documents_helper(page_size=None, retry=None, timeout=None):
 
     if page_size is not None:
         documents = [
-            i async for i in collection.list_documents(page_size=page_size, **kwargs,)
+            i
+            async for i in collection.list_documents(
+                page_size=page_size,
+                **kwargs,
+            )
         ]
     else:
         documents = [i async for i in collection.list_documents(**kwargs)]
@@ -353,7 +361,9 @@ async def test_asynccollectionreference_get_w_retry_timeout(query_class):
 
     assert get_response is query_instance.get.return_value
     query_instance.get.assert_called_once_with(
-        transaction=None, retry=retry, timeout=timeout,
+        transaction=None,
+        retry=retry,
+        timeout=timeout,
     )
 
 
@@ -405,7 +415,9 @@ async def test_asynccollectionreference_stream_w_retry_timeout(query_class):
     query_class.assert_called_once_with(collection)
     query_instance = query_class.return_value
     query_instance.stream.assert_called_once_with(
-        transaction=None, retry=retry, timeout=timeout,
+        transaction=None,
+        retry=retry,
+        timeout=timeout,
     )
 
 

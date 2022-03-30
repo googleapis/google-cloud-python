@@ -109,7 +109,8 @@ def test_baseclient__firestore_api_helper_wo_emulator():
         target, credentials=client._credentials, options=channel_options.items()
     )
     transport_class.assert_called_once_with(
-        host=target, channel=transport_class.create_channel.return_value,
+        host=target,
+        channel=transport_class.create_channel.return_value,
     )
     client_class.assert_called_once_with(
         transport=transport_class.return_value, client_options=client_options
@@ -138,7 +139,8 @@ def test_baseclient__firestore_api_helper_w_emulator():
 
     emulator_channel.assert_called_once_with(transport_class)
     transport_class.assert_called_once_with(
-        host=target, channel=emulator_channel.return_value,
+        host=target,
+        channel=emulator_channel.return_value,
     )
     client_class.assert_called_once_with(
         transport=transport_class.return_value, client_options=client_options
@@ -252,7 +254,9 @@ def test_baseclient__target_helper_w_client_options_w_endpoint():
     endpoint = "https://api.example.com/firestore"
     client_options = {"api_endpoint": endpoint}
     client = _make_base_client(
-        project=PROJECT, credentials=credentials, client_options=client_options,
+        project=PROJECT,
+        credentials=credentials,
+        client_options=client_options,
     )
 
     assert client._target_helper(None) == endpoint
@@ -264,7 +268,9 @@ def test_baseclient__target_helper_w_client_options_wo_endpoint():
     client_options = {}
     client_class = mock.Mock(instance=False, DEFAULT_ENDPOINT=endpoint)
     client = _make_base_client(
-        project=PROJECT, credentials=credentials, client_options=client_options,
+        project=PROJECT,
+        credentials=credentials,
+        client_options=client_options,
     )
 
     assert client._target_helper(client_class) == endpoint
@@ -274,7 +280,10 @@ def test_baseclient__target_helper_wo_client_options():
     credentials = _make_credentials()
     endpoint = "https://api.example.com/firestore"
     client_class = mock.Mock(instance=False, DEFAULT_ENDPOINT=endpoint)
-    client = _make_base_client(project=PROJECT, credentials=credentials,)
+    client = _make_base_client(
+        project=PROJECT,
+        credentials=credentials,
+    )
 
     assert client._target_helper(client_class) == endpoint
 
@@ -381,10 +390,10 @@ def test__get_reference_failure():
 def _dummy_ref_string():
     from google.cloud.firestore_v1.base_client import DEFAULT_DATABASE
 
-    project = u"bazzzz"
-    collection_id = u"fizz"
-    document_id = u"buzz"
-    return u"projects/{}/databases/{}/documents/{}/{}".format(
+    project = "bazzzz"
+    collection_id = "fizz"
+    document_id = "buzz"
+    return "projects/{}/databases/{}/documents/{}/{}".format(
         project, DEFAULT_DATABASE, collection_id, document_id
     )
 
@@ -406,7 +415,7 @@ def test__parse_batch_get_found():
         name=ref_string,
         fields={
             "foo": document.Value(double_value=1.5),
-            "bar": document.Value(string_value=u"skillz"),
+            "bar": document.Value(string_value="skillz"),
         },
         create_time=create_time,
         update_time=update_time,
@@ -417,7 +426,7 @@ def test__parse_batch_get_found():
     snapshot = _parse_batch_get(response_pb, reference_map, mock.sentinel.client)
     assert isinstance(snapshot, DocumentSnapshot)
     assert snapshot._reference is mock.sentinel.reference
-    assert snapshot._data == {"foo": 1.5, "bar": u"skillz"}
+    assert snapshot._data == {"foo": 1.5, "bar": "skillz"}
     assert snapshot._exists
     assert snapshot.read_time.timestamp_pb() == read_time
     assert snapshot.create_time.timestamp_pb() == create_time

@@ -187,7 +187,10 @@ class BaseDocumentReference(object):
         return self._client.collection(*child_path)
 
     def _prep_create(
-        self, document_data: dict, retry: retries.Retry = None, timeout: float = None,
+        self,
+        document_data: dict,
+        retry: retries.Retry = None,
+        timeout: float = None,
     ) -> Tuple[Any, dict]:
         batch = self._client.batch()
         batch.create(self, document_data)
@@ -196,7 +199,10 @@ class BaseDocumentReference(object):
         return batch, kwargs
 
     def create(
-        self, document_data: dict, retry: retries.Retry = None, timeout: float = None,
+        self,
+        document_data: dict,
+        retry: retries.Retry = None,
+        timeout: float = None,
     ) -> NoReturn:
         raise NotImplementedError
 
@@ -305,7 +311,10 @@ class BaseDocumentReference(object):
         raise NotImplementedError
 
     def _prep_collections(
-        self, page_size: int = None, retry: retries.Retry = None, timeout: float = None,
+        self,
+        page_size: int = None,
+        retry: retries.Retry = None,
+        timeout: float = None,
     ) -> Tuple[dict, dict]:
         """Shared setup for async/sync :meth:`collections`."""
         request = {"parent": self._document_path, "page_size": page_size}
@@ -314,7 +323,10 @@ class BaseDocumentReference(object):
         return request, kwargs
 
     def collections(
-        self, page_size: int = None, retry: retries.Retry = None, timeout: float = None,
+        self,
+        page_size: int = None,
+        retry: retries.Retry = None,
+        timeout: float = None,
     ) -> None:
         raise NotImplementedError
 

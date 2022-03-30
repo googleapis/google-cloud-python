@@ -189,15 +189,21 @@ async def test_asyncquery_chunkify_w_chunksize_lt_limit():
         for index in range(5)
     ]
     responses1 = [
-        firestore.RunQueryResponse(document=document.Document(name=doc_id),)
+        firestore.RunQueryResponse(
+            document=document.Document(name=doc_id),
+        )
         for doc_id in doc_ids[:2]
     ]
     responses2 = [
-        firestore.RunQueryResponse(document=document.Document(name=doc_id),)
+        firestore.RunQueryResponse(
+            document=document.Document(name=doc_id),
+        )
         for doc_id in doc_ids[2:4]
     ]
     responses3 = [
-        firestore.RunQueryResponse(document=document.Document(name=doc_id),)
+        firestore.RunQueryResponse(
+            document=document.Document(name=doc_id),
+        )
         for doc_id in doc_ids[4:]
     ]
     firestore_api.run_query.side_effect = [
@@ -626,7 +632,8 @@ async def _get_partitions_helper(retry=None, timeout=None):
     # Verify the mock call.
     parent_path, _ = parent._parent_info()
     partition_query = _make_async_collection_group(
-        parent, orders=(query._make_order("__name__", query.ASCENDING),),
+        parent,
+        orders=(query._make_order("__name__", query.ASCENDING),),
     )
     firestore_api.partition_query.assert_called_once_with(
         request={

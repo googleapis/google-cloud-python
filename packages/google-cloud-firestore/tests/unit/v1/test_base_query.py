@@ -25,7 +25,11 @@ def _make_base_query(*args, **kwargs):
 
 
 def _make_base_query_all_fields(
-    limit=9876, offset=12, skip_fields=(), parent=None, all_descendants=True,
+    limit=9876,
+    offset=12,
+    skip_fields=(),
+    parent=None,
+    all_descendants=True,
 ):
     kwargs = {
         "projection": mock.sentinel.projection,
@@ -1045,7 +1049,7 @@ def test_basequery__to_protobuf_where_only():
 
     parent = mock.Mock(id="dog", spec=["id"])
     query1 = _make_base_query(parent)
-    query2 = query1.where("a", "==", u"b")
+    query2 = query1.where("a", "==", "b")
 
     structured_query_pb = query2._to_protobuf()
     query_kwargs = {
@@ -1054,7 +1058,7 @@ def test_basequery__to_protobuf_where_only():
             field_filter=query.StructuredQuery.FieldFilter(
                 field=query.StructuredQuery.FieldReference(field_path="a"),
                 op=StructuredQuery.FieldFilter.Operator.EQUAL,
-                value=document.Value(string_value=u"b"),
+                value=document.Value(string_value="b"),
             )
         ),
     }
@@ -1088,15 +1092,13 @@ def test_basequery__to_protobuf_start_at_only():
     from google.cloud.firestore_v1.types import query
 
     parent = mock.Mock(id="phish", spec=["id"])
-    query_inst = (
-        _make_base_query(parent).order_by("X.Y").start_after({"X": {"Y": u"Z"}})
-    )
+    query_inst = _make_base_query(parent).order_by("X.Y").start_after({"X": {"Y": "Z"}})
 
     structured_query_pb = query_inst._to_protobuf()
     query_kwargs = {
         "from_": [StructuredQuery.CollectionSelector(collection_id=parent.id)],
         "order_by": [_make_order_pb("X.Y", StructuredQuery.Direction.ASCENDING)],
-        "start_at": query.Cursor(values=[document.Value(string_value=u"Z")]),
+        "start_at": query.Cursor(values=[document.Value(string_value="Z")]),
     }
     expected_pb = StructuredQuery(**query_kwargs)
     assert structured_query_pb == expected_pb

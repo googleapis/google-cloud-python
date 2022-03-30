@@ -163,7 +163,8 @@ def _document_watch_comparator(doc1, doc2):  # pragma: NO COVER
 
 
 def _make_watch_no_mocks(
-    snapshots=None, comparator=_document_watch_comparator,
+    snapshots=None,
+    comparator=_document_watch_comparator,
 ):
     from google.cloud.firestore_v1.watch import Watch
 
@@ -227,7 +228,9 @@ def test_watch_for_document(snapshots):
     with mock.patch("google.cloud.firestore_v1.watch.ResumableBidiRpc"):
         with mock.patch("google.cloud.firestore_v1.watch.BackgroundConsumer"):
             inst = Watch.for_document(
-                docref, snapshot_callback, document_snapshot_cls=DummyDocumentSnapshot,
+                docref,
+                snapshot_callback,
+                document_snapshot_cls=DummyDocumentSnapshot,
             )
 
     inst._consumer.start.assert_called_once_with()
@@ -257,7 +260,8 @@ def test_watch_for_query(snapshots):
     inst._rpc.add_done_callback.assert_called_once_with(inst._on_rpc_done)
     parent_path, _ = parent._parent_info()
     target.QueryTarget.assert_called_once_with(
-        parent=parent_path, structured_query=query._to_protobuf(),
+        parent=parent_path,
+        structured_query=query._to_protobuf(),
     )
     query_target = target.QueryTarget.return_value
     assert inst._targets["query"] is query_target._pb
@@ -289,7 +293,8 @@ def test_watch_for_query_nested(snapshots):
     query_target = target.QueryTarget.return_value
     parent_path, _ = parent._parent_info()
     target.QueryTarget.assert_called_once_with(
-        parent=parent_path, structured_query=query._to_protobuf(),
+        parent=parent_path,
+        structured_query=query._to_protobuf(),
     )
     query_target = target.QueryTarget.return_value
     assert inst._targets["query"] is query_target._pb

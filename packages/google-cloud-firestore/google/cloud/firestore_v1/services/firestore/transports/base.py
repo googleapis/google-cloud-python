@@ -32,7 +32,9 @@ from google.protobuf import empty_pb2  # type: ignore
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-firestore",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-firestore",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
@@ -291,7 +293,9 @@ class FirestoreTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.write: gapic_v1.method.wrap_method(
-                self.write, default_timeout=86400.0, client_info=client_info,
+                self.write,
+                default_timeout=86400.0,
+                client_info=client_info,
             ),
             self.listen: gapic_v1.method.wrap_method(
                 self.listen,
@@ -363,9 +367,9 @@ class FirestoreTransport(abc.ABC):
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

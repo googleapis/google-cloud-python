@@ -37,7 +37,9 @@ class AsyncWriteBatch(BaseWriteBatch):
         super(AsyncWriteBatch, self).__init__(client=client)
 
     async def commit(
-        self, retry: retries.Retry = gapic_v1.method.DEFAULT, timeout: float = None,
+        self,
+        retry: retries.Retry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
     ) -> list:
         """Commit the changes accumulated in this batch.
 
@@ -56,7 +58,9 @@ class AsyncWriteBatch(BaseWriteBatch):
         request, kwargs = self._prep_commit(retry, timeout)
 
         commit_response = await self._client._firestore_api.commit(
-            request=request, metadata=self._client._rpc_metadata, **kwargs,
+            request=request,
+            metadata=self._client._rpc_metadata,
+            **kwargs,
         )
 
         self._write_pbs = []

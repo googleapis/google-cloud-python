@@ -361,9 +361,7 @@ class BaseClient(ClientWithProject):
     @staticmethod
     def write_option(
         **kwargs,
-    ) -> Union[
-        _helpers.ExistsOption, _helpers.LastUpdateOption,
-    ]:
+    ) -> Union[_helpers.ExistsOption, _helpers.LastUpdateOption]:
         """Create a write option for write operations.
 
         Write operations include :meth:`~google.cloud.DocumentReference.set`,
@@ -445,7 +443,9 @@ class BaseClient(ClientWithProject):
         raise NotImplementedError
 
     def _prep_collections(
-        self, retry: retries.Retry = None, timeout: float = None,
+        self,
+        retry: retries.Retry = None,
+        timeout: float = None,
     ) -> Tuple[dict, dict]:
         """Shared setup for async/sync :meth:`collections`."""
         request = {"parent": "{}/documents".format(self._database_string)}
@@ -454,7 +454,9 @@ class BaseClient(ClientWithProject):
         return request, kwargs
 
     def collections(
-        self, retry: retries.Retry = None, timeout: float = None,
+        self,
+        retry: retries.Retry = None,
+        timeout: float = None,
     ) -> Union[
         AsyncGenerator[BaseCollectionReference, Any],
         Generator[BaseCollectionReference, Any, Any],

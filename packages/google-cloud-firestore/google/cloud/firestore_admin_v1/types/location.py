@@ -17,7 +17,10 @@ import proto  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.firestore.admin.v1", manifest={"LocationMetadata",},
+    package="google.firestore.admin.v1",
+    manifest={
+        "LocationMetadata",
+    },
 )
 
 
