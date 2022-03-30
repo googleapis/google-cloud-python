@@ -15,18 +15,9 @@
 """Create / interact with Google Cloud Storage connections."""
 
 import functools
-import os
-import pkg_resources
 
 from google.cloud import _http
-
 from google.cloud.storage import __version__
-
-
-if os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE") == "true":  # pragma: NO COVER
-    release = pkg_resources.get_distribution("google-cloud-core").parsed_version
-    if release < pkg_resources.parse_version("1.6.0"):
-        raise ImportError("google-cloud-core >= 1.6.0 is required to use mTLS feature")
 
 
 class Connection(_http.JSONConnection):
