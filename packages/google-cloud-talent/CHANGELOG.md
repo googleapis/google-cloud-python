@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-talent/#history
 
+### [2.5.2](https://github.com/googleapis/python-talent/compare/v2.5.1...v2.5.2) (2022-03-29)
+
+
+### Documentation
+
+* Added functionality in the companyDisplayNames filter to support fuzzy matching ([#221](https://github.com/googleapis/python-talent/issues/221)) ([985508c](https://github.com/googleapis/python-talent/commit/985508ce1cdd1050f5d6a7c7b6919408946e4c1d))
+
 ### [2.5.1](https://github.com/googleapis/python-talent/compare/v2.5.0...v2.5.1) (2022-03-05)
 
 
