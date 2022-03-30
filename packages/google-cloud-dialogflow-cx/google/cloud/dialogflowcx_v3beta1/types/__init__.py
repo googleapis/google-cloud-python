@@ -13,7 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .advanced_settings import AdvancedSettings
+from .advanced_settings import (
+    AdvancedSettings,
+)
 from .agent import (
     Agent,
     AgentValidationResult,
@@ -115,7 +117,9 @@ from .flow import (
     UpdateFlowRequest,
     ValidateFlowRequest,
 )
-from .fulfillment import Fulfillment
+from .fulfillment import (
+    Fulfillment,
+)
 from .intent import (
     CreateIntentRequest,
     DeleteIntentRequest,
@@ -138,7 +142,9 @@ from .page import (
     TransitionRoute,
     UpdatePageRequest,
 )
-from .response_message import ResponseMessage
+from .response_message import (
+    ResponseMessage,
+)
 from .security_settings import (
     CreateSecuritySettingsRequest,
     DeleteSecuritySettingsRequest,

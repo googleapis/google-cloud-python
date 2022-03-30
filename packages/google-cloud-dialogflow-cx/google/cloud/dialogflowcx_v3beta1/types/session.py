@@ -202,12 +202,12 @@ class StreamingDetectIntentRequest(proto.Message):
        recognition, please send a message with
        [query_input.text][google.cloud.dialogflow.cx.v3beta1.QueryInput.text].
 
-    However, note that:
+       However, note that:
 
-    -  Dialogflow will bill you for the audio duration so far.
-    -  Dialogflow discards all Speech recognition results in favor of
-       the input text.
-    -  Dialogflow will use the language code from the first message.
+       -  Dialogflow will bill you for the audio duration so far.
+       -  Dialogflow discards all Speech recognition results in favor of
+          the input text.
+       -  Dialogflow will use the language code from the first message.
 
     After you sent all input, you must half-close or abort the request
     stream.
