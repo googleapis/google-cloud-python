@@ -7099,14 +7099,14 @@ def test_parse_dns_authorization_path():
 def test_target_https_proxies_path():
     project = "whelk"
     location = "octopus"
-    targetHttpsProxy = "oyster"
-    expected = "projects/{project}/locations/{location}/targetHttpsProxies/{targetHttpsProxy}".format(
+    target_https_proxy = "oyster"
+    expected = "projects/{project}/locations/{location}/targetHttpsProxies/{target_https_proxy}".format(
         project=project,
         location=location,
-        targetHttpsProxy=targetHttpsProxy,
+        target_https_proxy=target_https_proxy,
     )
     actual = CertificateManagerClient.target_https_proxies_path(
-        project, location, targetHttpsProxy
+        project, location, target_https_proxy
     )
     assert expected == actual
 
@@ -7115,7 +7115,7 @@ def test_parse_target_https_proxies_path():
     expected = {
         "project": "nudibranch",
         "location": "cuttlefish",
-        "targetHttpsProxy": "mussel",
+        "target_https_proxy": "mussel",
     }
     path = CertificateManagerClient.target_https_proxies_path(**expected)
 
@@ -7127,14 +7127,14 @@ def test_parse_target_https_proxies_path():
 def test_target_ssl_proxies_path():
     project = "winkle"
     location = "nautilus"
-    targetSslProxy = "scallop"
-    expected = "projects/{project}/locations/{location}/targetSslProxies/{targetSslProxy}".format(
+    target_ssl_proxy = "scallop"
+    expected = "projects/{project}/locations/{location}/targetSslProxies/{target_ssl_proxy}".format(
         project=project,
         location=location,
-        targetSslProxy=targetSslProxy,
+        target_ssl_proxy=target_ssl_proxy,
     )
     actual = CertificateManagerClient.target_ssl_proxies_path(
-        project, location, targetSslProxy
+        project, location, target_ssl_proxy
     )
     assert expected == actual
 
@@ -7143,7 +7143,7 @@ def test_parse_target_ssl_proxies_path():
     expected = {
         "project": "abalone",
         "location": "squid",
-        "targetSslProxy": "clam",
+        "target_ssl_proxy": "clam",
     }
     path = CertificateManagerClient.target_ssl_proxies_path(**expected)
 

@@ -291,20 +291,20 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
     def target_https_proxies_path(
         project: str,
         location: str,
-        targetHttpsProxy: str,
+        target_https_proxy: str,
     ) -> str:
         """Returns a fully-qualified target_https_proxies string."""
-        return "projects/{project}/locations/{location}/targetHttpsProxies/{targetHttpsProxy}".format(
+        return "projects/{project}/locations/{location}/targetHttpsProxies/{target_https_proxy}".format(
             project=project,
             location=location,
-            targetHttpsProxy=targetHttpsProxy,
+            target_https_proxy=target_https_proxy,
         )
 
     @staticmethod
     def parse_target_https_proxies_path(path: str) -> Dict[str, str]:
         """Parses a target_https_proxies path into its component segments."""
         m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/targetHttpsProxies/(?P<targetHttpsProxy>.+?)$",
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/targetHttpsProxies/(?P<target_https_proxy>.+?)$",
             path,
         )
         return m.groupdict() if m else {}
@@ -313,20 +313,20 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
     def target_ssl_proxies_path(
         project: str,
         location: str,
-        targetSslProxy: str,
+        target_ssl_proxy: str,
     ) -> str:
         """Returns a fully-qualified target_ssl_proxies string."""
-        return "projects/{project}/locations/{location}/targetSslProxies/{targetSslProxy}".format(
+        return "projects/{project}/locations/{location}/targetSslProxies/{target_ssl_proxy}".format(
             project=project,
             location=location,
-            targetSslProxy=targetSslProxy,
+            target_ssl_proxy=target_ssl_proxy,
         )
 
     @staticmethod
     def parse_target_ssl_proxies_path(path: str) -> Dict[str, str]:
         """Parses a target_ssl_proxies path into its component segments."""
         m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/targetSslProxies/(?P<targetSslProxy>.+?)$",
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/targetSslProxies/(?P<target_ssl_proxy>.+?)$",
             path,
         )
         return m.groupdict() if m else {}

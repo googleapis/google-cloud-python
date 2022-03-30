@@ -849,7 +849,10 @@ class Certificate(proto.Message):
         san_dnsnames (Sequence[str]):
             Output only. The list of Subject Alternative
             Names of dnsName type defined in the certificate
-            (see RFC 5280 4.2.1.6)
+            (see RFC 5280 4.2.1.6). Managed certificates
+            that haven't been provisioned yet have this
+            field populated with a value of the
+            managed.domains field.
         pem_certificate (str):
             Output only. The PEM-encoded certificate
             chain.
