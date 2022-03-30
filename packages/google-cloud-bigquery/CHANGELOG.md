@@ -5,6 +5,14 @@
 [1]: https://pypi.org/project/google-cloud-bigquery/#history
 
 
+### [3.0.1](https://github.com/googleapis/python-bigquery/compare/v3.0.0...v3.0.1) (2022-03-30)
+
+
+### Bug Fixes
+
+* **deps:** raise exception when pandas is installed but db-dtypes is not ([#1191](https://github.com/googleapis/python-bigquery/issues/1191)) ([4333910](https://github.com/googleapis/python-bigquery/commit/433391097bae57dd12a93db18fc2bab573d8f128))
+* **deps:** restore dependency on python-dateutil ([#1187](https://github.com/googleapis/python-bigquery/issues/1187)) ([212d7ec](https://github.com/googleapis/python-bigquery/commit/212d7ec1f0740d04c26fb3ceffc9a4dd9eed6756))
+
 ## [3.0.0](https://github.com/googleapis/python-bigquery/compare/v2.34.3...v3.0.0) (2022-03-29)
 
 
