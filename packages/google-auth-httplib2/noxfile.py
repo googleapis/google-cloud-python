@@ -32,7 +32,7 @@ UNIT_TEST_PYTHON_VERSIONS = ["2.7", "3.5", "3.6", "3.7", "3.8"]
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
 def lint(session):
-    session.install("flake8", "flake8-import-order", "docutils", BLACK_VERSION)
+    session.install("flake8", "flake8-import-order", "docutils", BLACK_VERSION, "click<8.1.0")
     session.install(".")
     session.run("black", "--check", *BLACK_PATHS)
     session.run(
@@ -56,7 +56,7 @@ def blacken(session):
     That run uses an image that doesn't have 3.6 installed. Before updating this
     check the state of the `gcp_ubuntu_config` we use for that Kokoro run.
     """
-    session.install(BLACK_VERSION)
+    session.install(BLACK_VERSION, "click<8.1.0")
     session.run("black", *BLACK_PATHS)
 
 
