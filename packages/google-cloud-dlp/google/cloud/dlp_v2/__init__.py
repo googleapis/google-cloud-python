@@ -39,6 +39,13 @@ from .types.dlp import CryptoDeterministicConfig
 from .types.dlp import CryptoHashConfig
 from .types.dlp import CryptoKey
 from .types.dlp import CryptoReplaceFfxFpeConfig
+from .types.dlp import DataProfileAction
+from .types.dlp import DataProfileConfigSnapshot
+from .types.dlp import DataProfileJobConfig
+from .types.dlp import DataProfileLocation
+from .types.dlp import DataProfilePubSubCondition
+from .types.dlp import DataProfilePubSubMessage
+from .types.dlp import DataRiskLevel
 from .types.dlp import DateShiftConfig
 from .types.dlp import DateTime
 from .types.dlp import DeidentifyConfig
@@ -73,6 +80,7 @@ from .types.dlp import HybridInspectStatistics
 from .types.dlp import ImageLocation
 from .types.dlp import InfoTypeDescription
 from .types.dlp import InfoTypeStats
+from .types.dlp import InfoTypeSummary
 from .types.dlp import InfoTypeTransformations
 from .types.dlp import InspectConfig
 from .types.dlp import InspectContentRequest
@@ -102,9 +110,11 @@ from .types.dlp import ListStoredInfoTypesResponse
 from .types.dlp import Location
 from .types.dlp import Manual
 from .types.dlp import MetadataLocation
+from .types.dlp import OtherInfoTypeSummary
 from .types.dlp import OutputStorageConfig
 from .types.dlp import PrimitiveTransformation
 from .types.dlp import PrivacyMetric
+from .types.dlp import ProfileStatus
 from .types.dlp import QuasiId
 from .types.dlp import QuoteInfo
 from .types.dlp import Range
@@ -122,6 +132,7 @@ from .types.dlp import ReplaceValueConfig
 from .types.dlp import ReplaceWithInfoTypeConfig
 from .types.dlp import RiskAnalysisJobConfig
 from .types.dlp import Schedule
+from .types.dlp import SensitivityScore
 from .types.dlp import StatisticalTable
 from .types.dlp import StorageMetadataLabel
 from .types.dlp import StoredInfoType
@@ -129,6 +140,7 @@ from .types.dlp import StoredInfoTypeConfig
 from .types.dlp import StoredInfoTypeStats
 from .types.dlp import StoredInfoTypeVersion
 from .types.dlp import Table
+from .types.dlp import TableDataProfile
 from .types.dlp import TableLocation
 from .types.dlp import TimePartConfig
 from .types.dlp import TransformationErrorHandling
@@ -144,10 +156,12 @@ from .types.dlp import Value
 from .types.dlp import ValueFrequency
 from .types.dlp import ContentOption
 from .types.dlp import DlpJobType
+from .types.dlp import EncryptionStatus
 from .types.dlp import InfoTypeSupportedBy
 from .types.dlp import MatchingType
 from .types.dlp import MetadataType
 from .types.dlp import RelationalOperator
+from .types.dlp import ResourceVisibility
 from .types.dlp import StoredInfoTypeState
 from .types.storage import BigQueryField
 from .types.storage import BigQueryKey
@@ -208,6 +222,13 @@ __all__ = (
     "CryptoKey",
     "CryptoReplaceFfxFpeConfig",
     "CustomInfoType",
+    "DataProfileAction",
+    "DataProfileConfigSnapshot",
+    "DataProfileJobConfig",
+    "DataProfileLocation",
+    "DataProfilePubSubCondition",
+    "DataProfilePubSubMessage",
+    "DataRiskLevel",
     "DatastoreKey",
     "DatastoreOptions",
     "DateShiftConfig",
@@ -225,6 +246,7 @@ __all__ = (
     "DlpJobType",
     "DlpServiceClient",
     "DocumentLocation",
+    "EncryptionStatus",
     "EntityId",
     "Error",
     "ExcludeInfoTypes",
@@ -251,6 +273,7 @@ __all__ = (
     "InfoType",
     "InfoTypeDescription",
     "InfoTypeStats",
+    "InfoTypeSummary",
     "InfoTypeSupportedBy",
     "InfoTypeTransformations",
     "InspectConfig",
@@ -286,10 +309,12 @@ __all__ = (
     "MatchingType",
     "MetadataLocation",
     "MetadataType",
+    "OtherInfoTypeSummary",
     "OutputStorageConfig",
     "PartitionId",
     "PrimitiveTransformation",
     "PrivacyMetric",
+    "ProfileStatus",
     "QuasiId",
     "QuoteInfo",
     "Range",
@@ -307,8 +332,10 @@ __all__ = (
     "ReplaceDictionaryConfig",
     "ReplaceValueConfig",
     "ReplaceWithInfoTypeConfig",
+    "ResourceVisibility",
     "RiskAnalysisJobConfig",
     "Schedule",
+    "SensitivityScore",
     "StatisticalTable",
     "StorageConfig",
     "StorageMetadataLabel",
@@ -319,6 +346,7 @@ __all__ = (
     "StoredInfoTypeVersion",
     "StoredType",
     "Table",
+    "TableDataProfile",
     "TableLocation",
     "TableOptions",
     "TimePartConfig",

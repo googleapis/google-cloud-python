@@ -36,6 +36,8 @@ __protobuf__ = proto.module(
         "InfoTypeSupportedBy",
         "DlpJobType",
         "StoredInfoTypeState",
+        "ResourceVisibility",
+        "EncryptionStatus",
         "ExcludeInfoTypes",
         "ExclusionRule",
         "InspectionRule",
@@ -131,6 +133,9 @@ __protobuf__ = proto.module(
         "ListJobTriggersResponse",
         "DeleteJobTriggerRequest",
         "InspectJobConfig",
+        "DataProfileAction",
+        "DataProfileJobConfig",
+        "DataProfileLocation",
         "DlpJob",
         "GetDlpJobRequest",
         "ListDlpJobsRequest",
@@ -161,6 +166,15 @@ __protobuf__ = proto.module(
         "HybridContentItem",
         "HybridFindingDetails",
         "HybridInspectResponse",
+        "SensitivityScore",
+        "DataRiskLevel",
+        "DataProfileConfigSnapshot",
+        "TableDataProfile",
+        "ProfileStatus",
+        "InfoTypeSummary",
+        "OtherInfoTypeSummary",
+        "DataProfilePubSubCondition",
+        "DataProfilePubSubMessage",
     },
 )
 
@@ -222,6 +236,22 @@ class StoredInfoTypeState(proto.Enum):
     READY = 2
     FAILED = 3
     INVALID = 4
+
+
+class ResourceVisibility(proto.Enum):
+    r"""How broadly a resource has been shared. New items may be
+    added over time. A higher number means more restricted.
+    """
+    RESOURCE_VISIBILITY_UNSPECIFIED = 0
+    RESOURCE_VISIBILITY_PUBLIC = 10
+    RESOURCE_VISIBILITY_RESTRICTED = 20
+
+
+class EncryptionStatus(proto.Enum):
+    r"""How a resource is encrypted."""
+    ENCRYPTION_STATUS_UNSPECIFIED = 0
+    ENCRYPTION_GOOGLE_MANAGED = 1
+    ENCRYPTION_CUSTOMER_MANAGED = 2
 
 
 class ExcludeInfoTypes(proto.Message):
@@ -5706,6 +5736,212 @@ class InspectJobConfig(proto.Message):
     )
 
 
+class DataProfileAction(proto.Message):
+    r"""A task to execute when a data profile has been generated.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        export_data (google.cloud.dlp_v2.types.DataProfileAction.Export):
+            Export data profiles into a provided
+            location.
+
+            This field is a member of `oneof`_ ``action``.
+        pub_sub_notification (google.cloud.dlp_v2.types.DataProfileAction.PubSubNotification):
+            Publish a message into the Pub/Sub topic.
+
+            This field is a member of `oneof`_ ``action``.
+    """
+
+    class EventType(proto.Enum):
+        r"""Types of event that can trigger an action."""
+        EVENT_TYPE_UNSPECIFIED = 0
+        NEW_PROFILE = 1
+        CHANGED_PROFILE = 2
+        SCORE_INCREASED = 3
+        ERROR_CHANGED = 4
+
+    class Export(proto.Message):
+        r"""If set, the detailed data profiles will be persisted to the
+        location of your choice whenever updated.
+
+        Attributes:
+            profile_table (google.cloud.dlp_v2.types.BigQueryTable):
+                Store all table and column profiles in an
+                existing table or a new table in an existing
+                dataset. Each re-generation will result in a new
+                row in BigQuery.
+        """
+
+        profile_table = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=storage.BigQueryTable,
+        )
+
+    class PubSubNotification(proto.Message):
+        r"""Send a Pub/Sub message into the given Pub/Sub topic to connect other
+        systems to data profile generation. The message payload data will be
+        the byte serialization of ``DataProfilePubSubMessage``.
+
+        Attributes:
+            topic (str):
+                Cloud Pub/Sub topic to send notifications to.
+                Format is projects/{project}/topics/{topic}.
+            event (google.cloud.dlp_v2.types.DataProfileAction.EventType):
+                The type of event that triggers a Pub/Sub. At most one
+                ``PubSubNotification`` per EventType is permitted.
+            pubsub_condition (google.cloud.dlp_v2.types.DataProfilePubSubCondition):
+                Conditions (e.g., data risk or sensitivity
+                level) for triggering a Pub/Sub.
+            detail_of_message (google.cloud.dlp_v2.types.DataProfileAction.PubSubNotification.DetailLevel):
+                How much data to include in the Pub/Sub message. If the user
+                wishes to limit the size of the message, they can use
+                resource_name and fetch the profile fields they wish to. Per
+                table profile (not per column).
+        """
+
+        class DetailLevel(proto.Enum):
+            r"""The levels of detail that can be included in the Pub/Sub
+            message.
+            """
+            DETAIL_LEVEL_UNSPECIFIED = 0
+            TABLE_PROFILE = 1
+            RESOURCE_NAME = 2
+
+        topic = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        event = proto.Field(
+            proto.ENUM,
+            number=2,
+            enum="DataProfileAction.EventType",
+        )
+        pubsub_condition = proto.Field(
+            proto.MESSAGE,
+            number=3,
+            message="DataProfilePubSubCondition",
+        )
+        detail_of_message = proto.Field(
+            proto.ENUM,
+            number=4,
+            enum="DataProfileAction.PubSubNotification.DetailLevel",
+        )
+
+    export_data = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        oneof="action",
+        message=Export,
+    )
+    pub_sub_notification = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        oneof="action",
+        message=PubSubNotification,
+    )
+
+
+class DataProfileJobConfig(proto.Message):
+    r"""Configuration for setting up a job to scan resources for profile
+    generation. Only one data profile configuration may exist per
+    organization, folder, or project.
+
+    The generated data profiles are retained according to the [data
+    retention policy]
+    (https://cloud.google.com/dlp/docs/data-profiles#retention).
+
+    Attributes:
+        location (google.cloud.dlp_v2.types.DataProfileLocation):
+            The data to scan.
+        project_id (str):
+            The project that will run the scan. The DLP
+            service account that exists within this project
+            must have access to all resources that are
+            profiled, and the Cloud DLP API must be enabled.
+        inspect_templates (Sequence[str]):
+            Detection logic for profile generation.
+
+            Not all template features are used by profiles.
+            FindingLimits, include_quote and exclude_info_types have no
+            impact on data profiling.
+
+            Multiple templates may be provided if there is data in
+            multiple regions. At most one template must be specified
+            per-region (including "global"). Each region is scanned
+            using the applicable template. If no region-specific
+            template is specified, but a "global" template is specified,
+            it will be copied to that region and used instead. If no
+            global or region-specific template is provided for a region
+            with data, that region's data will not be scanned.
+
+            For more information, see
+            https://cloud.google.com/dlp/docs/data-profiles#data_residency.
+        data_profile_actions (Sequence[google.cloud.dlp_v2.types.DataProfileAction]):
+            Actions to execute at the completion of the
+            job.
+    """
+
+    location = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="DataProfileLocation",
+    )
+    project_id = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    inspect_templates = proto.RepeatedField(
+        proto.STRING,
+        number=7,
+    )
+    data_profile_actions = proto.RepeatedField(
+        proto.MESSAGE,
+        number=6,
+        message="DataProfileAction",
+    )
+
+
+class DataProfileLocation(proto.Message):
+    r"""The data that will be profiled.
+
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
+    .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+    Attributes:
+        organization_id (int):
+            The ID of an organization to scan.
+
+            This field is a member of `oneof`_ ``location``.
+        folder_id (int):
+            The ID of the Folder within an organization
+            to scan.
+
+            This field is a member of `oneof`_ ``location``.
+    """
+
+    organization_id = proto.Field(
+        proto.INT64,
+        number=1,
+        oneof="location",
+    )
+    folder_id = proto.Field(
+        proto.INT64,
+        number=2,
+        oneof="location",
+    )
+
+
 class DlpJob(proto.Message):
     r"""Combines all of the information about a DLP job.
 
@@ -6865,6 +7101,437 @@ class HybridFindingDetails(proto.Message):
 
 class HybridInspectResponse(proto.Message):
     r"""Quota exceeded errors will be thrown once quota has been met."""
+
+
+class SensitivityScore(proto.Message):
+    r"""Score is a summary of all elements in the data profile.
+    A higher number means more sensitive.
+
+    Attributes:
+        score (google.cloud.dlp_v2.types.SensitivityScore.SensitivityScoreLevel):
+            The score applied to the resource.
+    """
+
+    class SensitivityScoreLevel(proto.Enum):
+        r"""Various score levels for resources."""
+        SENSITIVITY_SCORE_UNSPECIFIED = 0
+        SENSITIVITY_LOW = 10
+        SENSITIVITY_MODERATE = 20
+        SENSITIVITY_HIGH = 30
+
+    score = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=SensitivityScoreLevel,
+    )
+
+
+class DataRiskLevel(proto.Message):
+    r"""Score is a summary of all elements in the data profile.
+    A higher number means more risky.
+
+    Attributes:
+        score (google.cloud.dlp_v2.types.DataRiskLevel.DataRiskLevelScore):
+            The score applied to the resource.
+    """
+
+    class DataRiskLevelScore(proto.Enum):
+        r"""Various score levels for resources."""
+        RISK_SCORE_UNSPECIFIED = 0
+        RISK_LOW = 10
+        RISK_MODERATE = 20
+        RISK_HIGH = 30
+
+    score = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=DataRiskLevelScore,
+    )
+
+
+class DataProfileConfigSnapshot(proto.Message):
+    r"""Snapshot of the configurations used to generate the profile.
+
+    Attributes:
+        inspect_config (google.cloud.dlp_v2.types.InspectConfig):
+            A copy of the inspection config used to generate this
+            profile. This is a copy of the inspect_template specified in
+            ``DataProfileJobConfig``.
+        data_profile_job (google.cloud.dlp_v2.types.DataProfileJobConfig):
+            A copy of the configuration used to generate
+            this profile.
+    """
+
+    inspect_config = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="InspectConfig",
+    )
+    data_profile_job = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="DataProfileJobConfig",
+    )
+
+
+class TableDataProfile(proto.Message):
+    r"""The profile for a scanned table.
+
+    Attributes:
+        name (str):
+            The name of the profile.
+        project_data_profile (str):
+            The resource name to the project data profile
+            for this table.
+        dataset_project_id (str):
+            The GCP project ID that owns the BigQuery
+            dataset.
+        dataset_location (str):
+            The BigQuery location where the dataset's
+            data is stored. See
+            https://cloud.google.com/bigquery/docs/locations
+            for supported locations.
+        dataset_id (str):
+            The BigQuery dataset ID.
+        table_id (str):
+            The BigQuery table ID.
+        full_resource (str):
+            The resource name of the table.
+            https://cloud.google.com/apis/design/resource_names#full_resource_name
+        profile_status (google.cloud.dlp_v2.types.ProfileStatus):
+            Success or error status from the most recent
+            profile generation attempt. May be empty if the
+            profile is still being generated.
+        state (google.cloud.dlp_v2.types.TableDataProfile.State):
+            State of a profile.
+        sensitivity_score (google.cloud.dlp_v2.types.SensitivityScore):
+            The sensitivity score of this table.
+        data_risk_level (google.cloud.dlp_v2.types.DataRiskLevel):
+            The data risk level of this table.
+        predicted_info_types (Sequence[google.cloud.dlp_v2.types.InfoTypeSummary]):
+            The infoTypes predicted from this table's
+            data.
+        other_info_types (Sequence[google.cloud.dlp_v2.types.OtherInfoTypeSummary]):
+            Other infoTypes found in this table's data.
+        config_snapshot (google.cloud.dlp_v2.types.DataProfileConfigSnapshot):
+            The snapshot of the configurations used to
+            generate the profile.
+        last_modified_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time when this table was last modified
+        expiration_time (google.protobuf.timestamp_pb2.Timestamp):
+            Optional. The time when this table expires.
+        scanned_column_count (int):
+            The number of columns profiled in the table.
+        failed_column_count (int):
+            The number of columns skipped in the table
+            because of an error.
+        table_size_bytes (int):
+            The size of the table when the profile was
+            generated.
+        row_count (int):
+            Number of rows in the table when the profile
+            was generated.
+        encryption_status (google.cloud.dlp_v2.types.EncryptionStatus):
+            How the table is encrypted.
+        resource_visibility (google.cloud.dlp_v2.types.ResourceVisibility):
+            How broadly a resource has been shared.
+        profile_last_generated (google.protobuf.timestamp_pb2.Timestamp):
+            The last time the profile was generated.
+        resource_labels (Sequence[google.cloud.dlp_v2.types.TableDataProfile.ResourceLabelsEntry]):
+            The labels applied to the resource at the
+            time the profile was generated.
+        create_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time at which the table was created.
+    """
+
+    class State(proto.Enum):
+        r"""Possible states of a profile. New items may be added."""
+        STATE_UNSPECIFIED = 0
+        RUNNING = 1
+        DONE = 2
+
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    project_data_profile = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    dataset_project_id = proto.Field(
+        proto.STRING,
+        number=24,
+    )
+    dataset_location = proto.Field(
+        proto.STRING,
+        number=29,
+    )
+    dataset_id = proto.Field(
+        proto.STRING,
+        number=25,
+    )
+    table_id = proto.Field(
+        proto.STRING,
+        number=26,
+    )
+    full_resource = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    profile_status = proto.Field(
+        proto.MESSAGE,
+        number=21,
+        message="ProfileStatus",
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=22,
+        enum=State,
+    )
+    sensitivity_score = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message="SensitivityScore",
+    )
+    data_risk_level = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message="DataRiskLevel",
+    )
+    predicted_info_types = proto.RepeatedField(
+        proto.MESSAGE,
+        number=27,
+        message="InfoTypeSummary",
+    )
+    other_info_types = proto.RepeatedField(
+        proto.MESSAGE,
+        number=28,
+        message="OtherInfoTypeSummary",
+    )
+    config_snapshot = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message="DataProfileConfigSnapshot",
+    )
+    last_modified_time = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=timestamp_pb2.Timestamp,
+    )
+    expiration_time = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message=timestamp_pb2.Timestamp,
+    )
+    scanned_column_count = proto.Field(
+        proto.INT64,
+        number=10,
+    )
+    failed_column_count = proto.Field(
+        proto.INT64,
+        number=11,
+    )
+    table_size_bytes = proto.Field(
+        proto.INT64,
+        number=12,
+    )
+    row_count = proto.Field(
+        proto.INT64,
+        number=13,
+    )
+    encryption_status = proto.Field(
+        proto.ENUM,
+        number=14,
+        enum="EncryptionStatus",
+    )
+    resource_visibility = proto.Field(
+        proto.ENUM,
+        number=15,
+        enum="ResourceVisibility",
+    )
+    profile_last_generated = proto.Field(
+        proto.MESSAGE,
+        number=16,
+        message=timestamp_pb2.Timestamp,
+    )
+    resource_labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=17,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=23,
+        message=timestamp_pb2.Timestamp,
+    )
+
+
+class ProfileStatus(proto.Message):
+    r"""
+
+    Attributes:
+        status (google.rpc.status_pb2.Status):
+            Profiling status code and optional message
+        timestamp (google.protobuf.timestamp_pb2.Timestamp):
+            Time when the profile generation status was
+            updated
+    """
+
+    status = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=status_pb2.Status,
+    )
+    timestamp = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message=timestamp_pb2.Timestamp,
+    )
+
+
+class InfoTypeSummary(proto.Message):
+    r"""The infoType details for this column.
+
+    Attributes:
+        info_type (google.cloud.dlp_v2.types.InfoType):
+            The infoType.
+    """
+
+    info_type = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=storage.InfoType,
+    )
+
+
+class OtherInfoTypeSummary(proto.Message):
+    r"""Infotype details for other infoTypes found within a column.
+
+    Attributes:
+        info_type (google.cloud.dlp_v2.types.InfoType):
+            The other infoType.
+    """
+
+    info_type = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=storage.InfoType,
+    )
+
+
+class DataProfilePubSubCondition(proto.Message):
+    r"""A condition for determining whether a PubSub should be
+    triggered.
+
+    Attributes:
+        expressions (google.cloud.dlp_v2.types.DataProfilePubSubCondition.PubSubExpressions):
+            An expression.
+    """
+
+    class ProfileScoreBucket(proto.Enum):
+        r"""Various score levels for resources."""
+        PROFILE_SCORE_BUCKET_UNSPECIFIED = 0
+        HIGH = 1
+        MEDIUM_OR_HIGH = 2
+
+    class PubSubCondition(proto.Message):
+        r"""A condition consisting of a value.
+
+        This message has `oneof`_ fields (mutually exclusive fields).
+        For each oneof, at most one member field can be set at the same time.
+        Setting any member of the oneof automatically clears all other
+        members.
+
+        .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
+
+        Attributes:
+            minimum_risk_score (google.cloud.dlp_v2.types.DataProfilePubSubCondition.ProfileScoreBucket):
+                The minimum data risk score that triggers the
+                condition.
+
+                This field is a member of `oneof`_ ``value``.
+            minimum_sensitivity_score (google.cloud.dlp_v2.types.DataProfilePubSubCondition.ProfileScoreBucket):
+                The minimum sensitivity level that triggers
+                the condition.
+
+                This field is a member of `oneof`_ ``value``.
+        """
+
+        minimum_risk_score = proto.Field(
+            proto.ENUM,
+            number=1,
+            oneof="value",
+            enum="DataProfilePubSubCondition.ProfileScoreBucket",
+        )
+        minimum_sensitivity_score = proto.Field(
+            proto.ENUM,
+            number=2,
+            oneof="value",
+            enum="DataProfilePubSubCondition.ProfileScoreBucket",
+        )
+
+    class PubSubExpressions(proto.Message):
+        r"""An expression, consisting of an operator and conditions.
+
+        Attributes:
+            logical_operator (google.cloud.dlp_v2.types.DataProfilePubSubCondition.PubSubExpressions.PubSubLogicalOperator):
+                The operator to apply to the collection of
+                conditions.
+            conditions (Sequence[google.cloud.dlp_v2.types.DataProfilePubSubCondition.PubSubCondition]):
+                Conditions to apply to the expression.
+        """
+
+        class PubSubLogicalOperator(proto.Enum):
+            r"""Logical operators for conditional checks."""
+            LOGICAL_OPERATOR_UNSPECIFIED = 0
+            OR = 1
+            AND = 2
+
+        logical_operator = proto.Field(
+            proto.ENUM,
+            number=1,
+            enum="DataProfilePubSubCondition.PubSubExpressions.PubSubLogicalOperator",
+        )
+        conditions = proto.RepeatedField(
+            proto.MESSAGE,
+            number=2,
+            message="DataProfilePubSubCondition.PubSubCondition",
+        )
+
+    expressions = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=PubSubExpressions,
+    )
+
+
+class DataProfilePubSubMessage(proto.Message):
+    r"""The message that will be published to a Pub/Sub topic.
+    To receive a message of protocol buffer schema type, convert the
+    message data to an object of this proto class.
+    https://cloud.google.com/pubsub/docs/samples/pubsub-subscribe-proto-messages
+
+    Attributes:
+        profile (google.cloud.dlp_v2.types.TableDataProfile):
+            If ``DetailLevel`` is ``TABLE_PROFILE`` this will be fully
+            populated. Otherwise, if ``DetailLevel`` is
+            ``RESOURCE_NAME``, then only ``name`` and ``full_resource``
+            will be populated.
+        event (google.cloud.dlp_v2.types.DataProfileAction.EventType):
+            The event that caused the Pub/Sub message to
+            be sent.
+    """
+
+    profile = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="TableDataProfile",
+    )
+    event = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum="DataProfileAction.EventType",
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

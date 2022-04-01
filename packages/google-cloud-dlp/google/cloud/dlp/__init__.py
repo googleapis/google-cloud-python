@@ -39,6 +39,13 @@ from google.cloud.dlp_v2.types.dlp import CryptoDeterministicConfig
 from google.cloud.dlp_v2.types.dlp import CryptoHashConfig
 from google.cloud.dlp_v2.types.dlp import CryptoKey
 from google.cloud.dlp_v2.types.dlp import CryptoReplaceFfxFpeConfig
+from google.cloud.dlp_v2.types.dlp import DataProfileAction
+from google.cloud.dlp_v2.types.dlp import DataProfileConfigSnapshot
+from google.cloud.dlp_v2.types.dlp import DataProfileJobConfig
+from google.cloud.dlp_v2.types.dlp import DataProfileLocation
+from google.cloud.dlp_v2.types.dlp import DataProfilePubSubCondition
+from google.cloud.dlp_v2.types.dlp import DataProfilePubSubMessage
+from google.cloud.dlp_v2.types.dlp import DataRiskLevel
 from google.cloud.dlp_v2.types.dlp import DateShiftConfig
 from google.cloud.dlp_v2.types.dlp import DateTime
 from google.cloud.dlp_v2.types.dlp import DeidentifyConfig
@@ -73,6 +80,7 @@ from google.cloud.dlp_v2.types.dlp import HybridInspectStatistics
 from google.cloud.dlp_v2.types.dlp import ImageLocation
 from google.cloud.dlp_v2.types.dlp import InfoTypeDescription
 from google.cloud.dlp_v2.types.dlp import InfoTypeStats
+from google.cloud.dlp_v2.types.dlp import InfoTypeSummary
 from google.cloud.dlp_v2.types.dlp import InfoTypeTransformations
 from google.cloud.dlp_v2.types.dlp import InspectConfig
 from google.cloud.dlp_v2.types.dlp import InspectContentRequest
@@ -102,9 +110,11 @@ from google.cloud.dlp_v2.types.dlp import ListStoredInfoTypesResponse
 from google.cloud.dlp_v2.types.dlp import Location
 from google.cloud.dlp_v2.types.dlp import Manual
 from google.cloud.dlp_v2.types.dlp import MetadataLocation
+from google.cloud.dlp_v2.types.dlp import OtherInfoTypeSummary
 from google.cloud.dlp_v2.types.dlp import OutputStorageConfig
 from google.cloud.dlp_v2.types.dlp import PrimitiveTransformation
 from google.cloud.dlp_v2.types.dlp import PrivacyMetric
+from google.cloud.dlp_v2.types.dlp import ProfileStatus
 from google.cloud.dlp_v2.types.dlp import QuasiId
 from google.cloud.dlp_v2.types.dlp import QuoteInfo
 from google.cloud.dlp_v2.types.dlp import Range
@@ -122,6 +132,7 @@ from google.cloud.dlp_v2.types.dlp import ReplaceValueConfig
 from google.cloud.dlp_v2.types.dlp import ReplaceWithInfoTypeConfig
 from google.cloud.dlp_v2.types.dlp import RiskAnalysisJobConfig
 from google.cloud.dlp_v2.types.dlp import Schedule
+from google.cloud.dlp_v2.types.dlp import SensitivityScore
 from google.cloud.dlp_v2.types.dlp import StatisticalTable
 from google.cloud.dlp_v2.types.dlp import StorageMetadataLabel
 from google.cloud.dlp_v2.types.dlp import StoredInfoType
@@ -129,6 +140,7 @@ from google.cloud.dlp_v2.types.dlp import StoredInfoTypeConfig
 from google.cloud.dlp_v2.types.dlp import StoredInfoTypeStats
 from google.cloud.dlp_v2.types.dlp import StoredInfoTypeVersion
 from google.cloud.dlp_v2.types.dlp import Table
+from google.cloud.dlp_v2.types.dlp import TableDataProfile
 from google.cloud.dlp_v2.types.dlp import TableLocation
 from google.cloud.dlp_v2.types.dlp import TimePartConfig
 from google.cloud.dlp_v2.types.dlp import TransformationErrorHandling
@@ -144,10 +156,12 @@ from google.cloud.dlp_v2.types.dlp import Value
 from google.cloud.dlp_v2.types.dlp import ValueFrequency
 from google.cloud.dlp_v2.types.dlp import ContentOption
 from google.cloud.dlp_v2.types.dlp import DlpJobType
+from google.cloud.dlp_v2.types.dlp import EncryptionStatus
 from google.cloud.dlp_v2.types.dlp import InfoTypeSupportedBy
 from google.cloud.dlp_v2.types.dlp import MatchingType
 from google.cloud.dlp_v2.types.dlp import MetadataType
 from google.cloud.dlp_v2.types.dlp import RelationalOperator
+from google.cloud.dlp_v2.types.dlp import ResourceVisibility
 from google.cloud.dlp_v2.types.dlp import StoredInfoTypeState
 from google.cloud.dlp_v2.types.storage import BigQueryField
 from google.cloud.dlp_v2.types.storage import BigQueryKey
@@ -199,6 +213,13 @@ __all__ = (
     "CryptoHashConfig",
     "CryptoKey",
     "CryptoReplaceFfxFpeConfig",
+    "DataProfileAction",
+    "DataProfileConfigSnapshot",
+    "DataProfileJobConfig",
+    "DataProfileLocation",
+    "DataProfilePubSubCondition",
+    "DataProfilePubSubMessage",
+    "DataRiskLevel",
     "DateShiftConfig",
     "DateTime",
     "DeidentifyConfig",
@@ -233,6 +254,7 @@ __all__ = (
     "ImageLocation",
     "InfoTypeDescription",
     "InfoTypeStats",
+    "InfoTypeSummary",
     "InfoTypeTransformations",
     "InspectConfig",
     "InspectContentRequest",
@@ -262,9 +284,11 @@ __all__ = (
     "Location",
     "Manual",
     "MetadataLocation",
+    "OtherInfoTypeSummary",
     "OutputStorageConfig",
     "PrimitiveTransformation",
     "PrivacyMetric",
+    "ProfileStatus",
     "QuasiId",
     "QuoteInfo",
     "Range",
@@ -282,6 +306,7 @@ __all__ = (
     "ReplaceWithInfoTypeConfig",
     "RiskAnalysisJobConfig",
     "Schedule",
+    "SensitivityScore",
     "StatisticalTable",
     "StorageMetadataLabel",
     "StoredInfoType",
@@ -289,6 +314,7 @@ __all__ = (
     "StoredInfoTypeStats",
     "StoredInfoTypeVersion",
     "Table",
+    "TableDataProfile",
     "TableLocation",
     "TimePartConfig",
     "TransformationErrorHandling",
@@ -304,10 +330,12 @@ __all__ = (
     "ValueFrequency",
     "ContentOption",
     "DlpJobType",
+    "EncryptionStatus",
     "InfoTypeSupportedBy",
     "MatchingType",
     "MetadataType",
     "RelationalOperator",
+    "ResourceVisibility",
     "StoredInfoTypeState",
     "BigQueryField",
     "BigQueryKey",
