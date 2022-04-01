@@ -63,5 +63,7 @@ s.move(templated_files, excludes=[".coveragerc"])  # microgenerator has a good .
 # https://github.com/googleapis/gapic-generator-python/issues/525
 s.replace("noxfile.py", '[\"\']-W[\"\']', '# "-W"')
 
+python.configure_previous_major_version_branches()
+
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
 
