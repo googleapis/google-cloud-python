@@ -166,6 +166,7 @@ s.move(templated_files,
         ]
     )
 
+python.configure_previous_major_version_branches()
 python.py_samples(skip_readmes=True)
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
