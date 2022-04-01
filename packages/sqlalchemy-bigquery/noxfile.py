@@ -21,18 +21,64 @@ import os
 import pathlib
 import re
 import shutil
+import warnings
 
 import nox
-
 
 BLACK_VERSION = "black==22.3.0"
 BLACK_PATHS = ["docs", "sqlalchemy_bigquery", "tests", "noxfile.py", "setup.py"]
 
 DEFAULT_PYTHON_VERSION = "3.8"
 
+UNIT_TEST_PYTHON_VERSIONS = ["3.6", "3.7", "3.8", "3.9", "3.10"]
+UNIT_TEST_STANDARD_DEPENDENCIES = [
+    "mock",
+    "asyncmock",
+    "pytest",
+    "pytest-cov",
+    "pytest-asyncio",
+]
+UNIT_TEST_EXTERNAL_DEPENDENCIES = []
+UNIT_TEST_LOCAL_DEPENDENCIES = []
+UNIT_TEST_DEPENDENCIES = []
+UNIT_TEST_EXTRAS = [
+    "tests",
+]
+UNIT_TEST_EXTRAS_BY_PYTHON = {
+    "3.8": [
+        "tests",
+        "alembic",
+    ],
+    "3.10": [
+        "tests",
+        "geography",
+    ],
+}
+
+
 # We're using two Python versions to test with sqlalchemy 1.3 and 1.4.
 SYSTEM_TEST_PYTHON_VERSIONS = ["3.8", "3.10"]
-UNIT_TEST_PYTHON_VERSIONS = ["3.6", "3.7", "3.8", "3.9", "3.10"]
+SYSTEM_TEST_STANDARD_DEPENDENCIES = [
+    "mock",
+    "pytest",
+    "google-cloud-testutils",
+]
+SYSTEM_TEST_EXTERNAL_DEPENDENCIES = []
+SYSTEM_TEST_LOCAL_DEPENDENCIES = []
+SYSTEM_TEST_DEPENDENCIES = []
+SYSTEM_TEST_EXTRAS = [
+    "tests",
+]
+SYSTEM_TEST_EXTRAS_BY_PYTHON = {
+    "3.8": [
+        "tests",
+        "alembic",
+    ],
+    "3.10": [
+        "tests",
+        "geography",
+    ],
+}
 
 CURRENT_DIRECTORY = pathlib.Path(__file__).parent.absolute()
 
@@ -85,29 +131,41 @@ def lint_setup_py(session):
     session.run("python", "setup.py", "check", "--restructuredtext", "--strict")
 
 
+def install_unittest_dependencies(session, *constraints):
+    standard_deps = UNIT_TEST_STANDARD_DEPENDENCIES + UNIT_TEST_DEPENDENCIES
+    session.install(*standard_deps, *constraints)
+
+    if UNIT_TEST_EXTERNAL_DEPENDENCIES:
+        warnings.warn(
+            "'unit_test_external_dependencies' is deprecated. Instead, please "
+            "use 'unit_test_dependencies' or 'unit_test_local_dependencies'.",
+            DeprecationWarning,
+        )
+        session.install(*UNIT_TEST_EXTERNAL_DEPENDENCIES, *constraints)
+
+    if UNIT_TEST_LOCAL_DEPENDENCIES:
+        session.install(*UNIT_TEST_LOCAL_DEPENDENCIES, *constraints)
+
+    if UNIT_TEST_EXTRAS_BY_PYTHON:
+        extras = UNIT_TEST_EXTRAS_BY_PYTHON.get(session.python, [])
+    elif UNIT_TEST_EXTRAS:
+        extras = UNIT_TEST_EXTRAS
+    else:
+        extras = []
+
+    if extras:
+        session.install("-e", f".[{','.join(extras)}]", *constraints)
+    else:
+        session.install("-e", ".", *constraints)
+
+
 def default(session):
     # Install all test dependencies, then install this package in-place.
 
     constraints_path = str(
         CURRENT_DIRECTORY / "testing" / f"constraints-{session.python}.txt"
     )
-    session.install(
-        "mock",
-        "asyncmock",
-        "pytest",
-        "pytest-cov",
-        "pytest-asyncio",
-        "-c",
-        constraints_path,
-    )
-
-    if session.python == "3.8":
-        extras = "[tests,alembic]"
-    elif session.python == "3.10":
-        extras = "[tests,geography]"
-    else:
-        extras = "[tests]"
-    session.install("-e", f".{extras}", "-c", constraints_path)
+    install_unittest_dependencies(session, "-c", constraints_path)
 
     # Run py.test against the unit tests.
     session.run(
@@ -129,6 +187,35 @@ def default(session):
 def unit(session):
     """Run the unit test suite."""
     default(session)
+
+
+def install_systemtest_dependencies(session, *constraints):
+
+    # Use pre-release gRPC for system tests.
+    session.install("--pre", "grpcio")
+
+    session.install(*SYSTEM_TEST_STANDARD_DEPENDENCIES, *constraints)
+
+    if SYSTEM_TEST_EXTERNAL_DEPENDENCIES:
+        session.install(*SYSTEM_TEST_EXTERNAL_DEPENDENCIES, *constraints)
+
+    if SYSTEM_TEST_LOCAL_DEPENDENCIES:
+        session.install("-e", *SYSTEM_TEST_LOCAL_DEPENDENCIES, *constraints)
+
+    if SYSTEM_TEST_DEPENDENCIES:
+        session.install("-e", *SYSTEM_TEST_DEPENDENCIES, *constraints)
+
+    if SYSTEM_TEST_EXTRAS_BY_PYTHON:
+        extras = SYSTEM_TEST_EXTRAS_BY_PYTHON.get(session.python, [])
+    elif SYSTEM_TEST_EXTRAS:
+        extras = SYSTEM_TEST_EXTRAS
+    else:
+        extras = []
+
+    if extras:
+        session.install("-e", f".[{','.join(extras)}]", *constraints)
+    else:
+        session.install("-e", ".", *constraints)
 
 
 @nox.session(python=SYSTEM_TEST_PYTHON_VERSIONS)
@@ -153,19 +240,7 @@ def system(session):
     if not system_test_exists and not system_test_folder_exists:
         session.skip("System tests were not found")
 
-    # Use pre-release gRPC for system tests.
-    session.install("--pre", "grpcio")
-
-    # Install all test dependencies, then install this package into the
-    # virtualenv's dist-packages.
-    session.install("mock", "pytest", "google-cloud-testutils", "-c", constraints_path)
-    if session.python == "3.8":
-        extras = "[tests,alembic]"
-    elif session.python == "3.10":
-        extras = "[tests,geography]"
-    else:
-        extras = "[tests]"
-    session.install("-e", f".{extras}", "-c", constraints_path)
+    install_systemtest_dependencies(session, "-c", constraints_path)
 
     # Run py.test against the system tests.
     if system_test_exists:
