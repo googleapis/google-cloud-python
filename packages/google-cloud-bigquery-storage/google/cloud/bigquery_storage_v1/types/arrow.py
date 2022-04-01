@@ -51,7 +51,9 @@ class ArrowRecordBatch(proto.Message):
         serialized_record_batch (bytes):
             IPC-serialized Arrow RecordBatch.
         row_count (int):
-            The count of rows in ``serialized_record_batch``.
+            [Deprecated] The count of rows in
+            ``serialized_record_batch``. Please use the
+            format-independent ReadRowsResponse.row_count instead.
     """
 
     serialized_record_batch = proto.Field(
