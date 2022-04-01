@@ -575,6 +575,31 @@ class TestJSONConnection(unittest.TestCase):
             timeout=(2.2, 3.3),
         )
 
+    def test_api_request_w_extra_api_info(self):
+        from google.cloud._http import CLIENT_INFO_HEADER
+
+        session = make_requests_session([self.EMPTY_JSON_RESPONSE])
+        client = mock.Mock(_http=session, spec=["_http"])
+        conn = self._make_mock_one(client)
+
+        EXTRA_API_INFO = "gccl-invocation-id/testing-id-123"
+        result = conn.api_request("GET", "/", extra_api_info=EXTRA_API_INFO)
+
+        self.assertEqual(result, {})
+
+        expected_headers = {
+            "Accept-Encoding": "gzip",
+            "User-Agent": conn.user_agent,
+            CLIENT_INFO_HEADER: f"{conn.user_agent} {EXTRA_API_INFO}",
+        }
+        session.request.assert_called_once_with(
+            method="GET",
+            url=mock.ANY,
+            headers=expected_headers,
+            data=None,
+            timeout=self._get_default_timeout(),
+        )
+
     def test_api_request_w_404(self):
         from google.cloud import exceptions
 
