@@ -90,14 +90,42 @@ class Container(proto.Message):
             filesystem.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    image = proto.Field(proto.STRING, number=2,)
-    command = proto.RepeatedField(proto.STRING, number=3,)
-    args = proto.RepeatedField(proto.STRING, number=4,)
-    env = proto.RepeatedField(proto.MESSAGE, number=5, message="EnvVar",)
-    resources = proto.Field(proto.MESSAGE, number=6, message="ResourceRequirements",)
-    ports = proto.RepeatedField(proto.MESSAGE, number=7, message="ContainerPort",)
-    volume_mounts = proto.RepeatedField(proto.MESSAGE, number=8, message="VolumeMount",)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    image = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    command = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+    args = proto.RepeatedField(
+        proto.STRING,
+        number=4,
+    )
+    env = proto.RepeatedField(
+        proto.MESSAGE,
+        number=5,
+        message="EnvVar",
+    )
+    resources = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message="ResourceRequirements",
+    )
+    ports = proto.RepeatedField(
+        proto.MESSAGE,
+        number=7,
+        message="ContainerPort",
+    )
+    volume_mounts = proto.RepeatedField(
+        proto.MESSAGE,
+        number=8,
+        message="VolumeMount",
+    )
 
 
 class ResourceRequirements(proto.Message):
@@ -118,8 +146,15 @@ class ResourceRequirements(proto.Message):
             not outside of requests.
     """
 
-    limits = proto.MapField(proto.STRING, proto.STRING, number=1,)
-    cpu_idle = proto.Field(proto.BOOL, number=2,)
+    limits = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=1,
+    )
+    cpu_idle = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
 
 
 class EnvVar(proto.Message):
@@ -154,10 +189,20 @@ class EnvVar(proto.Message):
             This field is a member of `oneof`_ ``values``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    value = proto.Field(proto.STRING, number=2, oneof="values",)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    value = proto.Field(
+        proto.STRING,
+        number=2,
+        oneof="values",
+    )
     value_source = proto.Field(
-        proto.MESSAGE, number=3, oneof="values", message="EnvVarSource",
+        proto.MESSAGE,
+        number=3,
+        oneof="values",
+        message="EnvVarSource",
     )
 
 
@@ -170,7 +215,11 @@ class EnvVarSource(proto.Message):
             Cloud Secret Manager.
     """
 
-    secret_key_ref = proto.Field(proto.MESSAGE, number=1, message="SecretKeySelector",)
+    secret_key_ref = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="SecretKeySelector",
+    )
 
 
 class SecretKeySelector(proto.Message):
@@ -189,8 +238,14 @@ class SecretKeySelector(proto.Message):
             integer for a specific version.
     """
 
-    secret = proto.Field(proto.STRING, number=1,)
-    version = proto.Field(proto.STRING, number=2,)
+    secret = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    version = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class ContainerPort(proto.Message):
@@ -206,8 +261,14 @@ class ContainerPort(proto.Message):
             TCP port number, 0 < container_port < 65536.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    container_port = proto.Field(proto.INT32, number=3,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    container_port = proto.Field(
+        proto.INT32,
+        number=3,
+    )
 
 
 class VolumeMount(proto.Message):
@@ -228,8 +289,14 @@ class VolumeMount(proto.Message):
             https://cloud.google.com/sql/docs/mysql/connect-run
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    mount_path = proto.Field(proto.STRING, number=3,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    mount_path = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class Volume(proto.Message):
@@ -261,12 +328,21 @@ class Volume(proto.Message):
             This field is a member of `oneof`_ ``volume_type``.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
     secret = proto.Field(
-        proto.MESSAGE, number=2, oneof="volume_type", message="SecretVolumeSource",
+        proto.MESSAGE,
+        number=2,
+        oneof="volume_type",
+        message="SecretVolumeSource",
     )
     cloud_sql_instance = proto.Field(
-        proto.MESSAGE, number=3, oneof="volume_type", message="CloudSqlInstance",
+        proto.MESSAGE,
+        number=3,
+        oneof="volume_type",
+        message="CloudSqlInstance",
     )
 
 
@@ -315,9 +391,19 @@ class SecretVolumeSource(proto.Message):
             could be set.
     """
 
-    secret = proto.Field(proto.STRING, number=1,)
-    items = proto.RepeatedField(proto.MESSAGE, number=2, message="VersionToPath",)
-    default_mode = proto.Field(proto.INT32, number=3,)
+    secret = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    items = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message="VersionToPath",
+    )
+    default_mode = proto.Field(
+        proto.INT32,
+        number=3,
+    )
 
 
 class VersionToPath(proto.Message):
@@ -353,9 +439,18 @@ class VersionToPath(proto.Message):
                mode bits set.
     """
 
-    path = proto.Field(proto.STRING, number=1,)
-    version = proto.Field(proto.STRING, number=2,)
-    mode = proto.Field(proto.INT32, number=3,)
+    path = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    version = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    mode = proto.Field(
+        proto.INT32,
+        number=3,
+    )
 
 
 class CloudSqlInstance(proto.Message):
@@ -373,7 +468,10 @@ class CloudSqlInstance(proto.Message):
             {project}:{location}:{instance}
     """
 
-    connections = proto.RepeatedField(proto.STRING, number=1,)
+    connections = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

@@ -65,7 +65,10 @@ class ServicesClientMeta(type):
     _transport_registry["grpc"] = ServicesGrpcTransport
     _transport_registry["grpc_asyncio"] = ServicesGrpcAsyncIOTransport
 
-    def get_transport_class(cls, label: str = None,) -> Type[ServicesTransport]:
+    def get_transport_class(
+        cls,
+        label: str = None,
+    ) -> Type[ServicesTransport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -170,10 +173,16 @@ class ServicesClient(metaclass=ServicesClientMeta):
         return self._transport
 
     @staticmethod
-    def connector_path(project: str, location: str, connector: str,) -> str:
+    def connector_path(
+        project: str,
+        location: str,
+        connector: str,
+    ) -> str:
         """Returns a fully-qualified connector string."""
         return "projects/{project}/locations/{location}/connectors/{connector}".format(
-            project=project, location=location, connector=connector,
+            project=project,
+            location=location,
+            connector=connector,
         )
 
     @staticmethod
@@ -187,7 +196,10 @@ class ServicesClient(metaclass=ServicesClientMeta):
 
     @staticmethod
     def crypto_key_path(
-        project: str, location: str, key_ring: str, crypto_key: str,
+        project: str,
+        location: str,
+        key_ring: str,
+        crypto_key: str,
     ) -> str:
         """Returns a fully-qualified crypto_key string."""
         return "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}".format(
@@ -207,10 +219,18 @@ class ServicesClient(metaclass=ServicesClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def revision_path(project: str, location: str, service: str, revision: str,) -> str:
+    def revision_path(
+        project: str,
+        location: str,
+        service: str,
+        revision: str,
+    ) -> str:
         """Returns a fully-qualified revision string."""
         return "projects/{project}/locations/{location}/services/{service}/revisions/{revision}".format(
-            project=project, location=location, service=service, revision=revision,
+            project=project,
+            location=location,
+            service=service,
+            revision=revision,
         )
 
     @staticmethod
@@ -223,10 +243,14 @@ class ServicesClient(metaclass=ServicesClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def secret_path(project: str, secret: str,) -> str:
+    def secret_path(
+        project: str,
+        secret: str,
+    ) -> str:
         """Returns a fully-qualified secret string."""
         return "projects/{project}/secrets/{secret}".format(
-            project=project, secret=secret,
+            project=project,
+            secret=secret,
         )
 
     @staticmethod
@@ -236,10 +260,16 @@ class ServicesClient(metaclass=ServicesClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def secret_version_path(project: str, secret: str, version: str,) -> str:
+    def secret_version_path(
+        project: str,
+        secret: str,
+        version: str,
+    ) -> str:
         """Returns a fully-qualified secret_version string."""
         return "projects/{project}/secrets/{secret}/versions/{version}".format(
-            project=project, secret=secret, version=version,
+            project=project,
+            secret=secret,
+            version=version,
         )
 
     @staticmethod
@@ -252,10 +282,16 @@ class ServicesClient(metaclass=ServicesClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def service_path(project: str, location: str, service: str,) -> str:
+    def service_path(
+        project: str,
+        location: str,
+        service: str,
+    ) -> str:
         """Returns a fully-qualified service string."""
         return "projects/{project}/locations/{location}/services/{service}".format(
-            project=project, location=location, service=service,
+            project=project,
+            location=location,
+            service=service,
         )
 
     @staticmethod
@@ -268,7 +304,9 @@ class ServicesClient(metaclass=ServicesClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_billing_account_path(billing_account: str,) -> str:
+    def common_billing_account_path(
+        billing_account: str,
+    ) -> str:
         """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
@@ -281,9 +319,13 @@ class ServicesClient(metaclass=ServicesClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(folder: str,) -> str:
+    def common_folder_path(
+        folder: str,
+    ) -> str:
         """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(folder=folder,)
+        return "folders/{folder}".format(
+            folder=folder,
+        )
 
     @staticmethod
     def parse_common_folder_path(path: str) -> Dict[str, str]:
@@ -292,9 +334,13 @@ class ServicesClient(metaclass=ServicesClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(organization: str,) -> str:
+    def common_organization_path(
+        organization: str,
+    ) -> str:
         """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(organization=organization,)
+        return "organizations/{organization}".format(
+            organization=organization,
+        )
 
     @staticmethod
     def parse_common_organization_path(path: str) -> Dict[str, str]:
@@ -303,9 +349,13 @@ class ServicesClient(metaclass=ServicesClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(project: str,) -> str:
+    def common_project_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified project string."""
-        return "projects/{project}".format(project=project,)
+        return "projects/{project}".format(
+            project=project,
+        )
 
     @staticmethod
     def parse_common_project_path(path: str) -> Dict[str, str]:
@@ -314,10 +364,14 @@ class ServicesClient(metaclass=ServicesClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(project: str, location: str,) -> str:
+    def common_location_path(
+        project: str,
+        location: str,
+    ) -> str:
         """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
-            project=project, location=location,
+            project=project,
+            location=location,
         )
 
     @staticmethod
@@ -613,7 +667,12 @@ class ServicesClient(metaclass=ServicesClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -719,7 +778,12 @@ class ServicesClient(metaclass=ServicesClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -816,12 +880,20 @@ class ServicesClient(metaclass=ServicesClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListServicesPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -930,7 +1002,12 @@ class ServicesClient(metaclass=ServicesClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1043,7 +1120,12 @@ class ServicesClient(metaclass=ServicesClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1177,7 +1259,12 @@ class ServicesClient(metaclass=ServicesClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1302,7 +1389,12 @@ class ServicesClient(metaclass=ServicesClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1375,7 +1467,12 @@ class ServicesClient(metaclass=ServicesClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1396,7 +1493,9 @@ class ServicesClient(metaclass=ServicesClientMeta):
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-run",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-run",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()

@@ -18,7 +18,11 @@ import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.cloud.run.v2",
-    manifest={"TrafficTargetAllocationType", "TrafficTarget", "TrafficTargetStatus",},
+    manifest={
+        "TrafficTargetAllocationType",
+        "TrafficTarget",
+        "TrafficTargetStatus",
+    },
 )
 
 
@@ -48,10 +52,23 @@ class TrafficTarget(proto.Message):
             exclusively reference this target.
     """
 
-    type_ = proto.Field(proto.ENUM, number=1, enum="TrafficTargetAllocationType",)
-    revision = proto.Field(proto.STRING, number=2,)
-    percent = proto.Field(proto.INT32, number=3,)
-    tag = proto.Field(proto.STRING, number=4,)
+    type_ = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum="TrafficTargetAllocationType",
+    )
+    revision = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    percent = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    tag = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class TrafficTargetStatus(proto.Message):
@@ -72,11 +89,27 @@ class TrafficTargetStatus(proto.Message):
             Displays the target URI.
     """
 
-    type_ = proto.Field(proto.ENUM, number=1, enum="TrafficTargetAllocationType",)
-    revision = proto.Field(proto.STRING, number=2,)
-    percent = proto.Field(proto.INT32, number=3,)
-    tag = proto.Field(proto.STRING, number=4,)
-    uri = proto.Field(proto.STRING, number=5,)
+    type_ = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum="TrafficTargetAllocationType",
+    )
+    revision = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    percent = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    tag = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    uri = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

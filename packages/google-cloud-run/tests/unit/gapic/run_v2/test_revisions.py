@@ -92,7 +92,10 @@ def test__get_default_mtls_endpoint():
 
 @pytest.mark.parametrize(
     "client_class,transport_name",
-    [(RevisionsClient, "grpc"), (RevisionsAsyncClient, "grpc_asyncio"),],
+    [
+        (RevisionsClient, "grpc"),
+        (RevisionsAsyncClient, "grpc_asyncio"),
+    ],
 )
 def test_revisions_client_from_service_account_info(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
@@ -135,7 +138,10 @@ def test_revisions_client_service_account_always_use_jwt(
 
 @pytest.mark.parametrize(
     "client_class,transport_name",
-    [(RevisionsClient, "grpc"), (RevisionsAsyncClient, "grpc_asyncio"),],
+    [
+        (RevisionsClient, "grpc"),
+        (RevisionsAsyncClient, "grpc_asyncio"),
+    ],
 )
 def test_revisions_client_from_service_account_file(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
@@ -493,7 +499,9 @@ def test_revisions_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -621,10 +629,17 @@ def test_revisions_client_create_channel_credentials_file(
         )
 
 
-@pytest.mark.parametrize("request_type", [revision.GetRevisionRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        revision.GetRevisionRequest,
+        dict,
+    ],
+)
 def test_get_revision(request_type, transport: str = "grpc"):
     client = RevisionsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -682,7 +697,8 @@ def test_get_revision_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = RevisionsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -698,7 +714,8 @@ async def test_get_revision_async(
     transport: str = "grpc_asyncio", request_type=revision.GetRevisionRequest
 ):
     client = RevisionsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -760,7 +777,9 @@ async def test_get_revision_async_from_dict():
 
 
 def test_get_revision_field_headers():
-    client = RevisionsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = RevisionsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -780,12 +799,17 @@ def test_get_revision_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_get_revision_field_headers_async():
-    client = RevisionsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = RevisionsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -805,11 +829,16 @@ async def test_get_revision_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_revision_flattened():
-    client = RevisionsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = RevisionsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_revision), "__call__") as call:
@@ -817,7 +846,9 @@ def test_get_revision_flattened():
         call.return_value = revision.Revision()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_revision(name="name_value",)
+        client.get_revision(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -829,19 +860,24 @@ def test_get_revision_flattened():
 
 
 def test_get_revision_flattened_error():
-    client = RevisionsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = RevisionsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_revision(
-            revision.GetRevisionRequest(), name="name_value",
+            revision.GetRevisionRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_get_revision_flattened_async():
-    client = RevisionsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = RevisionsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_revision), "__call__") as call:
@@ -851,7 +887,9 @@ async def test_get_revision_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(revision.Revision())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_revision(name="name_value",)
+        response = await client.get_revision(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -864,20 +902,30 @@ async def test_get_revision_flattened_async():
 
 @pytest.mark.asyncio
 async def test_get_revision_flattened_error_async():
-    client = RevisionsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = RevisionsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_revision(
-            revision.GetRevisionRequest(), name="name_value",
+            revision.GetRevisionRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [revision.ListRevisionsRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        revision.ListRevisionsRequest,
+        dict,
+    ],
+)
 def test_list_revisions(request_type, transport: str = "grpc"):
     client = RevisionsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -906,7 +954,8 @@ def test_list_revisions_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = RevisionsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -922,7 +971,8 @@ async def test_list_revisions_async(
     transport: str = "grpc_asyncio", request_type=revision.ListRevisionsRequest
 ):
     client = RevisionsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -933,7 +983,9 @@ async def test_list_revisions_async(
     with mock.patch.object(type(client.transport.list_revisions), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            revision.ListRevisionsResponse(next_page_token="next_page_token_value",)
+            revision.ListRevisionsResponse(
+                next_page_token="next_page_token_value",
+            )
         )
         response = await client.list_revisions(request)
 
@@ -953,7 +1005,9 @@ async def test_list_revisions_async_from_dict():
 
 
 def test_list_revisions_field_headers():
-    client = RevisionsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = RevisionsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -973,12 +1027,17 @@ def test_list_revisions_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_list_revisions_field_headers_async():
-    client = RevisionsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = RevisionsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1000,11 +1059,16 @@ async def test_list_revisions_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_revisions_flattened():
-    client = RevisionsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = RevisionsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_revisions), "__call__") as call:
@@ -1012,7 +1076,9 @@ def test_list_revisions_flattened():
         call.return_value = revision.ListRevisionsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_revisions(parent="parent_value",)
+        client.list_revisions(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1024,19 +1090,24 @@ def test_list_revisions_flattened():
 
 
 def test_list_revisions_flattened_error():
-    client = RevisionsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = RevisionsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_revisions(
-            revision.ListRevisionsRequest(), parent="parent_value",
+            revision.ListRevisionsRequest(),
+            parent="parent_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_list_revisions_flattened_async():
-    client = RevisionsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = RevisionsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_revisions), "__call__") as call:
@@ -1048,7 +1119,9 @@ async def test_list_revisions_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_revisions(parent="parent_value",)
+        response = await client.list_revisions(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1061,19 +1134,23 @@ async def test_list_revisions_flattened_async():
 
 @pytest.mark.asyncio
 async def test_list_revisions_flattened_error_async():
-    client = RevisionsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = RevisionsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_revisions(
-            revision.ListRevisionsRequest(), parent="parent_value",
+            revision.ListRevisionsRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_revisions_pager(transport_name: str = "grpc"):
     client = RevisionsClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1088,12 +1165,21 @@ def test_list_revisions_pager(transport_name: str = "grpc"):
                 ],
                 next_page_token="abc",
             ),
-            revision.ListRevisionsResponse(revisions=[], next_page_token="def",),
             revision.ListRevisionsResponse(
-                revisions=[revision.Revision(),], next_page_token="ghi",
+                revisions=[],
+                next_page_token="def",
             ),
             revision.ListRevisionsResponse(
-                revisions=[revision.Revision(), revision.Revision(),],
+                revisions=[
+                    revision.Revision(),
+                ],
+                next_page_token="ghi",
+            ),
+            revision.ListRevisionsResponse(
+                revisions=[
+                    revision.Revision(),
+                    revision.Revision(),
+                ],
             ),
             RuntimeError,
         )
@@ -1113,7 +1199,8 @@ def test_list_revisions_pager(transport_name: str = "grpc"):
 
 def test_list_revisions_pages(transport_name: str = "grpc"):
     client = RevisionsClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1128,12 +1215,21 @@ def test_list_revisions_pages(transport_name: str = "grpc"):
                 ],
                 next_page_token="abc",
             ),
-            revision.ListRevisionsResponse(revisions=[], next_page_token="def",),
             revision.ListRevisionsResponse(
-                revisions=[revision.Revision(),], next_page_token="ghi",
+                revisions=[],
+                next_page_token="def",
             ),
             revision.ListRevisionsResponse(
-                revisions=[revision.Revision(), revision.Revision(),],
+                revisions=[
+                    revision.Revision(),
+                ],
+                next_page_token="ghi",
+            ),
+            revision.ListRevisionsResponse(
+                revisions=[
+                    revision.Revision(),
+                    revision.Revision(),
+                ],
             ),
             RuntimeError,
         )
@@ -1144,7 +1240,9 @@ def test_list_revisions_pages(transport_name: str = "grpc"):
 
 @pytest.mark.asyncio
 async def test_list_revisions_async_pager():
-    client = RevisionsAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = RevisionsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1160,16 +1258,27 @@ async def test_list_revisions_async_pager():
                 ],
                 next_page_token="abc",
             ),
-            revision.ListRevisionsResponse(revisions=[], next_page_token="def",),
             revision.ListRevisionsResponse(
-                revisions=[revision.Revision(),], next_page_token="ghi",
+                revisions=[],
+                next_page_token="def",
             ),
             revision.ListRevisionsResponse(
-                revisions=[revision.Revision(), revision.Revision(),],
+                revisions=[
+                    revision.Revision(),
+                ],
+                next_page_token="ghi",
+            ),
+            revision.ListRevisionsResponse(
+                revisions=[
+                    revision.Revision(),
+                    revision.Revision(),
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.list_revisions(request={},)
+        async_pager = await client.list_revisions(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:  # pragma: no branch
@@ -1181,7 +1290,9 @@ async def test_list_revisions_async_pager():
 
 @pytest.mark.asyncio
 async def test_list_revisions_async_pages():
-    client = RevisionsAsyncClient(credentials=ga_credentials.AnonymousCredentials,)
+    client = RevisionsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1197,12 +1308,21 @@ async def test_list_revisions_async_pages():
                 ],
                 next_page_token="abc",
             ),
-            revision.ListRevisionsResponse(revisions=[], next_page_token="def",),
             revision.ListRevisionsResponse(
-                revisions=[revision.Revision(),], next_page_token="ghi",
+                revisions=[],
+                next_page_token="def",
             ),
             revision.ListRevisionsResponse(
-                revisions=[revision.Revision(), revision.Revision(),],
+                revisions=[
+                    revision.Revision(),
+                ],
+                next_page_token="ghi",
+            ),
+            revision.ListRevisionsResponse(
+                revisions=[
+                    revision.Revision(),
+                    revision.Revision(),
+                ],
             ),
             RuntimeError,
         )
@@ -1215,10 +1335,17 @@ async def test_list_revisions_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [revision.DeleteRevisionRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        revision.DeleteRevisionRequest,
+        dict,
+    ],
+)
 def test_delete_revision(request_type, transport: str = "grpc"):
     client = RevisionsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1244,7 +1371,8 @@ def test_delete_revision_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = RevisionsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1260,7 +1388,8 @@ async def test_delete_revision_async(
     transport: str = "grpc_asyncio", request_type=revision.DeleteRevisionRequest
 ):
     client = RevisionsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1290,7 +1419,9 @@ async def test_delete_revision_async_from_dict():
 
 
 def test_delete_revision_field_headers():
-    client = RevisionsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = RevisionsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1310,12 +1441,17 @@ def test_delete_revision_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
 async def test_delete_revision_field_headers_async():
-    client = RevisionsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = RevisionsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1337,11 +1473,16 @@ async def test_delete_revision_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_revision_flattened():
-    client = RevisionsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = RevisionsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_revision), "__call__") as call:
@@ -1349,7 +1490,9 @@ def test_delete_revision_flattened():
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_revision(name="name_value",)
+        client.delete_revision(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1361,19 +1504,24 @@ def test_delete_revision_flattened():
 
 
 def test_delete_revision_flattened_error():
-    client = RevisionsClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = RevisionsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_revision(
-            revision.DeleteRevisionRequest(), name="name_value",
+            revision.DeleteRevisionRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.asyncio
 async def test_delete_revision_flattened_async():
-    client = RevisionsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = RevisionsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_revision), "__call__") as call:
@@ -1385,7 +1533,9 @@ async def test_delete_revision_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_revision(name="name_value",)
+        response = await client.delete_revision(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1398,13 +1548,16 @@ async def test_delete_revision_flattened_async():
 
 @pytest.mark.asyncio
 async def test_delete_revision_flattened_error_async():
-    client = RevisionsAsyncClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = RevisionsAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_revision(
-            revision.DeleteRevisionRequest(), name="name_value",
+            revision.DeleteRevisionRequest(),
+            name="name_value",
         )
 
 
@@ -1415,7 +1568,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = RevisionsClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -1435,7 +1589,10 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = RevisionsClient(client_options=options, transport=transport,)
+        client = RevisionsClient(
+            client_options=options,
+            transport=transport,
+        )
 
     # It is an error to provide an api_key and a credential.
     options = mock.Mock()
@@ -1451,7 +1608,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = RevisionsClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -1481,7 +1639,10 @@ def test_transport_get_channel():
 
 @pytest.mark.parametrize(
     "transport_class",
-    [transports.RevisionsGrpcTransport, transports.RevisionsGrpcAsyncIOTransport,],
+    [
+        transports.RevisionsGrpcTransport,
+        transports.RevisionsGrpcAsyncIOTransport,
+    ],
 )
 def test_transport_adc(transport_class):
     # Test default credentials are used if not provided.
@@ -1493,8 +1654,13 @@ def test_transport_adc(transport_class):
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
-    client = RevisionsClient(credentials=ga_credentials.AnonymousCredentials(),)
-    assert isinstance(client.transport, transports.RevisionsGrpcTransport,)
+    client = RevisionsClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    assert isinstance(
+        client.transport,
+        transports.RevisionsGrpcTransport,
+    )
 
 
 def test_revisions_base_transport_error():
@@ -1546,7 +1712,8 @@ def test_revisions_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.RevisionsTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -1581,7 +1748,10 @@ def test_revisions_auth_adc():
 
 @pytest.mark.parametrize(
     "transport_class",
-    [transports.RevisionsGrpcTransport, transports.RevisionsGrpcAsyncIOTransport,],
+    [
+        transports.RevisionsGrpcTransport,
+        transports.RevisionsGrpcAsyncIOTransport,
+    ],
 )
 def test_revisions_transport_auth_adc(transport_class):
     # If credentials and host are not provided, the transport class should use
@@ -1673,7 +1843,13 @@ def test_revisions_grpc_transport_client_cert_source_for_mtls(transport_class):
             )
 
 
-@pytest.mark.parametrize("transport_name", ["grpc", "grpc_asyncio",])
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "grpc",
+        "grpc_asyncio",
+    ],
+)
 def test_revisions_host_no_port(transport_name):
     client = RevisionsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -1683,7 +1859,13 @@ def test_revisions_host_no_port(transport_name):
     assert client.transport._host == ("run.googleapis.com:443")
 
 
-@pytest.mark.parametrize("transport_name", ["grpc", "grpc_asyncio",])
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "grpc",
+        "grpc_asyncio",
+    ],
+)
 def test_revisions_host_with_port(transport_name):
     client = RevisionsClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -1700,7 +1882,8 @@ def test_revisions_grpc_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.RevisionsGrpcTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -1712,7 +1895,8 @@ def test_revisions_grpc_asyncio_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.RevisionsGrpcAsyncIOTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -1813,12 +1997,16 @@ def test_revisions_transport_channel_mtls_with_adc(transport_class):
 
 def test_revisions_grpc_lro_client():
     client = RevisionsClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
     transport = client.transport
 
     # Ensure that we have a api-core operations client.
-    assert isinstance(transport.operations_client, operations_v1.OperationsClient,)
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsClient,
+    )
 
     # Ensure that subsequent calls to the property send the exact same object.
     assert transport.operations_client is transport.operations_client
@@ -1826,12 +2014,16 @@ def test_revisions_grpc_lro_client():
 
 def test_revisions_grpc_lro_async_client():
     client = RevisionsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     transport = client.transport
 
     # Ensure that we have a api-core operations client.
-    assert isinstance(transport.operations_client, operations_v1.OperationsAsyncClient,)
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsAsyncClient,
+    )
 
     # Ensure that subsequent calls to the property send the exact same object.
     assert transport.operations_client is transport.operations_client
@@ -1842,7 +2034,9 @@ def test_connector_path():
     location = "clam"
     connector = "whelk"
     expected = "projects/{project}/locations/{location}/connectors/{connector}".format(
-        project=project, location=location, connector=connector,
+        project=project,
+        location=location,
+        connector=connector,
     )
     actual = RevisionsClient.connector_path(project, location, connector)
     assert expected == actual
@@ -1867,7 +2061,10 @@ def test_crypto_key_path():
     key_ring = "winkle"
     crypto_key = "nautilus"
     expected = "projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}".format(
-        project=project, location=location, key_ring=key_ring, crypto_key=crypto_key,
+        project=project,
+        location=location,
+        key_ring=key_ring,
+        crypto_key=crypto_key,
     )
     actual = RevisionsClient.crypto_key_path(project, location, key_ring, crypto_key)
     assert expected == actual
@@ -1893,7 +2090,10 @@ def test_revision_path():
     service = "oyster"
     revision = "nudibranch"
     expected = "projects/{project}/locations/{location}/services/{service}/revisions/{revision}".format(
-        project=project, location=location, service=service, revision=revision,
+        project=project,
+        location=location,
+        service=service,
+        revision=revision,
     )
     actual = RevisionsClient.revision_path(project, location, service, revision)
     assert expected == actual
@@ -1917,7 +2117,8 @@ def test_secret_path():
     project = "scallop"
     secret = "abalone"
     expected = "projects/{project}/secrets/{secret}".format(
-        project=project, secret=secret,
+        project=project,
+        secret=secret,
     )
     actual = RevisionsClient.secret_path(project, secret)
     assert expected == actual
@@ -1940,7 +2141,9 @@ def test_secret_version_path():
     secret = "octopus"
     version = "oyster"
     expected = "projects/{project}/secrets/{secret}/versions/{version}".format(
-        project=project, secret=secret, version=version,
+        project=project,
+        secret=secret,
+        version=version,
     )
     actual = RevisionsClient.secret_version_path(project, secret, version)
     assert expected == actual
@@ -1964,7 +2167,9 @@ def test_service_path():
     location = "nautilus"
     service = "scallop"
     expected = "projects/{project}/locations/{location}/services/{service}".format(
-        project=project, location=location, service=service,
+        project=project,
+        location=location,
+        service=service,
     )
     actual = RevisionsClient.service_path(project, location, service)
     assert expected == actual
@@ -2005,7 +2210,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "oyster"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = RevisionsClient.common_folder_path(folder)
     assert expected == actual
 
@@ -2023,7 +2230,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "cuttlefish"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = RevisionsClient.common_organization_path(organization)
     assert expected == actual
 
@@ -2041,7 +2250,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "winkle"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = RevisionsClient.common_project_path(project)
     assert expected == actual
 
@@ -2061,7 +2272,8 @@ def test_common_location_path():
     project = "scallop"
     location = "abalone"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = RevisionsClient.common_location_path(project, location)
     assert expected == actual
@@ -2086,7 +2298,8 @@ def test_client_with_default_client_info():
         transports.RevisionsTransport, "_prep_wrapped_messages"
     ) as prep:
         client = RevisionsClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -2095,7 +2308,8 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = RevisionsClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -2103,7 +2317,8 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = RevisionsAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     with mock.patch.object(
         type(getattr(client.transport, "grpc_channel")), "close"

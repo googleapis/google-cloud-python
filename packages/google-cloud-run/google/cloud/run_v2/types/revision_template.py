@@ -21,7 +21,10 @@ from google.protobuf import duration_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.cloud.run.v2", manifest={"RevisionTemplate",},
+    package="google.cloud.run.v2",
+    manifest={
+        "RevisionTemplate",
+    },
 )
 
 
@@ -77,27 +80,66 @@ class RevisionTemplate(proto.Message):
             https://cloud.google.com/run/docs/securing/using-cmek
     """
 
-    revision = proto.Field(proto.STRING, number=1,)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=2,)
-    annotations = proto.MapField(proto.STRING, proto.STRING, number=3,)
+    revision = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=2,
+    )
+    annotations = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=3,
+    )
     scaling = proto.Field(
-        proto.MESSAGE, number=4, message=vendor_settings.RevisionScaling,
+        proto.MESSAGE,
+        number=4,
+        message=vendor_settings.RevisionScaling,
     )
     vpc_access = proto.Field(
-        proto.MESSAGE, number=6, message=vendor_settings.VpcAccess,
+        proto.MESSAGE,
+        number=6,
+        message=vendor_settings.VpcAccess,
     )
-    container_concurrency = proto.Field(proto.INT32, number=7,)
-    timeout = proto.Field(proto.MESSAGE, number=8, message=duration_pb2.Duration,)
-    service_account = proto.Field(proto.STRING, number=9,)
+    container_concurrency = proto.Field(
+        proto.INT32,
+        number=7,
+    )
+    timeout = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=duration_pb2.Duration,
+    )
+    service_account = proto.Field(
+        proto.STRING,
+        number=9,
+    )
     containers = proto.RepeatedField(
-        proto.MESSAGE, number=10, message=k8s_min.Container,
+        proto.MESSAGE,
+        number=10,
+        message=k8s_min.Container,
     )
-    volumes = proto.RepeatedField(proto.MESSAGE, number=11, message=k8s_min.Volume,)
-    confidential = proto.Field(proto.BOOL, number=12,)
+    volumes = proto.RepeatedField(
+        proto.MESSAGE,
+        number=11,
+        message=k8s_min.Volume,
+    )
+    confidential = proto.Field(
+        proto.BOOL,
+        number=12,
+    )
     execution_environment = proto.Field(
-        proto.ENUM, number=13, enum=vendor_settings.ExecutionEnvironment,
+        proto.ENUM,
+        number=13,
+        enum=vendor_settings.ExecutionEnvironment,
     )
-    encryption_key = proto.Field(proto.STRING, number=14,)
+    encryption_key = proto.Field(
+        proto.STRING,
+        number=14,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

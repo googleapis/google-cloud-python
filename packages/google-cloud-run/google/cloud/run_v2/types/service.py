@@ -58,10 +58,23 @@ class CreateServiceRequest(proto.Message):
             resources.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    service = proto.Field(proto.MESSAGE, number=2, message="Service",)
-    service_id = proto.Field(proto.STRING, number=3,)
-    validate_only = proto.Field(proto.BOOL, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    service = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="Service",
+    )
+    service_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    validate_only = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
 
 
 class UpdateServiceRequest(proto.Message):
@@ -84,12 +97,24 @@ class UpdateServiceRequest(proto.Message):
             call if this is set to true.
     """
 
-    service = proto.Field(proto.MESSAGE, number=1, message="Service",)
-    update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+    service = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="Service",
     )
-    validate_only = proto.Field(proto.BOOL, number=3,)
-    allow_missing = proto.Field(proto.BOOL, number=4,)
+    update_mask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+    validate_only = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+    allow_missing = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
 
 
 class ListServicesRequest(proto.Message):
@@ -112,10 +137,22 @@ class ListServicesRequest(proto.Message):
             resources along with active ones.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    show_deleted = proto.Field(proto.BOOL, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    show_deleted = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
 
 
 class ListServicesResponse(proto.Message):
@@ -133,8 +170,15 @@ class ListServicesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    services = proto.RepeatedField(proto.MESSAGE, number=1, message="Service",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    services = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Service",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetServiceRequest(proto.Message):
@@ -147,7 +191,10 @@ class GetServiceRequest(proto.Message):
             projects/{projectnumber}/locations/{location}/services/{service}
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class DeleteServiceRequest(proto.Message):
@@ -168,9 +215,18 @@ class DeleteServiceRequest(proto.Message):
             modification conflict during updates.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    validate_only = proto.Field(proto.BOOL, number=2,)
-    etag = proto.Field(proto.STRING, number=3,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    validate_only = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+    etag = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class Service(proto.Message):
@@ -334,50 +390,132 @@ class Service(proto.Message):
             detect modification conflict during updates.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    description = proto.Field(proto.STRING, number=2,)
-    uid = proto.Field(proto.STRING, number=3,)
-    generation = proto.Field(proto.INT64, number=4,)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=5,)
-    annotations = proto.MapField(proto.STRING, proto.STRING, number=6,)
-    create_time = proto.Field(proto.MESSAGE, number=7, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=8, message=timestamp_pb2.Timestamp,)
-    delete_time = proto.Field(proto.MESSAGE, number=9, message=timestamp_pb2.Timestamp,)
-    expire_time = proto.Field(
-        proto.MESSAGE, number=10, message=timestamp_pb2.Timestamp,
+    name = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    creator = proto.Field(proto.STRING, number=11,)
-    last_modifier = proto.Field(proto.STRING, number=12,)
-    client = proto.Field(proto.STRING, number=13,)
-    client_version = proto.Field(proto.STRING, number=14,)
-    ingress = proto.Field(proto.ENUM, number=15, enum=vendor_settings.IngressTraffic,)
+    description = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    uid = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    generation = proto.Field(
+        proto.INT64,
+        number=4,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=5,
+    )
+    annotations = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=6,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=timestamp_pb2.Timestamp,
+    )
+    delete_time = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message=timestamp_pb2.Timestamp,
+    )
+    expire_time = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        message=timestamp_pb2.Timestamp,
+    )
+    creator = proto.Field(
+        proto.STRING,
+        number=11,
+    )
+    last_modifier = proto.Field(
+        proto.STRING,
+        number=12,
+    )
+    client = proto.Field(
+        proto.STRING,
+        number=13,
+    )
+    client_version = proto.Field(
+        proto.STRING,
+        number=14,
+    )
+    ingress = proto.Field(
+        proto.ENUM,
+        number=15,
+        enum=vendor_settings.IngressTraffic,
+    )
     launch_stage = proto.Field(
-        proto.ENUM, number=16, enum=launch_stage_pb2.LaunchStage,
+        proto.ENUM,
+        number=16,
+        enum=launch_stage_pb2.LaunchStage,
     )
     binary_authorization = proto.Field(
-        proto.MESSAGE, number=17, message=vendor_settings.BinaryAuthorization,
+        proto.MESSAGE,
+        number=17,
+        message=vendor_settings.BinaryAuthorization,
     )
     template = proto.Field(
-        proto.MESSAGE, number=18, message=revision_template.RevisionTemplate,
+        proto.MESSAGE,
+        number=18,
+        message=revision_template.RevisionTemplate,
     )
     traffic = proto.RepeatedField(
-        proto.MESSAGE, number=19, message=traffic_target.TrafficTarget,
+        proto.MESSAGE,
+        number=19,
+        message=traffic_target.TrafficTarget,
     )
-    observed_generation = proto.Field(proto.INT64, number=30,)
+    observed_generation = proto.Field(
+        proto.INT64,
+        number=30,
+    )
     terminal_condition = proto.Field(
-        proto.MESSAGE, number=31, message=condition.Condition,
+        proto.MESSAGE,
+        number=31,
+        message=condition.Condition,
     )
     conditions = proto.RepeatedField(
-        proto.MESSAGE, number=32, message=condition.Condition,
+        proto.MESSAGE,
+        number=32,
+        message=condition.Condition,
     )
-    latest_ready_revision = proto.Field(proto.STRING, number=33,)
-    latest_created_revision = proto.Field(proto.STRING, number=34,)
+    latest_ready_revision = proto.Field(
+        proto.STRING,
+        number=33,
+    )
+    latest_created_revision = proto.Field(
+        proto.STRING,
+        number=34,
+    )
     traffic_statuses = proto.RepeatedField(
-        proto.MESSAGE, number=35, message=traffic_target.TrafficTargetStatus,
+        proto.MESSAGE,
+        number=35,
+        message=traffic_target.TrafficTargetStatus,
     )
-    uri = proto.Field(proto.STRING, number=36,)
-    reconciling = proto.Field(proto.BOOL, number=98,)
-    etag = proto.Field(proto.STRING, number=99,)
+    uri = proto.Field(
+        proto.STRING,
+        number=36,
+    )
+    reconciling = proto.Field(
+        proto.BOOL,
+        number=98,
+    )
+    etag = proto.Field(
+        proto.STRING,
+        number=99,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

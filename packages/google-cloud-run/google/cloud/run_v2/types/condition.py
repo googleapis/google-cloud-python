@@ -18,7 +18,12 @@ import proto  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 
 
-__protobuf__ = proto.module(package="google.cloud.run.v2", manifest={"Condition",},)
+__protobuf__ = proto.module(
+    package="google.cloud.run.v2",
+    manifest={
+        "Condition",
+    },
+)
 
 
 class Condition(proto.Message):
@@ -152,25 +157,58 @@ class Condition(proto.Message):
         JOB_STATUS_SERVICE_POLLING_ERROR = 1
         NON_ZERO_EXIT_CODE = 2
 
-    type_ = proto.Field(proto.STRING, number=1,)
-    state = proto.Field(proto.ENUM, number=2, enum=State,)
-    message = proto.Field(proto.STRING, number=3,)
-    last_transition_time = proto.Field(
-        proto.MESSAGE, number=4, message=timestamp_pb2.Timestamp,
+    type_ = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    severity = proto.Field(proto.ENUM, number=5, enum=Severity,)
-    reason = proto.Field(proto.ENUM, number=6, oneof="reasons", enum=CommonReason,)
+    state = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=State,
+    )
+    message = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    last_transition_time = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        message=timestamp_pb2.Timestamp,
+    )
+    severity = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum=Severity,
+    )
+    reason = proto.Field(
+        proto.ENUM,
+        number=6,
+        oneof="reasons",
+        enum=CommonReason,
+    )
     internal_reason = proto.Field(
-        proto.ENUM, number=7, oneof="reasons", enum=InternalReason,
+        proto.ENUM,
+        number=7,
+        oneof="reasons",
+        enum=InternalReason,
     )
     domain_mapping_reason = proto.Field(
-        proto.ENUM, number=8, oneof="reasons", enum=DomainMappingReason,
+        proto.ENUM,
+        number=8,
+        oneof="reasons",
+        enum=DomainMappingReason,
     )
     revision_reason = proto.Field(
-        proto.ENUM, number=9, oneof="reasons", enum=RevisionReason,
+        proto.ENUM,
+        number=9,
+        oneof="reasons",
+        enum=RevisionReason,
     )
     execution_reason = proto.Field(
-        proto.ENUM, number=11, oneof="reasons", enum=ExecutionReason,
+        proto.ENUM,
+        number=11,
+        oneof="reasons",
+        enum=ExecutionReason,
     )
 
 

@@ -34,7 +34,9 @@ from google.longrunning import operations_pb2  # type: ignore
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
-        gapic_version=pkg_resources.get_distribution("google-cloud-run",).version,
+        gapic_version=pkg_resources.get_distribution(
+            "google-cloud-run",
+        ).version,
     )
 except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
@@ -124,7 +126,9 @@ class ServicesTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.create_service: gapic_v1.method.wrap_method(
-                self.create_service, default_timeout=15.0, client_info=client_info,
+                self.create_service,
+                default_timeout=15.0,
+                client_info=client_info,
             ),
             self.get_service: gapic_v1.method.wrap_method(
                 self.get_service,
@@ -155,16 +159,24 @@ class ServicesTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.update_service: gapic_v1.method.wrap_method(
-                self.update_service, default_timeout=15.0, client_info=client_info,
+                self.update_service,
+                default_timeout=15.0,
+                client_info=client_info,
             ),
             self.delete_service: gapic_v1.method.wrap_method(
-                self.delete_service, default_timeout=10.0, client_info=client_info,
+                self.delete_service,
+                default_timeout=10.0,
+                client_info=client_info,
             ),
             self.get_iam_policy: gapic_v1.method.wrap_method(
-                self.get_iam_policy, default_timeout=None, client_info=client_info,
+                self.get_iam_policy,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.set_iam_policy: gapic_v1.method.wrap_method(
-                self.set_iam_policy, default_timeout=None, client_info=client_info,
+                self.set_iam_policy,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.test_iam_permissions: gapic_v1.method.wrap_method(
                 self.test_iam_permissions,
@@ -176,9 +188,9 @@ class ServicesTransport(abc.ABC):
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

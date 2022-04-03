@@ -45,7 +45,10 @@ class GetRevisionRequest(proto.Message):
             projects/{project}/locations/{location}/services/{service}/revisions/{revision}
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ListRevisionsRequest(proto.Message):
@@ -69,10 +72,22 @@ class ListRevisionsRequest(proto.Message):
             resources along with active ones.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    show_deleted = proto.Field(proto.BOOL, number=4,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    show_deleted = proto.Field(
+        proto.BOOL,
+        number=4,
+    )
 
 
 class ListRevisionsResponse(proto.Message):
@@ -90,8 +105,15 @@ class ListRevisionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    revisions = proto.RepeatedField(proto.MESSAGE, number=1, message="Revision",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    revisions = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Revision",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class DeleteRevisionRequest(proto.Message):
@@ -115,9 +137,18 @@ class DeleteRevisionRequest(proto.Message):
             detect modification conflict during updates.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    validate_only = proto.Field(proto.BOOL, number=2,)
-    etag = proto.Field(proto.STRING, number=3,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    validate_only = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+    etag = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class Revision(proto.Message):
@@ -234,44 +265,124 @@ class Revision(proto.Message):
             detect modification conflict during updates.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    uid = proto.Field(proto.STRING, number=2,)
-    generation = proto.Field(proto.INT64, number=3,)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=4,)
-    annotations = proto.MapField(proto.STRING, proto.STRING, number=5,)
-    create_time = proto.Field(proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=7, message=timestamp_pb2.Timestamp,)
-    delete_time = proto.Field(proto.MESSAGE, number=8, message=timestamp_pb2.Timestamp,)
-    expire_time = proto.Field(proto.MESSAGE, number=9, message=timestamp_pb2.Timestamp,)
-    launch_stage = proto.Field(
-        proto.ENUM, number=10, enum=launch_stage_pb2.LaunchStage,
+    name = proto.Field(
+        proto.STRING,
+        number=1,
     )
-    service = proto.Field(proto.STRING, number=11,)
+    uid = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    generation = proto.Field(
+        proto.INT64,
+        number=3,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=4,
+    )
+    annotations = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=5,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=timestamp_pb2.Timestamp,
+    )
+    delete_time = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=timestamp_pb2.Timestamp,
+    )
+    expire_time = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        message=timestamp_pb2.Timestamp,
+    )
+    launch_stage = proto.Field(
+        proto.ENUM,
+        number=10,
+        enum=launch_stage_pb2.LaunchStage,
+    )
+    service = proto.Field(
+        proto.STRING,
+        number=11,
+    )
     scaling = proto.Field(
-        proto.MESSAGE, number=12, message=vendor_settings.RevisionScaling,
+        proto.MESSAGE,
+        number=12,
+        message=vendor_settings.RevisionScaling,
     )
     vpc_access = proto.Field(
-        proto.MESSAGE, number=13, message=vendor_settings.VpcAccess,
+        proto.MESSAGE,
+        number=13,
+        message=vendor_settings.VpcAccess,
     )
-    container_concurrency = proto.Field(proto.INT32, number=14,)
-    timeout = proto.Field(proto.MESSAGE, number=15, message=duration_pb2.Duration,)
-    service_account = proto.Field(proto.STRING, number=16,)
+    container_concurrency = proto.Field(
+        proto.INT32,
+        number=14,
+    )
+    timeout = proto.Field(
+        proto.MESSAGE,
+        number=15,
+        message=duration_pb2.Duration,
+    )
+    service_account = proto.Field(
+        proto.STRING,
+        number=16,
+    )
     containers = proto.RepeatedField(
-        proto.MESSAGE, number=17, message=k8s_min.Container,
+        proto.MESSAGE,
+        number=17,
+        message=k8s_min.Container,
     )
-    volumes = proto.RepeatedField(proto.MESSAGE, number=18, message=k8s_min.Volume,)
-    confidential = proto.Field(proto.BOOL, number=19,)
+    volumes = proto.RepeatedField(
+        proto.MESSAGE,
+        number=18,
+        message=k8s_min.Volume,
+    )
+    confidential = proto.Field(
+        proto.BOOL,
+        number=19,
+    )
     execution_environment = proto.Field(
-        proto.ENUM, number=20, enum=vendor_settings.ExecutionEnvironment,
+        proto.ENUM,
+        number=20,
+        enum=vendor_settings.ExecutionEnvironment,
     )
-    encryption_key = proto.Field(proto.STRING, number=21,)
-    reconciling = proto.Field(proto.BOOL, number=30,)
+    encryption_key = proto.Field(
+        proto.STRING,
+        number=21,
+    )
+    reconciling = proto.Field(
+        proto.BOOL,
+        number=30,
+    )
     conditions = proto.RepeatedField(
-        proto.MESSAGE, number=31, message=condition.Condition,
+        proto.MESSAGE,
+        number=31,
+        message=condition.Condition,
     )
-    observed_generation = proto.Field(proto.INT64, number=32,)
-    log_uri = proto.Field(proto.STRING, number=33,)
-    etag = proto.Field(proto.STRING, number=99,)
+    observed_generation = proto.Field(
+        proto.INT64,
+        number=32,
+    )
+    log_uri = proto.Field(
+        proto.STRING,
+        number=33,
+    )
+    etag = proto.Field(
+        proto.STRING,
+        number=99,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

@@ -66,8 +66,15 @@ class VpcAccess(proto.Message):
         ALL_TRAFFIC = 1
         PRIVATE_RANGES_ONLY = 2
 
-    connector = proto.Field(proto.STRING, number=1,)
-    egress = proto.Field(proto.ENUM, number=2, enum=VpcEgress,)
+    connector = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    egress = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=VpcEgress,
+    )
 
 
 class BinaryAuthorization(proto.Message):
@@ -89,8 +96,15 @@ class BinaryAuthorization(proto.Message):
             https://cloud.google.com/binary-authorization/docs/using-breakglass
     """
 
-    use_default = proto.Field(proto.BOOL, number=1, oneof="binauthz_method",)
-    breakglass_justification = proto.Field(proto.STRING, number=2,)
+    use_default = proto.Field(
+        proto.BOOL,
+        number=1,
+        oneof="binauthz_method",
+    )
+    breakglass_justification = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class RevisionScaling(proto.Message):
@@ -105,8 +119,14 @@ class RevisionScaling(proto.Message):
             resource should have.
     """
 
-    min_instance_count = proto.Field(proto.INT32, number=1,)
-    max_instance_count = proto.Field(proto.INT32, number=2,)
+    min_instance_count = proto.Field(
+        proto.INT32,
+        number=1,
+    )
+    max_instance_count = proto.Field(
+        proto.INT32,
+        number=2,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
