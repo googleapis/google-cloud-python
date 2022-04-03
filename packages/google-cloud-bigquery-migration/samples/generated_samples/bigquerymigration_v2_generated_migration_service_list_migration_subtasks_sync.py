@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for DeleteMigrationWorkflow
+# Snippet for ListMigrationSubtasks
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,21 +23,24 @@
 #   python3 -m pip install google-cloud-bigquery-migration
 
 
-# [START bigquerymigration_v2alpha_generated_MigrationService_DeleteMigrationWorkflow_async]
-from google.cloud import bigquery_migration_v2alpha
+# [START bigquerymigration_v2_generated_MigrationService_ListMigrationSubtasks_sync]
+from google.cloud import bigquery_migration_v2
 
 
-async def sample_delete_migration_workflow():
+def sample_list_migration_subtasks():
     # Create a client
-    client = bigquery_migration_v2alpha.MigrationServiceAsyncClient()
+    client = bigquery_migration_v2.MigrationServiceClient()
 
     # Initialize request argument(s)
-    request = bigquery_migration_v2alpha.DeleteMigrationWorkflowRequest(
-        name="name_value",
+    request = bigquery_migration_v2.ListMigrationSubtasksRequest(
+        parent="parent_value",
     )
 
     # Make the request
-    await client.delete_migration_workflow(request=request)
+    page_result = client.list_migration_subtasks(request=request)
 
+    # Handle the response
+    for response in page_result:
+        print(response)
 
-# [END bigquerymigration_v2alpha_generated_MigrationService_DeleteMigrationWorkflow_async]
+# [END bigquerymigration_v2_generated_MigrationService_ListMigrationSubtasks_sync]

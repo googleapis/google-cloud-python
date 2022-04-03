@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for DeleteMigrationWorkflow
+# Snippet for CreateMigrationWorkflow
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,21 +23,23 @@
 #   python3 -m pip install google-cloud-bigquery-migration
 
 
-# [START bigquerymigration_v2alpha_generated_MigrationService_DeleteMigrationWorkflow_sync]
-from google.cloud import bigquery_migration_v2alpha
+# [START bigquerymigration_v2_generated_MigrationService_CreateMigrationWorkflow_async]
+from google.cloud import bigquery_migration_v2
 
 
-def sample_delete_migration_workflow():
+async def sample_create_migration_workflow():
     # Create a client
-    client = bigquery_migration_v2alpha.MigrationServiceClient()
+    client = bigquery_migration_v2.MigrationServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = bigquery_migration_v2alpha.DeleteMigrationWorkflowRequest(
-        name="name_value",
+    request = bigquery_migration_v2.CreateMigrationWorkflowRequest(
+        parent="parent_value",
     )
 
     # Make the request
-    client.delete_migration_workflow(request=request)
+    response = await client.create_migration_workflow(request=request)
 
+    # Handle the response
+    print(response)
 
-# [END bigquerymigration_v2alpha_generated_MigrationService_DeleteMigrationWorkflow_sync]
+# [END bigquerymigration_v2_generated_MigrationService_CreateMigrationWorkflow_async]

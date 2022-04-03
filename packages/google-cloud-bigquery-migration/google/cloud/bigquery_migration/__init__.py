@@ -14,97 +14,87 @@
 # limitations under the License.
 #
 
-from google.cloud.bigquery_migration_v2alpha.services.migration_service.client import (
+from google.cloud.bigquery_migration_v2.services.migration_service.client import (
     MigrationServiceClient,
 )
-from google.cloud.bigquery_migration_v2alpha.services.migration_service.async_client import (
+from google.cloud.bigquery_migration_v2.services.migration_service.async_client import (
     MigrationServiceAsyncClient,
 )
 
-from google.cloud.bigquery_migration_v2alpha.types.assessment_task import (
-    AssessmentOrchestrationResultDetails,
-)
-from google.cloud.bigquery_migration_v2alpha.types.assessment_task import (
-    AssessmentTaskDetails,
-)
-from google.cloud.bigquery_migration_v2alpha.types.migration_entities import (
-    MigrationSubtask,
-)
-from google.cloud.bigquery_migration_v2alpha.types.migration_entities import (
-    MigrationTask,
-)
-from google.cloud.bigquery_migration_v2alpha.types.migration_entities import (
-    MigrationTaskOrchestrationResult,
-)
-from google.cloud.bigquery_migration_v2alpha.types.migration_entities import (
+from google.cloud.bigquery_migration_v2.types.migration_entities import MigrationSubtask
+from google.cloud.bigquery_migration_v2.types.migration_entities import MigrationTask
+from google.cloud.bigquery_migration_v2.types.migration_entities import (
     MigrationWorkflow,
 )
-from google.cloud.bigquery_migration_v2alpha.types.migration_error_details import (
-    ErrorDetail,
-)
-from google.cloud.bigquery_migration_v2alpha.types.migration_error_details import (
+from google.cloud.bigquery_migration_v2.types.migration_error_details import ErrorDetail
+from google.cloud.bigquery_migration_v2.types.migration_error_details import (
     ErrorLocation,
 )
-from google.cloud.bigquery_migration_v2alpha.types.migration_error_details import (
+from google.cloud.bigquery_migration_v2.types.migration_error_details import (
     ResourceErrorDetail,
 )
-from google.cloud.bigquery_migration_v2alpha.types.migration_metrics import Point
-from google.cloud.bigquery_migration_v2alpha.types.migration_metrics import TimeInterval
-from google.cloud.bigquery_migration_v2alpha.types.migration_metrics import TimeSeries
-from google.cloud.bigquery_migration_v2alpha.types.migration_metrics import TypedValue
-from google.cloud.bigquery_migration_v2alpha.types.migration_service import (
+from google.cloud.bigquery_migration_v2.types.migration_metrics import Point
+from google.cloud.bigquery_migration_v2.types.migration_metrics import TimeInterval
+from google.cloud.bigquery_migration_v2.types.migration_metrics import TimeSeries
+from google.cloud.bigquery_migration_v2.types.migration_metrics import TypedValue
+from google.cloud.bigquery_migration_v2.types.migration_service import (
     CreateMigrationWorkflowRequest,
 )
-from google.cloud.bigquery_migration_v2alpha.types.migration_service import (
+from google.cloud.bigquery_migration_v2.types.migration_service import (
     DeleteMigrationWorkflowRequest,
 )
-from google.cloud.bigquery_migration_v2alpha.types.migration_service import (
+from google.cloud.bigquery_migration_v2.types.migration_service import (
     GetMigrationSubtaskRequest,
 )
-from google.cloud.bigquery_migration_v2alpha.types.migration_service import (
+from google.cloud.bigquery_migration_v2.types.migration_service import (
     GetMigrationWorkflowRequest,
 )
-from google.cloud.bigquery_migration_v2alpha.types.migration_service import (
+from google.cloud.bigquery_migration_v2.types.migration_service import (
     ListMigrationSubtasksRequest,
 )
-from google.cloud.bigquery_migration_v2alpha.types.migration_service import (
+from google.cloud.bigquery_migration_v2.types.migration_service import (
     ListMigrationSubtasksResponse,
 )
-from google.cloud.bigquery_migration_v2alpha.types.migration_service import (
+from google.cloud.bigquery_migration_v2.types.migration_service import (
     ListMigrationWorkflowsRequest,
 )
-from google.cloud.bigquery_migration_v2alpha.types.migration_service import (
+from google.cloud.bigquery_migration_v2.types.migration_service import (
     ListMigrationWorkflowsResponse,
 )
-from google.cloud.bigquery_migration_v2alpha.types.migration_service import (
+from google.cloud.bigquery_migration_v2.types.migration_service import (
     StartMigrationWorkflowRequest,
 )
-from google.cloud.bigquery_migration_v2alpha.types.translation_task import BteqOptions
-from google.cloud.bigquery_migration_v2alpha.types.translation_task import (
-    DatasetReference,
+from google.cloud.bigquery_migration_v2.types.translation_config import (
+    AzureSynapseDialect,
 )
-from google.cloud.bigquery_migration_v2alpha.types.translation_task import Filter
-from google.cloud.bigquery_migration_v2alpha.types.translation_task import (
-    IdentifierSettings,
+from google.cloud.bigquery_migration_v2.types.translation_config import BigQueryDialect
+from google.cloud.bigquery_migration_v2.types.translation_config import Dialect
+from google.cloud.bigquery_migration_v2.types.translation_config import HiveQLDialect
+from google.cloud.bigquery_migration_v2.types.translation_config import NameMappingKey
+from google.cloud.bigquery_migration_v2.types.translation_config import NameMappingValue
+from google.cloud.bigquery_migration_v2.types.translation_config import NetezzaDialect
+from google.cloud.bigquery_migration_v2.types.translation_config import (
+    ObjectNameMapping,
 )
-from google.cloud.bigquery_migration_v2alpha.types.translation_task import (
-    TeradataOptions,
+from google.cloud.bigquery_migration_v2.types.translation_config import (
+    ObjectNameMappingList,
 )
-from google.cloud.bigquery_migration_v2alpha.types.translation_task import (
-    TranslationFileMapping,
+from google.cloud.bigquery_migration_v2.types.translation_config import OracleDialect
+from google.cloud.bigquery_migration_v2.types.translation_config import RedshiftDialect
+from google.cloud.bigquery_migration_v2.types.translation_config import SnowflakeDialect
+from google.cloud.bigquery_migration_v2.types.translation_config import SourceEnv
+from google.cloud.bigquery_migration_v2.types.translation_config import SparkSQLDialect
+from google.cloud.bigquery_migration_v2.types.translation_config import TeradataDialect
+from google.cloud.bigquery_migration_v2.types.translation_config import (
+    TranslationConfigDetails,
 )
-from google.cloud.bigquery_migration_v2alpha.types.translation_task import (
-    TranslationTaskDetails,
-)
+from google.cloud.bigquery_migration_v2.types.translation_config import VerticaDialect
 
 __all__ = (
     "MigrationServiceClient",
     "MigrationServiceAsyncClient",
-    "AssessmentOrchestrationResultDetails",
-    "AssessmentTaskDetails",
     "MigrationSubtask",
     "MigrationTask",
-    "MigrationTaskOrchestrationResult",
     "MigrationWorkflow",
     "ErrorDetail",
     "ErrorLocation",
@@ -122,11 +112,21 @@ __all__ = (
     "ListMigrationWorkflowsRequest",
     "ListMigrationWorkflowsResponse",
     "StartMigrationWorkflowRequest",
-    "BteqOptions",
-    "DatasetReference",
-    "Filter",
-    "IdentifierSettings",
-    "TeradataOptions",
-    "TranslationFileMapping",
-    "TranslationTaskDetails",
+    "AzureSynapseDialect",
+    "BigQueryDialect",
+    "Dialect",
+    "HiveQLDialect",
+    "NameMappingKey",
+    "NameMappingValue",
+    "NetezzaDialect",
+    "ObjectNameMapping",
+    "ObjectNameMappingList",
+    "OracleDialect",
+    "RedshiftDialect",
+    "SnowflakeDialect",
+    "SourceEnv",
+    "SparkSQLDialect",
+    "TeradataDialect",
+    "TranslationConfigDetails",
+    "VerticaDialect",
 )

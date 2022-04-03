@@ -1,0 +1,7 @@
+Types for Google Cloud Bigquery Migration v2 API
+================================================
+
+.. automodule:: google.cloud.bigquery_migration_v2.types
+    :members:
+    :undoc-members:
+    :show-inheritance:

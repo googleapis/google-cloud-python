@@ -10,8 +10,8 @@
           "shortName": "CreateMigrationWorkflow"
         }
       },
-      "file": "bigquerymigration_v2alpha_generated_migration_service_create_migration_workflow_async.py",
-      "regionTag": "bigquerymigration_v2alpha_generated_MigrationService_CreateMigrationWorkflow_async",
+      "file": "bigquerymigration_v2_generated_migration_service_create_migration_workflow_async.py",
+      "regionTag": "bigquerymigration_v2_generated_MigrationService_CreateMigrationWorkflow_async",
       "segments": [
         {
           "end": 44,
@@ -54,8 +54,8 @@
           "shortName": "CreateMigrationWorkflow"
         }
       },
-      "file": "bigquerymigration_v2alpha_generated_migration_service_create_migration_workflow_sync.py",
-      "regionTag": "bigquerymigration_v2alpha_generated_MigrationService_CreateMigrationWorkflow_sync",
+      "file": "bigquerymigration_v2_generated_migration_service_create_migration_workflow_sync.py",
+      "regionTag": "bigquerymigration_v2_generated_MigrationService_CreateMigrationWorkflow_sync",
       "segments": [
         {
           "end": 44,
@@ -99,8 +99,8 @@
           "shortName": "DeleteMigrationWorkflow"
         }
       },
-      "file": "bigquerymigration_v2alpha_generated_migration_service_delete_migration_workflow_async.py",
-      "regionTag": "bigquerymigration_v2alpha_generated_MigrationService_DeleteMigrationWorkflow_async",
+      "file": "bigquerymigration_v2_generated_migration_service_delete_migration_workflow_async.py",
+      "regionTag": "bigquerymigration_v2_generated_MigrationService_DeleteMigrationWorkflow_async",
       "segments": [
         {
           "end": 42,
@@ -141,8 +141,8 @@
           "shortName": "DeleteMigrationWorkflow"
         }
       },
-      "file": "bigquerymigration_v2alpha_generated_migration_service_delete_migration_workflow_sync.py",
-      "regionTag": "bigquerymigration_v2alpha_generated_MigrationService_DeleteMigrationWorkflow_sync",
+      "file": "bigquerymigration_v2_generated_migration_service_delete_migration_workflow_sync.py",
+      "regionTag": "bigquerymigration_v2_generated_MigrationService_DeleteMigrationWorkflow_sync",
       "segments": [
         {
           "end": 42,
@@ -184,8 +184,8 @@
           "shortName": "GetMigrationSubtask"
         }
       },
-      "file": "bigquerymigration_v2alpha_generated_migration_service_get_migration_subtask_async.py",
-      "regionTag": "bigquerymigration_v2alpha_generated_MigrationService_GetMigrationSubtask_async",
+      "file": "bigquerymigration_v2_generated_migration_service_get_migration_subtask_async.py",
+      "regionTag": "bigquerymigration_v2_generated_MigrationService_GetMigrationSubtask_async",
       "segments": [
         {
           "end": 44,
@@ -228,8 +228,8 @@
           "shortName": "GetMigrationSubtask"
         }
       },
-      "file": "bigquerymigration_v2alpha_generated_migration_service_get_migration_subtask_sync.py",
-      "regionTag": "bigquerymigration_v2alpha_generated_MigrationService_GetMigrationSubtask_sync",
+      "file": "bigquerymigration_v2_generated_migration_service_get_migration_subtask_sync.py",
+      "regionTag": "bigquerymigration_v2_generated_MigrationService_GetMigrationSubtask_sync",
       "segments": [
         {
           "end": 44,
@@ -273,8 +273,8 @@
           "shortName": "GetMigrationWorkflow"
         }
       },
-      "file": "bigquerymigration_v2alpha_generated_migration_service_get_migration_workflow_async.py",
-      "regionTag": "bigquerymigration_v2alpha_generated_MigrationService_GetMigrationWorkflow_async",
+      "file": "bigquerymigration_v2_generated_migration_service_get_migration_workflow_async.py",
+      "regionTag": "bigquerymigration_v2_generated_MigrationService_GetMigrationWorkflow_async",
       "segments": [
         {
           "end": 44,
@@ -317,8 +317,8 @@
           "shortName": "GetMigrationWorkflow"
         }
       },
-      "file": "bigquerymigration_v2alpha_generated_migration_service_get_migration_workflow_sync.py",
-      "regionTag": "bigquerymigration_v2alpha_generated_MigrationService_GetMigrationWorkflow_sync",
+      "file": "bigquerymigration_v2_generated_migration_service_get_migration_workflow_sync.py",
+      "regionTag": "bigquerymigration_v2_generated_MigrationService_GetMigrationWorkflow_sync",
       "segments": [
         {
           "end": 44,
@@ -362,8 +362,8 @@
           "shortName": "ListMigrationSubtasks"
         }
       },
-      "file": "bigquerymigration_v2alpha_generated_migration_service_list_migration_subtasks_async.py",
-      "regionTag": "bigquerymigration_v2alpha_generated_MigrationService_ListMigrationSubtasks_async",
+      "file": "bigquerymigration_v2_generated_migration_service_list_migration_subtasks_async.py",
+      "regionTag": "bigquerymigration_v2_generated_MigrationService_ListMigrationSubtasks_async",
       "segments": [
         {
           "end": 45,
@@ -406,8 +406,8 @@
           "shortName": "ListMigrationSubtasks"
         }
       },
-      "file": "bigquerymigration_v2alpha_generated_migration_service_list_migration_subtasks_sync.py",
-      "regionTag": "bigquerymigration_v2alpha_generated_MigrationService_ListMigrationSubtasks_sync",
+      "file": "bigquerymigration_v2_generated_migration_service_list_migration_subtasks_sync.py",
+      "regionTag": "bigquerymigration_v2_generated_MigrationService_ListMigrationSubtasks_sync",
       "segments": [
         {
           "end": 45,
@@ -451,8 +451,8 @@
           "shortName": "ListMigrationWorkflows"
         }
       },
-      "file": "bigquerymigration_v2alpha_generated_migration_service_list_migration_workflows_async.py",
-      "regionTag": "bigquerymigration_v2alpha_generated_MigrationService_ListMigrationWorkflows_async",
+      "file": "bigquerymigration_v2_generated_migration_service_list_migration_workflows_async.py",
+      "regionTag": "bigquerymigration_v2_generated_MigrationService_ListMigrationWorkflows_async",
       "segments": [
         {
           "end": 45,
@@ -495,8 +495,8 @@
           "shortName": "ListMigrationWorkflows"
         }
       },
-      "file": "bigquerymigration_v2alpha_generated_migration_service_list_migration_workflows_sync.py",
-      "regionTag": "bigquerymigration_v2alpha_generated_MigrationService_ListMigrationWorkflows_sync",
+      "file": "bigquerymigration_v2_generated_migration_service_list_migration_workflows_sync.py",
+      "regionTag": "bigquerymigration_v2_generated_MigrationService_ListMigrationWorkflows_sync",
       "segments": [
         {
           "end": 45,
@@ -540,8 +540,8 @@
           "shortName": "StartMigrationWorkflow"
         }
       },
-      "file": "bigquerymigration_v2alpha_generated_migration_service_start_migration_workflow_async.py",
-      "regionTag": "bigquerymigration_v2alpha_generated_MigrationService_StartMigrationWorkflow_async",
+      "file": "bigquerymigration_v2_generated_migration_service_start_migration_workflow_async.py",
+      "regionTag": "bigquerymigration_v2_generated_MigrationService_StartMigrationWorkflow_async",
       "segments": [
         {
           "end": 42,
@@ -582,8 +582,8 @@
           "shortName": "StartMigrationWorkflow"
         }
       },
-      "file": "bigquerymigration_v2alpha_generated_migration_service_start_migration_workflow_sync.py",
-      "regionTag": "bigquerymigration_v2alpha_generated_MigrationService_StartMigrationWorkflow_sync",
+      "file": "bigquerymigration_v2_generated_migration_service_start_migration_workflow_sync.py",
+      "regionTag": "bigquerymigration_v2_generated_MigrationService_StartMigrationWorkflow_sync",
       "segments": [
         {
           "end": 42,

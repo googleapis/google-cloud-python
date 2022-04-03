@@ -1,6 +1,6 @@
 #! /usr/bin/env python3
 # -*- coding: utf-8 -*-
-# Copyright 2020 Google LLC
+# Copyright 2022 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ def partition(
     return results[1], results[0]
 
 
-class migrationCallTransformer(cst.CSTTransformer):
+class bigquery_migrationCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
         'create_migration_workflow': ('parent', 'migration_workflow', ),
@@ -94,7 +94,7 @@ def fix_files(
     in_dir: pathlib.Path,
     out_dir: pathlib.Path,
     *,
-    transformer=migrationCallTransformer(),
+    transformer=bigquery_migrationCallTransformer(),
 ):
     """Duplicate the input dir to the output dir, fixing file method calls.
 
@@ -127,7 +127,7 @@ def fix_files(
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
-        description="""Fix up source that uses the migration client library.
+        description="""Fix up source that uses the bigquery_migration client library.
 
 The existing sources are NOT overwritten but are copied to output_dir with changes made.
 

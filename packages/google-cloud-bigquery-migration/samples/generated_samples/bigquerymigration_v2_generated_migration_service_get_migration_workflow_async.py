@@ -15,7 +15,7 @@
 #
 # Generated code. DO NOT EDIT!
 #
-# Snippet for StartMigrationWorkflow
+# Snippet for GetMigrationWorkflow
 # NOTE: This snippet has been automatically generated for illustrative purposes only.
 # It may require modifications to work in your environment.
 
@@ -23,21 +23,23 @@
 #   python3 -m pip install google-cloud-bigquery-migration
 
 
-# [START bigquerymigration_v2alpha_generated_MigrationService_StartMigrationWorkflow_async]
-from google.cloud import bigquery_migration_v2alpha
+# [START bigquerymigration_v2_generated_MigrationService_GetMigrationWorkflow_async]
+from google.cloud import bigquery_migration_v2
 
 
-async def sample_start_migration_workflow():
+async def sample_get_migration_workflow():
     # Create a client
-    client = bigquery_migration_v2alpha.MigrationServiceAsyncClient()
+    client = bigquery_migration_v2.MigrationServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = bigquery_migration_v2alpha.StartMigrationWorkflowRequest(
+    request = bigquery_migration_v2.GetMigrationWorkflowRequest(
         name="name_value",
     )
 
     # Make the request
-    await client.start_migration_workflow(request=request)
+    response = await client.get_migration_workflow(request=request)
 
+    # Handle the response
+    print(response)
 
-# [END bigquerymigration_v2alpha_generated_MigrationService_StartMigrationWorkflow_async]
+# [END bigquerymigration_v2_generated_MigrationService_GetMigrationWorkflow_async]

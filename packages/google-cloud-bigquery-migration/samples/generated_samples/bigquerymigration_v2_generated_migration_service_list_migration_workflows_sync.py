@@ -23,16 +23,16 @@
 #   python3 -m pip install google-cloud-bigquery-migration
 
 
-# [START bigquerymigration_v2alpha_generated_MigrationService_ListMigrationWorkflows_sync]
-from google.cloud import bigquery_migration_v2alpha
+# [START bigquerymigration_v2_generated_MigrationService_ListMigrationWorkflows_sync]
+from google.cloud import bigquery_migration_v2
 
 
 def sample_list_migration_workflows():
     # Create a client
-    client = bigquery_migration_v2alpha.MigrationServiceClient()
+    client = bigquery_migration_v2.MigrationServiceClient()
 
     # Initialize request argument(s)
-    request = bigquery_migration_v2alpha.ListMigrationWorkflowsRequest(
+    request = bigquery_migration_v2.ListMigrationWorkflowsRequest(
         parent="parent_value",
     )
 
@@ -43,4 +43,4 @@ def sample_list_migration_workflows():
     for response in page_result:
         print(response)
 
-# [END bigquerymigration_v2alpha_generated_MigrationService_ListMigrationWorkflows_sync]
+# [END bigquerymigration_v2_generated_MigrationService_ListMigrationWorkflows_sync]

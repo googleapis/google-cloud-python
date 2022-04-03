@@ -11,7 +11,7 @@
     "distribution_name": "google-cloud-bigquery-migration",
     "api_id": "bigquerymigration.googleapis.com",
     "requires_billing": true,
-    "default_version": "v2alpha",
+    "default_version": "v2",
     "codeowner_team": "@googleapis/api-bigquery",
     "api_shortname": "bigquerymigration"
 }
