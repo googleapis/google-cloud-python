@@ -42,6 +42,7 @@ templated_files = common.py_library(
 )
 
 s.move(templated_files, excludes=[".coveragerc"])  # microgenerator has a good .coveragerc file
+python.configure_previous_major_version_branches()
 
 python.py_samples(skip_readmes=True)
 
