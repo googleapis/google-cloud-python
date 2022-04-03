@@ -59,7 +59,7 @@ for library in s.get_staging_dirs(default_version):
             "setup.py",
             "README.rst",
             "docs/index.rst",
-            "google/cloud/bigquery/data_exchange/**",
+            "google/cloud/bigquery_data_exchange/**",
         ],
     )
 
