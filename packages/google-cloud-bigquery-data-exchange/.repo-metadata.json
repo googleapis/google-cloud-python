@@ -1,0 +1,16 @@
+{
+    "name": "analyticshub",
+    "name_pretty": "BigQuery Analytics Hub",
+    "product_documentation": "https://cloud.google.com/bigquery/docs/analytics-hub-introduction",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/analyticshub/latest",
+    "issue_tracker": "",
+    "release_level": "preview",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/python-bigquery-data-exchange",
+    "distribution_name": "google-cloud-bigquery-data-exchange",
+    "api_id": "analyticshub.googleapis.com",
+    "default_version": "v1beta1",
+    "codeowner_team": "",
+    "api_shortname": "analyticshub"
+}
