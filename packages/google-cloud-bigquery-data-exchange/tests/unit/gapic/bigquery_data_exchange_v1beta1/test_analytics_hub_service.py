@@ -31,20 +31,20 @@ from google.api_core import grpc_helpers_async
 from google.api_core import path_template
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
-from google.cloud.bigquery.data_exchange_v1beta1.services.analytics_hub_service import (
+from google.cloud.bigquery_data_exchange_v1beta1 import common  # type: ignore
+from google.cloud.bigquery_data_exchange_v1beta1.services.analytics_hub_service import (
     AnalyticsHubServiceAsyncClient,
 )
-from google.cloud.bigquery.data_exchange_v1beta1.services.analytics_hub_service import (
+from google.cloud.bigquery_data_exchange_v1beta1.services.analytics_hub_service import (
     AnalyticsHubServiceClient,
 )
-from google.cloud.bigquery.data_exchange_v1beta1.services.analytics_hub_service import (
+from google.cloud.bigquery_data_exchange_v1beta1.services.analytics_hub_service import (
     pagers,
 )
-from google.cloud.bigquery.data_exchange_v1beta1.services.analytics_hub_service import (
+from google.cloud.bigquery_data_exchange_v1beta1.services.analytics_hub_service import (
     transports,
 )
-from google.cloud.bigquery.data_exchange_v1beta1.types import dataexchange
-from google.cloud.bigquery.data_exchange_v1beta1 import common  # type: ignore
+from google.cloud.bigquery_data_exchange_v1beta1.types import dataexchange
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import options_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
@@ -591,7 +591,7 @@ def test_analytics_hub_service_client_client_options_credentials_file(
 
 def test_analytics_hub_service_client_client_options_from_dict():
     with mock.patch(
-        "google.cloud.bigquery.data_exchange_v1beta1.services.analytics_hub_service.transports.AnalyticsHubServiceGrpcTransport.__init__"
+        "google.cloud.bigquery_data_exchange_v1beta1.services.analytics_hub_service.transports.AnalyticsHubServiceGrpcTransport.__init__"
     ) as grpc_transport:
         grpc_transport.return_value = None
         client = AnalyticsHubServiceClient(
@@ -4954,7 +4954,7 @@ def test_analytics_hub_service_base_transport_error():
 def test_analytics_hub_service_base_transport():
     # Instantiate the base transport.
     with mock.patch(
-        "google.cloud.bigquery.data_exchange_v1beta1.services.analytics_hub_service.transports.AnalyticsHubServiceTransport.__init__"
+        "google.cloud.bigquery_data_exchange_v1beta1.services.analytics_hub_service.transports.AnalyticsHubServiceTransport.__init__"
     ) as Transport:
         Transport.return_value = None
         transport = transports.AnalyticsHubServiceTransport(
@@ -4993,7 +4993,7 @@ def test_analytics_hub_service_base_transport_with_credentials_file():
     with mock.patch.object(
         google.auth, "load_credentials_from_file", autospec=True
     ) as load_creds, mock.patch(
-        "google.cloud.bigquery.data_exchange_v1beta1.services.analytics_hub_service.transports.AnalyticsHubServiceTransport._prep_wrapped_messages"
+        "google.cloud.bigquery_data_exchange_v1beta1.services.analytics_hub_service.transports.AnalyticsHubServiceTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
@@ -5015,7 +5015,7 @@ def test_analytics_hub_service_base_transport_with_credentials_file():
 def test_analytics_hub_service_base_transport_with_adc():
     # Test the default credentials are used if credentials and credentials_file are None.
     with mock.patch.object(google.auth, "default", autospec=True) as adc, mock.patch(
-        "google.cloud.bigquery.data_exchange_v1beta1.services.analytics_hub_service.transports.AnalyticsHubServiceTransport._prep_wrapped_messages"
+        "google.cloud.bigquery_data_exchange_v1beta1.services.analytics_hub_service.transports.AnalyticsHubServiceTransport._prep_wrapped_messages"
     ) as Transport:
         Transport.return_value = None
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)

@@ -24,18 +24,18 @@
 
 
 # [START analyticshub_v1beta1_generated_AnalyticsHubService_CreateListing_async]
-from google.cloud.bigquery import data_exchange_v1beta1
+from google.cloud import bigquery_data_exchange_v1beta1
 
 
 async def sample_create_listing():
     # Create a client
-    client = data_exchange_v1beta1.AnalyticsHubServiceAsyncClient()
+    client = bigquery_data_exchange_v1beta1.AnalyticsHubServiceAsyncClient()
 
     # Initialize request argument(s)
-    listing = data_exchange_v1beta1.Listing()
+    listing = bigquery_data_exchange_v1beta1.Listing()
     listing.display_name = "display_name_value"
 
-    request = data_exchange_v1beta1.CreateListingRequest(
+    request = bigquery_data_exchange_v1beta1.CreateListingRequest(
         parent="parent_value",
         listing_id="listing_id_value",
         listing=listing,

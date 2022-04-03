@@ -14,26 +14,25 @@
 # limitations under the License.
 #
 import warnings
-from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
+from typing import Callable, Dict, Optional, Sequence, Tuple, Union
 
+from google.api_core import grpc_helpers
 from google.api_core import gapic_v1
-from google.api_core import grpc_helpers_async
+import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
 
 import grpc  # type: ignore
-from grpc.experimental import aio  # type: ignore
 
-from google.cloud.bigquery.data_exchange_v1beta1.types import dataexchange
+from google.cloud.bigquery_data_exchange_v1beta1.types import dataexchange
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from .base import AnalyticsHubServiceTransport, DEFAULT_CLIENT_INFO
-from .grpc import AnalyticsHubServiceGrpcTransport
 
 
-class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
-    """gRPC AsyncIO backend transport for AnalyticsHubService.
+class AnalyticsHubServiceGrpcTransport(AnalyticsHubServiceTransport):
+    """gRPC backend transport for AnalyticsHubService.
 
     The AnalyticsHubService API facilitates data sharing within
     and across organizations. It allows data providers to publish
@@ -50,65 +49,21 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
     top of HTTP/2); the ``grpcio`` package must be installed.
     """
 
-    _grpc_channel: aio.Channel
-    _stubs: Dict[str, Callable] = {}
-
-    @classmethod
-    def create_channel(
-        cls,
-        host: str = "analyticshub.googleapis.com",
-        credentials: ga_credentials.Credentials = None,
-        credentials_file: Optional[str] = None,
-        scopes: Optional[Sequence[str]] = None,
-        quota_project_id: Optional[str] = None,
-        **kwargs,
-    ) -> aio.Channel:
-        """Create and return a gRPC AsyncIO channel object.
-        Args:
-            host (Optional[str]): The host for the channel to use.
-            credentials (Optional[~.Credentials]): The
-                authorization credentials to attach to requests. These
-                credentials identify this application to the service. If
-                none are specified, the client will attempt to ascertain
-                the credentials from the environment.
-            credentials_file (Optional[str]): A file with credentials that can
-                be loaded with :func:`google.auth.load_credentials_from_file`.
-                This argument is ignored if ``channel`` is provided.
-            scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
-                service. These are only used when credentials are not specified and
-                are passed to :func:`google.auth.default`.
-            quota_project_id (Optional[str]): An optional project to use for billing
-                and quota.
-            kwargs (Optional[dict]): Keyword arguments, which are passed to the
-                channel creation.
-        Returns:
-            aio.Channel: A gRPC AsyncIO channel object.
-        """
-
-        return grpc_helpers_async.create_channel(
-            host,
-            credentials=credentials,
-            credentials_file=credentials_file,
-            quota_project_id=quota_project_id,
-            default_scopes=cls.AUTH_SCOPES,
-            scopes=scopes,
-            default_host=cls.DEFAULT_HOST,
-            **kwargs,
-        )
+    _stubs: Dict[str, Callable]
 
     def __init__(
         self,
         *,
         host: str = "analyticshub.googleapis.com",
         credentials: ga_credentials.Credentials = None,
-        credentials_file: Optional[str] = None,
-        scopes: Optional[Sequence[str]] = None,
-        channel: aio.Channel = None,
+        credentials_file: str = None,
+        scopes: Sequence[str] = None,
+        channel: grpc.Channel = None,
         api_mtls_endpoint: str = None,
         client_cert_source: Callable[[], Tuple[bytes, bytes]] = None,
         ssl_channel_credentials: grpc.ChannelCredentials = None,
         client_cert_source_for_mtls: Callable[[], Tuple[bytes, bytes]] = None,
-        quota_project_id=None,
+        quota_project_id: Optional[str] = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
         always_use_jwt_access: Optional[bool] = False,
     ) -> None:
@@ -126,10 +81,9 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
             credentials_file (Optional[str]): A file with credentials that can
                 be loaded with :func:`google.auth.load_credentials_from_file`.
                 This argument is ignored if ``channel`` is provided.
-            scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
-                service. These are only used when credentials are not specified and
-                are passed to :func:`google.auth.default`.
-            channel (Optional[aio.Channel]): A ``Channel`` instance through
+            scopes (Optional(Sequence[str])): A list of scopes. This argument is
+                ignored if ``channel`` is provided.
+            channel (Optional[grpc.Channel]): A ``Channel`` instance through
                 which to make calls.
             api_mtls_endpoint (Optional[str]): Deprecated. The mutual TLS endpoint.
                 If provided, it overrides the ``host`` argument and tries to create
@@ -156,7 +110,7 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
                 be used for service account credentials.
 
         Raises:
-            google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
+          google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
               creation failed for any reason.
           google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
               and ``credentials_file`` are passed.
@@ -176,6 +130,7 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
             # If a channel was explicitly provided, set it.
             self._grpc_channel = channel
             self._ssl_channel_credentials = None
+
         else:
             if api_mtls_endpoint:
                 host = api_mtls_endpoint
@@ -228,22 +183,63 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
         # Wrap messages. This must be done after self._grpc_channel exists
         self._prep_wrapped_messages(client_info)
 
-    @property
-    def grpc_channel(self) -> aio.Channel:
-        """Create the channel designed to connect to this service.
+    @classmethod
+    def create_channel(
+        cls,
+        host: str = "analyticshub.googleapis.com",
+        credentials: ga_credentials.Credentials = None,
+        credentials_file: str = None,
+        scopes: Optional[Sequence[str]] = None,
+        quota_project_id: Optional[str] = None,
+        **kwargs,
+    ) -> grpc.Channel:
+        """Create and return a gRPC channel object.
+        Args:
+            host (Optional[str]): The host for the channel to use.
+            credentials (Optional[~.Credentials]): The
+                authorization credentials to attach to requests. These
+                credentials identify this application to the service. If
+                none are specified, the client will attempt to ascertain
+                the credentials from the environment.
+            credentials_file (Optional[str]): A file with credentials that can
+                be loaded with :func:`google.auth.load_credentials_from_file`.
+                This argument is mutually exclusive with credentials.
+            scopes (Optional[Sequence[str]]): A optional list of scopes needed for this
+                service. These are only used when credentials are not specified and
+                are passed to :func:`google.auth.default`.
+            quota_project_id (Optional[str]): An optional project to use for billing
+                and quota.
+            kwargs (Optional[dict]): Keyword arguments, which are passed to the
+                channel creation.
+        Returns:
+            grpc.Channel: A gRPC channel object.
 
-        This property caches on the instance; repeated calls return
-        the same channel.
+        Raises:
+            google.api_core.exceptions.DuplicateCredentialArgs: If both ``credentials``
+              and ``credentials_file`` are passed.
         """
-        # Return the channel from cache.
+
+        return grpc_helpers.create_channel(
+            host,
+            credentials=credentials,
+            credentials_file=credentials_file,
+            quota_project_id=quota_project_id,
+            default_scopes=cls.AUTH_SCOPES,
+            scopes=scopes,
+            default_host=cls.DEFAULT_HOST,
+            **kwargs,
+        )
+
+    @property
+    def grpc_channel(self) -> grpc.Channel:
+        """Return the channel designed to connect to this service."""
         return self._grpc_channel
 
     @property
     def list_data_exchanges(
         self,
     ) -> Callable[
-        [dataexchange.ListDataExchangesRequest],
-        Awaitable[dataexchange.ListDataExchangesResponse],
+        [dataexchange.ListDataExchangesRequest], dataexchange.ListDataExchangesResponse
     ]:
         r"""Return a callable for the list data exchanges method over gRPC.
 
@@ -251,7 +247,7 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
 
         Returns:
             Callable[[~.ListDataExchangesRequest],
-                    Awaitable[~.ListDataExchangesResponse]]:
+                    ~.ListDataExchangesResponse]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -272,7 +268,7 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
         self,
     ) -> Callable[
         [dataexchange.ListOrgDataExchangesRequest],
-        Awaitable[dataexchange.ListOrgDataExchangesResponse],
+        dataexchange.ListOrgDataExchangesResponse,
     ]:
         r"""Return a callable for the list org data exchanges method over gRPC.
 
@@ -281,7 +277,7 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
 
         Returns:
             Callable[[~.ListOrgDataExchangesRequest],
-                    Awaitable[~.ListOrgDataExchangesResponse]]:
+                    ~.ListOrgDataExchangesResponse]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -300,16 +296,14 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
     @property
     def get_data_exchange(
         self,
-    ) -> Callable[
-        [dataexchange.GetDataExchangeRequest], Awaitable[dataexchange.DataExchange]
-    ]:
+    ) -> Callable[[dataexchange.GetDataExchangeRequest], dataexchange.DataExchange]:
         r"""Return a callable for the get data exchange method over gRPC.
 
         Gets details of a single DataExchange.
 
         Returns:
             Callable[[~.GetDataExchangeRequest],
-                    Awaitable[~.DataExchange]]:
+                    ~.DataExchange]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -328,9 +322,7 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
     @property
     def create_data_exchange(
         self,
-    ) -> Callable[
-        [dataexchange.CreateDataExchangeRequest], Awaitable[dataexchange.DataExchange]
-    ]:
+    ) -> Callable[[dataexchange.CreateDataExchangeRequest], dataexchange.DataExchange]:
         r"""Return a callable for the create data exchange method over gRPC.
 
         Creates a new DataExchange in a given project and
@@ -338,7 +330,7 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
 
         Returns:
             Callable[[~.CreateDataExchangeRequest],
-                    Awaitable[~.DataExchange]]:
+                    ~.DataExchange]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -357,16 +349,14 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
     @property
     def update_data_exchange(
         self,
-    ) -> Callable[
-        [dataexchange.UpdateDataExchangeRequest], Awaitable[dataexchange.DataExchange]
-    ]:
+    ) -> Callable[[dataexchange.UpdateDataExchangeRequest], dataexchange.DataExchange]:
         r"""Return a callable for the update data exchange method over gRPC.
 
         Updates the parameters of a single DataExchange.
 
         Returns:
             Callable[[~.UpdateDataExchangeRequest],
-                    Awaitable[~.DataExchange]]:
+                    ~.DataExchange]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -385,14 +375,14 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
     @property
     def delete_data_exchange(
         self,
-    ) -> Callable[[dataexchange.DeleteDataExchangeRequest], Awaitable[empty_pb2.Empty]]:
+    ) -> Callable[[dataexchange.DeleteDataExchangeRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete data exchange method over gRPC.
 
         Deletes a single DataExchange.
 
         Returns:
             Callable[[~.DeleteDataExchangeRequest],
-                    Awaitable[~.Empty]]:
+                    ~.Empty]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -412,7 +402,7 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
     def list_listings(
         self,
     ) -> Callable[
-        [dataexchange.ListListingsRequest], Awaitable[dataexchange.ListListingsResponse]
+        [dataexchange.ListListingsRequest], dataexchange.ListListingsResponse
     ]:
         r"""Return a callable for the list listings method over gRPC.
 
@@ -420,7 +410,7 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
 
         Returns:
             Callable[[~.ListListingsRequest],
-                    Awaitable[~.ListListingsResponse]]:
+                    ~.ListListingsResponse]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -439,14 +429,14 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
     @property
     def get_listing(
         self,
-    ) -> Callable[[dataexchange.GetListingRequest], Awaitable[dataexchange.Listing]]:
+    ) -> Callable[[dataexchange.GetListingRequest], dataexchange.Listing]:
         r"""Return a callable for the get listing method over gRPC.
 
         Gets details of a single Listing.
 
         Returns:
             Callable[[~.GetListingRequest],
-                    Awaitable[~.Listing]]:
+                    ~.Listing]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -465,7 +455,7 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
     @property
     def create_listing(
         self,
-    ) -> Callable[[dataexchange.CreateListingRequest], Awaitable[dataexchange.Listing]]:
+    ) -> Callable[[dataexchange.CreateListingRequest], dataexchange.Listing]:
         r"""Return a callable for the create listing method over gRPC.
 
         Creates a new Listing in a given project and
@@ -473,7 +463,7 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
 
         Returns:
             Callable[[~.CreateListingRequest],
-                    Awaitable[~.Listing]]:
+                    ~.Listing]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -492,14 +482,14 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
     @property
     def update_listing(
         self,
-    ) -> Callable[[dataexchange.UpdateListingRequest], Awaitable[dataexchange.Listing]]:
+    ) -> Callable[[dataexchange.UpdateListingRequest], dataexchange.Listing]:
         r"""Return a callable for the update listing method over gRPC.
 
         Updates the parameters of a single Listing.
 
         Returns:
             Callable[[~.UpdateListingRequest],
-                    Awaitable[~.Listing]]:
+                    ~.Listing]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -518,7 +508,7 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
     @property
     def delete_listing(
         self,
-    ) -> Callable[[dataexchange.DeleteListingRequest], Awaitable[empty_pb2.Empty]]:
+    ) -> Callable[[dataexchange.DeleteListingRequest], empty_pb2.Empty]:
         r"""Return a callable for the delete listing method over gRPC.
 
         Deletes a single Listing, as long as there are no
@@ -527,7 +517,7 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
 
         Returns:
             Callable[[~.DeleteListingRequest],
-                    Awaitable[~.Empty]]:
+                    ~.Empty]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -547,8 +537,7 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
     def subscribe_listing(
         self,
     ) -> Callable[
-        [dataexchange.SubscribeListingRequest],
-        Awaitable[dataexchange.SubscribeListingResponse],
+        [dataexchange.SubscribeListingRequest], dataexchange.SubscribeListingResponse
     ]:
         r"""Return a callable for the subscribe listing method over gRPC.
 
@@ -560,7 +549,7 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
 
         Returns:
             Callable[[~.SubscribeListingRequest],
-                    Awaitable[~.SubscribeListingResponse]]:
+                    ~.SubscribeListingResponse]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -579,14 +568,14 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
     @property
     def get_iam_policy(
         self,
-    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], Awaitable[policy_pb2.Policy]]:
+    ) -> Callable[[iam_policy_pb2.GetIamPolicyRequest], policy_pb2.Policy]:
         r"""Return a callable for the get iam policy method over gRPC.
 
         Gets the IAM policy for a dataExchange or a listing.
 
         Returns:
             Callable[[~.GetIamPolicyRequest],
-                    Awaitable[~.Policy]]:
+                    ~.Policy]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -605,14 +594,14 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
     @property
     def set_iam_policy(
         self,
-    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], Awaitable[policy_pb2.Policy]]:
+    ) -> Callable[[iam_policy_pb2.SetIamPolicyRequest], policy_pb2.Policy]:
         r"""Return a callable for the set iam policy method over gRPC.
 
         Sets the IAM policy for a dataExchange or a listing.
 
         Returns:
             Callable[[~.SetIamPolicyRequest],
-                    Awaitable[~.Policy]]:
+                    ~.Policy]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -633,7 +622,7 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
         self,
     ) -> Callable[
         [iam_policy_pb2.TestIamPermissionsRequest],
-        Awaitable[iam_policy_pb2.TestIamPermissionsResponse],
+        iam_policy_pb2.TestIamPermissionsResponse,
     ]:
         r"""Return a callable for the test iam permissions method over gRPC.
 
@@ -642,7 +631,7 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
 
         Returns:
             Callable[[~.TestIamPermissionsRequest],
-                    Awaitable[~.TestIamPermissionsResponse]]:
+                    ~.TestIamPermissionsResponse]:
                 A function that, when called, will call the underlying RPC
                 on the server.
         """
@@ -659,7 +648,7 @@ class AnalyticsHubServiceGrpcAsyncIOTransport(AnalyticsHubServiceTransport):
         return self._stubs["test_iam_permissions"]
 
     def close(self):
-        return self.grpc_channel.close()
+        self.grpc_channel.close()
 
 
-__all__ = ("AnalyticsHubServiceGrpcAsyncIOTransport",)
+__all__ = ("AnalyticsHubServiceGrpcTransport",)

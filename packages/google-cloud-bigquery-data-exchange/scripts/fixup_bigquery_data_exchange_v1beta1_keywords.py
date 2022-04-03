@@ -36,7 +36,7 @@ def partition(
     return results[1], results[0]
 
 
-class data_exchangeCallTransformer(cst.CSTTransformer):
+class bigquery_data_exchangeCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
         'create_data_exchange': ('parent', 'data_exchange_id', 'data_exchange', ),
@@ -102,7 +102,7 @@ def fix_files(
     in_dir: pathlib.Path,
     out_dir: pathlib.Path,
     *,
-    transformer=data_exchangeCallTransformer(),
+    transformer=bigquery_data_exchangeCallTransformer(),
 ):
     """Duplicate the input dir to the output dir, fixing file method calls.
 
@@ -135,7 +135,7 @@ def fix_files(
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
-        description="""Fix up source that uses the data_exchange client library.
+        description="""Fix up source that uses the bigquery_data_exchange client library.
 
 The existing sources are NOT overwritten but are copied to output_dir with changes made.
 

@@ -4,7 +4,7 @@ branch = True
 [report]
 show_missing = True
 omit =
-    google/cloud/bigquery/data_exchange/common/__init__.py
+    google/cloud/bigquery_data_exchange/common/__init__.py
 exclude_lines =
     # Re-enable the standard pragma
     pragma: NO COVER

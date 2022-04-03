@@ -24,15 +24,15 @@
 
 
 # [START analyticshub_v1beta1_generated_AnalyticsHubService_SetIamPolicy_async]
-from google.cloud.bigquery import data_exchange_v1beta1
+from google.cloud import bigquery_data_exchange_v1beta1
 
 
 async def sample_set_iam_policy():
     # Create a client
-    client = data_exchange_v1beta1.AnalyticsHubServiceAsyncClient()
+    client = bigquery_data_exchange_v1beta1.AnalyticsHubServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = data_exchange_v1beta1.SetIamPolicyRequest(
+    request = bigquery_data_exchange_v1beta1.SetIamPolicyRequest(
         resource="resource_value",
     )
 

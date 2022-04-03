@@ -8,8 +8,8 @@ API Reference
 .. toctree::
     :maxdepth: 2
 
-    data_exchange_v1beta1/services
-    data_exchange_v1beta1/types
+    bigquery_data_exchange_v1beta1/services
+    bigquery_data_exchange_v1beta1/types
     common/services
     common/types
 

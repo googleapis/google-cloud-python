@@ -24,18 +24,18 @@
 
 
 # [START analyticshub_v1beta1_generated_AnalyticsHubService_UpdateDataExchange_sync]
-from google.cloud.bigquery import data_exchange_v1beta1
+from google.cloud import bigquery_data_exchange_v1beta1
 
 
 def sample_update_data_exchange():
     # Create a client
-    client = data_exchange_v1beta1.AnalyticsHubServiceClient()
+    client = bigquery_data_exchange_v1beta1.AnalyticsHubServiceClient()
 
     # Initialize request argument(s)
-    data_exchange = data_exchange_v1beta1.DataExchange()
+    data_exchange = bigquery_data_exchange_v1beta1.DataExchange()
     data_exchange.display_name = "display_name_value"
 
-    request = data_exchange_v1beta1.UpdateDataExchangeRequest(
+    request = bigquery_data_exchange_v1beta1.UpdateDataExchangeRequest(
         data_exchange=data_exchange,
     )
 

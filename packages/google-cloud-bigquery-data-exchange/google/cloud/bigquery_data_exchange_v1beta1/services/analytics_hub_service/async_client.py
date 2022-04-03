@@ -14,19 +14,16 @@
 # limitations under the License.
 #
 from collections import OrderedDict
-import os
+import functools
 import re
 from typing import Dict, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
-from google.api_core import client_options as client_options_lib
+from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.auth.transport import mtls  # type: ignore
-from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 try:
@@ -34,56 +31,20 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
-from google.cloud.bigquery.data_exchange_v1beta1.services.analytics_hub_service import (
+from google.cloud.bigquery_data_exchange_v1beta1 import common  # type: ignore
+from google.cloud.bigquery_data_exchange_v1beta1.services.analytics_hub_service import (
     pagers,
 )
-from google.cloud.bigquery.data_exchange_v1beta1.types import dataexchange
-from google.cloud.bigquery.data_exchange_v1beta1 import common  # type: ignore
+from google.cloud.bigquery_data_exchange_v1beta1.types import dataexchange
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from .transports.base import AnalyticsHubServiceTransport, DEFAULT_CLIENT_INFO
-from .transports.grpc import AnalyticsHubServiceGrpcTransport
 from .transports.grpc_asyncio import AnalyticsHubServiceGrpcAsyncIOTransport
+from .client import AnalyticsHubServiceClient
 
 
-class AnalyticsHubServiceClientMeta(type):
-    """Metaclass for the AnalyticsHubService client.
-
-    This provides class-level methods for building and retrieving
-    support objects (e.g. transport) without polluting the client instance
-    objects.
-    """
-
-    _transport_registry = (
-        OrderedDict()
-    )  # type: Dict[str, Type[AnalyticsHubServiceTransport]]
-    _transport_registry["grpc"] = AnalyticsHubServiceGrpcTransport
-    _transport_registry["grpc_asyncio"] = AnalyticsHubServiceGrpcAsyncIOTransport
-
-    def get_transport_class(
-        cls,
-        label: str = None,
-    ) -> Type[AnalyticsHubServiceTransport]:
-        """Returns an appropriate transport class.
-
-        Args:
-            label: The name of the desired transport. If none is
-                provided, then the first transport in the registry is used.
-
-        Returns:
-            The transport class to use.
-        """
-        # If a specific transport is requested, return that one.
-        if label:
-            return cls._transport_registry[label]
-
-        # No transport is requested; return the default (that is, the first one
-        # in the dictionary).
-        return next(iter(cls._transport_registry.values()))
-
-
-class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
+class AnalyticsHubServiceAsyncClient:
     """The AnalyticsHubService API facilitates data sharing within
     and across organizations. It allows data providers to publish
     Listings --- a discoverable and searchable SKU representing a
@@ -92,39 +53,42 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
     surfacing the data in the consumer's project.
     """
 
-    @staticmethod
-    def _get_default_mtls_endpoint(api_endpoint):
-        """Converts api endpoint to mTLS endpoint.
+    _client: AnalyticsHubServiceClient
 
-        Convert "*.sandbox.googleapis.com" and "*.googleapis.com" to
-        "*.mtls.sandbox.googleapis.com" and "*.mtls.googleapis.com" respectively.
-        Args:
-            api_endpoint (Optional[str]): the api endpoint to convert.
-        Returns:
-            str: converted mTLS api endpoint.
-        """
-        if not api_endpoint:
-            return api_endpoint
+    DEFAULT_ENDPOINT = AnalyticsHubServiceClient.DEFAULT_ENDPOINT
+    DEFAULT_MTLS_ENDPOINT = AnalyticsHubServiceClient.DEFAULT_MTLS_ENDPOINT
 
-        mtls_endpoint_re = re.compile(
-            r"(?P<name>[^.]+)(?P<mtls>\.mtls)?(?P<sandbox>\.sandbox)?(?P<googledomain>\.googleapis\.com)?"
-        )
-
-        m = mtls_endpoint_re.match(api_endpoint)
-        name, mtls, sandbox, googledomain = m.groups()
-        if mtls or not googledomain:
-            return api_endpoint
-
-        if sandbox:
-            return api_endpoint.replace(
-                "sandbox.googleapis.com", "mtls.sandbox.googleapis.com"
-            )
-
-        return api_endpoint.replace(".googleapis.com", ".mtls.googleapis.com")
-
-    DEFAULT_ENDPOINT = "analyticshub.googleapis.com"
-    DEFAULT_MTLS_ENDPOINT = _get_default_mtls_endpoint.__func__(  # type: ignore
-        DEFAULT_ENDPOINT
+    data_exchange_path = staticmethod(AnalyticsHubServiceClient.data_exchange_path)
+    parse_data_exchange_path = staticmethod(
+        AnalyticsHubServiceClient.parse_data_exchange_path
+    )
+    dataset_path = staticmethod(AnalyticsHubServiceClient.dataset_path)
+    parse_dataset_path = staticmethod(AnalyticsHubServiceClient.parse_dataset_path)
+    listing_path = staticmethod(AnalyticsHubServiceClient.listing_path)
+    parse_listing_path = staticmethod(AnalyticsHubServiceClient.parse_listing_path)
+    common_billing_account_path = staticmethod(
+        AnalyticsHubServiceClient.common_billing_account_path
+    )
+    parse_common_billing_account_path = staticmethod(
+        AnalyticsHubServiceClient.parse_common_billing_account_path
+    )
+    common_folder_path = staticmethod(AnalyticsHubServiceClient.common_folder_path)
+    parse_common_folder_path = staticmethod(
+        AnalyticsHubServiceClient.parse_common_folder_path
+    )
+    common_organization_path = staticmethod(
+        AnalyticsHubServiceClient.common_organization_path
+    )
+    parse_common_organization_path = staticmethod(
+        AnalyticsHubServiceClient.parse_common_organization_path
+    )
+    common_project_path = staticmethod(AnalyticsHubServiceClient.common_project_path)
+    parse_common_project_path = staticmethod(
+        AnalyticsHubServiceClient.parse_common_project_path
+    )
+    common_location_path = staticmethod(AnalyticsHubServiceClient.common_location_path)
+    parse_common_location_path = staticmethod(
+        AnalyticsHubServiceClient.parse_common_location_path
     )
 
     @classmethod
@@ -138,11 +102,9 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            AnalyticsHubServiceClient: The constructed client.
+            AnalyticsHubServiceAsyncClient: The constructed client.
         """
-        credentials = service_account.Credentials.from_service_account_info(info)
-        kwargs["credentials"] = credentials
-        return cls(*args, **kwargs)
+        return AnalyticsHubServiceClient.from_service_account_info.__func__(AnalyticsHubServiceAsyncClient, info, *args, **kwargs)  # type: ignore
 
     @classmethod
     def from_service_account_file(cls, filename: str, *args, **kwargs):
@@ -156,167 +118,15 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
             kwargs: Additional arguments to pass to the constructor.
 
         Returns:
-            AnalyticsHubServiceClient: The constructed client.
+            AnalyticsHubServiceAsyncClient: The constructed client.
         """
-        credentials = service_account.Credentials.from_service_account_file(filename)
-        kwargs["credentials"] = credentials
-        return cls(*args, **kwargs)
+        return AnalyticsHubServiceClient.from_service_account_file.__func__(AnalyticsHubServiceAsyncClient, filename, *args, **kwargs)  # type: ignore
 
     from_service_account_json = from_service_account_file
 
-    @property
-    def transport(self) -> AnalyticsHubServiceTransport:
-        """Returns the transport used by the client instance.
-
-        Returns:
-            AnalyticsHubServiceTransport: The transport used by the client
-                instance.
-        """
-        return self._transport
-
-    @staticmethod
-    def data_exchange_path(
-        project: str,
-        location: str,
-        data_exchange: str,
-    ) -> str:
-        """Returns a fully-qualified data_exchange string."""
-        return "projects/{project}/locations/{location}/dataExchanges/{data_exchange}".format(
-            project=project,
-            location=location,
-            data_exchange=data_exchange,
-        )
-
-    @staticmethod
-    def parse_data_exchange_path(path: str) -> Dict[str, str]:
-        """Parses a data_exchange path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/dataExchanges/(?P<data_exchange>.+?)$",
-            path,
-        )
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def dataset_path(
-        project: str,
-        dataset: str,
-    ) -> str:
-        """Returns a fully-qualified dataset string."""
-        return "projects/{project}/datasets/{dataset}".format(
-            project=project,
-            dataset=dataset,
-        )
-
-    @staticmethod
-    def parse_dataset_path(path: str) -> Dict[str, str]:
-        """Parses a dataset path into its component segments."""
-        m = re.match(r"^projects/(?P<project>.+?)/datasets/(?P<dataset>.+?)$", path)
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def listing_path(
-        project: str,
-        location: str,
-        data_exchange: str,
-        listing: str,
-    ) -> str:
-        """Returns a fully-qualified listing string."""
-        return "projects/{project}/locations/{location}/dataExchanges/{data_exchange}/listings/{listing}".format(
-            project=project,
-            location=location,
-            data_exchange=data_exchange,
-            listing=listing,
-        )
-
-    @staticmethod
-    def parse_listing_path(path: str) -> Dict[str, str]:
-        """Parses a listing path into its component segments."""
-        m = re.match(
-            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/dataExchanges/(?P<data_exchange>.+?)/listings/(?P<listing>.+?)$",
-            path,
-        )
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def common_billing_account_path(
-        billing_account: str,
-    ) -> str:
-        """Returns a fully-qualified billing_account string."""
-        return "billingAccounts/{billing_account}".format(
-            billing_account=billing_account,
-        )
-
-    @staticmethod
-    def parse_common_billing_account_path(path: str) -> Dict[str, str]:
-        """Parse a billing_account path into its component segments."""
-        m = re.match(r"^billingAccounts/(?P<billing_account>.+?)$", path)
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def common_folder_path(
-        folder: str,
-    ) -> str:
-        """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(
-            folder=folder,
-        )
-
-    @staticmethod
-    def parse_common_folder_path(path: str) -> Dict[str, str]:
-        """Parse a folder path into its component segments."""
-        m = re.match(r"^folders/(?P<folder>.+?)$", path)
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def common_organization_path(
-        organization: str,
-    ) -> str:
-        """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(
-            organization=organization,
-        )
-
-    @staticmethod
-    def parse_common_organization_path(path: str) -> Dict[str, str]:
-        """Parse a organization path into its component segments."""
-        m = re.match(r"^organizations/(?P<organization>.+?)$", path)
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def common_project_path(
-        project: str,
-    ) -> str:
-        """Returns a fully-qualified project string."""
-        return "projects/{project}".format(
-            project=project,
-        )
-
-    @staticmethod
-    def parse_common_project_path(path: str) -> Dict[str, str]:
-        """Parse a project path into its component segments."""
-        m = re.match(r"^projects/(?P<project>.+?)$", path)
-        return m.groupdict() if m else {}
-
-    @staticmethod
-    def common_location_path(
-        project: str,
-        location: str,
-    ) -> str:
-        """Returns a fully-qualified location string."""
-        return "projects/{project}/locations/{location}".format(
-            project=project,
-            location=location,
-        )
-
-    @staticmethod
-    def parse_common_location_path(path: str) -> Dict[str, str]:
-        """Parse a location path into its component segments."""
-        m = re.match(r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)$", path)
-        return m.groupdict() if m else {}
-
     @classmethod
     def get_mtls_endpoint_and_cert_source(
-        cls, client_options: Optional[client_options_lib.ClientOptions] = None
+        cls, client_options: Optional[ClientOptions] = None
     ):
         """Return the API endpoint and client cert source for mutual TLS.
 
@@ -348,45 +158,28 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
         Raises:
             google.auth.exceptions.MutualTLSChannelError: If any errors happen.
         """
-        if client_options is None:
-            client_options = client_options_lib.ClientOptions()
-        use_client_cert = os.getenv("GOOGLE_API_USE_CLIENT_CERTIFICATE", "false")
-        use_mtls_endpoint = os.getenv("GOOGLE_API_USE_MTLS_ENDPOINT", "auto")
-        if use_client_cert not in ("true", "false"):
-            raise ValueError(
-                "Environment variable `GOOGLE_API_USE_CLIENT_CERTIFICATE` must be either `true` or `false`"
-            )
-        if use_mtls_endpoint not in ("auto", "never", "always"):
-            raise MutualTLSChannelError(
-                "Environment variable `GOOGLE_API_USE_MTLS_ENDPOINT` must be `never`, `auto` or `always`"
-            )
+        return AnalyticsHubServiceClient.get_mtls_endpoint_and_cert_source(client_options)  # type: ignore
 
-        # Figure out the client cert source to use.
-        client_cert_source = None
-        if use_client_cert == "true":
-            if client_options.client_cert_source:
-                client_cert_source = client_options.client_cert_source
-            elif mtls.has_default_client_cert_source():
-                client_cert_source = mtls.default_client_cert_source()
+    @property
+    def transport(self) -> AnalyticsHubServiceTransport:
+        """Returns the transport used by the client instance.
 
-        # Figure out which api endpoint to use.
-        if client_options.api_endpoint is not None:
-            api_endpoint = client_options.api_endpoint
-        elif use_mtls_endpoint == "always" or (
-            use_mtls_endpoint == "auto" and client_cert_source
-        ):
-            api_endpoint = cls.DEFAULT_MTLS_ENDPOINT
-        else:
-            api_endpoint = cls.DEFAULT_ENDPOINT
+        Returns:
+            AnalyticsHubServiceTransport: The transport used by the client instance.
+        """
+        return self._client.transport
 
-        return api_endpoint, client_cert_source
+    get_transport_class = functools.partial(
+        type(AnalyticsHubServiceClient).get_transport_class,
+        type(AnalyticsHubServiceClient),
+    )
 
     def __init__(
         self,
         *,
-        credentials: Optional[ga_credentials.Credentials] = None,
-        transport: Union[str, AnalyticsHubServiceTransport, None] = None,
-        client_options: Optional[client_options_lib.ClientOptions] = None,
+        credentials: ga_credentials.Credentials = None,
+        transport: Union[str, AnalyticsHubServiceTransport] = "grpc_asyncio",
+        client_options: ClientOptions = None,
         client_info: gapic_v1.client_info.ClientInfo = DEFAULT_CLIENT_INFO,
     ) -> None:
         """Instantiates the analytics hub service client.
@@ -397,11 +190,11 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
                 credentials identify the application to the service; if none
                 are specified, the client will attempt to ascertain the
                 credentials from the environment.
-            transport (Union[str, AnalyticsHubServiceTransport]): The
+            transport (Union[str, ~.AnalyticsHubServiceTransport]): The
                 transport to use. If set to None, a transport is chosen
                 automatically.
-            client_options (google.api_core.client_options.ClientOptions): Custom options for the
-                client. It won't take effect if a ``transport`` instance is provided.
+            client_options (ClientOptions): Custom options for the client. It
+                won't take effect if a ``transport`` instance is provided.
                 (1) The ``api_endpoint`` property can be used to override the
                 default endpoint provided by the client. GOOGLE_API_USE_MTLS_ENDPOINT
                 environment variable can also be used to override the endpoint:
@@ -416,70 +209,19 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
                 not provided, the default SSL client certificate will be used if
                 present. If GOOGLE_API_USE_CLIENT_CERTIFICATE is "false" or not
                 set, no client certificate will be used.
-            client_info (google.api_core.gapic_v1.client_info.ClientInfo):
-                The client info used to send a user-agent string along with
-                API requests. If ``None``, then default info will be used.
-                Generally, you only need to set this if you're developing
-                your own client library.
 
         Raises:
-            google.auth.exceptions.MutualTLSChannelError: If mutual TLS transport
+            google.auth.exceptions.MutualTlsChannelError: If mutual TLS transport
                 creation failed for any reason.
         """
-        if isinstance(client_options, dict):
-            client_options = client_options_lib.from_dict(client_options)
-        if client_options is None:
-            client_options = client_options_lib.ClientOptions()
-
-        api_endpoint, client_cert_source_func = self.get_mtls_endpoint_and_cert_source(
-            client_options
+        self._client = AnalyticsHubServiceClient(
+            credentials=credentials,
+            transport=transport,
+            client_options=client_options,
+            client_info=client_info,
         )
 
-        api_key_value = getattr(client_options, "api_key", None)
-        if api_key_value and credentials:
-            raise ValueError(
-                "client_options.api_key and credentials are mutually exclusive"
-            )
-
-        # Save or instantiate the transport.
-        # Ordinarily, we provide the transport, but allowing a custom transport
-        # instance provides an extensibility point for unusual situations.
-        if isinstance(transport, AnalyticsHubServiceTransport):
-            # transport is a AnalyticsHubServiceTransport instance.
-            if credentials or client_options.credentials_file or api_key_value:
-                raise ValueError(
-                    "When providing a transport instance, "
-                    "provide its credentials directly."
-                )
-            if client_options.scopes:
-                raise ValueError(
-                    "When providing a transport instance, provide its scopes "
-                    "directly."
-                )
-            self._transport = transport
-        else:
-            import google.auth._default  # type: ignore
-
-            if api_key_value and hasattr(
-                google.auth._default, "get_api_key_credentials"
-            ):
-                credentials = google.auth._default.get_api_key_credentials(
-                    api_key_value
-                )
-
-            Transport = type(self).get_transport_class(transport)
-            self._transport = Transport(
-                credentials=credentials,
-                credentials_file=client_options.credentials_file,
-                host=api_endpoint,
-                scopes=client_options.scopes,
-                client_cert_source_for_mtls=client_cert_source_func,
-                quota_project_id=client_options.quota_project_id,
-                client_info=client_info,
-                always_use_jwt_access=True,
-            )
-
-    def list_data_exchanges(
+    async def list_data_exchanges(
         self,
         request: Union[dataexchange.ListDataExchangesRequest, dict] = None,
         *,
@@ -487,19 +229,19 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pagers.ListDataExchangesPager:
+    ) -> pagers.ListDataExchangesAsyncPager:
         r"""Lists DataExchanges in a given project and location.
 
         .. code-block:: python
 
-            from google.cloud.bigquery import data_exchange_v1beta1
+            from google.cloud import bigquery_data_exchange_v1beta1
 
             def sample_list_data_exchanges():
                 # Create a client
-                client = data_exchange_v1beta1.AnalyticsHubServiceClient()
+                client = bigquery_data_exchange_v1beta1.AnalyticsHubServiceClient()
 
                 # Initialize request argument(s)
-                request = data_exchange_v1beta1.ListDataExchangesRequest(
+                request = bigquery_data_exchange_v1beta1.ListDataExchangesRequest(
                     parent="parent_value",
                 )
 
@@ -511,10 +253,10 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
                     print(response)
 
         Args:
-            request (Union[google.cloud.bigquery.data_exchange_v1beta1.types.ListDataExchangesRequest, dict]):
+            request (Union[google.cloud.bigquery_data_exchange_v1beta1.types.ListDataExchangesRequest, dict]):
                 The request object. Message for requesting list of
                 DataExchanges.
-            parent (str):
+            parent (:class:`str`):
                 Required. The parent resource path of the DataExchanges.
                 e.g. ``projects/myproject/locations/US``.
 
@@ -528,7 +270,7 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.bigquery.data_exchange_v1beta1.services.analytics_hub_service.pagers.ListDataExchangesPager:
+            google.cloud.bigquery_data_exchange_v1beta1.services.analytics_hub_service.pagers.ListDataExchangesAsyncPager:
                 Message for response to listing
                 DataExchanges.
                 Iterating over this object will yield
@@ -546,20 +288,20 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dataexchange.ListDataExchangesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, dataexchange.ListDataExchangesRequest):
-            request = dataexchange.ListDataExchangesRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if parent is not None:
-                request.parent = parent
+        request = dataexchange.ListDataExchangesRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.list_data_exchanges]
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.list_data_exchanges,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -568,7 +310,7 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -576,8 +318,8 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
         )
 
         # This method is paged; wrap the response in a pager, which provides
-        # an `__iter__` convenience method.
-        response = pagers.ListDataExchangesPager(
+        # an `__aiter__` convenience method.
+        response = pagers.ListDataExchangesAsyncPager(
             method=rpc,
             request=request,
             response=response,
@@ -587,7 +329,7 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
         # Done; return the response.
         return response
 
-    def list_org_data_exchanges(
+    async def list_org_data_exchanges(
         self,
         request: Union[dataexchange.ListOrgDataExchangesRequest, dict] = None,
         *,
@@ -595,21 +337,21 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pagers.ListOrgDataExchangesPager:
+    ) -> pagers.ListOrgDataExchangesAsyncPager:
         r"""Lists DataExchanges from projects in a given
         organization and location.
 
 
         .. code-block:: python
 
-            from google.cloud.bigquery import data_exchange_v1beta1
+            from google.cloud import bigquery_data_exchange_v1beta1
 
             def sample_list_org_data_exchanges():
                 # Create a client
-                client = data_exchange_v1beta1.AnalyticsHubServiceClient()
+                client = bigquery_data_exchange_v1beta1.AnalyticsHubServiceClient()
 
                 # Initialize request argument(s)
-                request = data_exchange_v1beta1.ListOrgDataExchangesRequest(
+                request = bigquery_data_exchange_v1beta1.ListOrgDataExchangesRequest(
                     organization="organization_value",
                 )
 
@@ -621,11 +363,11 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
                     print(response)
 
         Args:
-            request (Union[google.cloud.bigquery.data_exchange_v1beta1.types.ListOrgDataExchangesRequest, dict]):
+            request (Union[google.cloud.bigquery_data_exchange_v1beta1.types.ListOrgDataExchangesRequest, dict]):
                 The request object. Message for requesting list of
                 DataExchanges from projects in an organization and
                 location.
-            organization (str):
+            organization (:class:`str`):
                 Required. The organization resource path of the projects
                 containing DataExchanges. e.g.
                 ``organizations/myorg/locations/US``.
@@ -640,7 +382,7 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.bigquery.data_exchange_v1beta1.services.analytics_hub_service.pagers.ListOrgDataExchangesPager:
+            google.cloud.bigquery_data_exchange_v1beta1.services.analytics_hub_service.pagers.ListOrgDataExchangesAsyncPager:
                 Message for response to listing
                 DataExchanges in an organization and
                 location.
@@ -659,20 +401,20 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dataexchange.ListOrgDataExchangesRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, dataexchange.ListOrgDataExchangesRequest):
-            request = dataexchange.ListOrgDataExchangesRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if organization is not None:
-                request.organization = organization
+        request = dataexchange.ListOrgDataExchangesRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if organization is not None:
+            request.organization = organization
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.list_org_data_exchanges]
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.list_org_data_exchanges,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -683,7 +425,7 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -691,8 +433,8 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
         )
 
         # This method is paged; wrap the response in a pager, which provides
-        # an `__iter__` convenience method.
-        response = pagers.ListOrgDataExchangesPager(
+        # an `__aiter__` convenience method.
+        response = pagers.ListOrgDataExchangesAsyncPager(
             method=rpc,
             request=request,
             response=response,
@@ -702,7 +444,7 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
         # Done; return the response.
         return response
 
-    def get_data_exchange(
+    async def get_data_exchange(
         self,
         request: Union[dataexchange.GetDataExchangeRequest, dict] = None,
         *,
@@ -715,14 +457,14 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
 
         .. code-block:: python
 
-            from google.cloud.bigquery import data_exchange_v1beta1
+            from google.cloud import bigquery_data_exchange_v1beta1
 
             def sample_get_data_exchange():
                 # Create a client
-                client = data_exchange_v1beta1.AnalyticsHubServiceClient()
+                client = bigquery_data_exchange_v1beta1.AnalyticsHubServiceClient()
 
                 # Initialize request argument(s)
-                request = data_exchange_v1beta1.GetDataExchangeRequest(
+                request = bigquery_data_exchange_v1beta1.GetDataExchangeRequest(
                     name="name_value",
                 )
 
@@ -733,9 +475,9 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.cloud.bigquery.data_exchange_v1beta1.types.GetDataExchangeRequest, dict]):
+            request (Union[google.cloud.bigquery_data_exchange_v1beta1.types.GetDataExchangeRequest, dict]):
                 The request object. Message for getting a DataExchange.
-            name (str):
+            name (:class:`str`):
                 Required. The resource name of the DataExchange. e.g.
                 ``projects/myproject/locations/US/dataExchanges/123``.
 
@@ -749,7 +491,7 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.bigquery.data_exchange_v1beta1.types.DataExchange:
+            google.cloud.bigquery_data_exchange_v1beta1.types.DataExchange:
                 A data exchange is a container that
                 enables data sharing. It contains a set
                 of listings of the data sources along
@@ -767,20 +509,20 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dataexchange.GetDataExchangeRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, dataexchange.GetDataExchangeRequest):
-            request = dataexchange.GetDataExchangeRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if name is not None:
-                request.name = name
+        request = dataexchange.GetDataExchangeRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.get_data_exchange]
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_data_exchange,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -789,7 +531,7 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -799,7 +541,7 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
         # Done; return the response.
         return response
 
-    def create_data_exchange(
+    async def create_data_exchange(
         self,
         request: Union[dataexchange.CreateDataExchangeRequest, dict] = None,
         *,
@@ -815,17 +557,17 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
 
         .. code-block:: python
 
-            from google.cloud.bigquery import data_exchange_v1beta1
+            from google.cloud import bigquery_data_exchange_v1beta1
 
             def sample_create_data_exchange():
                 # Create a client
-                client = data_exchange_v1beta1.AnalyticsHubServiceClient()
+                client = bigquery_data_exchange_v1beta1.AnalyticsHubServiceClient()
 
                 # Initialize request argument(s)
-                data_exchange = data_exchange_v1beta1.DataExchange()
+                data_exchange = bigquery_data_exchange_v1beta1.DataExchange()
                 data_exchange.display_name = "display_name_value"
 
-                request = data_exchange_v1beta1.CreateDataExchangeRequest(
+                request = bigquery_data_exchange_v1beta1.CreateDataExchangeRequest(
                     parent="parent_value",
                     data_exchange_id="data_exchange_id_value",
                     data_exchange=data_exchange,
@@ -838,16 +580,16 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.cloud.bigquery.data_exchange_v1beta1.types.CreateDataExchangeRequest, dict]):
+            request (Union[google.cloud.bigquery_data_exchange_v1beta1.types.CreateDataExchangeRequest, dict]):
                 The request object. Message for creating a DataExchange.
-            parent (str):
+            parent (:class:`str`):
                 Required. The parent resource path of the DataExchange.
                 e.g. ``projects/myproject/locations/US``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            data_exchange (google.cloud.bigquery.data_exchange_v1beta1.types.DataExchange):
+            data_exchange (:class:`google.cloud.bigquery_data_exchange_v1beta1.types.DataExchange`):
                 Required. The DataExchange to create.
                 This corresponds to the ``data_exchange`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -859,7 +601,7 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.bigquery.data_exchange_v1beta1.types.DataExchange:
+            google.cloud.bigquery_data_exchange_v1beta1.types.DataExchange:
                 A data exchange is a container that
                 enables data sharing. It contains a set
                 of listings of the data sources along
@@ -877,22 +619,22 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dataexchange.CreateDataExchangeRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, dataexchange.CreateDataExchangeRequest):
-            request = dataexchange.CreateDataExchangeRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if parent is not None:
-                request.parent = parent
-            if data_exchange is not None:
-                request.data_exchange = data_exchange
+        request = dataexchange.CreateDataExchangeRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if data_exchange is not None:
+            request.data_exchange = data_exchange
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.create_data_exchange]
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.create_data_exchange,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -901,7 +643,7 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -911,7 +653,7 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
         # Done; return the response.
         return response
 
-    def update_data_exchange(
+    async def update_data_exchange(
         self,
         request: Union[dataexchange.UpdateDataExchangeRequest, dict] = None,
         *,
@@ -925,17 +667,17 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
 
         .. code-block:: python
 
-            from google.cloud.bigquery import data_exchange_v1beta1
+            from google.cloud import bigquery_data_exchange_v1beta1
 
             def sample_update_data_exchange():
                 # Create a client
-                client = data_exchange_v1beta1.AnalyticsHubServiceClient()
+                client = bigquery_data_exchange_v1beta1.AnalyticsHubServiceClient()
 
                 # Initialize request argument(s)
-                data_exchange = data_exchange_v1beta1.DataExchange()
+                data_exchange = bigquery_data_exchange_v1beta1.DataExchange()
                 data_exchange.display_name = "display_name_value"
 
-                request = data_exchange_v1beta1.UpdateDataExchangeRequest(
+                request = bigquery_data_exchange_v1beta1.UpdateDataExchangeRequest(
                     data_exchange=data_exchange,
                 )
 
@@ -946,14 +688,14 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.cloud.bigquery.data_exchange_v1beta1.types.UpdateDataExchangeRequest, dict]):
+            request (Union[google.cloud.bigquery_data_exchange_v1beta1.types.UpdateDataExchangeRequest, dict]):
                 The request object. Message for updating a DataExchange.
-            data_exchange (google.cloud.bigquery.data_exchange_v1beta1.types.DataExchange):
+            data_exchange (:class:`google.cloud.bigquery_data_exchange_v1beta1.types.DataExchange`):
                 Required. The DataExchange to update.
                 This corresponds to the ``data_exchange`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
                 Required. Field mask is used to specify the fields to be
                 overwritten in the DataExchange resource by the update.
                 The fields specified in the update_mask are relative to
@@ -969,7 +711,7 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.bigquery.data_exchange_v1beta1.types.DataExchange:
+            google.cloud.bigquery_data_exchange_v1beta1.types.DataExchange:
                 A data exchange is a container that
                 enables data sharing. It contains a set
                 of listings of the data sources along
@@ -987,22 +729,22 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dataexchange.UpdateDataExchangeRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, dataexchange.UpdateDataExchangeRequest):
-            request = dataexchange.UpdateDataExchangeRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if data_exchange is not None:
-                request.data_exchange = data_exchange
-            if update_mask is not None:
-                request.update_mask = update_mask
+        request = dataexchange.UpdateDataExchangeRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if data_exchange is not None:
+            request.data_exchange = data_exchange
+        if update_mask is not None:
+            request.update_mask = update_mask
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.update_data_exchange]
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.update_data_exchange,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1013,7 +755,7 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -1023,7 +765,7 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
         # Done; return the response.
         return response
 
-    def delete_data_exchange(
+    async def delete_data_exchange(
         self,
         request: Union[dataexchange.DeleteDataExchangeRequest, dict] = None,
         *,
@@ -1036,14 +778,14 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
 
         .. code-block:: python
 
-            from google.cloud.bigquery import data_exchange_v1beta1
+            from google.cloud import bigquery_data_exchange_v1beta1
 
             def sample_delete_data_exchange():
                 # Create a client
-                client = data_exchange_v1beta1.AnalyticsHubServiceClient()
+                client = bigquery_data_exchange_v1beta1.AnalyticsHubServiceClient()
 
                 # Initialize request argument(s)
-                request = data_exchange_v1beta1.DeleteDataExchangeRequest(
+                request = bigquery_data_exchange_v1beta1.DeleteDataExchangeRequest(
                     name="name_value",
                 )
 
@@ -1051,9 +793,9 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
                 client.delete_data_exchange(request=request)
 
         Args:
-            request (Union[google.cloud.bigquery.data_exchange_v1beta1.types.DeleteDataExchangeRequest, dict]):
+            request (Union[google.cloud.bigquery_data_exchange_v1beta1.types.DeleteDataExchangeRequest, dict]):
                 The request object. Message for deleting a DataExchange.
-            name (str):
+            name (:class:`str`):
                 Required. Resource name of the DataExchange to delete.
                 e.g.
                 ``projects/myproject/locations/US/dataExchanges/123``.
@@ -1077,20 +819,20 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dataexchange.DeleteDataExchangeRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, dataexchange.DeleteDataExchangeRequest):
-            request = dataexchange.DeleteDataExchangeRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if name is not None:
-                request.name = name
+        request = dataexchange.DeleteDataExchangeRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.delete_data_exchange]
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.delete_data_exchange,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1099,14 +841,14 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
         )
 
         # Send the request.
-        rpc(
+        await rpc(
             request,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
         )
 
-    def list_listings(
+    async def list_listings(
         self,
         request: Union[dataexchange.ListListingsRequest, dict] = None,
         *,
@@ -1114,19 +856,19 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
-    ) -> pagers.ListListingsPager:
+    ) -> pagers.ListListingsAsyncPager:
         r"""Lists Listings in a given project and location.
 
         .. code-block:: python
 
-            from google.cloud.bigquery import data_exchange_v1beta1
+            from google.cloud import bigquery_data_exchange_v1beta1
 
             def sample_list_listings():
                 # Create a client
-                client = data_exchange_v1beta1.AnalyticsHubServiceClient()
+                client = bigquery_data_exchange_v1beta1.AnalyticsHubServiceClient()
 
                 # Initialize request argument(s)
-                request = data_exchange_v1beta1.ListListingsRequest(
+                request = bigquery_data_exchange_v1beta1.ListListingsRequest(
                     parent="parent_value",
                 )
 
@@ -1138,10 +880,10 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
                     print(response)
 
         Args:
-            request (Union[google.cloud.bigquery.data_exchange_v1beta1.types.ListListingsRequest, dict]):
+            request (Union[google.cloud.bigquery_data_exchange_v1beta1.types.ListListingsRequest, dict]):
                 The request object. Message for requesting list of
                 Listings.
-            parent (str):
+            parent (:class:`str`):
                 Required. The parent resource path of the listing. e.g.
                 ``projects/myproject/locations/US/dataExchanges/123``.
 
@@ -1155,7 +897,7 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.bigquery.data_exchange_v1beta1.services.analytics_hub_service.pagers.ListListingsPager:
+            google.cloud.bigquery_data_exchange_v1beta1.services.analytics_hub_service.pagers.ListListingsAsyncPager:
                 Message for response to listing
                 Listings.
                 Iterating over this object will yield
@@ -1173,20 +915,20 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dataexchange.ListListingsRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, dataexchange.ListListingsRequest):
-            request = dataexchange.ListListingsRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if parent is not None:
-                request.parent = parent
+        request = dataexchange.ListListingsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.list_listings]
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.list_listings,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1195,7 +937,7 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -1203,8 +945,8 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
         )
 
         # This method is paged; wrap the response in a pager, which provides
-        # an `__iter__` convenience method.
-        response = pagers.ListListingsPager(
+        # an `__aiter__` convenience method.
+        response = pagers.ListListingsAsyncPager(
             method=rpc,
             request=request,
             response=response,
@@ -1214,7 +956,7 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
         # Done; return the response.
         return response
 
-    def get_listing(
+    async def get_listing(
         self,
         request: Union[dataexchange.GetListingRequest, dict] = None,
         *,
@@ -1227,14 +969,14 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
 
         .. code-block:: python
 
-            from google.cloud.bigquery import data_exchange_v1beta1
+            from google.cloud import bigquery_data_exchange_v1beta1
 
             def sample_get_listing():
                 # Create a client
-                client = data_exchange_v1beta1.AnalyticsHubServiceClient()
+                client = bigquery_data_exchange_v1beta1.AnalyticsHubServiceClient()
 
                 # Initialize request argument(s)
-                request = data_exchange_v1beta1.GetListingRequest(
+                request = bigquery_data_exchange_v1beta1.GetListingRequest(
                     name="name_value",
                 )
 
@@ -1245,9 +987,9 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.cloud.bigquery.data_exchange_v1beta1.types.GetListingRequest, dict]):
+            request (Union[google.cloud.bigquery_data_exchange_v1beta1.types.GetListingRequest, dict]):
                 The request object. Message for getting a Listing.
-            name (str):
+            name (:class:`str`):
                 Required. The resource name of the listing. e.g.
                 ``projects/myproject/locations/US/dataExchanges/123/listings/456``.
 
@@ -1261,7 +1003,7 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.bigquery.data_exchange_v1beta1.types.Listing:
+            google.cloud.bigquery_data_exchange_v1beta1.types.Listing:
                 A listing is what gets published into
                 a data exchange that a subscriber can
                 subscribe to. It contains a reference to
@@ -1280,20 +1022,20 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dataexchange.GetListingRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, dataexchange.GetListingRequest):
-            request = dataexchange.GetListingRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if name is not None:
-                request.name = name
+        request = dataexchange.GetListingRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.get_listing]
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_listing,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1302,7 +1044,7 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -1312,7 +1054,7 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
         # Done; return the response.
         return response
 
-    def create_listing(
+    async def create_listing(
         self,
         request: Union[dataexchange.CreateListingRequest, dict] = None,
         *,
@@ -1328,17 +1070,17 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
 
         .. code-block:: python
 
-            from google.cloud.bigquery import data_exchange_v1beta1
+            from google.cloud import bigquery_data_exchange_v1beta1
 
             def sample_create_listing():
                 # Create a client
-                client = data_exchange_v1beta1.AnalyticsHubServiceClient()
+                client = bigquery_data_exchange_v1beta1.AnalyticsHubServiceClient()
 
                 # Initialize request argument(s)
-                listing = data_exchange_v1beta1.Listing()
+                listing = bigquery_data_exchange_v1beta1.Listing()
                 listing.display_name = "display_name_value"
 
-                request = data_exchange_v1beta1.CreateListingRequest(
+                request = bigquery_data_exchange_v1beta1.CreateListingRequest(
                     parent="parent_value",
                     listing_id="listing_id_value",
                     listing=listing,
@@ -1351,16 +1093,16 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.cloud.bigquery.data_exchange_v1beta1.types.CreateListingRequest, dict]):
+            request (Union[google.cloud.bigquery_data_exchange_v1beta1.types.CreateListingRequest, dict]):
                 The request object. Message for creating a Listing.
-            parent (str):
+            parent (:class:`str`):
                 Required. The parent resource path of the listing. e.g.
                 ``projects/myproject/locations/US/dataExchanges/123``.
 
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            listing (google.cloud.bigquery.data_exchange_v1beta1.types.Listing):
+            listing (:class:`google.cloud.bigquery_data_exchange_v1beta1.types.Listing`):
                 Required. The listing to create.
                 This corresponds to the ``listing`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1372,7 +1114,7 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.bigquery.data_exchange_v1beta1.types.Listing:
+            google.cloud.bigquery_data_exchange_v1beta1.types.Listing:
                 A listing is what gets published into
                 a data exchange that a subscriber can
                 subscribe to. It contains a reference to
@@ -1391,22 +1133,22 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dataexchange.CreateListingRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, dataexchange.CreateListingRequest):
-            request = dataexchange.CreateListingRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if parent is not None:
-                request.parent = parent
-            if listing is not None:
-                request.listing = listing
+        request = dataexchange.CreateListingRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if listing is not None:
+            request.listing = listing
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.create_listing]
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.create_listing,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1415,7 +1157,7 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -1425,7 +1167,7 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
         # Done; return the response.
         return response
 
-    def update_listing(
+    async def update_listing(
         self,
         request: Union[dataexchange.UpdateListingRequest, dict] = None,
         *,
@@ -1439,17 +1181,17 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
 
         .. code-block:: python
 
-            from google.cloud.bigquery import data_exchange_v1beta1
+            from google.cloud import bigquery_data_exchange_v1beta1
 
             def sample_update_listing():
                 # Create a client
-                client = data_exchange_v1beta1.AnalyticsHubServiceClient()
+                client = bigquery_data_exchange_v1beta1.AnalyticsHubServiceClient()
 
                 # Initialize request argument(s)
-                listing = data_exchange_v1beta1.Listing()
+                listing = bigquery_data_exchange_v1beta1.Listing()
                 listing.display_name = "display_name_value"
 
-                request = data_exchange_v1beta1.UpdateListingRequest(
+                request = bigquery_data_exchange_v1beta1.UpdateListingRequest(
                     listing=listing,
                 )
 
@@ -1460,14 +1202,14 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.cloud.bigquery.data_exchange_v1beta1.types.UpdateListingRequest, dict]):
+            request (Union[google.cloud.bigquery_data_exchange_v1beta1.types.UpdateListingRequest, dict]):
                 The request object. Message for updating a Listing.
-            listing (google.cloud.bigquery.data_exchange_v1beta1.types.Listing):
+            listing (:class:`google.cloud.bigquery_data_exchange_v1beta1.types.Listing`):
                 Required. The listing to update.
                 This corresponds to the ``listing`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
                 Required. Field mask is used to specify the fields to be
                 overwritten in the Listing resource by the update. The
                 fields specified in the update_mask are relative to the
@@ -1483,7 +1225,7 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.bigquery.data_exchange_v1beta1.types.Listing:
+            google.cloud.bigquery_data_exchange_v1beta1.types.Listing:
                 A listing is what gets published into
                 a data exchange that a subscriber can
                 subscribe to. It contains a reference to
@@ -1502,22 +1244,22 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dataexchange.UpdateListingRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, dataexchange.UpdateListingRequest):
-            request = dataexchange.UpdateListingRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if listing is not None:
-                request.listing = listing
-            if update_mask is not None:
-                request.update_mask = update_mask
+        request = dataexchange.UpdateListingRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if listing is not None:
+            request.listing = listing
+        if update_mask is not None:
+            request.update_mask = update_mask
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.update_listing]
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.update_listing,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1528,7 +1270,7 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -1538,7 +1280,7 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
         # Done; return the response.
         return response
 
-    def delete_listing(
+    async def delete_listing(
         self,
         request: Union[dataexchange.DeleteListingRequest, dict] = None,
         *,
@@ -1554,14 +1296,14 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
 
         .. code-block:: python
 
-            from google.cloud.bigquery import data_exchange_v1beta1
+            from google.cloud import bigquery_data_exchange_v1beta1
 
             def sample_delete_listing():
                 # Create a client
-                client = data_exchange_v1beta1.AnalyticsHubServiceClient()
+                client = bigquery_data_exchange_v1beta1.AnalyticsHubServiceClient()
 
                 # Initialize request argument(s)
-                request = data_exchange_v1beta1.DeleteListingRequest(
+                request = bigquery_data_exchange_v1beta1.DeleteListingRequest(
                     name="name_value",
                 )
 
@@ -1569,9 +1311,9 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
                 client.delete_listing(request=request)
 
         Args:
-            request (Union[google.cloud.bigquery.data_exchange_v1beta1.types.DeleteListingRequest, dict]):
+            request (Union[google.cloud.bigquery_data_exchange_v1beta1.types.DeleteListingRequest, dict]):
                 The request object. Message for deleting a Listing.
-            name (str):
+            name (:class:`str`):
                 Required. Resource name of the listing to delete. e.g.
                 ``projects/myproject/locations/US/dataExchanges/123/listings/456``.
 
@@ -1594,20 +1336,20 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dataexchange.DeleteListingRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, dataexchange.DeleteListingRequest):
-            request = dataexchange.DeleteListingRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if name is not None:
-                request.name = name
+        request = dataexchange.DeleteListingRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.delete_listing]
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.delete_listing,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1616,14 +1358,14 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
         )
 
         # Send the request.
-        rpc(
+        await rpc(
             request,
             retry=retry,
             timeout=timeout,
             metadata=metadata,
         )
 
-    def subscribe_listing(
+    async def subscribe_listing(
         self,
         request: Union[dataexchange.SubscribeListingRequest, dict] = None,
         *,
@@ -1641,19 +1383,19 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
 
         .. code-block:: python
 
-            from google.cloud.bigquery import data_exchange_v1beta1
+            from google.cloud import bigquery_data_exchange_v1beta1
 
             def sample_subscribe_listing():
                 # Create a client
-                client = data_exchange_v1beta1.AnalyticsHubServiceClient()
+                client = bigquery_data_exchange_v1beta1.AnalyticsHubServiceClient()
 
                 # Initialize request argument(s)
-                destination_dataset = data_exchange_v1beta1.DestinationDataset()
+                destination_dataset = bigquery_data_exchange_v1beta1.DestinationDataset()
                 destination_dataset.dataset_reference.dataset_id = "dataset_id_value"
                 destination_dataset.dataset_reference.project_id = "project_id_value"
                 destination_dataset.location = "location_value"
 
-                request = data_exchange_v1beta1.SubscribeListingRequest(
+                request = bigquery_data_exchange_v1beta1.SubscribeListingRequest(
                     destination_dataset=destination_dataset,
                     name="name_value",
                 )
@@ -1665,9 +1407,9 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
                 print(response)
 
         Args:
-            request (Union[google.cloud.bigquery.data_exchange_v1beta1.types.SubscribeListingRequest, dict]):
+            request (Union[google.cloud.bigquery_data_exchange_v1beta1.types.SubscribeListingRequest, dict]):
                 The request object. Message for subscribing a Listing.
-            name (str):
+            name (:class:`str`):
                 Required. Resource name of the listing to subscribe to.
                 e.g.
                 ``projects/myproject/locations/US/dataExchanges/123/listings/456``.
@@ -1682,7 +1424,7 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.bigquery.data_exchange_v1beta1.types.SubscribeListingResponse:
+            google.cloud.bigquery_data_exchange_v1beta1.types.SubscribeListingResponse:
                 Message for response to subscribing a
                 Listing. Empty for now.
 
@@ -1697,20 +1439,20 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
                 "the individual field arguments should be set."
             )
 
-        # Minor optimization to avoid making a copy if the user passes
-        # in a dataexchange.SubscribeListingRequest.
-        # There's no risk of modifying the input as we've already verified
-        # there are no flattened fields.
-        if not isinstance(request, dataexchange.SubscribeListingRequest):
-            request = dataexchange.SubscribeListingRequest(request)
-            # If we have keyword arguments corresponding to fields on the
-            # request, apply these.
-            if name is not None:
-                request.name = name
+        request = dataexchange.SubscribeListingRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.subscribe_listing]
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.subscribe_listing,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1719,7 +1461,7 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -1729,7 +1471,7 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
         # Done; return the response.
         return response
 
-    def get_iam_policy(
+    async def get_iam_policy(
         self,
         request: Union[iam_policy_pb2.GetIamPolicyRequest, dict] = None,
         *,
@@ -1741,14 +1483,14 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
 
         .. code-block:: python
 
-            from google.cloud.bigquery import data_exchange_v1beta1
+            from google.cloud import bigquery_data_exchange_v1beta1
 
             def sample_get_iam_policy():
                 # Create a client
-                client = data_exchange_v1beta1.AnalyticsHubServiceClient()
+                client = bigquery_data_exchange_v1beta1.AnalyticsHubServiceClient()
 
                 # Initialize request argument(s)
-                request = data_exchange_v1beta1.GetIamPolicyRequest(
+                request = bigquery_data_exchange_v1beta1.GetIamPolicyRequest(
                     resource="resource_value",
                 )
 
@@ -1828,17 +1570,18 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
         if isinstance(request, dict):
-            # The request isn't a proto-plus wrapped type,
-            # so it must be constructed via keyword expansion.
             request = iam_policy_pb2.GetIamPolicyRequest(**request)
-        elif not request:
-            # Null request, just make one.
-            request = iam_policy_pb2.GetIamPolicyRequest()
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.get_iam_policy]
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_iam_policy,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1847,7 +1590,7 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -1857,7 +1600,7 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
         # Done; return the response.
         return response
 
-    def set_iam_policy(
+    async def set_iam_policy(
         self,
         request: Union[iam_policy_pb2.SetIamPolicyRequest, dict] = None,
         *,
@@ -1869,14 +1612,14 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
 
         .. code-block:: python
 
-            from google.cloud.bigquery import data_exchange_v1beta1
+            from google.cloud import bigquery_data_exchange_v1beta1
 
             def sample_set_iam_policy():
                 # Create a client
-                client = data_exchange_v1beta1.AnalyticsHubServiceClient()
+                client = bigquery_data_exchange_v1beta1.AnalyticsHubServiceClient()
 
                 # Initialize request argument(s)
-                request = data_exchange_v1beta1.SetIamPolicyRequest(
+                request = bigquery_data_exchange_v1beta1.SetIamPolicyRequest(
                     resource="resource_value",
                 )
 
@@ -1956,17 +1699,18 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
 
         """
         # Create or coerce a protobuf request object.
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
         if isinstance(request, dict):
-            # The request isn't a proto-plus wrapped type,
-            # so it must be constructed via keyword expansion.
             request = iam_policy_pb2.SetIamPolicyRequest(**request)
-        elif not request:
-            # Null request, just make one.
-            request = iam_policy_pb2.SetIamPolicyRequest()
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.set_iam_policy]
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.set_iam_policy,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -1975,7 +1719,7 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -1985,7 +1729,7 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
         # Done; return the response.
         return response
 
-    def test_iam_permissions(
+    async def test_iam_permissions(
         self,
         request: Union[iam_policy_pb2.TestIamPermissionsRequest, dict] = None,
         *,
@@ -1999,14 +1743,14 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
 
         .. code-block:: python
 
-            from google.cloud.bigquery import data_exchange_v1beta1
+            from google.cloud import bigquery_data_exchange_v1beta1
 
             def sample_test_iam_permissions():
                 # Create a client
-                client = data_exchange_v1beta1.AnalyticsHubServiceClient()
+                client = bigquery_data_exchange_v1beta1.AnalyticsHubServiceClient()
 
                 # Initialize request argument(s)
-                request = data_exchange_v1beta1.TestIamPermissionsRequest(
+                request = bigquery_data_exchange_v1beta1.TestIamPermissionsRequest(
                     resource="resource_value",
                     permissions=['permissions_value_1', 'permissions_value_2'],
                 )
@@ -2032,17 +1776,18 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
                 Response message for TestIamPermissions method.
         """
         # Create or coerce a protobuf request object.
+        # The request isn't a proto-plus wrapped type,
+        # so it must be constructed via keyword expansion.
         if isinstance(request, dict):
-            # The request isn't a proto-plus wrapped type,
-            # so it must be constructed via keyword expansion.
             request = iam_policy_pb2.TestIamPermissionsRequest(**request)
-        elif not request:
-            # Null request, just make one.
-            request = iam_policy_pb2.TestIamPermissionsRequest()
 
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
-        rpc = self._transport._wrapped_methods[self._transport.test_iam_permissions]
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.test_iam_permissions,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
 
         # Certain fields should be provided within the metadata header;
         # add these here.
@@ -2051,7 +1796,7 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
         )
 
         # Send the request.
-        response = rpc(
+        response = await rpc(
             request,
             retry=retry,
             timeout=timeout,
@@ -2061,18 +1806,11 @@ class AnalyticsHubServiceClient(metaclass=AnalyticsHubServiceClientMeta):
         # Done; return the response.
         return response
 
-    def __enter__(self):
+    async def __aenter__(self):
         return self
 
-    def __exit__(self, type, value, traceback):
-        """Releases underlying transport's resources.
-
-        .. warning::
-            ONLY use as a context manager if the transport is NOT shared
-            with other clients! Exiting the with block will CLOSE the transport
-            and may cause errors in other clients!
-        """
-        self.transport.close()
+    async def __aexit__(self, exc_type, exc, tb):
+        await self.transport.close()
 
 
 try:
@@ -2085,4 +1823,4 @@ except pkg_resources.DistributionNotFound:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo()
 
 
-__all__ = ("AnalyticsHubServiceClient",)
+__all__ = ("AnalyticsHubServiceAsyncClient",)

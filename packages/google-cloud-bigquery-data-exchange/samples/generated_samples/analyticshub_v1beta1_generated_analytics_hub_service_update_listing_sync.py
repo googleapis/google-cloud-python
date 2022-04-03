@@ -24,18 +24,18 @@
 
 
 # [START analyticshub_v1beta1_generated_AnalyticsHubService_UpdateListing_sync]
-from google.cloud.bigquery import data_exchange_v1beta1
+from google.cloud import bigquery_data_exchange_v1beta1
 
 
 def sample_update_listing():
     # Create a client
-    client = data_exchange_v1beta1.AnalyticsHubServiceClient()
+    client = bigquery_data_exchange_v1beta1.AnalyticsHubServiceClient()
 
     # Initialize request argument(s)
-    listing = data_exchange_v1beta1.Listing()
+    listing = bigquery_data_exchange_v1beta1.Listing()
     listing.display_name = "display_name_value"
 
-    request = data_exchange_v1beta1.UpdateListingRequest(
+    request = bigquery_data_exchange_v1beta1.UpdateListingRequest(
         listing=listing,
     )
 

@@ -24,15 +24,15 @@
 
 
 # [START analyticshub_v1beta1_generated_AnalyticsHubService_ListDataExchanges_async]
-from google.cloud.bigquery import data_exchange_v1beta1
+from google.cloud import bigquery_data_exchange_v1beta1
 
 
 async def sample_list_data_exchanges():
     # Create a client
-    client = data_exchange_v1beta1.AnalyticsHubServiceAsyncClient()
+    client = bigquery_data_exchange_v1beta1.AnalyticsHubServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = data_exchange_v1beta1.ListDataExchangesRequest(
+    request = bigquery_data_exchange_v1beta1.ListDataExchangesRequest(
         parent="parent_value",
     )
 

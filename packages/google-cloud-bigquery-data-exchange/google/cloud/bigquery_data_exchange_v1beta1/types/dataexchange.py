@@ -15,7 +15,7 @@
 #
 import proto  # type: ignore
 
-from google.cloud.bigquery.data_exchange_v1beta1 import common  # type: ignore
+from google.cloud.bigquery_data_exchange_v1beta1 import common  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import wrappers_pb2  # type: ignore
 
@@ -194,7 +194,7 @@ class DestinationDataset(proto.Message):
     r"""Defines the Destination BigQuery Dataset.
 
     Attributes:
-        dataset_reference (google.cloud.bigquery.data_exchange_v1beta1.types.DestinationDatasetReference):
+        dataset_reference (google.cloud.bigquery_data_exchange_v1beta1.types.DestinationDatasetReference):
             Required. A reference that identifies the
             destination dataset.
         friendly_name (google.protobuf.wrappers_pb2.StringValue):
@@ -202,7 +202,7 @@ class DestinationDataset(proto.Message):
         description (google.protobuf.wrappers_pb2.StringValue):
             Optional. A user-friendly description of the
             dataset.
-        labels (Sequence[google.cloud.bigquery.data_exchange_v1beta1.types.DestinationDataset.LabelsEntry]):
+        labels (Sequence[google.cloud.bigquery_data_exchange_v1beta1.types.DestinationDataset.LabelsEntry]):
             Optional. The labels associated with this
             dataset. You can use these to organize and group
             your datasets. You can set this property when
@@ -277,12 +277,12 @@ class Listing(proto.Message):
         documentation (str):
             Optional. Documentation describing the
             listing.
-        bigquery_dataset (google.cloud.bigquery.data_exchange_v1beta1.types.Listing.BigQueryDatasetSource):
+        bigquery_dataset (google.cloud.bigquery_data_exchange_v1beta1.types.Listing.BigQueryDatasetSource):
             Required. Shared dataset i.e. BigQuery
             dataset source.
 
             This field is a member of `oneof`_ ``source``.
-        state (google.cloud.bigquery.data_exchange_v1beta1.types.Listing.State):
+        state (google.cloud.bigquery_data_exchange_v1beta1.types.Listing.State):
             Output only. Current state of the Listing.
         icon (bytes):
             Optional. Base64 encoded image representing
@@ -293,13 +293,13 @@ class Listing(proto.Message):
             field are base64-encoded (which increases the
             size of the data by 33-36%) when using JSON on
             the wire.
-        data_provider (google.cloud.bigquery.data_exchange_v1beta1.types.DataProvider):
+        data_provider (google.cloud.bigquery_data_exchange_v1beta1.types.DataProvider):
             Optional. The details of the Data Provider
             who owns the source data.
-        categories (Sequence[google.cloud.bigquery.data_exchange_v1beta1.common.Category]):
+        categories (Sequence[google.cloud.bigquery_data_exchange_v1beta1.common.Category]):
             Optional. Categories of the Listing. Up to
             two categories are allowed.
-        publisher (google.cloud.bigquery.data_exchange_v1beta1.types.Publisher):
+        publisher (google.cloud.bigquery_data_exchange_v1beta1.types.Publisher):
             Optional. The details of the Publisher who
             owns the listing and has rights to share the
             source data.
@@ -425,7 +425,7 @@ class ListDataExchangesResponse(proto.Message):
     r"""Message for response to listing DataExchanges.
 
     Attributes:
-        data_exchanges (Sequence[google.cloud.bigquery.data_exchange_v1beta1.types.DataExchange]):
+        data_exchanges (Sequence[google.cloud.bigquery_data_exchange_v1beta1.types.DataExchange]):
             The list of DataExchange.
         next_page_token (str):
             A token to request the next page of results.
@@ -483,7 +483,7 @@ class ListOrgDataExchangesResponse(proto.Message):
     organization and location.
 
     Attributes:
-        data_exchanges (Sequence[google.cloud.bigquery.data_exchange_v1beta1.types.DataExchange]):
+        data_exchanges (Sequence[google.cloud.bigquery_data_exchange_v1beta1.types.DataExchange]):
             The list of DataExchange.
         next_page_token (str):
             A token to request the next page of results.
@@ -531,7 +531,7 @@ class CreateDataExchangeRequest(proto.Message):
             only Unicode letters, numbers (0-9), underscores (_). Should
             not use characters that require URL-escaping, or characters
             outside of ASCII, spaces. Max length: 100 bytes.
-        data_exchange (google.cloud.bigquery.data_exchange_v1beta1.types.DataExchange):
+        data_exchange (google.cloud.bigquery_data_exchange_v1beta1.types.DataExchange):
             Required. The DataExchange to create.
     """
 
@@ -559,7 +559,7 @@ class UpdateDataExchangeRequest(proto.Message):
             overwritten in the DataExchange resource by the update. The
             fields specified in the update_mask are relative to the
             resource, not the full request.
-        data_exchange (google.cloud.bigquery.data_exchange_v1beta1.types.DataExchange):
+        data_exchange (google.cloud.bigquery_data_exchange_v1beta1.types.DataExchange):
             Required. The DataExchange to update.
     """
 
@@ -624,7 +624,7 @@ class ListListingsResponse(proto.Message):
     r"""Message for response to listing Listings.
 
     Attributes:
-        listings (Sequence[google.cloud.bigquery.data_exchange_v1beta1.types.Listing]):
+        listings (Sequence[google.cloud.bigquery_data_exchange_v1beta1.types.Listing]):
             The list of Listing.
         next_page_token (str):
             A token to request the next page of results.
@@ -672,7 +672,7 @@ class CreateListingRequest(proto.Message):
             Unicode letters, numbers (0-9), underscores (_). Should not
             use characters that require URL-escaping, or characters
             outside of ASCII, spaces. Max length: 100 bytes.
-        listing (google.cloud.bigquery.data_exchange_v1beta1.types.Listing):
+        listing (google.cloud.bigquery_data_exchange_v1beta1.types.Listing):
             Required. The listing to create.
     """
 
@@ -700,7 +700,7 @@ class UpdateListingRequest(proto.Message):
             overwritten in the Listing resource by the update. The
             fields specified in the update_mask are relative to the
             resource, not the full request.
-        listing (google.cloud.bigquery.data_exchange_v1beta1.types.Listing):
+        listing (google.cloud.bigquery_data_exchange_v1beta1.types.Listing):
             Required. The listing to update.
     """
 
@@ -740,7 +740,7 @@ class SubscribeListingRequest(proto.Message):
         name (str):
             Required. Resource name of the listing to subscribe to. e.g.
             ``projects/myproject/locations/US/dataExchanges/123/listings/456``.
-        destination_dataset (google.cloud.bigquery.data_exchange_v1beta1.types.DestinationDataset):
+        destination_dataset (google.cloud.bigquery_data_exchange_v1beta1.types.DestinationDataset):
             BigQuery destination dataset to create for
             the subscriber.
 

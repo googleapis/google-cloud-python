@@ -24,20 +24,20 @@
 
 
 # [START analyticshub_v1beta1_generated_AnalyticsHubService_SubscribeListing_sync]
-from google.cloud.bigquery import data_exchange_v1beta1
+from google.cloud import bigquery_data_exchange_v1beta1
 
 
 def sample_subscribe_listing():
     # Create a client
-    client = data_exchange_v1beta1.AnalyticsHubServiceClient()
+    client = bigquery_data_exchange_v1beta1.AnalyticsHubServiceClient()
 
     # Initialize request argument(s)
-    destination_dataset = data_exchange_v1beta1.DestinationDataset()
+    destination_dataset = bigquery_data_exchange_v1beta1.DestinationDataset()
     destination_dataset.dataset_reference.dataset_id = "dataset_id_value"
     destination_dataset.dataset_reference.project_id = "project_id_value"
     destination_dataset.location = "location_value"
 
-    request = data_exchange_v1beta1.SubscribeListingRequest(
+    request = bigquery_data_exchange_v1beta1.SubscribeListingRequest(
         destination_dataset=destination_dataset,
         name="name_value",
     )

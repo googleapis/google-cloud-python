@@ -24,14 +24,14 @@ from typing import (
     Iterator,
 )
 
-from google.cloud.bigquery.data_exchange_v1beta1.types import dataexchange
+from google.cloud.bigquery_data_exchange_v1beta1.types import dataexchange
 
 
 class ListDataExchangesPager:
     """A pager for iterating through ``list_data_exchanges`` requests.
 
     This class thinly wraps an initial
-    :class:`google.cloud.bigquery.data_exchange_v1beta1.types.ListDataExchangesResponse` object, and
+    :class:`google.cloud.bigquery_data_exchange_v1beta1.types.ListDataExchangesResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``data_exchanges`` field.
 
@@ -40,7 +40,7 @@ class ListDataExchangesPager:
     through the ``data_exchanges`` field on the
     corresponding responses.
 
-    All the usual :class:`google.cloud.bigquery.data_exchange_v1beta1.types.ListDataExchangesResponse`
+    All the usual :class:`google.cloud.bigquery_data_exchange_v1beta1.types.ListDataExchangesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -58,9 +58,9 @@ class ListDataExchangesPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (google.cloud.bigquery.data_exchange_v1beta1.types.ListDataExchangesRequest):
+            request (google.cloud.bigquery_data_exchange_v1beta1.types.ListDataExchangesRequest):
                 The initial request object.
-            response (google.cloud.bigquery.data_exchange_v1beta1.types.ListDataExchangesResponse):
+            response (google.cloud.bigquery_data_exchange_v1beta1.types.ListDataExchangesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -93,7 +93,7 @@ class ListDataExchangesAsyncPager:
     """A pager for iterating through ``list_data_exchanges`` requests.
 
     This class thinly wraps an initial
-    :class:`google.cloud.bigquery.data_exchange_v1beta1.types.ListDataExchangesResponse` object, and
+    :class:`google.cloud.bigquery_data_exchange_v1beta1.types.ListDataExchangesResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``data_exchanges`` field.
 
@@ -102,7 +102,7 @@ class ListDataExchangesAsyncPager:
     through the ``data_exchanges`` field on the
     corresponding responses.
 
-    All the usual :class:`google.cloud.bigquery.data_exchange_v1beta1.types.ListDataExchangesResponse`
+    All the usual :class:`google.cloud.bigquery_data_exchange_v1beta1.types.ListDataExchangesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -120,9 +120,9 @@ class ListDataExchangesAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (google.cloud.bigquery.data_exchange_v1beta1.types.ListDataExchangesRequest):
+            request (google.cloud.bigquery_data_exchange_v1beta1.types.ListDataExchangesRequest):
                 The initial request object.
-            response (google.cloud.bigquery.data_exchange_v1beta1.types.ListDataExchangesResponse):
+            response (google.cloud.bigquery_data_exchange_v1beta1.types.ListDataExchangesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -159,7 +159,7 @@ class ListOrgDataExchangesPager:
     """A pager for iterating through ``list_org_data_exchanges`` requests.
 
     This class thinly wraps an initial
-    :class:`google.cloud.bigquery.data_exchange_v1beta1.types.ListOrgDataExchangesResponse` object, and
+    :class:`google.cloud.bigquery_data_exchange_v1beta1.types.ListOrgDataExchangesResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``data_exchanges`` field.
 
@@ -168,7 +168,7 @@ class ListOrgDataExchangesPager:
     through the ``data_exchanges`` field on the
     corresponding responses.
 
-    All the usual :class:`google.cloud.bigquery.data_exchange_v1beta1.types.ListOrgDataExchangesResponse`
+    All the usual :class:`google.cloud.bigquery_data_exchange_v1beta1.types.ListOrgDataExchangesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -186,9 +186,9 @@ class ListOrgDataExchangesPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (google.cloud.bigquery.data_exchange_v1beta1.types.ListOrgDataExchangesRequest):
+            request (google.cloud.bigquery_data_exchange_v1beta1.types.ListOrgDataExchangesRequest):
                 The initial request object.
-            response (google.cloud.bigquery.data_exchange_v1beta1.types.ListOrgDataExchangesResponse):
+            response (google.cloud.bigquery_data_exchange_v1beta1.types.ListOrgDataExchangesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -221,7 +221,7 @@ class ListOrgDataExchangesAsyncPager:
     """A pager for iterating through ``list_org_data_exchanges`` requests.
 
     This class thinly wraps an initial
-    :class:`google.cloud.bigquery.data_exchange_v1beta1.types.ListOrgDataExchangesResponse` object, and
+    :class:`google.cloud.bigquery_data_exchange_v1beta1.types.ListOrgDataExchangesResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``data_exchanges`` field.
 
@@ -230,7 +230,7 @@ class ListOrgDataExchangesAsyncPager:
     through the ``data_exchanges`` field on the
     corresponding responses.
 
-    All the usual :class:`google.cloud.bigquery.data_exchange_v1beta1.types.ListOrgDataExchangesResponse`
+    All the usual :class:`google.cloud.bigquery_data_exchange_v1beta1.types.ListOrgDataExchangesResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -248,9 +248,9 @@ class ListOrgDataExchangesAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (google.cloud.bigquery.data_exchange_v1beta1.types.ListOrgDataExchangesRequest):
+            request (google.cloud.bigquery_data_exchange_v1beta1.types.ListOrgDataExchangesRequest):
                 The initial request object.
-            response (google.cloud.bigquery.data_exchange_v1beta1.types.ListOrgDataExchangesResponse):
+            response (google.cloud.bigquery_data_exchange_v1beta1.types.ListOrgDataExchangesResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -287,7 +287,7 @@ class ListListingsPager:
     """A pager for iterating through ``list_listings`` requests.
 
     This class thinly wraps an initial
-    :class:`google.cloud.bigquery.data_exchange_v1beta1.types.ListListingsResponse` object, and
+    :class:`google.cloud.bigquery_data_exchange_v1beta1.types.ListListingsResponse` object, and
     provides an ``__iter__`` method to iterate through its
     ``listings`` field.
 
@@ -296,7 +296,7 @@ class ListListingsPager:
     through the ``listings`` field on the
     corresponding responses.
 
-    All the usual :class:`google.cloud.bigquery.data_exchange_v1beta1.types.ListListingsResponse`
+    All the usual :class:`google.cloud.bigquery_data_exchange_v1beta1.types.ListListingsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -314,9 +314,9 @@ class ListListingsPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (google.cloud.bigquery.data_exchange_v1beta1.types.ListListingsRequest):
+            request (google.cloud.bigquery_data_exchange_v1beta1.types.ListListingsRequest):
                 The initial request object.
-            response (google.cloud.bigquery.data_exchange_v1beta1.types.ListListingsResponse):
+            response (google.cloud.bigquery_data_exchange_v1beta1.types.ListListingsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.
@@ -349,7 +349,7 @@ class ListListingsAsyncPager:
     """A pager for iterating through ``list_listings`` requests.
 
     This class thinly wraps an initial
-    :class:`google.cloud.bigquery.data_exchange_v1beta1.types.ListListingsResponse` object, and
+    :class:`google.cloud.bigquery_data_exchange_v1beta1.types.ListListingsResponse` object, and
     provides an ``__aiter__`` method to iterate through its
     ``listings`` field.
 
@@ -358,7 +358,7 @@ class ListListingsAsyncPager:
     through the ``listings`` field on the
     corresponding responses.
 
-    All the usual :class:`google.cloud.bigquery.data_exchange_v1beta1.types.ListListingsResponse`
+    All the usual :class:`google.cloud.bigquery_data_exchange_v1beta1.types.ListListingsResponse`
     attributes are available on the pager. If multiple requests are made, only
     the most recent response is retained, and thus used for attribute lookup.
     """
@@ -376,9 +376,9 @@ class ListListingsAsyncPager:
         Args:
             method (Callable): The method that was originally called, and
                 which instantiated this pager.
-            request (google.cloud.bigquery.data_exchange_v1beta1.types.ListListingsRequest):
+            request (google.cloud.bigquery_data_exchange_v1beta1.types.ListListingsRequest):
                 The initial request object.
-            response (google.cloud.bigquery.data_exchange_v1beta1.types.ListListingsResponse):
+            response (google.cloud.bigquery_data_exchange_v1beta1.types.ListListingsResponse):
                 The initial response object.
             metadata (Sequence[Tuple[str, str]]): Strings which should be
                 sent along with the request as metadata.

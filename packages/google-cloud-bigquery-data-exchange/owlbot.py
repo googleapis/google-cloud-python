@@ -25,33 +25,33 @@ default_version = "v1beta1"
 for library in s.get_staging_dirs(default_version):
     s.replace(
         [
-            library / f"google/cloud/bigquery/data_exchange_{library.name}/**/*.py",
-            library / f"tests/unit/gapic/data_exchange_{library.name}/**/*.py",
+            library / f"google/cloud/bigquery_data_exchange_{library.name}/**/*.py",
+            library / f"tests/unit/gapic/bigquery_data_exchange_{library.name}/**/*.py",
         ],
         f"from google.cloud.bigquery.dataexchange.common import common_pb2",
-        f"from google.cloud.bigquery.data_exchange_{library.name} import common",
+        f"from google.cloud.bigquery_data_exchange_{library.name} import common",
     )
     s.replace(
-        library / f"google/cloud/bigquery/data_exchange_{library.name}/**/*.py",
+        library / f"google/cloud/bigquery_data_exchange_{library.name}/**/*.py",
         "google.cloud.bigquery.dataexchange.common.common_pb2.Category",
-        f"google.cloud.bigquery.data_exchange_{library.name}.common.Category",
+        f"google.cloud.bigquery_data_exchange_{library.name}.common.Category",
     )
     s.replace(
         library / f"docs/common/types.rst",
         "google.cloud.bigquery.data_exchange.common.types",
-        f"google.cloud.bigquery.data_exchange_{library.name}.common.types",
+        f"google.cloud.bigquery_data_exchange_{library.name}.common.types",
     )
     s.replace(
         [
-            library / f"google/cloud/bigquery/data_exchange_{library.name}/**/*.py",
-            library / f"tests/unit/gapic/data_exchange_{library.name}/**/*.py",
+            library / f"google/cloud/bigquery_data_exchange_{library.name}/**/*.py",
+            library / f"tests/unit/gapic/bigquery_data_exchange_{library.name}/**/*.py",
         ],
         "common_pb2",
         "common",
     )
     s.move(
-        library / "google/cloud/bigquery/data_exchange/common",
-        library / "google/cloud/bigquery/data_exchange_v1beta1/common",
+        library / "google/cloud/bigquery_data_exchange/common",
+        library / "google/cloud/bigquery_data_exchange_v1beta1/common",
     )
     s.move(
         library,
