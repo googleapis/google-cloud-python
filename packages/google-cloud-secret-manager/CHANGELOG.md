@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.10.0](https://github.com/googleapis/python-secret-manager/compare/v2.9.2...v2.10.0) (2022-04-04)
+
+
+### Features
+
+* Added support for accessing secret versions by alias ([#281](https://github.com/googleapis/python-secret-manager/issues/281)) ([6c5cd29](https://github.com/googleapis/python-secret-manager/commit/6c5cd296c888d1839ffdac1a8d09ca568c99d36d))
+
 ### [2.9.2](https://github.com/googleapis/python-secret-manager/compare/v2.9.1...v2.9.2) (2022-03-13)
 
 
