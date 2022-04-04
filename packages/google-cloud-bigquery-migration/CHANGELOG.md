@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.4.0](https://github.com/googleapis/python-bigquery-migration/compare/v0.3.1...v0.4.0) (2022-04-03)
+
+
+### Features
+
+* Add bigquery_migration v2 client library  ([#54](https://github.com/googleapis/python-bigquery-migration/issues/54)) ([776ea61](https://github.com/googleapis/python-bigquery-migration/commit/776ea6189f6a94c5daa5af6b4fa7e0e3b21015ec))
+
+
+### Bug Fixes
+
+* set bigquery_migration_v2 as the default import ([776ea61](https://github.com/googleapis/python-bigquery-migration/commit/776ea6189f6a94c5daa5af6b4fa7e0e3b21015ec))
+
 ### [0.3.1](https://github.com/googleapis/python-bigquery-migration/compare/v0.3.0...v0.3.1) (2022-03-05)
 
 
