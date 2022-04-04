@@ -103,5 +103,7 @@ s.replace(
 
 python.py_samples()
 
+python.configure_previous_major_version_branches()
+
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
 
