@@ -219,6 +219,8 @@ s.replace(
 
 python.py_samples(skip_readmes=True)
 
+python.configure_previous_major_version_branches()
+
 s.replace(
     "samples/beam/noxfile.py",
     """INSTALL_LIBRARY_FROM_SOURCE \= os.environ.get\("INSTALL_LIBRARY_FROM_SOURCE", False\) in \(
