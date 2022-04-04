@@ -1,6 +1,15 @@
 # Changelog
 
 
+### [0.63.8](https://github.com/googleapis/gapic-generator-python/compare/v0.63.7...v0.63.8) (2022-04-04)
+
+
+### Bug Fixes
+
+* **deps:** exclude click 8.1.0 ([#1255](https://github.com/googleapis/gapic-generator-python/issues/1255)) ([daf63eb](https://github.com/googleapis/gapic-generator-python/commit/daf63ebe2392fd6fde65326fffc5519cd126c2ae))
+* fix docstring for map fields ([#1249](https://github.com/googleapis/gapic-generator-python/issues/1249)) ([3100464](https://github.com/googleapis/gapic-generator-python/commit/310046478092b4fc4ef9dfdd1e50363ca6fc72c5))
+* sanitize file names ([#1236](https://github.com/googleapis/gapic-generator-python/issues/1236)) ([3072ffb](https://github.com/googleapis/gapic-generator-python/commit/3072ffb6000983ecb06d8dd7b44f77da61cc992e))
+
 ### [0.63.7](https://github.com/googleapis/gapic-generator-python/compare/v0.63.6...v0.63.7) (2022-03-08)
 
 
