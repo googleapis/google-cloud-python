@@ -238,6 +238,7 @@ s.move(
 )
 
 python.py_samples(skip_readmes=True)
+python.configure_previous_major_version_branches()
 
 # Library code is in "grafeas" instead of "google"
 s.replace("noxfile.py", """['"]google['"]""", '''"grafeas"''')
