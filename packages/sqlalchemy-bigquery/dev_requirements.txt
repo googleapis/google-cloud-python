@@ -1,6 +1,6 @@
 sqlalchemy>=1.1.9
 google-cloud-bigquery>=1.6.0
 future==0.18.2
-pytest==6.2.5
-pytest-flake8==1.1.0  # versions 1.1.1 and above require pytest 7
+pytest===6.2.5
+pytest-flake8===1.1.0  # versions 1.1.1 and above require pytest 7
 pytz==2022.1
