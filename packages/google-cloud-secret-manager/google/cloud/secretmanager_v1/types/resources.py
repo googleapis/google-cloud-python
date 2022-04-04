@@ -104,6 +104,20 @@ class Secret(proto.Message):
             Optional. Rotation policy attached to the
             [Secret][google.cloud.secretmanager.v1.Secret]. May be
             excluded if there is no rotation policy.
+        version_aliases (Sequence[google.cloud.secretmanager_v1.types.Secret.VersionAliasesEntry]):
+            Optional. Mapping from version alias to version name.
+
+            A version alias is a string with a maximum length of 63
+            characters and can contain uppercase and lowercase letters,
+            numerals, and the hyphen (``-``) and underscore ('_')
+            characters. An alias string must start with a letter and
+            cannot be the string 'latest' or 'NEW'. No more than 50
+            aliases can be assigned to a given secret.
+
+            Version-Alias pairs will be viewable via GetSecret and
+            modifiable via UpdateSecret. At launch access by alias will
+            only be supported on GetSecretVersion and
+            AccessSecretVersion.
     """
 
     name = proto.Field(
@@ -150,6 +164,11 @@ class Secret(proto.Message):
         proto.MESSAGE,
         number=9,
         message="Rotation",
+    )
+    version_aliases = proto.MapField(
+        proto.STRING,
+        proto.INT64,
+        number=11,
     )
 
 
