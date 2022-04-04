@@ -107,6 +107,8 @@ s.move(
 
 python.py_samples(skip_readmes=True)
 
+python.configure_previous_major_version_branches()
+
 # Preserve system tests w/ GOOGLE_DISABLE_GRPC set (#133, PR #136)
 assert 1 == s.replace(
     "noxfile.py",
