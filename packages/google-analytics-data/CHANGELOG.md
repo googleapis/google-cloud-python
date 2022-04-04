@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.11.2](https://github.com/googleapis/python-analytics-data/compare/v0.11.1...v0.11.2) (2022-04-01)
+
+
+### Documentation
+
+* fixes typo in python sample ([#214](https://github.com/googleapis/python-analytics-data/issues/214)) ([8978387](https://github.com/googleapis/python-analytics-data/commit/8978387b7781439df13db666f0af112ac517144e))
+
 ### [0.11.1](https://github.com/googleapis/python-analytics-data/compare/v0.11.0...v0.11.1) (2022-03-05)
 
 
