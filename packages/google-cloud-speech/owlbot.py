@@ -61,6 +61,7 @@ s.move(
     templated_files, excludes=[".coveragerc"]
 )  # microgenerator has a good .coveragerc file
 
+python.configure_previous_major_version_branches()
 
 # ----------------------------------------------------------------------------
 # Samples templates
