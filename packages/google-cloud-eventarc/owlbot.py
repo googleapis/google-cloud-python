@@ -59,6 +59,8 @@ templated_files = gcp.CommonTemplates().py_library(microgenerator=True)
 python.py_samples(skip_readmes=True)
 s.move(templated_files, excludes=[".coveragerc"]) # the microgenerator has a good coveragerc file
 
+python.configure_previous_major_version_branches()
+
 # ----------------------------------------------------------------------------
 # Run blacken session
 # ----------------------------------------------------------------------------
