@@ -53,6 +53,8 @@ s.replace(".github/workflows/unittest.yml", "--fail-under=100", "--fail-under=97
 
 python.py_samples(skip_readmes=True)
 
+python.configure_previous_major_version_branches()
+
 # NOTE: This library also has legacy pb2.py files for "v1"
 # in google/cloud/orgpolicy/v1
 # v1 only has messages (no service or RPCs).
