@@ -16,6 +16,7 @@
 
 import synthtool as s
 from synthtool import gcp
+from synthtool.languages import python
 
 common = gcp.CommonTemplates()
 
@@ -37,5 +38,7 @@ s.move(
         "setup.cfg",
     ],
 )
+
+python.configure_previous_major_version_branches()
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
