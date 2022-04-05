@@ -60,6 +60,8 @@ s.replace(".github/workflows/unittest.yml", "--fail-under=100", "--fail-under=98
 
 python.py_samples(skip_readmes=True)
 
+python.configure_previous_major_version_branches()
+
 # ----------------------------------------------------------------------------
 # Run blacken session for all directories with a noxfile
 # ----------------------------------------------------------------------------
