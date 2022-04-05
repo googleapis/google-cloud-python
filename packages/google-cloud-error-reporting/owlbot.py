@@ -41,6 +41,7 @@ s.move(templated_files, excludes=[".coveragerc"])  # microgenerator has a good .
 # ----------------------------------------------------------------------------
 python.py_samples(skip_readmes=True)
 
+python.configure_previous_major_version_branches()
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
 
