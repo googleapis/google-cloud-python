@@ -39,6 +39,8 @@ s.move(templated_files, excludes=[".coveragerc"]) # the microgenerator has a goo
 
 python.py_samples(skip_readmes=True)
 
+python.configure_previous_major_version_branches()
+
 # ----------------------------------------------------------------------------
 # Run blacken session
 # ----------------------------------------------------------------------------
