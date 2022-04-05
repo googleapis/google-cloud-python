@@ -20,7 +20,7 @@ date ranges in a report.
 See https://developers.google.com/analytics/devguides/reporting/data/v1/rest/v1beta/DateRange#FIELDS.name
 for more information.
 """
-# [START analyticsdata_run_report_with_date_ranges]
+# [START analyticsdata_run_report_with_named_date_ranges]
 from google.analytics.data_v1beta import BetaAnalyticsDataClient
 from google.analytics.data_v1beta.types import DateRange
 from google.analytics.data_v1beta.types import Dimension
@@ -57,7 +57,7 @@ def run_report_with_named_date_ranges(property_id="YOUR-GA4-PROPERTY-ID"):
     print_run_report_response(response)
 
 
-# [END analyticsdata_run_report_with_date_ranges]
+# [END analyticsdata_run_report_with_named_date_ranges]
 
 
 if __name__ == "__main__":
