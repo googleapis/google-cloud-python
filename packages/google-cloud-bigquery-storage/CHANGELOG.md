@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigquery-storage/#history
 
+### [2.13.1](https://github.com/googleapis/python-bigquery-storage/compare/v2.13.0...v2.13.1) (2022-04-04)
+
+
+### Bug Fixes
+
+* Deprecate format specific `row_count` field in Read API ([#424](https://github.com/googleapis/python-bigquery-storage/issues/424)) ([d52dbba](https://github.com/googleapis/python-bigquery-storage/commit/d52dbba8dd406b3432d9a151e6d80aabe45f086c))
+
 ## [2.13.0](https://github.com/googleapis/python-bigquery-storage/compare/v2.12.0...v2.13.0) (2022-03-07)
 
 
