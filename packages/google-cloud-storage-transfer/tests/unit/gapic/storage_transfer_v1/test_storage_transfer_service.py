@@ -1963,6 +1963,1436 @@ async def test_run_transfer_job_field_headers_async():
     ) in kw["metadata"]
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        transfer.CreateAgentPoolRequest,
+        dict,
+    ],
+)
+def test_create_agent_pool(request_type, transport: str = "grpc"):
+    client = StorageTransferServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_agent_pool), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = transfer_types.AgentPool(
+            name="name_value",
+            display_name="display_name_value",
+            state=transfer_types.AgentPool.State.CREATING,
+        )
+        response = client.create_agent_pool(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == transfer.CreateAgentPoolRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, transfer_types.AgentPool)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.state == transfer_types.AgentPool.State.CREATING
+
+
+def test_create_agent_pool_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = StorageTransferServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_agent_pool), "__call__"
+    ) as call:
+        client.create_agent_pool()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == transfer.CreateAgentPoolRequest()
+
+
+@pytest.mark.asyncio
+async def test_create_agent_pool_async(
+    transport: str = "grpc_asyncio", request_type=transfer.CreateAgentPoolRequest
+):
+    client = StorageTransferServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_agent_pool), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            transfer_types.AgentPool(
+                name="name_value",
+                display_name="display_name_value",
+                state=transfer_types.AgentPool.State.CREATING,
+            )
+        )
+        response = await client.create_agent_pool(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == transfer.CreateAgentPoolRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, transfer_types.AgentPool)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.state == transfer_types.AgentPool.State.CREATING
+
+
+@pytest.mark.asyncio
+async def test_create_agent_pool_async_from_dict():
+    await test_create_agent_pool_async(request_type=dict)
+
+
+def test_create_agent_pool_field_headers():
+    client = StorageTransferServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = transfer.CreateAgentPoolRequest()
+
+    request.project_id = "project_id/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_agent_pool), "__call__"
+    ) as call:
+        call.return_value = transfer_types.AgentPool()
+        client.create_agent_pool(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "project_id=project_id/value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_create_agent_pool_field_headers_async():
+    client = StorageTransferServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = transfer.CreateAgentPoolRequest()
+
+    request.project_id = "project_id/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_agent_pool), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            transfer_types.AgentPool()
+        )
+        await client.create_agent_pool(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "project_id=project_id/value",
+    ) in kw["metadata"]
+
+
+def test_create_agent_pool_flattened():
+    client = StorageTransferServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_agent_pool), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = transfer_types.AgentPool()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.create_agent_pool(
+            project_id="project_id_value",
+            agent_pool=transfer_types.AgentPool(name="name_value"),
+            agent_pool_id="agent_pool_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].project_id
+        mock_val = "project_id_value"
+        assert arg == mock_val
+        arg = args[0].agent_pool
+        mock_val = transfer_types.AgentPool(name="name_value")
+        assert arg == mock_val
+        arg = args[0].agent_pool_id
+        mock_val = "agent_pool_id_value"
+        assert arg == mock_val
+
+
+def test_create_agent_pool_flattened_error():
+    client = StorageTransferServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_agent_pool(
+            transfer.CreateAgentPoolRequest(),
+            project_id="project_id_value",
+            agent_pool=transfer_types.AgentPool(name="name_value"),
+            agent_pool_id="agent_pool_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_agent_pool_flattened_async():
+    client = StorageTransferServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_agent_pool), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = transfer_types.AgentPool()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            transfer_types.AgentPool()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.create_agent_pool(
+            project_id="project_id_value",
+            agent_pool=transfer_types.AgentPool(name="name_value"),
+            agent_pool_id="agent_pool_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].project_id
+        mock_val = "project_id_value"
+        assert arg == mock_val
+        arg = args[0].agent_pool
+        mock_val = transfer_types.AgentPool(name="name_value")
+        assert arg == mock_val
+        arg = args[0].agent_pool_id
+        mock_val = "agent_pool_id_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_create_agent_pool_flattened_error_async():
+    client = StorageTransferServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.create_agent_pool(
+            transfer.CreateAgentPoolRequest(),
+            project_id="project_id_value",
+            agent_pool=transfer_types.AgentPool(name="name_value"),
+            agent_pool_id="agent_pool_id_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        transfer.UpdateAgentPoolRequest,
+        dict,
+    ],
+)
+def test_update_agent_pool(request_type, transport: str = "grpc"):
+    client = StorageTransferServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_agent_pool), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = transfer_types.AgentPool(
+            name="name_value",
+            display_name="display_name_value",
+            state=transfer_types.AgentPool.State.CREATING,
+        )
+        response = client.update_agent_pool(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == transfer.UpdateAgentPoolRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, transfer_types.AgentPool)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.state == transfer_types.AgentPool.State.CREATING
+
+
+def test_update_agent_pool_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = StorageTransferServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_agent_pool), "__call__"
+    ) as call:
+        client.update_agent_pool()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == transfer.UpdateAgentPoolRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_agent_pool_async(
+    transport: str = "grpc_asyncio", request_type=transfer.UpdateAgentPoolRequest
+):
+    client = StorageTransferServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_agent_pool), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            transfer_types.AgentPool(
+                name="name_value",
+                display_name="display_name_value",
+                state=transfer_types.AgentPool.State.CREATING,
+            )
+        )
+        response = await client.update_agent_pool(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == transfer.UpdateAgentPoolRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, transfer_types.AgentPool)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.state == transfer_types.AgentPool.State.CREATING
+
+
+@pytest.mark.asyncio
+async def test_update_agent_pool_async_from_dict():
+    await test_update_agent_pool_async(request_type=dict)
+
+
+def test_update_agent_pool_field_headers():
+    client = StorageTransferServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = transfer.UpdateAgentPoolRequest()
+
+    request.agent_pool.name = "agent_pool.name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_agent_pool), "__call__"
+    ) as call:
+        call.return_value = transfer_types.AgentPool()
+        client.update_agent_pool(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "agent_pool.name=agent_pool.name/value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_agent_pool_field_headers_async():
+    client = StorageTransferServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = transfer.UpdateAgentPoolRequest()
+
+    request.agent_pool.name = "agent_pool.name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_agent_pool), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            transfer_types.AgentPool()
+        )
+        await client.update_agent_pool(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "agent_pool.name=agent_pool.name/value",
+    ) in kw["metadata"]
+
+
+def test_update_agent_pool_flattened():
+    client = StorageTransferServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_agent_pool), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = transfer_types.AgentPool()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_agent_pool(
+            agent_pool=transfer_types.AgentPool(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].agent_pool
+        mock_val = transfer_types.AgentPool(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+def test_update_agent_pool_flattened_error():
+    client = StorageTransferServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_agent_pool(
+            transfer.UpdateAgentPoolRequest(),
+            agent_pool=transfer_types.AgentPool(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_agent_pool_flattened_async():
+    client = StorageTransferServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_agent_pool), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = transfer_types.AgentPool()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            transfer_types.AgentPool()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_agent_pool(
+            agent_pool=transfer_types.AgentPool(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].agent_pool
+        mock_val = transfer_types.AgentPool(name="name_value")
+        assert arg == mock_val
+        arg = args[0].update_mask
+        mock_val = field_mask_pb2.FieldMask(paths=["paths_value"])
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_agent_pool_flattened_error_async():
+    client = StorageTransferServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_agent_pool(
+            transfer.UpdateAgentPoolRequest(),
+            agent_pool=transfer_types.AgentPool(name="name_value"),
+            update_mask=field_mask_pb2.FieldMask(paths=["paths_value"]),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        transfer.GetAgentPoolRequest,
+        dict,
+    ],
+)
+def test_get_agent_pool(request_type, transport: str = "grpc"):
+    client = StorageTransferServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_agent_pool), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = transfer_types.AgentPool(
+            name="name_value",
+            display_name="display_name_value",
+            state=transfer_types.AgentPool.State.CREATING,
+        )
+        response = client.get_agent_pool(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == transfer.GetAgentPoolRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, transfer_types.AgentPool)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.state == transfer_types.AgentPool.State.CREATING
+
+
+def test_get_agent_pool_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = StorageTransferServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_agent_pool), "__call__") as call:
+        client.get_agent_pool()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == transfer.GetAgentPoolRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_agent_pool_async(
+    transport: str = "grpc_asyncio", request_type=transfer.GetAgentPoolRequest
+):
+    client = StorageTransferServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_agent_pool), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            transfer_types.AgentPool(
+                name="name_value",
+                display_name="display_name_value",
+                state=transfer_types.AgentPool.State.CREATING,
+            )
+        )
+        response = await client.get_agent_pool(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == transfer.GetAgentPoolRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, transfer_types.AgentPool)
+    assert response.name == "name_value"
+    assert response.display_name == "display_name_value"
+    assert response.state == transfer_types.AgentPool.State.CREATING
+
+
+@pytest.mark.asyncio
+async def test_get_agent_pool_async_from_dict():
+    await test_get_agent_pool_async(request_type=dict)
+
+
+def test_get_agent_pool_field_headers():
+    client = StorageTransferServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = transfer.GetAgentPoolRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_agent_pool), "__call__") as call:
+        call.return_value = transfer_types.AgentPool()
+        client.get_agent_pool(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_agent_pool_field_headers_async():
+    client = StorageTransferServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = transfer.GetAgentPoolRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_agent_pool), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            transfer_types.AgentPool()
+        )
+        await client.get_agent_pool(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
+
+
+def test_get_agent_pool_flattened():
+    client = StorageTransferServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_agent_pool), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = transfer_types.AgentPool()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_agent_pool(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_agent_pool_flattened_error():
+    client = StorageTransferServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_agent_pool(
+            transfer.GetAgentPoolRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_agent_pool_flattened_async():
+    client = StorageTransferServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_agent_pool), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = transfer_types.AgentPool()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            transfer_types.AgentPool()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_agent_pool(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_agent_pool_flattened_error_async():
+    client = StorageTransferServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_agent_pool(
+            transfer.GetAgentPoolRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        transfer.ListAgentPoolsRequest,
+        dict,
+    ],
+)
+def test_list_agent_pools(request_type, transport: str = "grpc"):
+    client = StorageTransferServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_agent_pools), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = transfer.ListAgentPoolsResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.list_agent_pools(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == transfer.ListAgentPoolsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListAgentPoolsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_agent_pools_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = StorageTransferServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_agent_pools), "__call__") as call:
+        client.list_agent_pools()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == transfer.ListAgentPoolsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_agent_pools_async(
+    transport: str = "grpc_asyncio", request_type=transfer.ListAgentPoolsRequest
+):
+    client = StorageTransferServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_agent_pools), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            transfer.ListAgentPoolsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_agent_pools(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == transfer.ListAgentPoolsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListAgentPoolsAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_agent_pools_async_from_dict():
+    await test_list_agent_pools_async(request_type=dict)
+
+
+def test_list_agent_pools_field_headers():
+    client = StorageTransferServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = transfer.ListAgentPoolsRequest()
+
+    request.project_id = "project_id/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_agent_pools), "__call__") as call:
+        call.return_value = transfer.ListAgentPoolsResponse()
+        client.list_agent_pools(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "project_id=project_id/value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_agent_pools_field_headers_async():
+    client = StorageTransferServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = transfer.ListAgentPoolsRequest()
+
+    request.project_id = "project_id/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_agent_pools), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            transfer.ListAgentPoolsResponse()
+        )
+        await client.list_agent_pools(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "project_id=project_id/value",
+    ) in kw["metadata"]
+
+
+def test_list_agent_pools_flattened():
+    client = StorageTransferServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_agent_pools), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = transfer.ListAgentPoolsResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_agent_pools(
+            project_id="project_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].project_id
+        mock_val = "project_id_value"
+        assert arg == mock_val
+
+
+def test_list_agent_pools_flattened_error():
+    client = StorageTransferServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_agent_pools(
+            transfer.ListAgentPoolsRequest(),
+            project_id="project_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_agent_pools_flattened_async():
+    client = StorageTransferServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_agent_pools), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = transfer.ListAgentPoolsResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            transfer.ListAgentPoolsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_agent_pools(
+            project_id="project_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].project_id
+        mock_val = "project_id_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_agent_pools_flattened_error_async():
+    client = StorageTransferServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_agent_pools(
+            transfer.ListAgentPoolsRequest(),
+            project_id="project_id_value",
+        )
+
+
+def test_list_agent_pools_pager(transport_name: str = "grpc"):
+    client = StorageTransferServiceClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_agent_pools), "__call__") as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            transfer.ListAgentPoolsResponse(
+                agent_pools=[
+                    transfer_types.AgentPool(),
+                    transfer_types.AgentPool(),
+                    transfer_types.AgentPool(),
+                ],
+                next_page_token="abc",
+            ),
+            transfer.ListAgentPoolsResponse(
+                agent_pools=[],
+                next_page_token="def",
+            ),
+            transfer.ListAgentPoolsResponse(
+                agent_pools=[
+                    transfer_types.AgentPool(),
+                ],
+                next_page_token="ghi",
+            ),
+            transfer.ListAgentPoolsResponse(
+                agent_pools=[
+                    transfer_types.AgentPool(),
+                    transfer_types.AgentPool(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("project_id", ""),)),
+        )
+        pager = client.list_agent_pools(request={})
+
+        assert pager._metadata == metadata
+
+        results = [i for i in pager]
+        assert len(results) == 6
+        assert all(isinstance(i, transfer_types.AgentPool) for i in results)
+
+
+def test_list_agent_pools_pages(transport_name: str = "grpc"):
+    client = StorageTransferServiceClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_agent_pools), "__call__") as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            transfer.ListAgentPoolsResponse(
+                agent_pools=[
+                    transfer_types.AgentPool(),
+                    transfer_types.AgentPool(),
+                    transfer_types.AgentPool(),
+                ],
+                next_page_token="abc",
+            ),
+            transfer.ListAgentPoolsResponse(
+                agent_pools=[],
+                next_page_token="def",
+            ),
+            transfer.ListAgentPoolsResponse(
+                agent_pools=[
+                    transfer_types.AgentPool(),
+                ],
+                next_page_token="ghi",
+            ),
+            transfer.ListAgentPoolsResponse(
+                agent_pools=[
+                    transfer_types.AgentPool(),
+                    transfer_types.AgentPool(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_agent_pools(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_agent_pools_async_pager():
+    client = StorageTransferServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_agent_pools), "__call__", new_callable=mock.AsyncMock
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            transfer.ListAgentPoolsResponse(
+                agent_pools=[
+                    transfer_types.AgentPool(),
+                    transfer_types.AgentPool(),
+                    transfer_types.AgentPool(),
+                ],
+                next_page_token="abc",
+            ),
+            transfer.ListAgentPoolsResponse(
+                agent_pools=[],
+                next_page_token="def",
+            ),
+            transfer.ListAgentPoolsResponse(
+                agent_pools=[
+                    transfer_types.AgentPool(),
+                ],
+                next_page_token="ghi",
+            ),
+            transfer.ListAgentPoolsResponse(
+                agent_pools=[
+                    transfer_types.AgentPool(),
+                    transfer_types.AgentPool(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_agent_pools(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, transfer_types.AgentPool) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_agent_pools_async_pages():
+    client = StorageTransferServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_agent_pools), "__call__", new_callable=mock.AsyncMock
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            transfer.ListAgentPoolsResponse(
+                agent_pools=[
+                    transfer_types.AgentPool(),
+                    transfer_types.AgentPool(),
+                    transfer_types.AgentPool(),
+                ],
+                next_page_token="abc",
+            ),
+            transfer.ListAgentPoolsResponse(
+                agent_pools=[],
+                next_page_token="def",
+            ),
+            transfer.ListAgentPoolsResponse(
+                agent_pools=[
+                    transfer_types.AgentPool(),
+                ],
+                next_page_token="ghi",
+            ),
+            transfer.ListAgentPoolsResponse(
+                agent_pools=[
+                    transfer_types.AgentPool(),
+                    transfer_types.AgentPool(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        async for page_ in (await client.list_agent_pools(request={})).pages:
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        transfer.DeleteAgentPoolRequest,
+        dict,
+    ],
+)
+def test_delete_agent_pool(request_type, transport: str = "grpc"):
+    client = StorageTransferServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_agent_pool), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        response = client.delete_agent_pool(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == transfer.DeleteAgentPoolRequest()
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_agent_pool_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = StorageTransferServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_agent_pool), "__call__"
+    ) as call:
+        client.delete_agent_pool()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == transfer.DeleteAgentPoolRequest()
+
+
+@pytest.mark.asyncio
+async def test_delete_agent_pool_async(
+    transport: str = "grpc_asyncio", request_type=transfer.DeleteAgentPoolRequest
+):
+    client = StorageTransferServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_agent_pool), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_agent_pool(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == transfer.DeleteAgentPoolRequest()
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.asyncio
+async def test_delete_agent_pool_async_from_dict():
+    await test_delete_agent_pool_async(request_type=dict)
+
+
+def test_delete_agent_pool_field_headers():
+    client = StorageTransferServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = transfer.DeleteAgentPoolRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_agent_pool), "__call__"
+    ) as call:
+        call.return_value = None
+        client.delete_agent_pool(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_agent_pool_field_headers_async():
+    client = StorageTransferServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = transfer.DeleteAgentPoolRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_agent_pool), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_agent_pool(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
+
+
+def test_delete_agent_pool_flattened():
+    client = StorageTransferServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_agent_pool), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.delete_agent_pool(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_delete_agent_pool_flattened_error():
+    client = StorageTransferServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_agent_pool(
+            transfer.DeleteAgentPoolRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_agent_pool_flattened_async():
+    client = StorageTransferServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_agent_pool), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.delete_agent_pool(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_delete_agent_pool_flattened_error_async():
+    client = StorageTransferServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.delete_agent_pool(
+            transfer.DeleteAgentPoolRequest(),
+            name="name_value",
+        )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.StorageTransferServiceGrpcTransport(
@@ -2095,6 +3525,11 @@ def test_storage_transfer_service_base_transport():
         "pause_transfer_operation",
         "resume_transfer_operation",
         "run_transfer_job",
+        "create_agent_pool",
+        "update_agent_pool",
+        "get_agent_pool",
+        "list_agent_pools",
+        "delete_agent_pool",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):
@@ -2437,8 +3872,31 @@ def test_storage_transfer_service_grpc_lro_async_client():
     assert transport.operations_client is transport.operations_client
 
 
+def test_agent_pools_path():
+    project_id = "squid"
+    agent_pool_id = "clam"
+    expected = "projects/{project_id}/agentPools/{agent_pool_id}".format(
+        project_id=project_id,
+        agent_pool_id=agent_pool_id,
+    )
+    actual = StorageTransferServiceClient.agent_pools_path(project_id, agent_pool_id)
+    assert expected == actual
+
+
+def test_parse_agent_pools_path():
+    expected = {
+        "project_id": "whelk",
+        "agent_pool_id": "octopus",
+    }
+    path = StorageTransferServiceClient.agent_pools_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = StorageTransferServiceClient.parse_agent_pools_path(path)
+    assert expected == actual
+
+
 def test_common_billing_account_path():
-    billing_account = "squid"
+    billing_account = "oyster"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -2448,7 +3906,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "clam",
+        "billing_account": "nudibranch",
     }
     path = StorageTransferServiceClient.common_billing_account_path(**expected)
 
@@ -2458,7 +3916,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "whelk"
+    folder = "cuttlefish"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -2468,7 +3926,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "octopus",
+        "folder": "mussel",
     }
     path = StorageTransferServiceClient.common_folder_path(**expected)
 
@@ -2478,7 +3936,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "oyster"
+    organization = "winkle"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -2488,7 +3946,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nudibranch",
+        "organization": "nautilus",
     }
     path = StorageTransferServiceClient.common_organization_path(**expected)
 
@@ -2498,7 +3956,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "cuttlefish"
+    project = "scallop"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -2508,7 +3966,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "mussel",
+        "project": "abalone",
     }
     path = StorageTransferServiceClient.common_project_path(**expected)
 
@@ -2518,8 +3976,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "winkle"
-    location = "nautilus"
+    project = "squid"
+    location = "clam"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -2530,8 +3988,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "scallop",
-        "location": "abalone",
+        "project": "whelk",
+        "location": "octopus",
     }
     path = StorageTransferServiceClient.common_location_path(**expected)
 

@@ -10,9 +10,24 @@
         "grpc": {
           "libraryClient": "StorageTransferServiceClient",
           "rpcs": {
+            "CreateAgentPool": {
+              "methods": [
+                "create_agent_pool"
+              ]
+            },
             "CreateTransferJob": {
               "methods": [
                 "create_transfer_job"
+              ]
+            },
+            "DeleteAgentPool": {
+              "methods": [
+                "delete_agent_pool"
+              ]
+            },
+            "GetAgentPool": {
+              "methods": [
+                "get_agent_pool"
               ]
             },
             "GetGoogleServiceAccount": {
@@ -23,6 +38,11 @@
             "GetTransferJob": {
               "methods": [
                 "get_transfer_job"
+              ]
+            },
+            "ListAgentPools": {
+              "methods": [
+                "list_agent_pools"
               ]
             },
             "ListTransferJobs": {
@@ -43,6 +63,11 @@
             "RunTransferJob": {
               "methods": [
                 "run_transfer_job"
+              ]
+            },
+            "UpdateAgentPool": {
+              "methods": [
+                "update_agent_pool"
               ]
             },
             "UpdateTransferJob": {
@@ -55,9 +80,24 @@
         "grpc-async": {
           "libraryClient": "StorageTransferServiceAsyncClient",
           "rpcs": {
+            "CreateAgentPool": {
+              "methods": [
+                "create_agent_pool"
+              ]
+            },
             "CreateTransferJob": {
               "methods": [
                 "create_transfer_job"
+              ]
+            },
+            "DeleteAgentPool": {
+              "methods": [
+                "delete_agent_pool"
+              ]
+            },
+            "GetAgentPool": {
+              "methods": [
+                "get_agent_pool"
               ]
             },
             "GetGoogleServiceAccount": {
@@ -68,6 +108,11 @@
             "GetTransferJob": {
               "methods": [
                 "get_transfer_job"
+              ]
+            },
+            "ListAgentPools": {
+              "methods": [
+                "list_agent_pools"
               ]
             },
             "ListTransferJobs": {
@@ -88,6 +133,11 @@
             "RunTransferJob": {
               "methods": [
                 "run_transfer_job"
+              ]
+            },
+            "UpdateAgentPool": {
+              "methods": [
+                "update_agent_pool"
               ]
             },
             "UpdateTransferJob": {

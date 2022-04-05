@@ -164,6 +164,31 @@ class StorageTransferServiceTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.create_agent_pool: gapic_v1.method.wrap_method(
+                self.create_agent_pool,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_agent_pool: gapic_v1.method.wrap_method(
+                self.update_agent_pool,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_agent_pool: gapic_v1.method.wrap_method(
+                self.get_agent_pool,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_agent_pools: gapic_v1.method.wrap_method(
+                self.list_agent_pools,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_agent_pool: gapic_v1.method.wrap_method(
+                self.delete_agent_pool,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -255,6 +280,53 @@ class StorageTransferServiceTransport(abc.ABC):
     ) -> Callable[
         [transfer.RunTransferJobRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_agent_pool(
+        self,
+    ) -> Callable[
+        [transfer.CreateAgentPoolRequest],
+        Union[transfer_types.AgentPool, Awaitable[transfer_types.AgentPool]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_agent_pool(
+        self,
+    ) -> Callable[
+        [transfer.UpdateAgentPoolRequest],
+        Union[transfer_types.AgentPool, Awaitable[transfer_types.AgentPool]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_agent_pool(
+        self,
+    ) -> Callable[
+        [transfer.GetAgentPoolRequest],
+        Union[transfer_types.AgentPool, Awaitable[transfer_types.AgentPool]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_agent_pools(
+        self,
+    ) -> Callable[
+        [transfer.ListAgentPoolsRequest],
+        Union[
+            transfer.ListAgentPoolsResponse, Awaitable[transfer.ListAgentPoolsResponse]
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_agent_pool(
+        self,
+    ) -> Callable[
+        [transfer.DeleteAgentPoolRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
     ]:
         raise NotImplementedError()
 

@@ -31,6 +31,12 @@ __protobuf__ = proto.module(
         "PauseTransferOperationRequest",
         "ResumeTransferOperationRequest",
         "RunTransferJobRequest",
+        "CreateAgentPoolRequest",
+        "UpdateAgentPoolRequest",
+        "GetAgentPoolRequest",
+        "DeleteAgentPoolRequest",
+        "ListAgentPoolsRequest",
+        "ListAgentPoolsResponse",
     },
 )
 
@@ -40,9 +46,9 @@ class GetGoogleServiceAccountRequest(proto.Message):
 
     Attributes:
         project_id (str):
-            Required. The ID of the Google Cloud Platform
-            Console project that the Google service account
-            is associated with.
+            Required. The ID of the Google Cloud project
+            that the Google service account is associated
+            with.
     """
 
     project_id = proto.Field(
@@ -73,14 +79,15 @@ class UpdateTransferJobRequest(proto.Message):
         job_name (str):
             Required. The name of job to update.
         project_id (str):
-            Required. The ID of the Google Cloud Platform
-            Console project that owns the job.
+            Required. The ID of the Google Cloud project
+            that owns the job.
         transfer_job (google.cloud.storage_transfer_v1.types.TransferJob):
             Required. The job to update. ``transferJob`` is expected to
-            specify only four fields:
+            specify one or more of five fields:
             [description][google.storagetransfer.v1.TransferJob.description],
             [transfer_spec][google.storagetransfer.v1.TransferJob.transfer_spec],
             [notification_config][google.storagetransfer.v1.TransferJob.notification_config],
+            [logging_config][google.storagetransfer.v1.TransferJob.logging_config],
             and [status][google.storagetransfer.v1.TransferJob.status].
             An ``UpdateTransferJobRequest`` that specifies other fields
             are rejected with the error
@@ -95,6 +102,7 @@ class UpdateTransferJobRequest(proto.Message):
             [description][google.storagetransfer.v1.TransferJob.description],
             [transfer_spec][google.storagetransfer.v1.TransferJob.transfer_spec],
             [notification_config][google.storagetransfer.v1.TransferJob.notification_config],
+            [logging_config][google.storagetransfer.v1.TransferJob.logging_config],
             and [status][google.storagetransfer.v1.TransferJob.status].
             To update the ``transfer_spec`` of the job, a complete
             transfer specification must be provided. An incomplete
@@ -128,11 +136,10 @@ class GetTransferJobRequest(proto.Message):
 
     Attributes:
         job_name (str):
-            Required.
-            The job to get.
+            Required. The job to get.
         project_id (str):
-            Required. The ID of the Google Cloud Platform
-            Console project that owns the job.
+            Required. The ID of the Google Cloud project
+            that owns the job.
     """
 
     job_name = proto.Field(
@@ -245,8 +252,8 @@ class RunTransferJobRequest(proto.Message):
         job_name (str):
             Required. The name of the transfer job.
         project_id (str):
-            Required. The ID of the Google Cloud Platform
-            Console project that owns the transfer job.
+            Required. The ID of the Google Cloud project
+            that owns the transfer job.
     """
 
     job_name = proto.Field(
@@ -254,6 +261,182 @@ class RunTransferJobRequest(proto.Message):
         number=1,
     )
     project_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class CreateAgentPoolRequest(proto.Message):
+    r"""Specifies the request passed to CreateAgentPool.
+
+    Attributes:
+        project_id (str):
+            Required. The ID of the Google Cloud project
+            that owns the agent pool.
+        agent_pool (google.cloud.storage_transfer_v1.types.AgentPool):
+            Required. The agent pool to create.
+        agent_pool_id (str):
+            Required. The ID of the agent pool to create.
+
+            The ``agent_pool_id`` must meet the following requirements:
+
+            -  Length of 128 characters or less.
+            -  Not start with the string ``goog``.
+            -  Start with a lowercase ASCII character, followed by:
+
+               -  Zero or more: lowercase Latin alphabet characters,
+                  numerals, hyphens (``-``), periods (``.``),
+                  underscores (``_``), or tildes (``~``).
+               -  One or more numerals or lowercase ASCII characters.
+
+            As expressed by the regular expression:
+            ``^(?!goog)[a-z]([a-z0-9-._~]*[a-z0-9])?$``.
+    """
+
+    project_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    agent_pool = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=transfer_types.AgentPool,
+    )
+    agent_pool_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
+class UpdateAgentPoolRequest(proto.Message):
+    r"""Specifies the request passed to UpdateAgentPool.
+
+    Attributes:
+        agent_pool (google.cloud.storage_transfer_v1.types.AgentPool):
+            Required. The agent pool to update. ``agent_pool`` is
+            expected to specify following fields:
+
+            -  [name][google.storagetransfer.v1.AgentPool.name]
+
+            -  [display_name][google.storagetransfer.v1.AgentPool.display_name]
+
+            -  [bandwidth_limit][google.storagetransfer.v1.AgentPool.bandwidth_limit]
+               An ``UpdateAgentPoolRequest`` with any other fields is
+               rejected with the error
+               [INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT].
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            The [field mask]
+            (https://developers.google.com/protocol-buffers/docs/reference/google.protobuf)
+            of the fields in ``agentPool`` to update in this request.
+            The following ``agentPool`` fields can be updated:
+
+            -  [display_name][google.storagetransfer.v1.AgentPool.display_name]
+
+            -  [bandwidth_limit][google.storagetransfer.v1.AgentPool.bandwidth_limit]
+    """
+
+    agent_pool = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=transfer_types.AgentPool,
+    )
+    update_mask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+
+
+class GetAgentPoolRequest(proto.Message):
+    r"""Specifies the request passed to GetAgentPool.
+
+    Attributes:
+        name (str):
+            Required. The name of the agent pool to get.
+    """
+
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class DeleteAgentPoolRequest(proto.Message):
+    r"""Specifies the request passed to DeleteAgentPool.
+
+    Attributes:
+        name (str):
+            Required. The name of the agent pool to
+            delete.
+    """
+
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListAgentPoolsRequest(proto.Message):
+    r"""The request passed to ListAgentPools.
+
+    Attributes:
+        project_id (str):
+            Required. The ID of the Google Cloud project
+            that owns the job.
+        filter (str):
+            An optional list of query parameters specified as JSON text
+            in the form of:
+
+            ``{"agentPoolNames":["agentpool1","agentpool2",...]}``
+
+            Since ``agentPoolNames`` support multiple values, its values
+            must be specified with array notation. When the filter is
+            either empty or not provided, the list returns all agent
+            pools for the project.
+        page_size (int):
+            The list page size. The max allowed value is ``256``.
+        page_token (str):
+            The list page token.
+    """
+
+    project_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=3,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class ListAgentPoolsResponse(proto.Message):
+    r"""Response from ListAgentPools.
+
+    Attributes:
+        agent_pools (Sequence[google.cloud.storage_transfer_v1.types.AgentPool]):
+            A list of agent pools.
+        next_page_token (str):
+            The list next page token.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    agent_pools = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=transfer_types.AgentPool,
+    )
+    next_page_token = proto.Field(
         proto.STRING,
         number=2,
     )

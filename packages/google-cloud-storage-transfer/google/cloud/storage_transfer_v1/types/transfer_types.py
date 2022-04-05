@@ -33,14 +33,19 @@ __protobuf__ = proto.module(
         "AwsS3Data",
         "AzureBlobStorageData",
         "HttpData",
+        "PosixFilesystem",
+        "AgentPool",
         "TransferOptions",
         "TransferSpec",
+        "MetadataOptions",
+        "TransferManifest",
         "Schedule",
         "TransferJob",
         "ErrorLogEntry",
         "ErrorSummary",
         "TransferCounters",
         "NotificationConfig",
+        "LoggingConfig",
         "TransferOperation",
     },
 )
@@ -103,15 +108,6 @@ class AzureCredentials(proto.Message):
         sas_token (str):
             Required. Azure shared access signature (SAS).
 
-            .. raw:: html
-
-                <aside class="note">
-                <strong>Note:</strong>Copying data from Azure Data Lake
-                Storage (ADLS) Gen 2 is in [Preview](/products/#product-launch-stages).
-                During Preview, if you are copying data from ADLS Gen 2, you must use an
-                account SAS.
-                </aside>
-
             For more information about SAS, see `Grant limited access to
             Azure Storage resources using shared access signatures
             (SAS) <https://docs.microsoft.com/en-us/azure/storage/common/storage-sas-overview>`__.
@@ -124,7 +120,7 @@ class AzureCredentials(proto.Message):
 
 
 class ObjectConditions(proto.Message):
-    r"""Conditions that determine which objects will be transferred. Applies
+    r"""Conditions that determine which objects are transferred. Applies
     only to Cloud Data Sources such as S3, Azure, and Cloud Storage.
 
     The "last modification time" refers to the time of the last change
@@ -133,40 +129,42 @@ class ObjectConditions(proto.Message):
     field of S3 objects, and the ``Last-Modified`` header of Azure
     blobs.
 
+    Transfers with a
+    [PosixFilesystem][google.storagetransfer.v1.PosixFilesystem] source
+    or destination don't support ``ObjectConditions``.
+
     Attributes:
         min_time_elapsed_since_last_modification (google.protobuf.duration_pb2.Duration):
-            If specified, only objects with a "last modification time"
-            before ``NOW`` -
-            ``min_time_elapsed_since_last_modification`` and objects
-            that don't have a "last modification time" are transferred.
-
-            For each
+            Ensures that objects are not transferred until a specific
+            minimum time has elapsed after the "last modification time".
+            When a
             [TransferOperation][google.storagetransfer.v1.TransferOperation]
-            started by this
-            [TransferJob][google.storagetransfer.v1.TransferJob],
-            ``NOW`` refers to the [start_time]
-            [google.storagetransfer.v1.TransferOperation.start_time] of
-            the ``TransferOperation``.
+            begins, objects with a "last modification time" are
+            transferred only if the elapsed time between the
+            [start_time][google.storagetransfer.v1.TransferOperation.start_time]
+            of the ``TransferOperation`` and the "last modification
+            time" of the object is equal to or greater than the value of
+            min_time_elapsed_since_last_modification`. Objects that do
+            not have a "last modification time" are also transferred.
         max_time_elapsed_since_last_modification (google.protobuf.duration_pb2.Duration):
-            If specified, only objects with a "last modification time"
-            on or after ``NOW`` -
-            ``max_time_elapsed_since_last_modification`` and objects
-            that don't have a "last modification time" are transferred.
-
-            For each
+            Ensures that objects are not transferred if a specific
+            maximum time has elapsed since the "last modification time".
+            When a
             [TransferOperation][google.storagetransfer.v1.TransferOperation]
-            started by this
-            [TransferJob][google.storagetransfer.v1.TransferJob],
-            ``NOW`` refers to the [start_time]
-            [google.storagetransfer.v1.TransferOperation.start_time] of
-            the ``TransferOperation``.
+            begins, objects with a "last modification time" are
+            transferred only if the elapsed time between the
+            [start_time][google.storagetransfer.v1.TransferOperation.start_time]
+            of the ``TransferOperation``\ and the "last modification
+            time" of the object is less than the value of
+            max_time_elapsed_since_last_modification`. Objects that do
+            not have a "last modification time" are also transferred.
         include_prefixes (Sequence[str]):
             If you specify ``include_prefixes``, Storage Transfer
             Service uses the items in the ``include_prefixes`` array to
             determine which objects to include in a transfer. Objects
             must start with one of the matching ``include_prefixes`` for
-            inclusion in the transfer. If [exclude_prefixes]
-            [google.storagetransfer.v1.ObjectConditions.exclude_prefixes]
+            inclusion in the transfer. If
+            [exclude_prefixes][google.storagetransfer.v1.ObjectConditions.exclude_prefixes]
             is specified, objects must not start with any of the
             ``exclude_prefixes`` specified for inclusion in the
             transfer.
@@ -222,8 +220,8 @@ class ObjectConditions(proto.Message):
                the object namespace. No exclude-prefix may be a prefix
                of another exclude-prefix.
 
-            -  If [include_prefixes]
-               [google.storagetransfer.v1.ObjectConditions.include_prefixes]
+            -  If
+               [include_prefixes][google.storagetransfer.v1.ObjectConditions.include_prefixes]
                is specified, then each exclude-prefix must start with
                the value of a path explicitly included by
                ``include_prefixes``.
@@ -250,7 +248,7 @@ class ObjectConditions(proto.Message):
             If specified, only objects with a "last
             modification time" before this timestamp and
             objects that don't have a "last modification
-            time" will be transferred.
+            time" are transferred.
     """
 
     min_time_elapsed_since_last_modification = proto.Field(
@@ -326,8 +324,7 @@ class AwsS3Data(proto.Message):
         aws_access_key (google.cloud.storage_transfer_v1.types.AwsAccessKey):
             Input only. AWS access key used to sign the API requests to
             the AWS S3 bucket. Permissions on the bucket must be granted
-            to the access ID of the AWS access key. This field is
-            required.
+            to the access ID of the AWS access key.
 
             For information on our data retention policy for user
             credentials, see `User
@@ -339,13 +336,17 @@ class AwsS3Data(proto.Message):
             object prefix. As such, it should generally not
             begin with a '/'.
         role_arn (str):
-            Input only. Role arn to support temporary credentials via
-            AssumeRoleWithWebIdentity.
+            The Amazon Resource Name (ARN) of the role to support
+            temporary credentials via ``AssumeRoleWithWebIdentity``. For
+            more information about ARNs, see `IAM
+            ARNs <https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_identifiers.html#identifiers-arns>`__.
 
-            When role arn is provided, transfer service will fetch
-            temporary credentials for the session using
-            AssumeRoleWithWebIdentity call for the provided role using
-            the [GoogleServiceAccount] for this project.
+            When a role ARN is provided, Transfer Service fetches
+            temporary credentials for the session using a
+            ``AssumeRoleWithWebIdentity`` call for the provided role
+            using the
+            [GoogleServiceAccount][google.storagetransfer.v1.GoogleServiceAccount]
+            for this project.
     """
 
     bucket_name = proto.Field(
@@ -443,10 +444,10 @@ class HttpData(proto.Message):
        sink is ``<hostname>/<URL-path>``.
 
     -  If the specified size of an object does not match the actual size
-       of the object fetched, the object will not be transferred.
+       of the object fetched, the object is not transferred.
 
     -  If the specified MD5 does not match the MD5 computed from the
-       transferred bytes, the object transfer will fail.
+       transferred bytes, the object transfer fails.
 
     -  Ensure that each URL you specify is publicly accessible. For
        example, in Cloud Storage you can [share an object publicly]
@@ -473,6 +474,82 @@ class HttpData(proto.Message):
     )
 
 
+class PosixFilesystem(proto.Message):
+    r"""A POSIX filesystem resource.
+
+    Attributes:
+        root_directory (str):
+            Root directory path to the filesystem.
+    """
+
+    root_directory = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class AgentPool(proto.Message):
+    r"""Represents an On-Premises Agent pool.
+
+    Attributes:
+        name (str):
+            Required. Specifies a unique string that identifies the
+            agent pool.
+
+            Format: ``projects/{project_id}/agentPools/{agent_pool_id}``
+        display_name (str):
+            Specifies the client-specified AgentPool
+            description.
+        state (google.cloud.storage_transfer_v1.types.AgentPool.State):
+            Output only. Specifies the state of the
+            AgentPool.
+        bandwidth_limit (google.cloud.storage_transfer_v1.types.AgentPool.BandwidthLimit):
+            Specifies the bandwidth limit details. If
+            this field is unspecified, the default value is
+            set as 'No Limit'.
+    """
+
+    class State(proto.Enum):
+        r"""The state of an AgentPool."""
+        STATE_UNSPECIFIED = 0
+        CREATING = 1
+        CREATED = 2
+        DELETING = 3
+
+    class BandwidthLimit(proto.Message):
+        r"""Specifies a bandwidth limit for an agent pool.
+
+        Attributes:
+            limit_mbps (int):
+                Bandwidth rate in megabytes per second,
+                distributed across all the agents in the pool.
+        """
+
+        limit_mbps = proto.Field(
+            proto.INT64,
+            number=1,
+        )
+
+    name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    state = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=State,
+    )
+    bandwidth_limit = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=BandwidthLimit,
+    )
+
+
 class TransferOptions(proto.Message):
     r"""TransferOptions define the actions to be performed on objects
     in a transfer.
@@ -483,24 +560,39 @@ class TransferOptions(proto.Message):
             in the sink. The default is that only objects
             that are different from the source are
             ovewritten. If true, all objects in the sink
-            whose name matches an object in the source will
-            be overwritten with the source object.
+            whose name matches an object in the source are
+            overwritten with the source object.
         delete_objects_unique_in_sink (bool):
             Whether objects that exist only in the sink should be
             deleted.
 
             **Note:** This option and
-            [delete_objects_from_source_after_transfer]
-            [google.storagetransfer.v1.TransferOptions.delete_objects_from_source_after_transfer]
+            [delete_objects_from_source_after_transfer][google.storagetransfer.v1.TransferOptions.delete_objects_from_source_after_transfer]
             are mutually exclusive.
         delete_objects_from_source_after_transfer (bool):
             Whether objects should be deleted from the source after they
             are transferred to the sink.
 
-            **Note:** This option and [delete_objects_unique_in_sink]
-            [google.storagetransfer.v1.TransferOptions.delete_objects_unique_in_sink]
+            **Note:** This option and
+            [delete_objects_unique_in_sink][google.storagetransfer.v1.TransferOptions.delete_objects_unique_in_sink]
             are mutually exclusive.
+        overwrite_when (google.cloud.storage_transfer_v1.types.TransferOptions.OverwriteWhen):
+            When to overwrite objects that already exist in the sink. If
+            not set overwrite behavior is determined by
+            [overwrite_objects_already_existing_in_sink][google.storagetransfer.v1.TransferOptions.overwrite_objects_already_existing_in_sink].
+        metadata_options (google.cloud.storage_transfer_v1.types.MetadataOptions):
+            Represents the selected metadata options for
+            a transfer job. This feature is in Preview.
     """
+
+    class OverwriteWhen(proto.Enum):
+        r"""Specifies when to overwrite an object in the sink when an
+        object with matching name is found in the source.
+        """
+        OVERWRITE_WHEN_UNSPECIFIED = 0
+        DIFFERENT = 1
+        NEVER = 2
+        ALWAYS = 3
 
     overwrite_objects_already_existing_in_sink = proto.Field(
         proto.BOOL,
@@ -513,6 +605,16 @@ class TransferOptions(proto.Message):
     delete_objects_from_source_after_transfer = proto.Field(
         proto.BOOL,
         number=3,
+    )
+    overwrite_when = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=OverwriteWhen,
+    )
+    metadata_options = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message="MetadataOptions",
     )
 
 
@@ -531,6 +633,10 @@ class TransferSpec(proto.Message):
             A Cloud Storage data sink.
 
             This field is a member of `oneof`_ ``data_sink``.
+        posix_data_sink (google.cloud.storage_transfer_v1.types.PosixFilesystem):
+            A POSIX Filesystem data sink.
+
+            This field is a member of `oneof`_ ``data_sink``.
         gcs_data_source (google.cloud.storage_transfer_v1.types.GcsData):
             A Cloud Storage data source.
 
@@ -543,10 +649,18 @@ class TransferSpec(proto.Message):
             An HTTP URL data source.
 
             This field is a member of `oneof`_ ``data_source``.
+        posix_data_source (google.cloud.storage_transfer_v1.types.PosixFilesystem):
+            A POSIX Filesystem data source.
+
+            This field is a member of `oneof`_ ``data_source``.
         azure_blob_storage_data_source (google.cloud.storage_transfer_v1.types.AzureBlobStorageData):
             An Azure Blob Storage data source.
 
             This field is a member of `oneof`_ ``data_source``.
+        gcs_intermediate_data_location (google.cloud.storage_transfer_v1.types.GcsData):
+            Cloud Storage intermediate data location.
+
+            This field is a member of `oneof`_ ``intermediate_data_location``.
         object_conditions (google.cloud.storage_transfer_v1.types.ObjectConditions):
             Only objects that satisfy these object
             conditions are included in the set of data
@@ -559,6 +673,20 @@ class TransferSpec(proto.Message):
             is ``true`` and time-based object conditions such as 'last
             modification time' are specified, the request fails with an
             [INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT] error.
+        transfer_manifest (google.cloud.storage_transfer_v1.types.TransferManifest):
+            A manifest file provides a list of objects to
+            be transferred from the data source. This field
+            points to the location of the manifest file.
+            Otherwise, the entire source bucket is used.
+            ObjectConditions still apply.
+        source_agent_pool_name (str):
+            Specifies the agent pool name associated with
+            the posix data source. When unspecified, the
+            default name is used.
+        sink_agent_pool_name (str):
+            Specifies the agent pool name associated with
+            the posix data sink. When unspecified, the
+            default name is used.
     """
 
     gcs_data_sink = proto.Field(
@@ -566,6 +694,12 @@ class TransferSpec(proto.Message):
         number=4,
         oneof="data_sink",
         message="GcsData",
+    )
+    posix_data_sink = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        oneof="data_sink",
+        message="PosixFilesystem",
     )
     gcs_data_source = proto.Field(
         proto.MESSAGE,
@@ -585,11 +719,23 @@ class TransferSpec(proto.Message):
         oneof="data_source",
         message="HttpData",
     )
+    posix_data_source = proto.Field(
+        proto.MESSAGE,
+        number=14,
+        oneof="data_source",
+        message="PosixFilesystem",
+    )
     azure_blob_storage_data_source = proto.Field(
         proto.MESSAGE,
         number=8,
         oneof="data_source",
         message="AzureBlobStorageData",
+    )
+    gcs_intermediate_data_location = proto.Field(
+        proto.MESSAGE,
+        number=16,
+        oneof="intermediate_data_location",
+        message="GcsData",
     )
     object_conditions = proto.Field(
         proto.MESSAGE,
@@ -600,6 +746,207 @@ class TransferSpec(proto.Message):
         proto.MESSAGE,
         number=6,
         message="TransferOptions",
+    )
+    transfer_manifest = proto.Field(
+        proto.MESSAGE,
+        number=15,
+        message="TransferManifest",
+    )
+    source_agent_pool_name = proto.Field(
+        proto.STRING,
+        number=17,
+    )
+    sink_agent_pool_name = proto.Field(
+        proto.STRING,
+        number=18,
+    )
+
+
+class MetadataOptions(proto.Message):
+    r"""Specifies the metadata options for running a transfer.
+
+    Attributes:
+        symlink (google.cloud.storage_transfer_v1.types.MetadataOptions.Symlink):
+            Specifies how symlinks should be handled by
+            the transfer. By default, symlinks are not
+            preserved. Only applicable to transfers
+            involving POSIX file systems, and ignored for
+            other transfers.
+        mode (google.cloud.storage_transfer_v1.types.MetadataOptions.Mode):
+            Specifies how each file's mode attribute
+            should be handled by the transfer. By default,
+            mode is not preserved. Only applicable to
+            transfers involving POSIX file systems, and
+            ignored for other transfers.
+        gid (google.cloud.storage_transfer_v1.types.MetadataOptions.GID):
+            Specifies how each file's POSIX group ID
+            (GID) attribute should be handled by the
+            transfer. By default, GID is not preserved. Only
+            applicable to transfers involving POSIX file
+            systems, and ignored for other transfers.
+        uid (google.cloud.storage_transfer_v1.types.MetadataOptions.UID):
+            Specifies how each file's POSIX user ID (UID)
+            attribute should be handled by the transfer. By
+            default, UID is not preserved. Only applicable
+            to transfers involving POSIX file systems, and
+            ignored for other transfers.
+        acl (google.cloud.storage_transfer_v1.types.MetadataOptions.Acl):
+            Specifies how each object's ACLs should be preserved for
+            transfers between Google Cloud Storage buckets. If
+            unspecified, the default behavior is the same as
+            ACL_DESTINATION_BUCKET_DEFAULT.
+        storage_class (google.cloud.storage_transfer_v1.types.MetadataOptions.StorageClass):
+            Specifies the storage class to set on objects being
+            transferred to Google Cloud Storage buckets. If unspecified,
+            the default behavior is the same as
+            [STORAGE_CLASS_DESTINATION_BUCKET_DEFAULT][google.storagetransfer.v1.MetadataOptions.StorageClass.STORAGE_CLASS_DESTINATION_BUCKET_DEFAULT].
+        temporary_hold (google.cloud.storage_transfer_v1.types.MetadataOptions.TemporaryHold):
+            Specifies how each object's temporary hold status should be
+            preserved for transfers between Google Cloud Storage
+            buckets. If unspecified, the default behavior is the same as
+            [TEMPORARY_HOLD_PRESERVE][google.storagetransfer.v1.MetadataOptions.TemporaryHold.TEMPORARY_HOLD_PRESERVE].
+        kms_key (google.cloud.storage_transfer_v1.types.MetadataOptions.KmsKey):
+            Specifies how each object's Cloud KMS customer-managed
+            encryption key (CMEK) is preserved for transfers between
+            Google Cloud Storage buckets. If unspecified, the default
+            behavior is the same as
+            [KMS_KEY_DESTINATION_BUCKET_DEFAULT][google.storagetransfer.v1.MetadataOptions.KmsKey.KMS_KEY_DESTINATION_BUCKET_DEFAULT].
+        time_created (google.cloud.storage_transfer_v1.types.MetadataOptions.TimeCreated):
+            Specifies how each object's ``timeCreated`` metadata is
+            preserved for transfers between Google Cloud Storage
+            buckets. If unspecified, the default behavior is the same as
+            [TIME_CREATED_SKIP][google.storagetransfer.v1.MetadataOptions.TimeCreated.TIME_CREATED_SKIP].
+    """
+
+    class Symlink(proto.Enum):
+        r"""Whether symlinks should be skipped or preserved during a
+        transfer job.
+        """
+        SYMLINK_UNSPECIFIED = 0
+        SYMLINK_SKIP = 1
+        SYMLINK_PRESERVE = 2
+
+    class Mode(proto.Enum):
+        r"""Options for handling file mode attribute."""
+        MODE_UNSPECIFIED = 0
+        MODE_SKIP = 1
+        MODE_PRESERVE = 2
+
+    class GID(proto.Enum):
+        r"""Options for handling file GID attribute."""
+        GID_UNSPECIFIED = 0
+        GID_SKIP = 1
+        GID_NUMBER = 2
+
+    class UID(proto.Enum):
+        r"""Options for handling file UID attribute."""
+        UID_UNSPECIFIED = 0
+        UID_SKIP = 1
+        UID_NUMBER = 2
+
+    class Acl(proto.Enum):
+        r"""Options for handling Cloud Storage object ACLs."""
+        ACL_UNSPECIFIED = 0
+        ACL_DESTINATION_BUCKET_DEFAULT = 1
+        ACL_PRESERVE = 2
+
+    class StorageClass(proto.Enum):
+        r"""Options for handling Google Cloud Storage object storage
+        class.
+        """
+        STORAGE_CLASS_UNSPECIFIED = 0
+        STORAGE_CLASS_DESTINATION_BUCKET_DEFAULT = 1
+        STORAGE_CLASS_PRESERVE = 2
+        STORAGE_CLASS_STANDARD = 3
+        STORAGE_CLASS_NEARLINE = 4
+        STORAGE_CLASS_COLDLINE = 5
+        STORAGE_CLASS_ARCHIVE = 6
+
+    class TemporaryHold(proto.Enum):
+        r"""Options for handling temporary holds for Google Cloud Storage
+        objects.
+        """
+        TEMPORARY_HOLD_UNSPECIFIED = 0
+        TEMPORARY_HOLD_SKIP = 1
+        TEMPORARY_HOLD_PRESERVE = 2
+
+    class KmsKey(proto.Enum):
+        r"""Options for handling the KmsKey setting for Google Cloud
+        Storage objects.
+        """
+        KMS_KEY_UNSPECIFIED = 0
+        KMS_KEY_DESTINATION_BUCKET_DEFAULT = 1
+        KMS_KEY_PRESERVE = 2
+
+    class TimeCreated(proto.Enum):
+        r"""Options for handling ``timeCreated`` metadata for Google Cloud
+        Storage objects.
+        """
+        TIME_CREATED_UNSPECIFIED = 0
+        TIME_CREATED_SKIP = 1
+        TIME_CREATED_PRESERVE_AS_CUSTOM_TIME = 2
+
+    symlink = proto.Field(
+        proto.ENUM,
+        number=1,
+        enum=Symlink,
+    )
+    mode = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=Mode,
+    )
+    gid = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=GID,
+    )
+    uid = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum=UID,
+    )
+    acl = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum=Acl,
+    )
+    storage_class = proto.Field(
+        proto.ENUM,
+        number=6,
+        enum=StorageClass,
+    )
+    temporary_hold = proto.Field(
+        proto.ENUM,
+        number=7,
+        enum=TemporaryHold,
+    )
+    kms_key = proto.Field(
+        proto.ENUM,
+        number=8,
+        enum=KmsKey,
+    )
+    time_created = proto.Field(
+        proto.ENUM,
+        number=9,
+        enum=TimeCreated,
+    )
+
+
+class TransferManifest(proto.Message):
+    r"""Specifies where the manifest is located.
+
+    Attributes:
+        location (str):
+            Specifies the path to the manifest in Cloud Storage. The
+            Google-managed service account for the transfer must have
+            ``storage.objects.get`` permission for this object. An
+            example path is ``gs://bucket_name/path/manifest.csv``.
+    """
+
+    location = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 
@@ -617,19 +964,19 @@ class Schedule(proto.Message):
             request.
 
             **Note:** When starting jobs at or near midnight UTC it is
-            possible that a job will start later than expected. For
-            example, if you send an outbound request on June 1 one
-            millisecond prior to midnight UTC and the Storage Transfer
-            Service server receives the request on June 2, then it will
-            create a TransferJob with ``schedule_start_date`` set to
-            June 2 and a ``start_time_of_day`` set to midnight UTC. The
-            first scheduled
+            possible that a job starts later than expected. For example,
+            if you send an outbound request on June 1 one millisecond
+            prior to midnight UTC and the Storage Transfer Service
+            server receives the request on June 2, then it creates a
+            TransferJob with ``schedule_start_date`` set to June 2 and a
+            ``start_time_of_day`` set to midnight UTC. The first
+            scheduled
             [TransferOperation][google.storagetransfer.v1.TransferOperation]
-            will take place on June 3 at midnight UTC.
+            takes place on June 3 at midnight UTC.
         schedule_end_date (google.type.date_pb2.Date):
             The last day a transfer runs. Date boundaries are determined
-            relative to UTC time. A job will run once per 24 hours
-            within the following guidelines:
+            relative to UTC time. A job runs once per 24 hours within
+            the following guidelines:
 
             -  If ``schedule_end_date`` and
                [schedule_start_date][google.storagetransfer.v1.Schedule.schedule_start_date]
@@ -637,7 +984,7 @@ class Schedule(proto.Message):
                transfer is executed only one time.
             -  If ``schedule_end_date`` is later than
                ``schedule_start_date`` and ``schedule_end_date`` is in
-               the future relative to UTC, the job will run each day at
+               the future relative to UTC, the job runs each day at
                [start_time_of_day][google.storagetransfer.v1.Schedule.start_time_of_day]
                through ``schedule_end_date``.
         start_time_of_day (google.type.timeofday_pb2.TimeOfDay):
@@ -719,9 +1066,9 @@ class TransferJob(proto.Message):
         name (str):
             A unique name (within the transfer project) assigned when
             the job is created. If this field is empty in a
-            CreateTransferJobRequest, Storage Transfer Service will
-            assign a unique name. Otherwise, the specified name is used
-            as the unique name for this job.
+            CreateTransferJobRequest, Storage Transfer Service assigns a
+            unique name. Otherwise, the specified name is used as the
+            unique name for this job.
 
             If the specified name is in use by a job, the creation
             request fails with an
@@ -729,30 +1076,43 @@ class TransferJob(proto.Message):
 
             This name must start with ``"transferJobs/"`` prefix and end
             with a letter or a number, and should be no more than 128
-            characters. This name must not start with
-            'transferJobs/OPI'. 'transferJobs/OPI' is a reserved prefix.
-            Example:
+            characters. For transfers involving PosixFilesystem, this
+            name must start with ``transferJobs/OPI`` specifically. For
+            all other transfer types, this name must not start with
+            ``transferJobs/OPI``.
+
+            Non-PosixFilesystem example:
             ``"transferJobs/^(?!OPI)[A-Za-z0-9-._~]*[A-Za-z0-9]$"``
 
-            Invalid job names will fail with an
+            PosixFilesystem example:
+            ``"transferJobs/OPI^[A-Za-z0-9-._~]*[A-Za-z0-9]$"``
+
+            Applications must not rely on the enforcement of naming
+            requirements involving OPI.
+
+            Invalid job names fail with an
             [INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT] error.
         description (str):
             A description provided by the user for the
             job. Its max length is 1024 bytes when
             Unicode-encoded.
         project_id (str):
-            The ID of the Google Cloud Platform Project
-            that owns the job.
+            The ID of the Google Cloud project that owns
+            the job.
         transfer_spec (google.cloud.storage_transfer_v1.types.TransferSpec):
             Transfer specification.
         notification_config (google.cloud.storage_transfer_v1.types.NotificationConfig):
-            Notification configuration.
+            Notification configuration. This is not
+            supported for transfers involving
+            PosixFilesystem.
+        logging_config (google.cloud.storage_transfer_v1.types.LoggingConfig):
+            Logging configuration.
         schedule (google.cloud.storage_transfer_v1.types.Schedule):
             Specifies schedule for the transfer job.
             This is an optional field. When the field is not
-            set, the job will never execute a transfer,
-            unless you invoke RunTransferJob or update the
-            job to have a non-empty schedule.
+            set, the job never executes a transfer, unless
+            you invoke RunTransferJob or update the job to
+            have a non-empty schedule.
         status (google.cloud.storage_transfer_v1.types.TransferJob.Status):
             Status of the job. This value MUST be specified for
             ``CreateTransferJobRequests``.
@@ -809,6 +1169,11 @@ class TransferJob(proto.Message):
         proto.MESSAGE,
         number=11,
         message="NotificationConfig",
+    )
+    logging_config = proto.Field(
+        proto.MESSAGE,
+        number=14,
+        message="LoggingConfig",
     )
     schedule = proto.Field(
         proto.MESSAGE,
@@ -875,8 +1240,8 @@ class ErrorSummary(proto.Message):
             Required. Count of this type of error.
         error_log_entries (Sequence[google.cloud.storage_transfer_v1.types.ErrorLogEntry]):
             Error samples.
-            At most 5 error log entries will be recorded for
-            a given error code for a single transfer
+            At most 5 error log entries are recorded for a
+            given error code for a single transfer
             operation.
     """
 
@@ -952,6 +1317,31 @@ class TransferCounters(proto.Message):
         bytes_failed_to_delete_from_sink (int):
             Bytes that failed to be deleted from the data
             sink.
+        directories_found_from_source (int):
+            For transfers involving PosixFilesystem only.
+
+            Number of directories found while listing. For example, if
+            the root directory of the transfer is ``base/`` and there
+            are two other directories, ``a/`` and ``b/`` under this
+            directory, the count after listing ``base/``, ``base/a/``
+            and ``base/b/`` is 3.
+        directories_failed_to_list_from_source (int):
+            For transfers involving PosixFilesystem only.
+            Number of listing failures for each directory
+            found at the source. Potential failures when
+            listing a directory include permission failure
+            or block failure. If listing a directory fails,
+            no files in the directory are transferred.
+        directories_successfully_listed_from_source (int):
+            For transfers involving PosixFilesystem only.
+            Number of successful listings for each directory
+            found at the source.
+        intermediate_objects_cleaned_up (int):
+            Number of successfully cleaned up
+            intermediate objects.
+        intermediate_objects_failed_cleaned_up (int):
+            Number of intermediate objects failed cleaned
+            up.
     """
 
     objects_found_from_source = proto.Field(
@@ -1018,12 +1408,32 @@ class TransferCounters(proto.Message):
         proto.INT64,
         number=16,
     )
+    directories_found_from_source = proto.Field(
+        proto.INT64,
+        number=17,
+    )
+    directories_failed_to_list_from_source = proto.Field(
+        proto.INT64,
+        number=18,
+    )
+    directories_successfully_listed_from_source = proto.Field(
+        proto.INT64,
+        number=19,
+    )
+    intermediate_objects_cleaned_up = proto.Field(
+        proto.INT64,
+        number=22,
+    )
+    intermediate_objects_failed_cleaned_up = proto.Field(
+        proto.INT64,
+        number=23,
+    )
 
 
 class NotificationConfig(proto.Message):
-    r"""Specification to configure notifications published to Cloud Pub/Sub.
-    Notifications will be published to the customer-provided topic using
-    the following ``PubsubMessage.attributes``:
+    r"""Specification to configure notifications published to Pub/Sub.
+    Notifications are published to the customer-provided topic using the
+    following ``PubsubMessage.attributes``:
 
     -  ``"eventType"``: one of the
        [EventType][google.storagetransfer.v1.NotificationConfig.EventType]
@@ -1041,16 +1451,16 @@ class NotificationConfig(proto.Message):
        [name][google.storagetransfer.v1.TransferOperation.name] of the
        ``TransferOperation``
 
-    The ``PubsubMessage.data`` will contain a
+    The ``PubsubMessage.data`` contains a
     [TransferOperation][google.storagetransfer.v1.TransferOperation]
     resource formatted according to the specified ``PayloadFormat``.
 
     Attributes:
         pubsub_topic (str):
-            Required. The ``Topic.name`` of the Cloud Pub/Sub topic to
-            which to publish notifications. Must be of the format:
+            Required. The ``Topic.name`` of the Pub/Sub topic to which
+            to publish notifications. Must be of the format:
             ``projects/{project}/topics/{topic}``. Not matching this
-            format will result in an
+            format results in an
             [INVALID_ARGUMENT][google.rpc.Code.INVALID_ARGUMENT] error.
         event_types (Sequence[google.cloud.storage_transfer_v1.types.NotificationConfig.EventType]):
             Event types for which a notification is
@@ -1099,6 +1509,68 @@ class NotificationConfig(proto.Message):
     )
 
 
+class LoggingConfig(proto.Message):
+    r"""Specifies the logging behavior for transfer operations.
+
+    For cloud-to-cloud transfers, logs are sent to Cloud Logging. See
+    `Read transfer
+    logs <https://cloud.google.com/storage-transfer/docs/read-transfer-logs>`__
+    for details.
+
+    For transfers to or from a POSIX file system, logs are stored in the
+    Cloud Storage bucket that is the source or sink of the transfer. See
+    [Managing Transfer for on-premises jobs]
+    (https://cloud.google.com/storage-transfer/docs/managing-on-prem-jobs#viewing-logs)
+    for details.
+
+    Attributes:
+        log_actions (Sequence[google.cloud.storage_transfer_v1.types.LoggingConfig.LoggableAction]):
+            Specifies the actions to be logged. If empty, no logs are
+            generated. Not supported for transfers with PosixFilesystem
+            data sources; use
+            [enable_onprem_gcs_transfer_logs][google.storagetransfer.v1.LoggingConfig.enable_onprem_gcs_transfer_logs]
+            instead.
+        log_action_states (Sequence[google.cloud.storage_transfer_v1.types.LoggingConfig.LoggableActionState]):
+            States in which ``log_actions`` are logged. If empty, no
+            logs are generated. Not supported for transfers with
+            PosixFilesystem data sources; use
+            [enable_onprem_gcs_transfer_logs][google.storagetransfer.v1.LoggingConfig.enable_onprem_gcs_transfer_logs]
+            instead.
+        enable_onprem_gcs_transfer_logs (bool):
+            For transfers with a PosixFilesystem source,
+            this option enables the Cloud Storage transfer
+            logs for this transfer.
+    """
+
+    class LoggableAction(proto.Enum):
+        r"""Loggable actions."""
+        LOGGABLE_ACTION_UNSPECIFIED = 0
+        FIND = 1
+        DELETE = 2
+        COPY = 3
+
+    class LoggableActionState(proto.Enum):
+        r"""Loggable action states."""
+        LOGGABLE_ACTION_STATE_UNSPECIFIED = 0
+        SUCCEEDED = 1
+        FAILED = 2
+
+    log_actions = proto.RepeatedField(
+        proto.ENUM,
+        number=1,
+        enum=LoggableAction,
+    )
+    log_action_states = proto.RepeatedField(
+        proto.ENUM,
+        number=2,
+        enum=LoggableActionState,
+    )
+    enable_onprem_gcs_transfer_logs = proto.Field(
+        proto.BOOL,
+        number=3,
+    )
+
+
 class TransferOperation(proto.Message):
     r"""A description of the execution of a transfer.
 
@@ -1106,8 +1578,8 @@ class TransferOperation(proto.Message):
         name (str):
             A globally unique ID assigned by the system.
         project_id (str):
-            The ID of the Google Cloud Platform Project
-            that owns the operation.
+            The ID of the Google Cloud project that owns
+            the operation.
         transfer_spec (google.cloud.storage_transfer_v1.types.TransferSpec):
             Transfer specification.
         notification_config (google.cloud.storage_transfer_v1.types.NotificationConfig):

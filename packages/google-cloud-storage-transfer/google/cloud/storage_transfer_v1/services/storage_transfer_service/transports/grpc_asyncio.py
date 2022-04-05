@@ -266,12 +266,12 @@ class StorageTransferServiceGrpcAsyncIOTransport(StorageTransferServiceTransport
         Storage Transfer Service to access buckets in the
         project where transfers run or in other projects. Each
         Google service account is associated with one Google
-        Cloud Platform Console project. Users should add this
-        service account to the Google Cloud Storage bucket ACLs
-        to grant access to Storage Transfer Service. This
-        service account is created and owned by Storage Transfer
-        Service and can only be used by Storage Transfer
-        Service.
+        Cloud project. Users
+        should add this service account to the Google Cloud
+        Storage bucket ACLs to grant access to Storage Transfer
+        Service. This service account is created and owned by
+        Storage Transfer Service and can only be used by Storage
+        Transfer Service.
 
         Returns:
             Callable[[~.GetGoogleServiceAccountRequest],
@@ -478,7 +478,8 @@ class StorageTransferServiceGrpcAsyncIOTransport(StorageTransferServiceTransport
         Attempts to start a new TransferOperation for the
         current TransferJob. A TransferJob has a maximum of one
         active TransferOperation. If this method is called while
-        a TransferOperation is active, an error wil be returned.
+        a TransferOperation is active, an error will be
+        returned.
 
         Returns:
             Callable[[~.RunTransferJobRequest],
@@ -497,6 +498,142 @@ class StorageTransferServiceGrpcAsyncIOTransport(StorageTransferServiceTransport
                 response_deserializer=operations_pb2.Operation.FromString,
             )
         return self._stubs["run_transfer_job"]
+
+    @property
+    def create_agent_pool(
+        self,
+    ) -> Callable[
+        [transfer.CreateAgentPoolRequest], Awaitable[transfer_types.AgentPool]
+    ]:
+        r"""Return a callable for the create agent pool method over gRPC.
+
+        Creates an agent pool resource.
+
+        Returns:
+            Callable[[~.CreateAgentPoolRequest],
+                    Awaitable[~.AgentPool]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_agent_pool" not in self._stubs:
+            self._stubs["create_agent_pool"] = self.grpc_channel.unary_unary(
+                "/google.storagetransfer.v1.StorageTransferService/CreateAgentPool",
+                request_serializer=transfer.CreateAgentPoolRequest.serialize,
+                response_deserializer=transfer_types.AgentPool.deserialize,
+            )
+        return self._stubs["create_agent_pool"]
+
+    @property
+    def update_agent_pool(
+        self,
+    ) -> Callable[
+        [transfer.UpdateAgentPoolRequest], Awaitable[transfer_types.AgentPool]
+    ]:
+        r"""Return a callable for the update agent pool method over gRPC.
+
+        Updates an existing agent pool resource.
+
+        Returns:
+            Callable[[~.UpdateAgentPoolRequest],
+                    Awaitable[~.AgentPool]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_agent_pool" not in self._stubs:
+            self._stubs["update_agent_pool"] = self.grpc_channel.unary_unary(
+                "/google.storagetransfer.v1.StorageTransferService/UpdateAgentPool",
+                request_serializer=transfer.UpdateAgentPoolRequest.serialize,
+                response_deserializer=transfer_types.AgentPool.deserialize,
+            )
+        return self._stubs["update_agent_pool"]
+
+    @property
+    def get_agent_pool(
+        self,
+    ) -> Callable[[transfer.GetAgentPoolRequest], Awaitable[transfer_types.AgentPool]]:
+        r"""Return a callable for the get agent pool method over gRPC.
+
+        Gets an agent pool.
+
+        Returns:
+            Callable[[~.GetAgentPoolRequest],
+                    Awaitable[~.AgentPool]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_agent_pool" not in self._stubs:
+            self._stubs["get_agent_pool"] = self.grpc_channel.unary_unary(
+                "/google.storagetransfer.v1.StorageTransferService/GetAgentPool",
+                request_serializer=transfer.GetAgentPoolRequest.serialize,
+                response_deserializer=transfer_types.AgentPool.deserialize,
+            )
+        return self._stubs["get_agent_pool"]
+
+    @property
+    def list_agent_pools(
+        self,
+    ) -> Callable[
+        [transfer.ListAgentPoolsRequest], Awaitable[transfer.ListAgentPoolsResponse]
+    ]:
+        r"""Return a callable for the list agent pools method over gRPC.
+
+        Lists agent pools.
+
+        Returns:
+            Callable[[~.ListAgentPoolsRequest],
+                    Awaitable[~.ListAgentPoolsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_agent_pools" not in self._stubs:
+            self._stubs["list_agent_pools"] = self.grpc_channel.unary_unary(
+                "/google.storagetransfer.v1.StorageTransferService/ListAgentPools",
+                request_serializer=transfer.ListAgentPoolsRequest.serialize,
+                response_deserializer=transfer.ListAgentPoolsResponse.deserialize,
+            )
+        return self._stubs["list_agent_pools"]
+
+    @property
+    def delete_agent_pool(
+        self,
+    ) -> Callable[[transfer.DeleteAgentPoolRequest], Awaitable[empty_pb2.Empty]]:
+        r"""Return a callable for the delete agent pool method over gRPC.
+
+        Deletes an agent pool.
+
+        Returns:
+            Callable[[~.DeleteAgentPoolRequest],
+                    Awaitable[~.Empty]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_agent_pool" not in self._stubs:
+            self._stubs["delete_agent_pool"] = self.grpc_channel.unary_unary(
+                "/google.storagetransfer.v1.StorageTransferService/DeleteAgentPool",
+                request_serializer=transfer.DeleteAgentPoolRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_agent_pool"]
 
     def close(self):
         return self.grpc_channel.close()
