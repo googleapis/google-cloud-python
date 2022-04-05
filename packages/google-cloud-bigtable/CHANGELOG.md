@@ -4,6 +4,20 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+## [2.8.0](https://github.com/googleapis/python-bigtable/compare/v2.7.1...v2.8.0) (2022-04-04)
+
+
+### Features
+
+* Add ListHotTablets API method and protobufs ([#542](https://github.com/googleapis/python-bigtable/issues/542)) ([483f139](https://github.com/googleapis/python-bigtable/commit/483f139f5065d55378bd850c33e89db460119fc1))
+
+
+### Documentation
+
+* explain mutate vs mutate_rows ([#543](https://github.com/googleapis/python-bigtable/issues/543)) ([84cfb0a](https://github.com/googleapis/python-bigtable/commit/84cfb0abdfabd8aa2f292fc0bb7e6deab50f87f1))
+* Remove the limitation that all clusters in a CMEK instance must use the same key ([f008eea](https://github.com/googleapis/python-bigtable/commit/f008eea69a6c7c1a027cefc7f16d46042b524db1))
+* Update `cpu_utilization_percent` limit ([#547](https://github.com/googleapis/python-bigtable/issues/547)) ([f008eea](https://github.com/googleapis/python-bigtable/commit/f008eea69a6c7c1a027cefc7f16d46042b524db1))
+
 ### [2.7.1](https://github.com/googleapis/python-bigtable/compare/v2.7.0...v2.7.1) (2022-03-17)
 
 
