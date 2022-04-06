@@ -79,13 +79,36 @@ class DockerImage(proto.Message):
             the JavaScript Date constructor.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    uri = proto.Field(proto.STRING, number=2,)
-    tags = proto.RepeatedField(proto.STRING, number=3,)
-    image_size_bytes = proto.Field(proto.INT64, number=4,)
-    upload_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
-    media_type = proto.Field(proto.STRING, number=6,)
-    build_time = proto.Field(proto.MESSAGE, number=7, message=timestamp_pb2.Timestamp,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    uri = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    tags = proto.RepeatedField(
+        proto.STRING,
+        number=3,
+    )
+    image_size_bytes = proto.Field(
+        proto.INT64,
+        number=4,
+    )
+    upload_time = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+    media_type = proto.Field(
+        proto.STRING,
+        number=6,
+    )
+    build_time = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 class ListDockerImagesRequest(proto.Message):
@@ -102,9 +125,18 @@ class ListDockerImagesRequest(proto.Message):
             request, if any.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListDockerImagesResponse(proto.Message):
@@ -123,8 +155,15 @@ class ListDockerImagesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    docker_images = proto.RepeatedField(proto.MESSAGE, number=1, message="DockerImage",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    docker_images = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="DockerImage",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetDockerImageRequest(proto.Message):
@@ -135,7 +174,10 @@ class GetDockerImageRequest(proto.Message):
             Required. The name of the docker images.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

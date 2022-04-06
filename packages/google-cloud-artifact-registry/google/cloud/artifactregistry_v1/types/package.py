@@ -49,10 +49,24 @@ class Package(proto.Message):
             package.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    display_name = proto.Field(proto.STRING, number=2,)
-    create_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    display_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 class ListPackagesRequest(proto.Message):
@@ -70,9 +84,18 @@ class ListPackagesRequest(proto.Message):
             request, if any.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListPackagesResponse(proto.Message):
@@ -91,8 +114,15 @@ class ListPackagesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    packages = proto.RepeatedField(proto.MESSAGE, number=1, message="Package",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    packages = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Package",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetPackageRequest(proto.Message):
@@ -104,7 +134,10 @@ class GetPackageRequest(proto.Message):
             retrieve.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class DeletePackageRequest(proto.Message):
@@ -115,7 +148,10 @@ class DeletePackageRequest(proto.Message):
             Required. The name of the package to delete.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

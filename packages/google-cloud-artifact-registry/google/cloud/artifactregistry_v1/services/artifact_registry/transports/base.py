@@ -139,10 +139,14 @@ class ArtifactRegistryTransport(abc.ABC):
         # Precompute the wrapped methods.
         self._wrapped_methods = {
             self.list_docker_images: gapic_v1.method.wrap_method(
-                self.list_docker_images, default_timeout=None, client_info=client_info,
+                self.list_docker_images,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_docker_image: gapic_v1.method.wrap_method(
-                self.get_docker_image, default_timeout=None, client_info=client_info,
+                self.get_docker_image,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.import_apt_artifacts: gapic_v1.method.wrap_method(
                 self.import_apt_artifacts,
@@ -155,64 +159,104 @@ class ArtifactRegistryTransport(abc.ABC):
                 client_info=client_info,
             ),
             self.list_repositories: gapic_v1.method.wrap_method(
-                self.list_repositories, default_timeout=None, client_info=client_info,
+                self.list_repositories,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_repository: gapic_v1.method.wrap_method(
-                self.get_repository, default_timeout=None, client_info=client_info,
+                self.get_repository,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.create_repository: gapic_v1.method.wrap_method(
-                self.create_repository, default_timeout=None, client_info=client_info,
+                self.create_repository,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.update_repository: gapic_v1.method.wrap_method(
-                self.update_repository, default_timeout=None, client_info=client_info,
+                self.update_repository,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.delete_repository: gapic_v1.method.wrap_method(
-                self.delete_repository, default_timeout=None, client_info=client_info,
+                self.delete_repository,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_packages: gapic_v1.method.wrap_method(
-                self.list_packages, default_timeout=None, client_info=client_info,
+                self.list_packages,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_package: gapic_v1.method.wrap_method(
-                self.get_package, default_timeout=None, client_info=client_info,
+                self.get_package,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.delete_package: gapic_v1.method.wrap_method(
-                self.delete_package, default_timeout=None, client_info=client_info,
+                self.delete_package,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_versions: gapic_v1.method.wrap_method(
-                self.list_versions, default_timeout=None, client_info=client_info,
+                self.list_versions,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_version: gapic_v1.method.wrap_method(
-                self.get_version, default_timeout=None, client_info=client_info,
+                self.get_version,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.delete_version: gapic_v1.method.wrap_method(
-                self.delete_version, default_timeout=None, client_info=client_info,
+                self.delete_version,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_files: gapic_v1.method.wrap_method(
-                self.list_files, default_timeout=None, client_info=client_info,
+                self.list_files,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_file: gapic_v1.method.wrap_method(
-                self.get_file, default_timeout=None, client_info=client_info,
+                self.get_file,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.list_tags: gapic_v1.method.wrap_method(
-                self.list_tags, default_timeout=None, client_info=client_info,
+                self.list_tags,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_tag: gapic_v1.method.wrap_method(
-                self.get_tag, default_timeout=None, client_info=client_info,
+                self.get_tag,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.create_tag: gapic_v1.method.wrap_method(
-                self.create_tag, default_timeout=None, client_info=client_info,
+                self.create_tag,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.update_tag: gapic_v1.method.wrap_method(
-                self.update_tag, default_timeout=None, client_info=client_info,
+                self.update_tag,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.delete_tag: gapic_v1.method.wrap_method(
-                self.delete_tag, default_timeout=None, client_info=client_info,
+                self.delete_tag,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.set_iam_policy: gapic_v1.method.wrap_method(
-                self.set_iam_policy, default_timeout=None, client_info=client_info,
+                self.set_iam_policy,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.get_iam_policy: gapic_v1.method.wrap_method(
-                self.get_iam_policy, default_timeout=None, client_info=client_info,
+                self.get_iam_policy,
+                default_timeout=None,
+                client_info=client_info,
             ),
             self.test_iam_permissions: gapic_v1.method.wrap_method(
                 self.test_iam_permissions,
@@ -234,9 +278,9 @@ class ArtifactRegistryTransport(abc.ABC):
     def close(self):
         """Closes resources associated with the transport.
 
-       .. warning::
-            Only call this method if the transport is NOT shared
-            with other clients - this may cause errors in other clients!
+        .. warning::
+             Only call this method if the transport is NOT shared
+             with other clients - this may cause errors in other clients!
         """
         raise NotImplementedError()
 

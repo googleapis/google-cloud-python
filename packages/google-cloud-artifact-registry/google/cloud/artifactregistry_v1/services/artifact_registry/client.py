@@ -74,7 +74,10 @@ class ArtifactRegistryClientMeta(type):
     _transport_registry["grpc"] = ArtifactRegistryGrpcTransport
     _transport_registry["grpc_asyncio"] = ArtifactRegistryGrpcAsyncIOTransport
 
-    def get_transport_class(cls, label: str = None,) -> Type[ArtifactRegistryTransport]:
+    def get_transport_class(
+        cls,
+        label: str = None,
+    ) -> Type[ArtifactRegistryTransport]:
         """Returns an appropriate transport class.
 
         Args:
@@ -193,7 +196,10 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
 
     @staticmethod
     def apt_artifact_path(
-        project: str, location: str, repository: str, apt_artifact: str,
+        project: str,
+        location: str,
+        repository: str,
+        apt_artifact: str,
     ) -> str:
         """Returns a fully-qualified apt_artifact string."""
         return "projects/{project}/locations/{location}/repositories/{repository}/aptArtifacts/{apt_artifact}".format(
@@ -214,7 +220,10 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
 
     @staticmethod
     def docker_image_path(
-        project: str, location: str, repository: str, docker_image: str,
+        project: str,
+        location: str,
+        repository: str,
+        docker_image: str,
     ) -> str:
         """Returns a fully-qualified docker_image string."""
         return "projects/{project}/locations/{location}/repositories/{repository}/dockerImages/{docker_image}".format(
@@ -234,10 +243,18 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def file_path(project: str, location: str, repository: str, file: str,) -> str:
+    def file_path(
+        project: str,
+        location: str,
+        repository: str,
+        file: str,
+    ) -> str:
         """Returns a fully-qualified file string."""
         return "projects/{project}/locations/{location}/repositories/{repository}/files/{file}".format(
-            project=project, location=location, repository=repository, file=file,
+            project=project,
+            location=location,
+            repository=repository,
+            file=file,
         )
 
     @staticmethod
@@ -250,9 +267,13 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def project_settings_path(project: str,) -> str:
+    def project_settings_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified project_settings string."""
-        return "projects/{project}/projectSettings".format(project=project,)
+        return "projects/{project}/projectSettings".format(
+            project=project,
+        )
 
     @staticmethod
     def parse_project_settings_path(path: str) -> Dict[str, str]:
@@ -261,10 +282,18 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def repository_path(project: str, location: str, repository: str,) -> str:
+    def repository_path(
+        project: str,
+        location: str,
+        repository: str,
+    ) -> str:
         """Returns a fully-qualified repository string."""
-        return "projects/{project}/locations/{location}/repositories/{repository}".format(
-            project=project, location=location, repository=repository,
+        return (
+            "projects/{project}/locations/{location}/repositories/{repository}".format(
+                project=project,
+                location=location,
+                repository=repository,
+            )
         )
 
     @staticmethod
@@ -278,7 +307,11 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
 
     @staticmethod
     def tag_path(
-        project: str, location: str, repository: str, package: str, tag: str,
+        project: str,
+        location: str,
+        repository: str,
+        package: str,
+        tag: str,
     ) -> str:
         """Returns a fully-qualified tag string."""
         return "projects/{project}/locations/{location}/repositories/{repository}/packages/{package}/tags/{tag}".format(
@@ -300,7 +333,11 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
 
     @staticmethod
     def version_path(
-        project: str, location: str, repository: str, package: str, version: str,
+        project: str,
+        location: str,
+        repository: str,
+        package: str,
+        version: str,
     ) -> str:
         """Returns a fully-qualified version string."""
         return "projects/{project}/locations/{location}/repositories/{repository}/packages/{package}/versions/{version}".format(
@@ -322,7 +359,10 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
 
     @staticmethod
     def yum_artifact_path(
-        project: str, location: str, repository: str, yum_artifact: str,
+        project: str,
+        location: str,
+        repository: str,
+        yum_artifact: str,
     ) -> str:
         """Returns a fully-qualified yum_artifact string."""
         return "projects/{project}/locations/{location}/repositories/{repository}/yumArtifacts/{yum_artifact}".format(
@@ -342,7 +382,9 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_billing_account_path(billing_account: str,) -> str:
+    def common_billing_account_path(
+        billing_account: str,
+    ) -> str:
         """Returns a fully-qualified billing_account string."""
         return "billingAccounts/{billing_account}".format(
             billing_account=billing_account,
@@ -355,9 +397,13 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_folder_path(folder: str,) -> str:
+    def common_folder_path(
+        folder: str,
+    ) -> str:
         """Returns a fully-qualified folder string."""
-        return "folders/{folder}".format(folder=folder,)
+        return "folders/{folder}".format(
+            folder=folder,
+        )
 
     @staticmethod
     def parse_common_folder_path(path: str) -> Dict[str, str]:
@@ -366,9 +412,13 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_organization_path(organization: str,) -> str:
+    def common_organization_path(
+        organization: str,
+    ) -> str:
         """Returns a fully-qualified organization string."""
-        return "organizations/{organization}".format(organization=organization,)
+        return "organizations/{organization}".format(
+            organization=organization,
+        )
 
     @staticmethod
     def parse_common_organization_path(path: str) -> Dict[str, str]:
@@ -377,9 +427,13 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_project_path(project: str,) -> str:
+    def common_project_path(
+        project: str,
+    ) -> str:
         """Returns a fully-qualified project string."""
-        return "projects/{project}".format(project=project,)
+        return "projects/{project}".format(
+            project=project,
+        )
 
     @staticmethod
     def parse_common_project_path(path: str) -> Dict[str, str]:
@@ -388,10 +442,14 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
-    def common_location_path(project: str, location: str,) -> str:
+    def common_location_path(
+        project: str,
+        location: str,
+    ) -> str:
         """Returns a fully-qualified location string."""
         return "projects/{project}/locations/{location}".format(
-            project=project, location=location,
+            project=project,
+            location=location,
         )
 
     @staticmethod
@@ -654,12 +712,20 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListDockerImagesPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -752,7 +818,12 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -832,7 +903,12 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -920,7 +996,12 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1022,12 +1103,20 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListRepositoriesPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1118,7 +1207,12 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1238,7 +1332,12 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1347,7 +1446,12 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1457,7 +1561,12 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1557,12 +1666,20 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListPackagesPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1652,7 +1769,12 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -1761,7 +1883,12 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -1860,12 +1987,20 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListVersionsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -1955,7 +2090,12 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2061,7 +2201,12 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Wrap the response in an operation future.
         response = operation.from_gapic(
@@ -2161,12 +2306,20 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListFilesPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -2254,7 +2407,12 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2345,12 +2503,20 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # This method is paged; wrap the response in a pager, which provides
         # an `__iter__` convenience method.
         response = pagers.ListTagsPager(
-            method=rpc, request=request, response=response, metadata=metadata,
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
         )
 
         # Done; return the response.
@@ -2438,7 +2604,12 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2545,7 +2716,12 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2646,7 +2822,12 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2724,7 +2905,10 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
 
         # Send the request.
         rpc(
-            request, retry=retry, timeout=timeout, metadata=metadata,
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
         )
 
     def set_iam_policy(
@@ -2845,7 +3029,12 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -2968,7 +3157,12 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -3039,7 +3233,12 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -3129,7 +3328,12 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response
@@ -3227,7 +3431,12 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         )
 
         # Send the request.
-        response = rpc(request, retry=retry, timeout=timeout, metadata=metadata,)
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
         # Done; return the response.
         return response

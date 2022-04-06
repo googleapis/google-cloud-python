@@ -51,8 +51,14 @@ class Tag(proto.Message):
             slashes, the slashes are escaped.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    version = proto.Field(proto.STRING, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    version = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class ListTagsRequest(proto.Message):
@@ -82,10 +88,22 @@ class ListTagsRequest(proto.Message):
             request, if any.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    filter = proto.Field(proto.STRING, number=4,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListTagsResponse(proto.Message):
@@ -103,8 +121,15 @@ class ListTagsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    tags = proto.RepeatedField(proto.MESSAGE, number=1, message="Tag",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    tags = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Tag",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetTagRequest(proto.Message):
@@ -115,7 +140,10 @@ class GetTagRequest(proto.Message):
             The name of the tag to retrieve.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CreateTagRequest(proto.Message):
@@ -131,9 +159,19 @@ class CreateTagRequest(proto.Message):
             The tag to be created.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    tag_id = proto.Field(proto.STRING, number=2,)
-    tag = proto.Field(proto.MESSAGE, number=3, message="Tag",)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    tag_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    tag = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="Tag",
+    )
 
 
 class UpdateTagRequest(proto.Message):
@@ -149,9 +187,15 @@ class UpdateTagRequest(proto.Message):
             https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask
     """
 
-    tag = proto.Field(proto.MESSAGE, number=1, message="Tag",)
+    tag = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="Tag",
+    )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -163,7 +207,10 @@ class DeleteTagRequest(proto.Message):
             The name of the tag to delete.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

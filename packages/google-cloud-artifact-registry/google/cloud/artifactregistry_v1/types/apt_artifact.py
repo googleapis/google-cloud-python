@@ -63,12 +63,31 @@ class AptArtifact(proto.Message):
         BINARY = 1
         SOURCE = 2
 
-    name = proto.Field(proto.STRING, number=1,)
-    package_name = proto.Field(proto.STRING, number=2,)
-    package_type = proto.Field(proto.ENUM, number=3, enum=PackageType,)
-    architecture = proto.Field(proto.STRING, number=4,)
-    component = proto.Field(proto.STRING, number=5,)
-    control_file = proto.Field(proto.BYTES, number=6,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    package_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    package_type = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=PackageType,
+    )
+    architecture = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    component = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    control_file = proto.Field(
+        proto.BYTES,
+        number=6,
+    )
 
 
 class ImportAptArtifactsGcsSource(proto.Message):
@@ -83,8 +102,14 @@ class ImportAptArtifactsGcsSource(proto.Message):
             objects from a single URI.
     """
 
-    uris = proto.RepeatedField(proto.STRING, number=1,)
-    use_wildcards = proto.Field(proto.BOOL, number=2,)
+    uris = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
+    use_wildcards = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
 
 
 class ImportAptArtifactsRequest(proto.Message):
@@ -104,9 +129,15 @@ class ImportAptArtifactsRequest(proto.Message):
     """
 
     gcs_source = proto.Field(
-        proto.MESSAGE, number=2, oneof="source", message="ImportAptArtifactsGcsSource",
+        proto.MESSAGE,
+        number=2,
+        oneof="source",
+        message="ImportAptArtifactsGcsSource",
     )
-    parent = proto.Field(proto.STRING, number=1,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ImportAptArtifactsErrorInfo(proto.Message):
@@ -124,9 +155,16 @@ class ImportAptArtifactsErrorInfo(proto.Message):
     """
 
     gcs_source = proto.Field(
-        proto.MESSAGE, number=1, oneof="source", message="ImportAptArtifactsGcsSource",
+        proto.MESSAGE,
+        number=1,
+        oneof="source",
+        message="ImportAptArtifactsGcsSource",
     )
-    error = proto.Field(proto.MESSAGE, number=2, message=status_pb2.Status,)
+    error = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=status_pb2.Status,
+    )
 
 
 class ImportAptArtifactsResponse(proto.Message):
@@ -140,15 +178,20 @@ class ImportAptArtifactsResponse(proto.Message):
             not imported.
     """
 
-    apt_artifacts = proto.RepeatedField(proto.MESSAGE, number=1, message="AptArtifact",)
+    apt_artifacts = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="AptArtifact",
+    )
     errors = proto.RepeatedField(
-        proto.MESSAGE, number=2, message="ImportAptArtifactsErrorInfo",
+        proto.MESSAGE,
+        number=2,
+        message="ImportAptArtifactsErrorInfo",
     )
 
 
 class ImportAptArtifactsMetadata(proto.Message):
-    r"""The operation metadata for importing artifacts.
-    """
+    r"""The operation metadata for importing artifacts."""
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

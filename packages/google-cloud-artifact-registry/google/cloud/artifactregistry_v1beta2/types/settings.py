@@ -51,8 +51,15 @@ class ProjectSettings(proto.Message):
         REDIRECTION_FROM_GCR_IO_ENABLED = 2
         REDIRECTION_FROM_GCR_IO_FINALIZED = 3
 
-    name = proto.Field(proto.STRING, number=1,)
-    legacy_redirection_state = proto.Field(proto.ENUM, number=2, enum=RedirectionState,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    legacy_redirection_state = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=RedirectionState,
+    )
 
 
 class GetProjectSettingsRequest(proto.Message):
@@ -64,7 +71,10 @@ class GetProjectSettingsRequest(proto.Message):
             resource.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class UpdateProjectSettingsRequest(proto.Message):
@@ -77,9 +87,15 @@ class UpdateProjectSettingsRequest(proto.Message):
             Field mask to support partial updates.
     """
 
-    project_settings = proto.Field(proto.MESSAGE, number=2, message="ProjectSettings",)
+    project_settings = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message="ProjectSettings",
+    )
     update_mask = proto.Field(
-        proto.MESSAGE, number=3, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=3,
+        message=field_mask_pb2.FieldMask,
     )
 
 

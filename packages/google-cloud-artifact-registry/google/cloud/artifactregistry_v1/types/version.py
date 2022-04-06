@@ -72,12 +72,34 @@ class Version(proto.Message):
             [DockerImage][google.devtools.artifactregistry.v1.DockerImage]
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    description = proto.Field(proto.STRING, number=3,)
-    create_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,)
-    related_tags = proto.RepeatedField(proto.MESSAGE, number=7, message=tag.Tag,)
-    metadata = proto.Field(proto.MESSAGE, number=8, message=struct_pb2.Struct,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
+    )
+    related_tags = proto.RepeatedField(
+        proto.MESSAGE,
+        number=7,
+        message=tag.Tag,
+    )
+    metadata = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=struct_pb2.Struct,
+    )
 
 
 class ListVersionsRequest(proto.Message):
@@ -100,11 +122,27 @@ class ListVersionsRequest(proto.Message):
             Optional. The field to order the results by.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
-    view = proto.Field(proto.ENUM, number=4, enum="VersionView",)
-    order_by = proto.Field(proto.STRING, number=5,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    view = proto.Field(
+        proto.ENUM,
+        number=4,
+        enum="VersionView",
+    )
+    order_by = proto.Field(
+        proto.STRING,
+        number=5,
+    )
 
 
 class ListVersionsResponse(proto.Message):
@@ -123,8 +161,15 @@ class ListVersionsResponse(proto.Message):
     def raw_page(self):
         return self
 
-    versions = proto.RepeatedField(proto.MESSAGE, number=1, message="Version",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    versions = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Version",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetVersionRequest(proto.Message):
@@ -138,8 +183,15 @@ class GetVersionRequest(proto.Message):
             response.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    view = proto.Field(proto.ENUM, number=2, enum="VersionView",)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    view = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum="VersionView",
+    )
 
 
 class DeleteVersionRequest(proto.Message):
@@ -154,8 +206,14 @@ class DeleteVersionRequest(proto.Message):
             tags pointing to the version are deleted.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
-    force = proto.Field(proto.BOOL, number=2,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    force = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

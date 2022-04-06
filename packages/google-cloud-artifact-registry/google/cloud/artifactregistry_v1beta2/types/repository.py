@@ -106,21 +106,54 @@ class Repository(proto.Message):
             RELEASE = 1
             SNAPSHOT = 2
 
-        allow_snapshot_overwrites = proto.Field(proto.BOOL, number=1,)
+        allow_snapshot_overwrites = proto.Field(
+            proto.BOOL,
+            number=1,
+        )
         version_policy = proto.Field(
-            proto.ENUM, number=2, enum="Repository.MavenRepositoryConfig.VersionPolicy",
+            proto.ENUM,
+            number=2,
+            enum="Repository.MavenRepositoryConfig.VersionPolicy",
         )
 
     maven_config = proto.Field(
-        proto.MESSAGE, number=9, oneof="format_config", message=MavenRepositoryConfig,
+        proto.MESSAGE,
+        number=9,
+        oneof="format_config",
+        message=MavenRepositoryConfig,
     )
-    name = proto.Field(proto.STRING, number=1,)
-    format_ = proto.Field(proto.ENUM, number=2, enum=Format,)
-    description = proto.Field(proto.STRING, number=3,)
-    labels = proto.MapField(proto.STRING, proto.STRING, number=4,)
-    create_time = proto.Field(proto.MESSAGE, number=5, message=timestamp_pb2.Timestamp,)
-    update_time = proto.Field(proto.MESSAGE, number=6, message=timestamp_pb2.Timestamp,)
-    kms_key_name = proto.Field(proto.STRING, number=8,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    format_ = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum=Format,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=4,
+    )
+    create_time = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
+    )
+    kms_key_name = proto.Field(
+        proto.STRING,
+        number=8,
+    )
 
 
 class ListRepositoriesRequest(proto.Message):
@@ -138,9 +171,18 @@ class ListRepositoriesRequest(proto.Message):
             request, if any.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    page_size = proto.Field(proto.INT32, number=2,)
-    page_token = proto.Field(proto.STRING, number=3,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
 
 
 class ListRepositoriesResponse(proto.Message):
@@ -159,8 +201,15 @@ class ListRepositoriesResponse(proto.Message):
     def raw_page(self):
         return self
 
-    repositories = proto.RepeatedField(proto.MESSAGE, number=1, message="Repository",)
-    next_page_token = proto.Field(proto.STRING, number=2,)
+    repositories = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="Repository",
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
 
 
 class GetRepositoryRequest(proto.Message):
@@ -172,7 +221,10 @@ class GetRepositoryRequest(proto.Message):
             retrieve.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class CreateRepositoryRequest(proto.Message):
@@ -188,9 +240,19 @@ class CreateRepositoryRequest(proto.Message):
             The repository to be created.
     """
 
-    parent = proto.Field(proto.STRING, number=1,)
-    repository_id = proto.Field(proto.STRING, number=2,)
-    repository = proto.Field(proto.MESSAGE, number=3, message="Repository",)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    repository_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    repository = proto.Field(
+        proto.MESSAGE,
+        number=3,
+        message="Repository",
+    )
 
 
 class UpdateRepositoryRequest(proto.Message):
@@ -206,9 +268,15 @@ class UpdateRepositoryRequest(proto.Message):
             https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#fieldmask
     """
 
-    repository = proto.Field(proto.MESSAGE, number=1, message="Repository",)
+    repository = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="Repository",
+    )
     update_mask = proto.Field(
-        proto.MESSAGE, number=2, message=field_mask_pb2.FieldMask,
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
     )
 
 
@@ -221,7 +289,10 @@ class DeleteRepositoryRequest(proto.Message):
             delete.
     """
 
-    name = proto.Field(proto.STRING, number=1,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

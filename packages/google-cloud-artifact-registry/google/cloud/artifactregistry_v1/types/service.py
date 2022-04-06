@@ -17,13 +17,15 @@ import proto  # type: ignore
 
 
 __protobuf__ = proto.module(
-    package="google.devtools.artifactregistry.v1", manifest={"OperationMetadata",},
+    package="google.devtools.artifactregistry.v1",
+    manifest={
+        "OperationMetadata",
+    },
 )
 
 
 class OperationMetadata(proto.Message):
-    r"""Metadata type for longrunning-operations, currently empty.
-    """
+    r"""Metadata type for longrunning-operations, currently empty."""
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

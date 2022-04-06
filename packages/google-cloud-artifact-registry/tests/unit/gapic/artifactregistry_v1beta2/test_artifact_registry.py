@@ -112,7 +112,11 @@ def test__get_default_mtls_endpoint():
 
 
 @pytest.mark.parametrize(
-    "client_class", [ArtifactRegistryClient, ArtifactRegistryAsyncClient,]
+    "client_class",
+    [
+        ArtifactRegistryClient,
+        ArtifactRegistryAsyncClient,
+    ],
 )
 def test_artifact_registry_client_from_service_account_info(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -154,7 +158,11 @@ def test_artifact_registry_client_service_account_always_use_jwt(
 
 
 @pytest.mark.parametrize(
-    "client_class", [ArtifactRegistryClient, ArtifactRegistryAsyncClient,]
+    "client_class",
+    [
+        ArtifactRegistryClient,
+        ArtifactRegistryAsyncClient,
+    ],
 )
 def test_artifact_registry_client_from_service_account_file(client_class):
     creds = ga_credentials.AnonymousCredentials()
@@ -528,7 +536,9 @@ def test_artifact_registry_client_client_options_scopes(
     client_class, transport_class, transport_name
 ):
     # Check the case scopes are provided.
-    options = client_options.ClientOptions(scopes=["1", "2"],)
+    options = client_options.ClientOptions(
+        scopes=["1", "2"],
+    )
     with mock.patch.object(transport_class, "__init__") as patched:
         patched.return_value = None
         client = client_class(client_options=options, transport=transport_name)
@@ -672,11 +682,16 @@ def test_artifact_registry_client_create_channel_credentials_file(
 
 
 @pytest.mark.parametrize(
-    "request_type", [apt_artifact.ImportAptArtifactsRequest, dict,]
+    "request_type",
+    [
+        apt_artifact.ImportAptArtifactsRequest,
+        dict,
+    ],
 )
 def test_import_apt_artifacts(request_type, transport: str = "grpc"):
     client = ArtifactRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -704,7 +719,8 @@ def test_import_apt_artifacts_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ArtifactRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -722,7 +738,8 @@ async def test_import_apt_artifacts_async(
     transport: str = "grpc_asyncio", request_type=apt_artifact.ImportAptArtifactsRequest
 ):
     client = ArtifactRegistryAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -754,7 +771,9 @@ async def test_import_apt_artifacts_async_from_dict():
 
 
 def test_import_apt_artifacts_field_headers():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -776,7 +795,10 @@ def test_import_apt_artifacts_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -807,15 +829,23 @@ async def test_import_apt_artifacts_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.parametrize(
-    "request_type", [yum_artifact.ImportYumArtifactsRequest, dict,]
+    "request_type",
+    [
+        yum_artifact.ImportYumArtifactsRequest,
+        dict,
+    ],
 )
 def test_import_yum_artifacts(request_type, transport: str = "grpc"):
     client = ArtifactRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -843,7 +873,8 @@ def test_import_yum_artifacts_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ArtifactRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -861,7 +892,8 @@ async def test_import_yum_artifacts_async(
     transport: str = "grpc_asyncio", request_type=yum_artifact.ImportYumArtifactsRequest
 ):
     client = ArtifactRegistryAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -893,7 +925,9 @@ async def test_import_yum_artifacts_async_from_dict():
 
 
 def test_import_yum_artifacts_field_headers():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -915,7 +949,10 @@ def test_import_yum_artifacts_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -946,13 +983,23 @@ async def test_import_yum_artifacts_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
-@pytest.mark.parametrize("request_type", [repository.ListRepositoriesRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        repository.ListRepositoriesRequest,
+        dict,
+    ],
+)
 def test_list_repositories(request_type, transport: str = "grpc"):
     client = ArtifactRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -983,7 +1030,8 @@ def test_list_repositories_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ArtifactRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1001,7 +1049,8 @@ async def test_list_repositories_async(
     transport: str = "grpc_asyncio", request_type=repository.ListRepositoriesRequest
 ):
     client = ArtifactRegistryAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1036,7 +1085,9 @@ async def test_list_repositories_async_from_dict():
 
 
 def test_list_repositories_field_headers():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1058,7 +1109,10 @@ def test_list_repositories_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1089,11 +1143,16 @@ async def test_list_repositories_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_repositories_flattened():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1103,7 +1162,9 @@ def test_list_repositories_flattened():
         call.return_value = repository.ListRepositoriesResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_repositories(parent="parent_value",)
+        client.list_repositories(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1115,13 +1176,16 @@ def test_list_repositories_flattened():
 
 
 def test_list_repositories_flattened_error():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_repositories(
-            repository.ListRepositoriesRequest(), parent="parent_value",
+            repository.ListRepositoriesRequest(),
+            parent="parent_value",
         )
 
 
@@ -1143,7 +1207,9 @@ async def test_list_repositories_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_repositories(parent="parent_value",)
+        response = await client.list_repositories(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1164,13 +1230,15 @@ async def test_list_repositories_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_repositories(
-            repository.ListRepositoriesRequest(), parent="parent_value",
+            repository.ListRepositoriesRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_repositories_pager(transport_name: str = "grpc"):
     client = ArtifactRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1188,13 +1256,20 @@ def test_list_repositories_pager(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             repository.ListRepositoriesResponse(
-                repositories=[], next_page_token="def",
+                repositories=[],
+                next_page_token="def",
             ),
             repository.ListRepositoriesResponse(
-                repositories=[repository.Repository(),], next_page_token="ghi",
+                repositories=[
+                    repository.Repository(),
+                ],
+                next_page_token="ghi",
             ),
             repository.ListRepositoriesResponse(
-                repositories=[repository.Repository(), repository.Repository(),],
+                repositories=[
+                    repository.Repository(),
+                    repository.Repository(),
+                ],
             ),
             RuntimeError,
         )
@@ -1214,7 +1289,8 @@ def test_list_repositories_pager(transport_name: str = "grpc"):
 
 def test_list_repositories_pages(transport_name: str = "grpc"):
     client = ArtifactRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1232,13 +1308,20 @@ def test_list_repositories_pages(transport_name: str = "grpc"):
                 next_page_token="abc",
             ),
             repository.ListRepositoriesResponse(
-                repositories=[], next_page_token="def",
+                repositories=[],
+                next_page_token="def",
             ),
             repository.ListRepositoriesResponse(
-                repositories=[repository.Repository(),], next_page_token="ghi",
+                repositories=[
+                    repository.Repository(),
+                ],
+                next_page_token="ghi",
             ),
             repository.ListRepositoriesResponse(
-                repositories=[repository.Repository(), repository.Repository(),],
+                repositories=[
+                    repository.Repository(),
+                    repository.Repository(),
+                ],
             ),
             RuntimeError,
         )
@@ -1270,17 +1353,26 @@ async def test_list_repositories_async_pager():
                 next_page_token="abc",
             ),
             repository.ListRepositoriesResponse(
-                repositories=[], next_page_token="def",
+                repositories=[],
+                next_page_token="def",
             ),
             repository.ListRepositoriesResponse(
-                repositories=[repository.Repository(),], next_page_token="ghi",
+                repositories=[
+                    repository.Repository(),
+                ],
+                next_page_token="ghi",
             ),
             repository.ListRepositoriesResponse(
-                repositories=[repository.Repository(), repository.Repository(),],
+                repositories=[
+                    repository.Repository(),
+                    repository.Repository(),
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.list_repositories(request={},)
+        async_pager = await client.list_repositories(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -1313,13 +1405,20 @@ async def test_list_repositories_async_pages():
                 next_page_token="abc",
             ),
             repository.ListRepositoriesResponse(
-                repositories=[], next_page_token="def",
+                repositories=[],
+                next_page_token="def",
             ),
             repository.ListRepositoriesResponse(
-                repositories=[repository.Repository(),], next_page_token="ghi",
+                repositories=[
+                    repository.Repository(),
+                ],
+                next_page_token="ghi",
             ),
             repository.ListRepositoriesResponse(
-                repositories=[repository.Repository(), repository.Repository(),],
+                repositories=[
+                    repository.Repository(),
+                    repository.Repository(),
+                ],
             ),
             RuntimeError,
         )
@@ -1330,10 +1429,17 @@ async def test_list_repositories_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [repository.GetRepositoryRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        repository.GetRepositoryRequest,
+        dict,
+    ],
+)
 def test_get_repository(request_type, transport: str = "grpc"):
     client = ArtifactRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1371,7 +1477,8 @@ def test_get_repository_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ArtifactRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1387,7 +1494,8 @@ async def test_get_repository_async(
     transport: str = "grpc_asyncio", request_type=repository.GetRepositoryRequest
 ):
     client = ArtifactRegistryAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1426,7 +1534,9 @@ async def test_get_repository_async_from_dict():
 
 
 def test_get_repository_field_headers():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1446,7 +1556,10 @@ def test_get_repository_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1475,11 +1588,16 @@ async def test_get_repository_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_repository_flattened():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_repository), "__call__") as call:
@@ -1487,7 +1605,9 @@ def test_get_repository_flattened():
         call.return_value = repository.Repository()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_repository(name="name_value",)
+        client.get_repository(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1499,13 +1619,16 @@ def test_get_repository_flattened():
 
 
 def test_get_repository_flattened_error():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_repository(
-            repository.GetRepositoryRequest(), name="name_value",
+            repository.GetRepositoryRequest(),
+            name="name_value",
         )
 
 
@@ -1525,7 +1648,9 @@ async def test_get_repository_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_repository(name="name_value",)
+        response = await client.get_repository(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -1546,16 +1671,22 @@ async def test_get_repository_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_repository(
-            repository.GetRepositoryRequest(), name="name_value",
+            repository.GetRepositoryRequest(),
+            name="name_value",
         )
 
 
 @pytest.mark.parametrize(
-    "request_type", [gda_repository.CreateRepositoryRequest, dict,]
+    "request_type",
+    [
+        gda_repository.CreateRepositoryRequest,
+        dict,
+    ],
 )
 def test_create_repository(request_type, transport: str = "grpc"):
     client = ArtifactRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1583,7 +1714,8 @@ def test_create_repository_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ArtifactRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1601,7 +1733,8 @@ async def test_create_repository_async(
     transport: str = "grpc_asyncio", request_type=gda_repository.CreateRepositoryRequest
 ):
     client = ArtifactRegistryAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1633,7 +1766,9 @@ async def test_create_repository_async_from_dict():
 
 
 def test_create_repository_field_headers():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1655,7 +1790,10 @@ def test_create_repository_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1686,11 +1824,16 @@ async def test_create_repository_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_repository_flattened():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1730,7 +1873,9 @@ def test_create_repository_flattened():
 
 
 def test_create_repository_flattened_error():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -1816,11 +1961,16 @@ async def test_create_repository_flattened_error_async():
 
 
 @pytest.mark.parametrize(
-    "request_type", [gda_repository.UpdateRepositoryRequest, dict,]
+    "request_type",
+    [
+        gda_repository.UpdateRepositoryRequest,
+        dict,
+    ],
 )
 def test_update_repository(request_type, transport: str = "grpc"):
     client = ArtifactRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1860,7 +2010,8 @@ def test_update_repository_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ArtifactRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -1878,7 +2029,8 @@ async def test_update_repository_async(
     transport: str = "grpc_asyncio", request_type=gda_repository.UpdateRepositoryRequest
 ):
     client = ArtifactRegistryAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -1919,7 +2071,9 @@ async def test_update_repository_async_from_dict():
 
 
 def test_update_repository_field_headers():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -1941,9 +2095,10 @@ def test_update_repository_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "repository.name=repository.name/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "repository.name=repository.name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -1974,13 +2129,16 @@ async def test_update_repository_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "repository.name=repository.name/value",) in kw[
-        "metadata"
-    ]
+    assert (
+        "x-goog-request-params",
+        "repository.name=repository.name/value",
+    ) in kw["metadata"]
 
 
 def test_update_repository_flattened():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2016,7 +2174,9 @@ def test_update_repository_flattened():
 
 
 def test_update_repository_flattened_error():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -2095,10 +2255,17 @@ async def test_update_repository_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [repository.DeleteRepositoryRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        repository.DeleteRepositoryRequest,
+        dict,
+    ],
+)
 def test_delete_repository(request_type, transport: str = "grpc"):
     client = ArtifactRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2126,7 +2293,8 @@ def test_delete_repository_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ArtifactRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2144,7 +2312,8 @@ async def test_delete_repository_async(
     transport: str = "grpc_asyncio", request_type=repository.DeleteRepositoryRequest
 ):
     client = ArtifactRegistryAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2176,7 +2345,9 @@ async def test_delete_repository_async_from_dict():
 
 
 def test_delete_repository_field_headers():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2198,7 +2369,10 @@ def test_delete_repository_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2229,11 +2403,16 @@ async def test_delete_repository_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_repository_flattened():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2243,7 +2422,9 @@ def test_delete_repository_flattened():
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_repository(name="name_value",)
+        client.delete_repository(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2255,13 +2436,16 @@ def test_delete_repository_flattened():
 
 
 def test_delete_repository_flattened_error():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_repository(
-            repository.DeleteRepositoryRequest(), name="name_value",
+            repository.DeleteRepositoryRequest(),
+            name="name_value",
         )
 
 
@@ -2283,7 +2467,9 @@ async def test_delete_repository_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_repository(name="name_value",)
+        response = await client.delete_repository(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2304,14 +2490,22 @@ async def test_delete_repository_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_repository(
-            repository.DeleteRepositoryRequest(), name="name_value",
+            repository.DeleteRepositoryRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [package.ListPackagesRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        package.ListPackagesRequest,
+        dict,
+    ],
+)
 def test_list_packages(request_type, transport: str = "grpc"):
     client = ArtifactRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2340,7 +2534,8 @@ def test_list_packages_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ArtifactRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2356,7 +2551,8 @@ async def test_list_packages_async(
     transport: str = "grpc_asyncio", request_type=package.ListPackagesRequest
 ):
     client = ArtifactRegistryAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2367,7 +2563,9 @@ async def test_list_packages_async(
     with mock.patch.object(type(client.transport.list_packages), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            package.ListPackagesResponse(next_page_token="next_page_token_value",)
+            package.ListPackagesResponse(
+                next_page_token="next_page_token_value",
+            )
         )
         response = await client.list_packages(request)
 
@@ -2387,7 +2585,9 @@ async def test_list_packages_async_from_dict():
 
 
 def test_list_packages_field_headers():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2407,7 +2607,10 @@ def test_list_packages_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2436,11 +2639,16 @@ async def test_list_packages_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_packages_flattened():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_packages), "__call__") as call:
@@ -2448,7 +2656,9 @@ def test_list_packages_flattened():
         call.return_value = package.ListPackagesResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_packages(parent="parent_value",)
+        client.list_packages(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2460,13 +2670,16 @@ def test_list_packages_flattened():
 
 
 def test_list_packages_flattened_error():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_packages(
-            package.ListPackagesRequest(), parent="parent_value",
+            package.ListPackagesRequest(),
+            parent="parent_value",
         )
 
 
@@ -2486,7 +2699,9 @@ async def test_list_packages_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_packages(parent="parent_value",)
+        response = await client.list_packages(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2507,13 +2722,15 @@ async def test_list_packages_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_packages(
-            package.ListPackagesRequest(), parent="parent_value",
+            package.ListPackagesRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_packages_pager(transport_name: str = "grpc"):
     client = ArtifactRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2521,15 +2738,28 @@ def test_list_packages_pager(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             package.ListPackagesResponse(
-                packages=[package.Package(), package.Package(), package.Package(),],
+                packages=[
+                    package.Package(),
+                    package.Package(),
+                    package.Package(),
+                ],
                 next_page_token="abc",
             ),
-            package.ListPackagesResponse(packages=[], next_page_token="def",),
             package.ListPackagesResponse(
-                packages=[package.Package(),], next_page_token="ghi",
+                packages=[],
+                next_page_token="def",
             ),
             package.ListPackagesResponse(
-                packages=[package.Package(), package.Package(),],
+                packages=[
+                    package.Package(),
+                ],
+                next_page_token="ghi",
+            ),
+            package.ListPackagesResponse(
+                packages=[
+                    package.Package(),
+                    package.Package(),
+                ],
             ),
             RuntimeError,
         )
@@ -2549,7 +2779,8 @@ def test_list_packages_pager(transport_name: str = "grpc"):
 
 def test_list_packages_pages(transport_name: str = "grpc"):
     client = ArtifactRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2557,15 +2788,28 @@ def test_list_packages_pages(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             package.ListPackagesResponse(
-                packages=[package.Package(), package.Package(), package.Package(),],
+                packages=[
+                    package.Package(),
+                    package.Package(),
+                    package.Package(),
+                ],
                 next_page_token="abc",
             ),
-            package.ListPackagesResponse(packages=[], next_page_token="def",),
             package.ListPackagesResponse(
-                packages=[package.Package(),], next_page_token="ghi",
+                packages=[],
+                next_page_token="def",
             ),
             package.ListPackagesResponse(
-                packages=[package.Package(), package.Package(),],
+                packages=[
+                    package.Package(),
+                ],
+                next_page_token="ghi",
+            ),
+            package.ListPackagesResponse(
+                packages=[
+                    package.Package(),
+                    package.Package(),
+                ],
             ),
             RuntimeError,
         )
@@ -2587,19 +2831,34 @@ async def test_list_packages_async_pager():
         # Set the response to a series of pages.
         call.side_effect = (
             package.ListPackagesResponse(
-                packages=[package.Package(), package.Package(), package.Package(),],
+                packages=[
+                    package.Package(),
+                    package.Package(),
+                    package.Package(),
+                ],
                 next_page_token="abc",
             ),
-            package.ListPackagesResponse(packages=[], next_page_token="def",),
             package.ListPackagesResponse(
-                packages=[package.Package(),], next_page_token="ghi",
+                packages=[],
+                next_page_token="def",
             ),
             package.ListPackagesResponse(
-                packages=[package.Package(), package.Package(),],
+                packages=[
+                    package.Package(),
+                ],
+                next_page_token="ghi",
+            ),
+            package.ListPackagesResponse(
+                packages=[
+                    package.Package(),
+                    package.Package(),
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.list_packages(request={},)
+        async_pager = await client.list_packages(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -2622,15 +2881,28 @@ async def test_list_packages_async_pages():
         # Set the response to a series of pages.
         call.side_effect = (
             package.ListPackagesResponse(
-                packages=[package.Package(), package.Package(), package.Package(),],
+                packages=[
+                    package.Package(),
+                    package.Package(),
+                    package.Package(),
+                ],
                 next_page_token="abc",
             ),
-            package.ListPackagesResponse(packages=[], next_page_token="def",),
             package.ListPackagesResponse(
-                packages=[package.Package(),], next_page_token="ghi",
+                packages=[],
+                next_page_token="def",
             ),
             package.ListPackagesResponse(
-                packages=[package.Package(), package.Package(),],
+                packages=[
+                    package.Package(),
+                ],
+                next_page_token="ghi",
+            ),
+            package.ListPackagesResponse(
+                packages=[
+                    package.Package(),
+                    package.Package(),
+                ],
             ),
             RuntimeError,
         )
@@ -2641,10 +2913,17 @@ async def test_list_packages_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [package.GetPackageRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        package.GetPackageRequest,
+        dict,
+    ],
+)
 def test_get_package(request_type, transport: str = "grpc"):
     client = ArtifactRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2655,7 +2934,8 @@ def test_get_package(request_type, transport: str = "grpc"):
     with mock.patch.object(type(client.transport.get_package), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = package.Package(
-            name="name_value", display_name="display_name_value",
+            name="name_value",
+            display_name="display_name_value",
         )
         response = client.get_package(request)
 
@@ -2674,7 +2954,8 @@ def test_get_package_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ArtifactRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2690,7 +2971,8 @@ async def test_get_package_async(
     transport: str = "grpc_asyncio", request_type=package.GetPackageRequest
 ):
     client = ArtifactRegistryAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2701,7 +2983,10 @@ async def test_get_package_async(
     with mock.patch.object(type(client.transport.get_package), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            package.Package(name="name_value", display_name="display_name_value",)
+            package.Package(
+                name="name_value",
+                display_name="display_name_value",
+            )
         )
         response = await client.get_package(request)
 
@@ -2722,7 +3007,9 @@ async def test_get_package_async_from_dict():
 
 
 def test_get_package_field_headers():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2742,7 +3029,10 @@ def test_get_package_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2769,11 +3059,16 @@ async def test_get_package_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_package_flattened():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_package), "__call__") as call:
@@ -2781,7 +3076,9 @@ def test_get_package_flattened():
         call.return_value = package.Package()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_package(name="name_value",)
+        client.get_package(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2793,13 +3090,16 @@ def test_get_package_flattened():
 
 
 def test_get_package_flattened_error():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_package(
-            package.GetPackageRequest(), name="name_value",
+            package.GetPackageRequest(),
+            name="name_value",
         )
 
 
@@ -2817,7 +3117,9 @@ async def test_get_package_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(package.Package())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_package(name="name_value",)
+        response = await client.get_package(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2838,14 +3140,22 @@ async def test_get_package_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_package(
-            package.GetPackageRequest(), name="name_value",
+            package.GetPackageRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [package.DeletePackageRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        package.DeletePackageRequest,
+        dict,
+    ],
+)
 def test_delete_package(request_type, transport: str = "grpc"):
     client = ArtifactRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2871,7 +3181,8 @@ def test_delete_package_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ArtifactRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -2887,7 +3198,8 @@ async def test_delete_package_async(
     transport: str = "grpc_asyncio", request_type=package.DeletePackageRequest
 ):
     client = ArtifactRegistryAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -2917,7 +3229,9 @@ async def test_delete_package_async_from_dict():
 
 
 def test_delete_package_field_headers():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -2937,7 +3251,10 @@ def test_delete_package_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -2966,11 +3283,16 @@ async def test_delete_package_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_package_flattened():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_package), "__call__") as call:
@@ -2978,7 +3300,9 @@ def test_delete_package_flattened():
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_package(name="name_value",)
+        client.delete_package(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -2990,13 +3314,16 @@ def test_delete_package_flattened():
 
 
 def test_delete_package_flattened_error():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_package(
-            package.DeletePackageRequest(), name="name_value",
+            package.DeletePackageRequest(),
+            name="name_value",
         )
 
 
@@ -3016,7 +3343,9 @@ async def test_delete_package_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_package(name="name_value",)
+        response = await client.delete_package(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3037,14 +3366,22 @@ async def test_delete_package_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_package(
-            package.DeletePackageRequest(), name="name_value",
+            package.DeletePackageRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [version.ListVersionsRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        version.ListVersionsRequest,
+        dict,
+    ],
+)
 def test_list_versions(request_type, transport: str = "grpc"):
     client = ArtifactRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3073,7 +3410,8 @@ def test_list_versions_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ArtifactRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3089,7 +3427,8 @@ async def test_list_versions_async(
     transport: str = "grpc_asyncio", request_type=version.ListVersionsRequest
 ):
     client = ArtifactRegistryAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3100,7 +3439,9 @@ async def test_list_versions_async(
     with mock.patch.object(type(client.transport.list_versions), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            version.ListVersionsResponse(next_page_token="next_page_token_value",)
+            version.ListVersionsResponse(
+                next_page_token="next_page_token_value",
+            )
         )
         response = await client.list_versions(request)
 
@@ -3120,7 +3461,9 @@ async def test_list_versions_async_from_dict():
 
 
 def test_list_versions_field_headers():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3140,7 +3483,10 @@ def test_list_versions_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -3169,11 +3515,16 @@ async def test_list_versions_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_versions_flattened():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_versions), "__call__") as call:
@@ -3181,7 +3532,9 @@ def test_list_versions_flattened():
         call.return_value = version.ListVersionsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_versions(parent="parent_value",)
+        client.list_versions(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3193,13 +3546,16 @@ def test_list_versions_flattened():
 
 
 def test_list_versions_flattened_error():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_versions(
-            version.ListVersionsRequest(), parent="parent_value",
+            version.ListVersionsRequest(),
+            parent="parent_value",
         )
 
 
@@ -3219,7 +3575,9 @@ async def test_list_versions_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_versions(parent="parent_value",)
+        response = await client.list_versions(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3240,13 +3598,15 @@ async def test_list_versions_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_versions(
-            version.ListVersionsRequest(), parent="parent_value",
+            version.ListVersionsRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_versions_pager(transport_name: str = "grpc"):
     client = ArtifactRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3254,15 +3614,28 @@ def test_list_versions_pager(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             version.ListVersionsResponse(
-                versions=[version.Version(), version.Version(), version.Version(),],
+                versions=[
+                    version.Version(),
+                    version.Version(),
+                    version.Version(),
+                ],
                 next_page_token="abc",
             ),
-            version.ListVersionsResponse(versions=[], next_page_token="def",),
             version.ListVersionsResponse(
-                versions=[version.Version(),], next_page_token="ghi",
+                versions=[],
+                next_page_token="def",
             ),
             version.ListVersionsResponse(
-                versions=[version.Version(), version.Version(),],
+                versions=[
+                    version.Version(),
+                ],
+                next_page_token="ghi",
+            ),
+            version.ListVersionsResponse(
+                versions=[
+                    version.Version(),
+                    version.Version(),
+                ],
             ),
             RuntimeError,
         )
@@ -3282,7 +3655,8 @@ def test_list_versions_pager(transport_name: str = "grpc"):
 
 def test_list_versions_pages(transport_name: str = "grpc"):
     client = ArtifactRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3290,15 +3664,28 @@ def test_list_versions_pages(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             version.ListVersionsResponse(
-                versions=[version.Version(), version.Version(), version.Version(),],
+                versions=[
+                    version.Version(),
+                    version.Version(),
+                    version.Version(),
+                ],
                 next_page_token="abc",
             ),
-            version.ListVersionsResponse(versions=[], next_page_token="def",),
             version.ListVersionsResponse(
-                versions=[version.Version(),], next_page_token="ghi",
+                versions=[],
+                next_page_token="def",
             ),
             version.ListVersionsResponse(
-                versions=[version.Version(), version.Version(),],
+                versions=[
+                    version.Version(),
+                ],
+                next_page_token="ghi",
+            ),
+            version.ListVersionsResponse(
+                versions=[
+                    version.Version(),
+                    version.Version(),
+                ],
             ),
             RuntimeError,
         )
@@ -3320,19 +3707,34 @@ async def test_list_versions_async_pager():
         # Set the response to a series of pages.
         call.side_effect = (
             version.ListVersionsResponse(
-                versions=[version.Version(), version.Version(), version.Version(),],
+                versions=[
+                    version.Version(),
+                    version.Version(),
+                    version.Version(),
+                ],
                 next_page_token="abc",
             ),
-            version.ListVersionsResponse(versions=[], next_page_token="def",),
             version.ListVersionsResponse(
-                versions=[version.Version(),], next_page_token="ghi",
+                versions=[],
+                next_page_token="def",
             ),
             version.ListVersionsResponse(
-                versions=[version.Version(), version.Version(),],
+                versions=[
+                    version.Version(),
+                ],
+                next_page_token="ghi",
+            ),
+            version.ListVersionsResponse(
+                versions=[
+                    version.Version(),
+                    version.Version(),
+                ],
             ),
             RuntimeError,
         )
-        async_pager = await client.list_versions(request={},)
+        async_pager = await client.list_versions(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -3355,15 +3757,28 @@ async def test_list_versions_async_pages():
         # Set the response to a series of pages.
         call.side_effect = (
             version.ListVersionsResponse(
-                versions=[version.Version(), version.Version(), version.Version(),],
+                versions=[
+                    version.Version(),
+                    version.Version(),
+                    version.Version(),
+                ],
                 next_page_token="abc",
             ),
-            version.ListVersionsResponse(versions=[], next_page_token="def",),
             version.ListVersionsResponse(
-                versions=[version.Version(),], next_page_token="ghi",
+                versions=[],
+                next_page_token="def",
             ),
             version.ListVersionsResponse(
-                versions=[version.Version(), version.Version(),],
+                versions=[
+                    version.Version(),
+                ],
+                next_page_token="ghi",
+            ),
+            version.ListVersionsResponse(
+                versions=[
+                    version.Version(),
+                    version.Version(),
+                ],
             ),
             RuntimeError,
         )
@@ -3374,10 +3789,17 @@ async def test_list_versions_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [version.GetVersionRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        version.GetVersionRequest,
+        dict,
+    ],
+)
 def test_get_version(request_type, transport: str = "grpc"):
     client = ArtifactRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3388,7 +3810,8 @@ def test_get_version(request_type, transport: str = "grpc"):
     with mock.patch.object(type(client.transport.get_version), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = version.Version(
-            name="name_value", description="description_value",
+            name="name_value",
+            description="description_value",
         )
         response = client.get_version(request)
 
@@ -3407,7 +3830,8 @@ def test_get_version_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ArtifactRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3423,7 +3847,8 @@ async def test_get_version_async(
     transport: str = "grpc_asyncio", request_type=version.GetVersionRequest
 ):
     client = ArtifactRegistryAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3434,7 +3859,10 @@ async def test_get_version_async(
     with mock.patch.object(type(client.transport.get_version), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            version.Version(name="name_value", description="description_value",)
+            version.Version(
+                name="name_value",
+                description="description_value",
+            )
         )
         response = await client.get_version(request)
 
@@ -3455,7 +3883,9 @@ async def test_get_version_async_from_dict():
 
 
 def test_get_version_field_headers():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3475,7 +3905,10 @@ def test_get_version_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -3502,11 +3935,16 @@ async def test_get_version_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_version_flattened():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_version), "__call__") as call:
@@ -3514,7 +3952,9 @@ def test_get_version_flattened():
         call.return_value = version.Version()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_version(name="name_value",)
+        client.get_version(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3526,13 +3966,16 @@ def test_get_version_flattened():
 
 
 def test_get_version_flattened_error():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_version(
-            version.GetVersionRequest(), name="name_value",
+            version.GetVersionRequest(),
+            name="name_value",
         )
 
 
@@ -3550,7 +3993,9 @@ async def test_get_version_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(version.Version())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_version(name="name_value",)
+        response = await client.get_version(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3571,14 +4016,22 @@ async def test_get_version_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_version(
-            version.GetVersionRequest(), name="name_value",
+            version.GetVersionRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [version.DeleteVersionRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        version.DeleteVersionRequest,
+        dict,
+    ],
+)
 def test_delete_version(request_type, transport: str = "grpc"):
     client = ArtifactRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3604,7 +4057,8 @@ def test_delete_version_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ArtifactRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3620,7 +4074,8 @@ async def test_delete_version_async(
     transport: str = "grpc_asyncio", request_type=version.DeleteVersionRequest
 ):
     client = ArtifactRegistryAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3650,7 +4105,9 @@ async def test_delete_version_async_from_dict():
 
 
 def test_delete_version_field_headers():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3670,7 +4127,10 @@ def test_delete_version_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -3699,11 +4159,16 @@ async def test_delete_version_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_version_flattened():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_version), "__call__") as call:
@@ -3711,7 +4176,9 @@ def test_delete_version_flattened():
         call.return_value = operations_pb2.Operation(name="operations/op")
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_version(name="name_value",)
+        client.delete_version(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3723,13 +4190,16 @@ def test_delete_version_flattened():
 
 
 def test_delete_version_flattened_error():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_version(
-            version.DeleteVersionRequest(), name="name_value",
+            version.DeleteVersionRequest(),
+            name="name_value",
         )
 
 
@@ -3749,7 +4219,9 @@ async def test_delete_version_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_version(name="name_value",)
+        response = await client.delete_version(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3770,14 +4242,22 @@ async def test_delete_version_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_version(
-            version.DeleteVersionRequest(), name="name_value",
+            version.DeleteVersionRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [file.ListFilesRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        file.ListFilesRequest,
+        dict,
+    ],
+)
 def test_list_files(request_type, transport: str = "grpc"):
     client = ArtifactRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3806,7 +4286,8 @@ def test_list_files_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ArtifactRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3822,7 +4303,8 @@ async def test_list_files_async(
     transport: str = "grpc_asyncio", request_type=file.ListFilesRequest
 ):
     client = ArtifactRegistryAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -3833,7 +4315,9 @@ async def test_list_files_async(
     with mock.patch.object(type(client.transport.list_files), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            file.ListFilesResponse(next_page_token="next_page_token_value",)
+            file.ListFilesResponse(
+                next_page_token="next_page_token_value",
+            )
         )
         response = await client.list_files(request)
 
@@ -3853,7 +4337,9 @@ async def test_list_files_async_from_dict():
 
 
 def test_list_files_field_headers():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -3873,7 +4359,10 @@ def test_list_files_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -3902,11 +4391,16 @@ async def test_list_files_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_files_flattened():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_files), "__call__") as call:
@@ -3914,7 +4408,9 @@ def test_list_files_flattened():
         call.return_value = file.ListFilesResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_files(parent="parent_value",)
+        client.list_files(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3926,13 +4422,16 @@ def test_list_files_flattened():
 
 
 def test_list_files_flattened_error():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_files(
-            file.ListFilesRequest(), parent="parent_value",
+            file.ListFilesRequest(),
+            parent="parent_value",
         )
 
 
@@ -3952,7 +4451,9 @@ async def test_list_files_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_files(parent="parent_value",)
+        response = await client.list_files(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -3973,13 +4474,15 @@ async def test_list_files_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_files(
-            file.ListFilesRequest(), parent="parent_value",
+            file.ListFilesRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_files_pager(transport_name: str = "grpc"):
     client = ArtifactRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -3987,11 +4490,29 @@ def test_list_files_pager(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             file.ListFilesResponse(
-                files=[file.File(), file.File(), file.File(),], next_page_token="abc",
+                files=[
+                    file.File(),
+                    file.File(),
+                    file.File(),
+                ],
+                next_page_token="abc",
             ),
-            file.ListFilesResponse(files=[], next_page_token="def",),
-            file.ListFilesResponse(files=[file.File(),], next_page_token="ghi",),
-            file.ListFilesResponse(files=[file.File(), file.File(),],),
+            file.ListFilesResponse(
+                files=[],
+                next_page_token="def",
+            ),
+            file.ListFilesResponse(
+                files=[
+                    file.File(),
+                ],
+                next_page_token="ghi",
+            ),
+            file.ListFilesResponse(
+                files=[
+                    file.File(),
+                    file.File(),
+                ],
+            ),
             RuntimeError,
         )
 
@@ -4010,7 +4531,8 @@ def test_list_files_pager(transport_name: str = "grpc"):
 
 def test_list_files_pages(transport_name: str = "grpc"):
     client = ArtifactRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4018,11 +4540,29 @@ def test_list_files_pages(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             file.ListFilesResponse(
-                files=[file.File(), file.File(), file.File(),], next_page_token="abc",
+                files=[
+                    file.File(),
+                    file.File(),
+                    file.File(),
+                ],
+                next_page_token="abc",
             ),
-            file.ListFilesResponse(files=[], next_page_token="def",),
-            file.ListFilesResponse(files=[file.File(),], next_page_token="ghi",),
-            file.ListFilesResponse(files=[file.File(), file.File(),],),
+            file.ListFilesResponse(
+                files=[],
+                next_page_token="def",
+            ),
+            file.ListFilesResponse(
+                files=[
+                    file.File(),
+                ],
+                next_page_token="ghi",
+            ),
+            file.ListFilesResponse(
+                files=[
+                    file.File(),
+                    file.File(),
+                ],
+            ),
             RuntimeError,
         )
         pages = list(client.list_files(request={}).pages)
@@ -4043,14 +4583,34 @@ async def test_list_files_async_pager():
         # Set the response to a series of pages.
         call.side_effect = (
             file.ListFilesResponse(
-                files=[file.File(), file.File(), file.File(),], next_page_token="abc",
+                files=[
+                    file.File(),
+                    file.File(),
+                    file.File(),
+                ],
+                next_page_token="abc",
             ),
-            file.ListFilesResponse(files=[], next_page_token="def",),
-            file.ListFilesResponse(files=[file.File(),], next_page_token="ghi",),
-            file.ListFilesResponse(files=[file.File(), file.File(),],),
+            file.ListFilesResponse(
+                files=[],
+                next_page_token="def",
+            ),
+            file.ListFilesResponse(
+                files=[
+                    file.File(),
+                ],
+                next_page_token="ghi",
+            ),
+            file.ListFilesResponse(
+                files=[
+                    file.File(),
+                    file.File(),
+                ],
+            ),
             RuntimeError,
         )
-        async_pager = await client.list_files(request={},)
+        async_pager = await client.list_files(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -4073,11 +4633,29 @@ async def test_list_files_async_pages():
         # Set the response to a series of pages.
         call.side_effect = (
             file.ListFilesResponse(
-                files=[file.File(), file.File(), file.File(),], next_page_token="abc",
+                files=[
+                    file.File(),
+                    file.File(),
+                    file.File(),
+                ],
+                next_page_token="abc",
             ),
-            file.ListFilesResponse(files=[], next_page_token="def",),
-            file.ListFilesResponse(files=[file.File(),], next_page_token="ghi",),
-            file.ListFilesResponse(files=[file.File(), file.File(),],),
+            file.ListFilesResponse(
+                files=[],
+                next_page_token="def",
+            ),
+            file.ListFilesResponse(
+                files=[
+                    file.File(),
+                ],
+                next_page_token="ghi",
+            ),
+            file.ListFilesResponse(
+                files=[
+                    file.File(),
+                    file.File(),
+                ],
+            ),
             RuntimeError,
         )
         pages = []
@@ -4087,10 +4665,17 @@ async def test_list_files_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [file.GetFileRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        file.GetFileRequest,
+        dict,
+    ],
+)
 def test_get_file(request_type, transport: str = "grpc"):
     client = ArtifactRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4101,7 +4686,9 @@ def test_get_file(request_type, transport: str = "grpc"):
     with mock.patch.object(type(client.transport.get_file), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = file.File(
-            name="name_value", size_bytes=1089, owner="owner_value",
+            name="name_value",
+            size_bytes=1089,
+            owner="owner_value",
         )
         response = client.get_file(request)
 
@@ -4121,7 +4708,8 @@ def test_get_file_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ArtifactRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4137,7 +4725,8 @@ async def test_get_file_async(
     transport: str = "grpc_asyncio", request_type=file.GetFileRequest
 ):
     client = ArtifactRegistryAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4148,7 +4737,11 @@ async def test_get_file_async(
     with mock.patch.object(type(client.transport.get_file), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            file.File(name="name_value", size_bytes=1089, owner="owner_value",)
+            file.File(
+                name="name_value",
+                size_bytes=1089,
+                owner="owner_value",
+            )
         )
         response = await client.get_file(request)
 
@@ -4170,7 +4763,9 @@ async def test_get_file_async_from_dict():
 
 
 def test_get_file_field_headers():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -4190,7 +4785,10 @@ def test_get_file_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -4217,11 +4815,16 @@ async def test_get_file_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_file_flattened():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_file), "__call__") as call:
@@ -4229,7 +4832,9 @@ def test_get_file_flattened():
         call.return_value = file.File()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_file(name="name_value",)
+        client.get_file(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -4241,13 +4846,16 @@ def test_get_file_flattened():
 
 
 def test_get_file_flattened_error():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_file(
-            file.GetFileRequest(), name="name_value",
+            file.GetFileRequest(),
+            name="name_value",
         )
 
 
@@ -4265,7 +4873,9 @@ async def test_get_file_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(file.File())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_file(name="name_value",)
+        response = await client.get_file(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -4286,14 +4896,22 @@ async def test_get_file_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_file(
-            file.GetFileRequest(), name="name_value",
+            file.GetFileRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [tag.ListTagsRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        tag.ListTagsRequest,
+        dict,
+    ],
+)
 def test_list_tags(request_type, transport: str = "grpc"):
     client = ArtifactRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4322,7 +4940,8 @@ def test_list_tags_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ArtifactRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4338,7 +4957,8 @@ async def test_list_tags_async(
     transport: str = "grpc_asyncio", request_type=tag.ListTagsRequest
 ):
     client = ArtifactRegistryAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4349,7 +4969,9 @@ async def test_list_tags_async(
     with mock.patch.object(type(client.transport.list_tags), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            tag.ListTagsResponse(next_page_token="next_page_token_value",)
+            tag.ListTagsResponse(
+                next_page_token="next_page_token_value",
+            )
         )
         response = await client.list_tags(request)
 
@@ -4369,7 +4991,9 @@ async def test_list_tags_async_from_dict():
 
 
 def test_list_tags_field_headers():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -4389,7 +5013,10 @@ def test_list_tags_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -4418,11 +5045,16 @@ async def test_list_tags_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_list_tags_flattened():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_tags), "__call__") as call:
@@ -4430,7 +5062,9 @@ def test_list_tags_flattened():
         call.return_value = tag.ListTagsResponse()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.list_tags(parent="parent_value",)
+        client.list_tags(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -4442,13 +5076,16 @@ def test_list_tags_flattened():
 
 
 def test_list_tags_flattened_error():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.list_tags(
-            tag.ListTagsRequest(), parent="parent_value",
+            tag.ListTagsRequest(),
+            parent="parent_value",
         )
 
 
@@ -4468,7 +5105,9 @@ async def test_list_tags_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.list_tags(parent="parent_value",)
+        response = await client.list_tags(
+            parent="parent_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -4489,13 +5128,15 @@ async def test_list_tags_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.list_tags(
-            tag.ListTagsRequest(), parent="parent_value",
+            tag.ListTagsRequest(),
+            parent="parent_value",
         )
 
 
 def test_list_tags_pager(transport_name: str = "grpc"):
     client = ArtifactRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4503,11 +5144,29 @@ def test_list_tags_pager(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             tag.ListTagsResponse(
-                tags=[tag.Tag(), tag.Tag(), tag.Tag(),], next_page_token="abc",
+                tags=[
+                    tag.Tag(),
+                    tag.Tag(),
+                    tag.Tag(),
+                ],
+                next_page_token="abc",
             ),
-            tag.ListTagsResponse(tags=[], next_page_token="def",),
-            tag.ListTagsResponse(tags=[tag.Tag(),], next_page_token="ghi",),
-            tag.ListTagsResponse(tags=[tag.Tag(), tag.Tag(),],),
+            tag.ListTagsResponse(
+                tags=[],
+                next_page_token="def",
+            ),
+            tag.ListTagsResponse(
+                tags=[
+                    tag.Tag(),
+                ],
+                next_page_token="ghi",
+            ),
+            tag.ListTagsResponse(
+                tags=[
+                    tag.Tag(),
+                    tag.Tag(),
+                ],
+            ),
             RuntimeError,
         )
 
@@ -4526,7 +5185,8 @@ def test_list_tags_pager(transport_name: str = "grpc"):
 
 def test_list_tags_pages(transport_name: str = "grpc"):
     client = ArtifactRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials, transport=transport_name,
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4534,11 +5194,29 @@ def test_list_tags_pages(transport_name: str = "grpc"):
         # Set the response to a series of pages.
         call.side_effect = (
             tag.ListTagsResponse(
-                tags=[tag.Tag(), tag.Tag(), tag.Tag(),], next_page_token="abc",
+                tags=[
+                    tag.Tag(),
+                    tag.Tag(),
+                    tag.Tag(),
+                ],
+                next_page_token="abc",
             ),
-            tag.ListTagsResponse(tags=[], next_page_token="def",),
-            tag.ListTagsResponse(tags=[tag.Tag(),], next_page_token="ghi",),
-            tag.ListTagsResponse(tags=[tag.Tag(), tag.Tag(),],),
+            tag.ListTagsResponse(
+                tags=[],
+                next_page_token="def",
+            ),
+            tag.ListTagsResponse(
+                tags=[
+                    tag.Tag(),
+                ],
+                next_page_token="ghi",
+            ),
+            tag.ListTagsResponse(
+                tags=[
+                    tag.Tag(),
+                    tag.Tag(),
+                ],
+            ),
             RuntimeError,
         )
         pages = list(client.list_tags(request={}).pages)
@@ -4559,14 +5237,34 @@ async def test_list_tags_async_pager():
         # Set the response to a series of pages.
         call.side_effect = (
             tag.ListTagsResponse(
-                tags=[tag.Tag(), tag.Tag(), tag.Tag(),], next_page_token="abc",
+                tags=[
+                    tag.Tag(),
+                    tag.Tag(),
+                    tag.Tag(),
+                ],
+                next_page_token="abc",
             ),
-            tag.ListTagsResponse(tags=[], next_page_token="def",),
-            tag.ListTagsResponse(tags=[tag.Tag(),], next_page_token="ghi",),
-            tag.ListTagsResponse(tags=[tag.Tag(), tag.Tag(),],),
+            tag.ListTagsResponse(
+                tags=[],
+                next_page_token="def",
+            ),
+            tag.ListTagsResponse(
+                tags=[
+                    tag.Tag(),
+                ],
+                next_page_token="ghi",
+            ),
+            tag.ListTagsResponse(
+                tags=[
+                    tag.Tag(),
+                    tag.Tag(),
+                ],
+            ),
             RuntimeError,
         )
-        async_pager = await client.list_tags(request={},)
+        async_pager = await client.list_tags(
+            request={},
+        )
         assert async_pager.next_page_token == "abc"
         responses = []
         async for response in async_pager:
@@ -4589,11 +5287,29 @@ async def test_list_tags_async_pages():
         # Set the response to a series of pages.
         call.side_effect = (
             tag.ListTagsResponse(
-                tags=[tag.Tag(), tag.Tag(), tag.Tag(),], next_page_token="abc",
+                tags=[
+                    tag.Tag(),
+                    tag.Tag(),
+                    tag.Tag(),
+                ],
+                next_page_token="abc",
             ),
-            tag.ListTagsResponse(tags=[], next_page_token="def",),
-            tag.ListTagsResponse(tags=[tag.Tag(),], next_page_token="ghi",),
-            tag.ListTagsResponse(tags=[tag.Tag(), tag.Tag(),],),
+            tag.ListTagsResponse(
+                tags=[],
+                next_page_token="def",
+            ),
+            tag.ListTagsResponse(
+                tags=[
+                    tag.Tag(),
+                ],
+                next_page_token="ghi",
+            ),
+            tag.ListTagsResponse(
+                tags=[
+                    tag.Tag(),
+                    tag.Tag(),
+                ],
+            ),
             RuntimeError,
         )
         pages = []
@@ -4603,10 +5319,17 @@ async def test_list_tags_async_pages():
             assert page_.raw_page.next_page_token == token
 
 
-@pytest.mark.parametrize("request_type", [tag.GetTagRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        tag.GetTagRequest,
+        dict,
+    ],
+)
 def test_get_tag(request_type, transport: str = "grpc"):
     client = ArtifactRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4616,7 +5339,10 @@ def test_get_tag(request_type, transport: str = "grpc"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_tag), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = tag.Tag(name="name_value", version="version_value",)
+        call.return_value = tag.Tag(
+            name="name_value",
+            version="version_value",
+        )
         response = client.get_tag(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -4634,7 +5360,8 @@ def test_get_tag_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ArtifactRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4650,7 +5377,8 @@ async def test_get_tag_async(
     transport: str = "grpc_asyncio", request_type=tag.GetTagRequest
 ):
     client = ArtifactRegistryAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4661,7 +5389,10 @@ async def test_get_tag_async(
     with mock.patch.object(type(client.transport.get_tag), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            tag.Tag(name="name_value", version="version_value",)
+            tag.Tag(
+                name="name_value",
+                version="version_value",
+            )
         )
         response = await client.get_tag(request)
 
@@ -4682,7 +5413,9 @@ async def test_get_tag_async_from_dict():
 
 
 def test_get_tag_field_headers():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -4702,7 +5435,10 @@ def test_get_tag_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -4729,11 +5465,16 @@ async def test_get_tag_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_tag_flattened():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_tag), "__call__") as call:
@@ -4741,7 +5482,9 @@ def test_get_tag_flattened():
         call.return_value = tag.Tag()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_tag(name="name_value",)
+        client.get_tag(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -4753,13 +5496,16 @@ def test_get_tag_flattened():
 
 
 def test_get_tag_flattened_error():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_tag(
-            tag.GetTagRequest(), name="name_value",
+            tag.GetTagRequest(),
+            name="name_value",
         )
 
 
@@ -4777,7 +5523,9 @@ async def test_get_tag_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(tag.Tag())
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_tag(name="name_value",)
+        response = await client.get_tag(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -4798,14 +5546,22 @@ async def test_get_tag_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_tag(
-            tag.GetTagRequest(), name="name_value",
+            tag.GetTagRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [gda_tag.CreateTagRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gda_tag.CreateTagRequest,
+        dict,
+    ],
+)
 def test_create_tag(request_type, transport: str = "grpc"):
     client = ArtifactRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4815,7 +5571,10 @@ def test_create_tag(request_type, transport: str = "grpc"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_tag), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = gda_tag.Tag(name="name_value", version="version_value",)
+        call.return_value = gda_tag.Tag(
+            name="name_value",
+            version="version_value",
+        )
         response = client.create_tag(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -4833,7 +5592,8 @@ def test_create_tag_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ArtifactRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -4849,7 +5609,8 @@ async def test_create_tag_async(
     transport: str = "grpc_asyncio", request_type=gda_tag.CreateTagRequest
 ):
     client = ArtifactRegistryAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -4860,7 +5621,10 @@ async def test_create_tag_async(
     with mock.patch.object(type(client.transport.create_tag), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gda_tag.Tag(name="name_value", version="version_value",)
+            gda_tag.Tag(
+                name="name_value",
+                version="version_value",
+            )
         )
         response = await client.create_tag(request)
 
@@ -4881,7 +5645,9 @@ async def test_create_tag_async_from_dict():
 
 
 def test_create_tag_field_headers():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -4901,7 +5667,10 @@ def test_create_tag_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -4928,11 +5697,16 @@ async def test_create_tag_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "parent=parent/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
 
 
 def test_create_tag_flattened():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_tag), "__call__") as call:
@@ -4962,7 +5736,9 @@ def test_create_tag_flattened():
 
 
 def test_create_tag_flattened_error():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -5027,10 +5803,17 @@ async def test_create_tag_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [gda_tag.UpdateTagRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        gda_tag.UpdateTagRequest,
+        dict,
+    ],
+)
 def test_update_tag(request_type, transport: str = "grpc"):
     client = ArtifactRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5040,7 +5823,10 @@ def test_update_tag(request_type, transport: str = "grpc"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_tag), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = gda_tag.Tag(name="name_value", version="version_value",)
+        call.return_value = gda_tag.Tag(
+            name="name_value",
+            version="version_value",
+        )
         response = client.update_tag(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -5058,7 +5844,8 @@ def test_update_tag_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ArtifactRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5074,7 +5861,8 @@ async def test_update_tag_async(
     transport: str = "grpc_asyncio", request_type=gda_tag.UpdateTagRequest
 ):
     client = ArtifactRegistryAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5085,7 +5873,10 @@ async def test_update_tag_async(
     with mock.patch.object(type(client.transport.update_tag), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            gda_tag.Tag(name="name_value", version="version_value",)
+            gda_tag.Tag(
+                name="name_value",
+                version="version_value",
+            )
         )
         response = await client.update_tag(request)
 
@@ -5106,7 +5897,9 @@ async def test_update_tag_async_from_dict():
 
 
 def test_update_tag_field_headers():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -5126,7 +5919,10 @@ def test_update_tag_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "tag.name=tag.name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "tag.name=tag.name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -5153,11 +5949,16 @@ async def test_update_tag_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "tag.name=tag.name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "tag.name=tag.name/value",
+    ) in kw["metadata"]
 
 
 def test_update_tag_flattened():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_tag), "__call__") as call:
@@ -5183,7 +5984,9 @@ def test_update_tag_flattened():
 
 
 def test_update_tag_flattened_error():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -5242,10 +6045,17 @@ async def test_update_tag_flattened_error_async():
         )
 
 
-@pytest.mark.parametrize("request_type", [tag.DeleteTagRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        tag.DeleteTagRequest,
+        dict,
+    ],
+)
 def test_delete_tag(request_type, transport: str = "grpc"):
     client = ArtifactRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5271,7 +6081,8 @@ def test_delete_tag_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ArtifactRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5287,7 +6098,8 @@ async def test_delete_tag_async(
     transport: str = "grpc_asyncio", request_type=tag.DeleteTagRequest
 ):
     client = ArtifactRegistryAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5315,7 +6127,9 @@ async def test_delete_tag_async_from_dict():
 
 
 def test_delete_tag_field_headers():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -5335,7 +6149,10 @@ def test_delete_tag_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -5362,11 +6179,16 @@ async def test_delete_tag_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_delete_tag_flattened():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_tag), "__call__") as call:
@@ -5374,7 +6196,9 @@ def test_delete_tag_flattened():
         call.return_value = None
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.delete_tag(name="name_value",)
+        client.delete_tag(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -5386,13 +6210,16 @@ def test_delete_tag_flattened():
 
 
 def test_delete_tag_flattened_error():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.delete_tag(
-            tag.DeleteTagRequest(), name="name_value",
+            tag.DeleteTagRequest(),
+            name="name_value",
         )
 
 
@@ -5410,7 +6237,9 @@ async def test_delete_tag_flattened_async():
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.delete_tag(name="name_value",)
+        response = await client.delete_tag(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -5431,14 +6260,22 @@ async def test_delete_tag_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.delete_tag(
-            tag.DeleteTagRequest(), name="name_value",
+            tag.DeleteTagRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [iam_policy_pb2.SetIamPolicyRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.SetIamPolicyRequest,
+        dict,
+    ],
+)
 def test_set_iam_policy(request_type, transport: str = "grpc"):
     client = ArtifactRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5448,7 +6285,10 @@ def test_set_iam_policy(request_type, transport: str = "grpc"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = policy_pb2.Policy(version=774, etag=b"etag_blob",)
+        call.return_value = policy_pb2.Policy(
+            version=774,
+            etag=b"etag_blob",
+        )
         response = client.set_iam_policy(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -5466,7 +6306,8 @@ def test_set_iam_policy_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ArtifactRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5482,7 +6323,8 @@ async def test_set_iam_policy_async(
     transport: str = "grpc_asyncio", request_type=iam_policy_pb2.SetIamPolicyRequest
 ):
     client = ArtifactRegistryAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5493,7 +6335,10 @@ async def test_set_iam_policy_async(
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            policy_pb2.Policy(version=774, etag=b"etag_blob",)
+            policy_pb2.Policy(
+                version=774,
+                etag=b"etag_blob",
+            )
         )
         response = await client.set_iam_policy(request)
 
@@ -5514,7 +6359,9 @@ async def test_set_iam_policy_async_from_dict():
 
 
 def test_set_iam_policy_field_headers():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -5534,7 +6381,10 @@ def test_set_iam_policy_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -5561,11 +6411,16 @@ async def test_set_iam_policy_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
 
 
 def test_set_iam_policy_from_dict_foreign():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
@@ -5579,10 +6434,17 @@ def test_set_iam_policy_from_dict_foreign():
         call.assert_called()
 
 
-@pytest.mark.parametrize("request_type", [iam_policy_pb2.GetIamPolicyRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        iam_policy_pb2.GetIamPolicyRequest,
+        dict,
+    ],
+)
 def test_get_iam_policy(request_type, transport: str = "grpc"):
     client = ArtifactRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5592,7 +6454,10 @@ def test_get_iam_policy(request_type, transport: str = "grpc"):
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
-        call.return_value = policy_pb2.Policy(version=774, etag=b"etag_blob",)
+        call.return_value = policy_pb2.Policy(
+            version=774,
+            etag=b"etag_blob",
+        )
         response = client.get_iam_policy(request)
 
         # Establish that the underlying gRPC stub method was called.
@@ -5610,7 +6475,8 @@ def test_get_iam_policy_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ArtifactRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5626,7 +6492,8 @@ async def test_get_iam_policy_async(
     transport: str = "grpc_asyncio", request_type=iam_policy_pb2.GetIamPolicyRequest
 ):
     client = ArtifactRegistryAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5637,7 +6504,10 @@ async def test_get_iam_policy_async(
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
         call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
-            policy_pb2.Policy(version=774, etag=b"etag_blob",)
+            policy_pb2.Policy(
+                version=774,
+                etag=b"etag_blob",
+            )
         )
         response = await client.get_iam_policy(request)
 
@@ -5658,7 +6528,9 @@ async def test_get_iam_policy_async_from_dict():
 
 
 def test_get_iam_policy_field_headers():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -5678,7 +6550,10 @@ def test_get_iam_policy_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -5705,11 +6580,16 @@ async def test_get_iam_policy_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
 
 
 def test_get_iam_policy_from_dict_foreign():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
         # Designate an appropriate return value for the call.
@@ -5724,11 +6604,16 @@ def test_get_iam_policy_from_dict_foreign():
 
 
 @pytest.mark.parametrize(
-    "request_type", [iam_policy_pb2.TestIamPermissionsRequest, dict,]
+    "request_type",
+    [
+        iam_policy_pb2.TestIamPermissionsRequest,
+        dict,
+    ],
 )
 def test_test_iam_permissions(request_type, transport: str = "grpc"):
     client = ArtifactRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5759,7 +6644,8 @@ def test_test_iam_permissions_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ArtifactRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5778,7 +6664,8 @@ async def test_test_iam_permissions_async(
     request_type=iam_policy_pb2.TestIamPermissionsRequest,
 ):
     client = ArtifactRegistryAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5813,7 +6700,9 @@ async def test_test_iam_permissions_async_from_dict():
 
 
 def test_test_iam_permissions_field_headers():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -5835,7 +6724,10 @@ def test_test_iam_permissions_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -5866,11 +6758,16 @@ async def test_test_iam_permissions_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "resource=resource/value",
+    ) in kw["metadata"]
 
 
 def test_test_iam_permissions_from_dict_foreign():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
         type(client.transport.test_iam_permissions), "__call__"
@@ -5886,10 +6783,17 @@ def test_test_iam_permissions_from_dict_foreign():
         call.assert_called()
 
 
-@pytest.mark.parametrize("request_type", [settings.GetProjectSettingsRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        settings.GetProjectSettingsRequest,
+        dict,
+    ],
+)
 def test_get_project_settings(request_type, transport: str = "grpc"):
     client = ArtifactRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5925,7 +6829,8 @@ def test_get_project_settings_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ArtifactRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -5943,7 +6848,8 @@ async def test_get_project_settings_async(
     transport: str = "grpc_asyncio", request_type=settings.GetProjectSettingsRequest
 ):
     client = ArtifactRegistryAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -5983,7 +6889,9 @@ async def test_get_project_settings_async_from_dict():
 
 
 def test_get_project_settings_field_headers():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -6005,7 +6913,10 @@ def test_get_project_settings_field_headers():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.asyncio
@@ -6036,11 +6947,16 @@ async def test_get_project_settings_field_headers_async():
 
     # Establish that the field header was sent.
     _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "name=name/value",) in kw["metadata"]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
 
 
 def test_get_project_settings_flattened():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6050,7 +6966,9 @@ def test_get_project_settings_flattened():
         call.return_value = settings.ProjectSettings()
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        client.get_project_settings(name="name_value",)
+        client.get_project_settings(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -6062,13 +6980,16 @@ def test_get_project_settings_flattened():
 
 
 def test_get_project_settings_flattened_error():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
     with pytest.raises(ValueError):
         client.get_project_settings(
-            settings.GetProjectSettingsRequest(), name="name_value",
+            settings.GetProjectSettingsRequest(),
+            name="name_value",
         )
 
 
@@ -6090,7 +7011,9 @@ async def test_get_project_settings_flattened_async():
         )
         # Call the method with a truthy value for each flattened field,
         # using the keyword arguments to the method.
-        response = await client.get_project_settings(name="name_value",)
+        response = await client.get_project_settings(
+            name="name_value",
+        )
 
         # Establish that the underlying call was made with the expected
         # request object values.
@@ -6111,14 +7034,22 @@ async def test_get_project_settings_flattened_error_async():
     # fields is an error.
     with pytest.raises(ValueError):
         await client.get_project_settings(
-            settings.GetProjectSettingsRequest(), name="name_value",
+            settings.GetProjectSettingsRequest(),
+            name="name_value",
         )
 
 
-@pytest.mark.parametrize("request_type", [settings.UpdateProjectSettingsRequest, dict,])
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        settings.UpdateProjectSettingsRequest,
+        dict,
+    ],
+)
 def test_update_project_settings(request_type, transport: str = "grpc"):
     client = ArtifactRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -6154,7 +7085,8 @@ def test_update_project_settings_empty_call():
     # This test is a coverage failsafe to make sure that totally empty calls,
     # i.e. request == None and no flattened fields passed, work.
     client = ArtifactRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -6172,7 +7104,8 @@ async def test_update_project_settings_async(
     transport: str = "grpc_asyncio", request_type=settings.UpdateProjectSettingsRequest
 ):
     client = ArtifactRegistryAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
     )
 
     # Everything is optional in proto3 as far as the runtime is concerned,
@@ -6212,7 +7145,9 @@ async def test_update_project_settings_async_from_dict():
 
 
 def test_update_project_settings_field_headers():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Any value that is part of the HTTP/1.1 URI should be sent as
     # a field header. Set these to a non-empty value.
@@ -6275,7 +7210,9 @@ async def test_update_project_settings_field_headers_async():
 
 
 def test_update_project_settings_flattened():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -6303,7 +7240,9 @@ def test_update_project_settings_flattened():
 
 
 def test_update_project_settings_flattened_error():
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
 
     # Attempting to call a method with both a request object and flattened
     # fields is an error.
@@ -6373,7 +7312,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = ArtifactRegistryClient(
-            credentials=ga_credentials.AnonymousCredentials(), transport=transport,
+            credentials=ga_credentials.AnonymousCredentials(),
+            transport=transport,
         )
 
     # It is an error to provide a credentials file and a transport instance.
@@ -6393,7 +7333,10 @@ def test_credentials_transport_error():
     options = client_options.ClientOptions()
     options.api_key = "api_key"
     with pytest.raises(ValueError):
-        client = ArtifactRegistryClient(client_options=options, transport=transport,)
+        client = ArtifactRegistryClient(
+            client_options=options,
+            transport=transport,
+        )
 
     # It is an error to provide an api_key and a credential.
     options = mock.Mock()
@@ -6409,7 +7352,8 @@ def test_credentials_transport_error():
     )
     with pytest.raises(ValueError):
         client = ArtifactRegistryClient(
-            client_options={"scopes": ["1", "2"]}, transport=transport,
+            client_options={"scopes": ["1", "2"]},
+            transport=transport,
         )
 
 
@@ -6454,8 +7398,13 @@ def test_transport_adc(transport_class):
 
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
-    client = ArtifactRegistryClient(credentials=ga_credentials.AnonymousCredentials(),)
-    assert isinstance(client.transport, transports.ArtifactRegistryGrpcTransport,)
+    client = ArtifactRegistryClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    assert isinstance(
+        client.transport,
+        transports.ArtifactRegistryGrpcTransport,
+    )
 
 
 def test_artifact_registry_base_transport_error():
@@ -6529,7 +7478,8 @@ def test_artifact_registry_base_transport_with_credentials_file():
         Transport.return_value = None
         load_creds.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport = transports.ArtifactRegistryTransport(
-            credentials_file="credentials.json", quota_project_id="octopus",
+            credentials_file="credentials.json",
+            quota_project_id="octopus",
         )
         load_creds.assert_called_once_with(
             "credentials.json",
@@ -6699,7 +7649,8 @@ def test_artifact_registry_grpc_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.ArtifactRegistryGrpcTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -6711,7 +7662,8 @@ def test_artifact_registry_grpc_asyncio_transport_channel():
 
     # Check that channel is used if provided.
     transport = transports.ArtifactRegistryGrpcAsyncIOTransport(
-        host="squid.clam.whelk", channel=channel,
+        host="squid.clam.whelk",
+        channel=channel,
     )
     assert transport.grpc_channel == channel
     assert transport._host == "squid.clam.whelk:443"
@@ -6820,12 +7772,16 @@ def test_artifact_registry_transport_channel_mtls_with_adc(transport_class):
 
 def test_artifact_registry_grpc_lro_client():
     client = ArtifactRegistryClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
     )
     transport = client.transport
 
     # Ensure that we have a api-core operations client.
-    assert isinstance(transport.operations_client, operations_v1.OperationsClient,)
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsClient,
+    )
 
     # Ensure that subsequent calls to the property send the exact same object.
     assert transport.operations_client is transport.operations_client
@@ -6833,12 +7789,16 @@ def test_artifact_registry_grpc_lro_client():
 
 def test_artifact_registry_grpc_lro_async_client():
     client = ArtifactRegistryAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     transport = client.transport
 
     # Ensure that we have a api-core operations client.
-    assert isinstance(transport.operations_client, operations_v1.OperationsAsyncClient,)
+    assert isinstance(
+        transport.operations_client,
+        operations_v1.OperationsAsyncClient,
+    )
 
     # Ensure that subsequent calls to the property send the exact same object.
     assert transport.operations_client is transport.operations_client
@@ -6881,7 +7841,10 @@ def test_file_path():
     repository = "scallop"
     file = "abalone"
     expected = "projects/{project}/locations/{location}/repositories/{repository}/files/{file}".format(
-        project=project, location=location, repository=repository, file=file,
+        project=project,
+        location=location,
+        repository=repository,
+        file=file,
     )
     actual = ArtifactRegistryClient.file_path(project, location, repository, file)
     assert expected == actual
@@ -6903,7 +7866,9 @@ def test_parse_file_path():
 
 def test_project_settings_path():
     project = "oyster"
-    expected = "projects/{project}/projectSettings".format(project=project,)
+    expected = "projects/{project}/projectSettings".format(
+        project=project,
+    )
     actual = ArtifactRegistryClient.project_settings_path(project)
     assert expected == actual
 
@@ -6923,8 +7888,12 @@ def test_repository_path():
     project = "cuttlefish"
     location = "mussel"
     repository = "winkle"
-    expected = "projects/{project}/locations/{location}/repositories/{repository}".format(
-        project=project, location=location, repository=repository,
+    expected = (
+        "projects/{project}/locations/{location}/repositories/{repository}".format(
+            project=project,
+            location=location,
+            repository=repository,
+        )
     )
     actual = ArtifactRegistryClient.repository_path(project, location, repository)
     assert expected == actual
@@ -7064,7 +8033,9 @@ def test_parse_common_billing_account_path():
 
 def test_common_folder_path():
     folder = "cuttlefish"
-    expected = "folders/{folder}".format(folder=folder,)
+    expected = "folders/{folder}".format(
+        folder=folder,
+    )
     actual = ArtifactRegistryClient.common_folder_path(folder)
     assert expected == actual
 
@@ -7082,7 +8053,9 @@ def test_parse_common_folder_path():
 
 def test_common_organization_path():
     organization = "winkle"
-    expected = "organizations/{organization}".format(organization=organization,)
+    expected = "organizations/{organization}".format(
+        organization=organization,
+    )
     actual = ArtifactRegistryClient.common_organization_path(organization)
     assert expected == actual
 
@@ -7100,7 +8073,9 @@ def test_parse_common_organization_path():
 
 def test_common_project_path():
     project = "scallop"
-    expected = "projects/{project}".format(project=project,)
+    expected = "projects/{project}".format(
+        project=project,
+    )
     actual = ArtifactRegistryClient.common_project_path(project)
     assert expected == actual
 
@@ -7120,7 +8095,8 @@ def test_common_location_path():
     project = "squid"
     location = "clam"
     expected = "projects/{project}/locations/{location}".format(
-        project=project, location=location,
+        project=project,
+        location=location,
     )
     actual = ArtifactRegistryClient.common_location_path(project, location)
     assert expected == actual
@@ -7145,7 +8121,8 @@ def test_client_with_default_client_info():
         transports.ArtifactRegistryTransport, "_prep_wrapped_messages"
     ) as prep:
         client = ArtifactRegistryClient(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -7154,7 +8131,8 @@ def test_client_with_default_client_info():
     ) as prep:
         transport_class = ArtifactRegistryClient.get_transport_class()
         transport = transport_class(
-            credentials=ga_credentials.AnonymousCredentials(), client_info=client_info,
+            credentials=ga_credentials.AnonymousCredentials(),
+            client_info=client_info,
         )
         prep.assert_called_once_with(client_info)
 
@@ -7162,7 +8140,8 @@ def test_client_with_default_client_info():
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = ArtifactRegistryAsyncClient(
-        credentials=ga_credentials.AnonymousCredentials(), transport="grpc_asyncio",
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc_asyncio",
     )
     with mock.patch.object(
         type(getattr(client.transport, "grpc_channel")), "close"

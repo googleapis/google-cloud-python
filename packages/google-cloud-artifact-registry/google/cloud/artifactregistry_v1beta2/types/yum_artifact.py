@@ -55,10 +55,23 @@ class YumArtifact(proto.Message):
         BINARY = 1
         SOURCE = 2
 
-    name = proto.Field(proto.STRING, number=1,)
-    package_name = proto.Field(proto.STRING, number=2,)
-    package_type = proto.Field(proto.ENUM, number=3, enum=PackageType,)
-    architecture = proto.Field(proto.STRING, number=4,)
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    package_name = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    package_type = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum=PackageType,
+    )
+    architecture = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class ImportYumArtifactsGcsSource(proto.Message):
@@ -73,8 +86,14 @@ class ImportYumArtifactsGcsSource(proto.Message):
             objects from a single URI.
     """
 
-    uris = proto.RepeatedField(proto.STRING, number=1,)
-    use_wildcards = proto.Field(proto.BOOL, number=2,)
+    uris = proto.RepeatedField(
+        proto.STRING,
+        number=1,
+    )
+    use_wildcards = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
 
 
 class ImportYumArtifactsRequest(proto.Message):
@@ -94,9 +113,15 @@ class ImportYumArtifactsRequest(proto.Message):
     """
 
     gcs_source = proto.Field(
-        proto.MESSAGE, number=2, oneof="source", message="ImportYumArtifactsGcsSource",
+        proto.MESSAGE,
+        number=2,
+        oneof="source",
+        message="ImportYumArtifactsGcsSource",
     )
-    parent = proto.Field(proto.STRING, number=1,)
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
 
 
 class ImportYumArtifactsErrorInfo(proto.Message):
@@ -114,9 +139,16 @@ class ImportYumArtifactsErrorInfo(proto.Message):
     """
 
     gcs_source = proto.Field(
-        proto.MESSAGE, number=1, oneof="source", message="ImportYumArtifactsGcsSource",
+        proto.MESSAGE,
+        number=1,
+        oneof="source",
+        message="ImportYumArtifactsGcsSource",
     )
-    error = proto.Field(proto.MESSAGE, number=2, message=status_pb2.Status,)
+    error = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=status_pb2.Status,
+    )
 
 
 class ImportYumArtifactsResponse(proto.Message):
@@ -130,15 +162,20 @@ class ImportYumArtifactsResponse(proto.Message):
             not imported.
     """
 
-    yum_artifacts = proto.RepeatedField(proto.MESSAGE, number=1, message="YumArtifact",)
+    yum_artifacts = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message="YumArtifact",
+    )
     errors = proto.RepeatedField(
-        proto.MESSAGE, number=2, message="ImportYumArtifactsErrorInfo",
+        proto.MESSAGE,
+        number=2,
+        message="ImportYumArtifactsErrorInfo",
     )
 
 
 class ImportYumArtifactsMetadata(proto.Message):
-    r"""The operation metadata for importing artifacts.
-    """
+    r"""The operation metadata for importing artifacts."""
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))
