@@ -63,6 +63,7 @@ for more detailed instructions.
 * [CORS Configuration](#cors-configuration)
 * [Create Bucket](#create-bucket)
 * [Create Bucket Class Location](#create-bucket-class-location)
+* [Create Bucket Dual Region](#create-bucket-dual-region)
 * [Create Bucket Notifications](#create-bucket-notifications)
 * [Create Bucket Turbo Replication](#create-bucket-turbo-replication)
 * [Create HMAC Key](#create-hmac-key)
@@ -315,6 +316,15 @@ View the [source code](https://github.com/googleapis/python-storage/blob/main/sa
 
 
 `python storage_create_bucket_class_location.py <BUCKET_NAME>`
+
+-----
+### Create Bucket Dual Region
+[![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleapis/python-storage&page=editor&open_in_editor=samples/snippets/storage_create_bucket_dual_region.py,samples/README.md)
+
+View the [source code](https://github.com/googleapis/python-storage/blob/main/samples/snippets/storage_create_bucket_dual_region.py). To run this sample:
+
+
+`python storage_create_bucket_dual_region.py <BUCKET_NAME> <REGION_1> <REGION_2>`
 
 -----
 ### Create Bucket Notifications

@@ -875,8 +875,9 @@ class Client(ClientWithProject):
                 made via created bucket.
             location (str):
                 (Optional) The location of the bucket. If not passed,
-                the default location, US, will be used. See
-                https://cloud.google.com/storage/docs/bucket-locations
+                the default location, US, will be used. If specifying a dual-region,
+                can be specified as a string, e.g., 'US-CENTRAL1+US-WEST1'. See:
+                https://cloud.google.com/storage/docs/locations
             predefined_acl (str):
                 (Optional) Name of predefined ACL to apply to bucket. See:
                 https://cloud.google.com/storage/docs/access-control/lists#predefined-acl
