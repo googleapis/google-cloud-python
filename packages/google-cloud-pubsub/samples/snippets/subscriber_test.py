@@ -43,6 +43,7 @@ SUBSCRIPTION_DLQ = f"subscription-test-subscription-dlq-{PY_VERSION}-{UUID}"
 SUBSCRIPTION_EOD = f"subscription-test-subscription-eod-{PY_VERSION}-{UUID}"
 ENDPOINT = f"https://{PROJECT_ID}.appspot.com/push"
 NEW_ENDPOINT = f"https://{PROJECT_ID}.appspot.com/push2"
+REGIONAL_ENDPOINT = "us-east1-pubsub.googleapis.com:443"
 DEFAULT_MAX_DELIVERY_ATTEMPTS = 5
 UPDATED_MAX_DELIVERY_ATTEMPTS = 20
 FILTER = 'attributes.author="unknown"'
@@ -59,7 +60,7 @@ def publisher_client() -> Generator[pubsub_v1.PublisherClient, None, None]:
 
 @pytest.fixture(scope="module")
 def regional_publisher_client() -> Generator[pubsub_v1.PublisherClient, None, None]:
-    client_options = {"api_endpoint": "us-east1-pubsub.googleapis.com:443"}
+    client_options = {"api_endpoint": REGIONAL_ENDPOINT}
     publisher = pubsub_v1.PublisherClient(client_options=client_options)
     yield publisher
 
@@ -703,7 +704,8 @@ def test_receive_with_blocking_shutdown(
     eventually_consistent_test()
 
 
-def test_receive_messages_with_exactly_once_delivery_enabled(
+@typed_flaky
+def test_receive_messages_with_exactly_once_delivery_enabled_regional_endpoint(
     regional_publisher_client: pubsub_v1.PublisherClient,
     exactly_once_delivery_topic: str,
     subscription_eod: str,
@@ -711,6 +713,25 @@ def test_receive_messages_with_exactly_once_delivery_enabled(
 ) -> None:
 
     message_ids = _publish_messages(regional_publisher_client, exactly_once_delivery_topic)
+
+    subscriber.receive_messages_with_exactly_once_delivery_enabled(
+        PROJECT_ID, SUBSCRIPTION_EOD, 10
+    )
+
+    out, _ = capsys.readouterr()
+    assert subscription_eod in out
+    for message_id in message_ids:
+        assert message_id in out
+
+
+def test_receive_messages_with_exactly_once_delivery_enabled(
+    publisher_client: pubsub_v1.PublisherClient,
+    exactly_once_delivery_topic: str,
+    subscription_eod: str,
+    capsys: CaptureFixture[str],
+) -> None:
+
+    message_ids = _publish_messages(publisher_client, exactly_once_delivery_topic)
 
     subscriber.receive_messages_with_exactly_once_delivery_enabled(
         PROJECT_ID, SUBSCRIPTION_EOD, 10
