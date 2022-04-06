@@ -37,7 +37,6 @@ from google.auth import _helpers
 from google.auth import credentials
 from google.auth import exceptions
 from google.auth import jwt
-from google.auth.transport.requests import AuthorizedSession
 
 _DEFAULT_TOKEN_LIFETIME_SECS = 3600  # 1 hour in seconds
 
@@ -276,6 +275,7 @@ class Credentials(
         )
 
     def sign_bytes(self, message):
+        from google.auth.transport.requests import AuthorizedSession
 
         iam_sign_endpoint = _IAM_SIGN_ENDPOINT.format(self._target_principal)
 
@@ -407,6 +407,7 @@ class IDTokenCredentials(credentials.CredentialsWithQuotaProject):
 
     @_helpers.copy_docstring(credentials.Credentials)
     def refresh(self, request):
+        from google.auth.transport.requests import AuthorizedSession
 
         iam_sign_endpoint = _IAM_IDTOKEN_ENDPOINT.format(
             self._target_credentials.signer_email
