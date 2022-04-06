@@ -2,11 +2,7 @@ Python Client for Cloud AutoML API
 ==================================
 |ga| |pypi| |versions| 
 
-AutoML API Python Client is now available in the new Vertex AI.
-Migrate your AutoML resources to Vertex AI to get the latest features
-like data labeling, AutoML-powered training, and endpoint management. 
-
-- `Migrate to Vertex AI Documentation`_
+🔔 **AutoML API Python Client is now available in Vertex AI. Please visit** `Vertex SDK for Python`_ **for the new Python Vertex AI client.** Vertex AI is our next generation AI Platform, with many new features that are unavailable in the current platform. `Migrate your resources to Vertex AI`_ to get the latest machine learning features, simplify end-to-end journeys, and productionize models with MLOps.
 
 The `Cloud AutoML API`_ is a suite of machine learning products that enables
 developers with limited machine learning expertise to train high-quality models
@@ -22,10 +18,11 @@ transfer learning, and Neural Architecture Search technology.
    :target: https://pypi.org/project/google-cloud-automl/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-automl.svg
    :target: https://pypi.org/project/google-cloud-automl/
+.. _Vertex SDK for Python: https://github.com/googleapis/python-aiplatform
 .. _Cloud AutoML API: https://cloud.google.com/automl
 .. _Client Library Documentation: https://cloud.google.com/python/docs/reference/automl/latest
 .. _Product Documentation:  https://cloud.google.com/automl
-.. _Migrate to Vertex AI Documentation: https://cloud.google.com/vertex-ai/docs/start/migrating-to-vertex-ai
+.. _Migrate your resources to Vertex AI: https://cloud.google.com/vertex-ai/docs/start/migrating-to-vertex-ai
 
 Quick Start
 -----------
