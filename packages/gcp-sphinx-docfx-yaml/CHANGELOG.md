@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.4.6](https://github.com/googleapis/sphinx-docfx-yaml/compare/v1.4.5...v1.4.6) (2022-04-06)
+
+
+### Bug Fixes
+
+* support parsing summary docstring that is not well formed ([#200](https://github.com/googleapis/sphinx-docfx-yaml/issues/200)) ([a1b362d](https://github.com/googleapis/sphinx-docfx-yaml/commit/a1b362d611be6a60d19e2b5b06806554eea111f5))
+
 ### [1.4.5](https://github.com/googleapis/sphinx-docfx-yaml/compare/v1.4.4...v1.4.5) (2022-03-18)
 
 
