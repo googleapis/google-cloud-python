@@ -5,6 +5,19 @@
 [1]: https://pypi.org/project/google-cloud-pubsub/#history
 
 
+## [2.12.0](https://github.com/googleapis/python-pubsub/compare/v2.11.0...v2.12.0) (2022-04-06)
+
+
+### Features
+
+* increase GRPC max metadata size to 4 MB ([#623](https://github.com/googleapis/python-pubsub/issues/623)) ([54b9e07](https://github.com/googleapis/python-pubsub/commit/54b9e07401b7309f16ecfe2a7afc36ea69f24a9c))
+
+
+### Bug Fixes
+
+* mypy errors ([#622](https://github.com/googleapis/python-pubsub/issues/622)) ([dab13d5](https://github.com/googleapis/python-pubsub/commit/dab13d5fb1d723c971cd84ae20f18462e624a26d))
+* process ErrorInfo / GRPC errors for ack/modack only when exactly-once delivery is enabled ([#626](https://github.com/googleapis/python-pubsub/issues/626)) ([cc1953b](https://github.com/googleapis/python-pubsub/commit/cc1953bcf942fb394a92ba50ba615adf822bfe7d))
+
 ## [2.11.0](https://github.com/googleapis/python-pubsub/compare/v2.10.0...v2.11.0) (2022-03-09)
 
 
