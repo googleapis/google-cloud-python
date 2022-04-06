@@ -19,6 +19,7 @@ from google.cloud.deploy_v1.services.cloud_deploy.async_client import (
     CloudDeployAsyncClient,
 )
 
+from google.cloud.deploy_v1.types.cloud_deploy import AnthosCluster
 from google.cloud.deploy_v1.types.cloud_deploy import ApproveRolloutRequest
 from google.cloud.deploy_v1.types.cloud_deploy import ApproveRolloutResponse
 from google.cloud.deploy_v1.types.cloud_deploy import BuildArtifact
@@ -60,10 +61,25 @@ from google.cloud.deploy_v1.types.cloud_deploy import TargetArtifact
 from google.cloud.deploy_v1.types.cloud_deploy import TargetsPresentCondition
 from google.cloud.deploy_v1.types.cloud_deploy import UpdateDeliveryPipelineRequest
 from google.cloud.deploy_v1.types.cloud_deploy import UpdateTargetRequest
+from google.cloud.deploy_v1.types.deliverypipeline_notification_payload import (
+    DeliveryPipelineNotificationEvent,
+)
+from google.cloud.deploy_v1.types.log_enums import Type
+from google.cloud.deploy_v1.types.release_notification_payload import (
+    ReleaseNotificationEvent,
+)
+from google.cloud.deploy_v1.types.release_render_payload import ReleaseRenderEvent
+from google.cloud.deploy_v1.types.rollout_notification_payload import (
+    RolloutNotificationEvent,
+)
+from google.cloud.deploy_v1.types.target_notification_payload import (
+    TargetNotificationEvent,
+)
 
 __all__ = (
     "CloudDeployClient",
     "CloudDeployAsyncClient",
+    "AnthosCluster",
     "ApproveRolloutRequest",
     "ApproveRolloutResponse",
     "BuildArtifact",
@@ -105,4 +121,10 @@ __all__ = (
     "TargetsPresentCondition",
     "UpdateDeliveryPipelineRequest",
     "UpdateTargetRequest",
+    "DeliveryPipelineNotificationEvent",
+    "Type",
+    "ReleaseNotificationEvent",
+    "ReleaseRenderEvent",
+    "RolloutNotificationEvent",
+    "TargetNotificationEvent",
 )

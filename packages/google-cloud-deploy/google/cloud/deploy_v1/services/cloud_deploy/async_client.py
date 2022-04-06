@@ -64,6 +64,8 @@ class CloudDeployAsyncClient:
     parse_delivery_pipeline_path = staticmethod(
         CloudDeployClient.parse_delivery_pipeline_path
     )
+    membership_path = staticmethod(CloudDeployClient.membership_path)
+    parse_membership_path = staticmethod(CloudDeployClient.parse_membership_path)
     release_path = staticmethod(CloudDeployClient.release_path)
     parse_release_path = staticmethod(CloudDeployClient.parse_release_path)
     rollout_path = staticmethod(CloudDeployClient.rollout_path)

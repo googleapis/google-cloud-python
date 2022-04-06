@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 from .cloud_deploy import (
+    AnthosCluster,
     ApproveRolloutRequest,
     ApproveRolloutResponse,
     BuildArtifact,
@@ -56,8 +57,24 @@ from .cloud_deploy import (
     UpdateDeliveryPipelineRequest,
     UpdateTargetRequest,
 )
+from .deliverypipeline_notification_payload import (
+    DeliveryPipelineNotificationEvent,
+)
+from .release_notification_payload import (
+    ReleaseNotificationEvent,
+)
+from .release_render_payload import (
+    ReleaseRenderEvent,
+)
+from .rollout_notification_payload import (
+    RolloutNotificationEvent,
+)
+from .target_notification_payload import (
+    TargetNotificationEvent,
+)
 
 __all__ = (
+    "AnthosCluster",
     "ApproveRolloutRequest",
     "ApproveRolloutResponse",
     "BuildArtifact",
@@ -99,4 +116,10 @@ __all__ = (
     "TargetsPresentCondition",
     "UpdateDeliveryPipelineRequest",
     "UpdateTargetRequest",
+    "DeliveryPipelineNotificationEvent",
+    "Type",
+    "ReleaseNotificationEvent",
+    "ReleaseRenderEvent",
+    "RolloutNotificationEvent",
+    "TargetNotificationEvent",
 )

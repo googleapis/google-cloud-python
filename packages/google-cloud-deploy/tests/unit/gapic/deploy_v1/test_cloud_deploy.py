@@ -5070,6 +5070,7 @@ def test_get_rollout(request_type, transport: str = "grpc"):
             failure_reason="failure_reason_value",
             deploying_build="deploying_build_value",
             etag="etag_value",
+            deploy_failure_cause=cloud_deploy.Rollout.FailureCause.CLOUD_BUILD_UNAVAILABLE,
         )
         response = client.get_rollout(request)
 
@@ -5089,6 +5090,10 @@ def test_get_rollout(request_type, transport: str = "grpc"):
     assert response.failure_reason == "failure_reason_value"
     assert response.deploying_build == "deploying_build_value"
     assert response.etag == "etag_value"
+    assert (
+        response.deploy_failure_cause
+        == cloud_deploy.Rollout.FailureCause.CLOUD_BUILD_UNAVAILABLE
+    )
 
 
 def test_get_rollout_empty_call():
@@ -5134,6 +5139,7 @@ async def test_get_rollout_async(
                 failure_reason="failure_reason_value",
                 deploying_build="deploying_build_value",
                 etag="etag_value",
+                deploy_failure_cause=cloud_deploy.Rollout.FailureCause.CLOUD_BUILD_UNAVAILABLE,
             )
         )
         response = await client.get_rollout(request)
@@ -5154,6 +5160,10 @@ async def test_get_rollout_async(
     assert response.failure_reason == "failure_reason_value"
     assert response.deploying_build == "deploying_build_value"
     assert response.etag == "etag_value"
+    assert (
+        response.deploy_failure_cause
+        == cloud_deploy.Rollout.FailureCause.CLOUD_BUILD_UNAVAILABLE
+    )
 
 
 @pytest.mark.asyncio
@@ -6354,11 +6364,39 @@ def test_parse_delivery_pipeline_path():
     assert expected == actual
 
 
-def test_release_path():
+def test_membership_path():
     project = "scallop"
     location = "abalone"
-    delivery_pipeline = "squid"
-    release = "clam"
+    membership = "squid"
+    expected = (
+        "projects/{project}/locations/{location}/memberships/{membership}".format(
+            project=project,
+            location=location,
+            membership=membership,
+        )
+    )
+    actual = CloudDeployClient.membership_path(project, location, membership)
+    assert expected == actual
+
+
+def test_parse_membership_path():
+    expected = {
+        "project": "clam",
+        "location": "whelk",
+        "membership": "octopus",
+    }
+    path = CloudDeployClient.membership_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = CloudDeployClient.parse_membership_path(path)
+    assert expected == actual
+
+
+def test_release_path():
+    project = "oyster"
+    location = "nudibranch"
+    delivery_pipeline = "cuttlefish"
+    release = "mussel"
     expected = "projects/{project}/locations/{location}/deliveryPipelines/{delivery_pipeline}/releases/{release}".format(
         project=project,
         location=location,
@@ -6373,10 +6411,10 @@ def test_release_path():
 
 def test_parse_release_path():
     expected = {
-        "project": "whelk",
-        "location": "octopus",
-        "delivery_pipeline": "oyster",
-        "release": "nudibranch",
+        "project": "winkle",
+        "location": "nautilus",
+        "delivery_pipeline": "scallop",
+        "release": "abalone",
     }
     path = CloudDeployClient.release_path(**expected)
 
@@ -6386,11 +6424,11 @@ def test_parse_release_path():
 
 
 def test_rollout_path():
-    project = "cuttlefish"
-    location = "mussel"
-    delivery_pipeline = "winkle"
-    release = "nautilus"
-    rollout = "scallop"
+    project = "squid"
+    location = "clam"
+    delivery_pipeline = "whelk"
+    release = "octopus"
+    rollout = "oyster"
     expected = "projects/{project}/locations/{location}/deliveryPipelines/{delivery_pipeline}/releases/{release}/rollouts/{rollout}".format(
         project=project,
         location=location,
@@ -6406,11 +6444,11 @@ def test_rollout_path():
 
 def test_parse_rollout_path():
     expected = {
-        "project": "abalone",
-        "location": "squid",
-        "delivery_pipeline": "clam",
-        "release": "whelk",
-        "rollout": "octopus",
+        "project": "nudibranch",
+        "location": "cuttlefish",
+        "delivery_pipeline": "mussel",
+        "release": "winkle",
+        "rollout": "nautilus",
     }
     path = CloudDeployClient.rollout_path(**expected)
 
@@ -6420,9 +6458,9 @@ def test_parse_rollout_path():
 
 
 def test_target_path():
-    project = "oyster"
-    location = "nudibranch"
-    target = "cuttlefish"
+    project = "scallop"
+    location = "abalone"
+    target = "squid"
     expected = "projects/{project}/locations/{location}/targets/{target}".format(
         project=project,
         location=location,
@@ -6434,9 +6472,9 @@ def test_target_path():
 
 def test_parse_target_path():
     expected = {
-        "project": "mussel",
-        "location": "winkle",
-        "target": "nautilus",
+        "project": "clam",
+        "location": "whelk",
+        "target": "octopus",
     }
     path = CloudDeployClient.target_path(**expected)
 
@@ -6446,9 +6484,9 @@ def test_parse_target_path():
 
 
 def test_worker_pool_path():
-    project = "scallop"
-    location = "abalone"
-    worker_pool = "squid"
+    project = "oyster"
+    location = "nudibranch"
+    worker_pool = "cuttlefish"
     expected = (
         "projects/{project}/locations/{location}/workerPools/{worker_pool}".format(
             project=project,
@@ -6462,9 +6500,9 @@ def test_worker_pool_path():
 
 def test_parse_worker_pool_path():
     expected = {
-        "project": "clam",
-        "location": "whelk",
-        "worker_pool": "octopus",
+        "project": "mussel",
+        "location": "winkle",
+        "worker_pool": "nautilus",
     }
     path = CloudDeployClient.worker_pool_path(**expected)
 
@@ -6474,7 +6512,7 @@ def test_parse_worker_pool_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "oyster"
+    billing_account = "scallop"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -6484,7 +6522,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nudibranch",
+        "billing_account": "abalone",
     }
     path = CloudDeployClient.common_billing_account_path(**expected)
 
@@ -6494,7 +6532,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "cuttlefish"
+    folder = "squid"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -6504,7 +6542,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "mussel",
+        "folder": "clam",
     }
     path = CloudDeployClient.common_folder_path(**expected)
 
@@ -6514,7 +6552,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "winkle"
+    organization = "whelk"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -6524,7 +6562,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "nautilus",
+        "organization": "octopus",
     }
     path = CloudDeployClient.common_organization_path(**expected)
 
@@ -6534,7 +6572,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "scallop"
+    project = "oyster"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -6544,7 +6582,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "abalone",
+        "project": "nudibranch",
     }
     path = CloudDeployClient.common_project_path(**expected)
 
@@ -6554,8 +6592,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "squid"
-    location = "clam"
+    project = "cuttlefish"
+    location = "mussel"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -6566,8 +6604,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "whelk",
-        "location": "octopus",
+        "project": "winkle",
+        "location": "nautilus",
     }
     path = CloudDeployClient.common_location_path(**expected)
 

@@ -17,6 +17,7 @@
 from .services.cloud_deploy import CloudDeployClient
 from .services.cloud_deploy import CloudDeployAsyncClient
 
+from .types.cloud_deploy import AnthosCluster
 from .types.cloud_deploy import ApproveRolloutRequest
 from .types.cloud_deploy import ApproveRolloutResponse
 from .types.cloud_deploy import BuildArtifact
@@ -58,9 +59,18 @@ from .types.cloud_deploy import TargetArtifact
 from .types.cloud_deploy import TargetsPresentCondition
 from .types.cloud_deploy import UpdateDeliveryPipelineRequest
 from .types.cloud_deploy import UpdateTargetRequest
+from .types.deliverypipeline_notification_payload import (
+    DeliveryPipelineNotificationEvent,
+)
+from .types.log_enums import Type
+from .types.release_notification_payload import ReleaseNotificationEvent
+from .types.release_render_payload import ReleaseRenderEvent
+from .types.rollout_notification_payload import RolloutNotificationEvent
+from .types.target_notification_payload import TargetNotificationEvent
 
 __all__ = (
     "CloudDeployAsyncClient",
+    "AnthosCluster",
     "ApproveRolloutRequest",
     "ApproveRolloutResponse",
     "BuildArtifact",
@@ -74,6 +84,7 @@ __all__ = (
     "DeleteDeliveryPipelineRequest",
     "DeleteTargetRequest",
     "DeliveryPipeline",
+    "DeliveryPipelineNotificationEvent",
     "ExecutionConfig",
     "GetConfigRequest",
     "GetDeliveryPipelineRequest",
@@ -94,13 +105,18 @@ __all__ = (
     "PipelineReadyCondition",
     "PrivatePool",
     "Release",
+    "ReleaseNotificationEvent",
+    "ReleaseRenderEvent",
     "Rollout",
+    "RolloutNotificationEvent",
     "SerialPipeline",
     "SkaffoldVersion",
     "Stage",
     "Target",
     "TargetArtifact",
+    "TargetNotificationEvent",
     "TargetsPresentCondition",
+    "Type",
     "UpdateDeliveryPipelineRequest",
     "UpdateTargetRequest",
 )

@@ -40,6 +40,7 @@ __protobuf__ = proto.module(
         "DefaultPool",
         "PrivatePool",
         "GkeCluster",
+        "AnthosCluster",
         "ListTargetsRequest",
         "ListTargetsResponse",
         "GetTargetRequest",
@@ -96,11 +97,18 @@ class DeliveryPipeline(proto.Message):
         labels (Sequence[google.cloud.deploy_v1.types.DeliveryPipeline.LabelsEntry]):
             Labels are attributes that can be set and used by both the
             user and by Google Cloud Deploy. Labels must meet the
-            following constraints: Each resource is limited to 64
-            labels. Keys must conform to the regexp:
-            ``[a-zA-Z][a-zA-Z0-9_-]{0,62}``. Values must conform to the
-            regexp: ``[a-zA-Z0-9_-]{0,63}``. Both keys and values are
-            additionally constrained to be <= 128 bytes in size.
+            following constraints:
+
+            -  Keys and values can contain only lowercase letters,
+               numeric characters, underscores, and dashes.
+            -  All characters must use UTF-8 encoding, and international
+               characters are allowed.
+            -  Keys must start with a lowercase letter or international
+               character.
+            -  Each resource is limited to a maximum of 64 labels.
+
+            Both keys and values are additionally constrained to be <=
+            128 bytes.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Time at which the pipeline was
             created.
@@ -196,10 +204,10 @@ class Stage(proto.Message):
             The target_id to which this stage points. This field refers
             exclusively to the last segment of a target name. For
             example, this field would just be ``my-target`` (rather than
-            ``projects/project/deliveryPipelines/pipeline/targets/my-target``).
-            The parent ``DeliveryPipeline`` of the ``Target`` is
-            inferred to be the parent ``DeliveryPipeline`` of the
-            ``Release`` in which this ``Stage`` lives.
+            ``projects/project/locations/location/targets/my-target``).
+            The location of the ``Target`` is inferred to be the same as
+            the location of the ``DeliveryPipeline`` that contains this
+            ``Stage``.
         profiles (Sequence[str]):
             Skaffold profiles to use when rendering the manifest for
             this stage's ``Target``.
@@ -316,7 +324,7 @@ class ListDeliveryPipelinesRequest(proto.Message):
             When paginating, all other provided parameters match the
             call that provided the page token.
         filter (str):
-            Filter builds to be returned. See
+            Filter pipelines to be returned. See
             https://google.aip.dev/160 for more details.
         order_by (str):
             Field to sort by. See
@@ -595,14 +603,17 @@ class Target(proto.Message):
     A ``Target`` defines a location to which a Skaffold configuration
     can be deployed.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
 
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
         name (str):
             Optional. Name of the ``Target``. Format is
-            projects/{project}/locations/{location}/
-            deliveryPipelines/{deliveryPipeline}/targets/[a-z][a-z0-9-]{0,62}.
+            projects/{project}/locations/{location}/targets/[a-z][a-z0-9-]{0,62}.
         target_id (str):
             Output only. Resource id of the ``Target``.
         uid (str):
@@ -619,11 +630,18 @@ class Target(proto.Message):
         labels (Sequence[google.cloud.deploy_v1.types.Target.LabelsEntry]):
             Optional. Labels are attributes that can be set and used by
             both the user and by Google Cloud Deploy. Labels must meet
-            the following constraints: Each resource is limited to 64
-            labels. Keys must conform to the regexp:
-            ``[a-zA-Z][a-zA-Z0-9_-]{0,62}``. Values must conform to the
-            regexp: ``[a-zA-Z0-9_-]{0,63}``. Both keys and values are
-            additionally constrained to be <= 128 bytes in size.
+            the following constraints:
+
+            -  Keys and values can contain only lowercase letters,
+               numeric characters, underscores, and dashes.
+            -  All characters must use UTF-8 encoding, and international
+               characters are allowed.
+            -  Keys must start with a lowercase letter or international
+               character.
+            -  Each resource is limited to a maximum of 64 labels.
+
+            Both keys and values are additionally constrained to be <=
+            128 bytes.
         require_approval (bool):
             Optional. Whether or not the ``Target`` requires approval.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -633,6 +651,10 @@ class Target(proto.Message):
             updated.
         gke (google.cloud.deploy_v1.types.GkeCluster):
             Information specifying a GKE Cluster.
+
+            This field is a member of `oneof`_ ``deployment_target``.
+        anthos_cluster (google.cloud.deploy_v1.types.AnthosCluster):
+            Information specifying an Anthos Cluster.
 
             This field is a member of `oneof`_ ``deployment_target``.
         etag (str):
@@ -698,6 +720,12 @@ class Target(proto.Message):
         oneof="deployment_target",
         message="GkeCluster",
     )
+    anthos_cluster = proto.Field(
+        proto.MESSAGE,
+        number=17,
+        oneof="deployment_target",
+        message="AnthosCluster",
+    )
     etag = proto.Field(
         proto.STRING,
         number=12,
@@ -732,6 +760,24 @@ class ExecutionConfig(proto.Message):
             Optional. Use private Cloud Build pool.
 
             This field is a member of `oneof`_ ``execution_environment``.
+        worker_pool (str):
+            Optional. The resource name of the ``WorkerPool``, with the
+            format
+            ``projects/{project}/locations/{location}/workerPools/{worker_pool}``.
+            If this optional field is unspecified, the default Cloud
+            Build pool will be used.
+        service_account (str):
+            Optional. Google service account to use for execution. If
+            unspecified, the project execution service account
+            (<PROJECT_NUMBER>-compute@developer.gserviceaccount.com) is
+            used.
+        artifact_storage (str):
+            Optional. Cloud Storage location in which to
+            store execution outputs. This can either be a
+            bucket ("gs://my-bucket") or a path within a
+            bucket ("gs://my-bucket/my-dir").
+            If unspecified, a default bucket located in the
+            same region will be used.
     """
 
     class ExecutionEnvironmentUsage(proto.Enum):
@@ -756,6 +802,18 @@ class ExecutionConfig(proto.Message):
         number=3,
         oneof="execution_environment",
         message="PrivatePool",
+    )
+    worker_pool = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+    service_account = proto.Field(
+        proto.STRING,
+        number=5,
+    )
+    artifact_storage = proto.Field(
+        proto.STRING,
+        number=6,
     )
 
 
@@ -830,9 +888,39 @@ class GkeCluster(proto.Message):
         cluster (str):
             Information specifying a GKE Cluster. Format is
             \`projects/{project_id}/locations/{location_id}/clusters/{cluster_id}.
+        internal_ip (bool):
+            Optional. If true, ``cluster`` is accessed using the private
+            IP address of the control plane endpoint. Otherwise, the
+            default IP address of the control plane endpoint is used.
+            The default IP address is the private IP address for
+            clusters with private control-plane endpoints and the public
+            IP address otherwise.
+
+            Only specify this option when ``cluster`` is a `private GKE
+            cluster <https://cloud.google.com/kubernetes-engine/docs/concepts/private-cluster-concept>`__.
     """
 
     cluster = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    internal_ip = proto.Field(
+        proto.BOOL,
+        number=2,
+    )
+
+
+class AnthosCluster(proto.Message):
+    r"""Information specifying an Anthos Cluster.
+
+    Attributes:
+        membership (str):
+            Membership of the GKE Hub-registered cluster to which to
+            apply the Skaffold configuration. Format is
+            ``projects/{project}/locations/{location}/memberships/{membership_name}``.
+    """
+
+    membership = proto.Field(
         proto.STRING,
         number=1,
     )
@@ -860,7 +948,7 @@ class ListTargetsRequest(proto.Message):
             When paginating, all other provided parameters match the
             call that provided the page token.
         filter (str):
-            Optional. Filter builds to be returned. See
+            Optional. Filter targets to be returned. See
             https://google.aip.dev/160 for more details.
         order_by (str):
             Optional. Field to sort by. See
@@ -1150,11 +1238,18 @@ class Release(proto.Message):
         labels (Sequence[google.cloud.deploy_v1.types.Release.LabelsEntry]):
             Labels are attributes that can be set and used by both the
             user and by Google Cloud Deploy. Labels must meet the
-            following constraints: Each resource is limited to 64
-            labels. Keys must conform to the regexp:
-            ``[a-zA-Z][a-zA-Z0-9_-]{0,62}``. Values must conform to the
-            regexp: ``[a-zA-Z0-9_-]{0,63}``. Both keys and values are
-            additionally constrained to be <= 128 bytes in size.
+            following constraints:
+
+            -  Keys and values can contain only lowercase letters,
+               numeric characters, underscores, and dashes.
+            -  All characters must use UTF-8 encoding, and international
+               characters are allowed.
+            -  Keys must start with a lowercase letter or international
+               character.
+            -  Each resource is limited to a maximum of 64 labels.
+
+            Both keys and values are additionally constrained to be <=
+            128 bytes.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Time at which the ``Release`` was created.
         render_start_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -1175,9 +1270,8 @@ class Release(proto.Message):
             Output only. Snapshot of the parent pipeline
             taken at release creation time.
         target_snapshots (Sequence[google.cloud.deploy_v1.types.Target]):
-            Output only. Snapshot of the parent
-            pipeline's targets taken at release creation
-            time.
+            Output only. Snapshot of the targets taken at
+            release creation time.
         render_state (google.cloud.deploy_v1.types.Release.RenderState):
             Output only. Current state of the render
             operation.
@@ -1221,6 +1315,10 @@ class Release(proto.Message):
             rendering_state (google.cloud.deploy_v1.types.Release.TargetRender.TargetRenderState):
                 Output only. Current state of the render
                 operation for this Target.
+            failure_cause (google.cloud.deploy_v1.types.Release.TargetRender.FailureCause):
+                Output only. Reason this render failed. This
+                will always be unspecified while the render in
+                progress.
         """
 
         class TargetRenderState(proto.Enum):
@@ -1230,6 +1328,12 @@ class Release(proto.Message):
             FAILED = 2
             IN_PROGRESS = 3
 
+        class FailureCause(proto.Enum):
+            r"""Well-known rendering failures."""
+            FAILURE_CAUSE_UNSPECIFIED = 0
+            CLOUD_BUILD_UNAVAILABLE = 1
+            EXECUTION_FAILED = 2
+
         rendering_build = proto.Field(
             proto.STRING,
             number=1,
@@ -1238,6 +1342,11 @@ class Release(proto.Message):
             proto.ENUM,
             number=2,
             enum="Release.TargetRender.TargetRenderState",
+        )
+        failure_cause = proto.Field(
+            proto.ENUM,
+            number=4,
+            enum="Release.TargetRender.FailureCause",
         )
 
     name = proto.Field(
@@ -1407,7 +1516,7 @@ class ListReleasesRequest(proto.Message):
             When paginating, all other provided parameters match the
             call that provided the page token.
         filter (str):
-            Optional. Filter builds to be returned. See
+            Optional. Filter releases to be returned. See
             https://google.aip.dev/160 for more details.
         order_by (str):
             Optional. Field to sort by. See
@@ -1570,11 +1679,18 @@ class Rollout(proto.Message):
         labels (Sequence[google.cloud.deploy_v1.types.Rollout.LabelsEntry]):
             Labels are attributes that can be set and used by both the
             user and by Google Cloud Deploy. Labels must meet the
-            following constraints: Each resource is limited to 64
-            labels. Keys must conform to the regexp:
-            ``[a-zA-Z][a-zA-Z0-9_-]{0,62}``. Values must conform to the
-            regexp: ``[a-zA-Z0-9_-]{0,63}``. Both keys and values are
-            additionally constrained to be <= 128 bytes in size.
+            following constraints:
+
+            -  Keys and values can contain only lowercase letters,
+               numeric characters, underscores, and dashes.
+            -  All characters must use UTF-8 encoding, and international
+               characters are allowed.
+            -  Keys must start with a lowercase letter or international
+               character.
+            -  Each resource is limited to a maximum of 64 labels.
+
+            Both keys and values are additionally constrained to be <=
+            128 bytes.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Time at which the ``Rollout`` was created.
         approve_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -1606,6 +1722,10 @@ class Rollout(proto.Message):
             on the value of other fields, and may be sent on
             update and delete requests to ensure the client
             has an up-to-date value before proceeding.
+        deploy_failure_cause (google.cloud.deploy_v1.types.Rollout.FailureCause):
+            Output only. The reason this deploy failed.
+            This will always be unspecified while the deploy
+            in progress.
     """
 
     class ApprovalState(proto.Enum):
@@ -1626,6 +1746,14 @@ class Rollout(proto.Message):
         APPROVAL_REJECTED = 5
         PENDING = 6
         PENDING_RELEASE = 7
+
+    class FailureCause(proto.Enum):
+        r"""Well-known deployment failures."""
+        FAILURE_CAUSE_UNSPECIFIED = 0
+        CLOUD_BUILD_UNAVAILABLE = 1
+        EXECUTION_FAILED = 2
+        DEADLINE_EXCEEDED = 3
+        RELEASE_FAILED = 4
 
     name = proto.Field(
         proto.STRING,
@@ -1700,6 +1828,11 @@ class Rollout(proto.Message):
         proto.STRING,
         number=16,
     )
+    deploy_failure_cause = proto.Field(
+        proto.ENUM,
+        number=19,
+        enum=FailureCause,
+    )
 
 
 class ListRolloutsRequest(proto.Message):
@@ -1723,7 +1856,7 @@ class ListRolloutsRequest(proto.Message):
             When paginating, all other provided parameters match the
             call that provided the page token.
         filter (str):
-            Optional. Filter builds to be returned. See
+            Optional. Filter rollouts to be returned. See
             https://google.aip.dev/160 for more details.
         order_by (str):
             Optional. Field to sort by. See
