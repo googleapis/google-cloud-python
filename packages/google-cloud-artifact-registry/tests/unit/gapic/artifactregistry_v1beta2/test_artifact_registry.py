@@ -6429,6 +6429,7 @@ def test_set_iam_policy_from_dict_foreign():
             request={
                 "resource": "resource_value",
                 "policy": policy_pb2.Policy(version=774),
+                "update_mask": field_mask_pb2.FieldMask(paths=["paths_value"]),
             }
         )
         call.assert_called()

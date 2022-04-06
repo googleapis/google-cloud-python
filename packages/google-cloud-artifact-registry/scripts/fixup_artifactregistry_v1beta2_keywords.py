@@ -59,7 +59,7 @@ class artifactregistryCallTransformer(cst.CSTTransformer):
         'list_repositories': ('parent', 'page_size', 'page_token', ),
         'list_tags': ('parent', 'filter', 'page_size', 'page_token', ),
         'list_versions': ('parent', 'page_size', 'page_token', 'view', 'order_by', ),
-        'set_iam_policy': ('resource', 'policy', ),
+        'set_iam_policy': ('resource', 'policy', 'update_mask', ),
         'test_iam_permissions': ('resource', 'permissions', ),
         'update_project_settings': ('project_settings', 'update_mask', ),
         'update_repository': ('repository', 'update_mask', ),

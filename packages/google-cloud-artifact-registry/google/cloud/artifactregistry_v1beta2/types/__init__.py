@@ -44,7 +44,9 @@ from .repository import (
     Repository,
     UpdateRepositoryRequest,
 )
-from .service import OperationMetadata
+from .service import (
+    OperationMetadata,
+)
 from .settings import (
     GetProjectSettingsRequest,
     ProjectSettings,
