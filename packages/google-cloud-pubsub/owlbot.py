@@ -367,7 +367,7 @@ templated_files = gcp.CommonTemplates().py_library(
     system_test_external_dependencies=["psutil"],
 )
 s.move(templated_files, excludes=[".coveragerc", ".github/CODEOWNERS"])
-
+python.configure_previous_major_version_branches()
 # ----------------------------------------------------------------------------
 # Samples templates
 # ----------------------------------------------------------------------------
