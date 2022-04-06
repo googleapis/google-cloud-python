@@ -305,3 +305,15 @@ class TestAuthorizedHttp(object):
         is_mtls = authed_http.configure_mtls_channel(callback)
         assert not is_mtls
         get_client_cert_and_key.assert_not_called()
+
+    def test_clear_pool_on_del(self):
+        http = mock.create_autospec(urllib3.PoolManager)
+        authed_http = google.auth.transport.urllib3.AuthorizedHttp(
+            mock.sentinel.credentials, http=http
+        )
+        authed_http.__del__()
+        http.clear.assert_called_with()
+
+        authed_http.http = None
+        authed_http.__del__()
+        # Expect it to not crash

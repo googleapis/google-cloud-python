@@ -427,6 +427,10 @@ class AuthorizedHttp(urllib3.request.RequestMethods):
         """Proxy to ``self.http``."""
         return self.http.__exit__(exc_type, exc_val, exc_tb)
 
+    def __del__(self):
+        if hasattr(self, "http") and self.http is not None:
+            self.http.clear()
+
     @property
     def headers(self):
         """Proxy to ``self.http``."""

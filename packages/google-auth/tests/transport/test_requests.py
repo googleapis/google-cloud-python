@@ -51,6 +51,12 @@ class TestRequestResponse(compliance.RequestResponseTests):
 
         assert http.request.call_args[1]["timeout"] == 5
 
+    def test_session_closed_on_del(self):
+        http = mock.create_autospec(requests.Session, instance=True)
+        request = google.auth.transport.requests.Request(http)
+        request.__del__()
+        http.close.assert_called_with()
+
 
 class TestTimeoutGuard(object):
     def make_guard(self, *args, **kwargs):

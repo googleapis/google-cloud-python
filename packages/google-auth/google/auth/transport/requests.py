@@ -149,6 +149,10 @@ class Request(transport.Request):
 
         self.session = session
 
+    def __del__(self):
+        if hasattr(self, "session") and self.session is not None:
+            self.session.close()
+
     def __call__(
         self,
         url,
