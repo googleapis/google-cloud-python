@@ -736,6 +736,7 @@ Raises:
 
         self.assertEqual(header_line_want, header_line_got)
 
+
     def test_parse_docstring_summary(self):
         # Check that the summary gets parsed correctly.
         attributes_want = []
@@ -794,7 +795,7 @@ client = ImageAnnotatorClient(
 You can also pass a mapping object.
 
 
-.. code-block:: ruby
+\n.. code-block:: ruby
 
 \n    from google.cloud.vision_v1 import ImageAnnotatorClient
 \n    client = ImageAnnotatorClient(

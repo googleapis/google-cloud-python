@@ -469,9 +469,10 @@ def _parse_docstring_summary(summary):
                 continue
 
         # Parse keywords if found.
-        if part.startswith(".."):
+        # lstrip is added to parse code blocks that are not formatted well.
+        if part.lstrip('\n').startswith('..'):
             try:
-                keyword = extract_keyword(part)
+                keyword = extract_keyword(part.lstrip('\n'))
             except ValueError:
                 raise ValueError(f"Please check the docstring: \n{summary}")
             # Works for both code-block and code
