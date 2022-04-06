@@ -44,7 +44,7 @@ class bigquery_connectionCallTransformer(cst.CSTTransformer):
         'get_connection': ('name', ),
         'get_iam_policy': ('resource', 'options', ),
         'list_connections': ('parent', 'page_size', 'page_token', ),
-        'set_iam_policy': ('resource', 'policy', ),
+        'set_iam_policy': ('resource', 'policy', 'update_mask', ),
         'test_iam_permissions': ('resource', 'permissions', ),
         'update_connection': ('name', 'connection', 'update_mask', ),
     }
