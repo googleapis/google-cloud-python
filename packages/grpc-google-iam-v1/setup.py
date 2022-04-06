@@ -22,7 +22,7 @@ import setuptools
 
 name = "grpc-google-iam-v1"
 description = "IAM API client library"
-version = "0.12.4b1"
+version = "0.12.4"
 url = "https://github.com/googleapis/python-grpc-google-iam-v1"
 release_status = "Development Status :: 4 - Beta"
 dependencies = [
