@@ -910,7 +910,6 @@ def test_table_read_rows():
 
 def test_table_read_retry_rows():
     from google.api_core import retry
-    from google.cloud.bigtable.table import _create_row_request
 
     credentials = _make_credentials()
     client = _make_client(project="project-id", credentials=credentials, admin=True)
@@ -965,12 +964,55 @@ def test_table_read_retry_rows():
     result = rows[1]
     assert result.row_key == ROW_KEY_2
 
-    expected_request = _create_row_request(
-        table.name,
-        start_key=ROW_KEY_1,
-        end_key=ROW_KEY_2,
+    assert len(data_api.read_rows.mock_calls) == 3
+
+
+def test_table_read_retry_rows_no_full_table_scan():
+    from google.api_core import retry
+
+    credentials = _make_credentials()
+    client = _make_client(project="project-id", credentials=credentials, admin=True)
+    data_api = client._table_data_client = _make_data_api()
+    instance = client.instance(instance_id=INSTANCE_ID)
+    table = _make_table(TABLE_ID, instance)
+
+    retry_read_rows = retry.Retry(predicate=_read_rows_retry_exception)
+
+    # Create response_iterator
+    chunk_1 = _ReadRowsResponseCellChunkPB(
+        row_key=ROW_KEY_2,
+        family_name=FAMILY_NAME,
+        qualifier=QUALIFIER,
+        timestamp_micros=TIMESTAMP_MICROS,
+        value=VALUE,
+        commit_row=True,
     )
-    data_api.read_rows.mock_calls = [expected_request] * 3
+
+    response_1 = _ReadRowsResponseV2([chunk_1])
+    response_failure_iterator_2 = _MockFailureIterator_2([response_1])
+
+    data_api.table_path.return_value = (
+        f"projects/{PROJECT_ID}/instances/{INSTANCE_ID}/tables/{TABLE_ID}"
+    )
+
+    data_api.read_rows.side_effect = [
+        response_failure_iterator_2,
+    ]
+
+    rows = [
+        row
+        for row in table.read_rows(
+            start_key="doesn't matter", end_key=ROW_KEY_2, retry=retry_read_rows
+        )
+    ]
+    assert len(rows) == 1
+    result = rows[0]
+    assert result.row_key == ROW_KEY_2
+
+    assert len(data_api.read_rows.mock_calls) == 1
+    assert (
+        len(data_api.read_rows.mock_calls[0].args[0].rows.row_ranges) > 0
+    )  # not empty row_ranges
 
 
 def test_table_yield_retry_rows():

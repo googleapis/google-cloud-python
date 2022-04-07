@@ -321,11 +321,15 @@ class PartialRowData(object):
 
 
 class InvalidReadRowsResponse(RuntimeError):
-    """Exception raised to to invalid response data from back-end."""
+    """Exception raised to invalid response data from back-end."""
 
 
 class InvalidChunk(RuntimeError):
-    """Exception raised to to invalid chunk data from back-end."""
+    """Exception raised to invalid chunk data from back-end."""
+
+
+class InvalidRetryRequest(RuntimeError):
+    """Exception raised when retry request is invalid."""
 
 
 def _retry_read_rows_exception(exc):
@@ -486,6 +490,9 @@ class PartialRowsData(object):
                 if self.state != self.NEW_ROW:
                     raise ValueError("The row remains partial / is not committed.")
                 break
+            except InvalidRetryRequest:
+                self._cancelled = True
+                break
 
             for chunk in response.chunks:
                 if self._cancelled:
@@ -629,10 +636,11 @@ class _ReadRowsRequestManager(object):
         data_messages_v2_pb2.ReadRowsRequest.copy_from(resume_request, self.message)
 
         if self.message.rows_limit != 0:
-            # TODO: Throw an error if rows_limit - read_so_far is 0 or negative.
-            resume_request.rows_limit = max(
-                1, self.message.rows_limit - self.rows_read_so_far
-            )
+            row_limit_remaining = self.message.rows_limit - self.rows_read_so_far
+            if row_limit_remaining > 0:
+                resume_request.rows_limit = row_limit_remaining
+            else:
+                raise InvalidRetryRequest
 
         # if neither RowSet.row_keys nor RowSet.row_ranges currently exist,
         # add row_range that starts with last_scanned_key as start_key_open
@@ -643,6 +651,12 @@ class _ReadRowsRequestManager(object):
         else:
             row_keys = self._filter_rows_keys()
             row_ranges = self._filter_row_ranges()
+
+            if len(row_keys) == 0 and len(row_ranges) == 0:
+                # Avoid sending empty row_keys and row_ranges
+                # if that was not the intention
+                raise InvalidRetryRequest
+
             resume_request.rows = data_v2_pb2.RowSet(
                 row_keys=row_keys, row_ranges=row_ranges
             )
