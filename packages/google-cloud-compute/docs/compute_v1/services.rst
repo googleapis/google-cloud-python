@@ -34,7 +34,9 @@ Services for Google Cloud Compute v1 API
     licenses
     machine_images
     machine_types
+    network_edge_security_services
     network_endpoint_groups
+    network_firewall_policies
     networks
     node_groups
     node_templates
@@ -54,9 +56,11 @@ Services for Google Cloud Compute v1 API
     region_instance_groups
     region_instances
     region_network_endpoint_groups
+    region_network_firewall_policies
     region_notification_endpoints
     region_operations
     regions
+    region_security_policies
     region_ssl_certificates
     region_target_http_proxies
     region_target_https_proxies

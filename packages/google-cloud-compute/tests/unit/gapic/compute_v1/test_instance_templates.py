@@ -109,9 +109,9 @@ def test_instance_templates_client_from_service_account_info(
         assert isinstance(client, client_class)
 
         assert client.transport._host == (
-            "compute.googleapis.com{}".format(":443")
+            "compute.googleapis.com:443"
             if transport_name in ["grpc", "grpc_asyncio"]
-            else "https://{}".format("compute.googleapis.com")
+            else "https://compute.googleapis.com"
         )
 
 
@@ -166,9 +166,9 @@ def test_instance_templates_client_from_service_account_file(
         assert isinstance(client, client_class)
 
         assert client.transport._host == (
-            "compute.googleapis.com{}".format(":443")
+            "compute.googleapis.com:443"
             if transport_name in ["grpc", "grpc_asyncio"]
-            else "https://{}".format("compute.googleapis.com")
+            else "https://compute.googleapis.com"
         )
 
 
@@ -1522,6 +1522,7 @@ def test_insert_unary_rest(request_type):
                         }
                     ],
                     "fingerprint": "fingerprint_value",
+                    "internal_ipv6_prefix_length": 2831,
                     "ipv6_access_configs": {},
                     "ipv6_access_type": "ipv6_access_type_value",
                     "ipv6_address": "ipv6_address_value",
@@ -1908,6 +1909,7 @@ def test_insert_unary_rest_bad_request(
                         }
                     ],
                     "fingerprint": "fingerprint_value",
+                    "internal_ipv6_prefix_length": 2831,
                     "ipv6_access_configs": {},
                     "ipv6_access_type": "ipv6_access_type_value",
                     "ipv6_address": "ipv6_address_value",

@@ -2368,7 +2368,7 @@ class InstancesClient(metaclass=InstancesClientMeta):
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> compute.Operation:
         r"""Performs a reset on the instance. This is a hard
-        reset the VM does not do a graceful shutdown. For more
+        reset. The VM does not do a graceful shutdown. For more
         information, see Resetting an instance.
 
         Args:

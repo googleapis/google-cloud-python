@@ -100,9 +100,9 @@ def test_url_maps_client_from_service_account_info(client_class, transport_name)
         assert isinstance(client, client_class)
 
         assert client.transport._host == (
-            "compute.googleapis.com{}".format(":443")
+            "compute.googleapis.com:443"
             if transport_name in ["grpc", "grpc_asyncio"]
-            else "https://{}".format("compute.googleapis.com")
+            else "https://compute.googleapis.com"
         )
 
 
@@ -155,9 +155,9 @@ def test_url_maps_client_from_service_account_file(client_class, transport_name)
         assert isinstance(client, client_class)
 
         assert client.transport._host == (
-            "compute.googleapis.com{}".format(":443")
+            "compute.googleapis.com:443"
             if transport_name in ["grpc", "grpc_asyncio"]
-            else "https://{}".format("compute.googleapis.com")
+            else "https://compute.googleapis.com"
         )
 
 
@@ -4076,6 +4076,10 @@ def test_validate_rest(request_type):
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "url_map": "sample2"}
     request_init["url_maps_validate_request_resource"] = {
+        "load_balancing_schemes": [
+            "load_balancing_schemes_value_1",
+            "load_balancing_schemes_value_2",
+        ],
         "resource": {
             "creation_timestamp": "creation_timestamp_value",
             "default_route_action": {
@@ -4247,7 +4251,7 @@ def test_validate_rest(request_type):
                     "service": "service_value",
                 }
             ],
-        }
+        },
     }
     request = request_type(request_init)
 
@@ -4423,6 +4427,10 @@ def test_validate_rest_bad_request(
     # send a request that will satisfy transcoding
     request_init = {"project": "sample1", "url_map": "sample2"}
     request_init["url_maps_validate_request_resource"] = {
+        "load_balancing_schemes": [
+            "load_balancing_schemes_value_1",
+            "load_balancing_schemes_value_2",
+        ],
         "resource": {
             "creation_timestamp": "creation_timestamp_value",
             "default_route_action": {
@@ -4594,7 +4602,7 @@ def test_validate_rest_bad_request(
                     "service": "service_value",
                 }
             ],
-        }
+        },
     }
     request = request_type(request_init)
 
@@ -4629,7 +4637,7 @@ def test_validate_rest_flattened():
             project="project_value",
             url_map="url_map_value",
             url_maps_validate_request_resource=compute.UrlMapsValidateRequest(
-                resource=compute.UrlMap(creation_timestamp="creation_timestamp_value")
+                load_balancing_schemes=["load_balancing_schemes_value"]
             ),
         )
         mock_args.update(sample_request)
@@ -4669,7 +4677,7 @@ def test_validate_rest_flattened_error(transport: str = "rest"):
             project="project_value",
             url_map="url_map_value",
             url_maps_validate_request_resource=compute.UrlMapsValidateRequest(
-                resource=compute.UrlMap(creation_timestamp="creation_timestamp_value")
+                load_balancing_schemes=["load_balancing_schemes_value"]
             ),
         )
 

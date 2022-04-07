@@ -100,9 +100,9 @@ def test_routes_client_from_service_account_info(client_class, transport_name):
         assert isinstance(client, client_class)
 
         assert client.transport._host == (
-            "compute.googleapis.com{}".format(":443")
+            "compute.googleapis.com:443"
             if transport_name in ["grpc", "grpc_asyncio"]
-            else "https://{}".format("compute.googleapis.com")
+            else "https://compute.googleapis.com"
         )
 
 
@@ -153,9 +153,9 @@ def test_routes_client_from_service_account_file(client_class, transport_name):
         assert isinstance(client, client_class)
 
         assert client.transport._host == (
-            "compute.googleapis.com{}".format(":443")
+            "compute.googleapis.com:443"
             if transport_name in ["grpc", "grpc_asyncio"]
-            else "https://{}".format("compute.googleapis.com")
+            else "https://compute.googleapis.com"
         )
 
 
@@ -847,6 +847,7 @@ def test_get_rest(request_type):
             next_hop_peering="next_hop_peering_value",
             next_hop_vpn_tunnel="next_hop_vpn_tunnel_value",
             priority=898,
+            route_status="route_status_value",
             route_type="route_type_value",
             self_link="self_link_value",
             tags=["tags_value"],
@@ -877,6 +878,7 @@ def test_get_rest(request_type):
     assert response.next_hop_peering == "next_hop_peering_value"
     assert response.next_hop_vpn_tunnel == "next_hop_vpn_tunnel_value"
     assert response.priority == 898
+    assert response.route_status == "route_status_value"
     assert response.route_type == "route_type_value"
     assert response.self_link == "self_link_value"
     assert response.tags == ["tags_value"]
@@ -1144,6 +1146,7 @@ def test_insert_unary_rest(request_type):
         "next_hop_peering": "next_hop_peering_value",
         "next_hop_vpn_tunnel": "next_hop_vpn_tunnel_value",
         "priority": 898,
+        "route_status": "route_status_value",
         "route_type": "route_type_value",
         "self_link": "self_link_value",
         "tags": ["tags_value_1", "tags_value_2"],
@@ -1387,6 +1390,7 @@ def test_insert_unary_rest_bad_request(
         "next_hop_peering": "next_hop_peering_value",
         "next_hop_vpn_tunnel": "next_hop_vpn_tunnel_value",
         "priority": 898,
+        "route_status": "route_status_value",
         "route_type": "route_type_value",
         "self_link": "self_link_value",
         "tags": ["tags_value_1", "tags_value_2"],

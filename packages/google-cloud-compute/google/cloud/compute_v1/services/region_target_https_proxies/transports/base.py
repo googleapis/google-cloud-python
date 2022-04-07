@@ -143,6 +143,11 @@ class RegionTargetHttpsProxiesTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.patch: gapic_v1.method.wrap_method(
+                self.patch,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.set_ssl_certificates: gapic_v1.method.wrap_method(
                 self.set_ssl_certificates,
                 default_timeout=None,
@@ -197,6 +202,15 @@ class RegionTargetHttpsProxiesTransport(abc.ABC):
     ) -> Callable[
         [compute.ListRegionTargetHttpsProxiesRequest],
         Union[compute.TargetHttpsProxyList, Awaitable[compute.TargetHttpsProxyList]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def patch(
+        self,
+    ) -> Callable[
+        [compute.PatchRegionTargetHttpsProxyRequest],
+        Union[compute.Operation, Awaitable[compute.Operation]],
     ]:
         raise NotImplementedError()
 

@@ -109,9 +109,9 @@ def test_security_policies_client_from_service_account_info(
         assert isinstance(client, client_class)
 
         assert client.transport._host == (
-            "compute.googleapis.com{}".format(":443")
+            "compute.googleapis.com:443"
             if transport_name in ["grpc", "grpc_asyncio"]
-            else "https://{}".format("compute.googleapis.com")
+            else "https://compute.googleapis.com"
         )
 
 
@@ -166,9 +166,9 @@ def test_security_policies_client_from_service_account_file(
         assert isinstance(client, client_class)
 
         assert client.transport._host == (
-            "compute.googleapis.com{}".format(":443")
+            "compute.googleapis.com:443"
             if transport_name in ["grpc", "grpc_asyncio"]
-            else "https://{}".format("compute.googleapis.com")
+            else "https://compute.googleapis.com"
         )
 
 
@@ -942,6 +942,367 @@ def test_add_rule_unary_rest_error():
 @pytest.mark.parametrize(
     "request_type",
     [
+        compute.AggregatedListSecurityPoliciesRequest,
+        dict,
+    ],
+)
+def test_aggregated_list_rest(request_type):
+    client = SecurityPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1"}
+    request = request_type(request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.SecurityPoliciesAggregatedList(
+            etag="etag_value",
+            id="id_value",
+            kind="kind_value",
+            next_page_token="next_page_token_value",
+            self_link="self_link_value",
+            unreachables=["unreachables_value"],
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = compute.SecurityPoliciesAggregatedList.to_json(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.aggregated_list(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.AggregatedListPager)
+    assert response.etag == "etag_value"
+    assert response.id == "id_value"
+    assert response.kind == "kind_value"
+    assert response.next_page_token == "next_page_token_value"
+    assert response.self_link == "self_link_value"
+    assert response.unreachables == ["unreachables_value"]
+
+
+def test_aggregated_list_rest_required_fields(
+    request_type=compute.AggregatedListSecurityPoliciesRequest,
+):
+    transport_class = transports.SecurityPoliciesRestTransport
+
+    request_init = {}
+    request_init["project"] = ""
+    request = request_type(request_init)
+    jsonified_request = json.loads(
+        request_type.to_json(
+            request, including_default_value_fields=False, use_integers_for_enums=False
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).aggregated_list._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["project"] = "project_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).aggregated_list._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(
+        (
+            "filter",
+            "include_all_scopes",
+            "max_results",
+            "order_by",
+            "page_token",
+            "return_partial_success",
+        )
+    )
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+
+    client = SecurityPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.SecurityPoliciesAggregatedList()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "get",
+                "query_params": request_init,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = compute.SecurityPoliciesAggregatedList.to_json(
+                return_value
+            )
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.aggregated_list(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_aggregated_list_rest_unset_required_fields():
+    transport = transports.SecurityPoliciesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.aggregated_list._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(
+            (
+                "filter",
+                "includeAllScopes",
+                "maxResults",
+                "orderBy",
+                "pageToken",
+                "returnPartialSuccess",
+            )
+        )
+        & set(("project",))
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_aggregated_list_rest_interceptors(null_interceptor):
+    transport = transports.SecurityPoliciesRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None
+        if null_interceptor
+        else transports.SecurityPoliciesRestInterceptor(),
+    )
+    client = SecurityPoliciesClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.SecurityPoliciesRestInterceptor, "post_aggregated_list"
+    ) as post, mock.patch.object(
+        transports.SecurityPoliciesRestInterceptor, "pre_aggregated_list"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": None,
+            "query_params": {},
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.SecurityPoliciesAggregatedList.to_json(
+            compute.SecurityPoliciesAggregatedList()
+        )
+
+        request = compute.AggregatedListSecurityPoliciesRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.SecurityPoliciesAggregatedList
+
+        client.aggregated_list(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_aggregated_list_rest_bad_request(
+    transport: str = "rest", request_type=compute.AggregatedListSecurityPoliciesRequest
+):
+    client = SecurityPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1"}
+    request = request_type(request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.aggregated_list(request)
+
+
+def test_aggregated_list_rest_flattened():
+    client = SecurityPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.SecurityPoliciesAggregatedList()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project": "sample1"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project="project_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = compute.SecurityPoliciesAggregatedList.to_json(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.aggregated_list(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/compute/v1/projects/{project}/aggregated/securityPolicies"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_aggregated_list_rest_flattened_error(transport: str = "rest"):
+    client = SecurityPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.aggregated_list(
+            compute.AggregatedListSecurityPoliciesRequest(),
+            project="project_value",
+        )
+
+
+def test_aggregated_list_rest_pager(transport: str = "rest"):
+    client = SecurityPoliciesClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # TODO(kbandes): remove this mock unless there's a good reason for it.
+        # with mock.patch.object(path_template, 'transcode') as transcode:
+        # Set the response as a series of pages
+        response = (
+            compute.SecurityPoliciesAggregatedList(
+                items={
+                    "a": compute.SecurityPoliciesScopedList(),
+                    "b": compute.SecurityPoliciesScopedList(),
+                    "c": compute.SecurityPoliciesScopedList(),
+                },
+                next_page_token="abc",
+            ),
+            compute.SecurityPoliciesAggregatedList(
+                items={},
+                next_page_token="def",
+            ),
+            compute.SecurityPoliciesAggregatedList(
+                items={
+                    "g": compute.SecurityPoliciesScopedList(),
+                },
+                next_page_token="ghi",
+            ),
+            compute.SecurityPoliciesAggregatedList(
+                items={
+                    "h": compute.SecurityPoliciesScopedList(),
+                    "i": compute.SecurityPoliciesScopedList(),
+                },
+            ),
+        )
+        # Two responses for two calls
+        response = response + response
+
+        # Wrap the values into proper Response objs
+        response = tuple(
+            compute.SecurityPoliciesAggregatedList.to_json(x) for x in response
+        )
+        return_values = tuple(Response() for i in response)
+        for return_val, response_val in zip(return_values, response):
+            return_val._content = response_val.encode("UTF-8")
+            return_val.status_code = 200
+        req.side_effect = return_values
+
+        sample_request = {"project": "sample1"}
+
+        pager = client.aggregated_list(request=sample_request)
+
+        assert isinstance(pager.get("a"), compute.SecurityPoliciesScopedList)
+        assert pager.get("h") is None
+
+        results = list(pager)
+        assert len(results) == 6
+        assert all(isinstance(i, tuple) for i in results)
+        for result in results:
+            assert isinstance(result, tuple)
+            assert tuple(type(t) for t in result) == (
+                str,
+                compute.SecurityPoliciesScopedList,
+            )
+
+        assert pager.get("a") is None
+        assert isinstance(pager.get("h"), compute.SecurityPoliciesScopedList)
+
+        pages = list(client.aggregated_list(request=sample_request).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         compute.DeleteSecurityPolicyRequest,
         dict,
     ],
@@ -1279,6 +1640,7 @@ def test_get_rest(request_type):
             id=205,
             kind="kind_value",
             name="name_value",
+            region="region_value",
             self_link="self_link_value",
             type_="type__value",
         )
@@ -1299,6 +1661,7 @@ def test_get_rest(request_type):
     assert response.id == 205
     assert response.kind == "kind_value"
     assert response.name == "name_value"
+    assert response.region == "region_value"
     assert response.self_link == "self_link_value"
     assert response.type_ == "type__value"
 
@@ -1843,12 +2206,14 @@ def test_insert_unary_rest(request_type):
             "log_level": "log_level_value",
         },
         "creation_timestamp": "creation_timestamp_value",
+        "ddos_protection_config": {"ddos_protection": "ddos_protection_value"},
         "description": "description_value",
         "fingerprint": "fingerprint_value",
         "id": 205,
         "kind": "kind_value",
         "name": "name_value",
         "recaptcha_options_config": {"redirect_site_key": "redirect_site_key_value"},
+        "region": "region_value",
         "rules": [
             {
                 "action": "action_value",
@@ -2127,12 +2492,14 @@ def test_insert_unary_rest_bad_request(
             "log_level": "log_level_value",
         },
         "creation_timestamp": "creation_timestamp_value",
+        "ddos_protection_config": {"ddos_protection": "ddos_protection_value"},
         "description": "description_value",
         "fingerprint": "fingerprint_value",
         "id": 205,
         "kind": "kind_value",
         "name": "name_value",
         "recaptcha_options_config": {"redirect_site_key": "redirect_site_key_value"},
+        "region": "region_value",
         "rules": [
             {
                 "action": "action_value",
@@ -2934,12 +3301,14 @@ def test_patch_unary_rest(request_type):
             "log_level": "log_level_value",
         },
         "creation_timestamp": "creation_timestamp_value",
+        "ddos_protection_config": {"ddos_protection": "ddos_protection_value"},
         "description": "description_value",
         "fingerprint": "fingerprint_value",
         "id": 205,
         "kind": "kind_value",
         "name": "name_value",
         "recaptcha_options_config": {"redirect_site_key": "redirect_site_key_value"},
+        "region": "region_value",
         "rules": [
             {
                 "action": "action_value",
@@ -3223,12 +3592,14 @@ def test_patch_unary_rest_bad_request(
             "log_level": "log_level_value",
         },
         "creation_timestamp": "creation_timestamp_value",
+        "ddos_protection_config": {"ddos_protection": "ddos_protection_value"},
         "description": "description_value",
         "fingerprint": "fingerprint_value",
         "id": 205,
         "kind": "kind_value",
         "name": "name_value",
         "recaptcha_options_config": {"redirect_site_key": "redirect_site_key_value"},
+        "region": "region_value",
         "rules": [
             {
                 "action": "action_value",
@@ -4184,6 +4555,7 @@ def test_security_policies_base_transport():
     # raise NotImplementedError.
     methods = (
         "add_rule",
+        "aggregated_list",
         "delete",
         "get",
         "get_rule",

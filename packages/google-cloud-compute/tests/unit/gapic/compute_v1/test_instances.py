@@ -101,9 +101,9 @@ def test_instances_client_from_service_account_info(client_class, transport_name
         assert isinstance(client, client_class)
 
         assert client.transport._host == (
-            "compute.googleapis.com{}".format(":443")
+            "compute.googleapis.com:443"
             if transport_name in ["grpc", "grpc_asyncio"]
-            else "https://{}".format("compute.googleapis.com")
+            else "https://compute.googleapis.com"
         )
 
 
@@ -156,9 +156,9 @@ def test_instances_client_from_service_account_file(client_class, transport_name
         assert isinstance(client, client_class)
 
         assert client.transport._host == (
-            "compute.googleapis.com{}".format(":443")
+            "compute.googleapis.com:443"
             if transport_name in ["grpc", "grpc_asyncio"]
-            else "https://{}".format("compute.googleapis.com")
+            else "https://compute.googleapis.com"
         )
 
 
@@ -2105,6 +2105,7 @@ def test_bulk_insert_unary_rest(request_type):
                         }
                     ],
                     "fingerprint": "fingerprint_value",
+                    "internal_ipv6_prefix_length": 2831,
                     "ipv6_access_configs": {},
                     "ipv6_access_type": "ipv6_access_type_value",
                     "ipv6_address": "ipv6_address_value",
@@ -2483,6 +2484,7 @@ def test_bulk_insert_unary_rest_bad_request(
                         }
                     ],
                     "fingerprint": "fingerprint_value",
+                    "internal_ipv6_prefix_length": 2831,
                     "ipv6_access_configs": {},
                     "ipv6_access_type": "ipv6_access_type_value",
                     "ipv6_address": "ipv6_address_value",
@@ -5851,6 +5853,7 @@ def test_insert_unary_rest(request_type):
                     }
                 ],
                 "fingerprint": "fingerprint_value",
+                "internal_ipv6_prefix_length": 2831,
                 "ipv6_access_configs": {},
                 "ipv6_access_type": "ipv6_access_type_value",
                 "ipv6_address": "ipv6_address_value",
@@ -5867,6 +5870,7 @@ def test_insert_unary_rest(request_type):
         "network_performance_config": {
             "total_egress_bandwidth_tier": "total_egress_bandwidth_tier_value"
         },
+        "params": {"resource_manager_tags": {}},
         "private_ipv6_google_access": "private_ipv6_google_access_value",
         "reservation_affinity": {
             "consume_reservation_type": "consume_reservation_type_value",
@@ -6246,6 +6250,7 @@ def test_insert_unary_rest_bad_request(
                     }
                 ],
                 "fingerprint": "fingerprint_value",
+                "internal_ipv6_prefix_length": 2831,
                 "ipv6_access_configs": {},
                 "ipv6_access_type": "ipv6_access_type_value",
                 "ipv6_address": "ipv6_address_value",
@@ -6262,6 +6267,7 @@ def test_insert_unary_rest_bad_request(
         "network_performance_config": {
             "total_egress_bandwidth_tier": "total_egress_bandwidth_tier_value"
         },
+        "params": {"resource_manager_tags": {}},
         "private_ipv6_google_access": "private_ipv6_google_access_value",
         "reservation_affinity": {
             "consume_reservation_type": "consume_reservation_type_value",
@@ -14633,6 +14639,7 @@ def test_update_unary_rest(request_type):
                     }
                 ],
                 "fingerprint": "fingerprint_value",
+                "internal_ipv6_prefix_length": 2831,
                 "ipv6_access_configs": {},
                 "ipv6_access_type": "ipv6_access_type_value",
                 "ipv6_address": "ipv6_address_value",
@@ -14649,6 +14656,7 @@ def test_update_unary_rest(request_type):
         "network_performance_config": {
             "total_egress_bandwidth_tier": "total_egress_bandwidth_tier_value"
         },
+        "params": {"resource_manager_tags": {}},
         "private_ipv6_google_access": "private_ipv6_google_access_value",
         "reservation_affinity": {
             "consume_reservation_type": "consume_reservation_type_value",
@@ -15033,6 +15041,7 @@ def test_update_unary_rest_bad_request(
                     }
                 ],
                 "fingerprint": "fingerprint_value",
+                "internal_ipv6_prefix_length": 2831,
                 "ipv6_access_configs": {},
                 "ipv6_access_type": "ipv6_access_type_value",
                 "ipv6_address": "ipv6_address_value",
@@ -15049,6 +15058,7 @@ def test_update_unary_rest_bad_request(
         "network_performance_config": {
             "total_egress_bandwidth_tier": "total_egress_bandwidth_tier_value"
         },
+        "params": {"resource_manager_tags": {}},
         "private_ipv6_google_access": "private_ipv6_google_access_value",
         "reservation_affinity": {
             "consume_reservation_type": "consume_reservation_type_value",
@@ -15929,6 +15939,7 @@ def test_update_network_interface_unary_rest(request_type):
             }
         ],
         "fingerprint": "fingerprint_value",
+        "internal_ipv6_prefix_length": 2831,
         "ipv6_access_configs": {},
         "ipv6_access_type": "ipv6_access_type_value",
         "ipv6_address": "ipv6_address_value",
@@ -16210,6 +16221,7 @@ def test_update_network_interface_unary_rest_bad_request(
             }
         ],
         "fingerprint": "fingerprint_value",
+        "internal_ipv6_prefix_length": 2831,
         "ipv6_access_configs": {},
         "ipv6_access_type": "ipv6_access_type_value",
         "ipv6_address": "ipv6_address_value",

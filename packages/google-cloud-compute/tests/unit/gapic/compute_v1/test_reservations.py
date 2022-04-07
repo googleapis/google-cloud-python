@@ -103,9 +103,9 @@ def test_reservations_client_from_service_account_info(client_class, transport_n
         assert isinstance(client, client_class)
 
         assert client.transport._host == (
-            "compute.googleapis.com{}".format(":443")
+            "compute.googleapis.com:443"
             if transport_name in ["grpc", "grpc_asyncio"]
-            else "https://{}".format("compute.googleapis.com")
+            else "https://compute.googleapis.com"
         )
 
 
@@ -158,9 +158,9 @@ def test_reservations_client_from_service_account_file(client_class, transport_n
         assert isinstance(client, client_class)
 
         assert client.transport._host == (
-            "compute.googleapis.com{}".format(":443")
+            "compute.googleapis.com:443"
             if transport_name in ["grpc", "grpc_asyncio"]
-            else "https://{}".format("compute.googleapis.com")
+            else "https://compute.googleapis.com"
         )
 
 
@@ -1798,6 +1798,7 @@ def test_insert_unary_rest(request_type):
         "self_link": "self_link_value",
         "share_settings": {"project_map": {}, "share_type": "share_type_value"},
         "specific_reservation": {
+            "assured_count": 1407,
             "count": 553,
             "in_use_count": 1291,
             "instance_properties": {
@@ -2050,6 +2051,7 @@ def test_insert_unary_rest_bad_request(
         "self_link": "self_link_value",
         "share_settings": {"project_map": {}, "share_type": "share_type_value"},
         "specific_reservation": {
+            "assured_count": 1407,
             "count": 553,
             "in_use_count": 1291,
             "instance_properties": {
@@ -3599,6 +3601,7 @@ def test_update_unary_rest(request_type):
         "self_link": "self_link_value",
         "share_settings": {"project_map": {}, "share_type": "share_type_value"},
         "specific_reservation": {
+            "assured_count": 1407,
             "count": 553,
             "in_use_count": 1291,
             "instance_properties": {
@@ -3868,6 +3871,7 @@ def test_update_unary_rest_bad_request(
         "self_link": "self_link_value",
         "share_settings": {"project_map": {}, "share_type": "share_type_value"},
         "specific_reservation": {
+            "assured_count": 1407,
             "count": 553,
             "in_use_count": 1291,
             "instance_properties": {

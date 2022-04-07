@@ -111,9 +111,9 @@ def test_region_backend_services_client_from_service_account_info(
         assert isinstance(client, client_class)
 
         assert client.transport._host == (
-            "compute.googleapis.com{}".format(":443")
+            "compute.googleapis.com:443"
             if transport_name in ["grpc", "grpc_asyncio"]
-            else "https://{}".format("compute.googleapis.com")
+            else "https://compute.googleapis.com"
         )
 
 
@@ -168,9 +168,9 @@ def test_region_backend_services_client_from_service_account_file(
         assert isinstance(client, client_class)
 
         assert client.transport._host == (
-            "compute.googleapis.com{}".format(":443")
+            "compute.googleapis.com:443"
             if transport_name in ["grpc", "grpc_asyncio"]
-            else "https://{}".format("compute.googleapis.com")
+            else "https://compute.googleapis.com"
         )
 
 
@@ -1592,6 +1592,7 @@ def test_insert_unary_rest(request_type):
         "connection_draining": {"draining_timeout_sec": 2124},
         "connection_tracking_policy": {
             "connection_persistence_on_unhealthy_backends": "connection_persistence_on_unhealthy_backends_value",
+            "enable_strong_affinity": True,
             "idle_timeout_sec": 1694,
             "tracking_mode": "tracking_mode_value",
         },
@@ -1632,6 +1633,12 @@ def test_insert_unary_rest(request_type):
         "id": 205,
         "kind": "kind_value",
         "load_balancing_scheme": "load_balancing_scheme_value",
+        "locality_lb_policies": [
+            {
+                "custom_policy": {"data": "data_value", "name": "name_value"},
+                "policy": {"name": "name_value"},
+            }
+        ],
         "locality_lb_policy": "locality_lb_policy_value",
         "log_config": {"enable": True, "sample_rate": 0.1165},
         "max_stream_duration": {},
@@ -1954,6 +1961,7 @@ def test_insert_unary_rest_bad_request(
         "connection_draining": {"draining_timeout_sec": 2124},
         "connection_tracking_policy": {
             "connection_persistence_on_unhealthy_backends": "connection_persistence_on_unhealthy_backends_value",
+            "enable_strong_affinity": True,
             "idle_timeout_sec": 1694,
             "tracking_mode": "tracking_mode_value",
         },
@@ -1994,6 +2002,12 @@ def test_insert_unary_rest_bad_request(
         "id": 205,
         "kind": "kind_value",
         "load_balancing_scheme": "load_balancing_scheme_value",
+        "locality_lb_policies": [
+            {
+                "custom_policy": {"data": "data_value", "name": "name_value"},
+                "policy": {"name": "name_value"},
+            }
+        ],
         "locality_lb_policy": "locality_lb_policy_value",
         "log_config": {"enable": True, "sample_rate": 0.1165},
         "max_stream_duration": {},
@@ -2547,6 +2561,7 @@ def test_patch_unary_rest(request_type):
         "connection_draining": {"draining_timeout_sec": 2124},
         "connection_tracking_policy": {
             "connection_persistence_on_unhealthy_backends": "connection_persistence_on_unhealthy_backends_value",
+            "enable_strong_affinity": True,
             "idle_timeout_sec": 1694,
             "tracking_mode": "tracking_mode_value",
         },
@@ -2587,6 +2602,12 @@ def test_patch_unary_rest(request_type):
         "id": 205,
         "kind": "kind_value",
         "load_balancing_scheme": "load_balancing_scheme_value",
+        "locality_lb_policies": [
+            {
+                "custom_policy": {"data": "data_value", "name": "name_value"},
+                "policy": {"name": "name_value"},
+            }
+        ],
         "locality_lb_policy": "locality_lb_policy_value",
         "log_config": {"enable": True, "sample_rate": 0.1165},
         "max_stream_duration": {},
@@ -2918,6 +2939,7 @@ def test_patch_unary_rest_bad_request(
         "connection_draining": {"draining_timeout_sec": 2124},
         "connection_tracking_policy": {
             "connection_persistence_on_unhealthy_backends": "connection_persistence_on_unhealthy_backends_value",
+            "enable_strong_affinity": True,
             "idle_timeout_sec": 1694,
             "tracking_mode": "tracking_mode_value",
         },
@@ -2958,6 +2980,12 @@ def test_patch_unary_rest_bad_request(
         "id": 205,
         "kind": "kind_value",
         "load_balancing_scheme": "load_balancing_scheme_value",
+        "locality_lb_policies": [
+            {
+                "custom_policy": {"data": "data_value", "name": "name_value"},
+                "policy": {"name": "name_value"},
+            }
+        ],
         "locality_lb_policy": "locality_lb_policy_value",
         "log_config": {"enable": True, "sample_rate": 0.1165},
         "max_stream_duration": {},
@@ -3167,6 +3195,7 @@ def test_update_unary_rest(request_type):
         "connection_draining": {"draining_timeout_sec": 2124},
         "connection_tracking_policy": {
             "connection_persistence_on_unhealthy_backends": "connection_persistence_on_unhealthy_backends_value",
+            "enable_strong_affinity": True,
             "idle_timeout_sec": 1694,
             "tracking_mode": "tracking_mode_value",
         },
@@ -3207,6 +3236,12 @@ def test_update_unary_rest(request_type):
         "id": 205,
         "kind": "kind_value",
         "load_balancing_scheme": "load_balancing_scheme_value",
+        "locality_lb_policies": [
+            {
+                "custom_policy": {"data": "data_value", "name": "name_value"},
+                "policy": {"name": "name_value"},
+            }
+        ],
         "locality_lb_policy": "locality_lb_policy_value",
         "log_config": {"enable": True, "sample_rate": 0.1165},
         "max_stream_duration": {},
@@ -3538,6 +3573,7 @@ def test_update_unary_rest_bad_request(
         "connection_draining": {"draining_timeout_sec": 2124},
         "connection_tracking_policy": {
             "connection_persistence_on_unhealthy_backends": "connection_persistence_on_unhealthy_backends_value",
+            "enable_strong_affinity": True,
             "idle_timeout_sec": 1694,
             "tracking_mode": "tracking_mode_value",
         },
@@ -3578,6 +3614,12 @@ def test_update_unary_rest_bad_request(
         "id": 205,
         "kind": "kind_value",
         "load_balancing_scheme": "load_balancing_scheme_value",
+        "locality_lb_policies": [
+            {
+                "custom_policy": {"data": "data_value", "name": "name_value"},
+                "policy": {"name": "name_value"},
+            }
+        ],
         "locality_lb_policy": "locality_lb_policy_value",
         "log_config": {"enable": True, "sample_rate": 0.1165},
         "max_stream_duration": {},

@@ -77,8 +77,14 @@ from google.cloud.compute_v1.services.license_codes.client import LicenseCodesCl
 from google.cloud.compute_v1.services.licenses.client import LicensesClient
 from google.cloud.compute_v1.services.machine_images.client import MachineImagesClient
 from google.cloud.compute_v1.services.machine_types.client import MachineTypesClient
+from google.cloud.compute_v1.services.network_edge_security_services.client import (
+    NetworkEdgeSecurityServicesClient,
+)
 from google.cloud.compute_v1.services.network_endpoint_groups.client import (
     NetworkEndpointGroupsClient,
+)
+from google.cloud.compute_v1.services.network_firewall_policies.client import (
+    NetworkFirewallPoliciesClient,
 )
 from google.cloud.compute_v1.services.networks.client import NetworksClient
 from google.cloud.compute_v1.services.node_groups.client import NodeGroupsClient
@@ -125,6 +131,9 @@ from google.cloud.compute_v1.services.region_instances.client import (
 from google.cloud.compute_v1.services.region_network_endpoint_groups.client import (
     RegionNetworkEndpointGroupsClient,
 )
+from google.cloud.compute_v1.services.region_network_firewall_policies.client import (
+    RegionNetworkFirewallPoliciesClient,
+)
 from google.cloud.compute_v1.services.region_notification_endpoints.client import (
     RegionNotificationEndpointsClient,
 )
@@ -132,6 +141,9 @@ from google.cloud.compute_v1.services.region_operations.client import (
     RegionOperationsClient,
 )
 from google.cloud.compute_v1.services.regions.client import RegionsClient
+from google.cloud.compute_v1.services.region_security_policies.client import (
+    RegionSecurityPoliciesClient,
+)
 from google.cloud.compute_v1.services.region_ssl_certificates.client import (
     RegionSslCertificatesClient,
 )
@@ -203,6 +215,12 @@ from google.cloud.compute_v1.types.compute import AcceleratorTypesScopedList
 from google.cloud.compute_v1.types.compute import AccessConfig
 from google.cloud.compute_v1.types.compute import AddAccessConfigInstanceRequest
 from google.cloud.compute_v1.types.compute import AddAssociationFirewallPolicyRequest
+from google.cloud.compute_v1.types.compute import (
+    AddAssociationNetworkFirewallPolicyRequest,
+)
+from google.cloud.compute_v1.types.compute import (
+    AddAssociationRegionNetworkFirewallPolicyRequest,
+)
 from google.cloud.compute_v1.types.compute import AddHealthCheckTargetPoolRequest
 from google.cloud.compute_v1.types.compute import AddInstancesInstanceGroupRequest
 from google.cloud.compute_v1.types.compute import AddInstanceTargetPoolRequest
@@ -216,6 +234,10 @@ from google.cloud.compute_v1.types.compute import AddressAggregatedList
 from google.cloud.compute_v1.types.compute import AddressesScopedList
 from google.cloud.compute_v1.types.compute import AddressList
 from google.cloud.compute_v1.types.compute import AddRuleFirewallPolicyRequest
+from google.cloud.compute_v1.types.compute import AddRuleNetworkFirewallPolicyRequest
+from google.cloud.compute_v1.types.compute import (
+    AddRuleRegionNetworkFirewallPolicyRequest,
+)
 from google.cloud.compute_v1.types.compute import AddRuleSecurityPolicyRequest
 from google.cloud.compute_v1.types.compute import AddSignedUrlKeyBackendBucketRequest
 from google.cloud.compute_v1.types.compute import AddSignedUrlKeyBackendServiceRequest
@@ -239,6 +261,9 @@ from google.cloud.compute_v1.types.compute import (
 )
 from google.cloud.compute_v1.types.compute import AggregatedListMachineTypesRequest
 from google.cloud.compute_v1.types.compute import (
+    AggregatedListNetworkEdgeSecurityServicesRequest,
+)
+from google.cloud.compute_v1.types.compute import (
     AggregatedListNetworkEndpointGroupsRequest,
 )
 from google.cloud.compute_v1.types.compute import AggregatedListNodeGroupsRequest
@@ -252,6 +277,7 @@ from google.cloud.compute_v1.types.compute import AggregatedListRegionCommitment
 from google.cloud.compute_v1.types.compute import AggregatedListReservationsRequest
 from google.cloud.compute_v1.types.compute import AggregatedListResourcePoliciesRequest
 from google.cloud.compute_v1.types.compute import AggregatedListRoutersRequest
+from google.cloud.compute_v1.types.compute import AggregatedListSecurityPoliciesRequest
 from google.cloud.compute_v1.types.compute import (
     AggregatedListServiceAttachmentsRequest,
 )
@@ -334,6 +360,15 @@ from google.cloud.compute_v1.types.compute import BackendServiceFailoverPolicy
 from google.cloud.compute_v1.types.compute import BackendServiceGroupHealth
 from google.cloud.compute_v1.types.compute import BackendServiceIAP
 from google.cloud.compute_v1.types.compute import BackendServiceList
+from google.cloud.compute_v1.types.compute import (
+    BackendServiceLocalityLoadBalancingPolicyConfig,
+)
+from google.cloud.compute_v1.types.compute import (
+    BackendServiceLocalityLoadBalancingPolicyConfigCustomPolicy,
+)
+from google.cloud.compute_v1.types.compute import (
+    BackendServiceLocalityLoadBalancingPolicyConfigPolicy,
+)
 from google.cloud.compute_v1.types.compute import BackendServiceLogConfig
 from google.cloud.compute_v1.types.compute import BackendServiceReference
 from google.cloud.compute_v1.types.compute import BackendServicesScopedList
@@ -351,6 +386,10 @@ from google.cloud.compute_v1.types.compute import CacheInvalidationRule
 from google.cloud.compute_v1.types.compute import CacheKeyPolicy
 from google.cloud.compute_v1.types.compute import CircuitBreakers
 from google.cloud.compute_v1.types.compute import CloneRulesFirewallPolicyRequest
+from google.cloud.compute_v1.types.compute import CloneRulesNetworkFirewallPolicyRequest
+from google.cloud.compute_v1.types.compute import (
+    CloneRulesRegionNetworkFirewallPolicyRequest,
+)
 from google.cloud.compute_v1.types.compute import Commitment
 from google.cloud.compute_v1.types.compute import CommitmentAggregatedList
 from google.cloud.compute_v1.types.compute import CommitmentList
@@ -416,7 +455,11 @@ from google.cloud.compute_v1.types.compute import DeleteInterconnectAttachmentRe
 from google.cloud.compute_v1.types.compute import DeleteInterconnectRequest
 from google.cloud.compute_v1.types.compute import DeleteLicenseRequest
 from google.cloud.compute_v1.types.compute import DeleteMachineImageRequest
+from google.cloud.compute_v1.types.compute import (
+    DeleteNetworkEdgeSecurityServiceRequest,
+)
 from google.cloud.compute_v1.types.compute import DeleteNetworkEndpointGroupRequest
+from google.cloud.compute_v1.types.compute import DeleteNetworkFirewallPolicyRequest
 from google.cloud.compute_v1.types.compute import DeleteNetworkRequest
 from google.cloud.compute_v1.types.compute import DeleteNodeGroupRequest
 from google.cloud.compute_v1.types.compute import DeleteNodesNodeGroupRequest
@@ -442,10 +485,14 @@ from google.cloud.compute_v1.types.compute import (
     DeleteRegionNetworkEndpointGroupRequest,
 )
 from google.cloud.compute_v1.types.compute import (
+    DeleteRegionNetworkFirewallPolicyRequest,
+)
+from google.cloud.compute_v1.types.compute import (
     DeleteRegionNotificationEndpointRequest,
 )
 from google.cloud.compute_v1.types.compute import DeleteRegionOperationRequest
 from google.cloud.compute_v1.types.compute import DeleteRegionOperationResponse
+from google.cloud.compute_v1.types.compute import DeleteRegionSecurityPolicyRequest
 from google.cloud.compute_v1.types.compute import DeleteRegionSslCertificateRequest
 from google.cloud.compute_v1.types.compute import DeleteRegionTargetHttpProxyRequest
 from google.cloud.compute_v1.types.compute import DeleteRegionTargetHttpsProxyRequest
@@ -530,6 +577,7 @@ from google.cloud.compute_v1.types.compute import FirewallPolicyList
 from google.cloud.compute_v1.types.compute import FirewallPolicyRule
 from google.cloud.compute_v1.types.compute import FirewallPolicyRuleMatcher
 from google.cloud.compute_v1.types.compute import FirewallPolicyRuleMatcherLayer4Config
+from google.cloud.compute_v1.types.compute import FirewallPolicyRuleSecureTag
 from google.cloud.compute_v1.types.compute import FixedOrPercent
 from google.cloud.compute_v1.types.compute import ForwardingRule
 from google.cloud.compute_v1.types.compute import ForwardingRuleAggregatedList
@@ -542,6 +590,12 @@ from google.cloud.compute_v1.types.compute import ForwardingRulesScopedList
 from google.cloud.compute_v1.types.compute import GetAcceleratorTypeRequest
 from google.cloud.compute_v1.types.compute import GetAddressRequest
 from google.cloud.compute_v1.types.compute import GetAssociationFirewallPolicyRequest
+from google.cloud.compute_v1.types.compute import (
+    GetAssociationNetworkFirewallPolicyRequest,
+)
+from google.cloud.compute_v1.types.compute import (
+    GetAssociationRegionNetworkFirewallPolicyRequest,
+)
 from google.cloud.compute_v1.types.compute import GetAutoscalerRequest
 from google.cloud.compute_v1.types.compute import GetBackendBucketRequest
 from google.cloud.compute_v1.types.compute import GetBackendServiceRequest
@@ -550,6 +604,9 @@ from google.cloud.compute_v1.types.compute import GetDiskRequest
 from google.cloud.compute_v1.types.compute import GetDiskTypeRequest
 from google.cloud.compute_v1.types.compute import GetEffectiveFirewallsInstanceRequest
 from google.cloud.compute_v1.types.compute import GetEffectiveFirewallsNetworkRequest
+from google.cloud.compute_v1.types.compute import (
+    GetEffectiveFirewallsRegionNetworkFirewallPolicyRequest,
+)
 from google.cloud.compute_v1.types.compute import GetExternalVpnGatewayRequest
 from google.cloud.compute_v1.types.compute import GetFirewallPolicyRequest
 from google.cloud.compute_v1.types.compute import GetFirewallRequest
@@ -573,9 +630,15 @@ from google.cloud.compute_v1.types.compute import GetIamPolicyInstanceRequest
 from google.cloud.compute_v1.types.compute import GetIamPolicyInstanceTemplateRequest
 from google.cloud.compute_v1.types.compute import GetIamPolicyLicenseRequest
 from google.cloud.compute_v1.types.compute import GetIamPolicyMachineImageRequest
+from google.cloud.compute_v1.types.compute import (
+    GetIamPolicyNetworkFirewallPolicyRequest,
+)
 from google.cloud.compute_v1.types.compute import GetIamPolicyNodeGroupRequest
 from google.cloud.compute_v1.types.compute import GetIamPolicyNodeTemplateRequest
 from google.cloud.compute_v1.types.compute import GetIamPolicyRegionDiskRequest
+from google.cloud.compute_v1.types.compute import (
+    GetIamPolicyRegionNetworkFirewallPolicyRequest,
+)
 from google.cloud.compute_v1.types.compute import GetIamPolicyReservationRequest
 from google.cloud.compute_v1.types.compute import GetIamPolicyResourcePolicyRequest
 from google.cloud.compute_v1.types.compute import GetIamPolicyServiceAttachmentRequest
@@ -595,7 +658,9 @@ from google.cloud.compute_v1.types.compute import GetLicenseRequest
 from google.cloud.compute_v1.types.compute import GetMachineImageRequest
 from google.cloud.compute_v1.types.compute import GetMachineTypeRequest
 from google.cloud.compute_v1.types.compute import GetNatMappingInfoRoutersRequest
+from google.cloud.compute_v1.types.compute import GetNetworkEdgeSecurityServiceRequest
 from google.cloud.compute_v1.types.compute import GetNetworkEndpointGroupRequest
+from google.cloud.compute_v1.types.compute import GetNetworkFirewallPolicyRequest
 from google.cloud.compute_v1.types.compute import GetNetworkRequest
 from google.cloud.compute_v1.types.compute import GetNodeGroupRequest
 from google.cloud.compute_v1.types.compute import GetNodeTemplateRequest
@@ -614,9 +679,11 @@ from google.cloud.compute_v1.types.compute import GetRegionHealthCheckServiceReq
 from google.cloud.compute_v1.types.compute import GetRegionInstanceGroupManagerRequest
 from google.cloud.compute_v1.types.compute import GetRegionInstanceGroupRequest
 from google.cloud.compute_v1.types.compute import GetRegionNetworkEndpointGroupRequest
+from google.cloud.compute_v1.types.compute import GetRegionNetworkFirewallPolicyRequest
 from google.cloud.compute_v1.types.compute import GetRegionNotificationEndpointRequest
 from google.cloud.compute_v1.types.compute import GetRegionOperationRequest
 from google.cloud.compute_v1.types.compute import GetRegionRequest
+from google.cloud.compute_v1.types.compute import GetRegionSecurityPolicyRequest
 from google.cloud.compute_v1.types.compute import GetRegionSslCertificateRequest
 from google.cloud.compute_v1.types.compute import GetRegionTargetHttpProxyRequest
 from google.cloud.compute_v1.types.compute import GetRegionTargetHttpsProxyRequest
@@ -627,6 +694,10 @@ from google.cloud.compute_v1.types.compute import GetRouteRequest
 from google.cloud.compute_v1.types.compute import GetRouterRequest
 from google.cloud.compute_v1.types.compute import GetRouterStatusRouterRequest
 from google.cloud.compute_v1.types.compute import GetRuleFirewallPolicyRequest
+from google.cloud.compute_v1.types.compute import GetRuleNetworkFirewallPolicyRequest
+from google.cloud.compute_v1.types.compute import (
+    GetRuleRegionNetworkFirewallPolicyRequest,
+)
 from google.cloud.compute_v1.types.compute import GetRuleSecurityPolicyRequest
 from google.cloud.compute_v1.types.compute import GetScreenshotInstanceRequest
 from google.cloud.compute_v1.types.compute import GetSecurityPolicyRequest
@@ -727,7 +798,11 @@ from google.cloud.compute_v1.types.compute import InsertInterconnectAttachmentRe
 from google.cloud.compute_v1.types.compute import InsertInterconnectRequest
 from google.cloud.compute_v1.types.compute import InsertLicenseRequest
 from google.cloud.compute_v1.types.compute import InsertMachineImageRequest
+from google.cloud.compute_v1.types.compute import (
+    InsertNetworkEdgeSecurityServiceRequest,
+)
 from google.cloud.compute_v1.types.compute import InsertNetworkEndpointGroupRequest
+from google.cloud.compute_v1.types.compute import InsertNetworkFirewallPolicyRequest
 from google.cloud.compute_v1.types.compute import InsertNetworkRequest
 from google.cloud.compute_v1.types.compute import InsertNodeGroupRequest
 from google.cloud.compute_v1.types.compute import InsertNodeTemplateRequest
@@ -747,8 +822,12 @@ from google.cloud.compute_v1.types.compute import (
     InsertRegionNetworkEndpointGroupRequest,
 )
 from google.cloud.compute_v1.types.compute import (
+    InsertRegionNetworkFirewallPolicyRequest,
+)
+from google.cloud.compute_v1.types.compute import (
     InsertRegionNotificationEndpointRequest,
 )
+from google.cloud.compute_v1.types.compute import InsertRegionSecurityPolicyRequest
 from google.cloud.compute_v1.types.compute import InsertRegionSslCertificateRequest
 from google.cloud.compute_v1.types.compute import InsertRegionTargetHttpProxyRequest
 from google.cloud.compute_v1.types.compute import InsertRegionTargetHttpsProxyRequest
@@ -850,6 +929,7 @@ from google.cloud.compute_v1.types.compute import (
     InstanceManagedByIgmErrorManagedInstanceError,
 )
 from google.cloud.compute_v1.types.compute import InstanceMoveRequest
+from google.cloud.compute_v1.types.compute import InstanceParams
 from google.cloud.compute_v1.types.compute import InstanceProperties
 from google.cloud.compute_v1.types.compute import InstanceReference
 from google.cloud.compute_v1.types.compute import InstancesAddResourcePoliciesRequest
@@ -956,6 +1036,7 @@ from google.cloud.compute_v1.types.compute import (
 from google.cloud.compute_v1.types.compute import (
     ListNetworkEndpointsNetworkEndpointGroupsRequest,
 )
+from google.cloud.compute_v1.types.compute import ListNetworkFirewallPoliciesRequest
 from google.cloud.compute_v1.types.compute import ListNetworksRequest
 from google.cloud.compute_v1.types.compute import ListNodeGroupsRequest
 from google.cloud.compute_v1.types.compute import ListNodesNodeGroupsRequest
@@ -985,8 +1066,12 @@ from google.cloud.compute_v1.types.compute import ListRegionHealthChecksRequest
 from google.cloud.compute_v1.types.compute import ListRegionInstanceGroupManagersRequest
 from google.cloud.compute_v1.types.compute import ListRegionInstanceGroupsRequest
 from google.cloud.compute_v1.types.compute import ListRegionNetworkEndpointGroupsRequest
+from google.cloud.compute_v1.types.compute import (
+    ListRegionNetworkFirewallPoliciesRequest,
+)
 from google.cloud.compute_v1.types.compute import ListRegionNotificationEndpointsRequest
 from google.cloud.compute_v1.types.compute import ListRegionOperationsRequest
+from google.cloud.compute_v1.types.compute import ListRegionSecurityPoliciesRequest
 from google.cloud.compute_v1.types.compute import ListRegionsRequest
 from google.cloud.compute_v1.types.compute import ListRegionSslCertificatesRequest
 from google.cloud.compute_v1.types.compute import ListRegionTargetHttpProxiesRequest
@@ -1043,6 +1128,11 @@ from google.cloud.compute_v1.types.compute import MoveFirewallPolicyRequest
 from google.cloud.compute_v1.types.compute import MoveInstanceProjectRequest
 from google.cloud.compute_v1.types.compute import NamedPort
 from google.cloud.compute_v1.types.compute import Network
+from google.cloud.compute_v1.types.compute import NetworkEdgeSecurityService
+from google.cloud.compute_v1.types.compute import (
+    NetworkEdgeSecurityServiceAggregatedList,
+)
+from google.cloud.compute_v1.types.compute import NetworkEdgeSecurityServicesScopedList
 from google.cloud.compute_v1.types.compute import NetworkEndpoint
 from google.cloud.compute_v1.types.compute import NetworkEndpointGroup
 from google.cloud.compute_v1.types.compute import NetworkEndpointGroupAggregatedList
@@ -1134,6 +1224,8 @@ from google.cloud.compute_v1.types.compute import PatchImageRequest
 from google.cloud.compute_v1.types.compute import PatchInstanceGroupManagerRequest
 from google.cloud.compute_v1.types.compute import PatchInterconnectAttachmentRequest
 from google.cloud.compute_v1.types.compute import PatchInterconnectRequest
+from google.cloud.compute_v1.types.compute import PatchNetworkEdgeSecurityServiceRequest
+from google.cloud.compute_v1.types.compute import PatchNetworkFirewallPolicyRequest
 from google.cloud.compute_v1.types.compute import PatchNetworkRequest
 from google.cloud.compute_v1.types.compute import PatchNodeGroupRequest
 from google.cloud.compute_v1.types.compute import PatchPacketMirroringRequest
@@ -1150,9 +1242,18 @@ from google.cloud.compute_v1.types.compute import PatchRegionBackendServiceReque
 from google.cloud.compute_v1.types.compute import PatchRegionHealthCheckRequest
 from google.cloud.compute_v1.types.compute import PatchRegionHealthCheckServiceRequest
 from google.cloud.compute_v1.types.compute import PatchRegionInstanceGroupManagerRequest
+from google.cloud.compute_v1.types.compute import (
+    PatchRegionNetworkFirewallPolicyRequest,
+)
+from google.cloud.compute_v1.types.compute import PatchRegionSecurityPolicyRequest
+from google.cloud.compute_v1.types.compute import PatchRegionTargetHttpsProxyRequest
 from google.cloud.compute_v1.types.compute import PatchRegionUrlMapRequest
 from google.cloud.compute_v1.types.compute import PatchRouterRequest
 from google.cloud.compute_v1.types.compute import PatchRuleFirewallPolicyRequest
+from google.cloud.compute_v1.types.compute import PatchRuleNetworkFirewallPolicyRequest
+from google.cloud.compute_v1.types.compute import (
+    PatchRuleRegionNetworkFirewallPolicyRequest,
+)
 from google.cloud.compute_v1.types.compute import PatchRuleSecurityPolicyRequest
 from google.cloud.compute_v1.types.compute import PatchSecurityPolicyRequest
 from google.cloud.compute_v1.types.compute import PatchServiceAttachmentRequest
@@ -1254,6 +1355,12 @@ from google.cloud.compute_v1.types.compute import (
     RegionInstanceGroupsSetNamedPortsRequest,
 )
 from google.cloud.compute_v1.types.compute import RegionList
+from google.cloud.compute_v1.types.compute import (
+    RegionNetworkFirewallPoliciesGetEffectiveFirewallsResponse,
+)
+from google.cloud.compute_v1.types.compute import (
+    RegionNetworkFirewallPoliciesGetEffectiveFirewallsResponseEffectiveFirewallPolicy,
+)
 from google.cloud.compute_v1.types.compute import RegionSetLabelsRequest
 from google.cloud.compute_v1.types.compute import RegionSetPolicyRequest
 from google.cloud.compute_v1.types.compute import (
@@ -1261,6 +1368,12 @@ from google.cloud.compute_v1.types.compute import (
 )
 from google.cloud.compute_v1.types.compute import RegionUrlMapsValidateRequest
 from google.cloud.compute_v1.types.compute import RemoveAssociationFirewallPolicyRequest
+from google.cloud.compute_v1.types.compute import (
+    RemoveAssociationNetworkFirewallPolicyRequest,
+)
+from google.cloud.compute_v1.types.compute import (
+    RemoveAssociationRegionNetworkFirewallPolicyRequest,
+)
 from google.cloud.compute_v1.types.compute import RemoveHealthCheckTargetPoolRequest
 from google.cloud.compute_v1.types.compute import RemoveInstancesInstanceGroupRequest
 from google.cloud.compute_v1.types.compute import RemoveInstanceTargetPoolRequest
@@ -1271,6 +1384,10 @@ from google.cloud.compute_v1.types.compute import (
     RemoveResourcePoliciesRegionDiskRequest,
 )
 from google.cloud.compute_v1.types.compute import RemoveRuleFirewallPolicyRequest
+from google.cloud.compute_v1.types.compute import RemoveRuleNetworkFirewallPolicyRequest
+from google.cloud.compute_v1.types.compute import (
+    RemoveRuleRegionNetworkFirewallPolicyRequest,
+)
 from google.cloud.compute_v1.types.compute import RemoveRuleSecurityPolicyRequest
 from google.cloud.compute_v1.types.compute import RequestMirrorPolicy
 from google.cloud.compute_v1.types.compute import Reservation
@@ -1348,9 +1465,11 @@ from google.cloud.compute_v1.types.compute import Scheduling
 from google.cloud.compute_v1.types.compute import SchedulingNodeAffinity
 from google.cloud.compute_v1.types.compute import ScratchDisks
 from google.cloud.compute_v1.types.compute import Screenshot
+from google.cloud.compute_v1.types.compute import SecurityPoliciesAggregatedList
 from google.cloud.compute_v1.types.compute import (
     SecurityPoliciesListPreconfiguredExpressionSetsResponse,
 )
+from google.cloud.compute_v1.types.compute import SecurityPoliciesScopedList
 from google.cloud.compute_v1.types.compute import SecurityPoliciesWafConfig
 from google.cloud.compute_v1.types.compute import SecurityPolicy
 from google.cloud.compute_v1.types.compute import SecurityPolicyAdaptiveProtectionConfig
@@ -1358,6 +1477,7 @@ from google.cloud.compute_v1.types.compute import (
     SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfig,
 )
 from google.cloud.compute_v1.types.compute import SecurityPolicyAdvancedOptionsConfig
+from google.cloud.compute_v1.types.compute import SecurityPolicyDdosProtectionConfig
 from google.cloud.compute_v1.types.compute import SecurityPolicyList
 from google.cloud.compute_v1.types.compute import SecurityPolicyRecaptchaOptionsConfig
 from google.cloud.compute_v1.types.compute import SecurityPolicyReference
@@ -1409,9 +1529,15 @@ from google.cloud.compute_v1.types.compute import SetIamPolicyInstanceRequest
 from google.cloud.compute_v1.types.compute import SetIamPolicyInstanceTemplateRequest
 from google.cloud.compute_v1.types.compute import SetIamPolicyLicenseRequest
 from google.cloud.compute_v1.types.compute import SetIamPolicyMachineImageRequest
+from google.cloud.compute_v1.types.compute import (
+    SetIamPolicyNetworkFirewallPolicyRequest,
+)
 from google.cloud.compute_v1.types.compute import SetIamPolicyNodeGroupRequest
 from google.cloud.compute_v1.types.compute import SetIamPolicyNodeTemplateRequest
 from google.cloud.compute_v1.types.compute import SetIamPolicyRegionDiskRequest
+from google.cloud.compute_v1.types.compute import (
+    SetIamPolicyRegionNetworkFirewallPolicyRequest,
+)
 from google.cloud.compute_v1.types.compute import SetIamPolicyReservationRequest
 from google.cloud.compute_v1.types.compute import SetIamPolicyResourcePolicyRequest
 from google.cloud.compute_v1.types.compute import SetIamPolicyServiceAttachmentRequest
@@ -1597,12 +1723,18 @@ from google.cloud.compute_v1.types.compute import TestIamPermissionsMachineImage
 from google.cloud.compute_v1.types.compute import (
     TestIamPermissionsNetworkEndpointGroupRequest,
 )
+from google.cloud.compute_v1.types.compute import (
+    TestIamPermissionsNetworkFirewallPolicyRequest,
+)
 from google.cloud.compute_v1.types.compute import TestIamPermissionsNodeGroupRequest
 from google.cloud.compute_v1.types.compute import TestIamPermissionsNodeTemplateRequest
 from google.cloud.compute_v1.types.compute import (
     TestIamPermissionsPacketMirroringRequest,
 )
 from google.cloud.compute_v1.types.compute import TestIamPermissionsRegionDiskRequest
+from google.cloud.compute_v1.types.compute import (
+    TestIamPermissionsRegionNetworkFirewallPolicyRequest,
+)
 from google.cloud.compute_v1.types.compute import TestIamPermissionsReservationRequest
 from google.cloud.compute_v1.types.compute import (
     TestIamPermissionsResourcePolicyRequest,
@@ -1728,7 +1860,9 @@ __all__ = (
     "LicensesClient",
     "MachineImagesClient",
     "MachineTypesClient",
+    "NetworkEdgeSecurityServicesClient",
     "NetworkEndpointGroupsClient",
+    "NetworkFirewallPoliciesClient",
     "NetworksClient",
     "NodeGroupsClient",
     "NodeTemplatesClient",
@@ -1748,9 +1882,11 @@ __all__ = (
     "RegionInstanceGroupsClient",
     "RegionInstancesClient",
     "RegionNetworkEndpointGroupsClient",
+    "RegionNetworkFirewallPoliciesClient",
     "RegionNotificationEndpointsClient",
     "RegionOperationsClient",
     "RegionsClient",
+    "RegionSecurityPoliciesClient",
     "RegionSslCertificatesClient",
     "RegionTargetHttpProxiesClient",
     "RegionTargetHttpsProxiesClient",
@@ -1789,6 +1925,8 @@ __all__ = (
     "AccessConfig",
     "AddAccessConfigInstanceRequest",
     "AddAssociationFirewallPolicyRequest",
+    "AddAssociationNetworkFirewallPolicyRequest",
+    "AddAssociationRegionNetworkFirewallPolicyRequest",
     "AddHealthCheckTargetPoolRequest",
     "AddInstancesInstanceGroupRequest",
     "AddInstanceTargetPoolRequest",
@@ -1802,6 +1940,8 @@ __all__ = (
     "AddressesScopedList",
     "AddressList",
     "AddRuleFirewallPolicyRequest",
+    "AddRuleNetworkFirewallPolicyRequest",
+    "AddRuleRegionNetworkFirewallPolicyRequest",
     "AddRuleSecurityPolicyRequest",
     "AddSignedUrlKeyBackendBucketRequest",
     "AddSignedUrlKeyBackendServiceRequest",
@@ -1820,6 +1960,7 @@ __all__ = (
     "AggregatedListInstancesRequest",
     "AggregatedListInterconnectAttachmentsRequest",
     "AggregatedListMachineTypesRequest",
+    "AggregatedListNetworkEdgeSecurityServicesRequest",
     "AggregatedListNetworkEndpointGroupsRequest",
     "AggregatedListNodeGroupsRequest",
     "AggregatedListNodeTemplatesRequest",
@@ -1830,6 +1971,7 @@ __all__ = (
     "AggregatedListReservationsRequest",
     "AggregatedListResourcePoliciesRequest",
     "AggregatedListRoutersRequest",
+    "AggregatedListSecurityPoliciesRequest",
     "AggregatedListServiceAttachmentsRequest",
     "AggregatedListSslCertificatesRequest",
     "AggregatedListSubnetworksRequest",
@@ -1884,6 +2026,9 @@ __all__ = (
     "BackendServiceGroupHealth",
     "BackendServiceIAP",
     "BackendServiceList",
+    "BackendServiceLocalityLoadBalancingPolicyConfig",
+    "BackendServiceLocalityLoadBalancingPolicyConfigCustomPolicy",
+    "BackendServiceLocalityLoadBalancingPolicyConfigPolicy",
     "BackendServiceLogConfig",
     "BackendServiceReference",
     "BackendServicesScopedList",
@@ -1899,6 +2044,8 @@ __all__ = (
     "CacheKeyPolicy",
     "CircuitBreakers",
     "CloneRulesFirewallPolicyRequest",
+    "CloneRulesNetworkFirewallPolicyRequest",
+    "CloneRulesRegionNetworkFirewallPolicyRequest",
     "Commitment",
     "CommitmentAggregatedList",
     "CommitmentList",
@@ -1946,7 +2093,9 @@ __all__ = (
     "DeleteInterconnectRequest",
     "DeleteLicenseRequest",
     "DeleteMachineImageRequest",
+    "DeleteNetworkEdgeSecurityServiceRequest",
     "DeleteNetworkEndpointGroupRequest",
+    "DeleteNetworkFirewallPolicyRequest",
     "DeleteNetworkRequest",
     "DeleteNodeGroupRequest",
     "DeleteNodesNodeGroupRequest",
@@ -1963,9 +2112,11 @@ __all__ = (
     "DeleteRegionHealthCheckServiceRequest",
     "DeleteRegionInstanceGroupManagerRequest",
     "DeleteRegionNetworkEndpointGroupRequest",
+    "DeleteRegionNetworkFirewallPolicyRequest",
     "DeleteRegionNotificationEndpointRequest",
     "DeleteRegionOperationRequest",
     "DeleteRegionOperationResponse",
+    "DeleteRegionSecurityPolicyRequest",
     "DeleteRegionSslCertificateRequest",
     "DeleteRegionTargetHttpProxyRequest",
     "DeleteRegionTargetHttpsProxyRequest",
@@ -2042,6 +2193,7 @@ __all__ = (
     "FirewallPolicyRule",
     "FirewallPolicyRuleMatcher",
     "FirewallPolicyRuleMatcherLayer4Config",
+    "FirewallPolicyRuleSecureTag",
     "FixedOrPercent",
     "ForwardingRule",
     "ForwardingRuleAggregatedList",
@@ -2052,6 +2204,8 @@ __all__ = (
     "GetAcceleratorTypeRequest",
     "GetAddressRequest",
     "GetAssociationFirewallPolicyRequest",
+    "GetAssociationNetworkFirewallPolicyRequest",
+    "GetAssociationRegionNetworkFirewallPolicyRequest",
     "GetAutoscalerRequest",
     "GetBackendBucketRequest",
     "GetBackendServiceRequest",
@@ -2060,6 +2214,7 @@ __all__ = (
     "GetDiskTypeRequest",
     "GetEffectiveFirewallsInstanceRequest",
     "GetEffectiveFirewallsNetworkRequest",
+    "GetEffectiveFirewallsRegionNetworkFirewallPolicyRequest",
     "GetExternalVpnGatewayRequest",
     "GetFirewallPolicyRequest",
     "GetFirewallRequest",
@@ -2083,9 +2238,11 @@ __all__ = (
     "GetIamPolicyInstanceTemplateRequest",
     "GetIamPolicyLicenseRequest",
     "GetIamPolicyMachineImageRequest",
+    "GetIamPolicyNetworkFirewallPolicyRequest",
     "GetIamPolicyNodeGroupRequest",
     "GetIamPolicyNodeTemplateRequest",
     "GetIamPolicyRegionDiskRequest",
+    "GetIamPolicyRegionNetworkFirewallPolicyRequest",
     "GetIamPolicyReservationRequest",
     "GetIamPolicyResourcePolicyRequest",
     "GetIamPolicyServiceAttachmentRequest",
@@ -2105,7 +2262,9 @@ __all__ = (
     "GetMachineImageRequest",
     "GetMachineTypeRequest",
     "GetNatMappingInfoRoutersRequest",
+    "GetNetworkEdgeSecurityServiceRequest",
     "GetNetworkEndpointGroupRequest",
+    "GetNetworkFirewallPolicyRequest",
     "GetNetworkRequest",
     "GetNodeGroupRequest",
     "GetNodeTemplateRequest",
@@ -2124,9 +2283,11 @@ __all__ = (
     "GetRegionInstanceGroupManagerRequest",
     "GetRegionInstanceGroupRequest",
     "GetRegionNetworkEndpointGroupRequest",
+    "GetRegionNetworkFirewallPolicyRequest",
     "GetRegionNotificationEndpointRequest",
     "GetRegionOperationRequest",
     "GetRegionRequest",
+    "GetRegionSecurityPolicyRequest",
     "GetRegionSslCertificateRequest",
     "GetRegionTargetHttpProxyRequest",
     "GetRegionTargetHttpsProxyRequest",
@@ -2137,6 +2298,8 @@ __all__ = (
     "GetRouterRequest",
     "GetRouterStatusRouterRequest",
     "GetRuleFirewallPolicyRequest",
+    "GetRuleNetworkFirewallPolicyRequest",
+    "GetRuleRegionNetworkFirewallPolicyRequest",
     "GetRuleSecurityPolicyRequest",
     "GetScreenshotInstanceRequest",
     "GetSecurityPolicyRequest",
@@ -2227,7 +2390,9 @@ __all__ = (
     "InsertInterconnectRequest",
     "InsertLicenseRequest",
     "InsertMachineImageRequest",
+    "InsertNetworkEdgeSecurityServiceRequest",
     "InsertNetworkEndpointGroupRequest",
+    "InsertNetworkFirewallPolicyRequest",
     "InsertNetworkRequest",
     "InsertNodeGroupRequest",
     "InsertNodeTemplateRequest",
@@ -2242,7 +2407,9 @@ __all__ = (
     "InsertRegionHealthCheckServiceRequest",
     "InsertRegionInstanceGroupManagerRequest",
     "InsertRegionNetworkEndpointGroupRequest",
+    "InsertRegionNetworkFirewallPolicyRequest",
     "InsertRegionNotificationEndpointRequest",
+    "InsertRegionSecurityPolicyRequest",
     "InsertRegionSslCertificateRequest",
     "InsertRegionTargetHttpProxyRequest",
     "InsertRegionTargetHttpsProxyRequest",
@@ -2310,6 +2477,7 @@ __all__ = (
     "InstanceManagedByIgmErrorInstanceActionDetails",
     "InstanceManagedByIgmErrorManagedInstanceError",
     "InstanceMoveRequest",
+    "InstanceParams",
     "InstanceProperties",
     "InstanceReference",
     "InstancesAddResourcePoliciesRequest",
@@ -2394,6 +2562,7 @@ __all__ = (
     "ListNetworkEndpointGroupsRequest",
     "ListNetworkEndpointsGlobalNetworkEndpointGroupsRequest",
     "ListNetworkEndpointsNetworkEndpointGroupsRequest",
+    "ListNetworkFirewallPoliciesRequest",
     "ListNetworksRequest",
     "ListNodeGroupsRequest",
     "ListNodesNodeGroupsRequest",
@@ -2417,8 +2586,10 @@ __all__ = (
     "ListRegionInstanceGroupManagersRequest",
     "ListRegionInstanceGroupsRequest",
     "ListRegionNetworkEndpointGroupsRequest",
+    "ListRegionNetworkFirewallPoliciesRequest",
     "ListRegionNotificationEndpointsRequest",
     "ListRegionOperationsRequest",
+    "ListRegionSecurityPoliciesRequest",
     "ListRegionsRequest",
     "ListRegionSslCertificatesRequest",
     "ListRegionTargetHttpProxiesRequest",
@@ -2475,6 +2646,9 @@ __all__ = (
     "MoveInstanceProjectRequest",
     "NamedPort",
     "Network",
+    "NetworkEdgeSecurityService",
+    "NetworkEdgeSecurityServiceAggregatedList",
+    "NetworkEdgeSecurityServicesScopedList",
     "NetworkEndpoint",
     "NetworkEndpointGroup",
     "NetworkEndpointGroupAggregatedList",
@@ -2550,6 +2724,8 @@ __all__ = (
     "PatchInstanceGroupManagerRequest",
     "PatchInterconnectAttachmentRequest",
     "PatchInterconnectRequest",
+    "PatchNetworkEdgeSecurityServiceRequest",
+    "PatchNetworkFirewallPolicyRequest",
     "PatchNetworkRequest",
     "PatchNodeGroupRequest",
     "PatchPacketMirroringRequest",
@@ -2562,9 +2738,14 @@ __all__ = (
     "PatchRegionHealthCheckRequest",
     "PatchRegionHealthCheckServiceRequest",
     "PatchRegionInstanceGroupManagerRequest",
+    "PatchRegionNetworkFirewallPolicyRequest",
+    "PatchRegionSecurityPolicyRequest",
+    "PatchRegionTargetHttpsProxyRequest",
     "PatchRegionUrlMapRequest",
     "PatchRouterRequest",
     "PatchRuleFirewallPolicyRequest",
+    "PatchRuleNetworkFirewallPolicyRequest",
+    "PatchRuleRegionNetworkFirewallPolicyRequest",
     "PatchRuleSecurityPolicyRequest",
     "PatchSecurityPolicyRequest",
     "PatchServiceAttachmentRequest",
@@ -2626,11 +2807,15 @@ __all__ = (
     "RegionInstanceGroupsListInstancesRequest",
     "RegionInstanceGroupsSetNamedPortsRequest",
     "RegionList",
+    "RegionNetworkFirewallPoliciesGetEffectiveFirewallsResponse",
+    "RegionNetworkFirewallPoliciesGetEffectiveFirewallsResponseEffectiveFirewallPolicy",
     "RegionSetLabelsRequest",
     "RegionSetPolicyRequest",
     "RegionTargetHttpsProxiesSetSslCertificatesRequest",
     "RegionUrlMapsValidateRequest",
     "RemoveAssociationFirewallPolicyRequest",
+    "RemoveAssociationNetworkFirewallPolicyRequest",
+    "RemoveAssociationRegionNetworkFirewallPolicyRequest",
     "RemoveHealthCheckTargetPoolRequest",
     "RemoveInstancesInstanceGroupRequest",
     "RemoveInstanceTargetPoolRequest",
@@ -2639,6 +2824,8 @@ __all__ = (
     "RemoveResourcePoliciesInstanceRequest",
     "RemoveResourcePoliciesRegionDiskRequest",
     "RemoveRuleFirewallPolicyRequest",
+    "RemoveRuleNetworkFirewallPolicyRequest",
+    "RemoveRuleRegionNetworkFirewallPolicyRequest",
     "RemoveRuleSecurityPolicyRequest",
     "RequestMirrorPolicy",
     "Reservation",
@@ -2704,12 +2891,15 @@ __all__ = (
     "SchedulingNodeAffinity",
     "ScratchDisks",
     "Screenshot",
+    "SecurityPoliciesAggregatedList",
     "SecurityPoliciesListPreconfiguredExpressionSetsResponse",
+    "SecurityPoliciesScopedList",
     "SecurityPoliciesWafConfig",
     "SecurityPolicy",
     "SecurityPolicyAdaptiveProtectionConfig",
     "SecurityPolicyAdaptiveProtectionConfigLayer7DdosDefenseConfig",
     "SecurityPolicyAdvancedOptionsConfig",
+    "SecurityPolicyDdosProtectionConfig",
     "SecurityPolicyList",
     "SecurityPolicyRecaptchaOptionsConfig",
     "SecurityPolicyReference",
@@ -2749,9 +2939,11 @@ __all__ = (
     "SetIamPolicyInstanceTemplateRequest",
     "SetIamPolicyLicenseRequest",
     "SetIamPolicyMachineImageRequest",
+    "SetIamPolicyNetworkFirewallPolicyRequest",
     "SetIamPolicyNodeGroupRequest",
     "SetIamPolicyNodeTemplateRequest",
     "SetIamPolicyRegionDiskRequest",
+    "SetIamPolicyRegionNetworkFirewallPolicyRequest",
     "SetIamPolicyReservationRequest",
     "SetIamPolicyResourcePolicyRequest",
     "SetIamPolicyServiceAttachmentRequest",
@@ -2891,10 +3083,12 @@ __all__ = (
     "TestIamPermissionsLicenseRequest",
     "TestIamPermissionsMachineImageRequest",
     "TestIamPermissionsNetworkEndpointGroupRequest",
+    "TestIamPermissionsNetworkFirewallPolicyRequest",
     "TestIamPermissionsNodeGroupRequest",
     "TestIamPermissionsNodeTemplateRequest",
     "TestIamPermissionsPacketMirroringRequest",
     "TestIamPermissionsRegionDiskRequest",
+    "TestIamPermissionsRegionNetworkFirewallPolicyRequest",
     "TestIamPermissionsReservationRequest",
     "TestIamPermissionsResourcePolicyRequest",
     "TestIamPermissionsServiceAttachmentRequest",

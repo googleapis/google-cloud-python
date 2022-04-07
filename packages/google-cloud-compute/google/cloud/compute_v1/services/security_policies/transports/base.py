@@ -128,6 +128,11 @@ class SecurityPoliciesTransport(abc.ABC):
                 default_timeout=None,
                 client_info=client_info,
             ),
+            self.aggregated_list: gapic_v1.method.wrap_method(
+                self.aggregated_list,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.delete: gapic_v1.method.wrap_method(
                 self.delete,
                 default_timeout=None,
@@ -190,6 +195,18 @@ class SecurityPoliciesTransport(abc.ABC):
     ) -> Callable[
         [compute.AddRuleSecurityPolicyRequest],
         Union[compute.Operation, Awaitable[compute.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def aggregated_list(
+        self,
+    ) -> Callable[
+        [compute.AggregatedListSecurityPoliciesRequest],
+        Union[
+            compute.SecurityPoliciesAggregatedList,
+            Awaitable[compute.SecurityPoliciesAggregatedList],
+        ],
     ]:
         raise NotImplementedError()
 

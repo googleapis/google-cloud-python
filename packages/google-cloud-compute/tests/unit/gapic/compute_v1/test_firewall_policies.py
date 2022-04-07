@@ -109,9 +109,9 @@ def test_firewall_policies_client_from_service_account_info(
         assert isinstance(client, client_class)
 
         assert client.transport._host == (
-            "compute.googleapis.com{}".format(":443")
+            "compute.googleapis.com:443"
             if transport_name in ["grpc", "grpc_asyncio"]
-            else "https://{}".format("compute.googleapis.com")
+            else "https://compute.googleapis.com"
         )
 
 
@@ -166,9 +166,9 @@ def test_firewall_policies_client_from_service_account_file(
         assert isinstance(client, client_class)
 
         assert client.transport._host == (
-            "compute.googleapis.com{}".format(":443")
+            "compute.googleapis.com:443"
             if transport_name in ["grpc", "grpc_asyncio"]
-            else "https://{}".format("compute.googleapis.com")
+            else "https://compute.googleapis.com"
         )
 
 
@@ -907,10 +907,13 @@ def test_add_rule_unary_rest(request_type):
                 }
             ],
             "src_ip_ranges": ["src_ip_ranges_value_1", "src_ip_ranges_value_2"],
+            "src_secure_tags": [{"name": "name_value", "state": "state_value"}],
         },
         "priority": 898,
+        "rule_name": "rule_name_value",
         "rule_tuple_count": 1737,
         "target_resources": ["target_resources_value_1", "target_resources_value_2"],
+        "target_secure_tags": {},
         "target_service_accounts": [
             "target_service_accounts_value_1",
             "target_service_accounts_value_2",
@@ -1149,10 +1152,13 @@ def test_add_rule_unary_rest_bad_request(
                 }
             ],
             "src_ip_ranges": ["src_ip_ranges_value_1", "src_ip_ranges_value_2"],
+            "src_secure_tags": [{"name": "name_value", "state": "state_value"}],
         },
         "priority": 898,
+        "rule_name": "rule_name_value",
         "rule_tuple_count": 1737,
         "target_resources": ["target_resources_value_1", "target_resources_value_2"],
+        "target_secure_tags": {},
         "target_service_accounts": [
             "target_service_accounts_value_1",
             "target_service_accounts_value_2",
@@ -1880,6 +1886,7 @@ def test_get_rest(request_type):
             kind="kind_value",
             name="name_value",
             parent="parent_value",
+            region="region_value",
             rule_tuple_count=1737,
             self_link="self_link_value",
             self_link_with_id="self_link_with_id_value",
@@ -1904,6 +1911,7 @@ def test_get_rest(request_type):
     assert response.kind == "kind_value"
     assert response.name == "name_value"
     assert response.parent == "parent_value"
+    assert response.region == "region_value"
     assert response.rule_tuple_count == 1737
     assert response.self_link == "self_link_value"
     assert response.self_link_with_id == "self_link_with_id_value"
@@ -2686,6 +2694,7 @@ def test_get_rule_rest(request_type):
             enable_logging=True,
             kind="kind_value",
             priority=898,
+            rule_name="rule_name_value",
             rule_tuple_count=1737,
             target_resources=["target_resources_value"],
             target_service_accounts=["target_service_accounts_value"],
@@ -2708,6 +2717,7 @@ def test_get_rule_rest(request_type):
     assert response.enable_logging is True
     assert response.kind == "kind_value"
     assert response.priority == 898
+    assert response.rule_name == "rule_name_value"
     assert response.rule_tuple_count == 1737
     assert response.target_resources == ["target_resources_value"]
     assert response.target_service_accounts == ["target_service_accounts_value"]
@@ -2968,6 +2978,7 @@ def test_insert_unary_rest(request_type):
         "kind": "kind_value",
         "name": "name_value",
         "parent": "parent_value",
+        "region": "region_value",
         "rule_tuple_count": 1737,
         "rules": [
             {
@@ -2989,13 +3000,16 @@ def test_insert_unary_rest(request_type):
                         }
                     ],
                     "src_ip_ranges": ["src_ip_ranges_value_1", "src_ip_ranges_value_2"],
+                    "src_secure_tags": [{"name": "name_value", "state": "state_value"}],
                 },
                 "priority": 898,
+                "rule_name": "rule_name_value",
                 "rule_tuple_count": 1737,
                 "target_resources": [
                     "target_resources_value_1",
                     "target_resources_value_2",
                 ],
+                "target_secure_tags": {},
                 "target_service_accounts": [
                     "target_service_accounts_value_1",
                     "target_service_accounts_value_2",
@@ -3241,6 +3255,7 @@ def test_insert_unary_rest_bad_request(
         "kind": "kind_value",
         "name": "name_value",
         "parent": "parent_value",
+        "region": "region_value",
         "rule_tuple_count": 1737,
         "rules": [
             {
@@ -3262,13 +3277,16 @@ def test_insert_unary_rest_bad_request(
                         }
                     ],
                     "src_ip_ranges": ["src_ip_ranges_value_1", "src_ip_ranges_value_2"],
+                    "src_secure_tags": [{"name": "name_value", "state": "state_value"}],
                 },
                 "priority": 898,
+                "rule_name": "rule_name_value",
                 "rule_tuple_count": 1737,
                 "target_resources": [
                     "target_resources_value_1",
                     "target_resources_value_2",
                 ],
+                "target_secure_tags": {},
                 "target_service_accounts": [
                     "target_service_accounts_value_1",
                     "target_service_accounts_value_2",
@@ -4022,6 +4040,7 @@ def test_patch_unary_rest(request_type):
         "kind": "kind_value",
         "name": "name_value",
         "parent": "parent_value",
+        "region": "region_value",
         "rule_tuple_count": 1737,
         "rules": [
             {
@@ -4043,13 +4062,16 @@ def test_patch_unary_rest(request_type):
                         }
                     ],
                     "src_ip_ranges": ["src_ip_ranges_value_1", "src_ip_ranges_value_2"],
+                    "src_secure_tags": [{"name": "name_value", "state": "state_value"}],
                 },
                 "priority": 898,
+                "rule_name": "rule_name_value",
                 "rule_tuple_count": 1737,
                 "target_resources": [
                     "target_resources_value_1",
                     "target_resources_value_2",
                 ],
+                "target_secure_tags": {},
                 "target_service_accounts": [
                     "target_service_accounts_value_1",
                     "target_service_accounts_value_2",
@@ -4295,6 +4317,7 @@ def test_patch_unary_rest_bad_request(
         "kind": "kind_value",
         "name": "name_value",
         "parent": "parent_value",
+        "region": "region_value",
         "rule_tuple_count": 1737,
         "rules": [
             {
@@ -4316,13 +4339,16 @@ def test_patch_unary_rest_bad_request(
                         }
                     ],
                     "src_ip_ranges": ["src_ip_ranges_value_1", "src_ip_ranges_value_2"],
+                    "src_secure_tags": [{"name": "name_value", "state": "state_value"}],
                 },
                 "priority": 898,
+                "rule_name": "rule_name_value",
                 "rule_tuple_count": 1737,
                 "target_resources": [
                     "target_resources_value_1",
                     "target_resources_value_2",
                 ],
+                "target_secure_tags": {},
                 "target_service_accounts": [
                     "target_service_accounts_value_1",
                     "target_service_accounts_value_2",
@@ -4454,10 +4480,13 @@ def test_patch_rule_unary_rest(request_type):
                 }
             ],
             "src_ip_ranges": ["src_ip_ranges_value_1", "src_ip_ranges_value_2"],
+            "src_secure_tags": [{"name": "name_value", "state": "state_value"}],
         },
         "priority": 898,
+        "rule_name": "rule_name_value",
         "rule_tuple_count": 1737,
         "target_resources": ["target_resources_value_1", "target_resources_value_2"],
+        "target_secure_tags": {},
         "target_service_accounts": [
             "target_service_accounts_value_1",
             "target_service_accounts_value_2",
@@ -4706,10 +4735,13 @@ def test_patch_rule_unary_rest_bad_request(
                 }
             ],
             "src_ip_ranges": ["src_ip_ranges_value_1", "src_ip_ranges_value_2"],
+            "src_secure_tags": [{"name": "name_value", "state": "state_value"}],
         },
         "priority": 898,
+        "rule_name": "rule_name_value",
         "rule_tuple_count": 1737,
         "target_resources": ["target_resources_value_1", "target_resources_value_2"],
+        "target_secure_tags": {},
         "target_service_accounts": [
             "target_service_accounts_value_1",
             "target_service_accounts_value_2",

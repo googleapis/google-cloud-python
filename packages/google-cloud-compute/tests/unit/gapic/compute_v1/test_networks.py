@@ -101,9 +101,9 @@ def test_networks_client_from_service_account_info(client_class, transport_name)
         assert isinstance(client, client_class)
 
         assert client.transport._host == (
-            "compute.googleapis.com{}".format(":443")
+            "compute.googleapis.com:443"
             if transport_name in ["grpc", "grpc_asyncio"]
-            else "https://{}".format("compute.googleapis.com")
+            else "https://compute.googleapis.com"
         )
 
 
@@ -156,9 +156,9 @@ def test_networks_client_from_service_account_file(client_class, transport_name)
         assert isinstance(client, client_class)
 
         assert client.transport._host == (
-            "compute.googleapis.com{}".format(":443")
+            "compute.googleapis.com:443"
             if transport_name in ["grpc", "grpc_asyncio"]
-            else "https://{}".format("compute.googleapis.com")
+            else "https://compute.googleapis.com"
         )
 
 
@@ -1194,12 +1194,16 @@ def test_get_rest(request_type):
             auto_create_subnetworks=True,
             creation_timestamp="creation_timestamp_value",
             description="description_value",
+            enable_ula_internal_ipv6=True,
             gateway_i_pv4="gateway_i_pv4_value",
             id=205,
+            internal_ipv6_range="internal_ipv6_range_value",
             kind="kind_value",
             mtu=342,
             name="name_value",
+            network_firewall_policy_enforcement_order="network_firewall_policy_enforcement_order_value",
             self_link="self_link_value",
+            self_link_with_id="self_link_with_id_value",
             subnetworks=["subnetworks_value"],
         )
 
@@ -1217,12 +1221,19 @@ def test_get_rest(request_type):
     assert response.auto_create_subnetworks is True
     assert response.creation_timestamp == "creation_timestamp_value"
     assert response.description == "description_value"
+    assert response.enable_ula_internal_ipv6 is True
     assert response.gateway_i_pv4 == "gateway_i_pv4_value"
     assert response.id == 205
+    assert response.internal_ipv6_range == "internal_ipv6_range_value"
     assert response.kind == "kind_value"
     assert response.mtu == 342
     assert response.name == "name_value"
+    assert (
+        response.network_firewall_policy_enforcement_order
+        == "network_firewall_policy_enforcement_order_value"
+    )
     assert response.self_link == "self_link_value"
+    assert response.self_link_with_id == "self_link_with_id_value"
     assert response.subnetworks == ["subnetworks_value"]
 
 
@@ -1748,11 +1759,14 @@ def test_insert_unary_rest(request_type):
         "auto_create_subnetworks": True,
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
+        "enable_ula_internal_ipv6": True,
         "gateway_i_pv4": "gateway_i_pv4_value",
         "id": 205,
+        "internal_ipv6_range": "internal_ipv6_range_value",
         "kind": "kind_value",
         "mtu": 342,
         "name": "name_value",
+        "network_firewall_policy_enforcement_order": "network_firewall_policy_enforcement_order_value",
         "peerings": [
             {
                 "auto_create_routes": True,
@@ -1770,6 +1784,7 @@ def test_insert_unary_rest(request_type):
         ],
         "routing_config": {"routing_mode": "routing_mode_value"},
         "self_link": "self_link_value",
+        "self_link_with_id": "self_link_with_id_value",
         "subnetworks": ["subnetworks_value_1", "subnetworks_value_2"],
     }
     request = request_type(request_init)
@@ -1990,11 +2005,14 @@ def test_insert_unary_rest_bad_request(
         "auto_create_subnetworks": True,
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
+        "enable_ula_internal_ipv6": True,
         "gateway_i_pv4": "gateway_i_pv4_value",
         "id": 205,
+        "internal_ipv6_range": "internal_ipv6_range_value",
         "kind": "kind_value",
         "mtu": 342,
         "name": "name_value",
+        "network_firewall_policy_enforcement_order": "network_firewall_policy_enforcement_order_value",
         "peerings": [
             {
                 "auto_create_routes": True,
@@ -2012,6 +2030,7 @@ def test_insert_unary_rest_bad_request(
         ],
         "routing_config": {"routing_mode": "routing_mode_value"},
         "self_link": "self_link_value",
+        "self_link_with_id": "self_link_with_id_value",
         "subnetworks": ["subnetworks_value_1", "subnetworks_value_2"],
     }
     request = request_type(request_init)
@@ -2799,11 +2818,14 @@ def test_patch_unary_rest(request_type):
         "auto_create_subnetworks": True,
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
+        "enable_ula_internal_ipv6": True,
         "gateway_i_pv4": "gateway_i_pv4_value",
         "id": 205,
+        "internal_ipv6_range": "internal_ipv6_range_value",
         "kind": "kind_value",
         "mtu": 342,
         "name": "name_value",
+        "network_firewall_policy_enforcement_order": "network_firewall_policy_enforcement_order_value",
         "peerings": [
             {
                 "auto_create_routes": True,
@@ -2821,6 +2843,7 @@ def test_patch_unary_rest(request_type):
         ],
         "routing_config": {"routing_mode": "routing_mode_value"},
         "self_link": "self_link_value",
+        "self_link_with_id": "self_link_with_id_value",
         "subnetworks": ["subnetworks_value_1", "subnetworks_value_2"],
     }
     request = request_type(request_init)
@@ -3046,11 +3069,14 @@ def test_patch_unary_rest_bad_request(
         "auto_create_subnetworks": True,
         "creation_timestamp": "creation_timestamp_value",
         "description": "description_value",
+        "enable_ula_internal_ipv6": True,
         "gateway_i_pv4": "gateway_i_pv4_value",
         "id": 205,
+        "internal_ipv6_range": "internal_ipv6_range_value",
         "kind": "kind_value",
         "mtu": 342,
         "name": "name_value",
+        "network_firewall_policy_enforcement_order": "network_firewall_policy_enforcement_order_value",
         "peerings": [
             {
                 "auto_create_routes": True,
@@ -3068,6 +3094,7 @@ def test_patch_unary_rest_bad_request(
         ],
         "routing_config": {"routing_mode": "routing_mode_value"},
         "self_link": "self_link_value",
+        "self_link_with_id": "self_link_with_id_value",
         "subnetworks": ["subnetworks_value_1", "subnetworks_value_2"],
     }
     request = request_type(request_init)

@@ -800,6 +800,119 @@ class RegionTargetHttpsProxiesClient(metaclass=RegionTargetHttpsProxiesClientMet
         # Done; return the response.
         return response
 
+    def patch_unary(
+        self,
+        request: Union[compute.PatchRegionTargetHttpsProxyRequest, dict] = None,
+        *,
+        project: str = None,
+        region: str = None,
+        target_https_proxy: str = None,
+        target_https_proxy_resource: compute.TargetHttpsProxy = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> compute.Operation:
+        r"""Patches the specified regional TargetHttpsProxy
+        resource with the data included in the request. This
+        method supports PATCH semantics and uses JSON merge
+        patch format and processing rules.
+
+        Args:
+            request (Union[google.cloud.compute_v1.types.PatchRegionTargetHttpsProxyRequest, dict]):
+                The request object. A request message for
+                RegionTargetHttpsProxies.Patch. See the method
+                description for details.
+            project (str):
+                Project ID for this request.
+                This corresponds to the ``project`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            region (str):
+                Name of the region for this request.
+                This corresponds to the ``region`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            target_https_proxy (str):
+                Name of the TargetHttpsProxy resource
+                to patch.
+
+                This corresponds to the ``target_https_proxy`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            target_https_proxy_resource (google.cloud.compute_v1.types.TargetHttpsProxy):
+                The body resource for this request
+                This corresponds to the ``target_https_proxy_resource`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.compute_v1.types.Operation:
+                Represents an Operation resource. Google Compute Engine
+                has three Operation resources: \*
+                [Global](/compute/docs/reference/rest/v1/globalOperations)
+                \*
+                [Regional](/compute/docs/reference/rest/v1/regionOperations)
+                \*
+                [Zonal](/compute/docs/reference/rest/v1/zoneOperations)
+                You can use an operation resource to manage asynchronous
+                API requests. For more information, read Handling API
+                responses. Operations can be global, regional or zonal.
+                - For global operations, use the globalOperations
+                resource. - For regional operations, use the
+                regionOperations resource. - For zonal operations, use
+                the zonalOperations resource. For more information, read
+                Global, Regional, and Zonal Resources.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any(
+            [project, region, target_https_proxy, target_https_proxy_resource]
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a compute.PatchRegionTargetHttpsProxyRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, compute.PatchRegionTargetHttpsProxyRequest):
+            request = compute.PatchRegionTargetHttpsProxyRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if project is not None:
+                request.project = project
+            if region is not None:
+                request.region = region
+            if target_https_proxy is not None:
+                request.target_https_proxy = target_https_proxy
+            if target_https_proxy_resource is not None:
+                request.target_https_proxy_resource = target_https_proxy_resource
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.patch]
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     def set_ssl_certificates_unary(
         self,
         request: Union[

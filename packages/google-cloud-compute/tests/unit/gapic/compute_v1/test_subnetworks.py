@@ -103,9 +103,9 @@ def test_subnetworks_client_from_service_account_info(client_class, transport_na
         assert isinstance(client, client_class)
 
         assert client.transport._host == (
-            "compute.googleapis.com{}".format(":443")
+            "compute.googleapis.com:443"
             if transport_name in ["grpc", "grpc_asyncio"]
-            else "https://{}".format("compute.googleapis.com")
+            else "https://compute.googleapis.com"
         )
 
 
@@ -158,9 +158,9 @@ def test_subnetworks_client_from_service_account_file(client_class, transport_na
         assert isinstance(client, client_class)
 
         assert client.transport._host == (
-            "compute.googleapis.com{}".format(":443")
+            "compute.googleapis.com:443"
             if transport_name in ["grpc", "grpc_asyncio"]
-            else "https://{}".format("compute.googleapis.com")
+            else "https://compute.googleapis.com"
         )
 
 
@@ -1554,6 +1554,7 @@ def test_get_rest(request_type):
             fingerprint="fingerprint_value",
             gateway_address="gateway_address_value",
             id=205,
+            internal_ipv6_prefix="internal_ipv6_prefix_value",
             ip_cidr_range="ip_cidr_range_value",
             ipv6_access_type="ipv6_access_type_value",
             ipv6_cidr_range="ipv6_cidr_range_value",
@@ -1587,6 +1588,7 @@ def test_get_rest(request_type):
     assert response.fingerprint == "fingerprint_value"
     assert response.gateway_address == "gateway_address_value"
     assert response.id == 205
+    assert response.internal_ipv6_prefix == "internal_ipv6_prefix_value"
     assert response.ip_cidr_range == "ip_cidr_range_value"
     assert response.ipv6_access_type == "ipv6_access_type_value"
     assert response.ipv6_cidr_range == "ipv6_cidr_range_value"
@@ -2153,6 +2155,7 @@ def test_insert_unary_rest(request_type):
         "fingerprint": "fingerprint_value",
         "gateway_address": "gateway_address_value",
         "id": 205,
+        "internal_ipv6_prefix": "internal_ipv6_prefix_value",
         "ip_cidr_range": "ip_cidr_range_value",
         "ipv6_access_type": "ipv6_access_type_value",
         "ipv6_cidr_range": "ipv6_cidr_range_value",
@@ -2409,6 +2412,7 @@ def test_insert_unary_rest_bad_request(
         "fingerprint": "fingerprint_value",
         "gateway_address": "gateway_address_value",
         "id": 205,
+        "internal_ipv6_prefix": "internal_ipv6_prefix_value",
         "ip_cidr_range": "ip_cidr_range_value",
         "ipv6_access_type": "ipv6_access_type_value",
         "ipv6_cidr_range": "ipv6_cidr_range_value",
@@ -3237,6 +3241,7 @@ def test_patch_unary_rest(request_type):
         "fingerprint": "fingerprint_value",
         "gateway_address": "gateway_address_value",
         "id": 205,
+        "internal_ipv6_prefix": "internal_ipv6_prefix_value",
         "ip_cidr_range": "ip_cidr_range_value",
         "ipv6_access_type": "ipv6_access_type_value",
         "ipv6_cidr_range": "ipv6_cidr_range_value",
@@ -3506,6 +3511,7 @@ def test_patch_unary_rest_bad_request(
         "fingerprint": "fingerprint_value",
         "gateway_address": "gateway_address_value",
         "id": 205,
+        "internal_ipv6_prefix": "internal_ipv6_prefix_value",
         "ip_cidr_range": "ip_cidr_range_value",
         "ipv6_access_type": "ipv6_access_type_value",
         "ipv6_cidr_range": "ipv6_cidr_range_value",
