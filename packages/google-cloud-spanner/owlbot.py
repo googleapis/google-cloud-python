@@ -160,6 +160,7 @@ export GOOGLE_CLOUD_TESTS_CREATE_SPANNER_INSTANCE=true
 # Update samples folder in CONTRIBUTING.rst
 s.replace("CONTRIBUTING.rst", "samples/snippets", "samples/samples")
 
+python.configure_previous_major_version_branches()
 # ----------------------------------------------------------------------------
 # Samples templates
 # ----------------------------------------------------------------------------
