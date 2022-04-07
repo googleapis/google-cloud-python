@@ -71,7 +71,7 @@ class HttpTarget(proto.Message):
             characters after encoding.
         http_method (google.cloud.scheduler_v1beta1.types.HttpMethod):
             Which HTTP method to use for the request.
-        headers (Sequence[google.cloud.scheduler_v1beta1.types.HttpTarget.HeadersEntry]):
+        headers (Mapping[str, str]):
             The user can specify HTTP request headers to send with the
             job's HTTP request. This map contains the header field names
             and values. Repeated headers are not supported, but a header
@@ -179,7 +179,7 @@ class AppEngineHttpTarget(proto.Message):
             arguments, and ``#`` fragments. If the relative URL is
             empty, then the root path "/" will be used. No spaces are
             allowed, and the maximum length allowed is 2083 characters.
-        headers (Sequence[google.cloud.scheduler_v1beta1.types.AppEngineHttpTarget.HeadersEntry]):
+        headers (Mapping[str, str]):
             HTTP request headers.
 
             This map contains the header field names and values. Headers
@@ -270,7 +270,7 @@ class PubsubTarget(proto.Message):
             The message payload for PubsubMessage.
             Pubsub message must contain either non-empty
             data, or at least one attribute.
-        attributes (Sequence[google.cloud.scheduler_v1beta1.types.PubsubTarget.AttributesEntry]):
+        attributes (Mapping[str, str]):
             Attributes for PubsubMessage.
             Pubsub message must contain either non-empty
             data, or at least one attribute.
