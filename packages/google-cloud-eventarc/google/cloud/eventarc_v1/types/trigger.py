@@ -82,7 +82,7 @@ class Trigger(proto.Message):
             intermediary. This field contains a reference to
             that transport intermediary. This information
             can be used for debugging purposes.
-        labels (Sequence[google.cloud.eventarc_v1.types.Trigger.LabelsEntry]):
+        labels (Mapping[str, str]):
             Optional. User labels attached to the
             triggers that can be used to group resources.
         channel (str):

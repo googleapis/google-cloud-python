@@ -13,8 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .channel import Channel
-from .channel_connection import ChannelConnection
+from .channel import (
+    Channel,
+)
+from .channel_connection import (
+    ChannelConnection,
+)
 from .eventarc import (
     CreateChannelConnectionRequest,
     CreateChannelRequest,
