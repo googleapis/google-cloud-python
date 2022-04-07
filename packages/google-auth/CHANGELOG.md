@@ -4,6 +4,15 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+### [2.6.3](https://github.com/googleapis/google-auth-library-python/compare/v2.6.2...v2.6.3) (2022-04-06)
+
+
+### Bug Fixes
+
+* change requests lib import place ([#1010](https://github.com/googleapis/google-auth-library-python/issues/1010)) ([c753c08](https://github.com/googleapis/google-auth-library-python/commit/c753c08d2c78295173bb1160e8a74e819a352c33))
+* clean up HTTP session and pool during tear down phase ([#1007](https://github.com/googleapis/google-auth-library-python/issues/1007)) ([d057376](https://github.com/googleapis/google-auth-library-python/commit/d057376245283402fe0b772ca138091c05864e5d))
+* pin click version and update sys test creds ([#1008](https://github.com/googleapis/google-auth-library-python/issues/1008)) ([ae2804b](https://github.com/googleapis/google-auth-library-python/commit/ae2804bf292b5c8e6f935d2d0751db8fbe95a7b3))
+
 ### [2.6.2](https://github.com/googleapis/google-auth-library-python/compare/v2.6.1...v2.6.2) (2022-03-16)
 
 
