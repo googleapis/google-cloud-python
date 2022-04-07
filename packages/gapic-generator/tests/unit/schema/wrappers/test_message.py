@@ -338,30 +338,30 @@ def test_is_extended_operation():
 
     operation = make_message(
         name="Operation",
-        fields=(
+        fields=tuple(
             make_field(name=name, type=T.Value("TYPE_STRING"), number=i)
             for i, name in enumerate(("name", "status", "error_code", "error_message"), start=1)
         )
     )
-    for f in operation.field:
+    for f in operation.fields.values():
         options = descriptor_pb2.FieldOptions()
         # Note: The field numbers were carefully chosen to be the corresponding enum values.
         options.Extensions[ex_ops_pb2.operation_field] = f.number
         f.options.MergeFrom(options)
 
     assert operation.is_extended_operation
+    assert operation.extended_operation_status_field == operation.fields["status"]
 
     # Missing a required field
-
     missing = make_message(
         name="Operation",
-        fields=(
+        fields=tuple(
             make_field(name=name, type=T.Value("TYPE_STRING"), number=i)
             # Missing error_message
             for i, name in enumerate(("name", "status", "error_code"), start=1)
         )
     )
-    for f in missing.field:
+    for f in missing.fields.values():
         options = descriptor_pb2.FieldOptions()
         # Note: The field numbers were carefully chosen to be the corresponding enum values.
         options.Extensions[ex_ops_pb2.operation_field] = f.number
@@ -370,15 +370,14 @@ def test_is_extended_operation():
     assert not missing.is_extended_operation
 
     # Named incorrectly
-
     my_message = make_message(
         name="MyMessage",
-        fields=(
+        fields=tuple(
             make_field(name=name, type=T.Value("TYPE_STRING"), number=i)
             for i, name in enumerate(("name", "status", "error_code", "error_message"), start=1)
         )
     )
-    for f in my_message.field:
+    for f in my_message.fields.values():
         options = descriptor_pb2.FieldOptions()
         options.Extensions[ex_ops_pb2.operation_field] = f.number
         f.options.MergeFrom(options)
@@ -389,12 +388,12 @@ def test_is_extended_operation():
     for mapping in range(1, 5):
         duplicate = make_message(
             name="Operation",
-            fields=(
+            fields=tuple(
                 make_field(name=name, type=T.Value("TYPE_STRING"), number=i)
                 for i, name in enumerate(("name", "status", "error_code", "error_message"), start=1)
             )
         )
-        for f in duplicate.field:
+        for f in duplicate.fields.values():
             options = descriptor_pb2.FieldOptions()
             # All set to the same value
             options.Extensions[ex_ops_pb2.operation_field] = mapping
@@ -402,3 +401,49 @@ def test_is_extended_operation():
 
         with pytest.raises(TypeError):
             duplicate.is_extended_operation
+
+    # Just totally not an operation
+    random_message = make_message(
+        "MyOperation",
+        fields=[
+            make_field(name="moniker", type=T.Value("TYPE_STRING"), number=1),
+        ],
+    )
+
+    assert not random_message.is_extended_operation
+    assert not random_message.extended_operation_status_field
+
+
+def test_extended_operation_request_response_fields():
+    T = descriptor_pb2.FieldDescriptorProto.Type
+    # Operation request
+    request = make_message(
+        name="Request",
+        fields=[
+            make_field(name=name, type=T.Value("TYPE_STRING"), number=i)
+            for i, name in enumerate(("project", "name", "armor_class", "id"), start=1)
+        ],
+    )
+    expected = (request.fields["project"], request.fields["id"])
+    for field in expected:
+        options = descriptor_pb2.FieldOptions()
+        options.Extensions[ex_ops_pb2.operation_request_field] = field.name
+        field.options.MergeFrom(options)
+
+    actual = request.extended_operation_request_fields
+    assert actual == expected
+
+    # Operation response
+    poll_request = make_message(
+        name="GetRequest",
+        fields=[
+            make_field(name=name, type=T.Value("TYPE_STRING"), number=i)
+            for i, name in enumerate(("name", "rank", "affinity", "serial"))
+        ]
+    )
+    expected = (poll_request.fields["name"], poll_request.fields["affinity"])
+    for field in expected:
+        field.options.Extensions[ex_ops_pb2.operation_response_field] = field.name
+
+    actual = poll_request.extended_operation_response_fields
+    assert actual == expected

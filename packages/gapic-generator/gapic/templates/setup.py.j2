@@ -32,9 +32,9 @@ setuptools.setup(
     install_requires=(
         {# TODO(dovs): remove when 1.x deprecation is complete #}
         {% if 'rest' in opts.transport %}
-        'google-api-core[grpc] >= 2.4.0, < 3.0.0dev',
+        'google-api-core[grpc] >= 2.7.0, < 3.0.0dev',
         {% else %}
-        'google-api-core[grpc] >= 1.28.0, < 3.0.0dev',
+        'google-api-core[grpc] >= 1.31.0, < 3.0.0dev',
         {% endif %}
         'libcst >= 0.2.5',
         'proto-plus >= 1.19.7',

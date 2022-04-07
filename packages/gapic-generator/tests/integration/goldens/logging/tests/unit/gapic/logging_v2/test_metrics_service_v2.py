@@ -546,7 +546,6 @@ def test_list_log_metrics_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_metrics.ListLogMetricsRequest()
 
-
 @pytest.mark.asyncio
 async def test_list_log_metrics_async(transport: str = 'grpc_asyncio', request_type=logging_metrics.ListLogMetricsRequest):
     client = MetricsServiceV2AsyncClient(
@@ -685,7 +684,6 @@ def test_list_log_metrics_flattened_error():
             parent='parent_value',
         )
 
-
 @pytest.mark.asyncio
 async def test_list_log_metrics_flattened_async():
     client = MetricsServiceV2AsyncClient(
@@ -713,7 +711,6 @@ async def test_list_log_metrics_flattened_async():
         arg = args[0].parent
         mock_val = 'parent_value'
         assert arg == mock_val
-
 
 @pytest.mark.asyncio
 async def test_list_log_metrics_flattened_error_async():
@@ -977,7 +974,6 @@ def test_get_log_metric_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_metrics.GetLogMetricRequest()
 
-
 @pytest.mark.asyncio
 async def test_get_log_metric_async(transport: str = 'grpc_asyncio', request_type=logging_metrics.GetLogMetricRequest):
     client = MetricsServiceV2AsyncClient(
@@ -1124,7 +1120,6 @@ def test_get_log_metric_flattened_error():
             metric_name='metric_name_value',
         )
 
-
 @pytest.mark.asyncio
 async def test_get_log_metric_flattened_async():
     client = MetricsServiceV2AsyncClient(
@@ -1152,7 +1147,6 @@ async def test_get_log_metric_flattened_async():
         arg = args[0].metric_name
         mock_val = 'metric_name_value'
         assert arg == mock_val
-
 
 @pytest.mark.asyncio
 async def test_get_log_metric_flattened_error_async():
@@ -1227,7 +1221,6 @@ def test_create_log_metric_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_metrics.CreateLogMetricRequest()
-
 
 @pytest.mark.asyncio
 async def test_create_log_metric_async(transport: str = 'grpc_asyncio', request_type=logging_metrics.CreateLogMetricRequest):
@@ -1380,7 +1373,6 @@ def test_create_log_metric_flattened_error():
             metric=logging_metrics.LogMetric(name='name_value'),
         )
 
-
 @pytest.mark.asyncio
 async def test_create_log_metric_flattened_async():
     client = MetricsServiceV2AsyncClient(
@@ -1412,7 +1404,6 @@ async def test_create_log_metric_flattened_async():
         arg = args[0].metric
         mock_val = logging_metrics.LogMetric(name='name_value')
         assert arg == mock_val
-
 
 @pytest.mark.asyncio
 async def test_create_log_metric_flattened_error_async():
@@ -1488,7 +1479,6 @@ def test_update_log_metric_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_metrics.UpdateLogMetricRequest()
-
 
 @pytest.mark.asyncio
 async def test_update_log_metric_async(transport: str = 'grpc_asyncio', request_type=logging_metrics.UpdateLogMetricRequest):
@@ -1641,7 +1631,6 @@ def test_update_log_metric_flattened_error():
             metric=logging_metrics.LogMetric(name='name_value'),
         )
 
-
 @pytest.mark.asyncio
 async def test_update_log_metric_flattened_async():
     client = MetricsServiceV2AsyncClient(
@@ -1673,7 +1662,6 @@ async def test_update_log_metric_flattened_async():
         arg = args[0].metric
         mock_val = logging_metrics.LogMetric(name='name_value')
         assert arg == mock_val
-
 
 @pytest.mark.asyncio
 async def test_update_log_metric_flattened_error_async():
@@ -1738,7 +1726,6 @@ def test_delete_log_metric_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_metrics.DeleteLogMetricRequest()
-
 
 @pytest.mark.asyncio
 async def test_delete_log_metric_async(transport: str = 'grpc_asyncio', request_type=logging_metrics.DeleteLogMetricRequest):
@@ -1875,7 +1862,6 @@ def test_delete_log_metric_flattened_error():
             metric_name='metric_name_value',
         )
 
-
 @pytest.mark.asyncio
 async def test_delete_log_metric_flattened_async():
     client = MetricsServiceV2AsyncClient(
@@ -1903,7 +1889,6 @@ async def test_delete_log_metric_flattened_async():
         arg = args[0].metric_name
         mock_val = 'metric_name_value'
         assert arg == mock_val
-
 
 @pytest.mark.asyncio
 async def test_delete_log_metric_flattened_error_async():
@@ -2006,6 +1991,15 @@ def test_transport_adc(transport_class):
         transport_class()
         adc.assert_called_once()
 
+@pytest.mark.parametrize("transport_name", [
+    "grpc",
+])
+def test_transport_kind(transport_name):
+    transport = MetricsServiceV2Client.get_transport_class(transport_name)(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    assert transport.kind == transport_name
+
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = MetricsServiceV2Client(
@@ -2048,6 +2042,14 @@ def test_metrics_service_v2_base_transport():
 
     with pytest.raises(NotImplementedError):
         transport.close()
+
+    # Catch all for all remaining methods and properties
+    remainder = [
+        'kind',
+    ]
+    for r in remainder:
+        with pytest.raises(NotImplementedError):
+            getattr(transport, r)()
 
 
 def test_metrics_service_v2_base_transport_with_credentials_file():

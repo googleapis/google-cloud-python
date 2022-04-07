@@ -355,7 +355,8 @@ def make_message_pb2(
 def make_field_pb2(name: str, number: int,
                    type: int = 11,  # 11 == message
                    type_name: str = None,
-                   oneof_index: int = None
+                   oneof_index: int = None,
+                   **kwargs,
                    ) -> desc.FieldDescriptorProto:
     return desc.FieldDescriptorProto(
         name=name,
@@ -363,6 +364,7 @@ def make_field_pb2(name: str, number: int,
         type=type,
         type_name=type_name,
         oneof_index=oneof_index,
+        **kwargs,
     )
 
 def make_oneof_pb2(name: str) -> desc.OneofDescriptorProto:

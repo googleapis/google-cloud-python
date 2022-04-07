@@ -28,7 +28,10 @@ message Operation {
     RUNNING = 121282975;
   }
 
-  optional string name = 1 [(google.cloud.operation_field) = NAME];
+  optional string name = 1 [
+    (google.cloud.operation_field) = NAME,
+    (google.cloud.operation_response_field) = "name"
+  ];
   optional string http_error_message = 202521945 [(google.cloud.operation_field) = ERROR_MESSAGE];
   optional int32 http_error_status_code = 312345196 [(google.cloud.operation_field) = ERROR_CODE];
   optional Status status = 181260274 [(google.cloud.operation_field) = STATUS];
@@ -50,8 +53,12 @@ message DeleteOperationResponse {
 }
 
 message StartExpensiveComputationRequest {
-  string computation = 1;
-  string fragment = 2;
+  string computation = 1 [
+    (google.cloud.operation_request_field) = "computation"
+  ];
+  string fragment = 2 [
+    (google.cloud.operation_request_field) = "fragment"
+  ];
 }
 
 message StartCheapComputationRequest {
@@ -87,7 +94,7 @@ service DoStuff {
   option (google.api.default_host) = "my.example.com";
 
   rpc StartExpensiveComputation(StartExpensiveComputationRequest) returns (Operation) {
-    option (google.cloud.operation_service) = "GlobalOperations";
+    option (google.cloud.operation_service) = "DefactoOperationsClient";
     option (google.api.http) = {
       post: "/expensive/v1/computations/{computation}/fragments/{fragment}"
     };

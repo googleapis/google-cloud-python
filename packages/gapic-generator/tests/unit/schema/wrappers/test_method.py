@@ -15,6 +15,7 @@
 import collections
 import dataclasses
 import json
+import pytest
 from typing import Sequence
 
 from google.api import field_behavior_pb2
@@ -821,12 +822,12 @@ def test_is_operation_polling_method():
 
     operation = make_message(
         name="Operation",
-        fields=(
+        fields=[
             make_field(name=name, type=T.Value("TYPE_STRING"), number=i)
             for i, name in enumerate(("name", "status", "error_code", "error_message"), start=1)
-        ),
+        ],
     )
-    for f in operation.field:
+    for f in operation.fields.values():
         options = descriptor_pb2.FieldOptions()
         # Note: The field numbers were carefully chosen to be the corresponding enum values.
         options.Extensions[ex_ops_pb2.operation_field] = f.number
@@ -871,6 +872,78 @@ def test_is_operation_polling_method():
     )
 
     assert not invalid_method.is_operation_polling_method
+
+
+@pytest.mark.parametrize(
+    "all_field_names,canonical_name_to_field_name",
+    [
+        [
+            [
+                "name",
+                "status",
+                "error_code",
+                "error_message",
+            ],
+            {},
+        ],
+        [
+            [
+                "moniker",
+                "done_ness",
+                "errno",
+                "warning",
+            ],
+            {
+                "name": "moniker",
+                "status": "done_ness",
+                "error_code": "errno",
+                "error_message": "warning",
+            },
+        ],
+        [
+            [
+                "name",
+                "status",
+                "http_error_code",
+                "http_error_message",
+            ],
+            {
+                "error_code": "http_error_code",
+                "error_message": "http_error_message",
+            },
+        ],
+        # No fields means this cannot be an extended operation.
+        [[], None],
+    ],
+)
+def test_differently_named_extended_operation_fields(
+    all_field_names,
+    canonical_name_to_field_name,
+):
+    T = descriptor_pb2.FieldDescriptorProto.Type
+    operation = make_message(
+        name="Operation",
+        fields=[
+            make_field(
+                name=name.lower(),
+                type=T.Value("TYPE_STRING"),
+                number=i,
+            )
+            for i, name in enumerate(all_field_names, start=1)
+        ]
+    )
+    for f in operation.fields.values():
+        options = descriptor_pb2.FieldOptions()
+        options.Extensions[ex_ops_pb2.operation_field] = f.number
+        f.options.MergeFrom(options)
+
+    expected = {
+        k: operation.fields[v]
+        for k, v in canonical_name_to_field_name.items()
+    } if canonical_name_to_field_name is not None else None
+    actual = operation.differently_named_extended_operation_fields
+
+    assert expected == actual
 
 
 def test_transport_safe_name():

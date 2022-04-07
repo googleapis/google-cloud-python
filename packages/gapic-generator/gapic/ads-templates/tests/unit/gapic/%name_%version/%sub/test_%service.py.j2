@@ -107,7 +107,7 @@ def test_{{ service.client_name|snake_case }}_from_service_account_info(client_c
             '{{ service.host }}{% if ":" not in service.host %}:443{% endif %}'
             {% if 'rest' in opts.transport %}
             if transport_name in ['grpc', 'grpc_asyncio']
-            else     
+            else
             'https://{{ service.host }}'
             {% endif %}
         )
@@ -159,7 +159,7 @@ def test_{{ service.client_name|snake_case }}_from_service_account_file(client_c
             '{{ service.host }}{% if ":" not in service.host %}:443{% endif %}'
             {% if 'rest' in opts.transport %}
             if transport_name in ['grpc', 'grpc_asyncio']
-            else     
+            else
             'https://{{ service.host }}'
             {% endif %}
         )
@@ -525,6 +525,8 @@ def test_{{ method_name }}(request_type, transport: str = 'grpc'):
         call.return_value = None
         {% elif method.lro %}
         call.return_value = operations_pb2.Operation(name='operations/spam')
+        {% elif method.extended_lro %}
+        call.return_value = {{ method.extended_lro.operation_type.ident }}()
         {% elif method.server_streaming %}
         call.return_value = iter([{{ method.output.ident }}()])
         {% else %}
@@ -561,6 +563,8 @@ def test_{{ method_name }}(request_type, transport: str = 'grpc'):
     assert response is None
     {% elif method.lro %}
     assert isinstance(response, future.Future)
+    {% elif method.extended_lro %}
+    assert isinstance(response, {{ method.extended_lro.operation_type.ident }})
     {% elif method.server_streaming %}
     for message in response:
         assert isinstance(message, {{ method.output.ident }})
@@ -1055,6 +1059,8 @@ def test_{{ method.name|snake_case }}_rest(request_type):
     assert response is None
     {% elif method.lro %}
     assert response.operation.name == "operations/spam"
+    {% elif method.extended_lro %}
+    assert isinstance(response, {{ method.extended_lro.operation_type.ident }})
     {% else %}
     assert isinstance(response, {{ method.client_output.ident }})
     {% for field in method.output.fields.values() | rejectattr('message') %}

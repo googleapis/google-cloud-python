@@ -488,18 +488,40 @@ class API:
         )
 
     def get_custom_operation_service(self, method: "wrappers.Method") -> "wrappers.Service":
+        """Return the extended operation service that should be polled for progress
+        from a given initial method.
+
+        Precondition: `method` returns an Extended Operation type message
+        and has an `operation_polling_service` annotation.
+        """
         if not method.output.is_extended_operation:
             raise ValueError(
                 f"Method is not an extended operation LRO: {method.name}")
 
         op_serv_name = self.naming.proto_package + "." + \
             method.options.Extensions[ex_ops_pb2.operation_service]
-        op_serv = self.services[op_serv_name]
-        if not op_serv.custom_polling_method:
+        op_serv = self.services.get(op_serv_name)
+        if not op_serv:
+            raise ValueError(
+                f"No such service: {op_serv_name}"
+            )
+
+        if not op_serv.operation_polling_method:
             raise ValueError(
                 f"Service is not an extended operation operation service: {op_serv.name}")
 
         return op_serv
+
+    def get_extended_operations_services(self, service) -> Set["wrappers.Service"]:
+        """Return a set of all the extended operation services used by the input service.
+
+        Precondition: `service` is NOT an extended operation service
+        """
+        return set(
+            self.get_custom_operation_service(m)
+            for m in service.methods.values()
+            if m.operation_service
+        )
 
 
 class _ProtoBuilder:
@@ -902,6 +924,70 @@ class _ProtoBuilder:
 
         return lro
 
+    def _maybe_get_extended_lro(
+        self,
+        service_address: metadata.Address,
+        meth_pb: descriptor_pb2.MethodDescriptorProto,
+    ) -> Optional[wrappers.ExtendedOperationInfo]:
+        op_service_name = meth_pb.options.Extensions[ex_ops_pb2.operation_service]
+        if not op_service_name:
+            return None
+
+        # Manual lookups because services and methods haven't been loaded.
+        # Note: this assumes that the operation service lives in the same proto file.
+        # This is a reasonable assumption as of March '22, but it may (unlikely)
+        # change in the future.
+        op_service_pb = next(
+            (s for s in self.file_descriptor.service if s.name == op_service_name),
+            None,
+        )
+        if not op_service_pb:
+            raise ValueError(
+                f"Could not find custom operation service: {op_service_name}"
+            )
+
+        operation_polling_method_pb = next(
+            (
+                m
+                for m in op_service_pb.method
+                if m.options.Extensions[ex_ops_pb2.operation_polling_method]
+            ),
+            None,
+        )
+        if not operation_polling_method_pb:
+            raise ValueError(
+                f"Could not find operation polling method for custom operation service: {op_service_name}"
+            )
+
+        operation_request_key = service_address.resolve(
+            operation_polling_method_pb.input_type.lstrip(".")
+        )
+        operation_request_message = self.api_messages[operation_request_key]
+
+        operation_type = service_address.resolve(
+            operation_polling_method_pb.output_type.lstrip(".")
+        )
+        method_output_type = service_address.resolve(
+            meth_pb.output_type.lstrip(".")
+        )
+        if operation_type != method_output_type:
+            raise ValueError(
+                f"Inconsistent return types between extended lro method '{meth_pb.name}'"
+                f" and extended lro polling method '{operation_polling_method_pb.name}':"
+                f" '{method_output_type}' and '{operation_type}'"
+            )
+
+        operation_message = self.api_messages[operation_type]
+        if not operation_message.is_extended_operation:
+            raise ValueError(
+                f"Message is not an extended operation: {operation_type}"
+            )
+
+        return wrappers.ExtendedOperationInfo(
+            request_type=operation_request_message,
+            operation_type=operation_message,
+        )
+
     def _get_methods(self,
                      methods: Sequence[descriptor_pb2.MethodDescriptorProto],
                      service_address: metadata.Address, path: Tuple[int, ...],
@@ -932,6 +1018,10 @@ class _ProtoBuilder:
             answer[meth_pb.name] = wrappers.Method(
                 input=self.api_messages[meth_pb.input_type.lstrip('.')],
                 lro=self._maybe_get_lro(service_address, meth_pb),
+                extended_lro=self._maybe_get_extended_lro(
+                    service_address,
+                    meth_pb,
+                ),
                 method_pb=meth_pb,
                 meta=metadata.Metadata(
                     address=service_address.child(meth_pb.name, path + (i,)),

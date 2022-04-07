@@ -545,7 +545,6 @@ def test_delete_log_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging.DeleteLogRequest()
 
-
 @pytest.mark.asyncio
 async def test_delete_log_async(transport: str = 'grpc_asyncio', request_type=logging.DeleteLogRequest):
     client = LoggingServiceV2AsyncClient(
@@ -681,7 +680,6 @@ def test_delete_log_flattened_error():
             log_name='log_name_value',
         )
 
-
 @pytest.mark.asyncio
 async def test_delete_log_flattened_async():
     client = LoggingServiceV2AsyncClient(
@@ -709,7 +707,6 @@ async def test_delete_log_flattened_async():
         arg = args[0].log_name
         mock_val = 'log_name_value'
         assert arg == mock_val
-
 
 @pytest.mark.asyncio
 async def test_delete_log_flattened_error_async():
@@ -774,7 +771,6 @@ def test_write_log_entries_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging.WriteLogEntriesRequest()
-
 
 @pytest.mark.asyncio
 async def test_write_log_entries_async(transport: str = 'grpc_asyncio', request_type=logging.WriteLogEntriesRequest):
@@ -864,7 +860,6 @@ def test_write_log_entries_flattened_error():
             entries=[log_entry.LogEntry(log_name='log_name_value')],
         )
 
-
 @pytest.mark.asyncio
 async def test_write_log_entries_flattened_async():
     client = LoggingServiceV2AsyncClient(
@@ -904,7 +899,6 @@ async def test_write_log_entries_flattened_async():
         arg = args[0].entries
         mock_val = [log_entry.LogEntry(log_name='log_name_value')]
         assert arg == mock_val
-
 
 @pytest.mark.asyncio
 async def test_write_log_entries_flattened_error_async():
@@ -974,7 +968,6 @@ def test_list_log_entries_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging.ListLogEntriesRequest()
-
 
 @pytest.mark.asyncio
 async def test_list_log_entries_async(transport: str = 'grpc_asyncio', request_type=logging.ListLogEntriesRequest):
@@ -1061,7 +1054,6 @@ def test_list_log_entries_flattened_error():
             order_by='order_by_value',
         )
 
-
 @pytest.mark.asyncio
 async def test_list_log_entries_flattened_async():
     client = LoggingServiceV2AsyncClient(
@@ -1097,7 +1089,6 @@ async def test_list_log_entries_flattened_async():
         arg = args[0].order_by
         mock_val = 'order_by_value'
         assert arg == mock_val
-
 
 @pytest.mark.asyncio
 async def test_list_log_entries_flattened_error_async():
@@ -1349,7 +1340,6 @@ def test_list_monitored_resource_descriptors_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging.ListMonitoredResourceDescriptorsRequest()
-
 
 @pytest.mark.asyncio
 async def test_list_monitored_resource_descriptors_async(transport: str = 'grpc_asyncio', request_type=logging.ListMonitoredResourceDescriptorsRequest):
@@ -1623,7 +1613,6 @@ def test_list_logs_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging.ListLogsRequest()
 
-
 @pytest.mark.asyncio
 async def test_list_logs_async(transport: str = 'grpc_asyncio', request_type=logging.ListLogsRequest):
     client = LoggingServiceV2AsyncClient(
@@ -1764,7 +1753,6 @@ def test_list_logs_flattened_error():
             parent='parent_value',
         )
 
-
 @pytest.mark.asyncio
 async def test_list_logs_flattened_async():
     client = LoggingServiceV2AsyncClient(
@@ -1792,7 +1780,6 @@ async def test_list_logs_flattened_async():
         arg = args[0].parent
         mock_val = 'parent_value'
         assert arg == mock_val
-
 
 @pytest.mark.asyncio
 async def test_list_logs_flattened_error_async():
@@ -2152,6 +2139,15 @@ def test_transport_adc(transport_class):
         transport_class()
         adc.assert_called_once()
 
+@pytest.mark.parametrize("transport_name", [
+    "grpc",
+])
+def test_transport_kind(transport_name):
+    transport = LoggingServiceV2Client.get_transport_class(transport_name)(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    assert transport.kind == transport_name
+
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = LoggingServiceV2Client(
@@ -2195,6 +2191,14 @@ def test_logging_service_v2_base_transport():
 
     with pytest.raises(NotImplementedError):
         transport.close()
+
+    # Catch all for all remaining methods and properties
+    remainder = [
+        'kind',
+    ]
+    for r in remainder:
+        with pytest.raises(NotImplementedError):
+            getattr(transport, r)()
 
 
 def test_logging_service_v2_base_transport_with_credentials_file():

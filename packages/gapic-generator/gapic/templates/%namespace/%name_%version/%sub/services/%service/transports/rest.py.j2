@@ -409,6 +409,10 @@ class {{service.name}}RestTransport({{service.name}}Transport):
 
     {% endfor %}
 
+    @property
+    def kind(self) -> str:
+        return "rest"
+
     def close(self):
         self._session.close()
 

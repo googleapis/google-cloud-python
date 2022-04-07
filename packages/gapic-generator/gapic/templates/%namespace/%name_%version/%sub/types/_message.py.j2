@@ -75,4 +75,22 @@ class {{ message.name }}({{ p }}.Message):
     )
     {% endif %}{# field.map #}
     {% endfor %}{# for field in message.fields.values#}
+
+    {% if message.extended_operation_status_field %}
+    {% with status_field = message.extended_operation_status_field %}
+    @property
+    def done(self) -> bool:
+        """Return True if the backing extended operation is completed, False otherwise."""
+        {% if status_field.enum %}
+        return self.{{ status_field.name }} == type(self.{{ status_field.name }}).DONE
+        {% elif status_field.is_primitive and status_field.type.python_type == str %}
+        return self.{{ status_field.name }} == "DONE"
+        {% elif status_field.is_primitive and status_field.type.python_type == bool %}
+        return self.{{ status_field.name }}
+        {% else %}
+        raise ValueError("Unexpected type for field {{ status_field.name }}: {{ status_field.type }}")
+        {% endif %}
+    {% endwith %}
+    {% endif %}
+
 {{ '\n\n' }}

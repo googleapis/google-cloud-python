@@ -418,7 +418,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         .. code-block:: python
 
-            from google.cloud import redis_v1
+                    from google.cloud import redis_v1
 
             def sample_list_instances():
                 # Create a client
@@ -527,7 +527,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         .. code-block:: python
 
-            from google.cloud import redis_v1
+                    from google.cloud import redis_v1
 
             def sample_get_instance():
                 # Create a client
@@ -636,7 +636,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         .. code-block:: python
 
-            from google.cloud import redis_v1
+                    from google.cloud import redis_v1
 
             def sample_create_instance():
                 # Create a client
@@ -784,7 +784,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         .. code-block:: python
 
-            from google.cloud import redis_v1
+                    from google.cloud import redis_v1
 
             def sample_update_instance():
                 # Create a client
@@ -917,7 +917,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         .. code-block:: python
 
-            from google.cloud import redis_v1
+                    from google.cloud import redis_v1
 
             def sample_upgrade_instance():
                 # Create a client
@@ -1047,7 +1047,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         .. code-block:: python
 
-            from google.cloud import redis_v1
+                    from google.cloud import redis_v1
 
             def sample_import_instance():
                 # Create a client
@@ -1176,7 +1176,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         .. code-block:: python
 
-            from google.cloud import redis_v1
+                    from google.cloud import redis_v1
 
             def sample_export_instance():
                 # Create a client
@@ -1303,7 +1303,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         .. code-block:: python
 
-            from google.cloud import redis_v1
+                    from google.cloud import redis_v1
 
             def sample_failover_instance():
                 # Create a client
@@ -1425,7 +1425,7 @@ class CloudRedisClient(metaclass=CloudRedisClientMeta):
 
         .. code-block:: python
 
-            from google.cloud import redis_v1
+                    from google.cloud import redis_v1
 
             def sample_delete_instance():
                 # Create a client

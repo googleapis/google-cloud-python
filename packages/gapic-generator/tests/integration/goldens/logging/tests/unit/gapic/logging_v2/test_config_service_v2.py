@@ -541,7 +541,6 @@ def test_list_buckets_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.ListBucketsRequest()
 
-
 @pytest.mark.asyncio
 async def test_list_buckets_async(transport: str = 'grpc_asyncio', request_type=logging_config.ListBucketsRequest):
     client = ConfigServiceV2AsyncClient(
@@ -680,7 +679,6 @@ def test_list_buckets_flattened_error():
             parent='parent_value',
         )
 
-
 @pytest.mark.asyncio
 async def test_list_buckets_flattened_async():
     client = ConfigServiceV2AsyncClient(
@@ -708,7 +706,6 @@ async def test_list_buckets_flattened_async():
         arg = args[0].parent
         mock_val = 'parent_value'
         assert arg == mock_val
-
 
 @pytest.mark.asyncio
 async def test_list_buckets_flattened_error_async():
@@ -972,7 +969,6 @@ def test_get_bucket_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.GetBucketRequest()
 
-
 @pytest.mark.asyncio
 async def test_get_bucket_async(transport: str = 'grpc_asyncio', request_type=logging_config.GetBucketRequest):
     client = ConfigServiceV2AsyncClient(
@@ -1138,7 +1134,6 @@ def test_create_bucket_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.CreateBucketRequest()
-
 
 @pytest.mark.asyncio
 async def test_create_bucket_async(transport: str = 'grpc_asyncio', request_type=logging_config.CreateBucketRequest):
@@ -1306,7 +1301,6 @@ def test_update_bucket_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.UpdateBucketRequest()
 
-
 @pytest.mark.asyncio
 async def test_update_bucket_async(transport: str = 'grpc_asyncio', request_type=logging_config.UpdateBucketRequest):
     client = ConfigServiceV2AsyncClient(
@@ -1462,7 +1456,6 @@ def test_delete_bucket_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.DeleteBucketRequest()
 
-
 @pytest.mark.asyncio
 async def test_delete_bucket_async(transport: str = 'grpc_asyncio', request_type=logging_config.DeleteBucketRequest):
     client = ConfigServiceV2AsyncClient(
@@ -1606,7 +1599,6 @@ def test_undelete_bucket_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.UndeleteBucketRequest()
-
 
 @pytest.mark.asyncio
 async def test_undelete_bucket_async(transport: str = 'grpc_asyncio', request_type=logging_config.UndeleteBucketRequest):
@@ -1755,7 +1747,6 @@ def test_list_views_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.ListViewsRequest()
 
-
 @pytest.mark.asyncio
 async def test_list_views_async(transport: str = 'grpc_asyncio', request_type=logging_config.ListViewsRequest):
     client = ConfigServiceV2AsyncClient(
@@ -1894,7 +1885,6 @@ def test_list_views_flattened_error():
             parent='parent_value',
         )
 
-
 @pytest.mark.asyncio
 async def test_list_views_flattened_async():
     client = ConfigServiceV2AsyncClient(
@@ -1922,7 +1912,6 @@ async def test_list_views_flattened_async():
         arg = args[0].parent
         mock_val = 'parent_value'
         assert arg == mock_val
-
 
 @pytest.mark.asyncio
 async def test_list_views_flattened_error_async():
@@ -2182,7 +2171,6 @@ def test_get_view_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.GetViewRequest()
 
-
 @pytest.mark.asyncio
 async def test_get_view_async(transport: str = 'grpc_asyncio', request_type=logging_config.GetViewRequest):
     client = ConfigServiceV2AsyncClient(
@@ -2340,7 +2328,6 @@ def test_create_view_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.CreateViewRequest()
-
 
 @pytest.mark.asyncio
 async def test_create_view_async(transport: str = 'grpc_asyncio', request_type=logging_config.CreateViewRequest):
@@ -2500,7 +2487,6 @@ def test_update_view_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.UpdateViewRequest()
 
-
 @pytest.mark.asyncio
 async def test_update_view_async(transport: str = 'grpc_asyncio', request_type=logging_config.UpdateViewRequest):
     client = ConfigServiceV2AsyncClient(
@@ -2652,7 +2638,6 @@ def test_delete_view_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.DeleteViewRequest()
 
-
 @pytest.mark.asyncio
 async def test_delete_view_async(transport: str = 'grpc_asyncio', request_type=logging_config.DeleteViewRequest):
     client = ConfigServiceV2AsyncClient(
@@ -2800,7 +2785,6 @@ def test_list_sinks_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.ListSinksRequest()
 
-
 @pytest.mark.asyncio
 async def test_list_sinks_async(transport: str = 'grpc_asyncio', request_type=logging_config.ListSinksRequest):
     client = ConfigServiceV2AsyncClient(
@@ -2939,7 +2923,6 @@ def test_list_sinks_flattened_error():
             parent='parent_value',
         )
 
-
 @pytest.mark.asyncio
 async def test_list_sinks_flattened_async():
     client = ConfigServiceV2AsyncClient(
@@ -2967,7 +2950,6 @@ async def test_list_sinks_flattened_async():
         arg = args[0].parent
         mock_val = 'parent_value'
         assert arg == mock_val
-
 
 @pytest.mark.asyncio
 async def test_list_sinks_flattened_error_async():
@@ -3238,7 +3220,6 @@ def test_get_sink_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.GetSinkRequest()
 
-
 @pytest.mark.asyncio
 async def test_get_sink_async(transport: str = 'grpc_asyncio', request_type=logging_config.GetSinkRequest):
     client = ConfigServiceV2AsyncClient(
@@ -3391,7 +3372,6 @@ def test_get_sink_flattened_error():
             sink_name='sink_name_value',
         )
 
-
 @pytest.mark.asyncio
 async def test_get_sink_flattened_async():
     client = ConfigServiceV2AsyncClient(
@@ -3419,7 +3399,6 @@ async def test_get_sink_flattened_async():
         arg = args[0].sink_name
         mock_val = 'sink_name_value'
         assert arg == mock_val
-
 
 @pytest.mark.asyncio
 async def test_get_sink_flattened_error_async():
@@ -3501,7 +3480,6 @@ def test_create_sink_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.CreateSinkRequest()
-
 
 @pytest.mark.asyncio
 async def test_create_sink_async(transport: str = 'grpc_asyncio', request_type=logging_config.CreateSinkRequest):
@@ -3660,7 +3638,6 @@ def test_create_sink_flattened_error():
             sink=logging_config.LogSink(name='name_value'),
         )
 
-
 @pytest.mark.asyncio
 async def test_create_sink_flattened_async():
     client = ConfigServiceV2AsyncClient(
@@ -3692,7 +3669,6 @@ async def test_create_sink_flattened_async():
         arg = args[0].sink
         mock_val = logging_config.LogSink(name='name_value')
         assert arg == mock_val
-
 
 @pytest.mark.asyncio
 async def test_create_sink_flattened_error_async():
@@ -3775,7 +3751,6 @@ def test_update_sink_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.UpdateSinkRequest()
-
 
 @pytest.mark.asyncio
 async def test_update_sink_async(transport: str = 'grpc_asyncio', request_type=logging_config.UpdateSinkRequest):
@@ -3939,7 +3914,6 @@ def test_update_sink_flattened_error():
             update_mask=field_mask_pb2.FieldMask(paths=['paths_value']),
         )
 
-
 @pytest.mark.asyncio
 async def test_update_sink_flattened_async():
     client = ConfigServiceV2AsyncClient(
@@ -3975,7 +3949,6 @@ async def test_update_sink_flattened_async():
         arg = args[0].update_mask
         mock_val = field_mask_pb2.FieldMask(paths=['paths_value'])
         assert arg == mock_val
-
 
 @pytest.mark.asyncio
 async def test_update_sink_flattened_error_async():
@@ -4041,7 +4014,6 @@ def test_delete_sink_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.DeleteSinkRequest()
-
 
 @pytest.mark.asyncio
 async def test_delete_sink_async(transport: str = 'grpc_asyncio', request_type=logging_config.DeleteSinkRequest):
@@ -4178,7 +4150,6 @@ def test_delete_sink_flattened_error():
             sink_name='sink_name_value',
         )
 
-
 @pytest.mark.asyncio
 async def test_delete_sink_flattened_async():
     client = ConfigServiceV2AsyncClient(
@@ -4206,7 +4177,6 @@ async def test_delete_sink_flattened_async():
         arg = args[0].sink_name
         mock_val = 'sink_name_value'
         assert arg == mock_val
-
 
 @pytest.mark.asyncio
 async def test_delete_sink_flattened_error_async():
@@ -4273,7 +4243,6 @@ def test_list_exclusions_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.ListExclusionsRequest()
-
 
 @pytest.mark.asyncio
 async def test_list_exclusions_async(transport: str = 'grpc_asyncio', request_type=logging_config.ListExclusionsRequest):
@@ -4413,7 +4382,6 @@ def test_list_exclusions_flattened_error():
             parent='parent_value',
         )
 
-
 @pytest.mark.asyncio
 async def test_list_exclusions_flattened_async():
     client = ConfigServiceV2AsyncClient(
@@ -4441,7 +4409,6 @@ async def test_list_exclusions_flattened_async():
         arg = args[0].parent
         mock_val = 'parent_value'
         assert arg == mock_val
-
 
 @pytest.mark.asyncio
 async def test_list_exclusions_flattened_error_async():
@@ -4703,7 +4670,6 @@ def test_get_exclusion_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.GetExclusionRequest()
 
-
 @pytest.mark.asyncio
 async def test_get_exclusion_async(transport: str = 'grpc_asyncio', request_type=logging_config.GetExclusionRequest):
     client = ConfigServiceV2AsyncClient(
@@ -4848,7 +4814,6 @@ def test_get_exclusion_flattened_error():
             name='name_value',
         )
 
-
 @pytest.mark.asyncio
 async def test_get_exclusion_flattened_async():
     client = ConfigServiceV2AsyncClient(
@@ -4876,7 +4841,6 @@ async def test_get_exclusion_flattened_async():
         arg = args[0].name
         mock_val = 'name_value'
         assert arg == mock_val
-
 
 @pytest.mark.asyncio
 async def test_get_exclusion_flattened_error_async():
@@ -4949,7 +4913,6 @@ def test_create_exclusion_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.CreateExclusionRequest()
-
 
 @pytest.mark.asyncio
 async def test_create_exclusion_async(transport: str = 'grpc_asyncio', request_type=logging_config.CreateExclusionRequest):
@@ -5100,7 +5063,6 @@ def test_create_exclusion_flattened_error():
             exclusion=logging_config.LogExclusion(name='name_value'),
         )
 
-
 @pytest.mark.asyncio
 async def test_create_exclusion_flattened_async():
     client = ConfigServiceV2AsyncClient(
@@ -5132,7 +5094,6 @@ async def test_create_exclusion_flattened_async():
         arg = args[0].exclusion
         mock_val = logging_config.LogExclusion(name='name_value')
         assert arg == mock_val
-
 
 @pytest.mark.asyncio
 async def test_create_exclusion_flattened_error_async():
@@ -5206,7 +5167,6 @@ def test_update_exclusion_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.UpdateExclusionRequest()
-
 
 @pytest.mark.asyncio
 async def test_update_exclusion_async(transport: str = 'grpc_asyncio', request_type=logging_config.UpdateExclusionRequest):
@@ -5362,7 +5322,6 @@ def test_update_exclusion_flattened_error():
             update_mask=field_mask_pb2.FieldMask(paths=['paths_value']),
         )
 
-
 @pytest.mark.asyncio
 async def test_update_exclusion_flattened_async():
     client = ConfigServiceV2AsyncClient(
@@ -5398,7 +5357,6 @@ async def test_update_exclusion_flattened_async():
         arg = args[0].update_mask
         mock_val = field_mask_pb2.FieldMask(paths=['paths_value'])
         assert arg == mock_val
-
 
 @pytest.mark.asyncio
 async def test_update_exclusion_flattened_error_async():
@@ -5464,7 +5422,6 @@ def test_delete_exclusion_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.DeleteExclusionRequest()
-
 
 @pytest.mark.asyncio
 async def test_delete_exclusion_async(transport: str = 'grpc_asyncio', request_type=logging_config.DeleteExclusionRequest):
@@ -5601,7 +5558,6 @@ def test_delete_exclusion_flattened_error():
             name='name_value',
         )
 
-
 @pytest.mark.asyncio
 async def test_delete_exclusion_flattened_async():
     client = ConfigServiceV2AsyncClient(
@@ -5629,7 +5585,6 @@ async def test_delete_exclusion_flattened_async():
         arg = args[0].name
         mock_val = 'name_value'
         assert arg == mock_val
-
 
 @pytest.mark.asyncio
 async def test_delete_exclusion_flattened_error_async():
@@ -5700,7 +5655,6 @@ def test_get_cmek_settings_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.GetCmekSettingsRequest()
-
 
 @pytest.mark.asyncio
 async def test_get_cmek_settings_async(transport: str = 'grpc_asyncio', request_type=logging_config.GetCmekSettingsRequest):
@@ -5859,7 +5813,6 @@ def test_update_cmek_settings_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == logging_config.UpdateCmekSettingsRequest()
-
 
 @pytest.mark.asyncio
 async def test_update_cmek_settings_async(transport: str = 'grpc_asyncio', request_type=logging_config.UpdateCmekSettingsRequest):
@@ -6050,6 +6003,15 @@ def test_transport_adc(transport_class):
         transport_class()
         adc.assert_called_once()
 
+@pytest.mark.parametrize("transport_name", [
+    "grpc",
+])
+def test_transport_kind(transport_name):
+    transport = ConfigServiceV2Client.get_transport_class(transport_name)(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    assert transport.kind == transport_name
+
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = ConfigServiceV2Client(
@@ -6110,6 +6072,14 @@ def test_config_service_v2_base_transport():
 
     with pytest.raises(NotImplementedError):
         transport.close()
+
+    # Catch all for all remaining methods and properties
+    remainder = [
+        'kind',
+    ]
+    for r in remainder:
+        with pytest.raises(NotImplementedError):
+            getattr(transport, r)()
 
 
 def test_config_service_v2_base_transport_with_credentials_file():

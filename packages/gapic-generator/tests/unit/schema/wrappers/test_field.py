@@ -18,6 +18,7 @@ import pytest
 
 from google.api import field_behavior_pb2
 from google.api import resource_pb2
+from google.cloud import extended_operations_pb2 as ex_ops_pb2
 from google.protobuf import descriptor_pb2
 
 from gapic.schema import api
@@ -485,3 +486,13 @@ def test_field_name_kword_disambiguation():
 
 def test_field_resource_reference():
     field = make_field(name='parent', type='TYPE_STRING')
+
+
+def test_extended_operation_properties():
+    options = descriptor_pb2.FieldOptions()
+    options.Extensions[ex_ops_pb2.operation_request_field] = "squid"
+    options.Extensions[ex_ops_pb2.operation_response_field] = "clam"
+    f = make_field(options=options)
+
+    assert f.operation_request_field == "squid"
+    assert f.operation_response_field == "clam"

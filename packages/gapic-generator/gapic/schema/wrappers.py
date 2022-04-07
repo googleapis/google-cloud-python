@@ -99,6 +99,18 @@ class Field:
         """Return True if this field is a map, False otherwise."""
         return bool(self.repeated and self.message and self.message.map)
 
+    @property
+    def operation_field(self) -> Optional[str]:
+        return self.options.Extensions[ex_ops_pb2.operation_field]
+
+    @property
+    def operation_request_field(self) -> Optional[str]:
+        return self.options.Extensions[ex_ops_pb2.operation_request_field]
+
+    @property
+    def operation_response_field(self) -> Optional[str]:
+        return self.options.Extensions[ex_ops_pb2.operation_response_field]
+
     @utils.cached_property
     def mock_value_original_type(self) -> Union[bool, str, bytes, int, float, Dict[str, Any], List[Any], None]:
         visited_messages = set()
@@ -388,13 +400,58 @@ class MessageType:
         return oneof_fields
 
     @utils.cached_property
+    def extended_operation_request_fields(self) -> Sequence[Field]:
+        """
+        If this message is the request for a method that uses extended operations,
+        return the fields that correspond to operation request fields in the operation message.
+        """
+        return tuple(
+            f
+            for f in self.fields.values()
+            if f.operation_request_field
+        )
+
+    @utils.cached_property
+    def extended_operation_response_fields(self) -> Sequence[Field]:
+        """
+        If this message is the request for a method that uses extended operations,
+        return the fields that correspond to operation response fields in the polling message.
+        """
+        return tuple(
+            f
+            for f in self.fields.values()
+            if f.operation_response_field
+        )
+
+    @utils.cached_property
+    def differently_named_extended_operation_fields(self) -> Optional[Dict[str, Field]]:
+        if not self.is_extended_operation:
+            return None
+
+        def canonical_name(field):
+            return OperationResponseMapping.Name(field.operation_field).lower()
+
+        OperationResponseMapping = ex_ops_pb2.OperationResponseMapping
+        default_field_names = [
+            k.lower()
+            # The first variant is UNKNOWN
+            for k in ex_ops_pb2.OperationResponseMapping.keys()[1:]
+        ]
+
+        return {
+            canonical_name(f): f
+            for f in self.fields.values()
+            if f.operation_field and f.name not in default_field_names
+        }
+
+    @utils.cached_property
     def is_extended_operation(self) -> bool:
         if not self.name == "Operation":
             return False
 
         name, status, error_code, error_message = False, False, False, False
         duplicate_msg = f"Message '{self.name}' has multiple fields with the same operation response mapping: {{}}"
-        for f in self.field:
+        for f in self.fields.values():
             maybe_op_mapping = f.options.Extensions[ex_ops_pb2.operation_field]
             OperationResponseMapping = ex_ops_pb2.OperationResponseMapping
 
@@ -419,6 +476,18 @@ class MessageType:
                 error_message = True
 
         return name and status and error_code and error_message
+
+    @utils.cached_property
+    def extended_operation_status_field(self) -> Optional[Field]:
+        STATUS = ex_ops_pb2.OperationResponseMapping.STATUS
+        return next(
+            (
+                f
+                for f in self.fields.values()
+                if f.options.Extensions[ex_ops_pb2.operation_field] == STATUS
+            ),
+            None,
+        )
 
     @utils.cached_property
     def required_fields(self) -> Sequence['Field']:
@@ -758,6 +827,32 @@ class PrimitiveType(PythonType):
 
 
 @dataclasses.dataclass(frozen=True)
+class ExtendedOperationInfo:
+    """A handle to the request type of the extended operation polling method
+    and the underlying operation type.
+    """
+    request_type: MessageType
+    operation_type: MessageType
+
+    def with_context(self, *, collisions: FrozenSet[str]) -> 'ExtendedOperationInfo':
+        """Return a derivative of this OperationInfo with the provided context.
+
+          This method is used to address naming collisions. The returned
+          ``OperationInfo`` object aliases module names to avoid naming collisions
+          in the file being written.
+          """
+        return self if not collisions else dataclasses.replace(
+            self,
+            request_type=self.request_type.with_context(
+                collisions=collisions
+            ),
+            operation_type=self.operation_type.with_context(
+                collisions=collisions,
+            ),
+        )
+
+
+@dataclasses.dataclass(frozen=True)
 class OperationInfo:
     """Representation of long-running operation info."""
     response_type: MessageType
@@ -969,6 +1064,8 @@ class Method:
     input: MessageType
     output: MessageType
     lro: Optional[OperationInfo] = dataclasses.field(default=None)
+    extended_lro: Optional[ExtendedOperationInfo] = dataclasses.field(
+        default=None)
     retry: Optional[RetryInfo] = dataclasses.field(default=None)
     timeout: Optional[float] = None
     meta: metadata.Metadata = dataclasses.field(
@@ -1047,6 +1144,21 @@ class Method:
                     ),
                 ),
             ))
+
+        if self.extended_lro:
+            return PythonType(
+                meta=metadata.Metadata(
+                    address=metadata.Address(
+                        name="ExtendedOperation",
+                        module="extended_operation",
+                        package=("google", "api_core"),
+                        collisions=self.extended_lro.operation_type.ident.collisions,
+                    ),
+                    documentation=utils.doc(
+                        "An object representing a extended long-running operation."
+                    ),
+                ),
+            )
 
         # If this method is paginated, return that method's pager class.
         if self.paged_result_field:
@@ -1325,6 +1437,11 @@ class Method:
             answer.append(self.lro.response_type)
             answer.append(self.lro.metadata_type)
 
+        # Extended operation
+        if self.extended_lro:
+            answer.append(self.extended_lro.request_type)
+            answer.append(self.extended_lro.operation_type)
+
         # If this message paginates its responses, it is possible
         # that the individual result messages reside in a different module.
         if self.paged_result_field and self.paged_result_field.message:
@@ -1351,9 +1468,16 @@ class Method:
                 collisions=collisions
             ) if collisions else self.lro
 
+        maybe_extended_lro = (
+            self.extended_lro.with_context(
+                collisions=collisions
+            ) if self.extended_lro else None
+        )
+
         return dataclasses.replace(
             self,
             lro=maybe_lro,
+            extended_lro=maybe_extended_lro,
             input=self.input.with_context(collisions=collisions),
             output=self.output.with_context(collisions=collisions),
             meta=self.meta.with_context(collisions=collisions),
@@ -1427,12 +1551,11 @@ class Service:
         compare=False,
     )
 
+    def __hash__(self):
+        return hash(f"{self.meta.address.api_naming.module_name}.{self.name}")
+
     def __getattr__(self, name):
         return getattr(self.service_pb, name)
-
-    @property
-    def custom_polling_method(self) -> Optional[Method]:
-        return next((m for m in self.methods.values() if m.is_operation_polling_method), None)
 
     @property
     def client_name(self) -> str:
@@ -1463,7 +1586,11 @@ class Service:
     @property
     def has_lro(self) -> bool:
         """Return whether the service has a long-running method."""
-        return any([m.lro for m in self.methods.values()])
+        return any(m.lro for m in self.methods.values())
+
+    @property
+    def has_extended_lro(self) -> bool:
+        return any(m.extended_lro for m in self.methods.values())
 
     @property
     def has_pagers(self) -> bool:
@@ -1617,6 +1744,21 @@ class Service:
     @utils.cached_property
     def any_deprecated(self) -> bool:
         return any(m.is_deprecated for m in self.methods.values())
+
+    @utils.cached_property
+    def any_extended_operations_methods(self) -> bool:
+        return any(m.operation_service for m in self.methods.values())
+
+    @utils.cached_property
+    def operation_polling_method(self) -> Optional[Method]:
+        return next(
+            (
+                m
+                for m in self.methods.values()
+                if m.is_operation_polling_method
+            ),
+            None
+        )
 
     def with_context(self, *, collisions: FrozenSet[str]) -> 'Service':
         """Return a derivative of this service with the provided context.

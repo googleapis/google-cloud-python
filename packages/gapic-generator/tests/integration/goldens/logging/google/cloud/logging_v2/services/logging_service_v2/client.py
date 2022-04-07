@@ -389,7 +389,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
 
         .. code-block:: python
 
-            from google.cloud import logging_v2
+                    from google.cloud import logging_v2
 
             def sample_delete_log():
                 # Create a client
@@ -492,7 +492,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
 
         .. code-block:: python
 
-            from google.cloud import logging_v2
+                    from google.cloud import logging_v2
 
             def sample_write_log_entries():
                 # Create a client
@@ -671,7 +671,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
 
         .. code-block:: python
 
-            from google.cloud import logging_v2
+                    from google.cloud import logging_v2
 
             def sample_list_log_entries():
                 # Create a client
@@ -816,7 +816,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
 
         .. code-block:: python
 
-            from google.cloud import logging_v2
+                    from google.cloud import logging_v2
 
             def sample_list_monitored_resource_descriptors():
                 # Create a client
@@ -899,7 +899,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
 
         .. code-block:: python
 
-            from google.cloud import logging_v2
+                    from google.cloud import logging_v2
 
             def sample_list_logs():
                 # Create a client
@@ -1012,7 +1012,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
 
         .. code-block:: python
 
-            from google.cloud import logging_v2
+                    from google.cloud import logging_v2
 
             def sample_tail_log_entries():
                 # Create a client

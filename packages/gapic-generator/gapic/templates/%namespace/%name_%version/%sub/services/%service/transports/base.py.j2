@@ -27,6 +27,11 @@ from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 {% endif %}
 {% endfilter %}
+{% filter sort_lines %}
+{% for operations_service in api.get_extended_operations_services(service) %}
+from {{ (api.naming.module_namespace + (api.naming.versioned_module_name,) + service.meta.address.subpackage)|join(".") }}.services import {{ operations_service.name|snake_case }}
+{% endfor %}
+{% endfilter %}
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
@@ -84,6 +89,10 @@ class {{ service.name }}Transport(abc.ABC):
             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
                 be used for service account credentials.
         """
+        {% if service.any_extended_operations_methods %}
+        self._extended_operations_services: Dict[str, Any] = {}
+        {% endif %}
+
         # Save the hostname. Default to port 443 (HTTPS) if none is specified.
         if ':' not in host:
             host += ':443'
@@ -201,6 +210,26 @@ class {{ service.name }}Transport(abc.ABC):
     ]:
         raise NotImplementedError()
     {% endif %}
+
+    @property
+    def kind(self) -> str:
+        raise NotImplementedError()
+
+    {% for operations_service in api.get_extended_operations_services(service)|sort(attribute="name") %}
+    @property
+    def _{{ operations_service.client_name|snake_case }}(self) -> {{ operations_service.name|snake_case }}.{{ operations_service.client_name }}:
+        ex_op_service = self._extended_operations_services.get("{{ operations_service.name|snake_case }}")
+        if not ex_op_service:
+            ex_op_service = {{ operations_service.name|snake_case }}.{{ operations_service.client_name }}(
+                credentials=self._credentials,
+                transport=self.kind,
+            )
+            self._extended_operations_services["{{ operations_service.name|snake_case }}"] = ex_op_service
+
+        return ex_op_service
+
+    {% endfor %}
+
 
 __all__ = (
     '{{ service.name }}Transport',

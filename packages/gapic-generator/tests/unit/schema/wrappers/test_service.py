@@ -532,12 +532,12 @@ def test_operation_polling_method():
 
     operation = make_message(
         name="Operation",
-        fields=(
+        fields=[
             make_field(name=name, type=T.Value("TYPE_STRING"), number=i)
             for i, name in enumerate(("name", "status", "error_code", "error_message"), start=1)
-        ),
+        ],
     )
-    for f in operation.field:
+    for f in operation.fields.values():
         options = descriptor_pb2.FieldOptions()
         # Note: The field numbers were carefully chosen to be the corresponding enum values.
         options.Extensions[ex_ops_pb2.operation_field] = f.number
@@ -572,7 +572,7 @@ def test_operation_polling_method():
         ],
     )
 
-    assert ops_service.custom_polling_method == polling_method
+    assert ops_service.operation_polling_method == polling_method
 
     # Methods are LROs, so they are not polling methods
     user_service = make_service(
@@ -586,7 +586,7 @@ def test_operation_polling_method():
         ],
     )
 
-    assert not user_service.custom_polling_method
+    assert not user_service.operation_polling_method
 
 
 def test_extended_operations_lro_detection():
@@ -594,12 +594,12 @@ def test_extended_operations_lro_detection():
 
     operation = make_message(
         name="Operation",
-        fields=(
+        fields=[
             make_field(name=name, type=T.Value("TYPE_STRING"), number=i)
             for i, name in enumerate(("name", "status", "error_code", "error_message"), start=1)
-        ),
+        ],
     )
-    for f in operation.field:
+    for f in operation.fields.values():
         options = descriptor_pb2.FieldOptions()
         # Note: The field numbers were carefully chosen to be the corresponding enum values.
         options.Extensions[ex_ops_pb2.operation_field] = f.number
@@ -633,6 +633,8 @@ def test_extended_operations_lro_detection():
         ],
     )
 
+    assert not ops_service.has_extended_lro
+    assert not ops_service.any_extended_operations_methods
     assert not polling_method.operation_service
 
     # Methods are LROs, so they are not polling methods
@@ -651,6 +653,7 @@ def test_extended_operations_lro_detection():
         ],
     )
 
+    assert user_service.any_extended_operations_methods
     # Note: we can't have the operation_serivce property point to the actual operation service
     # because Service objects can't perform the lookup.
     # Instead we kick that can to the API object and make it do the lookup and verification.

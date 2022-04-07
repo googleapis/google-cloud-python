@@ -537,7 +537,6 @@ def test_generate_access_token_empty_call():
         _, args, _ = call.mock_calls[0]
         assert args[0] == common.GenerateAccessTokenRequest()
 
-
 @pytest.mark.asyncio
 async def test_generate_access_token_async(transport: str = 'grpc_asyncio', request_type=common.GenerateAccessTokenRequest):
     client = IAMCredentialsAsyncClient(
@@ -689,7 +688,6 @@ def test_generate_access_token_flattened_error():
             lifetime=duration_pb2.Duration(seconds=751),
         )
 
-
 @pytest.mark.asyncio
 async def test_generate_access_token_flattened_async():
     client = IAMCredentialsAsyncClient(
@@ -727,7 +725,6 @@ async def test_generate_access_token_flattened_async():
         mock_val = ['scope_value']
         assert arg == mock_val
         assert DurationRule().to_proto(args[0].lifetime) == duration_pb2.Duration(seconds=751)
-
 
 @pytest.mark.asyncio
 async def test_generate_access_token_flattened_error_async():
@@ -797,7 +794,6 @@ def test_generate_id_token_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == common.GenerateIdTokenRequest()
-
 
 @pytest.mark.asyncio
 async def test_generate_id_token_async(transport: str = 'grpc_asyncio', request_type=common.GenerateIdTokenRequest):
@@ -952,7 +948,6 @@ def test_generate_id_token_flattened_error():
             include_email=True,
         )
 
-
 @pytest.mark.asyncio
 async def test_generate_id_token_flattened_async():
     client = IAMCredentialsAsyncClient(
@@ -992,7 +987,6 @@ async def test_generate_id_token_flattened_async():
         arg = args[0].include_email
         mock_val = True
         assert arg == mock_val
-
 
 @pytest.mark.asyncio
 async def test_generate_id_token_flattened_error_async():
@@ -1064,7 +1058,6 @@ def test_sign_blob_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == common.SignBlobRequest()
-
 
 @pytest.mark.asyncio
 async def test_sign_blob_async(transport: str = 'grpc_asyncio', request_type=common.SignBlobRequest):
@@ -1216,7 +1209,6 @@ def test_sign_blob_flattened_error():
             payload=b'payload_blob',
         )
 
-
 @pytest.mark.asyncio
 async def test_sign_blob_flattened_async():
     client = IAMCredentialsAsyncClient(
@@ -1252,7 +1244,6 @@ async def test_sign_blob_flattened_async():
         arg = args[0].payload
         mock_val = b'payload_blob'
         assert arg == mock_val
-
 
 @pytest.mark.asyncio
 async def test_sign_blob_flattened_error_async():
@@ -1323,7 +1314,6 @@ def test_sign_jwt_empty_call():
         call.assert_called()
         _, args, _ = call.mock_calls[0]
         assert args[0] == common.SignJwtRequest()
-
 
 @pytest.mark.asyncio
 async def test_sign_jwt_async(transport: str = 'grpc_asyncio', request_type=common.SignJwtRequest):
@@ -1475,7 +1465,6 @@ def test_sign_jwt_flattened_error():
             payload='payload_value',
         )
 
-
 @pytest.mark.asyncio
 async def test_sign_jwt_flattened_async():
     client = IAMCredentialsAsyncClient(
@@ -1511,7 +1500,6 @@ async def test_sign_jwt_flattened_async():
         arg = args[0].payload
         mock_val = 'payload_value'
         assert arg == mock_val
-
 
 @pytest.mark.asyncio
 async def test_sign_jwt_flattened_error_async():
@@ -1616,6 +1604,15 @@ def test_transport_adc(transport_class):
         transport_class()
         adc.assert_called_once()
 
+@pytest.mark.parametrize("transport_name", [
+    "grpc",
+])
+def test_transport_kind(transport_name):
+    transport = IAMCredentialsClient.get_transport_class(transport_name)(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    assert transport.kind == transport_name
+
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = IAMCredentialsClient(
@@ -1657,6 +1654,14 @@ def test_iam_credentials_base_transport():
 
     with pytest.raises(NotImplementedError):
         transport.close()
+
+    # Catch all for all remaining methods and properties
+    remainder = [
+        'kind',
+    ]
+    for r in remainder:
+        with pytest.raises(NotImplementedError):
+            getattr(transport, r)()
 
 
 def test_iam_credentials_base_transport_with_credentials_file():
