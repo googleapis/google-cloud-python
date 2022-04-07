@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+### [2.8.1](https://github.com/googleapis/python-bigtable/compare/v2.8.0...v2.8.1) (2022-04-07)
+
+
+### Bug Fixes
+
+* Prevent sending full table scan when retrying ([#554](https://github.com/googleapis/python-bigtable/issues/554)) ([56f5357](https://github.com/googleapis/python-bigtable/commit/56f5357c09ac867491b934f6029776dcd74c6eac))
+
 ## [2.8.0](https://github.com/googleapis/python-bigtable/compare/v2.7.1...v2.8.0) (2022-04-04)
 
 
