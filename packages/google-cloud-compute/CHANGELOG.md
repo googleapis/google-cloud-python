@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.2.0](https://github.com/googleapis/python-compute/compare/v1.1.0...v1.2.0) (2022-04-07)
+
+
+### Features
+
+* update compute API to revision 20220322 ([#710](https://github.com/googleapis/python-compute/issues/710)) ([84604a1](https://github.com/googleapis/python-compute/commit/84604a1966dee9dfdb1359a871d9b741c0bf2eaf))
+
+
+### Bug Fixes
+
+* fix type in docstring for map fields ([#256](https://github.com/googleapis/python-compute/issues/256)) ([84604a1](https://github.com/googleapis/python-compute/commit/84604a1966dee9dfdb1359a871d9b741c0bf2eaf))
+
+
+### Documentation
+
+* **samples:** Add samples for moving VM to different regions/zones ([#244](https://github.com/googleapis/python-compute/issues/244)) ([9d22f0d](https://github.com/googleapis/python-compute/commit/9d22f0d7fa14eea52d17c1df4d55358e747f0831))
+
 ## [1.1.0](https://github.com/googleapis/python-compute/compare/v1.0.0...v1.1.0) (2022-03-08)
 
 
