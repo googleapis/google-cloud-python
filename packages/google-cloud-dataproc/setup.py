@@ -22,7 +22,7 @@ import setuptools
 
 name = "google-cloud-dataproc"
 description = "Google Cloud Dataproc API client library"
-version = "4.0.1"
+version = "4.0.2"
 # Should be one of:
 # 'Development Status :: 3 - Alpha'
 # 'Development Status :: 4 - Beta'
