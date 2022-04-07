@@ -124,9 +124,7 @@ class LoggingServiceV2Transport(abc.ABC):
                 self.delete_log,
                 default_retry=retries.Retry(
 initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
-                        core_exceptions.InternalServerError,
-                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.GoogleAPICallError,
                     ),
                     deadline=60.0,
                 ),
@@ -137,9 +135,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if
                 self.write_log_entries,
                 default_retry=retries.Retry(
 initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
-                        core_exceptions.InternalServerError,
-                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.GoogleAPICallError,
                     ),
                     deadline=60.0,
                 ),
@@ -150,9 +146,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if
                 self.list_log_entries,
                 default_retry=retries.Retry(
 initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
-                        core_exceptions.InternalServerError,
-                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.GoogleAPICallError,
                     ),
                     deadline=60.0,
                 ),
@@ -163,9 +157,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if
                 self.list_monitored_resource_descriptors,
                 default_retry=retries.Retry(
 initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
-                        core_exceptions.InternalServerError,
-                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.GoogleAPICallError,
                     ),
                     deadline=60.0,
                 ),
@@ -176,9 +168,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if
                 self.list_logs,
                 default_retry=retries.Retry(
 initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
-                        core_exceptions.InternalServerError,
-                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.GoogleAPICallError,
                     ),
                     deadline=60.0,
                 ),
@@ -189,9 +179,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if
                 self.tail_log_entries,
                 default_retry=retries.Retry(
 initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if_exception_type(
-                        core_exceptions.DeadlineExceeded,
-                        core_exceptions.InternalServerError,
-                        core_exceptions.ServiceUnavailable,
+                        core_exceptions.GoogleAPICallError,
                     ),
                     deadline=3600.0,
                 ),

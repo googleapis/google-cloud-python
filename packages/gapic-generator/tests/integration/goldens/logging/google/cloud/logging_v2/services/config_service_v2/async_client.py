@@ -1139,9 +1139,7 @@ class ConfigServiceV2AsyncClient:
             self._client._transport.list_sinks,
             default_retry=retries.Retry(
 initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.InternalServerError,
-                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=60.0,
             ),
@@ -1264,9 +1262,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             self._client._transport.get_sink,
             default_retry=retries.Retry(
 initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.InternalServerError,
-                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=60.0,
             ),
@@ -1554,9 +1550,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             self._client._transport.update_sink,
             default_retry=retries.Retry(
 initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.InternalServerError,
-                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=60.0,
             ),
@@ -1657,9 +1651,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             self._client._transport.delete_sink,
             default_retry=retries.Retry(
 initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.InternalServerError,
-                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=60.0,
             ),
@@ -1765,9 +1757,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             self._client._transport.list_exclusions,
             default_retry=retries.Retry(
 initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.InternalServerError,
-                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=60.0,
             ),
@@ -1893,9 +1883,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             self._client._transport.get_exclusion,
             default_retry=retries.Retry(
 initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.InternalServerError,
-                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=60.0,
             ),
@@ -2273,9 +2261,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             self._client._transport.delete_exclusion,
             default_retry=retries.Retry(
 initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.InternalServerError,
-                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=60.0,
             ),
