@@ -109,7 +109,10 @@ def test_create_dataset_w_attrs(client, PROJECT, DS_ID):
             "friendlyName": FRIENDLY_NAME,
             "location": LOCATION,
             "defaultTableExpirationMs": "3600",
-            "access": [{"role": "OWNER", "userByEmail": USER_EMAIL}, {"view": VIEW}],
+            "access": [
+                {"role": "OWNER", "userByEmail": USER_EMAIL},
+                {"view": VIEW, "role": None},
+            ],
             "labels": LABELS,
         },
         timeout=DEFAULT_TIMEOUT,

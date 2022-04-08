@@ -15,14 +15,20 @@
 import unittest
 
 import mock
+from google.cloud.bigquery.routine.routine import Routine, RoutineReference
 import pytest
+from google.cloud.bigquery.dataset import (
+    AccessEntry,
+    Dataset,
+    DatasetReference,
+    Table,
+    TableReference,
+)
 
 
 class TestAccessEntry(unittest.TestCase):
     @staticmethod
     def _get_target_class():
-        from google.cloud.bigquery.dataset import AccessEntry
-
         return AccessEntry
 
     def _make_one(self, *args, **kw):
@@ -34,16 +40,6 @@ class TestAccessEntry(unittest.TestCase):
         self.assertEqual(entry.entity_type, "userByEmail")
         self.assertEqual(entry.entity_id, "phred@example.com")
 
-    def test_ctor_bad_entity_type(self):
-        with self.assertRaises(ValueError):
-            self._make_one(None, "unknown", None)
-
-    def test_ctor_view_with_role(self):
-        role = "READER"
-        entity_type = "view"
-        with self.assertRaises(ValueError):
-            self._make_one(role, entity_type, None)
-
     def test_ctor_view_success(self):
         role = None
         entity_type = "view"
@@ -53,12 +49,6 @@ class TestAccessEntry(unittest.TestCase):
         self.assertEqual(entry.entity_type, entity_type)
         self.assertEqual(entry.entity_id, entity_id)
 
-    def test_ctor_routine_with_role(self):
-        role = "READER"
-        entity_type = "routine"
-        with self.assertRaises(ValueError):
-            self._make_one(role, entity_type, None)
-
     def test_ctor_routine_success(self):
         role = None
         entity_type = "routine"
@@ -67,12 +57,6 @@ class TestAccessEntry(unittest.TestCase):
         self.assertEqual(entry.role, role)
         self.assertEqual(entry.entity_type, entity_type)
         self.assertEqual(entry.entity_id, entity_id)
-
-    def test_ctor_nonview_without_role(self):
-        role = None
-        entity_type = "userByEmail"
-        with self.assertRaises(ValueError):
-            self._make_one(role, entity_type, None)
 
     def test___eq___role_mismatch(self):
         entry = self._make_one("OWNER", "userByEmail", "phred@example.com")
@@ -127,7 +111,7 @@ class TestAccessEntry(unittest.TestCase):
         }
         entry = self._make_one(None, "view", view)
         resource = entry.to_api_repr()
-        exp_resource = {"view": view}
+        exp_resource = {"view": view, "role": None}
         self.assertEqual(resource, exp_resource)
 
     def test_to_api_repr_routine(self):
@@ -136,9 +120,10 @@ class TestAccessEntry(unittest.TestCase):
             "datasetId": "my_dataset",
             "routineId": "my_routine",
         }
+
         entry = self._make_one(None, "routine", routine)
         resource = entry.to_api_repr()
-        exp_resource = {"routine": routine}
+        exp_resource = {"routine": routine, "role": None}
         self.assertEqual(resource, exp_resource)
 
     def test_to_api_repr_dataset(self):
@@ -148,20 +133,8 @@ class TestAccessEntry(unittest.TestCase):
         }
         entry = self._make_one(None, "dataset", dataset)
         resource = entry.to_api_repr()
-        exp_resource = {"dataset": dataset}
+        exp_resource = {"dataset": dataset, "role": None}
         self.assertEqual(resource, exp_resource)
-
-    def test_to_api_w_incorrect_role(self):
-        dataset = {
-            "dataset": {
-                "projectId": "my-project",
-                "datasetId": "my_dataset",
-                "tableId": "my_table",
-            },
-            "target_type": "VIEW",
-        }
-        with self.assertRaises(ValueError):
-            self._make_one("READER", "dataset", dataset)
 
     def test_from_api_repr(self):
         resource = {"role": "OWNER", "userByEmail": "salmon@example.com"}
@@ -197,6 +170,311 @@ class TestAccessEntry(unittest.TestCase):
         }
         with self.assertRaises(ValueError):
             self._get_target_class().from_api_repr(resource)
+
+    def test_view_getter_setter(self):
+        view = {
+            "projectId": "my_project",
+            "datasetId": "my_dataset",
+            "tableId": "my_table",
+        }
+        view_ref = TableReference.from_api_repr(view)
+        entry = self._make_one(None)
+        entry.view = view
+        resource = entry.to_api_repr()
+        exp_resource = {"view": view, "role": None}
+        self.assertEqual(entry.view, view_ref)
+        self.assertEqual(resource, exp_resource)
+
+    def test_view_getter_setter_none(self):
+        entry = self._make_one(None)
+        self.assertEqual(entry.view, None)
+
+    def test_view_getter_setter_string(self):
+        project = "my_project"
+        dataset = "my_dataset"
+        table = "my_table"
+        view = {
+            "projectId": project,
+            "datasetId": dataset,
+            "tableId": table,
+        }
+        entry = self._make_one(None)
+        entry.view = f"{project}.{dataset}.{table}"
+        resource = entry.to_api_repr()
+        exp_resource = {"view": view, "role": None}
+        self.assertEqual(resource, exp_resource)
+
+    def test_view_getter_setter_table(self):
+        project = "my_project"
+        dataset = "my_dataset"
+        table = "my_table"
+        view = {
+            "projectId": project,
+            "datasetId": dataset,
+            "tableId": table,
+        }
+        view_ref = Table.from_string(f"{project}.{dataset}.{table}")
+        entry = self._make_one(None)
+        entry.view = view_ref
+        resource = entry.to_api_repr()
+        exp_resource = {"view": view, "role": None}
+        self.assertEqual(resource, exp_resource)
+
+    def test_view_getter_setter_table_ref(self):
+        project = "my_project"
+        dataset = "my_dataset"
+        table = "my_table"
+        view = {
+            "projectId": project,
+            "datasetId": dataset,
+            "tableId": table,
+        }
+        view_ref = TableReference.from_string(f"{project}.{dataset}.{table}")
+        entry = self._make_one(None)
+        entry.view = view_ref
+        resource = entry.to_api_repr()
+        exp_resource = {"view": view, "role": None}
+        self.assertEqual(resource, exp_resource)
+
+    def test_view_getter_setter_incorrect_role(self):
+        view = {
+            "projectId": "my_project",
+            "datasetId": "my_dataset",
+            "tableId": "my_table",
+        }
+        view_ref = TableReference.from_api_repr(view)
+        entry = self._make_one("READER")
+        with self.assertRaises(ValueError):
+            entry.view = view_ref
+
+    def test_dataset_getter_setter(self):
+        dataset = {"projectId": "my-project", "datasetId": "my_dataset"}
+        entry = self._make_one(None)
+        entry.dataset = dataset
+        resource = entry.to_api_repr()
+        exp_resource = {
+            "dataset": {"dataset": dataset, "targetTypes": None},
+            "role": None,
+        }
+        dataset_ref = DatasetReference.from_api_repr(dataset)
+        prop = entry.dataset
+        self.assertEqual(resource, exp_resource)
+        self.assertEqual(prop, dataset_ref)
+
+    def test_dataset_getter_setter_none(self):
+        entry = self._make_one(None)
+        self.assertEqual(entry.dataset, None)
+
+    def test_dataset_getter_setter_string(self):
+        project = "my-project"
+        dataset_id = "my_dataset"
+        dataset = {
+            "projectId": project,
+            "datasetId": dataset_id,
+        }
+        entry = self._make_one(None)
+        string_ref = f"{project}.{dataset_id}"
+        entry.dataset = string_ref
+        resource = entry.to_api_repr()
+        exp_resource = {
+            "dataset": {"dataset": dataset, "targetTypes": None},
+            "role": None,
+        }
+        self.assertEqual(resource, exp_resource)
+
+    def test_dataset_getter_setter_dataset_ref(self):
+        project = "my-project"
+        dataset_id = "my_dataset"
+        dataset_ref = DatasetReference(project, dataset_id)
+        entry = self._make_one(None)
+        entry.dataset = dataset_ref
+        resource = entry.to_api_repr()
+        exp_resource = {
+            "dataset": {"dataset": dataset_ref, "targetTypes": None},
+            "role": None,
+        }
+        self.assertEqual(resource, exp_resource)
+
+    def test_dataset_getter_setter_dataset(self):
+        project = "my-project"
+        dataset_id = "my_dataset"
+        dataset_repr = {
+            "projectId": project,
+            "datasetId": dataset_id,
+        }
+        dataset = Dataset(f"{project}.{dataset_id}")
+        entry = self._make_one(None)
+        entry.dataset = dataset
+        resource = entry.to_api_repr()
+        exp_resource = {
+            "role": None,
+            "dataset": {"dataset": dataset_repr, "targetTypes": None},
+        }
+        self.assertEqual(resource, exp_resource)
+
+    def test_dataset_getter_setter_incorrect_role(self):
+        dataset = {"dataset": {"projectId": "my-project", "datasetId": "my_dataset"}}
+        entry = self._make_one("READER")
+        with self.assertRaises(ValueError):
+            entry.dataset = dataset
+
+    def test_routine_getter_setter(self):
+        routine = {
+            "projectId": "my-project",
+            "datasetId": "my_dataset",
+            "routineId": "my_routine",
+        }
+        entry = self._make_one(None)
+        entry.routine = routine
+        resource = entry.to_api_repr()
+        exp_resource = {"routine": routine, "role": None}
+        self.assertEqual(resource, exp_resource)
+
+    def test_routine_getter_setter_none(self):
+        entry = self._make_one(None)
+        self.assertEqual(entry.routine, None)
+
+    def test_routine_getter_setter_string(self):
+        project = "my-project"
+        dataset_id = "my_dataset"
+        routine_id = "my_routine"
+        routine = {
+            "projectId": project,
+            "datasetId": dataset_id,
+            "routineId": routine_id,
+        }
+        entry = self._make_one(None)
+        entry.routine = f"{project}.{dataset_id}.{routine_id}"
+        resource = entry.to_api_repr()
+        exp_resource = {
+            "routine": routine,
+            "role": None,
+        }
+        self.assertEqual(resource, exp_resource)
+
+    def test_routine_getter_setter_routine_ref(self):
+        routine = {
+            "projectId": "my-project",
+            "datasetId": "my_dataset",
+            "routineId": "my_routine",
+        }
+        entry = self._make_one(None)
+        entry.routine = RoutineReference.from_api_repr(routine)
+        resource = entry.to_api_repr()
+        exp_resource = {
+            "routine": routine,
+            "role": None,
+        }
+        self.assertEqual(resource, exp_resource)
+
+    def test_routine_getter_setter_routine(self):
+        routine = {
+            "projectId": "my-project",
+            "datasetId": "my_dataset",
+            "routineId": "my_routine",
+        }
+        routine_ref = RoutineReference.from_api_repr(routine)
+        entry = self._make_one(None)
+        entry.routine = Routine(routine_ref)
+        resource = entry.to_api_repr()
+        exp_resource = {
+            "routine": routine,
+            "role": None,
+        }
+        self.assertEqual(entry.routine, routine_ref)
+        self.assertEqual(resource, exp_resource)
+
+    def test_routine_getter_setter_incorrect_role(self):
+        routine = {
+            "projectId": "my-project",
+            "datasetId": "my_dataset",
+            "routineId": "my_routine",
+        }
+        entry = self._make_one("READER")
+        with self.assertRaises(ValueError):
+            entry.routine = routine
+
+    def test_group_by_email_getter_setter(self):
+        email = "cloud-developer-relations@google.com"
+        entry = self._make_one(None)
+        entry.group_by_email = email
+        resource = entry.to_api_repr()
+        exp_resource = {"groupByEmail": email, "role": None}
+        self.assertEqual(entry.group_by_email, email)
+        self.assertEqual(resource, exp_resource)
+
+    def test_group_by_email_getter_setter_none(self):
+        entry = self._make_one(None)
+        self.assertEqual(entry.group_by_email, None)
+
+    def test_user_by_email_getter_setter(self):
+        email = "cloud-developer-relations@google.com"
+        entry = self._make_one(None)
+        entry.user_by_email = email
+        resource = entry.to_api_repr()
+        exp_resource = {"userByEmail": email, "role": None}
+        self.assertEqual(entry.user_by_email, email)
+        self.assertEqual(resource, exp_resource)
+
+    def test_user_by_email_getter_setter_none(self):
+        entry = self._make_one(None)
+        self.assertEqual(entry.user_by_email, None)
+
+    def test_domain_setter(self):
+        domain = "my_domain"
+        entry = self._make_one(None)
+        entry.domain = domain
+        resource = entry.to_api_repr()
+        exp_resource = {"domain": domain, "role": None}
+        self.assertEqual(entry.domain, domain)
+        self.assertEqual(resource, exp_resource)
+
+    def test_domain_getter_setter_none(self):
+        entry = self._make_one(None)
+        self.assertEqual(entry.domain, None)
+
+    def test_special_group_getter_setter(self):
+        special_group = "my_special_group"
+        entry = self._make_one(None)
+        entry.special_group = special_group
+        resource = entry.to_api_repr()
+        exp_resource = {"specialGroup": special_group, "role": None}
+        self.assertEqual(entry.special_group, special_group)
+        self.assertEqual(resource, exp_resource)
+
+    def test_special_group_getter_setter_none(self):
+        entry = self._make_one(None)
+        self.assertEqual(entry.special_group, None)
+
+    def test_role_getter_setter(self):
+        role = "READER"
+        entry = self._make_one(None)
+        entry.role = role
+        resource = entry.to_api_repr()
+        exp_resource = {"role": role}
+        self.assertEqual(resource, exp_resource)
+
+    def test_role_getter_setter_none(self):
+        entry = self._make_one(None)
+        self.assertEqual(entry.role, None)
+
+    def test_dataset_target_types_getter_setter(self):
+        target_types = ["VIEWS"]
+        entry = self._make_one(None)
+        entry.dataset_target_types = target_types
+        self.assertEqual(entry.dataset_target_types, target_types)
+
+    def test_dataset_target_types_getter_setter_none(self):
+        entry = self._make_one(None)
+        self.assertEqual(entry.dataset_target_types, None)
+
+    def test_dataset_target_types_getter_setter_w_dataset(self):
+        dataset = {"projectId": "my-project", "datasetId": "my_dataset"}
+        target_types = ["VIEWS"]
+        entry = self._make_one(None)
+        entry.dataset = dataset
+        entry.dataset_target_types = target_types
+        self.assertEqual(entry.dataset_target_types, target_types)
 
 
 class TestDatasetReference(unittest.TestCase):

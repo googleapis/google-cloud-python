@@ -17,15 +17,18 @@
 from __future__ import absolute_import
 
 import copy
-from typing import Dict, Any
+
+import typing
 
 import google.cloud._helpers  # type: ignore
 
 from google.cloud.bigquery import _helpers
 from google.cloud.bigquery.model import ModelReference
-from google.cloud.bigquery.routine import RoutineReference
-from google.cloud.bigquery.table import TableReference
+from google.cloud.bigquery.routine import Routine, RoutineReference
+from google.cloud.bigquery.table import Table, TableReference
 from google.cloud.bigquery.encryption_configuration import EncryptionConfiguration
+
+from typing import Optional, List, Dict, Any, Union
 
 
 def _get_table_reference(self, table_id: str) -> TableReference:
@@ -73,173 +76,6 @@ def _get_routine_reference(self, routine_id):
             "routineId": routine_id,
         }
     )
-
-
-class AccessEntry(object):
-    """Represents grant of an access role to an entity.
-
-    An entry must have exactly one of the allowed
-    :class:`google.cloud.bigquery.enums.EntityTypes`. If anything but ``view``, ``routine``,
-    or ``dataset`` are set, a ``role`` is also required. ``role`` is omitted for ``view``,
-    ``routine``, ``dataset``, because they are always read-only.
-
-    See https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets.
-
-    Args:
-        role (str):
-            Role granted to the entity. The following string values are
-            supported: `'READER'`, `'WRITER'`, `'OWNER'`. It may also be
-            :data:`None` if the ``entity_type`` is ``view``, ``routine``, or ``dataset``.
-
-        entity_type (str):
-            Type of entity being granted the role. See
-            :class:`google.cloud.bigquery.enums.EntityTypes` for supported types.
-
-        entity_id (Union[str, Dict[str, str]]):
-            If the ``entity_type`` is not 'view', 'routine', or 'dataset', the
-            ``entity_id`` is the ``str`` ID of the entity being granted the role. If
-            the ``entity_type`` is 'view' or 'routine', the ``entity_id`` is a ``dict``
-            representing the view or routine from a different dataset to grant access
-            to in the following format for views::
-
-                {
-                    'projectId': string,
-                    'datasetId': string,
-                    'tableId': string
-                }
-
-            For routines::
-
-                {
-                    'projectId': string,
-                    'datasetId': string,
-                    'routineId': string
-                }
-
-            If the ``entity_type`` is 'dataset', the ``entity_id`` is a ``dict`` that includes
-            a 'dataset' field with a ``dict`` representing the dataset and a 'target_types'
-            field with a ``str`` value of the dataset's resource type::
-
-                {
-                    'dataset': {
-                        'projectId': string,
-                        'datasetId': string,
-                    },
-                    'target_types: 'VIEWS'
-                }
-
-    Raises:
-        ValueError:
-            If a ``view``, ``routine``, or ``dataset`` has ``role`` set, or a non ``view``,
-            non ``routine``, and non ``dataset`` **does not** have a ``role`` set.
-
-    Examples:
-        >>> entry = AccessEntry('OWNER', 'userByEmail', 'user@example.com')
-
-        >>> view = {
-        ...     'projectId': 'my-project',
-        ...     'datasetId': 'my_dataset',
-        ...     'tableId': 'my_table'
-        ... }
-        >>> entry = AccessEntry(None, 'view', view)
-    """
-
-    def __init__(self, role=None, entity_type=None, entity_id=None) -> None:
-        self._properties: Dict[str, Any] = {}
-        if entity_type in ("view", "routine", "dataset"):
-            if role is not None:
-                raise ValueError(
-                    "Role must be None for a %r. Received "
-                    "role: %r" % (entity_type, role)
-                )
-        else:
-            if role is None:
-                raise ValueError(
-                    "Role must be set for entity " "type %r" % (entity_type,)
-                )
-        self._role = role
-        self._entity_type = entity_type
-        self._entity_id = entity_id
-
-    @property
-    def role(self):
-        """str: The role of the entry."""
-        return self._role
-
-    @property
-    def entity_type(self):
-        """str: The entity_type of the entry."""
-        return self._entity_type
-
-    @property
-    def entity_id(self):
-        """str: The entity_id of the entry."""
-        return self._entity_id
-
-    def __eq__(self, other):
-        if not isinstance(other, AccessEntry):
-            return NotImplemented
-        return self._key() == other._key()
-
-    def __ne__(self, other):
-        return not self == other
-
-    def __repr__(self):
-        return "<AccessEntry: role=%s, %s=%s>" % (
-            self._role,
-            self._entity_type,
-            self._entity_id,
-        )
-
-    def _key(self):
-        """A tuple key that uniquely describes this field.
-        Used to compute this instance's hashcode and evaluate equality.
-        Returns:
-            Tuple: The contents of this :class:`~google.cloud.bigquery.dataset.AccessEntry`.
-        """
-        return (self._role, self._entity_type, self._entity_id)
-
-    def __hash__(self):
-        return hash(self._key())
-
-    def to_api_repr(self):
-        """Construct the API resource representation of this access entry
-
-        Returns:
-            Dict[str, object]: Access entry represented as an API resource
-        """
-        resource = copy.deepcopy(self._properties)
-        resource[self._entity_type] = self._entity_id
-        if self._role is not None:
-            resource["role"] = self._role
-        return resource
-
-    @classmethod
-    def from_api_repr(cls, resource: dict) -> "AccessEntry":
-        """Factory: construct an access entry given its API representation
-
-        Args:
-            resource (Dict[str, object]):
-                Access entry resource representation returned from the API
-
-        Returns:
-            google.cloud.bigquery.dataset.AccessEntry:
-                Access entry parsed from ``resource``.
-
-        Raises:
-            ValueError:
-                If the resource has more keys than ``role`` and one additional
-                key.
-        """
-        entry = resource.copy()
-        role = entry.pop("role", None)
-        entity_type, entity_id = entry.popitem()
-        if len(entry) != 0:
-            raise ValueError("Entry has unexpected keys remaining.", entry)
-
-        config = cls(role, entity_type, entity_id)
-        config._properties = copy.deepcopy(resource)
-        return config
 
 
 class DatasetReference(object):
@@ -381,6 +217,291 @@ class DatasetReference(object):
 
     def __repr__(self):
         return "DatasetReference{}".format(self._key())
+
+
+class AccessEntry(object):
+    """Represents grant of an access role to an entity.
+
+    An entry must have exactly one of the allowed
+    :class:`google.cloud.bigquery.enums.EntityTypes`. If anything but ``view``, ``routine``,
+    or ``dataset`` are set, a ``role`` is also required. ``role`` is omitted for ``view``,
+    ``routine``, ``dataset``, because they are always read-only.
+
+    See https://cloud.google.com/bigquery/docs/reference/rest/v2/datasets.
+
+    Args:
+        role:
+            Role granted to the entity. The following string values are
+            supported: `'READER'`, `'WRITER'`, `'OWNER'`. It may also be
+            :data:`None` if the ``entity_type`` is ``view``, ``routine``, or ``dataset``.
+
+        entity_type:
+            Type of entity being granted the role. See
+            :class:`google.cloud.bigquery.enums.EntityTypes` for supported types.
+
+        entity_id:
+            If the ``entity_type`` is not 'view', 'routine', or 'dataset', the
+            ``entity_id`` is the ``str`` ID of the entity being granted the role. If
+            the ``entity_type`` is 'view' or 'routine', the ``entity_id`` is a ``dict``
+            representing the view or routine from a different dataset to grant access
+            to in the following format for views::
+
+                {
+                    'projectId': string,
+                    'datasetId': string,
+                    'tableId': string
+                }
+
+            For routines::
+
+                {
+                    'projectId': string,
+                    'datasetId': string,
+                    'routineId': string
+                }
+
+            If the ``entity_type`` is 'dataset', the ``entity_id`` is a ``dict`` that includes
+            a 'dataset' field with a ``dict`` representing the dataset and a 'target_types'
+            field with a ``str`` value of the dataset's resource type::
+
+                {
+                    'dataset': {
+                        'projectId': string,
+                        'datasetId': string,
+                    },
+                    'target_types: 'VIEWS'
+                }
+
+    Raises:
+        ValueError:
+            If a ``view``, ``routine``, or ``dataset`` has ``role`` set, or a non ``view``,
+            non ``routine``, and non ``dataset`` **does not** have a ``role`` set.
+
+    Examples:
+        >>> entry = AccessEntry('OWNER', 'userByEmail', 'user@example.com')
+
+        >>> view = {
+        ...     'projectId': 'my-project',
+        ...     'datasetId': 'my_dataset',
+        ...     'tableId': 'my_table'
+        ... }
+        >>> entry = AccessEntry(None, 'view', view)
+    """
+
+    def __init__(
+        self,
+        role: Optional[str] = None,
+        entity_type: Optional[str] = None,
+        entity_id: Optional[Union[Dict[str, Any], str]] = None,
+    ):
+        self._properties = {}
+        if entity_type is not None:
+            self._properties[entity_type] = entity_id
+        self._properties["role"] = role
+        self._entity_type = entity_type
+
+    @property
+    def role(self) -> Optional[str]:
+        """The role of the entry."""
+        return typing.cast(Optional[str], self._properties.get("role"))
+
+    @role.setter
+    def role(self, value):
+        self._properties["role"] = value
+
+    @property
+    def dataset(self) -> Optional[DatasetReference]:
+        """API resource representation of a dataset reference."""
+        value = _helpers._get_sub_prop(self._properties, ["dataset", "dataset"])
+        return DatasetReference.from_api_repr(value) if value else None
+
+    @dataset.setter
+    def dataset(self, value):
+        if self.role is not None:
+            raise ValueError(
+                "Role must be None for a dataset. Current " "role: %r" % (self.role)
+            )
+
+        if isinstance(value, str):
+            value = DatasetReference.from_string(value).to_api_repr()
+
+        if isinstance(value, (Dataset, DatasetListItem)):
+            value = value.reference.to_api_repr()
+
+        _helpers._set_sub_prop(self._properties, ["dataset", "dataset"], value)
+        _helpers._set_sub_prop(
+            self._properties,
+            ["dataset", "targetTypes"],
+            self._properties.get("targetTypes"),
+        )
+
+    @property
+    def dataset_target_types(self) -> Optional[List[str]]:
+        """Which resources that the dataset in this entry applies to."""
+        return typing.cast(
+            Optional[List[str]],
+            _helpers._get_sub_prop(self._properties, ["dataset", "targetTypes"]),
+        )
+
+    @dataset_target_types.setter
+    def dataset_target_types(self, value):
+        self._properties.setdefault("dataset", {})
+        _helpers._set_sub_prop(self._properties, ["dataset", "targetTypes"], value)
+
+    @property
+    def routine(self) -> Optional[RoutineReference]:
+        """API resource representation of a routine reference."""
+        value = typing.cast(Optional[Dict], self._properties.get("routine"))
+        return RoutineReference.from_api_repr(value) if value else None
+
+    @routine.setter
+    def routine(self, value):
+        if self.role is not None:
+            raise ValueError(
+                "Role must be None for a routine. Current " "role: %r" % (self.role)
+            )
+
+        if isinstance(value, str):
+            value = RoutineReference.from_string(value).to_api_repr()
+
+        if isinstance(value, RoutineReference):
+            value = value.to_api_repr()
+
+        if isinstance(value, Routine):
+            value = value.reference.to_api_repr()
+
+        self._properties["routine"] = value
+
+    @property
+    def view(self) -> Optional[TableReference]:
+        """API resource representation of a view reference."""
+        value = typing.cast(Optional[Dict], self._properties.get("view"))
+        return TableReference.from_api_repr(value) if value else None
+
+    @view.setter
+    def view(self, value):
+        if self.role is not None:
+            raise ValueError(
+                "Role must be None for a view. Current " "role: %r" % (self.role)
+            )
+
+        if isinstance(value, str):
+            value = TableReference.from_string(value).to_api_repr()
+
+        if isinstance(value, TableReference):
+            value = value.to_api_repr()
+
+        if isinstance(value, Table):
+            value = value.reference.to_api_repr()
+
+        self._properties["view"] = value
+
+    @property
+    def group_by_email(self) -> Optional[str]:
+        """An email address of a Google Group to grant access to."""
+        return typing.cast(Optional[str], self._properties.get("groupByEmail"))
+
+    @group_by_email.setter
+    def group_by_email(self, value):
+        self._properties["groupByEmail"] = value
+
+    @property
+    def user_by_email(self) -> Optional[str]:
+        """An email address of a user to grant access to."""
+        return typing.cast(Optional[str], self._properties.get("userByEmail"))
+
+    @user_by_email.setter
+    def user_by_email(self, value):
+        self._properties["userByEmail"] = value
+
+    @property
+    def domain(self) -> Optional[str]:
+        """A domain to grant access to."""
+        return typing.cast(Optional[str], self._properties.get("domain"))
+
+    @domain.setter
+    def domain(self, value):
+        self._properties["domain"] = value
+
+    @property
+    def special_group(self) -> Optional[str]:
+        """A special group to grant access to."""
+        return typing.cast(Optional[str], self._properties.get("specialGroup"))
+
+    @special_group.setter
+    def special_group(self, value):
+        self._properties["specialGroup"] = value
+
+    @property
+    def entity_type(self) -> Optional[str]:
+        """The entity_type of the entry."""
+        return self._entity_type
+
+    @property
+    def entity_id(self) -> Optional[Union[Dict[str, Any], str]]:
+        """The entity_id of the entry."""
+        return self._properties.get(self._entity_type) if self._entity_type else None
+
+    def __eq__(self, other):
+        if not isinstance(other, AccessEntry):
+            return NotImplemented
+        return self._key() == other._key()
+
+    def __ne__(self, other):
+        return not self == other
+
+    def __repr__(self):
+
+        return f"<AccessEntry: role={self.role}, {self._entity_type}={self.entity_id}>"
+
+    def _key(self):
+        """A tuple key that uniquely describes this field.
+        Used to compute this instance's hashcode and evaluate equality.
+        Returns:
+            Tuple: The contents of this :class:`~google.cloud.bigquery.dataset.AccessEntry`.
+        """
+        properties = self._properties.copy()
+        prop_tup = tuple(sorted(properties.items()))
+        return (self.role, self._entity_type, self.entity_id, prop_tup)
+
+    def __hash__(self):
+        return hash(self._key())
+
+    def to_api_repr(self):
+        """Construct the API resource representation of this access entry
+
+        Returns:
+            Dict[str, object]: Access entry represented as an API resource
+        """
+        resource = copy.deepcopy(self._properties)
+        return resource
+
+    @classmethod
+    def from_api_repr(cls, resource: dict) -> "AccessEntry":
+        """Factory: construct an access entry given its API representation
+
+        Args:
+            resource (Dict[str, object]):
+                Access entry resource representation returned from the API
+
+        Returns:
+            google.cloud.bigquery.dataset.AccessEntry:
+                Access entry parsed from ``resource``.
+
+        Raises:
+            ValueError:
+                If the resource has more keys than ``role`` and one additional
+                key.
+        """
+        entry = resource.copy()
+        role = entry.pop("role", None)
+        entity_type, entity_id = entry.popitem()
+        if len(entry) != 0:
+            raise ValueError("Entry has unexpected keys remaining.", entry)
+
+        config = cls(role, entity_type, entity_id)
+        config._properties = copy.deepcopy(resource)
+        return config
 
 
 class Dataset(object):
