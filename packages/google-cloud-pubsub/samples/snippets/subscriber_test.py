@@ -246,7 +246,7 @@ def subscription_eod(
             request={
                 "name": subscription_path,
                 "topic": exactly_once_delivery_topic,
-                "enable_exactly_once_delivery": True
+                "enable_exactly_once_delivery": True,
             }
         )
 
@@ -704,43 +704,33 @@ def test_receive_with_blocking_shutdown(
     eventually_consistent_test()
 
 
-@typed_flaky
-def test_receive_messages_with_exactly_once_delivery_enabled_regional_endpoint(
+def test_receive_messages_with_exactly_once_delivery_enabled(
     regional_publisher_client: pubsub_v1.PublisherClient,
     exactly_once_delivery_topic: str,
     subscription_eod: str,
     capsys: CaptureFixture[str],
 ) -> None:
 
-    message_ids = _publish_messages(regional_publisher_client, exactly_once_delivery_topic)
-
-    subscriber.receive_messages_with_exactly_once_delivery_enabled(
-        PROJECT_ID, SUBSCRIPTION_EOD, 10
+    typed_backoff = cast(
+        Callable[[C], C], backoff.on_exception(backoff.expo, Unknown, max_time=300),
     )
 
-    out, _ = capsys.readouterr()
-    assert subscription_eod in out
-    for message_id in message_ids:
-        assert message_id in out
+    @typed_backoff
+    def eventually_consistent_test() -> None:
+        message_ids = _publish_messages(
+            regional_publisher_client, exactly_once_delivery_topic
+        )
 
+        subscriber.receive_messages_with_exactly_once_delivery_enabled(
+            PROJECT_ID, SUBSCRIPTION_EOD, 10
+        )
 
-def test_receive_messages_with_exactly_once_delivery_enabled(
-    publisher_client: pubsub_v1.PublisherClient,
-    exactly_once_delivery_topic: str,
-    subscription_eod: str,
-    capsys: CaptureFixture[str],
-) -> None:
+        out, _ = capsys.readouterr()
+        assert subscription_eod in out
+        for message_id in message_ids:
+            assert message_id in out
 
-    message_ids = _publish_messages(publisher_client, exactly_once_delivery_topic)
-
-    subscriber.receive_messages_with_exactly_once_delivery_enabled(
-        PROJECT_ID, SUBSCRIPTION_EOD, 10
-    )
-
-    out, _ = capsys.readouterr()
-    assert subscription_eod in out
-    for message_id in message_ids:
-        assert message_id in out
+    eventually_consistent_test()
 
 
 def test_listen_for_errors(
