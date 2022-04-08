@@ -9,7 +9,7 @@ import functools
 {% endif %}
 import os
 import re
-from typing import Dict, Optional, {% if service.any_server_streaming %}Iterable, {% endif %}{% if service.any_client_streaming %}Iterator, {% endif %}Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, {% if service.any_server_streaming %}Iterable, {% endif %}{% if service.any_client_streaming %}Iterator, {% endif %}Sequence, Tuple, Type, Union
 import pkg_resources
 {% if service.any_deprecated %}
 import warnings
