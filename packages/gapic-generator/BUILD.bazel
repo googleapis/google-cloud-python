@@ -69,6 +69,7 @@ py_binary(
         requirement("MarkupSafe"),
         requirement("pypandoc"),
         requirement("PyYAML"),
+	requirement("grpc-google-iam-v1"),
     ] + select({
         ":gapic_gen_python_3_6": [requirement("dataclasses")],
         "//conditions:default": [],

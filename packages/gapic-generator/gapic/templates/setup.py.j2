@@ -37,8 +37,10 @@ setuptools.setup(
         'google-api-core[grpc] >= 1.31.0, < 3.0.0dev',
         {% endif %}
         'libcst >= 0.2.5',
+        'googleapis-common-protos >= 1.55.0, <2.0.0dev',
         'proto-plus >= 1.19.7',
-    {% if api.requires_package(('google', 'iam', 'v1')) or opts.add_iam_methods %}
+    {# TODO: Remove after https://github.com/googleapis/gapic-generator-python/pull/1240 is merged. #}
+    {% if api.requires_package(('google', 'iam', 'v1')) or opts.add_iam_methods or api.has_iam_mixin %}
         'grpc-google-iam-v1 >= 0.12.3, < 0.13dev',
     {% endif %}
     ),

@@ -43,6 +43,9 @@ from google.longrunning import operations_pb2
 from google.protobuf import json_format
 {% endif %}{# rest transport #}
 {% endif %}{# lro #}
+{% if api.has_location_mixin %}
+from google.cloud.location import locations_pb2
+{% endif %}
 from google.api_core import gapic_v1
 {% for method in service.methods.values() %}
 {% for ref_type in method.ref_types
@@ -51,7 +54,8 @@ from google.api_core import gapic_v1
 {{ ref_type.ident.python_import }}
 {% endfor %}
 {% endfor %}
-{% if opts.add_iam_methods %}
+{# TODO: Remove once https://github.com/googleapis/gapic-generator-python/pull/1240 is merged #}
+{% if opts.add_iam_methods or api.has_iam_mixin %}
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import options_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
@@ -1677,10 +1681,15 @@ def test_{{ service.name|snake_case }}_base_transport():
         {% for method in service.methods.values() %}
         '{{ method.transport_safe_name|snake_case }}',
         {% endfor %}
-        {% if opts.add_iam_methods %}
+        {# TODO: Remove after https://github.com/googleapis/gapic-generator-python/pull/1240 is merged. #}
+        {% if opts.add_iam_methods or api.has_iam_mixin %}
         'set_iam_policy',
         'get_iam_policy',
         'test_iam_permissions',
+        {% endif %}
+        {% if api.has_location_mixin %}
+        'get_location',
+        'list_locations',
         {% endif %}
     )
     for method in methods:
@@ -2125,236 +2134,7 @@ def test_client_with_default_client_info():
         )
         prep.assert_called_once_with(client_info)
 
-
-{% if opts.add_iam_methods and 'grpc' in opts.transport %}
-def test_set_iam_policy(transport: str = "grpc"):
-    client = {{ service.client_name }}(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = iam_policy_pb2.SetIamPolicyRequest()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = policy_pb2.Policy(version=774, etag=b"etag_blob",)
-
-        response = client.set_iam_policy(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-
-        assert args[0] == request
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, policy_pb2.Policy)
-
-    assert response.version == 774
-
-    assert response.etag == b"etag_blob"
-
-
-def test_set_iam_policy_field_headers():
-    client = {{ service.client_name }}(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = iam_policy_pb2.SetIamPolicyRequest()
-    request.resource = "resource/value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
-        call.return_value = policy_pb2.Policy()
-
-        client.set_iam_policy(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
-
-
-def test_set_iam_policy_from_dict():
-    client = {{ service.client_name }}(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.set_iam_policy), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = policy_pb2.Policy()
-
-        response = client.set_iam_policy(
-            request={
-                "resource": "resource_value",
-                "policy": policy_pb2.Policy(version=774),
-            }
-        )
-        call.assert_called()
-
-
-def test_get_iam_policy(transport: str = "grpc"):
-    client = {{ service.client_name }}(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = iam_policy_pb2.GetIamPolicyRequest()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = policy_pb2.Policy(version=774, etag=b"etag_blob",)
-
-        response = client.get_iam_policy(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-
-        assert args[0] == request
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, policy_pb2.Policy)
-
-    assert response.version == 774
-
-    assert response.etag == b"etag_blob"
-
-
-def test_get_iam_policy_field_headers():
-    client = {{ service.client_name }}(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = iam_policy_pb2.GetIamPolicyRequest()
-    request.resource = "resource/value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
-        call.return_value = policy_pb2.Policy()
-
-        client.get_iam_policy(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
-
-
-def test_get_iam_policy_from_dict():
-    client = {{ service.client_name }}(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(type(client.transport.get_iam_policy), "__call__") as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = policy_pb2.Policy()
-
-        response = client.get_iam_policy(
-            request={
-                "resource": "resource_value",
-                "options": options_pb2.GetPolicyOptions(requested_policy_version=2598),
-            }
-        )
-        call.assert_called()
-
-
-def test_test_iam_permissions(transport: str = "grpc"):
-    client = {{ service.client_name }}(
-        credentials=ga_credentials.AnonymousCredentials(), transport=transport,
-    )
-
-    # Everything is optional in proto3 as far as the runtime is concerned,
-    # and we are mocking out the actual API, so just send an empty request.
-    request = iam_policy_pb2.TestIamPermissionsRequest()
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.test_iam_permissions), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = iam_policy_pb2.TestIamPermissionsResponse(
-            permissions=["permissions_value"],
-        )
-
-        response = client.test_iam_permissions(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-
-        assert args[0] == request
-
-    # Establish that the response is the type that we expect.
-    assert isinstance(response, iam_policy_pb2.TestIamPermissionsResponse)
-
-    assert response.permissions == ["permissions_value"]
-
-
-def test_test_iam_permissions_field_headers():
-    client = {{ service.client_name }}(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-
-    # Any value that is part of the HTTP/1.1 URI should be sent as
-    # a field header. Set these to a non-empty value.
-    request = iam_policy_pb2.TestIamPermissionsRequest()
-    request.resource = "resource/value"
-
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.test_iam_permissions), "__call__"
-    ) as call:
-        call.return_value = iam_policy_pb2.TestIamPermissionsResponse()
-
-        client.test_iam_permissions(request)
-
-        # Establish that the underlying gRPC stub method was called.
-        assert len(call.mock_calls) == 1
-        _, args, _ = call.mock_calls[0]
-        assert args[0] == request
-
-    # Establish that the field header was sent.
-    _, _, kw = call.mock_calls[0]
-    assert ("x-goog-request-params", "resource=resource/value",) in kw["metadata"]
-
-
-def test_test_iam_permissions_from_dict():
-    client = {{ service.client_name }}(
-        credentials=ga_credentials.AnonymousCredentials(),
-    )
-    # Mock the actual call within the gRPC stub, and fake the request.
-    with mock.patch.object(
-        type(client.transport.test_iam_permissions), "__call__"
-    ) as call:
-        # Designate an appropriate return value for the call.
-        call.return_value = iam_policy_pb2.TestIamPermissionsResponse()
-
-        response = client.test_iam_permissions(
-            request={
-                "resource": "resource_value",
-                "permissions": ["permissions_value"],
-            }
-        )
-        call.assert_called()
-
-{% endif %}
+{% include 'tests/unit/gapic/%name_%version/%sub/_test_mixins.py.j2' %}
 
 def test_transport_close():
     transports = {

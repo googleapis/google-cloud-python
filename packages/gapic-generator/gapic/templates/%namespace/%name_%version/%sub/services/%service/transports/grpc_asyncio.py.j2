@@ -21,9 +21,12 @@ from grpc.experimental import aio  # type: ignore
 {{ method.input.ident.python_import }}
 {{ method.output.ident.python_import }}
 {% endfor %}
-{% if opts.add_iam_methods %}
+{% if opts.add_iam_methods or api.has_iam_mixin %}
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
+{% endif %}
+{% if api.has_location_mixin %}
+from google.cloud.location import locations_pb2 # type: ignore
 {% endif %}
 {% endfilter %}
 from .base import {{ service.name }}Transport, DEFAULT_CLIENT_INFO
@@ -279,6 +282,7 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
         return self._stubs['{{ method.transport_safe_name|snake_case }}']
     {% endfor %}
 
+    {# TODO: Remove after https://github.com/googleapis/gapic-generator-python/pull/1240 is merged. #}
     {% if opts.add_iam_methods %}
     @property
     def set_iam_policy(
@@ -363,6 +367,8 @@ class {{ service.grpc_asyncio_transport_name }}({{ service.name }}Transport):
 
     def close(self):
         return self.grpc_channel.close()
+
+    {% include '%namespace/%name_%version/%sub/services/%service/transports/_mixins.py.j2' %}
 
 
 __all__ = (

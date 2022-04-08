@@ -4171,7 +4171,6 @@ def test_client_with_default_client_info():
         )
         prep.assert_called_once_with(client_info)
 
-
 @pytest.mark.asyncio
 async def test_transport_close_async():
     client = AssetServiceAsyncClient(
@@ -4182,6 +4181,7 @@ async def test_transport_close_async():
         async with client:
             close.assert_not_called()
         close.assert_called_once()
+
 
 def test_transport_close():
     transports = {

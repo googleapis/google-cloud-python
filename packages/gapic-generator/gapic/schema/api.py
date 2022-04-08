@@ -33,12 +33,15 @@ from google.api import service_pb2  # type: ignore
 from google.cloud import extended_operations_pb2 as ex_ops_pb2  # type: ignore
 from google.gapic.metadata import gapic_metadata_pb2  # type: ignore
 from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import descriptor_pb2
+from google.iam.v1 import iam_policy_pb2  # type: ignore
+from google.cloud.location import locations_pb2  # type: ignore
+from google.protobuf import descriptor_pb2  # type: ignore
 from google.protobuf.json_format import MessageToJson
 from google.protobuf.json_format import ParseDict
-
+from google.protobuf.descriptor import ServiceDescriptor
 import grpc  # type: ignore
-
+from google.protobuf.descriptor_pb2 import MethodDescriptorProto
+from google.api import annotations_pb2  # type: ignore
 from gapic.schema import metadata
 from gapic.schema import wrappers
 from gapic.schema import naming as api_naming
@@ -511,6 +514,61 @@ class API:
                 f"Service is not an extended operation operation service: {op_serv.name}")
 
         return op_serv
+
+    @cached_property
+    def mixin_api_methods(self) -> Dict[str, MethodDescriptorProto]:
+        methods: Dict[str, MethodDescriptorProto] = {}
+        if self.has_location_mixin:
+            methods = {**methods, **
+                self._get_methods_from_service(locations_pb2)}
+        if not self._has_iam_overrides and self.has_iam_mixin:
+            methods = {**methods, **
+                self._get_methods_from_service(iam_policy_pb2)}
+        # For LRO, expose operations client instead.
+        return methods
+
+    @cached_property
+    def has_location_mixin(self) -> bool:
+        return len(list(filter(lambda api: api.name == "google.cloud.location.Locations", self.service_yaml_config.apis))) > 0
+
+    @cached_property
+    def has_iam_mixin(self) -> bool:
+        return len(list(filter(lambda api: api.name == "google.iam.v1.IAMPolicy", self.service_yaml_config.apis))) > 0
+
+    @cached_property
+    def has_operations_mixin(self) -> bool:
+        return len(list(filter(lambda api: api.name == "google.longrunning.Operations", self.service_yaml_config.apis))) > 0
+
+    @cached_property
+    def _has_iam_overrides(self) -> bool:
+        if not self.has_iam_mixin:
+            return False
+        iam_mixin_methods: Dict[str, MethodDescriptorProto] = self._get_methods_from_service(
+            iam_policy_pb2)
+        for (_, s) in self.services.items():
+            for m_name in iam_mixin_methods:
+                if m_name in s.methods:
+                    return True
+        return False
+
+    def _get_methods_from_service(self, service_pb) -> Dict[str, MethodDescriptorProto]:
+        services = service_pb.DESCRIPTOR.services_by_name
+        methods = {}
+        methods_to_generate = {}
+        for service_name in services:
+            service: ServiceDescriptor = services[service_name]
+            for method in service.methods:
+                fqn = "{}.{}.{}".format(
+                    service_pb.DESCRIPTOR.package, service.name, method.name)
+                methods[fqn] = method
+        for rule in self.service_yaml_config.http.rules:
+            if rule.selector in methods:
+                m = methods[rule.selector]
+                x = descriptor_pb2.MethodDescriptorProto()
+                m.CopyToProto(x)
+                x.options.Extensions[annotations_pb2.http].CopyFrom(rule)
+                methods_to_generate[x.name] = x
+        return methods_to_generate
 
     def get_extended_operations_services(self, service) -> Set["wrappers.Service"]:
         """Return a set of all the extended operation services used by the input service.

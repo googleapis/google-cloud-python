@@ -39,6 +39,7 @@ setuptools.setup(
     install_requires=(
         'google-api-core[grpc] >= 1.31.0, < 3.0.0dev',
         'libcst >= 0.2.5',
+        'googleapis-common-protos >= 1.55.0, <2.0.0dev',
         'proto-plus >= 1.19.7',
         'grpc-google-iam-v1 >= 0.12.3, < 0.13dev',
     ),

@@ -165,7 +165,8 @@ def fragment_alternative_templates(session):
 
 @contextmanager
 def showcase_library(
-    session, templates="DEFAULT", other_opts: typing.Iterable[str] = ()
+    session, templates="DEFAULT", other_opts: typing.Iterable[str] = (),
+    include_service_yaml=False,
 ):
     """Install the generated library into the session for showcase tests."""
 
@@ -198,11 +199,25 @@ def showcase_library(
             external=True,
             silent=True,
         )
-
+        if include_service_yaml:
+            session.run(
+                "curl",
+                "https://github.com/googleapis/gapic-showcase/releases/"
+                f"download/v{showcase_version}/"
+                f"showcase_v1beta1.yaml",
+                "-L",
+                "--output",
+                path.join(tmp_dir, "showcase_v1beta1.yaml"),
+                external=True,
+                silent=True,
+            )
         # Write out a client library for Showcase.
         template_opt = f"python-gapic-templates={templates}"
         opts = "--python_gapic_opt="
-        opts += ",".join(other_opts + (f"{template_opt}", "transport=grpc+rest"))
+        if include_service_yaml:
+            opts += ",".join(other_opts + (f"{template_opt}", "transport=grpc+rest", f"service-yaml={tmp_dir}/showcase_v1beta1.yaml"))
+        else:
+            opts += ",".join(other_opts + (f"{template_opt}", "transport=grpc+rest",))            
         cmd_tup = (
             "python",
             "-m",
@@ -347,6 +362,23 @@ def showcase_unit_add_iam_methods(session):
         # 2. Run the tests again with latest version of dependencies.
         session.install(".", "--upgrade", "--force-reinstall")
         run_showcase_unit_tests(session, fail_under=100)
+
+
+@nox.session(python=ALL_PYTHON)
+def showcase_unit_mixins(session):
+    with showcase_library(session, include_service_yaml=True) as lib:
+        session.chdir(lib)
+        run_showcase_unit_tests(session)
+
+
+@nox.session(python=ALL_PYTHON[1:])  # Do not test 3.6
+def showcase_unit_alternative_templates_mixins(session):
+    with showcase_library(
+        session, templates=ADS_TEMPLATES, other_opts=("old-naming",),
+        include_service_yaml=True
+    ) as lib:
+        session.chdir(lib)
+        run_showcase_unit_tests(session)
 
 
 @nox.session(python=NEWEST_PYTHON)

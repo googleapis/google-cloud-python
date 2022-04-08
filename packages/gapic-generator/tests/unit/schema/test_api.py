@@ -19,6 +19,7 @@ from unittest import mock
 
 import pytest
 
+from google.api import annotations_pb2  # type: ignore
 from google.api import client_pb2
 from google.api import resource_pb2
 from google.api_core import exceptions
@@ -27,6 +28,8 @@ from google.gapic.metadata import gapic_metadata_pb2
 from google.longrunning import operations_pb2
 from google.protobuf import descriptor_pb2
 from google.protobuf.json_format import MessageToJson
+from google.cloud.location import locations_pb2
+from google.iam.v1 import iam_policy_pb2  # type: ignore
 
 from gapic.schema import api
 from gapic.schema import imp
@@ -39,6 +42,7 @@ from test_utils.test_utils import (
     make_field_pb2,
     make_file_pb2,
     make_message_pb2,
+    make_method,
     make_naming,
     make_oneof_pb2,
 )
@@ -82,6 +86,7 @@ def test_api_build():
                     ),
                 ),
             ),),
+
         ),
     )
 
@@ -2097,3 +2102,177 @@ def test_extended_operations_lro_operation_service_no_polling_method():
 
     with pytest.raises(ValueError):
         api_schema.get_custom_operation_service(initial_method)
+
+
+def methods_from_service(service_pb, name: str):
+    service = service_pb.DESCRIPTOR.services_by_name[name]
+    res = {}
+    for m in service.methods:
+        x = descriptor_pb2.MethodDescriptorProto()
+        m.CopyToProto(x)
+        res[x.name] = x
+    return res
+
+
+def test_mixin_api_methods_locations():
+    fd = (
+        make_file_pb2(
+            name='example.proto',
+            package='google.example.v1',
+            messages=(make_message_pb2(name='ExampleRequest', fields=()),),
+        ),)
+    opts = Options(service_yaml_config={
+        'apis': [
+            {
+                'name': 'google.cloud.location.Locations'
+            }
+        ],
+        'http': {
+            'rules': [
+                {
+                    'selector': 'google.cloud.location.Locations.ListLocations',
+                    'get': '/v1/{name=examples/*}/*',
+                    'body': '*'
+                },
+                {
+                    'selector': 'google.cloud.location.Locations.GetLocation',
+                    'get': '/v1/{name=examples/*}/*',
+                    'body': '*'
+                },
+                {
+                    'selector': 'google.example.v1.Example',
+                }]
+        }
+    })
+    ms = methods_from_service(locations_pb2, 'Locations')
+    assert len(ms) == 2
+    m1 = ms['ListLocations']
+    m1.options.ClearExtension(annotations_pb2.http)
+    m1.options.Extensions[annotations_pb2.http].selector = 'google.cloud.location.Locations.ListLocations'
+    m1.options.Extensions[annotations_pb2.http].get = '/v1/{name=examples/*}/*'
+    m1.options.Extensions[annotations_pb2.http].body = '*'
+    m2 = ms['GetLocation']
+    m2.options.ClearExtension(annotations_pb2.http)
+    m2.options.Extensions[annotations_pb2.http].selector = 'google.cloud.location.Locations.GetLocation'
+    m2.options.Extensions[annotations_pb2.http].get = '/v1/{name=examples/*}/*'
+    m2.options.Extensions[annotations_pb2.http].body = '*'
+    api_schema = api.API.build(fd, 'google.example.v1', opts=opts)
+    assert api_schema.mixin_api_methods == {
+        'ListLocations': m1, 'GetLocation': m2}
+
+
+def test_mixin_api_methods_iam():
+    fd = (
+        make_file_pb2(
+            name='example.proto',
+            package='google.example.v1',
+            messages=(make_message_pb2(name='ExampleRequest', fields=()),
+            make_message_pb2(name='ExampleResponse', fields=())),
+            services=(descriptor_pb2.ServiceDescriptorProto(
+                name='FooService',
+                method=(
+                    descriptor_pb2.MethodDescriptorProto(
+                        name='FooMethod',
+                        # Input and output types don't matter.
+                        input_type='google.example.v1.ExampleRequest',
+                        output_type='google.example.v1.ExampleResponse',
+                    ),
+                ),
+            ),),
+        ),)
+    r1 = {
+        'selector': 'google.iam.v1.IAMPolicy.SetIamPolicy',
+        'post': '/v1/{resource=examples/*}/*',
+        'body': '*'
+    }
+    r2 = {
+        'selector': 'google.iam.v1.IAMPolicy.GetIamPolicy',
+        'get': '/v1/{resource=examples/*}/*',
+        'body': '*'
+    }
+    r3 = {
+        'selector': 'google.iam.v1.IAMPolicy.TestIamPermissions',
+        'post': '/v1/{resource=examples/*}/*',
+        'body': '*'
+    }
+    opts = Options(service_yaml_config={
+        'apis': [
+            {
+                'name': 'google.iam.v1.IAMPolicy'
+            }
+        ],
+        'http': {
+            'rules': [r1, r2, r3]
+        }
+    })
+    ms = methods_from_service(iam_policy_pb2, 'IAMPolicy')
+    assert len(ms) == 3
+    m1 = ms['SetIamPolicy']
+    m1.options.ClearExtension(annotations_pb2.http)
+    m1.options.Extensions[annotations_pb2.http].selector = r1['selector']
+    m1.options.Extensions[annotations_pb2.http].post = r1['post']
+    m1.options.Extensions[annotations_pb2.http].body = r1['body']
+    m2 = ms['GetIamPolicy']
+    m2.options.ClearExtension(annotations_pb2.http)
+    m2.options.Extensions[annotations_pb2.http].selector = r2['selector']
+    m2.options.Extensions[annotations_pb2.http].get = r2['get']
+    m2.options.Extensions[annotations_pb2.http].body = r2['body']
+    m3 = ms['TestIamPermissions']
+    m3.options.ClearExtension(annotations_pb2.http)
+    m3.options.Extensions[annotations_pb2.http].selector = r3['selector']
+    m3.options.Extensions[annotations_pb2.http].post = r3['post']
+    m3.options.Extensions[annotations_pb2.http].body = r3['body']
+    api_schema = api.API.build(fd, 'google.example.v1', opts=opts)
+    assert api_schema.mixin_api_methods == {
+        'SetIamPolicy': m1, 'GetIamPolicy': m2, 'TestIamPermissions': m3}
+    assert not api_schema.has_operations_mixin
+
+
+def test_mixin_api_methods_iam_overrides():
+    fd = (
+        make_file_pb2(
+            name='example.proto',
+            package='google.example.v1',
+            messages=(make_message_pb2(name='ExampleRequest', fields=()),
+            make_message_pb2(name='ExampleResponse', fields=()),
+                      ),
+            services=(descriptor_pb2.ServiceDescriptorProto(
+                name='FooService',
+                method=(
+                    descriptor_pb2.MethodDescriptorProto(
+                        name='TestIamPermissions',
+                        # Input and output types don't matter.
+                        input_type='google.example.v1.ExampleRequest',
+                        output_type='google.example.v1.ExampleResponse',
+                    ),
+                ),
+            ),),
+        ),
+    )
+    r1 = {
+        'selector': 'google.iam.v1.IAMPolicy.SetIamPolicy',
+        'post': '/v1/{resource=examples/*}/*',
+        'body': '*'
+    }
+    r2 = {
+        'selector': 'google.iam.v1.IAMPolicy.GetIamPolicy',
+        'get': '/v1/{resource=examples/*}/*',
+        'body': '*'
+    }
+    r3 = {
+        'selector': 'google.iam.v1.IAMPolicy.TestIamPermissions',
+        'post': '/v1/{resource=examples/*}/*',
+        'body': '*'
+    }
+    opts = Options(service_yaml_config={
+        'apis': [
+            {
+                'name': 'google.iam.v1.IAMPolicy'
+            }
+        ],
+        'http': {
+            'rules': [r1, r2, r3]
+        }
+    })
+    api_schema = api.API.build(fd, 'google.example.v1', opts=opts)
+    assert api_schema.mixin_api_methods == {}
