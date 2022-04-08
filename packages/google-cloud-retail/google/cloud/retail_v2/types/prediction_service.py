@@ -98,7 +98,7 @@ class PredictRequest(proto.Message):
             used that returns arbitrary products. Note that
             the validate only mode should only be used for
             testing the API, or if the model is not ready.
-        params (Sequence[google.cloud.retail_v2.types.PredictRequest.ParamsEntry]):
+        params (Mapping[str, google.protobuf.struct_pb2.Value]):
             Additional domain specific parameters for the predictions.
 
             Allowed values:
@@ -127,7 +127,7 @@ class PredictRequest(proto.Message):
                'low-diversity', 'medium-diversity', 'high-diversity',
                'auto-diversity'}. This gives request-level control and
                adjusts prediction results based on product category.
-        labels (Sequence[google.cloud.retail_v2.types.PredictRequest.LabelsEntry]):
+        labels (Mapping[str, str]):
             The labels applied to a resource must meet the following
             requirements:
 
@@ -217,7 +217,7 @@ class PredictResponse(proto.Message):
         Attributes:
             id (str):
                 ID of the recommended product
-            metadata (Sequence[google.cloud.retail_v2.types.PredictResponse.PredictionResult.MetadataEntry]):
+            metadata (Mapping[str, google.protobuf.struct_pb2.Value]):
                 Additional product metadata / annotations.
 
                 Possible values:

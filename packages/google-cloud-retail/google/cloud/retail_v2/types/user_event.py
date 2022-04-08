@@ -139,7 +139,7 @@ class UserEvent(proto.Message):
             This field should be set for ``search`` event when
             autocomplete function is enabled and the user clicks a
             suggestion for search.
-        attributes (Sequence[google.cloud.retail_v2.types.UserEvent.AttributesEntry]):
+        attributes (Mapping[str, google.cloud.retail_v2.types.CustomAttribute]):
             Extra user event features to include in the recommendation
             model.
 

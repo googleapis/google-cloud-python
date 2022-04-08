@@ -847,7 +847,7 @@ class SearchResponse(proto.Message):
                 The count of matched
                 [variant][google.cloud.retail.v2.Product.Type.VARIANT]
                 [Product][google.cloud.retail.v2.Product]s.
-            matching_variant_fields (Sequence[google.cloud.retail_v2.types.SearchResponse.SearchResult.MatchingVariantFieldsEntry]):
+            matching_variant_fields (Mapping[str, google.protobuf.field_mask_pb2.FieldMask]):
                 If a [variant][google.cloud.retail.v2.Product.Type.VARIANT]
                 [Product][google.cloud.retail.v2.Product] matches the search
                 query, this map indicates which
@@ -862,7 +862,7 @@ class SearchResponse(proto.Message):
                 "products.color_info" indicates there is a match between
                 "sku1" [ColorInfo][google.cloud.retail.v2.ColorInfo] and the
                 query.
-            variant_rollup_values (Sequence[google.cloud.retail_v2.types.SearchResponse.SearchResult.VariantRollupValuesEntry]):
+            variant_rollup_values (Mapping[str, google.protobuf.struct_pb2.Value]):
                 The rollup matching
                 [variant][google.cloud.retail.v2.Product.Type.VARIANT]
                 [Product][google.cloud.retail.v2.Product] attributes. The

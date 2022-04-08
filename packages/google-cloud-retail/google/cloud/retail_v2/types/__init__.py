@@ -63,7 +63,9 @@ from .prediction_service import (
     PredictRequest,
     PredictResponse,
 )
-from .product import Product
+from .product import (
+    Product,
+)
 from .product_service import (
     AddFulfillmentPlacesMetadata,
     AddFulfillmentPlacesRequest,
@@ -87,7 +89,9 @@ from .product_service import (
     SetInventoryResponse,
     UpdateProductRequest,
 )
-from .promotion import Promotion
+from .promotion import (
+    Promotion,
+)
 from .purge_config import (
     PurgeMetadata,
     PurgeUserEventsRequest,

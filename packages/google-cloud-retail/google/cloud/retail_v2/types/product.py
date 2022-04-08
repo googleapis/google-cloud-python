@@ -257,7 +257,7 @@ class Product(proto.Message):
 
             For product search this field is in use. It defaults to
             "en-US" if unset.
-        attributes (Sequence[google.cloud.retail_v2.types.Product.AttributesEntry]):
+        attributes (Mapping[str, google.cloud.retail_v2.types.CustomAttribute]):
             Highly encouraged. Extra product attributes to be included.
             For example, for products, this could include the store
             name, vendor, style, color, etc. These are very strong

@@ -171,7 +171,7 @@ class CompleteQueryResponse(proto.Message):
         Attributes:
             suggestion (str):
                 The suggestion for the query.
-            attributes (Sequence[google.cloud.retail_v2.types.CompleteQueryResponse.CompletionResult.AttributesEntry]):
+            attributes (Mapping[str, google.cloud.retail_v2.types.CustomAttribute]):
                 Custom attributes for the suggestion term.
 
                 -  For "user-data", the attributes are additional custom

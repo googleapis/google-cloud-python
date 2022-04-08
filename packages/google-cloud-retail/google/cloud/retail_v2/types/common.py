@@ -648,7 +648,7 @@ class LocalInventory(proto.Message):
 
             Google Merchant Center property
             `price <https://support.google.com/merchants/answer/6324371>`__.
-        attributes (Sequence[google.cloud.retail_v2.types.LocalInventory.AttributesEntry]):
+        attributes (Mapping[str, google.cloud.retail_v2.types.CustomAttribute]):
             Additional local inventory attributes, for example, store
             name, promotion tags, etc.
 
