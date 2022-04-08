@@ -1,6 +1,18 @@
 # Changelog
 
 
+## [0.64.0](https://github.com/googleapis/gapic-generator-python/compare/v0.63.8...v0.64.0) (2022-04-08)
+
+
+### Features
+
+* full LRO for Extended Operations ([#1234](https://github.com/googleapis/gapic-generator-python/issues/1234)) ([4d1bccc](https://github.com/googleapis/gapic-generator-python/commit/4d1bccc965a6908e9b1aeaebf1327918f3e2042a))
+
+
+### Bug Fixes
+
+* add missing import for Mapping ([#1267](https://github.com/googleapis/gapic-generator-python/issues/1267)) ([f416622](https://github.com/googleapis/gapic-generator-python/commit/f416622c753a56036cf9ac1fa6eb818a6e557018))
+
 ### [0.63.8](https://github.com/googleapis/gapic-generator-python/compare/v0.63.7...v0.63.8) (2022-04-04)
 
 
