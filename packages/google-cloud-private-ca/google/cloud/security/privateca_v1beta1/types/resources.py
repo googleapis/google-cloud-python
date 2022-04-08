@@ -169,7 +169,7 @@ class CertificateAuthority(proto.Message):
             Output only. The time at which this
             [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority]
             will be deleted, if scheduled for deletion.
-        labels (Sequence[google.cloud.security.privateca_v1beta1.types.CertificateAuthority.LabelsEntry]):
+        labels (Mapping[str, str]):
             Optional. Labels with user-defined metadata.
     """
 
@@ -685,7 +685,7 @@ class CertificateRevocationList(proto.Message):
             Output only. The time at which this
             [CertificateRevocationList][google.cloud.security.privateca.v1beta1.CertificateRevocationList]
             was updated.
-        labels (Sequence[google.cloud.security.privateca_v1beta1.types.CertificateRevocationList.LabelsEntry]):
+        labels (Mapping[str, str]):
             Optional. Labels with user-defined metadata.
     """
 
@@ -832,7 +832,7 @@ class Certificate(proto.Message):
             Output only. The time at which this
             [Certificate][google.cloud.security.privateca.v1beta1.Certificate]
             was updated.
-        labels (Sequence[google.cloud.security.privateca_v1beta1.types.Certificate.LabelsEntry]):
+        labels (Mapping[str, str]):
             Optional. Labels with user-defined metadata.
     """
 
@@ -945,7 +945,7 @@ class ReusableConfig(proto.Message):
             Output only. The time at which this
             [ReusableConfig][google.cloud.security.privateca.v1beta1.ReusableConfig]
             was updated.
-        labels (Sequence[google.cloud.security.privateca_v1beta1.types.ReusableConfig.LabelsEntry]):
+        labels (Mapping[str, str]):
             Optional. Labels with user-defined metadata.
     """
 

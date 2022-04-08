@@ -179,7 +179,7 @@ class CertificateAuthority(proto.Message):
             will be permanently purged, if it is in the
             [DELETED][google.cloud.security.privateca.v1.CertificateAuthority.State.DELETED]
             state.
-        labels (Sequence[google.cloud.security.privateca_v1.types.CertificateAuthority.LabelsEntry]):
+        labels (Mapping[str, str]):
             Optional. Labels with user-defined metadata.
     """
 
@@ -414,7 +414,7 @@ class CaPool(proto.Message):
             from any
             [CertificateAuthority][google.cloud.security.privateca.v1.CertificateAuthority]
             in this [CaPool][google.cloud.security.privateca.v1.CaPool].
-        labels (Sequence[google.cloud.security.privateca_v1.types.CaPool.LabelsEntry]):
+        labels (Mapping[str, str]):
             Optional. Labels with user-defined metadata.
     """
 
@@ -758,7 +758,7 @@ class CertificateRevocationList(proto.Message):
             [CertificateRevocationList][google.cloud.security.privateca.v1.CertificateRevocationList].
             A new revision is committed whenever a new CRL is published.
             The format is an 8-character hexadecimal string.
-        labels (Sequence[google.cloud.security.privateca_v1.types.CertificateRevocationList.LabelsEntry]):
+        labels (Mapping[str, str]):
             Optional. Labels with user-defined metadata.
     """
 
@@ -928,7 +928,7 @@ class Certificate(proto.Message):
             Output only. The time at which this
             [Certificate][google.cloud.security.privateca.v1.Certificate]
             was updated.
-        labels (Sequence[google.cloud.security.privateca_v1.types.Certificate.LabelsEntry]):
+        labels (Mapping[str, str]):
             Optional. Labels with user-defined metadata.
     """
 
@@ -1087,7 +1087,7 @@ class CertificateTemplate(proto.Message):
             Output only. The time at which this
             [CertificateTemplate][google.cloud.security.privateca.v1.CertificateTemplate]
             was updated.
-        labels (Sequence[google.cloud.security.privateca_v1.types.CertificateTemplate.LabelsEntry]):
+        labels (Mapping[str, str]):
             Optional. Labels with user-defined metadata.
     """
 
