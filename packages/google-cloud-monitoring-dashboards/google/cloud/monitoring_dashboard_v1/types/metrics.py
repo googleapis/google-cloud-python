@@ -263,6 +263,10 @@ class Threshold(proto.Message):
         direction (google.cloud.monitoring_dashboard_v1.types.Threshold.Direction):
             The direction for the current threshold.
             Direction is not allowed in a XyChart.
+        target_axis (google.cloud.monitoring_dashboard_v1.types.Threshold.TargetAxis):
+            The target axis to use for plotting the
+            threshold. Target axis is not allowed in a
+            Scorecard.
     """
 
     class Color(proto.Enum):
@@ -283,6 +287,12 @@ class Threshold(proto.Message):
         ABOVE = 1
         BELOW = 2
 
+    class TargetAxis(proto.Enum):
+        r"""An axis identifier."""
+        TARGET_AXIS_UNSPECIFIED = 0
+        Y1 = 1
+        Y2 = 2
+
     label = proto.Field(
         proto.STRING,
         number=1,
@@ -300,6 +310,11 @@ class Threshold(proto.Message):
         proto.ENUM,
         number=4,
         enum=Direction,
+    )
+    target_axis = proto.Field(
+        proto.ENUM,
+        number=5,
+        enum=TargetAxis,
     )
 
 

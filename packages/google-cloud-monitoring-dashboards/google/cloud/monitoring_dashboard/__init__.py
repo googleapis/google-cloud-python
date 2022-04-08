@@ -22,12 +22,16 @@ from google.cloud.monitoring_dashboard_v1.services.dashboards_service.async_clie
 )
 
 from google.cloud.monitoring_dashboard_v1.types.alertchart import AlertChart
+from google.cloud.monitoring_dashboard_v1.types.collapsible_group import (
+    CollapsibleGroup,
+)
 from google.cloud.monitoring_dashboard_v1.types.common import Aggregation
 from google.cloud.monitoring_dashboard_v1.types.common import PickTimeSeriesFilter
 from google.cloud.monitoring_dashboard_v1.types.common import (
     StatisticalTimeSeriesFilter,
 )
 from google.cloud.monitoring_dashboard_v1.types.dashboard import Dashboard
+from google.cloud.monitoring_dashboard_v1.types.dashboard_filter import DashboardFilter
 from google.cloud.monitoring_dashboard_v1.types.dashboards_service import (
     CreateDashboardRequest,
 )
@@ -50,12 +54,17 @@ from google.cloud.monitoring_dashboard_v1.types.layouts import ColumnLayout
 from google.cloud.monitoring_dashboard_v1.types.layouts import GridLayout
 from google.cloud.monitoring_dashboard_v1.types.layouts import MosaicLayout
 from google.cloud.monitoring_dashboard_v1.types.layouts import RowLayout
+from google.cloud.monitoring_dashboard_v1.types.logs_panel import LogsPanel
 from google.cloud.monitoring_dashboard_v1.types.metrics import Threshold
 from google.cloud.monitoring_dashboard_v1.types.metrics import TimeSeriesFilter
 from google.cloud.monitoring_dashboard_v1.types.metrics import TimeSeriesFilterRatio
 from google.cloud.monitoring_dashboard_v1.types.metrics import TimeSeriesQuery
 from google.cloud.monitoring_dashboard_v1.types.metrics import SparkChartType
 from google.cloud.monitoring_dashboard_v1.types.scorecard import Scorecard
+from google.cloud.monitoring_dashboard_v1.types.table import TimeSeriesTable
+from google.cloud.monitoring_dashboard_v1.types.table_display_options import (
+    TableDisplayOptions,
+)
 from google.cloud.monitoring_dashboard_v1.types.text import Text
 from google.cloud.monitoring_dashboard_v1.types.widget import Widget
 from google.cloud.monitoring_dashboard_v1.types.xychart import ChartOptions
@@ -65,10 +74,12 @@ __all__ = (
     "DashboardsServiceClient",
     "DashboardsServiceAsyncClient",
     "AlertChart",
+    "CollapsibleGroup",
     "Aggregation",
     "PickTimeSeriesFilter",
     "StatisticalTimeSeriesFilter",
     "Dashboard",
+    "DashboardFilter",
     "CreateDashboardRequest",
     "DeleteDashboardRequest",
     "GetDashboardRequest",
@@ -79,12 +90,15 @@ __all__ = (
     "GridLayout",
     "MosaicLayout",
     "RowLayout",
+    "LogsPanel",
     "Threshold",
     "TimeSeriesFilter",
     "TimeSeriesFilterRatio",
     "TimeSeriesQuery",
     "SparkChartType",
     "Scorecard",
+    "TimeSeriesTable",
+    "TableDisplayOptions",
     "Text",
     "Widget",
     "ChartOptions",

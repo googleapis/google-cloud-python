@@ -18,10 +18,12 @@ from .services.dashboards_service import DashboardsServiceClient
 from .services.dashboards_service import DashboardsServiceAsyncClient
 
 from .types.alertchart import AlertChart
+from .types.collapsible_group import CollapsibleGroup
 from .types.common import Aggregation
 from .types.common import PickTimeSeriesFilter
 from .types.common import StatisticalTimeSeriesFilter
 from .types.dashboard import Dashboard
+from .types.dashboard_filter import DashboardFilter
 from .types.dashboards_service import CreateDashboardRequest
 from .types.dashboards_service import DeleteDashboardRequest
 from .types.dashboards_service import GetDashboardRequest
@@ -32,12 +34,15 @@ from .types.layouts import ColumnLayout
 from .types.layouts import GridLayout
 from .types.layouts import MosaicLayout
 from .types.layouts import RowLayout
+from .types.logs_panel import LogsPanel
 from .types.metrics import Threshold
 from .types.metrics import TimeSeriesFilter
 from .types.metrics import TimeSeriesFilterRatio
 from .types.metrics import TimeSeriesQuery
 from .types.metrics import SparkChartType
 from .types.scorecard import Scorecard
+from .types.table import TimeSeriesTable
+from .types.table_display_options import TableDisplayOptions
 from .types.text import Text
 from .types.widget import Widget
 from .types.xychart import ChartOptions
@@ -48,26 +53,31 @@ __all__ = (
     "Aggregation",
     "AlertChart",
     "ChartOptions",
+    "CollapsibleGroup",
     "ColumnLayout",
     "CreateDashboardRequest",
     "Dashboard",
+    "DashboardFilter",
     "DashboardsServiceClient",
     "DeleteDashboardRequest",
     "GetDashboardRequest",
     "GridLayout",
     "ListDashboardsRequest",
     "ListDashboardsResponse",
+    "LogsPanel",
     "MosaicLayout",
     "PickTimeSeriesFilter",
     "RowLayout",
     "Scorecard",
     "SparkChartType",
     "StatisticalTimeSeriesFilter",
+    "TableDisplayOptions",
     "Text",
     "Threshold",
     "TimeSeriesFilter",
     "TimeSeriesFilterRatio",
     "TimeSeriesQuery",
+    "TimeSeriesTable",
     "UpdateDashboardRequest",
     "Widget",
     "XyChart",

@@ -36,6 +36,7 @@ except AttributeError:  # pragma: NO COVER
 
 from google.cloud.monitoring_dashboard_v1.services.dashboards_service import pagers
 from google.cloud.monitoring_dashboard_v1.types import dashboard
+from google.cloud.monitoring_dashboard_v1.types import dashboard_filter
 from google.cloud.monitoring_dashboard_v1.types import dashboards_service
 from google.cloud.monitoring_dashboard_v1.types import layouts
 from .transports.base import DashboardsServiceTransport, DEFAULT_CLIENT_INFO

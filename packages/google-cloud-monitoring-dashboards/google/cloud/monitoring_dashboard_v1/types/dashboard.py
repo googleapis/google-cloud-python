@@ -15,6 +15,7 @@
 #
 import proto  # type: ignore
 
+from google.cloud.monitoring_dashboard_v1.types import dashboard_filter
 from google.cloud.monitoring_dashboard_v1.types import layouts
 
 
@@ -74,6 +75,11 @@ class Dashboard(proto.Message):
             columns and the widgets are arranged vertically.
 
             This field is a member of `oneof`_ ``layout``.
+        dashboard_filters (Sequence[google.cloud.monitoring_dashboard_v1.types.DashboardFilter]):
+            Filters to reduce the amount of data charted
+            based on the filter criteria.
+        labels (Mapping[str, str]):
+            Labels applied to the dashboard
     """
 
     name = proto.Field(
@@ -111,6 +117,16 @@ class Dashboard(proto.Message):
         number=9,
         oneof="layout",
         message=layouts.ColumnLayout,
+    )
+    dashboard_filters = proto.RepeatedField(
+        proto.MESSAGE,
+        number=11,
+        message=dashboard_filter.DashboardFilter,
+    )
+    labels = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=12,
     )
 
 

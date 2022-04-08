@@ -16,7 +16,12 @@
 import proto  # type: ignore
 
 from google.cloud.monitoring_dashboard_v1.types import alertchart
+from google.cloud.monitoring_dashboard_v1.types import (
+    collapsible_group as gmd_collapsible_group,
+)
+from google.cloud.monitoring_dashboard_v1.types import logs_panel as gmd_logs_panel
 from google.cloud.monitoring_dashboard_v1.types import scorecard as gmd_scorecard
+from google.cloud.monitoring_dashboard_v1.types import table
 from google.cloud.monitoring_dashboard_v1.types import text as gmd_text
 from google.cloud.monitoring_dashboard_v1.types import xychart
 from google.protobuf import empty_pb2  # type: ignore
@@ -65,6 +70,21 @@ class Widget(proto.Message):
             A chart of alert policy data.
 
             This field is a member of `oneof`_ ``content``.
+        time_series_table (google.cloud.monitoring_dashboard_v1.types.TimeSeriesTable):
+            A widget that displays time series data in a
+            tabular format.
+
+            This field is a member of `oneof`_ ``content``.
+        collapsible_group (google.cloud.monitoring_dashboard_v1.types.CollapsibleGroup):
+            A widget that groups the other widgets. All
+            widgets that are within the area spanned by the
+            grouping widget are considered member widgets.
+
+            This field is a member of `oneof`_ ``content``.
+        logs_panel (google.cloud.monitoring_dashboard_v1.types.LogsPanel):
+            A widget that shows a stream of logs.
+
+            This field is a member of `oneof`_ ``content``.
     """
 
     title = proto.Field(
@@ -100,6 +120,24 @@ class Widget(proto.Message):
         number=7,
         oneof="content",
         message=alertchart.AlertChart,
+    )
+    time_series_table = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        oneof="content",
+        message=table.TimeSeriesTable,
+    )
+    collapsible_group = proto.Field(
+        proto.MESSAGE,
+        number=9,
+        oneof="content",
+        message=gmd_collapsible_group.CollapsibleGroup,
+    )
+    logs_panel = proto.Field(
+        proto.MESSAGE,
+        number=10,
+        oneof="content",
+        message=gmd_logs_panel.LogsPanel,
     )
 
 

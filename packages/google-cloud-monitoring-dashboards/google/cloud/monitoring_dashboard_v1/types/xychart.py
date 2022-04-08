@@ -49,6 +49,8 @@ class XyChart(proto.Message):
             The properties applied to the X axis.
         y_axis (google.cloud.monitoring_dashboard_v1.types.XyChart.Axis):
             The properties applied to the Y axis.
+        y2_axis (google.cloud.monitoring_dashboard_v1.types.XyChart.Axis):
+            The properties applied to the Y2 axis.
         chart_options (google.cloud.monitoring_dashboard_v1.types.ChartOptions):
             Display options for the chart.
     """
@@ -75,6 +77,9 @@ class XyChart(proto.Message):
                 ``min_alignment_period`` should be at least 10 minutes. It
                 would not make sense to fetch and align data at one minute
                 intervals.
+            target_axis (google.cloud.monitoring_dashboard_v1.types.XyChart.DataSet.TargetAxis):
+                Optional. The target axis to use for plotting
+                the metric.
         """
 
         class PlotType(proto.Enum):
@@ -84,6 +89,12 @@ class XyChart(proto.Message):
             STACKED_AREA = 2
             STACKED_BAR = 3
             HEATMAP = 4
+
+        class TargetAxis(proto.Enum):
+            r"""An axis identifier."""
+            TARGET_AXIS_UNSPECIFIED = 0
+            Y1 = 1
+            Y2 = 2
 
         time_series_query = proto.Field(
             proto.MESSAGE,
@@ -103,6 +114,11 @@ class XyChart(proto.Message):
             proto.MESSAGE,
             number=4,
             message=duration_pb2.Duration,
+        )
+        target_axis = proto.Field(
+            proto.ENUM,
+            number=5,
+            enum="XyChart.DataSet.TargetAxis",
         )
 
     class Axis(proto.Message):
@@ -155,6 +171,11 @@ class XyChart(proto.Message):
     y_axis = proto.Field(
         proto.MESSAGE,
         number=7,
+        message=Axis,
+    )
+    y2_axis = proto.Field(
+        proto.MESSAGE,
+        number=9,
         message=Axis,
     )
     chart_options = proto.Field(
