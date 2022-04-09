@@ -251,7 +251,8 @@ class AdaptationAsyncClient:
                 ``us`` (US North America), and ``eu`` (Europe). If you
                 are calling the ``speech.googleapis.com`` endpoint, use
                 the ``global`` location. To specify a region, use a
-                `regional endpoint </speech-to-text/docs/endpoints>`__
+                `regional
+                endpoint <https://cloud.google.com/speech-to-text/docs/endpoints>`__
                 with matching ``us`` or ``eu`` location value.
 
                 This corresponds to the ``parent`` field
@@ -376,7 +377,8 @@ class AdaptationAsyncClient:
                 ``us`` (US North America), and ``eu`` (Europe). If you
                 are calling the ``speech.googleapis.com`` endpoint, use
                 the ``global`` location. To specify a region, use a
-                `regional endpoint </speech-to-text/docs/endpoints>`__
+                `regional
+                endpoint <https://cloud.google.com/speech-to-text/docs/endpoints>`__
                 with matching ``us`` or ``eu`` location value.
 
                 This corresponds to the ``name`` field
@@ -482,7 +484,8 @@ class AdaptationAsyncClient:
                 ``us`` (US North America), and ``eu`` (Europe). If you
                 are calling the ``speech.googleapis.com`` endpoint, use
                 the ``global`` location. To specify a region, use a
-                `regional endpoint </speech-to-text/docs/endpoints>`__
+                `regional
+                endpoint <https://cloud.google.com/speech-to-text/docs/endpoints>`__
                 with matching ``us`` or ``eu`` location value.
 
                 This corresponds to the ``parent`` field
@@ -600,7 +603,8 @@ class AdaptationAsyncClient:
                 ``us`` (US North America), and ``eu`` (Europe). If you
                 are calling the ``speech.googleapis.com`` endpoint, use
                 the ``global`` location. To specify a region, use a
-                `regional endpoint </speech-to-text/docs/endpoints>`__
+                `regional
+                endpoint <https://cloud.google.com/speech-to-text/docs/endpoints>`__
                 with matching ``us`` or ``eu`` location value.
 
                 This corresponds to the ``phrase_set`` field
@@ -801,7 +805,8 @@ class AdaptationAsyncClient:
                 ``us`` (US North America), and ``eu`` (Europe). If you
                 are calling the ``speech.googleapis.com`` endpoint, use
                 the ``global`` location. To specify a region, use a
-                `regional endpoint </speech-to-text/docs/endpoints>`__
+                `regional
+                endpoint <https://cloud.google.com/speech-to-text/docs/endpoints>`__
                 with matching ``us`` or ``eu`` location value.
 
                 This corresponds to the ``parent`` field
@@ -1033,7 +1038,8 @@ class AdaptationAsyncClient:
                 ``us`` (US North America), and ``eu`` (Europe). If you
                 are calling the ``speech.googleapis.com`` endpoint, use
                 the ``global`` location. To specify a region, use a
-                `regional endpoint </speech-to-text/docs/endpoints>`__
+                `regional
+                endpoint <https://cloud.google.com/speech-to-text/docs/endpoints>`__
                 with matching ``us`` or ``eu`` location value.
 
                 This corresponds to the ``parent`` field
@@ -1151,7 +1157,8 @@ class AdaptationAsyncClient:
                 ``us`` (US North America), and ``eu`` (Europe). If you
                 are calling the ``speech.googleapis.com`` endpoint, use
                 the ``global`` location. To specify a region, use a
-                `regional endpoint </speech-to-text/docs/endpoints>`__
+                `regional
+                endpoint <https://cloud.google.com/speech-to-text/docs/endpoints>`__
                 with matching ``us`` or ``eu`` location value.
 
                 This corresponds to the ``custom_class`` field
@@ -1266,7 +1273,8 @@ class AdaptationAsyncClient:
                 ``us`` (US North America), and ``eu`` (Europe). If you
                 are calling the ``speech.googleapis.com`` endpoint, use
                 the ``global`` location. To specify a region, use a
-                `regional endpoint </speech-to-text/docs/endpoints>`__
+                `regional
+                endpoint <https://cloud.google.com/speech-to-text/docs/endpoints>`__
                 with matching ``us`` or ``eu`` location value.
 
                 This corresponds to the ``name`` field

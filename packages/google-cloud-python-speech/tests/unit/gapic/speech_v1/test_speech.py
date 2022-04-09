@@ -87,24 +87,24 @@ def test__get_default_mtls_endpoint():
 
 
 @pytest.mark.parametrize(
-    "client_class",
+    "client_class,transport_name",
     [
-        SpeechClient,
-        SpeechAsyncClient,
+        (SpeechClient, "grpc"),
+        (SpeechAsyncClient, "grpc_asyncio"),
     ],
 )
-def test_speech_client_from_service_account_info(client_class):
+def test_speech_client_from_service_account_info(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_info"
     ) as factory:
         factory.return_value = creds
         info = {"valid": True}
-        client = client_class.from_service_account_info(info)
+        client = client_class.from_service_account_info(info, transport=transport_name)
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == "speech.googleapis.com:443"
+        assert client.transport._host == ("speech.googleapis.com:443")
 
 
 @pytest.mark.parametrize(
@@ -131,27 +131,31 @@ def test_speech_client_service_account_always_use_jwt(transport_class, transport
 
 
 @pytest.mark.parametrize(
-    "client_class",
+    "client_class,transport_name",
     [
-        SpeechClient,
-        SpeechAsyncClient,
+        (SpeechClient, "grpc"),
+        (SpeechAsyncClient, "grpc_asyncio"),
     ],
 )
-def test_speech_client_from_service_account_file(client_class):
+def test_speech_client_from_service_account_file(client_class, transport_name):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_file"
     ) as factory:
         factory.return_value = creds
-        client = client_class.from_service_account_file("dummy/file/path.json")
+        client = client_class.from_service_account_file(
+            "dummy/file/path.json", transport=transport_name
+        )
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        client = client_class.from_service_account_json("dummy/file/path.json")
+        client = client_class.from_service_account_json(
+            "dummy/file/path.json", transport=transport_name
+        )
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == "speech.googleapis.com:443"
+        assert client.transport._host == ("speech.googleapis.com:443")
 
 
 def test_speech_client_get_transport_class():
@@ -1348,24 +1352,40 @@ def test_speech_grpc_transport_client_cert_source_for_mtls(transport_class):
             )
 
 
-def test_speech_host_no_port():
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "grpc",
+        "grpc_asyncio",
+    ],
+)
+def test_speech_host_no_port(transport_name):
     client = SpeechClient(
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="speech.googleapis.com"
         ),
+        transport=transport_name,
     )
-    assert client.transport._host == "speech.googleapis.com:443"
+    assert client.transport._host == ("speech.googleapis.com:443")
 
 
-def test_speech_host_with_port():
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "grpc",
+        "grpc_asyncio",
+    ],
+)
+def test_speech_host_with_port(transport_name):
     client = SpeechClient(
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="speech.googleapis.com:8000"
         ),
+        transport=transport_name,
     )
-    assert client.transport._host == "speech.googleapis.com:8000"
+    assert client.transport._host == ("speech.googleapis.com:8000")
 
 
 def test_speech_grpc_transport_channel():
