@@ -395,10 +395,9 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         r"""Generates an OAuth 2.0 access token for a service
         account.
 
-
         .. code-block:: python
 
-                    from google.iam import credentials_v1
+            from google.iam import credentials_v1
 
             def sample_generate_access_token():
                 # Create a client
@@ -542,10 +541,9 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         r"""Generates an OpenID Connect ID token for a service
         account.
 
-
         .. code-block:: python
 
-                    from google.iam import credentials_v1
+            from google.iam import credentials_v1
 
             def sample_generate_id_token():
                 # Create a client
@@ -682,10 +680,9 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         r"""Signs a blob using a service account's system-managed
         private key.
 
-
         .. code-block:: python
 
-                    from google.iam import credentials_v1
+            from google.iam import credentials_v1
 
             def sample_sign_blob():
                 # Create a client
@@ -809,10 +806,9 @@ class IAMCredentialsClient(metaclass=IAMCredentialsClientMeta):
         r"""Signs a JWT using a service account's system-managed
         private key.
 
-
         .. code-block:: python
 
-                    from google.iam import credentials_v1
+            from google.iam import credentials_v1
 
             def sample_sign_jwt():
                 # Create a client

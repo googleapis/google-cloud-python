@@ -210,7 +210,6 @@ class AssetServiceAsyncClient:
         the export operation result. For regular-size resource parent,
         the export operation usually finishes within 5 minutes.
 
-
         .. code-block:: python
 
             from google.cloud import asset_v1
@@ -306,7 +305,6 @@ class AssetServiceAsyncClient:
             ) -> pagers.ListAssetsAsyncPager:
         r"""Lists assets with time and resource types and returns
         paged results in response.
-
 
         .. code-block:: python
 
@@ -421,7 +419,6 @@ class AssetServiceAsyncClient:
         specified asset does not exist, this API returns an
         INVALID_ARGUMENT error.
 
-
         .. code-block:: python
 
             from google.cloud import asset_v1
@@ -501,7 +498,6 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         r"""Creates a feed in a parent
         project/folder/organization to listen to its asset
         updates.
-
 
         .. code-block:: python
 
@@ -719,7 +715,6 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             ) -> asset_service.ListFeedsResponse:
         r"""Lists all asset feeds in a parent
         project/folder/organization.
-
 
         .. code-block:: python
 
@@ -1020,7 +1015,6 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         the ``cloudasset.assets.searchAllResources`` permission on the
         desired scope, otherwise the request will be rejected.
 
-
         .. code-block:: python
 
             from google.cloud import asset_v1
@@ -1226,7 +1220,6 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         ``cloudasset.assets.searchAllIamPolicies`` permission on the
         desired scope, otherwise the request will be rejected.
 
-
         .. code-block:: python
 
             from google.cloud import asset_v1
@@ -1408,7 +1401,6 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         r"""Analyzes IAM policies to answer which identities have
         what accesses on which resources.
 
-
         .. code-block:: python
 
             from google.cloud import asset_v1
@@ -1502,7 +1494,6 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         intervals of at least 2 seconds with exponential backoff retry
         to poll the operation result. The metadata contains the request
         to help callers to map responses to requests.
-
 
         .. code-block:: python
 

@@ -385,7 +385,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
 
         .. code-block:: python
 
-                    from google.cloud import logging_v2
+            from google.cloud import logging_v2
 
             def sample_list_log_metrics():
                 # Create a client
@@ -494,7 +494,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
 
         .. code-block:: python
 
-                    from google.cloud import logging_v2
+            from google.cloud import logging_v2
 
             def sample_get_log_metric():
                 # Create a client
@@ -600,7 +600,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
 
         .. code-block:: python
 
-                    from google.cloud import logging_v2
+            from google.cloud import logging_v2
 
             def sample_create_log_metric():
                 # Create a client
@@ -724,7 +724,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
 
         .. code-block:: python
 
-                    from google.cloud import logging_v2
+            from google.cloud import logging_v2
 
             def sample_update_log_metric():
                 # Create a client
@@ -846,7 +846,7 @@ class MetricsServiceV2Client(metaclass=MetricsServiceV2ClientMeta):
 
         .. code-block:: python
 
-                    from google.cloud import logging_v2
+            from google.cloud import logging_v2
 
             def sample_delete_log_metric():
                 # Create a client

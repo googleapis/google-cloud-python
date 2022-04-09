@@ -208,7 +208,6 @@ class IAMCredentialsAsyncClient:
         r"""Generates an OAuth 2.0 access token for a service
         account.
 
-
         .. code-block:: python
 
             from google.iam import credentials_v1
@@ -361,7 +360,6 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         r"""Generates an OpenID Connect ID token for a service
         account.
 
-
         .. code-block:: python
 
             from google.iam import credentials_v1
@@ -507,7 +505,6 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
         r"""Signs a blob using a service account's system-managed
         private key.
 
-
         .. code-block:: python
 
             from google.iam import credentials_v1
@@ -639,7 +636,6 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
             ) -> common.SignJwtResponse:
         r"""Signs a JWT using a service account's system-managed
         private key.
-
 
         .. code-block:: python
 

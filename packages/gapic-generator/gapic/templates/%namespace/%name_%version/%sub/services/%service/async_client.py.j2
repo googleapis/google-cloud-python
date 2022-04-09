@@ -209,7 +209,7 @@ class {{ service.async_client_name }}:
             {% else %}
             ) -> Awaitable[AsyncIterable[{{ method.client_output_async.ident }}]]:
             {% endif %}
-        r"""{{ method.meta.doc|rst(width=72, indent=8) }}
+        r"""{{ method.meta.doc|rst(width=72, indent=8)|trim }}
 
         {% with snippet = snippet_index.get_snippet(service.name, method.name, sync=True) %}
         {% if snippet is not none %}

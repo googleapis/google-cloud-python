@@ -386,10 +386,9 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         deleted. Entries received after the delete operation
         with a timestamp before the operation will be deleted.
 
-
         .. code-block:: python
 
-                    from google.cloud import logging_v2
+            from google.cloud import logging_v2
 
             def sample_delete_log():
                 # Create a client
@@ -489,10 +488,9 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         maximum of 1000 different resources (projects,
         organizations, billing accounts or folders)
 
-
         .. code-block:: python
 
-                    from google.cloud import logging_v2
+            from google.cloud import logging_v2
 
             def sample_write_log_entries():
                 # Create a client
@@ -668,10 +666,9 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         For ways to export log entries, see `Exporting
         Logs <https://cloud.google.com/logging/docs/export>`__.
 
-
         .. code-block:: python
 
-                    from google.cloud import logging_v2
+            from google.cloud import logging_v2
 
             def sample_list_log_entries():
                 # Create a client
@@ -813,10 +810,9 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         r"""Lists the descriptors for monitored resource types
         used by Logging.
 
-
         .. code-block:: python
 
-                    from google.cloud import logging_v2
+            from google.cloud import logging_v2
 
             def sample_list_monitored_resource_descriptors():
                 # Create a client
@@ -896,10 +892,9 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         or billing accounts. Only logs that have entries are
         listed.
 
-
         .. code-block:: python
 
-                    from google.cloud import logging_v2
+            from google.cloud import logging_v2
 
             def sample_list_logs():
                 # Create a client
@@ -1009,10 +1004,9 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         Until the stream is terminated, it will continue reading
         logs.
 
-
         .. code-block:: python
 
-                    from google.cloud import logging_v2
+            from google.cloud import logging_v2
 
             def sample_tail_log_entries():
                 # Create a client
