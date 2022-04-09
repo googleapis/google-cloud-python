@@ -197,6 +197,7 @@ class Generator:
                 )
 
                 snippet_metadata.file = fpath
+                snippet_metadata.title = fpath
 
                 index.add_snippet(
                     snippet_index.Snippet(sample, snippet_metadata))

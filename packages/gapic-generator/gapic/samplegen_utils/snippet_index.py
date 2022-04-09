@@ -102,6 +102,14 @@ class SnippetIndex:
     def __init__(self, api_schema: api.API):
         self.metadata_index = snippet_metadata_pb2.Index()  # type: ignore
 
+        self.metadata_index.client_library.name = api_schema.naming.warehouse_package_name
+        self.metadata_index.client_library.language = snippet_metadata_pb2.Language.PYTHON  # type: ignore
+
+        self.metadata_index.client_library.apis.append(snippet_metadata_pb2.Api(  # type: ignore
+            id=api_schema.naming.proto_package,
+            version=api_schema.naming.version
+        ))
+
         # Construct a dictionary to insert samples into based on the API schema
         # NOTE: In the future we expect the generator to support configured samples,
         # which will result in more than one sample variant per RPC. At that

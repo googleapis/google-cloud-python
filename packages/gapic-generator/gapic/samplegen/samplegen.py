@@ -1015,6 +1015,70 @@ def generate_sample_specs(api_schema: api.API, *, opts) -> Generator[Dict[str, A
                 yield spec
 
 
+def _fill_sample_metadata(sample: dict, api_schema: api.API):
+    """Returns snippet metadata for the sample."""
+
+    # Snippet Metadata can't be fully filled out in any one function
+    # In this function we add information from
+    # the API schema and sample dictionary.
+    # See `snippet_metadata.proto` for documentation on the fields
+
+    service = api_schema.services[sample["service"]]
+    method = service.methods[sample["rpc"]]
+    async_ = sample["transport"] == api.TRANSPORT_GRPC_ASYNC
+
+    snippet_metadata = snippet_metadata_pb2.Snippet()  # type: ignore
+    snippet_metadata.region_tag = sample["region_tag"]
+    snippet_metadata.description = f"Sample for {sample['rpc']}"
+    snippet_metadata.language = snippet_metadata_pb2.Language.PYTHON  # type: ignore
+    snippet_metadata.canonical = True
+    snippet_metadata.origin = snippet_metadata_pb2.Snippet.Origin.API_DEFINITION  # type: ignore
+
+    # Service Client
+    snippet_metadata.client_method.client.short_name = service.async_client_name if async_ else service.client_name
+    snippet_metadata.client_method.client.full_name = f"{'.'.join(sample['module_namespace'])}.{sample['module_name']}.{snippet_metadata.client_method.client.short_name}"
+
+    # Service
+    snippet_metadata.client_method.method.service.short_name = service.name
+    snippet_metadata.client_method.method.service.full_name = f"{api_schema.naming.proto_package}.{service.name}"
+
+    # RPC
+    snippet_metadata.client_method.method.short_name = method.name
+    snippet_metadata.client_method.method.full_name = f"{api_schema.naming.proto_package}.{service.name}.{method.name}"
+
+    # Client Method
+    setattr(snippet_metadata.client_method, "async", async_)
+    snippet_metadata.client_method.short_name = utils.to_snake_case(
+        method.name)
+    snippet_metadata.client_method.full_name = f"{snippet_metadata.client_method.client.full_name}.{snippet_metadata.client_method.short_name}"
+
+    if not method.void:
+        snippet_metadata.client_method.result_type = method.client_output_async.ident.sphinx if async_ else method.client_output.ident.sphinx
+        if method.server_streaming:
+            snippet_metadata.client_method.result_type = f"Iterable[{snippet_metadata.client_method.result_type }]"
+
+    # Client Method Parameters
+    parameters = snippet_metadata.client_method.parameters
+    if not method.client_streaming:
+        parameters.append(snippet_metadata_pb2.ClientMethod.Parameter(  # type: ignore
+            type=method.input.ident.sphinx, name="request"))
+        for field in method.flattened_fields.values():
+            parameters.append(snippet_metadata_pb2.ClientMethod.Parameter(  # type: ignore
+                type=field.ident.sphinx, name=field.name))
+    else:
+        parameters.append(snippet_metadata_pb2.ClientMethod.Parameter(  # type: ignore
+            type=f"Iterator[{method.input.ident.sphinx}]", name="requests"))
+
+    parameters.append(snippet_metadata_pb2.ClientMethod.Parameter(  # type: ignore
+        name="retry", type="google.api_core.retry.Retry"))
+    parameters.append(snippet_metadata_pb2.ClientMethod.Parameter(  # type: ignore
+        name="timeout", type="float"))
+    parameters.append(snippet_metadata_pb2.ClientMethod.Parameter(  # type: ignore
+        name="metadata", type="Sequence[Tuple[str, str]"))
+
+    return snippet_metadata
+
+
 def generate_sample(sample, api_schema, sample_template: jinja2.Template) -> Tuple[str, Any]:
     """Generate a standalone, runnable sample.
 
@@ -1053,16 +1117,7 @@ def generate_sample(sample, api_schema, sample_template: jinja2.Template) -> Tup
 
     v.validate_response(sample["response"])
 
-    # Snippet Metadata can't be fully filled out in any one function
-    # In this function we add information from
-    # the API schema and sample dictionary.
-    snippet_metadata = snippet_metadata_pb2.Snippet()  # type: ignore
-    snippet_metadata.region_tag = sample["region_tag"]
-    setattr(snippet_metadata.client_method, "async",
-            sample["transport"] == api.TRANSPORT_GRPC_ASYNC)
-    snippet_metadata.client_method.method.short_name = sample["rpc"]
-    snippet_metadata.client_method.method.service.short_name = sample["service"].split(
-        ".")[-1]
+    snippet_metadata = _fill_sample_metadata(sample, api_schema)
 
     return sample_template.render(
         sample=sample,

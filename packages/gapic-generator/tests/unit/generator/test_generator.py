@@ -464,7 +464,7 @@ def test_samplegen_config_to_output_files(mock_gmtime, fs):
             },
             )},
         naming=DummyNaming(name="mollusc", version="v1", warehouse_package_name="mollusc-cephalopod-teuthida-",
-                           versioned_module_name="teuthida_v1", module_namespace="mollusc.cephalopod"),
+                           versioned_module_name="teuthida_v1", module_namespace="mollusc.cephalopod", proto_package="google.mollusca"),
     )
 
     with mock.patch("gapic.samplegen.samplegen.generate_sample", side_effect=mock_generate_sample):
@@ -472,16 +472,24 @@ def test_samplegen_config_to_output_files(mock_gmtime, fs):
             api_schema, opts=Options.build("autogen-snippets=False"))
 
     expected_snippet_index_json = {
+        "clientLibrary": {
+            "apis": [{
+                "id": "google.mollusca",
+                "version": "v1"
+            }],
+            "language": "PYTHON",
+            "name": "mollusc-cephalopod-teuthida-"
+            },
         "snippets": [
             {
                 "clientMethod": {
                     "method": {
-                        "shortName": "GetSquidStreaming",
                         "service": {
                             "shortName": "Mollusc"
-                            }
-                    }
-                },
+                            },
+                        "shortName": "GetSquidStreaming"
+                        }
+                    },
                 "file": "squid_sample.py",
                 "segments": [
                     {"type": "FULL"},
@@ -490,17 +498,18 @@ def test_samplegen_config_to_output_files(mock_gmtime, fs):
                     {"type": "REQUEST_INITIALIZATION"},
                     {"type": "REQUEST_EXECUTION"},
                     {"type": "RESPONSE_HANDLING"}
-                ]
+                ],
+                "title": "squid_sample.py"
                 },
             {
                 "clientMethod": {
                     "method": {
-                        "shortName": "GetClam",
                         "service": {
                             "shortName": "Mollusc"
-                            }
-                    }
-                },
+                            },
+                        "shortName": "GetClam"
+                        }
+                    },
                 "file": "clam_sample.py",
                 "segments": [
                     {"type": "FULL"},
@@ -509,10 +518,11 @@ def test_samplegen_config_to_output_files(mock_gmtime, fs):
                     {"type": "REQUEST_INITIALIZATION"},
                     {"type": "REQUEST_EXECUTION"},
                     {"type": "RESPONSE_HANDLING"}
-                ]
+                ],
+                "title": "clam_sample.py"
                 }
             ]
-    }
+        }
 
     assert actual_response.supported_features == CodeGeneratorResponse.Feature.FEATURE_PROTO3_OPTIONAL
 
@@ -523,6 +533,7 @@ def test_samplegen_config_to_output_files(mock_gmtime, fs):
         name="samples/generated_samples/clam_sample.py", content="\n",)
 
     assert actual_response.file[2].name == "samples/generated_samples/snippet_metadata_mollusc_v1.json"
+
     assert json.loads(
         actual_response.file[2].content) == expected_snippet_index_json
 
@@ -605,23 +616,33 @@ def test_samplegen_id_disambiguation(mock_gmtime, fs):
             },
             )},
         naming=DummyNaming(name="mollusc", version="v1", warehouse_package_name="mollusc-cephalopod-teuthida-",
-                           versioned_module_name="teuthida_v1", module_namespace="mollusc.cephalopod"),
+                           versioned_module_name="teuthida_v1", module_namespace="mollusc.cephalopod", proto_package="google.mollusca"),
     )
     with mock.patch("gapic.samplegen.samplegen.generate_sample", side_effect=mock_generate_sample):
         actual_response = g.get_response(api_schema,
                                      opts=Options.build("autogen-snippets=False"))
 
     expected_snippet_metadata_json = {
+        "clientLibrary": {
+            "apis": [
+                {
+                    "id": "google.mollusca",
+                    "version": "v1"
+                    }
+            ],
+            "language": "PYTHON",
+            "name": "mollusc-cephalopod-teuthida-"
+        },
         "snippets": [
             {
                 "clientMethod": {
                     "method": {
-                        "shortName": "GetSquidStreaming",
                         "service": {
                             "shortName": "Mollusc"
-                            }
-                        }
-                    },
+                            },
+                        "shortName": "GetSquidStreaming"
+                    }
+                },
                 "file": "squid_sample_1cfd0b3d.py",
                 "segments": [
                     {"type": "FULL"},
@@ -630,17 +651,18 @@ def test_samplegen_id_disambiguation(mock_gmtime, fs):
                     {"type": "REQUEST_INITIALIZATION"},
                     {"type": "REQUEST_EXECUTION"},
                     {"type": "RESPONSE_HANDLING"}
-                    ]
+                ],
+                "title": "squid_sample_1cfd0b3d.py"
                 },
             {
                 "clientMethod": {
                     "method": {
-                        "shortName": "GetSquidStreaming",
                         "service": {
                             "shortName": "Mollusc"
-                            }
-                        }
-                    },
+                            },
+                        "shortName": "GetSquidStreaming"
+                    }
+                },
                 "file": "squid_sample_cf4d4fa4.py",
                 "segments": [
                     {"type": "FULL"},
@@ -649,17 +671,18 @@ def test_samplegen_id_disambiguation(mock_gmtime, fs):
                     {"type": "REQUEST_INITIALIZATION"},
                     {"type": "REQUEST_EXECUTION"},
                     {"type": "RESPONSE_HANDLING"}
-                    ]
+                ],
+                "title": "squid_sample_cf4d4fa4.py"
                 },
             {
                 "clientMethod": {
                     "method": {
-                        "shortName": "GetSquidStreaming",
                         "service": {
                             "shortName": "Mollusc"
-                            }
-                        }
-                    },
+                            },
+                        "shortName": "GetSquidStreaming"
+                    }
+                },
                 "file": "7384949e.py",
                 "segments": [
                     {"type": "FULL"},
@@ -668,10 +691,11 @@ def test_samplegen_id_disambiguation(mock_gmtime, fs):
                     {"type": "REQUEST_INITIALIZATION"},
                     {"type": "REQUEST_EXECUTION"},
                     {"type": "RESPONSE_HANDLING"}
-                    ]
+                ],
+                "title": "7384949e.py"
                 }
             ]
-        }
+    }
 
     assert actual_response.supported_features == CodeGeneratorResponse.Feature.FEATURE_PROTO3_OPTIONAL
     assert len(actual_response.file) == 4
@@ -684,6 +708,7 @@ def test_samplegen_id_disambiguation(mock_gmtime, fs):
     assert actual_response.file[2] == CodeGeneratorResponse.File(
         name="samples/generated_samples/7384949e.py", content="\n",
     )
+    print(actual_response.file[3].content)
     assert actual_response.file[3].name == "samples/generated_samples/snippet_metadata_mollusc_v1.json"
     assert json.loads(
         actual_response.file[3].content) == expected_snippet_metadata_json

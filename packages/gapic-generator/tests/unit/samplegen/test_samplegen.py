@@ -21,6 +21,8 @@ from collections import (OrderedDict, namedtuple)
 from google.api import client_pb2
 from google.api import resource_pb2
 from google.protobuf import descriptor_pb2
+from google.protobuf import json_format
+
 
 import gapic.samplegen.samplegen as samplegen
 import gapic.samplegen_utils.types as types
@@ -2063,6 +2065,161 @@ def test_generate_sample_spec_basic():
         "service": "animalia.mollusca.v1.Squid",
         "region_tag": "example_v1_generated_Squid_Ramshorn_async",
         "description": "Snippet for ramshorn"
+    }
+
+
+def test__set_sample_metadata_server_streaming():
+    sample = {
+        "rpc": "Ramshorn",
+        "transport": "grpc",
+        "service": "animalia.mollusca.v1.Squid",
+        "region_tag": "example_v1_generated_Squid_Ramshorn_sync",
+        "description": "Snippet for ramshorn",
+        "module_namespace": ["animalia"],
+        "module_name": "mollusca_v1"
+    }
+
+    service_options = descriptor_pb2.ServiceOptions()
+    service_options.Extensions[client_pb2.default_host] = "example.googleapis.com"
+
+    api_schema = api.API.build(
+        file_descriptors=[
+            descriptor_pb2.FileDescriptorProto(
+                name="cephalopod.proto",
+                package="animalia.mollusca.v1",
+                message_type=[
+                    descriptor_pb2.DescriptorProto(
+                        name="MolluscRequest",
+                    ),
+                    descriptor_pb2.DescriptorProto(
+                        name="Mollusc",
+                    ),
+                ],
+                service=[
+                    descriptor_pb2.ServiceDescriptorProto(
+                        name="Squid",
+                        options=service_options,
+                        method=[
+                            descriptor_pb2.MethodDescriptorProto(
+                                server_streaming=True,
+                                name="Ramshorn",
+                                input_type="animalia.mollusca.v1.MolluscRequest",
+                                output_type="animalia.mollusca.v1.Mollusc",
+                            ),
+                        ],
+                    ),
+                ],
+            )
+        ]
+    )
+
+    snippet_metadata = samplegen._fill_sample_metadata(sample, api_schema)
+
+    assert json_format.MessageToDict(snippet_metadata) == {
+        'regionTag': 'example_v1_generated_Squid_Ramshorn_sync',
+        'description': 'Sample for Ramshorn',
+        'language': 'PYTHON',
+        'clientMethod': {
+            'shortName': 'ramshorn',
+            'fullName': 'animalia.mollusca_v1.SquidClient.ramshorn',
+            'parameters': [
+                {'type': 'animalia.mollusca_v1.types.MolluscRequest', 'name': 'request'},
+                {'type': 'google.api_core.retry.Retry', 'name': 'retry'},
+                {'type': 'float', 'name': 'timeout'},
+                {'type': 'Sequence[Tuple[str, str]', 'name': 'metadata'}
+            ],
+            'resultType': 'Iterable[animalia.mollusca_v1.types.Mollusc]',
+            'client': {
+                'shortName': 'SquidClient',
+                'fullName': 'animalia.mollusca_v1.SquidClient'  # FIX THE FULL NAME
+            },
+            'method': {
+                'shortName': 'Ramshorn',
+                'fullName': 'animalia.mollusca.v1.Squid.Ramshorn',
+                'service': {'shortName': 'Squid', 'fullName': 'animalia.mollusca.v1.Squid'}
+            }
+        },
+        'canonical': True,
+        'origin': 'API_DEFINITION'
+    }
+
+
+def test__set_sample_metadata_client_streaming():
+    sample = {
+        "rpc": "Ramshorn",
+        "transport": "grpc",
+        "service": "animalia.mollusca.v1.Squid",
+        "region_tag": "example_v1_generated_Squid_Ramshorn_sync",
+        "description": "Snippet for ramshorn",
+        "module_namespace": ["animalia"],
+        "module_name": "mollusca_v1"
+    }
+
+    service_options = descriptor_pb2.ServiceOptions()
+    service_options.Extensions[client_pb2.default_host] = "example.googleapis.com"
+
+    api_schema = api.API.build(
+        file_descriptors=[
+            descriptor_pb2.FileDescriptorProto(
+                name="cephalopod.proto",
+                package="animalia.mollusca.v1",
+                message_type=[
+                    descriptor_pb2.DescriptorProto(
+                        name="MolluscRequest",
+                    ),
+                    descriptor_pb2.DescriptorProto(
+                        name="Mollusc",
+                    ),
+                ],
+                service=[
+                    descriptor_pb2.ServiceDescriptorProto(
+                        name="Squid",
+                        options=service_options,
+                        method=[
+                            descriptor_pb2.MethodDescriptorProto(
+                                client_streaming=True,
+                                name="Ramshorn",
+                                input_type="animalia.mollusca.v1.MolluscRequest",
+                                output_type="animalia.mollusca.v1.Mollusc",
+                            ),
+                        ],
+                    ),
+                ],
+            )
+        ]
+    )
+
+    snippet_metadata = samplegen._fill_sample_metadata(sample, api_schema)
+
+    print(json_format.MessageToDict(snippet_metadata))
+
+    assert json_format.MessageToDict(snippet_metadata) == {
+        'regionTag': 'example_v1_generated_Squid_Ramshorn_sync',
+        'description': 'Sample for Ramshorn',
+        'language': 'PYTHON',
+        'clientMethod': {
+            'shortName': 'ramshorn',
+            'fullName': 'animalia.mollusca_v1.SquidClient.ramshorn',
+            'parameters': [
+                {'type': 'Iterator[animalia.mollusca_v1.types.MolluscRequest]',
+                    'name': 'requests'},
+                {'type': 'google.api_core.retry.Retry', 'name': 'retry'},
+                {'type': 'float', 'name': 'timeout'},
+                {'type': 'Sequence[Tuple[str, str]', 'name': 'metadata'}
+            ],
+            'resultType': 'animalia.mollusca_v1.types.Mollusc',
+            'client': {
+                'shortName': 'SquidClient',
+                'fullName': 'animalia.mollusca_v1.SquidClient'
+            },
+            'method': {
+                'shortName': 'Ramshorn',
+                'fullName': 'animalia.mollusca.v1.Squid.Ramshorn',
+                'service': {'shortName': 'Squid', 'fullName': 'animalia.mollusca.v1.Squid'}
+            }
+        },
+        'canonical': True,
+        'origin': 'API_DEFINITION'
     }
 
 

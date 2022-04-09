@@ -19,7 +19,7 @@ import pytest
 
 from gapic.samplegen_utils import snippet_metadata_pb2
 from gapic.samplegen_utils import snippet_index, types
-from ..common_types import DummyApiSchema, DummyService, DummyMethod
+from ..common_types import DummyApiSchema, DummyService, DummyMethod, DummyNaming
 
 
 @pytest.fixture
@@ -119,7 +119,13 @@ def test_add_snippet_no_matching_service(sample_str):
 
     # No 'Clam' service in API Schema
     index = snippet_index.SnippetIndex(api_schema=DummyApiSchema(
-        services={"Squid": DummyService(name="Squid", methods={})}
+        services={"Squid": DummyService(name="Squid", methods={})},
+        naming=DummyNaming(
+            proto_package="google.mollusca",
+            warehouse_package_name="google-mollusca",
+            version="v1"
+        ),
+
     ))
     with pytest.raises(types.UnknownService):
         index.add_snippet(snippet)
@@ -134,7 +140,12 @@ def test_add_snippet_no_matching_rpc(sample_str):
 
     # No 'classify' method in 'Squid' service
     index = snippet_index.SnippetIndex(api_schema=DummyApiSchema(
-        services={"Squid": DummyService(name="Squid", methods={"list": None})}
+        services={"Squid": DummyService(name="Squid", methods={"list": None})},
+        naming=DummyNaming(
+            proto_package="google.mollusca",
+            warehouse_package_name="google-mollusca",
+            version="v1"
+        ),
     ))
     with pytest.raises(types.RpcMethodNotFound):
         index.add_snippet(snippet)
@@ -142,6 +153,11 @@ def test_add_snippet_no_matching_rpc(sample_str):
 
 def test_get_snippet_no_matching_service():
     index = snippet_index.SnippetIndex(api_schema=DummyApiSchema(
+        naming=DummyNaming(
+            proto_package="google.mollusca",
+            warehouse_package_name="google-mollusca",
+            version="v1"
+        ),
         services={"Squid": DummyService(
             name="Squid", methods={"classify": DummyMethod()})}
     ))
@@ -154,7 +170,12 @@ def test_get_snippet_no_matching_service():
 def test_get_snippet_no_matching_rpc():
     index = snippet_index.SnippetIndex(api_schema=DummyApiSchema(
         services={"Squid": DummyService(
-            name="Squid", methods={"classify": DummyMethod()})}
+            name="Squid", methods={"classify": DummyMethod()})},
+        naming=DummyNaming(
+            proto_package="google.mollusca",
+            warehouse_package_name="google-mollusca",
+            version="v1"
+        ),
     ))
 
     # No 'list' RPC in 'Squid' service
@@ -170,7 +191,12 @@ def test_add_and_get_snippet_sync(sample_str):
 
     index = snippet_index.SnippetIndex(api_schema=DummyApiSchema(
         services={"Squid": DummyService(
-            name="Squid", methods={"classify": DummyMethod()})}
+            name="Squid", methods={"classify": DummyMethod()})},
+        naming=DummyNaming(
+            proto_package="google.mollusca",
+            warehouse_package_name="google-mollusca",
+            version="v1"
+        ),
     ))
 
     index.add_snippet(snippet)
@@ -187,7 +213,12 @@ def test_add_and_get_snippet_async(sample_str):
 
     index = snippet_index.SnippetIndex(api_schema=DummyApiSchema(
         services={"Squid": DummyService(
-            name="Squid", methods={"classify": DummyMethod()})}
+            name="Squid", methods={"classify": DummyMethod()})},
+        naming=DummyNaming(
+            proto_package="google.mollusca",
+            warehouse_package_name="google-mollusca",
+            version="v1"
+        ),
     ))
 
     index.add_snippet(snippet)
@@ -203,26 +234,70 @@ def test_get_metadata_json(sample_str):
 
     index = snippet_index.SnippetIndex(api_schema=DummyApiSchema(
         services={"Squid": DummyService(
-            name="Squid", methods={"classify": DummyMethod()})}
+            name="Squid", methods={"classify": DummyMethod()})},
+        naming=DummyNaming(
+            proto_package="google.mollusca",
+            warehouse_package_name="google-mollusca",
+            version="v1"
+        ),
     ))
 
     index.add_snippet(snippet)
 
+    print(index.get_metadata_json())
     assert json.loads(index.get_metadata_json()) == {
-        'snippets': [{'clientMethod': {'method': {'shortName': 'classify',
-                                'service': {'shortName': 'Squid'}}},
-        'segments': [{'end': 28, 'start': 2, 'type': 'FULL'},
-                     {'end': 28, 'start': 2, 'type': 'SHORT'},
-                     {'end': 8,
-                      'start': 6,
-                      'type': 'CLIENT_INITIALIZATION'},
-                     {'end': 22,
-                      'start': 9,
-                      'type': 'REQUEST_INITIALIZATION'},
-                     {'end': 25,
-                      'start': 23,
-                      'type': 'REQUEST_EXECUTION'},
-                     {'end': 29,
-                      'start': 26,
-                      'type': 'RESPONSE_HANDLING'}]}]
+        "clientLibrary": {
+            "apis": [
+                {
+                    "id": "google.mollusca",
+                    "version": "v1"
+                    }
+                ],
+            "language": "PYTHON",
+            "name": "google-mollusca"
+            },
+        "snippets": [
+            {
+                "clientMethod": {
+                    "method": {
+                        "service": {
+                            "shortName": "Squid"
+                            },
+                        "shortName": "classify"
+                        }
+                    },
+                "segments": [
+                    {
+                        "end": 28,
+                        "start": 2,
+                        "type": "FULL"
+                        },
+                    {
+                        "end": 28,
+                        "start": 2,
+                        "type": "SHORT"
+                        },
+                    {
+                        "end": 8,
+                        "start": 6,
+                        "type": "CLIENT_INITIALIZATION"
+                        },
+                    {
+                        "end": 22,
+                        "start": 9,
+                        "type": "REQUEST_INITIALIZATION"
+                        },
+                    {
+                        "end": 25,
+                        "start": 23,
+                        "type": "REQUEST_EXECUTION"
+                        },
+                    {
+                        "end": 29,
+                        "start": 26,
+                        "type": "RESPONSE_HANDLING"
+                        }
+                    ]
+                }
+            ]
         }
