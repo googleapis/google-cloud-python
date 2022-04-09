@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [0.65.0](https://github.com/googleapis/gapic-generator-python/compare/v0.64.0...v0.65.0) (2022-04-09)
+
+
+### Features
+
+* adds support for MixIns. ([#1240](https://github.com/googleapis/gapic-generator-python/issues/1240)) ([856af2e](https://github.com/googleapis/gapic-generator-python/commit/856af2ef406e0ea380fcfaa5d505435124330c25))
+
 ## [0.64.0](https://github.com/googleapis/gapic-generator-python/compare/v0.63.8...v0.64.0) (2022-04-08)
 
 
