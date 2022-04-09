@@ -31,6 +31,7 @@ from .types.bigquery import CloudSqlBigQueryConnectionSpec
 from .types.common import PersonalDetails
 from .types.common import IntegratedSystem
 from .types.data_source import DataSource
+from .types.data_source import StorageProperties
 from .types.datacatalog import BusinessContext
 from .types.datacatalog import Contacts
 from .types.datacatalog import CreateEntryGroupRequest
@@ -48,6 +49,7 @@ from .types.datacatalog import DeleteTagTemplateRequest
 from .types.datacatalog import Entry
 from .types.datacatalog import EntryGroup
 from .types.datacatalog import EntryOverview
+from .types.datacatalog import FilesetSpec
 from .types.datacatalog import GetEntryGroupRequest
 from .types.datacatalog import GetEntryRequest
 from .types.datacatalog import GetTagTemplateRequest
@@ -75,8 +77,13 @@ from .types.datacatalog import UpdateTagRequest
 from .types.datacatalog import UpdateTagTemplateFieldRequest
 from .types.datacatalog import UpdateTagTemplateRequest
 from .types.datacatalog import EntryType
+from .types.dataplex_spec import DataplexExternalTable
+from .types.dataplex_spec import DataplexFilesetSpec
+from .types.dataplex_spec import DataplexSpec
+from .types.dataplex_spec import DataplexTableSpec
 from .types.gcs_fileset_spec import GcsFilesetSpec
 from .types.gcs_fileset_spec import GcsFileSpec
+from .types.physical_schema import PhysicalSchema
 from .types.policytagmanager import CreatePolicyTagRequest
 from .types.policytagmanager import CreateTaxonomyRequest
 from .types.policytagmanager import DeletePolicyTagRequest
@@ -142,6 +149,10 @@ __all__ = (
     "DataSource",
     "DataSourceConnectionSpec",
     "DatabaseTableSpec",
+    "DataplexExternalTable",
+    "DataplexFilesetSpec",
+    "DataplexSpec",
+    "DataplexTableSpec",
     "DeleteEntryGroupRequest",
     "DeleteEntryRequest",
     "DeletePolicyTagRequest",
@@ -156,6 +167,7 @@ __all__ = (
     "ExportTaxonomiesRequest",
     "ExportTaxonomiesResponse",
     "FieldType",
+    "FilesetSpec",
     "GcsFileSpec",
     "GcsFilesetSpec",
     "GetEntryGroupRequest",
@@ -181,6 +193,7 @@ __all__ = (
     "ModifyEntryContactsRequest",
     "ModifyEntryOverviewRequest",
     "PersonalDetails",
+    "PhysicalSchema",
     "PolicyTag",
     "PolicyTagManagerClient",
     "PolicyTagManagerSerializationClient",
@@ -197,6 +210,7 @@ __all__ = (
     "SerializedTaxonomy",
     "StarEntryRequest",
     "StarEntryResponse",
+    "StorageProperties",
     "SystemTimestamps",
     "TableSourceType",
     "TableSpec",

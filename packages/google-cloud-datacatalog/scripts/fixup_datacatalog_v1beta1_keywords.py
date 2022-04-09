@@ -69,7 +69,7 @@ class datacatalogCallTransformer(cst.CSTTransformer):
         'lookup_entry': ('linked_resource', 'sql_resource', ),
         'rename_tag_template_field': ('name', 'new_tag_template_field_id', ),
         'search_catalog': ('scope', 'query', 'page_size', 'page_token', 'order_by', ),
-        'set_iam_policy': ('resource', 'policy', ),
+        'set_iam_policy': ('resource', 'policy', 'update_mask', ),
         'test_iam_permissions': ('resource', 'permissions', ),
         'update_entry': ('entry', 'update_mask', ),
         'update_entry_group': ('entry_group', 'update_mask', ),

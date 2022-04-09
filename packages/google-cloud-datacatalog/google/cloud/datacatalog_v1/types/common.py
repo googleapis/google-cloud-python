@@ -35,6 +35,7 @@ class IntegratedSystem(proto.Enum):
     BIGQUERY = 1
     CLOUD_PUBSUB = 2
     DATAPROC_METASTORE = 3
+    DATAPLEX = 4
 
 
 class PersonalDetails(proto.Message):

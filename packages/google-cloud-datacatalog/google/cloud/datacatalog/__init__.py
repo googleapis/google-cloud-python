@@ -37,6 +37,7 @@ from google.cloud.datacatalog_v1.types.bigquery import CloudSqlBigQueryConnectio
 from google.cloud.datacatalog_v1.types.common import PersonalDetails
 from google.cloud.datacatalog_v1.types.common import IntegratedSystem
 from google.cloud.datacatalog_v1.types.data_source import DataSource
+from google.cloud.datacatalog_v1.types.data_source import StorageProperties
 from google.cloud.datacatalog_v1.types.datacatalog import BusinessContext
 from google.cloud.datacatalog_v1.types.datacatalog import Contacts
 from google.cloud.datacatalog_v1.types.datacatalog import CreateEntryGroupRequest
@@ -54,6 +55,7 @@ from google.cloud.datacatalog_v1.types.datacatalog import DeleteTagTemplateReque
 from google.cloud.datacatalog_v1.types.datacatalog import Entry
 from google.cloud.datacatalog_v1.types.datacatalog import EntryGroup
 from google.cloud.datacatalog_v1.types.datacatalog import EntryOverview
+from google.cloud.datacatalog_v1.types.datacatalog import FilesetSpec
 from google.cloud.datacatalog_v1.types.datacatalog import GetEntryGroupRequest
 from google.cloud.datacatalog_v1.types.datacatalog import GetEntryRequest
 from google.cloud.datacatalog_v1.types.datacatalog import GetTagTemplateRequest
@@ -83,8 +85,13 @@ from google.cloud.datacatalog_v1.types.datacatalog import UpdateTagRequest
 from google.cloud.datacatalog_v1.types.datacatalog import UpdateTagTemplateFieldRequest
 from google.cloud.datacatalog_v1.types.datacatalog import UpdateTagTemplateRequest
 from google.cloud.datacatalog_v1.types.datacatalog import EntryType
+from google.cloud.datacatalog_v1.types.dataplex_spec import DataplexExternalTable
+from google.cloud.datacatalog_v1.types.dataplex_spec import DataplexFilesetSpec
+from google.cloud.datacatalog_v1.types.dataplex_spec import DataplexSpec
+from google.cloud.datacatalog_v1.types.dataplex_spec import DataplexTableSpec
 from google.cloud.datacatalog_v1.types.gcs_fileset_spec import GcsFilesetSpec
 from google.cloud.datacatalog_v1.types.gcs_fileset_spec import GcsFileSpec
+from google.cloud.datacatalog_v1.types.physical_schema import PhysicalSchema
 from google.cloud.datacatalog_v1.types.policytagmanager import CreatePolicyTagRequest
 from google.cloud.datacatalog_v1.types.policytagmanager import CreateTaxonomyRequest
 from google.cloud.datacatalog_v1.types.policytagmanager import DeletePolicyTagRequest
@@ -155,6 +162,7 @@ __all__ = (
     "PersonalDetails",
     "IntegratedSystem",
     "DataSource",
+    "StorageProperties",
     "BusinessContext",
     "Contacts",
     "CreateEntryGroupRequest",
@@ -172,6 +180,7 @@ __all__ = (
     "Entry",
     "EntryGroup",
     "EntryOverview",
+    "FilesetSpec",
     "GetEntryGroupRequest",
     "GetEntryRequest",
     "GetTagTemplateRequest",
@@ -199,8 +208,13 @@ __all__ = (
     "UpdateTagTemplateFieldRequest",
     "UpdateTagTemplateRequest",
     "EntryType",
+    "DataplexExternalTable",
+    "DataplexFilesetSpec",
+    "DataplexSpec",
+    "DataplexTableSpec",
     "GcsFilesetSpec",
     "GcsFileSpec",
+    "PhysicalSchema",
     "CreatePolicyTagRequest",
     "CreateTaxonomyRequest",
     "DeletePolicyTagRequest",

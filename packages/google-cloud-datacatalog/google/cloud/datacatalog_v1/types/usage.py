@@ -81,7 +81,7 @@ class UsageSignal(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             The end timestamp of the duration of usage
             statistics.
-        usage_within_time_range (Sequence[google.cloud.datacatalog_v1.types.UsageSignal.UsageWithinTimeRangeEntry]):
+        usage_within_time_range (Mapping[str, google.cloud.datacatalog_v1.types.UsageStats]):
             Usage statistics over each of the predefined time ranges.
 
             Supported time ranges are ``{"24H", "7D", "30D"}``.

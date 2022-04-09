@@ -71,7 +71,7 @@ class Tag(proto.Message):
             -  ``outer_column.inner_column``
 
             This field is a member of `oneof`_ ``scope``.
-        fields (Sequence[google.cloud.datacatalog_v1beta1.types.Tag.FieldsEntry]):
+        fields (Mapping[str, google.cloud.datacatalog_v1beta1.types.TagField]):
             Required. This maps the ID of a tag field to
             the value of and additional information about
             that field. Valid field IDs are defined by the
@@ -227,7 +227,7 @@ class TagTemplate(proto.Message):
         display_name (str):
             The display name for this template. Defaults
             to an empty string.
-        fields (Sequence[google.cloud.datacatalog_v1beta1.types.TagTemplate.FieldsEntry]):
+        fields (Mapping[str, google.cloud.datacatalog_v1beta1.types.TagTemplateField]):
             Required. Map of tag template field IDs to the settings for
             the field. This map is an exhaustive list of the allowed
             fields. This map must contain at least one field and at most

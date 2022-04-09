@@ -97,7 +97,9 @@ from .tags import (
     TagTemplate,
     TagTemplateField,
 )
-from .timestamps import SystemTimestamps
+from .timestamps import (
+    SystemTimestamps,
+)
 
 __all__ = (
     "IntegratedSystem",

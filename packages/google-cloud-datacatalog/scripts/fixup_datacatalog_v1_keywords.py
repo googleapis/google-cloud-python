@@ -73,7 +73,7 @@ class datacatalogCallTransformer(cst.CSTTransformer):
         'rename_tag_template_field_enum_value': ('name', 'new_enum_value_display_name', ),
         'replace_taxonomy': ('name', 'serialized_taxonomy', ),
         'search_catalog': ('scope', 'query', 'page_size', 'page_token', 'order_by', ),
-        'set_iam_policy': ('resource', 'policy', ),
+        'set_iam_policy': ('resource', 'policy', 'update_mask', ),
         'star_entry': ('name', ),
         'test_iam_permissions': ('resource', 'permissions', ),
         'unstar_entry': ('name', ),

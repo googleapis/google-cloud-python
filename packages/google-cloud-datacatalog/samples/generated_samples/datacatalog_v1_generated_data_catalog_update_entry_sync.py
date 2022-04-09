@@ -34,7 +34,7 @@ def sample_update_entry():
     # Initialize request argument(s)
     entry = datacatalog_v1.Entry()
     entry.type_ = "SERVICE"
-    entry.integrated_system = "DATAPROC_METASTORE"
+    entry.integrated_system = "DATAPLEX"
     entry.gcs_fileset_spec.file_patterns = ['file_patterns_value_1', 'file_patterns_value_2']
 
     request = datacatalog_v1.UpdateEntryRequest(

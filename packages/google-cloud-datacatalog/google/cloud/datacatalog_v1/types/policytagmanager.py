@@ -78,6 +78,9 @@ class Taxonomy(proto.Message):
             contain only Unicode letters, numbers,
             underscores, dashes, and spaces, and be at most
             200 bytes long when encoded in UTF-8.
+
+            The taxonomy display name must be unique within
+            an organization.
         description (str):
             Optional. Description of this taxonomy. If
             not set, defaults to empty.

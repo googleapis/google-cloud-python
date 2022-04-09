@@ -22,7 +22,10 @@ from .common import (
     PersonalDetails,
     IntegratedSystem,
 )
-from .data_source import DataSource
+from .data_source import (
+    DataSource,
+    StorageProperties,
+)
 from .datacatalog import (
     BusinessContext,
     Contacts,
@@ -41,6 +44,7 @@ from .datacatalog import (
     Entry,
     EntryGroup,
     EntryOverview,
+    FilesetSpec,
     GetEntryGroupRequest,
     GetEntryRequest,
     GetTagTemplateRequest,
@@ -69,9 +73,18 @@ from .datacatalog import (
     UpdateTagTemplateRequest,
     EntryType,
 )
+from .dataplex_spec import (
+    DataplexExternalTable,
+    DataplexFilesetSpec,
+    DataplexSpec,
+    DataplexTableSpec,
+)
 from .gcs_fileset_spec import (
     GcsFilesetSpec,
     GcsFileSpec,
+)
+from .physical_schema import (
+    PhysicalSchema,
 )
 from .policytagmanager import (
     CreatePolicyTagRequest,
@@ -122,7 +135,9 @@ from .tags import (
     TagTemplate,
     TagTemplateField,
 )
-from .timestamps import SystemTimestamps
+from .timestamps import (
+    SystemTimestamps,
+)
 from .usage import (
     UsageSignal,
     UsageStats,
@@ -135,6 +150,7 @@ __all__ = (
     "PersonalDetails",
     "IntegratedSystem",
     "DataSource",
+    "StorageProperties",
     "BusinessContext",
     "Contacts",
     "CreateEntryGroupRequest",
@@ -152,6 +168,7 @@ __all__ = (
     "Entry",
     "EntryGroup",
     "EntryOverview",
+    "FilesetSpec",
     "GetEntryGroupRequest",
     "GetEntryRequest",
     "GetTagTemplateRequest",
@@ -179,8 +196,13 @@ __all__ = (
     "UpdateTagTemplateFieldRequest",
     "UpdateTagTemplateRequest",
     "EntryType",
+    "DataplexExternalTable",
+    "DataplexFilesetSpec",
+    "DataplexSpec",
+    "DataplexTableSpec",
     "GcsFilesetSpec",
     "GcsFileSpec",
+    "PhysicalSchema",
     "CreatePolicyTagRequest",
     "CreateTaxonomyRequest",
     "DeletePolicyTagRequest",

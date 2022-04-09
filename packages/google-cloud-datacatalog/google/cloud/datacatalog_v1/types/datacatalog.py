@@ -18,6 +18,7 @@ import proto  # type: ignore
 from google.cloud.datacatalog_v1.types import bigquery
 from google.cloud.datacatalog_v1.types import common
 from google.cloud.datacatalog_v1.types import data_source as gcd_data_source
+from google.cloud.datacatalog_v1.types import dataplex_spec
 from google.cloud.datacatalog_v1.types import gcs_fileset_spec as gcd_gcs_fileset_spec
 from google.cloud.datacatalog_v1.types import schema as gcd_schema
 from google.cloud.datacatalog_v1.types import search
@@ -47,6 +48,7 @@ __protobuf__ = proto.module(
         "LookupEntryRequest",
         "Entry",
         "DatabaseTableSpec",
+        "FilesetSpec",
         "DataSourceConnectionSpec",
         "RoutineSpec",
         "BusinessContext",
@@ -92,6 +94,8 @@ class EntryType(proto.Enum):
     DATABASE = 7
     DATA_SOURCE_CONNECTION = 8
     ROUTINE = 9
+    LAKE = 10
+    ZONE = 11
     SERVICE = 14
 
 
@@ -802,6 +806,11 @@ class Entry(proto.Message):
             procedure. Valid only for entries with the ``ROUTINE`` type.
 
             This field is a member of `oneof`_ ``spec``.
+        fileset_spec (google.cloud.datacatalog_v1.types.FilesetSpec):
+            Specification that applies to a fileset resource. Valid only
+            for entries with the ``FILESET`` type.
+
+            This field is a member of `oneof`_ ``spec``.
         display_name (str):
             Display name of an entry.
 
@@ -821,7 +830,7 @@ class Entry(proto.Message):
             UTF-8. Default value is an empty string.
         business_context (google.cloud.datacatalog_v1.types.BusinessContext):
             Business Context of the entry. Not supported
-            for BigQuery datasets.
+            for BigQuery datasets
         schema (google.cloud.datacatalog_v1.types.Schema):
             Schema of the entry. An entry might not have
             any schema attached to it.
@@ -835,7 +844,7 @@ class Entry(proto.Message):
             to an empty timestamp.
         usage_signal (google.cloud.datacatalog_v1.types.UsageSignal):
             Output only. Resource usage statistics.
-        labels (Sequence[google.cloud.datacatalog_v1.types.Entry.LabelsEntry]):
+        labels (Mapping[str, str]):
             Cloud labels attached to the entry.
             In Data Catalog, you can create and modify
             labels attached only to custom entries. Synced
@@ -918,6 +927,12 @@ class Entry(proto.Message):
         oneof="spec",
         message="RoutineSpec",
     )
+    fileset_spec = proto.Field(
+        proto.MESSAGE,
+        number=33,
+        oneof="spec",
+        message="FilesetSpec",
+    )
     display_name = proto.Field(
         proto.STRING,
         number=3,
@@ -970,6 +985,9 @@ class DatabaseTableSpec(proto.Message):
     Attributes:
         type_ (google.cloud.datacatalog_v1.types.DatabaseTableSpec.TableType):
             Type of this table.
+        dataplex_table (google.cloud.datacatalog_v1.types.DataplexTableSpec):
+            Fields specific to a Dataplex table and
+            present only in the Dataplex table entries.
     """
 
     class TableType(proto.Enum):
@@ -982,6 +1000,28 @@ class DatabaseTableSpec(proto.Message):
         proto.ENUM,
         number=1,
         enum=TableType,
+    )
+    dataplex_table = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=dataplex_spec.DataplexTableSpec,
+    )
+
+
+class FilesetSpec(proto.Message):
+    r"""Specification that applies to a fileset. Valid only for
+    entries with the 'FILESET' type.
+
+    Attributes:
+        dataplex_fileset (google.cloud.datacatalog_v1.types.DataplexFilesetSpec):
+            Fields specific to a Dataplex fileset and
+            present only in the Dataplex fileset entries.
+    """
+
+    dataplex_fileset = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=dataplex_spec.DataplexFilesetSpec,
     )
 
 
@@ -1162,9 +1202,8 @@ class Contacts(proto.Message):
                 Designation of the person, for example, Data
                 Steward.
             email (str):
-                Email of the person in the format of
-                ``john.doe@example.com``, ``<john.doe@example.com>``, or
-                ``John Doe<john.doe@example.com>``.
+                Email of the person in the format of ``john.doe@xyz``,
+                ``<john.doe@xyz>``, or ``John Doe<john.doe@xyz>``.
         """
 
         designation = proto.Field(
