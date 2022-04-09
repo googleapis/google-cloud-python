@@ -52,8 +52,8 @@ class CreatePhraseSetRequest(proto.Message):
             (US North America), and ``eu`` (Europe). If you are calling
             the ``speech.googleapis.com`` endpoint, use the ``global``
             location. To specify a region, use a `regional
-            endpoint </speech-to-text/docs/endpoints>`__ with matching
-            ``us`` or ``eu`` location value.
+            endpoint <https://cloud.google.com/speech-to-text/docs/endpoints>`__
+            with matching ``us`` or ``eu`` location value.
         phrase_set_id (str):
             Required. The ID to use for the phrase set, which will
             become the final component of the phrase set's resource
@@ -96,8 +96,8 @@ class UpdatePhraseSetRequest(proto.Message):
             (US North America), and ``eu`` (Europe). If you are calling
             the ``speech.googleapis.com`` endpoint, use the ``global``
             location. To specify a region, use a `regional
-            endpoint </speech-to-text/docs/endpoints>`__ with matching
-            ``us`` or ``eu`` location value.
+            endpoint <https://cloud.google.com/speech-to-text/docs/endpoints>`__
+            with matching ``us`` or ``eu`` location value.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             The list of fields to be updated.
     """
@@ -127,8 +127,8 @@ class GetPhraseSetRequest(proto.Message):
             (US North America), and ``eu`` (Europe). If you are calling
             the ``speech.googleapis.com`` endpoint, use the ``global``
             location. To specify a region, use a `regional
-            endpoint </speech-to-text/docs/endpoints>`__ with matching
-            ``us`` or ``eu`` location value.
+            endpoint <https://cloud.google.com/speech-to-text/docs/endpoints>`__
+            with matching ``us`` or ``eu`` location value.
     """
 
     name = proto.Field(
@@ -151,8 +151,8 @@ class ListPhraseSetRequest(proto.Message):
             (US North America), and ``eu`` (Europe). If you are calling
             the ``speech.googleapis.com`` endpoint, use the ``global``
             location. To specify a region, use a `regional
-            endpoint </speech-to-text/docs/endpoints>`__ with matching
-            ``us`` or ``eu`` location value.
+            endpoint <https://cloud.google.com/speech-to-text/docs/endpoints>`__
+            with matching ``us`` or ``eu`` location value.
         page_size (int):
             The maximum number of phrase sets to return.
             The service may return fewer than this value. If
@@ -239,8 +239,8 @@ class CreateCustomClassRequest(proto.Message):
             (US North America), and ``eu`` (Europe). If you are calling
             the ``speech.googleapis.com`` endpoint, use the ``global``
             location. To specify a region, use a `regional
-            endpoint </speech-to-text/docs/endpoints>`__ with matching
-            ``us`` or ``eu`` location value.
+            endpoint <https://cloud.google.com/speech-to-text/docs/endpoints>`__
+            with matching ``us`` or ``eu`` location value.
         custom_class_id (str):
             Required. The ID to use for the custom class, which will
             become the final component of the custom class' resource
@@ -283,8 +283,8 @@ class UpdateCustomClassRequest(proto.Message):
             (US North America), and ``eu`` (Europe). If you are calling
             the ``speech.googleapis.com`` endpoint, use the ``global``
             location. To specify a region, use a `regional
-            endpoint </speech-to-text/docs/endpoints>`__ with matching
-            ``us`` or ``eu`` location value.
+            endpoint <https://cloud.google.com/speech-to-text/docs/endpoints>`__
+            with matching ``us`` or ``eu`` location value.
         update_mask (google.protobuf.field_mask_pb2.FieldMask):
             The list of fields to be updated.
     """
@@ -331,8 +331,8 @@ class ListCustomClassesRequest(proto.Message):
             (US North America), and ``eu`` (Europe). If you are calling
             the ``speech.googleapis.com`` endpoint, use the ``global``
             location. To specify a region, use a `regional
-            endpoint </speech-to-text/docs/endpoints>`__ with matching
-            ``us`` or ``eu`` location value.
+            endpoint <https://cloud.google.com/speech-to-text/docs/endpoints>`__
+            with matching ``us`` or ``eu`` location value.
         page_size (int):
             The maximum number of custom classes to
             return. The service may return fewer than this
@@ -402,8 +402,8 @@ class DeleteCustomClassRequest(proto.Message):
             (US North America), and ``eu`` (Europe). If you are calling
             the ``speech.googleapis.com`` endpoint, use the ``global``
             location. To specify a region, use a `regional
-            endpoint </speech-to-text/docs/endpoints>`__ with matching
-            ``us`` or ``eu`` location value.
+            endpoint <https://cloud.google.com/speech-to-text/docs/endpoints>`__
+            with matching ``us`` or ``eu`` location value.
     """
 
     name = proto.Field(
