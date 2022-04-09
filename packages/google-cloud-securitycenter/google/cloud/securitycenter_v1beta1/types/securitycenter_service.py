@@ -451,7 +451,7 @@ class GroupResult(proto.Message):
     request.
 
     Attributes:
-        properties (Sequence[google.cloud.securitycenter_v1beta1.types.GroupResult.PropertiesEntry]):
+        properties (Mapping[str, google.protobuf.struct_pb2.Value]):
             Properties matching the groupBy fields in the
             request.
         count (int):

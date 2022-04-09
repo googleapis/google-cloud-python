@@ -867,7 +867,7 @@ class GroupResult(proto.Message):
     request.
 
     Attributes:
-        properties (Sequence[google.cloud.securitycenter_v1.types.GroupResult.PropertiesEntry]):
+        properties (Mapping[str, google.protobuf.struct_pb2.Value]):
             Properties matching the groupBy fields in the
             request.
         count (int):
@@ -1596,29 +1596,37 @@ class ListFindingsResponse(proto.Message):
                 name (str):
                     The full resource name of the resource. See:
                     https://cloud.google.com/apis/design/resource_names#full_resource_name
+                display_name (str):
+                    The human readable name of the resource.
+                type_ (str):
+                    The full resource type of the resource.
                 project_name (str):
                     The full resource name of project that the
                     resource belongs to.
                 project_display_name (str):
-                    The project id that the resource belongs to.
+                    The project ID that the resource belongs to.
                 parent_name (str):
                     The full resource name of resource's parent.
                 parent_display_name (str):
                     The human readable name of resource's parent.
-                type_ (str):
-                    The full resource type of the resource.
                 folders (Sequence[google.cloud.securitycenter_v1.types.Folder]):
                     Contains a Folder message for each folder in
                     the assets ancestry. The first folder is the
                     deepest nested folder, and the last folder is
                     the folder directly under the Organization.
-                display_name (str):
-                    The human readable name of the resource.
             """
 
             name = proto.Field(
                 proto.STRING,
                 number=1,
+            )
+            display_name = proto.Field(
+                proto.STRING,
+                number=8,
+            )
+            type_ = proto.Field(
+                proto.STRING,
+                number=6,
             )
             project_name = proto.Field(
                 proto.STRING,
@@ -1636,18 +1644,10 @@ class ListFindingsResponse(proto.Message):
                 proto.STRING,
                 number=5,
             )
-            type_ = proto.Field(
-                proto.STRING,
-                number=6,
-            )
             folders = proto.RepeatedField(
                 proto.MESSAGE,
                 number=7,
                 message=folder.Folder,
-            )
-            display_name = proto.Field(
-                proto.STRING,
-                number=8,
             )
 
         finding = proto.Field(
@@ -1938,7 +1938,7 @@ class UpdateSecurityMarksRequest(proto.Message):
             take effect. If not set uses current server
             time.  Updates will be applied to the
             SecurityMarks that are active immediately
-            preceding this time. Must be smaller or equal to
+            preceding this time. Must be earlier or equal to
             the server time.
     """
 

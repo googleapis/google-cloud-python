@@ -17,6 +17,7 @@ import proto  # type: ignore
 
 from google.cloud.securitycenter_v1.types import access as gcs_access
 from google.cloud.securitycenter_v1.types import external_system
+from google.cloud.securitycenter_v1.types import iam_binding
 from google.cloud.securitycenter_v1.types import indicator as gcs_indicator
 from google.cloud.securitycenter_v1.types import mitre_attack as gcs_mitre_attack
 from google.cloud.securitycenter_v1.types import security_marks as gcs_security_marks
@@ -72,7 +73,7 @@ class Finding(proto.Message):
             additional information about the finding can be
             found. This field is guaranteed to be either
             empty or a well formed URL.
-        source_properties (Sequence[google.cloud.securitycenter_v1.types.Finding.SourcePropertiesEntry]):
+        source_properties (Mapping[str, google.protobuf.struct_pb2.Value]):
             Source specific properties. These properties are managed by
             the source that writes the finding. The key names in the
             source_properties map must be between 1 and 255 characters,
@@ -110,9 +111,9 @@ class Finding(proto.Message):
             associated with the finding.
         mute (google.cloud.securitycenter_v1.types.Finding.Mute):
             Indicates the mute state of a finding (either
-            unspecified, muted, unmuted or undefined).
-            Unlike other attributes of a finding, a finding
-            provider shouldn't set the value of mute.
+            muted, unmuted or undefined). Unlike other
+            attributes of a finding, a finding provider
+            shouldn't set the value of mute.
         finding_class (google.cloud.securitycenter_v1.types.Finding.FindingClass):
             The class of the finding.
         indicator (google.cloud.securitycenter_v1.types.Indicator):
@@ -129,7 +130,7 @@ class Finding(proto.Message):
         mute_update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The most recent time this
             finding was muted or unmuted.
-        external_systems (Sequence[google.cloud.securitycenter_v1.types.Finding.ExternalSystemsEntry]):
+        external_systems (Mapping[str, google.cloud.securitycenter_v1.types.ExternalSystem]):
             Output only. Third party SIEM/SOAR fields
             within SCC, contains external system information
             and external system finding fields.
@@ -146,6 +147,11 @@ class Finding(proto.Message):
             muted the finding, user who muted the finding, etc. Unlike
             other attributes of a finding, a finding provider shouldn't
             set the value of mute.
+        iam_bindings (Sequence[google.cloud.securitycenter_v1.types.IamBinding]):
+            Represents IAM bindings associated with the
+            Finding.
+        next_steps (str):
+            Next steps associate to the finding.
     """
 
     class State(proto.Enum):
@@ -277,6 +283,15 @@ class Finding(proto.Message):
     mute_initiator = proto.Field(
         proto.STRING,
         number=28,
+    )
+    iam_bindings = proto.RepeatedField(
+        proto.MESSAGE,
+        number=39,
+        message=iam_binding.IamBinding,
+    )
+    next_steps = proto.Field(
+        proto.STRING,
+        number=40,
     )
 
 

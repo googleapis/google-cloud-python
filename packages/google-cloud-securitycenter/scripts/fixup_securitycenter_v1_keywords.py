@@ -64,7 +64,7 @@ class securitycenterCallTransformer(cst.CSTTransformer):
         'list_sources': ('parent', 'page_token', 'page_size', ),
         'run_asset_discovery': ('parent', ),
         'set_finding_state': ('name', 'state', 'start_time', ),
-        'set_iam_policy': ('resource', 'policy', ),
+        'set_iam_policy': ('resource', 'policy', 'update_mask', ),
         'set_mute': ('name', 'mute', ),
         'test_iam_permissions': ('resource', 'permissions', ),
         'update_big_query_export': ('big_query_export', 'update_mask', ),

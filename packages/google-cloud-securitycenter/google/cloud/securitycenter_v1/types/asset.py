@@ -49,7 +49,7 @@ class Asset(proto.Message):
             Security Command Center managed properties.
             These properties are managed by Security Command
             Center and cannot be modified by the user.
-        resource_properties (Sequence[google.cloud.securitycenter_v1.types.Asset.ResourcePropertiesEntry]):
+        resource_properties (Mapping[str, google.protobuf.struct_pb2.Value]):
             Resource managed properties. These properties
             are managed and defined by the Google Cloud
             resource and cannot be modified by the user.

@@ -24,6 +24,7 @@ from .types.bigquery_export import BigQueryExport
 from .types.external_system import ExternalSystem
 from .types.finding import Finding
 from .types.folder import Folder
+from .types.iam_binding import IamBinding
 from .types.indicator import Indicator
 from .types.mitre_attack import MitreAttack
 from .types.mute_config import MuteConfig
@@ -113,6 +114,7 @@ __all__ = (
     "GroupFindingsRequest",
     "GroupFindingsResponse",
     "GroupResult",
+    "IamBinding",
     "Indicator",
     "ListAssetsRequest",
     "ListAssetsResponse",

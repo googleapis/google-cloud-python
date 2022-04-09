@@ -38,7 +38,7 @@ class SecurityMarks(proto.Message):
             Examples:
             "organizations/{organization_id}/assets/{asset_id}/securityMarks"
             "organizations/{organization_id}/sources/{source_id}/findings/{finding_id}/securityMarks".
-        marks (Sequence[google.cloud.securitycenter_v1beta1.types.SecurityMarks.MarksEntry]):
+        marks (Mapping[str, str]):
             Mutable user specified security marks belonging to the
             parent resource. Constraints are as follows:
 

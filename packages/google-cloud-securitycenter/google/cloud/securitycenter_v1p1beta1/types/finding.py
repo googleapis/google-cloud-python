@@ -69,7 +69,7 @@ class Finding(proto.Message):
             additional information about the finding can be
             found. This field is guaranteed to be either
             empty or a well formed URL.
-        source_properties (Sequence[google.cloud.securitycenter_v1p1beta1.types.Finding.SourcePropertiesEntry]):
+        source_properties (Mapping[str, google.protobuf.struct_pb2.Value]):
             Source specific properties. These properties are managed by
             the source that writes the finding. The key names in the
             source_properties map must be between 1 and 255 characters,

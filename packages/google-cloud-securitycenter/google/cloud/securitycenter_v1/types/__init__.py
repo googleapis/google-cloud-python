@@ -17,20 +17,51 @@ from .access import (
     Access,
     Geolocation,
 )
-from .asset import Asset
-from .bigquery_export import BigQueryExport
-from .external_system import ExternalSystem
-from .finding import Finding
-from .folder import Folder
-from .indicator import Indicator
-from .mitre_attack import MitreAttack
-from .mute_config import MuteConfig
-from .notification_config import NotificationConfig
-from .notification_message import NotificationMessage
-from .organization_settings import OrganizationSettings
-from .resource import Resource
-from .run_asset_discovery_response import RunAssetDiscoveryResponse
-from .security_marks import SecurityMarks
+from .asset import (
+    Asset,
+)
+from .bigquery_export import (
+    BigQueryExport,
+)
+from .external_system import (
+    ExternalSystem,
+)
+from .finding import (
+    Finding,
+)
+from .folder import (
+    Folder,
+)
+from .iam_binding import (
+    IamBinding,
+)
+from .indicator import (
+    Indicator,
+)
+from .mitre_attack import (
+    MitreAttack,
+)
+from .mute_config import (
+    MuteConfig,
+)
+from .notification_config import (
+    NotificationConfig,
+)
+from .notification_message import (
+    NotificationMessage,
+)
+from .organization_settings import (
+    OrganizationSettings,
+)
+from .resource import (
+    Resource,
+)
+from .run_asset_discovery_response import (
+    RunAssetDiscoveryResponse,
+)
+from .security_marks import (
+    SecurityMarks,
+)
 from .securitycenter_service import (
     BulkMuteFindingsRequest,
     BulkMuteFindingsResponse,
@@ -76,7 +107,9 @@ from .securitycenter_service import (
     UpdateSecurityMarksRequest,
     UpdateSourceRequest,
 )
-from .source import Source
+from .source import (
+    Source,
+)
 from .vulnerability import (
     Cve,
     Cvssv3,
@@ -92,6 +125,7 @@ __all__ = (
     "ExternalSystem",
     "Finding",
     "Folder",
+    "IamBinding",
     "Indicator",
     "MitreAttack",
     "MuteConfig",
