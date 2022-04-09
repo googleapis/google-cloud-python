@@ -8,4 +8,4 @@ pypandoc==1.7.5
 PyYAML==6.0
 dataclasses==0.6  # TODO(busunkim) remove when 3.6 support is dropped
 setuptools==62.0.0
-grpc-google-iam-v1==0.12.3
+grpc-google-iam-v1==0.12.4
