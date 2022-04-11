@@ -1,0 +1,16 @@
+{
+    "name": "networkservices",
+    "name_pretty": "Network Services",
+    "product_documentation": "",
+    "client_documentation": "https://cloud.google.com/python/docs/reference/networkservices/latest",
+    "issue_tracker": "",
+    "release_level": "preview",
+    "language": "python",
+    "library_type": "GAPIC_AUTO",
+    "repo": "googleapis/python-network-services",
+    "distribution_name": "google-cloud-network-services",
+    "api_id": "networkservices.googleapis.com",
+    "default_version": "v1",
+    "codeowner_team": "",
+    "api_shortname": "networkservices"
+}

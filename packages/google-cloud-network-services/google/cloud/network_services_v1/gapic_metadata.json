@@ -1,0 +1,73 @@
+ {
+  "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
+  "language": "python",
+  "libraryPackage": "google.cloud.network_services_v1",
+  "protoPackage": "google.cloud.networkservices.v1",
+  "schema": "1.0",
+  "services": {
+    "NetworkServices": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "NetworkServicesClient",
+          "rpcs": {
+            "CreateEndpointPolicy": {
+              "methods": [
+                "create_endpoint_policy"
+              ]
+            },
+            "DeleteEndpointPolicy": {
+              "methods": [
+                "delete_endpoint_policy"
+              ]
+            },
+            "GetEndpointPolicy": {
+              "methods": [
+                "get_endpoint_policy"
+              ]
+            },
+            "ListEndpointPolicies": {
+              "methods": [
+                "list_endpoint_policies"
+              ]
+            },
+            "UpdateEndpointPolicy": {
+              "methods": [
+                "update_endpoint_policy"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "NetworkServicesAsyncClient",
+          "rpcs": {
+            "CreateEndpointPolicy": {
+              "methods": [
+                "create_endpoint_policy"
+              ]
+            },
+            "DeleteEndpointPolicy": {
+              "methods": [
+                "delete_endpoint_policy"
+              ]
+            },
+            "GetEndpointPolicy": {
+              "methods": [
+                "get_endpoint_policy"
+              ]
+            },
+            "ListEndpointPolicies": {
+              "methods": [
+                "list_endpoint_policies"
+              ]
+            },
+            "UpdateEndpointPolicy": {
+              "methods": [
+                "update_endpoint_policy"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}
