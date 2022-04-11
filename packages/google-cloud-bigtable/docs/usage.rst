@@ -9,6 +9,7 @@ Using the API
   cluster
   instance
   table
+  app-profile
   backup
   column-family
   row
