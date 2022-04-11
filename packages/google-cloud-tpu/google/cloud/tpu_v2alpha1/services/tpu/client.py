@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -919,7 +919,6 @@ class TpuClient(metaclass=TpuClientMeta):
         r"""Stops a node. This operation is only available with
         single TPU nodes.
 
-
         .. code-block:: python
 
             from google.cloud import tpu_v2alpha1
@@ -1222,7 +1221,6 @@ class TpuClient(metaclass=TpuClientMeta):
     ) -> cloud_tpu.GenerateServiceIdentityResponse:
         r"""Generates the Cloud TPU service identity for the
         project.
-
 
         .. code-block:: python
 

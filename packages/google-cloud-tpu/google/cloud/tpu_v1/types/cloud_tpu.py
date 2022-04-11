@@ -154,7 +154,7 @@ class Node(proto.Message):
             reach out to the 0th entry in this map first.
         health (google.cloud.tpu_v1.types.Node.Health):
             The health status of the TPU node.
-        labels (Sequence[google.cloud.tpu_v1.types.Node.LabelsEntry]):
+        labels (Mapping[str, str]):
             Resource labels to represent user-provided
             metadata.
         use_service_networking (bool):
