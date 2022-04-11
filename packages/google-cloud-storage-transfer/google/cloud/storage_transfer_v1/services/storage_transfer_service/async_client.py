@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -235,7 +235,6 @@ class StorageTransferServiceAsyncClient:
         Storage Transfer Service and can only be used by Storage
         Transfer Service.
 
-
         .. code-block:: python
 
             from google.cloud import storage_transfer_v1
@@ -376,7 +375,6 @@ class StorageTransferServiceAsyncClient:
         [DISABLED][google.storagetransfer.v1.TransferJob.Status.DISABLED],
         or
         [ENABLED][google.storagetransfer.v1.TransferJob.Status.ENABLED]).
-
 
         .. code-block:: python
 
@@ -731,7 +729,6 @@ class StorageTransferServiceAsyncClient:
         active TransferOperation. If this method is called while
         a TransferOperation is active, an error will be
         returned.
-
 
         .. code-block:: python
 

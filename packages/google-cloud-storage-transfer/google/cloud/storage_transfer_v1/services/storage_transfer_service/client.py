@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -451,7 +451,6 @@ class StorageTransferServiceClient(metaclass=StorageTransferServiceClientMeta):
         Storage Transfer Service and can only be used by Storage
         Transfer Service.
 
-
         .. code-block:: python
 
             from google.cloud import storage_transfer_v1
@@ -596,7 +595,6 @@ class StorageTransferServiceClient(metaclass=StorageTransferServiceClientMeta):
         [DISABLED][google.storagetransfer.v1.TransferJob.Status.DISABLED],
         or
         [ENABLED][google.storagetransfer.v1.TransferJob.Status.ENABLED]).
-
 
         .. code-block:: python
 
@@ -958,7 +956,6 @@ class StorageTransferServiceClient(metaclass=StorageTransferServiceClientMeta):
         active TransferOperation. If this method is called while
         a TransferOperation is active, an error will be
         returned.
-
 
         .. code-block:: python
 
