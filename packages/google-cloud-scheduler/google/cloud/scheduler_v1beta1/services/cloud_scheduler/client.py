@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -793,7 +793,6 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
         retry the UpdateJob request until a successful response is
         received.
 
-
         .. code-block:: python
 
             from google.cloud import scheduler_v1beta1
@@ -998,7 +997,6 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
         [Job.State.ENABLED][google.cloud.scheduler.v1beta1.Job.State.ENABLED]
         to be paused.
 
-
         .. code-block:: python
 
             from google.cloud import scheduler_v1beta1
@@ -1105,7 +1103,6 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
         [Job.State.PAUSED][google.cloud.scheduler.v1beta1.Job.State.PAUSED]
         to be resumed.
 
-
         .. code-block:: python
 
             from google.cloud import scheduler_v1beta1
@@ -1203,7 +1200,6 @@ class CloudSchedulerClient(metaclass=CloudSchedulerClientMeta):
         r"""Forces a job to run now.
         When this method is called, Cloud Scheduler will
         dispatch the job, even if the job is already running.
-
 
         .. code-block:: python
 

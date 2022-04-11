@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -297,8 +297,7 @@ class CloudSchedulerAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=600.0,
             ),
@@ -412,8 +411,7 @@ class CloudSchedulerAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=600.0,
             ),
@@ -572,7 +570,6 @@ class CloudSchedulerAsyncClient:
         state. A job in this state may not be executed. If this happens,
         retry the UpdateJob request until a successful response is
         received.
-
 
         .. code-block:: python
 
@@ -743,8 +740,7 @@ class CloudSchedulerAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=600.0,
             ),
@@ -787,7 +783,6 @@ class CloudSchedulerAsyncClient:
         A job must be in
         [Job.State.ENABLED][google.cloud.scheduler.v1.Job.State.ENABLED]
         to be paused.
-
 
         .. code-block:: python
 
@@ -895,7 +890,6 @@ class CloudSchedulerAsyncClient:
         [Job.State.PAUSED][google.cloud.scheduler.v1.Job.State.PAUSED]
         to be resumed.
 
-
         .. code-block:: python
 
             from google.cloud import scheduler_v1
@@ -993,7 +987,6 @@ class CloudSchedulerAsyncClient:
         r"""Forces a job to run now.
         When this method is called, Cloud Scheduler will
         dispatch the job, even if the job is already running.
-
 
         .. code-block:: python
 
