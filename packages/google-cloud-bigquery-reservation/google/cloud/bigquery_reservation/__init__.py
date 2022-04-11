@@ -90,6 +90,10 @@ from google.cloud.bigquery_reservation_v1.types.reservation import (
 from google.cloud.bigquery_reservation_v1.types.reservation import (
     SplitCapacityCommitmentResponse,
 )
+from google.cloud.bigquery_reservation_v1.types.reservation import TableReference
+from google.cloud.bigquery_reservation_v1.types.reservation import (
+    UpdateAssignmentRequest,
+)
 from google.cloud.bigquery_reservation_v1.types.reservation import (
     UpdateBiReservationRequest,
 )
@@ -130,6 +134,8 @@ __all__ = (
     "SearchAssignmentsResponse",
     "SplitCapacityCommitmentRequest",
     "SplitCapacityCommitmentResponse",
+    "TableReference",
+    "UpdateAssignmentRequest",
     "UpdateBiReservationRequest",
     "UpdateCapacityCommitmentRequest",
     "UpdateReservationRequest",

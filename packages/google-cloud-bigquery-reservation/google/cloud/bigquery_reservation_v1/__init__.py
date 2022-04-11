@@ -44,6 +44,8 @@ from .types.reservation import SearchAssignmentsRequest
 from .types.reservation import SearchAssignmentsResponse
 from .types.reservation import SplitCapacityCommitmentRequest
 from .types.reservation import SplitCapacityCommitmentResponse
+from .types.reservation import TableReference
+from .types.reservation import UpdateAssignmentRequest
 from .types.reservation import UpdateBiReservationRequest
 from .types.reservation import UpdateCapacityCommitmentRequest
 from .types.reservation import UpdateReservationRequest
@@ -78,6 +80,8 @@ __all__ = (
     "SearchAssignmentsResponse",
     "SplitCapacityCommitmentRequest",
     "SplitCapacityCommitmentResponse",
+    "TableReference",
+    "UpdateAssignmentRequest",
     "UpdateBiReservationRequest",
     "UpdateCapacityCommitmentRequest",
     "UpdateReservationRequest",

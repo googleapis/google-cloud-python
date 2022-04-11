@@ -549,8 +549,8 @@ class ReservationServiceGrpcTransport(ReservationServiceTransport):
 
         For example, in order to downgrade from 10000 slots to 8000, you
         might split a 10000 capacity commitment into commitments of 2000
-        and 8000. Then, you would change the plan of the first one to
-        ``FLEX`` and then delete it.
+        and 8000. Then, you delete the first one after the commitment
+        end time passes.
 
         Returns:
             Callable[[~.SplitCapacityCommitmentRequest],
@@ -894,6 +894,34 @@ class ReservationServiceGrpcTransport(ReservationServiceTransport):
         return self._stubs["move_assignment"]
 
     @property
+    def update_assignment(
+        self,
+    ) -> Callable[[reservation.UpdateAssignmentRequest], reservation.Assignment]:
+        r"""Return a callable for the update assignment method over gRPC.
+
+        Updates an existing assignment.
+
+        Only the ``priority`` field can be updated.
+
+        Returns:
+            Callable[[~.UpdateAssignmentRequest],
+                    ~.Assignment]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_assignment" not in self._stubs:
+            self._stubs["update_assignment"] = self.grpc_channel.unary_unary(
+                "/google.cloud.bigquery.reservation.v1.ReservationService/UpdateAssignment",
+                request_serializer=reservation.UpdateAssignmentRequest.serialize,
+                response_deserializer=reservation.Assignment.deserialize,
+            )
+        return self._stubs["update_assignment"]
+
+    @property
     def get_bi_reservation(
         self,
     ) -> Callable[[reservation.GetBiReservationRequest], reservation.BiReservation]:
@@ -954,6 +982,10 @@ class ReservationServiceGrpcTransport(ReservationServiceTransport):
 
     def close(self):
         self.grpc_channel.close()
+
+    @property
+    def kind(self) -> str:
+        return "grpc"
 
 
 __all__ = ("ReservationServiceGrpcTransport",)

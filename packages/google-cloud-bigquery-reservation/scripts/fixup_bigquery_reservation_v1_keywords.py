@@ -56,6 +56,7 @@ class bigquery_reservationCallTransformer(cst.CSTTransformer):
         'search_all_assignments': ('parent', 'query', 'page_size', 'page_token', ),
         'search_assignments': ('parent', 'query', 'page_size', 'page_token', ),
         'split_capacity_commitment': ('name', 'slot_count', ),
+        'update_assignment': ('assignment', 'update_mask', ),
         'update_bi_reservation': ('bi_reservation', 'update_mask', ),
         'update_capacity_commitment': ('capacity_commitment', 'update_mask', ),
         'update_reservation': ('reservation', 'update_mask', ),

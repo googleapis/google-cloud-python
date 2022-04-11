@@ -95,6 +95,11 @@
                 "split_capacity_commitment"
               ]
             },
+            "UpdateAssignment": {
+              "methods": [
+                "update_assignment"
+              ]
+            },
             "UpdateBiReservation": {
               "methods": [
                 "update_bi_reservation"
@@ -198,6 +203,11 @@
             "SplitCapacityCommitment": {
               "methods": [
                 "split_capacity_commitment"
+              ]
+            },
+            "UpdateAssignment": {
+              "methods": [
+                "update_assignment"
               ]
             },
             "UpdateBiReservation": {

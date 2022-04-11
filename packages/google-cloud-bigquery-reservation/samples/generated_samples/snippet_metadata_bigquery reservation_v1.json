@@ -1508,6 +1508,95 @@
           "service": {
             "shortName": "ReservationService"
           },
+          "shortName": "UpdateAssignment"
+        }
+      },
+      "file": "bigqueryreservation_v1_generated_reservation_service_update_assignment_async.py",
+      "regionTag": "bigqueryreservation_v1_generated_ReservationService_UpdateAssignment_async",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "method": {
+          "service": {
+            "shortName": "ReservationService"
+          },
+          "shortName": "UpdateAssignment"
+        }
+      },
+      "file": "bigqueryreservation_v1_generated_reservation_service_update_assignment_sync.py",
+      "regionTag": "bigqueryreservation_v1_generated_ReservationService_UpdateAssignment_sync",
+      "segments": [
+        {
+          "end": 43,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 43,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 37,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 40,
+          "start": 38,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 44,
+          "start": 41,
+          "type": "RESPONSE_HANDLING"
+        }
+      ]
+    },
+    {
+      "clientMethod": {
+        "async": true,
+        "method": {
+          "service": {
+            "shortName": "ReservationService"
+          },
           "shortName": "UpdateBiReservation"
         }
       },

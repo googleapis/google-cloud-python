@@ -50,6 +50,8 @@ __protobuf__ = proto.module(
         "SearchAssignmentsResponse",
         "SearchAllAssignmentsResponse",
         "MoveAssignmentRequest",
+        "UpdateAssignmentRequest",
+        "TableReference",
         "BiReservation",
         "GetBiReservationRequest",
         "UpdateBiReservationRequest",
@@ -64,7 +66,10 @@ class Reservation(proto.Message):
     Attributes:
         name (str):
             The resource name of the reservation, e.g.,
-            ``projects/*/locations/*/reservations/team1-prod``.
+            ``projects/*/locations/*/reservations/team1-prod``. The
+            reservation_id must only contain lower case alphanumeric
+            characters or dashes. It must start with a letter and must
+            not end with a dash. Its maximum length is 64 characters.
         slot_capacity (int):
             Minimum slots available to this reservation. A slot is a
             unit of computational power in BigQuery, and serves as the
@@ -73,23 +78,46 @@ class Reservation(proto.Message):
             Queries using this reservation might use more slots during
             runtime if ignore_idle_slots is set to false.
 
-            If the new reservation's slot capacity exceed the parent's
+            If the new reservation's slot capacity exceeds the project's
             slot capacity or if total slot capacity of the new
-            reservation and its siblings exceeds the parent's slot
+            reservation and its siblings exceeds the project's slot
             capacity, the request will fail with
             ``google.rpc.Code.RESOURCE_EXHAUSTED``.
+
+            NOTE: for reservations in US or EU multi-regions, slot
+            capacity constraints are checked separately for default and
+            auxiliary regions. See multi_region_auxiliary flag for more
+            details.
         ignore_idle_slots (bool):
             If false, any query or pipeline job using this reservation
             will use idle slots from other reservations within the same
             admin project. If true, a query or pipeline job using this
             reservation will execute with the slot capacity specified in
             the slot_capacity field at most.
+        concurrency (int):
+            Maximum number of queries that are allowed to
+            run concurrently in this reservation. This is a
+            soft limit due to asynchronous nature of the
+            system and various optimizations for small
+            queries.
+            Default value is 0 which means that concurrency
+            will be automatically set based on the
+            reservation size.
         creation_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Creation time of the
             reservation.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Last update time of the
             reservation.
+        multi_region_auxiliary (bool):
+            Applicable only for reservations located
+            within one of the BigQuery multi-regions (US or
+            EU).
+            If set to true, this reservation is placed in
+            the organization's secondary region which is
+            designated for disaster recovery purposes. If
+            false, this reservation is placed in the
+            organization's default region.
     """
 
     name = proto.Field(
@@ -104,6 +132,10 @@ class Reservation(proto.Message):
         proto.BOOL,
         number=4,
     )
+    concurrency = proto.Field(
+        proto.INT64,
+        number=16,
+    )
     creation_time = proto.Field(
         proto.MESSAGE,
         number=8,
@@ -113,6 +145,10 @@ class Reservation(proto.Message):
         proto.MESSAGE,
         number=9,
         message=timestamp_pb2.Timestamp,
+    )
+    multi_region_auxiliary = proto.Field(
+        proto.BOOL,
+        number=14,
     )
 
 
@@ -133,6 +169,9 @@ class CapacityCommitment(proto.Message):
             Output only. The resource name of the capacity commitment,
             e.g.,
             ``projects/myproject/locations/US/capacityCommitments/123``
+            The commitment_id must only contain lower case alphanumeric
+            characters or dashes. It must start with a letter and must
+            not end with a dash. Its maximum length is 64 characters.
         slot_count (int):
             Number of slots in this commitment.
         plan (google.cloud.bigquery_reservation_v1.types.CapacityCommitment.CommitmentPlan):
@@ -155,6 +194,15 @@ class CapacityCommitment(proto.Message):
             commitment_end_time passes. Once the plan is changed,
             committed period is extended according to commitment plan.
             Only applicable for ANNUAL and TRIAL commitments.
+        multi_region_auxiliary (bool):
+            Applicable only for commitments located
+            within one of the BigQuery multi-regions (US or
+            EU).
+            If set to true, this commitment is placed in the
+            organization's secondary region which is
+            designated for disaster recovery purposes. If
+            false, this commitment is placed in the
+            organization's default region.
     """
 
     class CommitmentPlan(proto.Enum):
@@ -215,6 +263,10 @@ class CapacityCommitment(proto.Message):
         number=8,
         enum=CommitmentPlan,
     )
+    multi_region_auxiliary = proto.Field(
+        proto.BOOL,
+        number=10,
+    )
 
 
 class CreateReservationRequest(proto.Message):
@@ -226,9 +278,10 @@ class CreateReservationRequest(proto.Message):
             Required. Project, location. E.g.,
             ``projects/myproject/locations/US``
         reservation_id (str):
-            The reservation ID. This field must only
-            contain lower case alphanumeric characters or
-            dash. Max length is 64 characters.
+            The reservation ID. It must only contain
+            lower case alphanumeric characters or dashes. It
+            must start with a letter and must not end with a
+            dash. Its maximum length is 64 characters.
         reservation (google.cloud.bigquery_reservation_v1.types.Reservation):
             Definition of the new reservation to create.
     """
@@ -382,9 +435,10 @@ class CreateCapacityCommitmentRequest(proto.Message):
             commitment name will be generated automatically
             if this field is empty. This field must only
             contain lower case alphanumeric characters or
-            dash. Max length is 64 characters.
-            NOTE: this ID won't be kept if the capacity
-            commitment is split or merged.
+            dashes. The first and last character cannot be a
+            dash. Max length is 64 characters. NOTE: this ID
+            won't be kept if the capacity commitment is
+            split or merged.
     """
 
     parent = proto.Field(
@@ -607,13 +661,15 @@ class MergeCapacityCommitmentsRequest(proto.Message):
 
 
 class Assignment(proto.Message):
-    r"""A Assignment allows a project to submit jobs
+    r"""An assignment allows a project to submit jobs
     of a certain type using slots from the specified reservation.
 
     Attributes:
         name (str):
             Output only. Name of the resource. E.g.:
             ``projects/myproject/locations/US/reservations/team1-prod/assignments/123``.
+            The assignment_id must only contain lower case alphanumeric
+            characters or dashes and the max length is 64 characters.
         assignee (str):
             The resource which will use the reservation. E.g.
             ``projects/myproject``, ``folders/123``, or
@@ -678,7 +734,7 @@ class CreateAssignmentRequest(proto.Message):
             The optional assignment ID. Assignment name
             will be generated automatically if this field is
             empty. This field must only contain lower case
-            alphanumeric characters or dash. Max length is
+            alphanumeric characters or dashes. Max length is
             64 characters.
     """
 
@@ -954,6 +1010,57 @@ class MoveAssignmentRequest(proto.Message):
     )
 
 
+class UpdateAssignmentRequest(proto.Message):
+    r"""The request for
+    [ReservationService.UpdateAssignment][google.cloud.bigquery.reservation.v1.ReservationService.UpdateAssignment].
+
+    Attributes:
+        assignment (google.cloud.bigquery_reservation_v1.types.Assignment):
+            Content of the assignment to update.
+        update_mask (google.protobuf.field_mask_pb2.FieldMask):
+            Standard field mask for the set of fields to
+            be updated.
+    """
+
+    assignment = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message="Assignment",
+    )
+    update_mask = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=field_mask_pb2.FieldMask,
+    )
+
+
+class TableReference(proto.Message):
+    r"""Fully qualified reference to BigQuery table.
+    Internally stored as google.cloud.bi.v1.BqTableReference.
+
+    Attributes:
+        project_id (str):
+            The assigned project ID of the project.
+        dataset_id (str):
+            The ID of the dataset in the above project.
+        table_id (str):
+            The ID of the table in the above dataset.
+    """
+
+    project_id = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    dataset_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+    table_id = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+
+
 class BiReservation(proto.Message):
     r"""Represents a BI Reservation.
 
@@ -967,6 +1074,8 @@ class BiReservation(proto.Message):
             reservation.
         size (int):
             Size of a reservation, in bytes.
+        preferred_tables (Sequence[google.cloud.bigquery_reservation_v1.types.TableReference]):
+            Preferred tables to use BI capacity for.
     """
 
     name = proto.Field(
@@ -981,6 +1090,11 @@ class BiReservation(proto.Message):
     size = proto.Field(
         proto.INT64,
         number=4,
+    )
+    preferred_tables = proto.RepeatedField(
+        proto.MESSAGE,
+        number=5,
+        message="TableReference",
     )
 
 

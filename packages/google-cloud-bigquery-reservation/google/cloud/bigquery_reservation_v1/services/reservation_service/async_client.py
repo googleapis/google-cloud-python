@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 import warnings
 
@@ -290,10 +290,11 @@ class ReservationServiceAsyncClient:
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
             reservation_id (:class:`str`):
-                The reservation ID. This field must
-                only contain lower case alphanumeric
-                characters or dash. Max length is 64
-                characters.
+                The reservation ID. It must only
+                contain lower case alphanumeric
+                characters or dashes. It must start with
+                a letter and must not end with a dash.
+                Its maximum length is 64 characters.
 
                 This corresponds to the ``reservation_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -441,8 +442,7 @@ class ReservationServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=300.0,
             ),
@@ -556,8 +556,7 @@ class ReservationServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=300.0,
             ),
@@ -656,8 +655,7 @@ class ReservationServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=300.0,
             ),
@@ -985,8 +983,7 @@ class ReservationServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=300.0,
             ),
@@ -1112,8 +1109,7 @@ class ReservationServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=300.0,
             ),
@@ -1212,8 +1208,7 @@ class ReservationServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=300.0,
             ),
@@ -1378,8 +1373,8 @@ class ReservationServiceAsyncClient:
 
         For example, in order to downgrade from 10000 slots to 8000, you
         might split a 10000 capacity commitment into commitments of 2000
-        and 8000. Then, you would change the plan of the first one to
-        ``FLEX`` and then delete it.
+        and 8000. Then, you delete the first one after the commitment
+        end time passes.
 
 
         .. code-block:: python
@@ -1702,7 +1697,7 @@ class ReservationServiceAsyncClient:
 
         Returns:
             google.cloud.bigquery_reservation_v1.types.Assignment:
-                A Assignment allows a project to
+                An assignment allows a project to
                 submit jobs of a certain type using
                 slots from the specified reservation.
 
@@ -1861,8 +1856,7 @@ class ReservationServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=300.0,
             ),
@@ -1984,8 +1978,7 @@ class ReservationServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=300.0,
             ),
@@ -2138,8 +2131,7 @@ class ReservationServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=300.0,
             ),
@@ -2390,7 +2382,7 @@ class ReservationServiceAsyncClient:
 
         Returns:
             google.cloud.bigquery_reservation_v1.types.Assignment:
-                A Assignment allows a project to
+                An assignment allows a project to
                 submit jobs of a certain type using
                 slots from the specified reservation.
 
@@ -2426,6 +2418,114 @@ class ReservationServiceAsyncClient:
         # add these here.
         metadata = tuple(metadata) + (
             gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def update_assignment(
+        self,
+        request: Union[reservation.UpdateAssignmentRequest, dict] = None,
+        *,
+        assignment: reservation.Assignment = None,
+        update_mask: field_mask_pb2.FieldMask = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> reservation.Assignment:
+        r"""Updates an existing assignment.
+
+        Only the ``priority`` field can be updated.
+
+
+        .. code-block:: python
+
+            from google.cloud import bigquery_reservation_v1
+
+            def sample_update_assignment():
+                # Create a client
+                client = bigquery_reservation_v1.ReservationServiceClient()
+
+                # Initialize request argument(s)
+                request = bigquery_reservation_v1.UpdateAssignmentRequest(
+                )
+
+                # Make the request
+                response = client.update_assignment(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.bigquery_reservation_v1.types.UpdateAssignmentRequest, dict]):
+                The request object. The request for
+                [ReservationService.UpdateAssignment][google.cloud.bigquery.reservation.v1.ReservationService.UpdateAssignment].
+            assignment (:class:`google.cloud.bigquery_reservation_v1.types.Assignment`):
+                Content of the assignment to update.
+                This corresponds to the ``assignment`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            update_mask (:class:`google.protobuf.field_mask_pb2.FieldMask`):
+                Standard field mask for the set of
+                fields to be updated.
+
+                This corresponds to the ``update_mask`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.bigquery_reservation_v1.types.Assignment:
+                An assignment allows a project to
+                submit jobs of a certain type using
+                slots from the specified reservation.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([assignment, update_mask])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = reservation.UpdateAssignmentRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if assignment is not None:
+            request.assignment = assignment
+        if update_mask is not None:
+            request.update_mask = update_mask
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.update_assignment,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("assignment.name", request.assignment.name),)
+            ),
         )
 
         # Send the request.
@@ -2517,8 +2617,7 @@ class ReservationServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=300.0,
             ),
