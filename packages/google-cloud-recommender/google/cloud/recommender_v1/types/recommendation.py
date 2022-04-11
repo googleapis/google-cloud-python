@@ -281,7 +281,7 @@ class Operation(proto.Message):
             for 'test' operation.
 
             This field is a member of `oneof`_ ``path_value``.
-        path_filters (Sequence[google.cloud.recommender_v1.types.Operation.PathFiltersEntry]):
+        path_filters (Mapping[str, google.protobuf.struct_pb2.Value]):
             Set of filters to apply if ``path`` refers to array elements
             or nested array elements in order to narrow down to a single
             unique element that is being tested/modified. This is
@@ -317,7 +317,7 @@ class Operation(proto.Message):
 
             When both path_filters and path_value_matchers are set, an
             implicit AND must be performed.
-        path_value_matchers (Sequence[google.cloud.recommender_v1.types.Operation.PathValueMatchersEntry]):
+        path_value_matchers (Mapping[str, google.cloud.recommender_v1.types.ValueMatcher]):
             Similar to path_filters, this contains set of filters to
             apply if ``path`` field refers to array elements. This is
             meant to support value matching beyond exact match. To
@@ -505,7 +505,7 @@ class RecommendationStateInfo(proto.Message):
         state (google.cloud.recommender_v1.types.RecommendationStateInfo.State):
             The state of the recommendation, Eg ACTIVE,
             SUCCEEDED, FAILED.
-        state_metadata (Sequence[google.cloud.recommender_v1.types.RecommendationStateInfo.StateMetadataEntry]):
+        state_metadata (Mapping[str, str]):
             A map of metadata for the state, provided by
             user or automations systems.
     """

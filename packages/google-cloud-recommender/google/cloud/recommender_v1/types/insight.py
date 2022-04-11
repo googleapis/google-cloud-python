@@ -162,7 +162,7 @@ class InsightStateInfo(proto.Message):
     Attributes:
         state (google.cloud.recommender_v1.types.InsightStateInfo.State):
             Insight state.
-        state_metadata (Sequence[google.cloud.recommender_v1.types.InsightStateInfo.StateMetadataEntry]):
+        state_metadata (Mapping[str, str]):
             A map of metadata for the state, provided by
             user or automations systems.
     """

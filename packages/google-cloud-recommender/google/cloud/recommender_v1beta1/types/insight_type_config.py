@@ -49,7 +49,7 @@ class InsightTypeConfig(proto.Message):
             the config. A new revision is committed whenever
             the config is changed in any way. The format is
             an 8-character hexadecimal string.
-        annotations (Sequence[google.cloud.recommender_v1beta1.types.InsightTypeConfig.AnnotationsEntry]):
+        annotations (Mapping[str, str]):
             Allows clients to store small amounts of arbitrary data.
             Annotations must follow the Kubernetes syntax. The total
             size of all keys and values combined is limited to 256k. Key

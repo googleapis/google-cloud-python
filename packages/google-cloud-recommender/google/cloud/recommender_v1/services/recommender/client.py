@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -519,7 +519,6 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
         recommender.*.list IAM permission for the specified insight
         type.
 
-
         .. code-block:: python
 
             from google.cloud import recommender_v1
@@ -643,7 +642,6 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
         r"""Gets the requested insight. Requires the recommender.*.get IAM
         permission for the specified insight type.
 
-
         .. code-block:: python
 
             from google.cloud import recommender_v1
@@ -732,9 +730,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
         request: Union[recommender_service.MarkInsightAcceptedRequest, dict] = None,
         *,
         name: str = None,
-        state_metadata: Sequence[
-            recommender_service.MarkInsightAcceptedRequest.StateMetadataEntry
-        ] = None,
+        state_metadata: Mapping[str, str] = None,
         etag: str = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -748,7 +744,6 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
         MarkInsightAccepted can be applied to insights in ACTIVE state.
         Requires the recommender.*.update IAM permission for the
         specified insight.
-
 
         .. code-block:: python
 
@@ -779,7 +774,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            state_metadata (Sequence[google.cloud.recommender_v1.types.MarkInsightAcceptedRequest.StateMetadataEntry]):
+            state_metadata (Mapping[str, str]):
                 Optional. State properties user wish to include with
                 this state. Full replace of the current state_metadata.
 
@@ -866,7 +861,6 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
         r"""Lists recommendations for the specified Cloud Resource. Requires
         the recommender.*.list IAM permission for the specified
         recommender.
-
 
         .. code-block:: python
 
@@ -1019,7 +1013,6 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
         r"""Gets the requested recommendation. Requires the
         recommender.*.get IAM permission for the specified recommender.
 
-
         .. code-block:: python
 
             from google.cloud import recommender_v1
@@ -1111,9 +1104,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
         ] = None,
         *,
         name: str = None,
-        state_metadata: Sequence[
-            recommender_service.MarkRecommendationClaimedRequest.StateMetadataEntry
-        ] = None,
+        state_metadata: Mapping[str, str] = None,
         etag: str = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -1130,7 +1121,6 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
 
         Requires the recommender.*.update IAM permission for the
         specified recommender.
-
 
         .. code-block:: python
 
@@ -1161,7 +1151,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            state_metadata (Sequence[google.cloud.recommender_v1.types.MarkRecommendationClaimedRequest.StateMetadataEntry]):
+            state_metadata (Mapping[str, str]):
                 State properties to include with this state. Overwrites
                 any existing ``state_metadata``. Keys must match the
                 regex ``/^[a-z0-9][a-z0-9_.-]{0,62}$/``. Values must
@@ -1249,9 +1239,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
         ] = None,
         *,
         name: str = None,
-        state_metadata: Sequence[
-            recommender_service.MarkRecommendationSucceededRequest.StateMetadataEntry
-        ] = None,
+        state_metadata: Mapping[str, str] = None,
         etag: str = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -1268,7 +1256,6 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
 
         Requires the recommender.*.update IAM permission for the
         specified recommender.
-
 
         .. code-block:: python
 
@@ -1299,7 +1286,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            state_metadata (Sequence[google.cloud.recommender_v1.types.MarkRecommendationSucceededRequest.StateMetadataEntry]):
+            state_metadata (Mapping[str, str]):
                 State properties to include with this state. Overwrites
                 any existing ``state_metadata``. Keys must match the
                 regex ``/^[a-z0-9][a-z0-9_.-]{0,62}$/``. Values must
@@ -1387,9 +1374,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
         ] = None,
         *,
         name: str = None,
-        state_metadata: Sequence[
-            recommender_service.MarkRecommendationFailedRequest.StateMetadataEntry
-        ] = None,
+        state_metadata: Mapping[str, str] = None,
         etag: str = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -1406,7 +1391,6 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
 
         Requires the recommender.*.update IAM permission for the
         specified recommender.
-
 
         .. code-block:: python
 
@@ -1437,7 +1421,7 @@ class RecommenderClient(metaclass=RecommenderClientMeta):
                 This corresponds to the ``name`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            state_metadata (Sequence[google.cloud.recommender_v1.types.MarkRecommendationFailedRequest.StateMetadataEntry]):
+            state_metadata (Mapping[str, str]):
                 State properties to include with this state. Overwrites
                 any existing ``state_metadata``. Keys must match the
                 regex ``/^[a-z0-9][a-z0-9_.-]{0,62}$/``. Values must

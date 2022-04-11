@@ -169,7 +169,7 @@ class MarkInsightAcceptedRequest(proto.Message):
     Attributes:
         name (str):
             Required. Name of the insight.
-        state_metadata (Sequence[google.cloud.recommender_v1beta1.types.MarkInsightAcceptedRequest.StateMetadataEntry]):
+        state_metadata (Mapping[str, str]):
             Optional. State properties user wish to include with this
             state. Full replace of the current state_metadata.
         etag (str):
@@ -314,7 +314,7 @@ class MarkRecommendationClaimedRequest(proto.Message):
     Attributes:
         name (str):
             Required. Name of the recommendation.
-        state_metadata (Sequence[google.cloud.recommender_v1beta1.types.MarkRecommendationClaimedRequest.StateMetadataEntry]):
+        state_metadata (Mapping[str, str]):
             State properties to include with this state. Overwrites any
             existing ``state_metadata``. Keys must match the regex
             ``/^[a-z0-9][a-z0-9_.-]{0,62}$/``. Values must match the
@@ -345,7 +345,7 @@ class MarkRecommendationSucceededRequest(proto.Message):
     Attributes:
         name (str):
             Required. Name of the recommendation.
-        state_metadata (Sequence[google.cloud.recommender_v1beta1.types.MarkRecommendationSucceededRequest.StateMetadataEntry]):
+        state_metadata (Mapping[str, str]):
             State properties to include with this state. Overwrites any
             existing ``state_metadata``. Keys must match the regex
             ``/^[a-z0-9][a-z0-9_.-]{0,62}$/``. Values must match the
@@ -376,7 +376,7 @@ class MarkRecommendationFailedRequest(proto.Message):
     Attributes:
         name (str):
             Required. Name of the recommendation.
-        state_metadata (Sequence[google.cloud.recommender_v1beta1.types.MarkRecommendationFailedRequest.StateMetadataEntry]):
+        state_metadata (Mapping[str, str]):
             State properties to include with this state. Overwrites any
             existing ``state_metadata``. Keys must match the regex
             ``/^[a-z0-9][a-z0-9_.-]{0,62}$/``. Values must match the
