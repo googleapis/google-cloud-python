@@ -66,7 +66,7 @@ class LogEntry(proto.Message):
             A unique ID for the log entry used for deduplication. If
             omitted, the implementation will generate one based on
             operation_id.
-        labels (Sequence[google.cloud.servicecontrol_v1.types.LogEntry.LabelsEntry]):
+        labels (Mapping[str, str]):
             A set of user-defined (key, value) data that
             provides additional information about the log
             entry.

@@ -99,7 +99,7 @@ class QuotaOperation(proto.Message):
             This can be in one of the following formats:
             project:<project_id>, project_number:<project_number>,
             api_key:<api_key>.
-        labels (Sequence[google.cloud.servicecontrol_v1.types.QuotaOperation.LabelsEntry]):
+        labels (Mapping[str, str]):
             Labels describing the operation.
         quota_metrics (Sequence[google.cloud.servicecontrol_v1.types.MetricValueSet]):
             Represents information about this operation. Each

@@ -145,7 +145,7 @@ class CheckResponse(proto.Message):
             non-'OK' status indicates a denial;
             [google.rpc.Status.details][google.rpc.Status.details] would
             contain additional details about the denial.
-        headers (Sequence[google.cloud.servicecontrol_v2.types.CheckResponse.HeadersEntry]):
+        headers (Mapping[str, str]):
             Returns a set of request contexts generated from the
             ``CheckRequest``.
     """

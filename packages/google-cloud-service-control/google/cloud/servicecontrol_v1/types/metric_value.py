@@ -39,7 +39,7 @@ class MetricValue(proto.Message):
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
-        labels (Sequence[google.cloud.servicecontrol_v1.types.MetricValue.LabelsEntry]):
+        labels (Mapping[str, str]):
             The labels describing the metric value. See comments on
             [google.api.servicecontrol.v1.Operation.labels][google.api.servicecontrol.v1.Operation.labels]
             for the overriding relationship. Note that this map must not

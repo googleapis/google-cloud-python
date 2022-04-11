@@ -71,7 +71,7 @@ class Operation(proto.Message):
             [ServiceController.Report][google.api.servicecontrol.v1.ServiceController.Report],
             but optional when the operation is used in
             [ServiceController.Check][google.api.servicecontrol.v1.ServiceController.Check].
-        labels (Sequence[google.cloud.servicecontrol_v1.types.Operation.LabelsEntry]):
+        labels (Mapping[str, str]):
             Labels describing the operation. Only the following labels
             are allowed:
 
