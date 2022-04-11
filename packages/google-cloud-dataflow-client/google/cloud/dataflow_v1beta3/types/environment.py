@@ -731,7 +731,7 @@ class WorkerPool(proto.Message):
         data_disks (Sequence[google.cloud.dataflow_v1beta3.types.Disk]):
             Data disks that are used by a VM in this
             workflow.
-        metadata (Sequence[google.cloud.dataflow_v1beta3.types.WorkerPool.MetadataEntry]):
+        metadata (Mapping[str, str]):
             Metadata to set on the Google Compute Engine
             VMs.
         autoscaling_settings (google.cloud.dataflow_v1beta3.types.AutoscalingSettings):

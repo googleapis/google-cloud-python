@@ -140,9 +140,9 @@ class LaunchFlexTemplateParameter(proto.Message):
             serialized ContainerSpec as content.
 
             This field is a member of `oneof`_ ``template``.
-        parameters (Sequence[google.cloud.dataflow_v1beta3.types.LaunchFlexTemplateParameter.ParametersEntry]):
+        parameters (Mapping[str, str]):
             The parameters for FlexTemplate. Ex. {"num_workers":"5"}
-        launch_options (Sequence[google.cloud.dataflow_v1beta3.types.LaunchFlexTemplateParameter.LaunchOptionsEntry]):
+        launch_options (Mapping[str, str]):
             Launch options for this flex template job.
             This is a common set of options across languages
             and templates. This should not be used to pass
@@ -154,7 +154,7 @@ class LaunchFlexTemplateParameter(proto.Message):
             Set this to true if you are sending a request
             to update a running streaming job. When set, the
             job name should be the same as the running job.
-        transform_name_mappings (Sequence[google.cloud.dataflow_v1beta3.types.LaunchFlexTemplateParameter.TransformNameMappingsEntry]):
+        transform_name_mappings (Mapping[str, str]):
             Use this to pass transform_name_mappings for streaming
             update jobs. Ex:{"oldTransformName":"newTransformName",...}'
     """
@@ -240,7 +240,7 @@ class FlexTemplateRuntimeEnvironment(proto.Message):
             or "regions/REGION/subnetworks/SUBNETWORK". If the
             subnetwork is located in a Shared VPC network, you must use
             the complete URL.
-        additional_user_labels (Sequence[google.cloud.dataflow_v1beta3.types.FlexTemplateRuntimeEnvironment.AdditionalUserLabelsEntry]):
+        additional_user_labels (Mapping[str, str]):
             Additional user labels to be specified for the job. Keys and
             values must follow the restrictions specified in the
             `labeling
@@ -482,7 +482,7 @@ class RuntimeEnvironment(proto.Message):
             or "regions/REGION/subnetworks/SUBNETWORK". If the
             subnetwork is located in a Shared VPC network, you must use
             the complete URL.
-        additional_user_labels (Sequence[google.cloud.dataflow_v1beta3.types.RuntimeEnvironment.AdditionalUserLabelsEntry]):
+        additional_user_labels (Mapping[str, str]):
             Additional user labels to be specified for the job. Keys and
             values should follow the restrictions specified in the
             `labeling
@@ -605,7 +605,7 @@ class ParameterMetadata(proto.Message):
         param_type (google.cloud.dataflow_v1beta3.types.ParameterType):
             Optional. The type of the parameter.
             Used for selecting input picker.
-        custom_metadata (Sequence[google.cloud.dataflow_v1beta3.types.ParameterMetadata.CustomMetadataEntry]):
+        custom_metadata (Mapping[str, str]):
             Optional. Additional metadata for describing
             this parameter.
     """
@@ -736,7 +736,7 @@ class CreateJobFromTemplateRequest(proto.Message):
             with ``gs://``.
 
             This field is a member of `oneof`_ ``template``.
-        parameters (Sequence[google.cloud.dataflow_v1beta3.types.CreateJobFromTemplateRequest.ParametersEntry]):
+        parameters (Mapping[str, str]):
             The runtime parameters to pass to the job.
         environment (google.cloud.dataflow_v1beta3.types.RuntimeEnvironment):
             The runtime environment for the job.
@@ -875,7 +875,7 @@ class LaunchTemplateParameters(proto.Message):
         job_name (str):
             Required. The job name to use for the created
             job.
-        parameters (Sequence[google.cloud.dataflow_v1beta3.types.LaunchTemplateParameters.ParametersEntry]):
+        parameters (Mapping[str, str]):
             The runtime parameters to pass to the job.
         environment (google.cloud.dataflow_v1beta3.types.RuntimeEnvironment):
             The runtime environment for the job.
@@ -883,7 +883,7 @@ class LaunchTemplateParameters(proto.Message):
             If set, replace the existing pipeline with
             the name specified by jobName with this
             pipeline, preserving state.
-        transform_name_mapping (Sequence[google.cloud.dataflow_v1beta3.types.LaunchTemplateParameters.TransformNameMappingEntry]):
+        transform_name_mapping (Mapping[str, str]):
             Only applicable when updating a pipeline. Map
             of transform name prefixes of the job to be
             replaced to the corresponding name prefixes of

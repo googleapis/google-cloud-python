@@ -48,7 +48,7 @@ class TopologyConfig(proto.Message):
         data_disk_assignments (Sequence[google.cloud.dataflow_v1beta3.types.DataDiskAssignment]):
             The disks assigned to a streaming Dataflow
             job.
-        user_stage_to_computation_name_map (Sequence[google.cloud.dataflow_v1beta3.types.TopologyConfig.UserStageToComputationNameMapEntry]):
+        user_stage_to_computation_name_map (Mapping[str, str]):
             Maps user stage names to stable computation
             names.
         forwarding_key_bits (int):

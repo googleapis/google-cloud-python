@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -423,7 +423,6 @@ class MessagesV1Beta3Client(metaclass=MessagesV1Beta3ClientMeta):
         Using ``projects.jobs.messages.list`` is not recommended, as you
         can only request the status of jobs that are running in
         ``us-central1``.
-
 
         .. code-block:: python
 

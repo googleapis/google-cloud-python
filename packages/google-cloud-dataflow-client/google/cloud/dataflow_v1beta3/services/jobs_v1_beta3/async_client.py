@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -219,7 +219,6 @@ class JobsV1Beta3AsyncClient:
         Using ``projects.jobs.create`` is not recommended, as your job
         will always start in ``us-central1``.
 
-
         .. code-block:: python
 
             from google.cloud import dataflow_v1beta3
@@ -291,7 +290,6 @@ class JobsV1Beta3AsyncClient:
         (https://cloud.google.com/dataflow/docs/concepts/regional-endpoints).
         Using ``projects.jobs.get`` is not recommended, as you can only
         get the state of jobs that are running in ``us-central1``.
-
 
         .. code-block:: python
 
@@ -366,7 +364,6 @@ class JobsV1Beta3AsyncClient:
         only update the state of jobs that are running in
         ``us-central1``.
 
-
         .. code-block:: python
 
             from google.cloud import dataflow_v1beta3
@@ -440,7 +437,6 @@ class JobsV1Beta3AsyncClient:
         ``projects.jobs.aggregated``. Using ``projects.jobs.list`` is
         not recommended, as you can only get the list of jobs that are
         running in ``us-central1``.
-
 
         .. code-block:: python
 
@@ -612,7 +608,6 @@ class JobsV1Beta3AsyncClient:
     ) -> jobs.CheckActiveJobsResponse:
         r"""Check for existence of active jobs in the given
         project across all regions.
-
 
         .. code-block:: python
 

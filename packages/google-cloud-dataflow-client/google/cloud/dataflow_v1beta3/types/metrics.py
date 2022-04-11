@@ -61,7 +61,7 @@ class MetricStructuredName(proto.Message):
             service or SDK.
         name (str):
             Worker-defined metric name.
-        context (Sequence[google.cloud.dataflow_v1beta3.types.MetricStructuredName.ContextEntry]):
+        context (Mapping[str, str]):
             Zero or more labeled fields which identify the part of the
             job this metric is associated with, such as the name of a
             step or collection.

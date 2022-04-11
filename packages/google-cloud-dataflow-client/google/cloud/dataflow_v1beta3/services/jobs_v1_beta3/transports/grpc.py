@@ -433,5 +433,9 @@ class JobsV1Beta3GrpcTransport(JobsV1Beta3Transport):
     def close(self):
         self.grpc_channel.close()
 
+    @property
+    def kind(self) -> str:
+        return "grpc"
+
 
 __all__ = ("JobsV1Beta3GrpcTransport",)

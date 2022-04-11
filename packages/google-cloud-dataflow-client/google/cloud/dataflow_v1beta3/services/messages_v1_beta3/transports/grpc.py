@@ -265,5 +265,9 @@ class MessagesV1Beta3GrpcTransport(MessagesV1Beta3Transport):
     def close(self):
         self.grpc_channel.close()
 
+    @property
+    def kind(self) -> str:
+        return "grpc"
+
 
 __all__ = ("MessagesV1Beta3GrpcTransport",)

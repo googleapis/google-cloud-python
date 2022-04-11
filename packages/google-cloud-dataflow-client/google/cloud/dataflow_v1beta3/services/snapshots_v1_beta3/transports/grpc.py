@@ -309,5 +309,9 @@ class SnapshotsV1Beta3GrpcTransport(SnapshotsV1Beta3Transport):
     def close(self):
         self.grpc_channel.close()
 
+    @property
+    def kind(self) -> str:
+        return "grpc"
+
 
 __all__ = ("SnapshotsV1Beta3GrpcTransport",)

@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -221,7 +221,6 @@ class MetricsV1Beta3AsyncClient:
         can only request the status of jobs that are running in
         ``us-central1``.
 
-
         .. code-block:: python
 
             from google.cloud import dataflow_v1beta3
@@ -298,7 +297,6 @@ class MetricsV1Beta3AsyncClient:
         status of the job.
         EXPERIMENTAL.  This API is subject to change or removal
         without notice.
-
 
         .. code-block:: python
 
@@ -382,7 +380,6 @@ class MetricsV1Beta3AsyncClient:
 
         EXPERIMENTAL.  This API is subject to change or removal
         without notice.
-
 
         .. code-block:: python
 

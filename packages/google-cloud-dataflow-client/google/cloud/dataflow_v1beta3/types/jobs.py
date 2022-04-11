@@ -171,7 +171,7 @@ class Job(proto.Message):
             When sending a ``CreateJobRequest``, you can update a job by
             specifying it here. The job named here is stopped, and its
             intermediate state is transferred to this job.
-        transform_name_mapping (Sequence[google.cloud.dataflow_v1beta3.types.Job.TransformNameMappingEntry]):
+        transform_name_mapping (Mapping[str, str]):
             The map of transform name prefixes of the job
             to be replaced to the corresponding name
             prefixes of the new job.
@@ -204,7 +204,7 @@ class Job(proto.Message):
 
                storage.googleapis.com/{bucket}/{object}
                bucket.storage.googleapis.com/{object}
-        labels (Sequence[google.cloud.dataflow_v1beta3.types.Job.LabelsEntry]):
+        labels (Mapping[str, str]):
             User-defined labels for this job.
 
             The labels map can contain no more than 64 entries. Entries
@@ -1074,7 +1074,7 @@ class JobExecutionInfo(proto.Message):
     executed that isn't contained in the submitted job.
 
     Attributes:
-        stages (Sequence[google.cloud.dataflow_v1beta3.types.JobExecutionInfo.StagesEntry]):
+        stages (Mapping[str, google.cloud.dataflow_v1beta3.types.JobExecutionStageInfo]):
             A mapping from each stage to the information
             about that stage.
     """
