@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Iterable, Iterator, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    Optional,
+    Iterable,
+    Iterator,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -462,7 +472,6 @@ class SpeechClient(metaclass=SpeechClientMeta):
         r"""Performs synchronous speech recognition: receive
         results after all audio has been sent and processed.
 
-
         .. code-block:: python
 
             from google.cloud import speech_v1
@@ -575,7 +584,6 @@ class SpeechClient(metaclass=SpeechClientMeta):
         a ``LongRunningRecognizeResponse`` message. For more information
         on asynchronous speech recognition, see the
         `how-to <https://cloud.google.com/speech-to-text/docs/async-recognize>`__.
-
 
         .. code-block:: python
 
@@ -701,7 +709,6 @@ class SpeechClient(metaclass=SpeechClientMeta):
         r"""Performs bidirectional streaming speech recognition:
         receive results while sending audio. This method is only
         available via the gRPC API (not REST).
-
 
         .. code-block:: python
 
