@@ -101,7 +101,7 @@ class ExtendedSourceContext(proto.Message):
     Attributes:
         context (google.cloud.source_context_v1.types.SourceContext):
             Any source context.
-        labels (Sequence[google.cloud.source_context_v1.types.ExtendedSourceContext.LabelsEntry]):
+        labels (Mapping[str, str]):
             Labels with user defined metadata.
     """
 
