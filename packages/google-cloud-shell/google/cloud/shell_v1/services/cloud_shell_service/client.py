@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -442,7 +442,6 @@ class CloudShellServiceClient(metaclass=CloudShellServiceClientMeta):
         r"""Gets an environment. Returns NOT_FOUND if the environment does
         not exist.
 
-
         .. code-block:: python
 
             from google.cloud import shell_v1
@@ -551,7 +550,6 @@ class CloudShellServiceClient(metaclass=CloudShellServiceClientMeta):
         connections, the operation will contain a
         StartEnvironmentResponse in its response field.
 
-
         .. code-block:: python
 
             from google.cloud import shell_v1
@@ -644,7 +642,6 @@ class CloudShellServiceClient(metaclass=CloudShellServiceClientMeta):
         line tools without requiring the user to manually
         authenticate.
 
-
         .. code-block:: python
 
             from google.cloud import shell_v1
@@ -734,7 +731,6 @@ class CloudShellServiceClient(metaclass=CloudShellServiceClientMeta):
         the corresponding private key to connect to that environment via
         SSH. If a key with the same content already exists, this will
         error with ALREADY_EXISTS.
-
 
         .. code-block:: python
 
@@ -827,7 +823,6 @@ class CloudShellServiceClient(metaclass=CloudShellServiceClientMeta):
         longer be able to connect to the environment using the
         corresponding private key. If a key with the same content is not
         present, this will error with NOT_FOUND.
-
 
         .. code-block:: python
 

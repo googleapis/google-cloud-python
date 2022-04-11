@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -225,7 +225,6 @@ class CloudShellServiceAsyncClient:
         r"""Gets an environment. Returns NOT_FOUND if the environment does
         not exist.
 
-
         .. code-block:: python
 
             from google.cloud import shell_v1
@@ -301,8 +300,7 @@ class CloudShellServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
-                    core_exceptions.Unknown,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=60.0,
             ),
@@ -343,7 +341,6 @@ class CloudShellServiceAsyncClient:
         environment has finished starting and is ready to accept
         connections, the operation will contain a
         StartEnvironmentResponse in its response field.
-
 
         .. code-block:: python
 
@@ -436,7 +433,6 @@ class CloudShellServiceAsyncClient:
         line tools without requiring the user to manually
         authenticate.
 
-
         .. code-block:: python
 
             from google.cloud import shell_v1
@@ -525,7 +521,6 @@ class CloudShellServiceAsyncClient:
         the corresponding private key to connect to that environment via
         SSH. If a key with the same content already exists, this will
         error with ALREADY_EXISTS.
-
 
         .. code-block:: python
 
@@ -617,7 +612,6 @@ class CloudShellServiceAsyncClient:
         longer be able to connect to the environment using the
         corresponding private key. If a key with the same content is not
         present, this will error with NOT_FOUND.
-
 
         .. code-block:: python
 
