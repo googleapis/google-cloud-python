@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -654,7 +654,6 @@ class QuestionServiceAsyncClient:
     ) -> gcd_user_feedback.UserFeedback:
         r"""Updates user feedback. This creates user feedback if
         there was none before (upsert).
-
 
         .. code-block:: python
 

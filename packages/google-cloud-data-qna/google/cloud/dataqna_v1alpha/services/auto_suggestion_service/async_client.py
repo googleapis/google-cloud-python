@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -283,7 +283,6 @@ class AutoSuggestionServiceAsyncClient:
     ) -> auto_suggestion_service.SuggestQueriesResponse:
         r"""Gets a list of suggestions based on a prefix string.
         AutoSuggestion tolerance should be less than 1 second.
-
 
         .. code-block:: python
 
