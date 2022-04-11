@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -228,7 +228,6 @@ class DatastreamAsyncClient:
         r"""Use this method to list connection profiles created
         in a project and location.
 
-
         .. code-block:: python
 
             from google.cloud import datastream_v1
@@ -338,7 +337,6 @@ class DatastreamAsyncClient:
         r"""Use this method to get details about a connection
         profile.
 
-
         .. code-block:: python
 
             from google.cloud import datastream_v1
@@ -437,7 +435,6 @@ class DatastreamAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Use this method to create a connection profile in a
         project and location.
-
 
         .. code-block:: python
 
@@ -576,7 +573,6 @@ class DatastreamAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Use this method to update the parameters of a
         connection profile.
-
 
         .. code-block:: python
 
@@ -832,7 +828,6 @@ class DatastreamAsyncClient:
         returns children data objects of a parent data object
         that's optionally supplied in the request.
 
-
         .. code-block:: python
 
             from google.cloud import datastream_v1
@@ -914,7 +909,6 @@ class DatastreamAsyncClient:
     ) -> pagers.ListStreamsAsyncPager:
         r"""Use this method to list streams in a project and
         location.
-
 
         .. code-block:: python
 
@@ -1254,7 +1248,6 @@ class DatastreamAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Use this method to update the configuration of a
         stream.
-
 
         .. code-block:: python
 
@@ -1602,7 +1595,6 @@ class DatastreamAsyncClient:
         r"""Use this method to look up a stream object by its
         source object identifier.
 
-
         .. code-block:: python
 
             from google.cloud import datastream_v1
@@ -1682,7 +1674,6 @@ class DatastreamAsyncClient:
     ) -> pagers.ListStreamObjectsAsyncPager:
         r"""Use this method to list the objects of a specific
         stream.
-
 
         .. code-block:: python
 
@@ -1793,7 +1784,6 @@ class DatastreamAsyncClient:
         r"""Use this method to start a backfill job for the
         specified stream object.
 
-
         .. code-block:: python
 
             from google.cloud import datastream_v1
@@ -1892,7 +1882,6 @@ class DatastreamAsyncClient:
         r"""Use this method to stop a backfill job for the
         specified stream object.
 
-
         .. code-block:: python
 
             from google.cloud import datastream_v1
@@ -1989,7 +1978,6 @@ class DatastreamAsyncClient:
     ) -> pagers.FetchStaticIpsAsyncPager:
         r"""The FetchStaticIps API call exposes the static IP
         addresses used by Datastream.
-
 
         .. code-block:: python
 
@@ -2102,7 +2090,6 @@ class DatastreamAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Use this method to create a private connectivity
         configuration.
-
 
         .. code-block:: python
 
@@ -2237,7 +2224,6 @@ class DatastreamAsyncClient:
         r"""Use this method to get details about a private
         connectivity configuration.
 
-
         .. code-block:: python
 
             from google.cloud import datastream_v1
@@ -2335,7 +2321,6 @@ class DatastreamAsyncClient:
     ) -> pagers.ListPrivateConnectionsAsyncPager:
         r"""Use this method to list private connectivity
         configurations in a project and location.
-
 
         .. code-block:: python
 
@@ -2446,7 +2431,6 @@ class DatastreamAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Use this method to delete a private connectivity
         configuration.
-
 
         .. code-block:: python
 
@@ -2570,7 +2554,6 @@ class DatastreamAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Use this method to create a route for a private
         connectivity configuration in a project and location.
-
 
         .. code-block:: python
 
@@ -2798,7 +2781,6 @@ class DatastreamAsyncClient:
     ) -> pagers.ListRoutesAsyncPager:
         r"""Use this method to list routes created for a private
         connectivity configuration in a project and location.
-
 
         .. code-block:: python
 

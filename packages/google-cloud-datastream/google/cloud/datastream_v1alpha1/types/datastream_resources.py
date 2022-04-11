@@ -89,7 +89,7 @@ class OracleProfile(proto.Message):
             Required. Password for the Oracle connection.
         database_service (str):
             Required. Database for the Oracle connection.
-        connection_attributes (Sequence[google.cloud.datastream_v1alpha1.types.OracleProfile.ConnectionAttributesEntry]):
+        connection_attributes (Mapping[str, str]):
             Connection string attributes
     """
 
@@ -276,7 +276,7 @@ class PrivateConnection(proto.Message):
             Output only. The create time of the resource.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The update time of the resource.
-        labels (Sequence[google.cloud.datastream_v1alpha1.types.PrivateConnection.LabelsEntry]):
+        labels (Mapping[str, str]):
             Labels.
         display_name (str):
             Required. Display name.
@@ -363,7 +363,7 @@ class Route(proto.Message):
             Output only. The create time of the resource.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The update time of the resource.
-        labels (Sequence[google.cloud.datastream_v1alpha1.types.Route.LabelsEntry]):
+        labels (Mapping[str, str]):
             Labels.
         display_name (str):
             Required. Display name.
@@ -477,7 +477,7 @@ class ConnectionProfile(proto.Message):
             Output only. The create time of the resource.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The update time of the resource.
-        labels (Sequence[google.cloud.datastream_v1alpha1.types.ConnectionProfile.LabelsEntry]):
+        labels (Mapping[str, str]):
             Labels.
         display_name (str):
             Required. Display name.
@@ -1046,7 +1046,7 @@ class Stream(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The last update time of the
             stream.
-        labels (Sequence[google.cloud.datastream_v1alpha1.types.Stream.LabelsEntry]):
+        labels (Mapping[str, str]):
             Labels.
         display_name (str):
             Required. Display name.
@@ -1200,7 +1200,7 @@ class Error(proto.Message):
             the error that occurred.
         error_time (google.protobuf.timestamp_pb2.Timestamp):
             The time when the error occurred.
-        details (Sequence[google.cloud.datastream_v1alpha1.types.Error.DetailsEntry]):
+        details (Mapping[str, str]):
             Additional information about the error.
     """
 
@@ -1293,7 +1293,7 @@ class ValidationMessage(proto.Message):
             The result of the validation.
         level (google.cloud.datastream_v1alpha1.types.ValidationMessage.Level):
             Message severity level (warning or error).
-        metadata (Sequence[google.cloud.datastream_v1alpha1.types.ValidationMessage.MetadataEntry]):
+        metadata (Mapping[str, str]):
             Additional metadata related to the result.
         code (str):
             A custom code identifying this specific
