@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-core/#history
 
+## [2.3.0](https://github.com/googleapis/python-cloud-core/compare/v2.2.3...v2.3.0) (2022-04-06)
+
+
+### Features
+
+* allow extra_api_info to be passed to api request ([#183](https://github.com/googleapis/python-cloud-core/issues/183)) ([3f8e058](https://github.com/googleapis/python-cloud-core/commit/3f8e0581e631cde3163278fff326fd4831a75e75))
+
 ### [2.2.3](https://github.com/googleapis/python-cloud-core/compare/v2.2.2...v2.2.3) (2022-03-07)
 
 
