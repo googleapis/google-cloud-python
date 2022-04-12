@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from pathlib import Path
+
 import synthtool as s
 import synthtool.gcp as gcp
 from synthtool.languages import python
@@ -67,4 +69,6 @@ python.py_samples(skip_readmes=True)
 # Run blacken session
 # ----------------------------------------------------------------------------
 
-s.shell.run(["nox", "-s", "blacken"], hide_output=False)
+# run blacken session for all directories which have a noxfile
+for noxfile in Path(".").glob("**/noxfile.py"):
+    s.shell.run(["nox", "-s", "blacken"], cwd=noxfile.parent, hide_output=False)
