@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -827,7 +827,6 @@ class ProductServiceAsyncClient:
         [Product][google.cloud.retail.v2.Product]s to be successfully
         updated.
 
-
         .. code-block:: python
 
             from google.cloud import retail_v2
@@ -888,8 +887,7 @@ class ProductServiceAsyncClient:
                 maximum=300.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=300.0,
             ),
@@ -978,7 +976,6 @@ class ProductServiceAsyncClient:
         This feature is only available for users who have Retail Search
         enabled. Please enable Retail Search on Cloud Console before
         using this feature.
-
 
         .. code-block:: python
 
@@ -1185,7 +1182,6 @@ class ProductServiceAsyncClient:
         enabled. Please enable Retail Search on Cloud Console before
         using this feature.
 
-
         .. code-block:: python
 
             from google.cloud import retail_v2
@@ -1319,7 +1315,6 @@ class ProductServiceAsyncClient:
         This feature is only available for users who have Retail Search
         enabled. Please enable Retail Search on Cloud Console before
         using this feature.
-
 
         .. code-block:: python
 
@@ -1464,7 +1459,6 @@ class ProductServiceAsyncClient:
         enabled. Please enable Retail Search on Cloud Console before
         using this feature.
 
-
         .. code-block:: python
 
             from google.cloud import retail_v2
@@ -1602,7 +1596,6 @@ class ProductServiceAsyncClient:
         This feature is only available for users who have Retail Search
         enabled. Please enable Retail Search on Cloud Console before
         using this feature.
-
 
         .. code-block:: python
 

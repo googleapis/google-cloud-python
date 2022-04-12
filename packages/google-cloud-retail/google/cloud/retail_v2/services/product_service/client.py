@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -1077,7 +1077,6 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
         [Product][google.cloud.retail.v2.Product]s to be successfully
         updated.
 
-
         .. code-block:: python
 
             from google.cloud import retail_v2
@@ -1219,7 +1218,6 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
         This feature is only available for users who have Retail Search
         enabled. Please enable Retail Search on Cloud Console before
         using this feature.
-
 
         .. code-block:: python
 
@@ -1426,7 +1424,6 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
         enabled. Please enable Retail Search on Cloud Console before
         using this feature.
 
-
         .. code-block:: python
 
             from google.cloud import retail_v2
@@ -1560,7 +1557,6 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
         This feature is only available for users who have Retail Search
         enabled. Please enable Retail Search on Cloud Console before
         using this feature.
-
 
         .. code-block:: python
 
@@ -1707,7 +1703,6 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
         enabled. Please enable Retail Search on Cloud Console before
         using this feature.
 
-
         .. code-block:: python
 
             from google.cloud import retail_v2
@@ -1845,7 +1840,6 @@ class ProductServiceClient(metaclass=ProductServiceClientMeta):
         This feature is only available for users who have Retail Search
         enabled. Please enable Retail Search on Cloud Console before
         using this feature.
-
 
         .. code-block:: python
 

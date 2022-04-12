@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -219,7 +219,6 @@ class CatalogServiceAsyncClient:
     ) -> pagers.ListCatalogsAsyncPager:
         r"""Lists all the [Catalog][google.cloud.retail.v2.Catalog]s
         associated with the project.
-
 
         .. code-block:: python
 
@@ -491,7 +490,6 @@ class CatalogServiceAsyncClient:
         -  UserEventService will only join events with products from
            branch {newBranch}.
 
-
         .. code-block:: python
 
             from google.cloud import retail_v2
@@ -575,7 +573,6 @@ class CatalogServiceAsyncClient:
         r"""Get which branch is currently default branch set by
         [CatalogService.SetDefaultBranch][google.cloud.retail.v2.CatalogService.SetDefaultBranch]
         method under a specified parent catalog.
-
 
         .. code-block:: python
 

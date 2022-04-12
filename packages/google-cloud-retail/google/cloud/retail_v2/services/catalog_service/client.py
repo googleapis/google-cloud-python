@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -466,7 +466,6 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         r"""Lists all the [Catalog][google.cloud.retail.v2.Catalog]s
         associated with the project.
 
-
         .. code-block:: python
 
             from google.cloud import retail_v2
@@ -737,7 +736,6 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         -  UserEventService will only join events with products from
            branch {newBranch}.
 
-
         .. code-block:: python
 
             from google.cloud import retail_v2
@@ -821,7 +819,6 @@ class CatalogServiceClient(metaclass=CatalogServiceClientMeta):
         r"""Get which branch is currently default branch set by
         [CatalogService.SetDefaultBranch][google.cloud.retail.v2.CatalogService.SetDefaultBranch]
         method under a specified parent catalog.
-
 
         .. code-block:: python
 

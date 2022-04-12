@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -222,7 +222,6 @@ class CompletionServiceAsyncClient:
         Search enabled. Please enable Retail Search on Cloud
         Console before using this feature.
 
-
         .. code-block:: python
 
             from google.cloud import retail_v2
@@ -301,7 +300,6 @@ class CompletionServiceAsyncClient:
         This feature is only available for users who have Retail
         Search enabled. Please enable Retail Search on Cloud
         Console before using this feature.
-
 
         .. code-block:: python
 

@@ -680,5 +680,9 @@ class ProductServiceGrpcTransport(ProductServiceTransport):
     def close(self):
         self.grpc_channel.close()
 
+    @property
+    def kind(self) -> str:
+        return "grpc"
+
 
 __all__ = ("ProductServiceGrpcTransport",)
