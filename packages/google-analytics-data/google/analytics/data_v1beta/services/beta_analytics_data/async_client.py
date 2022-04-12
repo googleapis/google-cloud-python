@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -220,7 +220,6 @@ class BetaAnalyticsDataAsyncClient:
         Dimensions break down metrics across some common
         criteria, such as country or event name.
 
-
         .. code-block:: python
 
             from google.analytics import data_v1beta
@@ -297,7 +296,6 @@ class BetaAnalyticsDataAsyncClient:
         in a pivot. Multiple pivots can be specified to further
         dissect your data.
 
-
         .. code-block:: python
 
             from google.analytics import data_v1beta
@@ -371,7 +369,6 @@ class BetaAnalyticsDataAsyncClient:
         r"""Returns multiple reports in a batch. All reports must
         be for the same GA4 Property.
 
-
         .. code-block:: python
 
             from google.analytics import data_v1beta
@@ -444,7 +441,6 @@ class BetaAnalyticsDataAsyncClient:
     ) -> analytics_data_api.BatchRunPivotReportsResponse:
         r"""Returns multiple pivot reports in a batch. All
         reports must be for the same GA4 Property.
-
 
         .. code-block:: python
 
@@ -528,7 +524,6 @@ class BetaAnalyticsDataAsyncClient:
         response will contain ``customEvent:levels_unlocked``. Universal
         metadata are dimensions and metrics applicable to any property
         such as ``country`` and ``totalUsers``.
-
 
         .. code-block:: python
 
@@ -637,7 +632,6 @@ class BetaAnalyticsDataAsyncClient:
         property. These reports show events and usage from the
         last 30 minutes.
 
-
         .. code-block:: python
 
             from google.analytics import data_v1beta
@@ -719,7 +713,6 @@ class BetaAnalyticsDataAsyncClient:
         The Realtime and Core reports have different
         compatibility rules. This method checks compatibility
         for Core reports.
-
 
         .. code-block:: python
 
