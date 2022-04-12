@@ -13,7 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .condition import Condition
+from .condition import (
+    Condition,
+)
 from .k8s_min import (
     CloudSqlInstance,
     Container,
@@ -34,7 +36,9 @@ from .revision import (
     ListRevisionsResponse,
     Revision,
 )
-from .revision_template import RevisionTemplate
+from .revision_template import (
+    RevisionTemplate,
+)
 from .service import (
     CreateServiceRequest,
     DeleteServiceRequest,

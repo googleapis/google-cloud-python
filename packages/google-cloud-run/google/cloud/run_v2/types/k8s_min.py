@@ -133,7 +133,7 @@ class ResourceRequirements(proto.Message):
     requirements.
 
     Attributes:
-        limits (Sequence[google.cloud.run_v2.types.ResourceRequirements.LimitsEntry]):
+        limits (Mapping[str, str]):
             Only memory and CPU are supported. Note: The
             only supported values for CPU are '1', '2', and
             '4'. Setting 4 CPU requires at least 2Gi of

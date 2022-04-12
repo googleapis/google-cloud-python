@@ -2378,6 +2378,7 @@ def test_set_iam_policy_from_dict_foreign():
             request={
                 "resource": "resource_value",
                 "policy": policy_pb2.Policy(version=774),
+                "update_mask": field_mask_pb2.FieldMask(paths=["paths_value"]),
             }
         )
         call.assert_called()
@@ -2654,6 +2655,19 @@ def test_transport_adc(transport_class):
         adc.assert_called_once()
 
 
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "grpc",
+    ],
+)
+def test_transport_kind(transport_name):
+    transport = ServicesClient.get_transport_class(transport_name)(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    assert transport.kind == transport_name
+
+
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = ServicesClient(
@@ -2707,6 +2721,14 @@ def test_services_base_transport():
     # also raise NotImplementedError
     with pytest.raises(NotImplementedError):
         transport.operations_client
+
+    # Catch all for all remaining methods and properties
+    remainder = [
+        "kind",
+    ]
+    for r in remainder:
+        with pytest.raises(NotImplementedError):
+            getattr(transport, r)()
 
 
 def test_services_base_transport_with_credentials_file():

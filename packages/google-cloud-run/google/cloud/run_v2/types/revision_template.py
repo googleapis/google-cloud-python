@@ -37,9 +37,9 @@ class RevisionTemplate(proto.Message):
             The unique name for the revision. If this
             field is omitted, it will be automatically
             generated based on the Service name.
-        labels (Sequence[google.cloud.run_v2.types.RevisionTemplate.LabelsEntry]):
+        labels (Mapping[str, str]):
             KRM-style labels for the resource.
-        annotations (Sequence[google.cloud.run_v2.types.RevisionTemplate.AnnotationsEntry]):
+        annotations (Mapping[str, str]):
             KRM-style annotations for the resource.
         scaling (google.cloud.run_v2.types.RevisionScaling):
             Scaling settings for this Revision.

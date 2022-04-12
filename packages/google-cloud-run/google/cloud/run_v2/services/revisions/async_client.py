@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -324,7 +324,6 @@ class RevisionsAsyncClient:
     ) -> pagers.ListRevisionsAsyncPager:
         r"""List Revisions from a given Service, or from a given
         location.
-
 
         .. code-block:: python
 

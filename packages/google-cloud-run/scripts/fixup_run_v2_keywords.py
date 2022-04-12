@@ -47,7 +47,7 @@ class runCallTransformer(cst.CSTTransformer):
         'get_service': ('name', ),
         'list_revisions': ('parent', 'page_size', 'page_token', 'show_deleted', ),
         'list_services': ('parent', 'page_size', 'page_token', 'show_deleted', ),
-        'set_iam_policy': ('resource', 'policy', ),
+        'set_iam_policy': ('resource', 'policy', 'update_mask', ),
         'test_iam_permissions': ('resource', 'permissions', ),
         'update_service': ('service', 'update_mask', 'validate_only', 'allow_missing', ),
     }

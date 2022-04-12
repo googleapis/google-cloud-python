@@ -169,7 +169,7 @@ class Revision(proto.Message):
             Output only. A number that monotonically
             increases every time the user modifies the
             desired state.
-        labels (Sequence[google.cloud.run_v2.types.Revision.LabelsEntry]):
+        labels (Mapping[str, str]):
             KRM-style labels for the resource.
             User-provided labels are shared with Google's
             billing system, so they can be used to filter,
@@ -183,7 +183,7 @@ class Revision(proto.Message):
             'run.googleapis.com' or 'serving.knative.dev'
             namespaces. Those labels are read-only, and user
             changes will not be preserved.
-        annotations (Sequence[google.cloud.run_v2.types.Revision.AnnotationsEntry]):
+        annotations (Mapping[str, str]):
             KRM-style annotations for the resource.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The creation time.

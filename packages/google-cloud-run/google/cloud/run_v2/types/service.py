@@ -258,7 +258,7 @@ class Service(proto.Message):
             Output only. A number that monotonically
             increases every time the user modifies the
             desired state.
-        labels (Sequence[google.cloud.run_v2.types.Service.LabelsEntry]):
+        labels (Mapping[str, str]):
             Map of string keys and values that can be
             used to organize and categorize objects.
             User-provided labels are shared with Google's
@@ -273,7 +273,7 @@ class Service(proto.Message):
             'run.googleapis.com' or 'serving.knative.dev'
             namespaces. Those labels are read-only, and user
             changes will not be preserved.
-        annotations (Sequence[google.cloud.run_v2.types.Service.AnnotationsEntry]):
+        annotations (Mapping[str, str]):
             Unstructured key value map that may be set by
             external tools to store and arbitrary metadata.
             They are not queryable and should be preserved
