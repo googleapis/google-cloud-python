@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -448,7 +448,6 @@ class ResourceSettingsServiceClient(metaclass=ResourceSettingsServiceClientMeta)
         r"""Lists all the settings that are available on the Cloud resource
         ``parent``.
 
-
         .. code-block:: python
 
             from google.cloud import resourcesettings_v1
@@ -563,7 +562,6 @@ class ResourceSettingsServiceClient(metaclass=ResourceSettingsServiceClientMeta)
         Returns a ``google.rpc.Status`` with
         ``google.rpc.Code.NOT_FOUND`` if the setting does not exist.
 
-
         .. code-block:: python
 
             from google.cloud import resourcesettings_v1
@@ -670,7 +668,6 @@ class ResourceSettingsServiceClient(metaclass=ResourceSettingsServiceClientMeta)
 
         Note: the supplied setting will perform a full overwrite of the
         ``local_value`` field.
-
 
         .. code-block:: python
 

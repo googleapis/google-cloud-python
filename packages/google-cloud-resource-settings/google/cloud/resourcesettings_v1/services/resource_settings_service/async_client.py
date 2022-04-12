@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -232,7 +232,6 @@ class ResourceSettingsServiceAsyncClient:
         r"""Lists all the settings that are available on the Cloud resource
         ``parent``.
 
-
         .. code-block:: python
 
             from google.cloud import resourcesettings_v1
@@ -308,8 +307,7 @@ class ResourceSettingsServiceAsyncClient:
                 maximum=10.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=60.0,
             ),
@@ -356,7 +354,6 @@ class ResourceSettingsServiceAsyncClient:
 
         Returns a ``google.rpc.Status`` with
         ``google.rpc.Code.NOT_FOUND`` if the setting does not exist.
-
 
         .. code-block:: python
 
@@ -424,8 +421,7 @@ class ResourceSettingsServiceAsyncClient:
                 maximum=10.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=60.0,
             ),
@@ -475,7 +471,6 @@ class ResourceSettingsServiceAsyncClient:
         Note: the supplied setting will perform a full overwrite of the
         ``local_value`` field.
 
-
         .. code-block:: python
 
             from google.cloud import resourcesettings_v1
@@ -519,8 +514,7 @@ class ResourceSettingsServiceAsyncClient:
                 maximum=10.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=60.0,
             ),
