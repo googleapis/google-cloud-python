@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -449,7 +449,6 @@ class DomainsClient(metaclass=DomainsClientMeta):
         ``RetrieveRegisterParameters`` on a domain before registering to
         confirm availability.
 
-
         .. code-block:: python
 
             from google.cloud import domains_v1
@@ -555,7 +554,6 @@ class DomainsClient(metaclass=DomainsClientMeta):
         r"""Gets parameters needed to register a new domain name, including
         price and up-to-date availability. Use the returned values to
         call ``RegisterDomain``.
-
 
         .. code-block:: python
 
@@ -677,7 +675,6 @@ class DomainsClient(metaclass=DomainsClientMeta):
         ``REGISTRATION_FAILED``, it indicates that the domain was not
         registered successfully, and you can safely delete the resource
         and retry registration.
-
 
         .. code-block:: python
 
@@ -845,7 +842,6 @@ class DomainsClient(metaclass=DomainsClientMeta):
 
         Use the returned values to call ``TransferDomain``.
 
-
         .. code-block:: python
 
             from google.cloud import domains_v1
@@ -977,7 +973,6 @@ class DomainsClient(metaclass=DomainsClientMeta):
         without being approved, the resource can end up in state
         ``TRANSFER_FAILED``. If transfer fails, you can safely delete
         the resource and retry the transfer.
-
 
         .. code-block:: python
 
@@ -1389,7 +1384,6 @@ class DomainsClient(metaclass=DomainsClientMeta):
         -  To update DNS configuration, see ``ConfigureDnsSettings``
         -  To update contact information, see
            ``ConfigureContactSettings``
-
 
         .. code-block:: python
 
@@ -1846,7 +1840,6 @@ class DomainsClient(metaclass=DomainsClientMeta):
         r"""Updates a ``Registration``'s contact settings. Some changes
         require confirmation by the domain's registrant contact .
 
-
         .. code-block:: python
 
             from google.cloud import domains_v1
@@ -2008,7 +2001,6 @@ class DomainsClient(metaclass=DomainsClientMeta):
         The domain does not renew automatically unless the new owner
         sets up billing in Google Domains.
 
-
         .. code-block:: python
 
             from google.cloud import domains_v1
@@ -2159,7 +2151,6 @@ class DomainsClient(metaclass=DomainsClientMeta):
         The domain does not renew automatically unless the new owner
         sets up billing in Google Domains.
 
-
         .. code-block:: python
 
             from google.cloud import domains_v1
@@ -2284,7 +2275,6 @@ class DomainsClient(metaclass=DomainsClientMeta):
         You can call this method only after 60 days have elapsed since
         the initial domain registration.
 
-
         .. code-block:: python
 
             from google.cloud import domains_v1
@@ -2386,7 +2376,6 @@ class DomainsClient(metaclass=DomainsClientMeta):
 
         You can call this method only after 60 days have elapsed since
         the initial domain registration.
-
 
         .. code-block:: python
 

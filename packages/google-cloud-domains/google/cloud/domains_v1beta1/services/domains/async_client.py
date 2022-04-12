@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -219,7 +219,6 @@ class DomainsAsyncClient:
         ``RetrieveRegisterParameters`` on a domain before registering to
         confirm availability.
 
-
         .. code-block:: python
 
             from google.cloud import domains_v1beta1
@@ -325,7 +324,6 @@ class DomainsAsyncClient:
         r"""Gets parameters needed to register a new domain name, including
         price and up-to-date availability. Use the returned values to
         call ``RegisterDomain``.
-
 
         .. code-block:: python
 
@@ -445,7 +443,6 @@ class DomainsAsyncClient:
         ``REGISTRATION_FAILED``, it indicates that the domain was not
         registered successfully, and you can safely delete the resource
         and retry registration.
-
 
         .. code-block:: python
 
@@ -613,7 +610,6 @@ class DomainsAsyncClient:
 
         Use the returned values to call ``TransferDomain``.
 
-
         .. code-block:: python
 
             from google.cloud import domains_v1beta1
@@ -743,7 +739,6 @@ class DomainsAsyncClient:
         without being approved, the resource can end up in state
         ``TRANSFER_FAILED``. If transfer fails, you can safely delete
         the resource and retry the transfer.
-
 
         .. code-block:: python
 
@@ -1155,7 +1150,6 @@ class DomainsAsyncClient:
         -  To update DNS configuration, see ``ConfigureDnsSettings``
         -  To update contact information, see
            ``ConfigureContactSettings``
-
 
         .. code-block:: python
 
@@ -1610,7 +1604,6 @@ class DomainsAsyncClient:
         r"""Updates a ``Registration``'s contact settings. Some changes
         require confirmation by the domain's registrant contact .
 
-
         .. code-block:: python
 
             from google.cloud import domains_v1beta1
@@ -1770,7 +1763,6 @@ class DomainsAsyncClient:
         The domain does not renew automatically unless the new owner
         sets up billing in Google Domains.
 
-
         .. code-block:: python
 
             from google.cloud import domains_v1beta1
@@ -1921,7 +1913,6 @@ class DomainsAsyncClient:
         The domain does not renew automatically unless the new owner
         sets up billing in Google Domains.
 
-
         .. code-block:: python
 
             from google.cloud import domains_v1beta1
@@ -2046,7 +2037,6 @@ class DomainsAsyncClient:
         You can call this method only after 60 days have elapsed since
         the initial domain registration.
 
-
         .. code-block:: python
 
             from google.cloud import domains_v1beta1
@@ -2146,7 +2136,6 @@ class DomainsAsyncClient:
 
         You can call this method only after 60 days have elapsed since
         the initial domain registration.
-
 
         .. code-block:: python
 

@@ -135,7 +135,7 @@ class Registration(proto.Message):
         issues (Sequence[google.cloud.domains_v1.types.Registration.Issue]):
             Output only. The set of issues with the ``Registration``
             that require attention.
-        labels (Sequence[google.cloud.domains_v1.types.Registration.LabelsEntry]):
+        labels (Mapping[str, str]):
             Set of labels associated with the ``Registration``.
         management_settings (google.cloud.domains_v1.types.ManagementSettings):
             Settings for management of the ``Registration``, including
