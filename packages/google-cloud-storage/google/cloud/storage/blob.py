@@ -15,14 +15,6 @@
 # pylint: disable=too-many-lines
 
 """Create / interact with Google Cloud Storage blobs.
-
-.. _API reference docs: https://cloud.google.com/storage/docs/\
-                        json_api/v1/objects
-.. _customer-supplied: https://cloud.google.com/storage/docs/\
-                       encryption#customer-supplied
-.. _google-resumable-media: https://googleapis.github.io/\
-                            google-resumable-media-python/latest/\
-                            google.resumable_media.requests.html
 """
 
 import base64
@@ -1048,7 +1040,8 @@ class Blob(_PropertyMixin):
            If the server-set property, :attr:`media_link`, is not yet
            initialized, makes an additional API request to load it.
 
-        Downloading a file that has been encrypted with a `customer-supplied`_
+        Downloading a file that has been encrypted with a
+        [`customer-supplied`](https://cloud.google.com/storage/docs/encryption#customer-supplied)
         encryption key:
 
          .. literalinclude:: snippets.py
@@ -1064,8 +1057,8 @@ class Blob(_PropertyMixin):
         of data in each request.
 
         For more fine-grained control over the download process, check out
-        `google-resumable-media`_. For example, this library allows
-        downloading **parts** of a blob rather than the whole thing.
+        [`google-resumable-media`](https://googleapis.dev/python/google-resumable-media/latest/index.html).
+        For example, this library allows downloading **parts** of a blob rather than the whole thing.
 
         If :attr:`user_project` is set on the bucket, bills the API request
         to that project.
@@ -1694,8 +1687,8 @@ class Blob(_PropertyMixin):
 
         This is intended to be used when creating a new object / blob.
 
-        See the `API reference docs`_ for more information, the fields
-        marked as writable are:
+        See the [`API reference docs`](https://cloud.google.com/storage/docs/json_api/v1/objects)
+        for more information, the fields marked as writable are:
 
         * ``acl``
         * ``cacheControl``
@@ -2445,7 +2438,8 @@ class Blob(_PropertyMixin):
            See the `object versioning`_ and `lifecycle`_ API documents
            for details.
 
-        Uploading a file with a `customer-supplied`_ encryption key:
+        Uploading a file with a
+        [`customer-supplied`](https://cloud.google.com/storage/docs/encryption#customer-supplied) encryption key:
 
         .. literalinclude:: snippets.py
             :start-after: [START upload_from_file]
@@ -2460,7 +2454,7 @@ class Blob(_PropertyMixin):
         uploaded in a single multipart upload request.
 
         For more fine-grained over the upload process, check out
-        `google-resumable-media`_.
+        [`google-resumable-media`](https://googleapis.dev/python/google-resumable-media/latest/index.html).
 
         If :attr:`user_project` is set on the bucket, bills the API request
         to that project.
@@ -2911,7 +2905,8 @@ class Blob(_PropertyMixin):
            API documents for details.
 
         If :attr:`encryption_key` is set, the blob will be encrypted with
-        a `customer-supplied`_ encryption key.
+        a [`customer-supplied`](https://cloud.google.com/storage/docs/encryption#customer-supplied)
+        encryption key.
 
         If :attr:`user_project` is set on the bucket, bills the API request
         to that project.
@@ -3931,51 +3926,47 @@ class Blob(_PropertyMixin):
     cache_control = _scalar_property("cacheControl")
     """HTTP 'Cache-Control' header for this object.
 
-    See `RFC 7234`_ and `API reference docs`_.
+    See [`RFC 7234`](https://tools.ietf.org/html/rfc7234#section-5.2)
+    and [`API reference docs`](https://cloud.google.com/storage/docs/json_api/v1/objects).
 
     :rtype: str or ``NoneType``
 
-    .. _RFC 7234: https://tools.ietf.org/html/rfc7234#section-5.2
     """
 
     content_disposition = _scalar_property("contentDisposition")
     """HTTP 'Content-Disposition' header for this object.
 
-    See `RFC 6266`_ and `API reference docs`_.
+    See [`RFC 6266`](https://tools.ietf.org/html/rfc7234#section-5.2) and
+    [`API reference docs`](https://cloud.google.com/storage/docs/json_api/v1/objects).
 
     :rtype: str or ``NoneType``
-
-    .. _RFC 6266: https://tools.ietf.org/html/rfc7234#section-5.2
     """
 
     content_encoding = _scalar_property("contentEncoding")
     """HTTP 'Content-Encoding' header for this object.
 
-    See `RFC 7231`_ and `API reference docs`_.
+    See [`RFC 7231`](https://tools.ietf.org/html/rfc7231#section-3.1.2.2) and
+    [`API reference docs`](https://cloud.google.com/storage/docs/json_api/v1/objects).
 
     :rtype: str or ``NoneType``
-
-    .. _RFC 7231: https://tools.ietf.org/html/rfc7231#section-3.1.2.2
     """
 
     content_language = _scalar_property("contentLanguage")
     """HTTP 'Content-Language' header for this object.
 
-    See `BCP47`_ and `API reference docs`_.
+    See [`BCP47`](https://tools.ietf.org/html/bcp47) and
+    [`API reference docs`](https://cloud.google.com/storage/docs/json_api/v1/objects).
 
     :rtype: str or ``NoneType``
-
-    .. _BCP47: https://tools.ietf.org/html/bcp47
     """
 
     content_type = _scalar_property(_CONTENT_TYPE_FIELD)
     """HTTP 'Content-Type' header for this object.
 
-    See `RFC 2616`_ and `API reference docs`_.
+    See [`RFC 2616`](https://tools.ietf.org/html/rfc2616#section-14.17) and
+    [`API reference docs`](https://cloud.google.com/storage/docs/json_api/v1/objects).
 
     :rtype: str or ``NoneType``
-
-    .. _RFC 2616: https://tools.ietf.org/html/rfc2616#section-14.17
     """
 
     crc32c = _scalar_property("crc32c")
@@ -3984,13 +3975,13 @@ class Blob(_PropertyMixin):
     This returns the blob's CRC32C checksum. To retrieve the value, first use a
     reload method of the Blob class which loads the blob's properties from the server.
 
-    See `RFC 4960`_ and `API reference docs`_.
+    See [`RFC 4960`](https://tools.ietf.org/html/rfc4960#appendix-B) and
+    [`API reference docs`](https://cloud.google.com/storage/docs/json_api/v1/objects).
 
     If not set before upload, the server will compute the hash.
 
     :rtype: str or ``NoneType``
 
-    .. _RFC 4960: https://tools.ietf.org/html/rfc4960#appendix-B
 
     Example:
             Retrieve the crc32c hash of blob.
@@ -4029,20 +4020,19 @@ class Blob(_PropertyMixin):
     def etag(self):
         """Retrieve the ETag for the object.
 
-        See `RFC 2616 (etags)`_ and `API reference docs`_.
+        See [`RFC 2616 (etags)`](https://tools.ietf.org/html/rfc2616#section-3.11) and
+        [`API reference docs`](https://cloud.google.com/storage/docs/json_api/v1/objects).
 
         :rtype: str or ``NoneType``
         :returns: The blob etag or ``None`` if the blob's resource has not
                   been loaded from the server.
-
-        .. _RFC 2616 (etags): https://tools.ietf.org/html/rfc2616#section-3.11
         """
         return self._properties.get("etag")
 
     event_based_hold = _scalar_property("eventBasedHold")
     """Is an event-based hold active on the object?
 
-    See `API reference docs`_.
+    See [`API reference docs`](https://cloud.google.com/storage/docs/json_api/v1/objects).
 
     If the property is not set locally, returns :data:`None`.
 
@@ -4083,13 +4073,12 @@ class Blob(_PropertyMixin):
     This returns the blob's MD5 hash. To retrieve the value, first use a
     reload method of the Blob class which loads the blob's properties from the server.
 
-    See `RFC 1321`_ and `API reference docs`_.
+    See [`RFC 1321`](https://tools.ietf.org/html/rfc1321) and
+    [`API reference docs`](https://cloud.google.com/storage/docs/json_api/v1/objects).
 
     If not set before upload, the server will compute the hash.
 
     :rtype: str or ``NoneType``
-
-    .. _RFC 1321: https://tools.ietf.org/html/rfc1321
 
     Example:
             Retrieve the md5 hash of blob.
@@ -4265,7 +4254,7 @@ class Blob(_PropertyMixin):
     temporary_hold = _scalar_property("temporaryHold")
     """Is a temporary hold active on the object?
 
-    See `API reference docs`_.
+    See [`API reference docs`](https://cloud.google.com/storage/docs/json_api/v1/objects).
 
     If the property is not set locally, returns :data:`None`.
 
