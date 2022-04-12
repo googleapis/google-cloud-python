@@ -18,6 +18,7 @@ import functools
 import re
 from typing import (
     Dict,
+    Mapping,
     Optional,
     AsyncIterable,
     Awaitable,
@@ -221,7 +222,6 @@ class TetherAsyncClient:
         the dialer, the RPC client.
         The listener streams http requests and the dialer
         streams http responses.
-
 
         .. code-block:: python
 
