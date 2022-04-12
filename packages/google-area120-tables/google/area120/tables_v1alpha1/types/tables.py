@@ -641,7 +641,7 @@ class Row(proto.Message):
             The resource name of the row. Row names have the form
             ``tables/{table}/rows/{row}``. The name is ignored when
             creating a row.
-        values (Sequence[google.area120.tables_v1alpha1.types.Row.ValuesEntry]):
+        values (Mapping[str, google.protobuf.struct_pb2.Value]):
             The values of the row. This is a map of
             column key to value. Key is user entered
             name(default) or the internal column id based on

@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -649,7 +649,6 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
         r"""Gets a workspace. Returns NOT_FOUND if the workspace does not
         exist.
 
-
         .. code-block:: python
 
             from google.area120 import tables_v1alpha1
@@ -825,7 +824,6 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
         r"""Gets a row. Returns NOT_FOUND if the row does not exist in the
         table.
 
-
         .. code-block:: python
 
             from google.area120 import tables_v1alpha1
@@ -920,7 +918,6 @@ class TablesServiceClient(metaclass=TablesServiceClientMeta):
     ) -> pagers.ListRowsPager:
         r"""Lists rows in a table. Returns NOT_FOUND if the table does not
         exist.
-
 
         .. code-block:: python
 
