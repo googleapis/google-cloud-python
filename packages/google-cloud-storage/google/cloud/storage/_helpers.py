@@ -21,6 +21,7 @@ import base64
 from hashlib import md5
 import os
 from urllib.parse import urlsplit
+from uuid import uuid4
 
 from google import resumable_media
 from google.auth import environment_vars
@@ -584,6 +585,10 @@ def _api_core_retry_to_resumable_media_retry(retry, num_retries=None):
         return resumable_media.RetryStrategy(max_retries=0)
 
 
+def _get_invocation_id():
+    return "gccl-invocation-id/" + str(uuid4())
+
+
 def _get_default_headers(
     user_agent,
     content_type="application/json; charset=UTF-8",
@@ -600,7 +605,7 @@ def _get_default_headers(
         "Accept": "application/json",
         "Accept-Encoding": "gzip, deflate",
         "User-Agent": user_agent,
-        "x-goog-api-client": user_agent,
+        "X-Goog-API-Client": f"{user_agent} {_get_invocation_id()}",
         "content-type": content_type,
         "x-upload-content-type": x_upload_content_type or content_type,
     }

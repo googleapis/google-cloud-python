@@ -21,11 +21,13 @@ import os
 import tempfile
 import unittest
 import http.client
+from unittest.mock import patch
 from urllib.parse import urlencode
 
 import mock
 import pytest
 
+from google.cloud.storage import _helpers
 from google.cloud.storage._helpers import _get_default_headers
 from google.cloud.storage.retry import (
     DEFAULT_RETRY,
@@ -33,6 +35,7 @@ from google.cloud.storage.retry import (
 )
 from google.cloud.storage.retry import DEFAULT_RETRY_IF_ETAG_IN_JSON
 from google.cloud.storage.retry import DEFAULT_RETRY_IF_GENERATION_SPECIFIED
+from tests.unit.test__helpers import GCCL_INVOCATION_TEST_CONST
 
 
 def _make_credentials():
@@ -2234,17 +2237,23 @@ class Test_Blob(unittest.TestCase):
         blob.content_disposition = "inline"
 
         content_type = "image/jpeg"
-        info = blob._get_upload_arguments(client, content_type)
+        with patch.object(
+            _helpers, "_get_invocation_id", return_value=GCCL_INVOCATION_TEST_CONST
+        ):
+            info = blob._get_upload_arguments(client, content_type)
 
         headers, object_metadata, new_content_type = info
         header_key_value = "W3BYd0AscEBAQWZCZnJSM3gtMmIyU0NIUiwuP1l3Uk8="
         header_key_hash_value = "G0++dxF4q5rG4o9kE8gvEKn15RH6wLm0wXV1MgAlXOg="
-        expected_headers = {
-            **_get_default_headers(client._connection.user_agent, content_type),
-            "X-Goog-Encryption-Algorithm": "AES256",
-            "X-Goog-Encryption-Key": header_key_value,
-            "X-Goog-Encryption-Key-Sha256": header_key_hash_value,
-        }
+        with patch.object(
+            _helpers, "_get_invocation_id", return_value=GCCL_INVOCATION_TEST_CONST
+        ):
+            expected_headers = {
+                **_get_default_headers(client._connection.user_agent, content_type),
+                "X-Goog-Encryption-Algorithm": "AES256",
+                "X-Goog-Encryption-Key": header_key_value,
+                "X-Goog-Encryption-Key-Sha256": header_key_hash_value,
+            }
         self.assertEqual(headers, expected_headers)
         expected_metadata = {
             "contentDisposition": blob.content_disposition,
@@ -2313,20 +2322,23 @@ class Test_Blob(unittest.TestCase):
             expected_timeout = timeout
             timeout_kwarg = {"timeout": timeout}
 
-        response = blob._do_multipart_upload(
-            client,
-            stream,
-            content_type,
-            size,
-            num_retries,
-            predefined_acl,
-            if_generation_match,
-            if_generation_not_match,
-            if_metageneration_match,
-            if_metageneration_not_match,
-            retry=retry,
-            **timeout_kwarg
-        )
+        with patch.object(
+            _helpers, "_get_invocation_id", return_value=GCCL_INVOCATION_TEST_CONST
+        ):
+            response = blob._do_multipart_upload(
+                client,
+                stream,
+                content_type,
+                size,
+                num_retries,
+                predefined_acl,
+                if_generation_match,
+                if_generation_not_match,
+                if_metageneration_match,
+                if_metageneration_not_match,
+                retry=retry,
+                **timeout_kwarg
+            )
 
         # Clean up the get_api_base_url_for_mtls mock.
         if mtls:
@@ -2387,11 +2399,14 @@ class Test_Blob(unittest.TestCase):
             + data_read
             + b"\r\n--==0==--"
         )
-        headers = _get_default_headers(
-            client._connection.user_agent,
-            b'multipart/related; boundary="==0=="',
-            "application/xml",
-        )
+        with patch.object(
+            _helpers, "_get_invocation_id", return_value=GCCL_INVOCATION_TEST_CONST
+        ):
+            headers = _get_default_headers(
+                client._connection.user_agent,
+                b'multipart/related; boundary="==0=="',
+                "application/xml",
+            )
         client._http.request.assert_called_once_with(
             "POST", upload_url, data=payload, headers=headers, timeout=expected_timeout
         )
@@ -2578,23 +2593,25 @@ class Test_Blob(unittest.TestCase):
         else:
             expected_timeout = timeout
             timeout_kwarg = {"timeout": timeout}
-
-        upload, transport = blob._initiate_resumable_upload(
-            client,
-            stream,
-            content_type,
-            size,
-            num_retries,
-            extra_headers=extra_headers,
-            chunk_size=chunk_size,
-            predefined_acl=predefined_acl,
-            if_generation_match=if_generation_match,
-            if_generation_not_match=if_generation_not_match,
-            if_metageneration_match=if_metageneration_match,
-            if_metageneration_not_match=if_metageneration_not_match,
-            retry=retry,
-            **timeout_kwarg
-        )
+        with patch.object(
+            _helpers, "_get_invocation_id", return_value=GCCL_INVOCATION_TEST_CONST
+        ):
+            upload, transport = blob._initiate_resumable_upload(
+                client,
+                stream,
+                content_type,
+                size,
+                num_retries,
+                extra_headers=extra_headers,
+                chunk_size=chunk_size,
+                predefined_acl=predefined_acl,
+                if_generation_match=if_generation_match,
+                if_generation_not_match=if_generation_not_match,
+                if_metageneration_match=if_metageneration_match,
+                if_metageneration_not_match=if_metageneration_not_match,
+                retry=retry,
+                **timeout_kwarg
+            )
 
         # Clean up the get_api_base_url_for_mtls mock.
         if mtls:
@@ -2634,18 +2651,21 @@ class Test_Blob(unittest.TestCase):
         upload_url += "?" + urlencode(qs_params)
 
         self.assertEqual(upload.upload_url, upload_url)
-        if extra_headers is None:
-            self.assertEqual(
-                upload._headers,
-                _get_default_headers(client._connection.user_agent, content_type),
-            )
-        else:
-            expected_headers = {
-                **_get_default_headers(client._connection.user_agent, content_type),
-                **extra_headers,
-            }
-            self.assertEqual(upload._headers, expected_headers)
-            self.assertIsNot(upload._headers, expected_headers)
+        with patch.object(
+            _helpers, "_get_invocation_id", return_value=GCCL_INVOCATION_TEST_CONST
+        ):
+            if extra_headers is None:
+                self.assertEqual(
+                    upload._headers,
+                    _get_default_headers(client._connection.user_agent, content_type),
+                )
+            else:
+                expected_headers = {
+                    **_get_default_headers(client._connection.user_agent, content_type),
+                    **extra_headers,
+                }
+                self.assertEqual(upload._headers, expected_headers)
+                self.assertIsNot(upload._headers, expected_headers)
         self.assertFalse(upload.finished)
         if chunk_size is None:
             if blob_chunk_size is None:
@@ -2684,9 +2704,13 @@ class Test_Blob(unittest.TestCase):
             # Check the mocks.
             blob._get_writable_metadata.assert_called_once_with()
         payload = json.dumps(object_metadata).encode("utf-8")
-        expected_headers = _get_default_headers(
-            client._connection.user_agent, x_upload_content_type=content_type
-        )
+
+        with patch.object(
+            _helpers, "_get_invocation_id", return_value=GCCL_INVOCATION_TEST_CONST
+        ):
+            expected_headers = _get_default_headers(
+                client._connection.user_agent, x_upload_content_type=content_type
+            )
         if size is not None:
             expected_headers["x-upload-content-length"] = str(size)
         if extra_headers is not None:
@@ -2932,18 +2956,25 @@ class Test_Blob(unittest.TestCase):
 
         # Create mocks to be checked for doing transport.
         resumable_url = "http://test.invalid?upload_id=and-then-there-was-1"
-        headers1 = {
-            **_get_default_headers(USER_AGENT, content_type),
-            "location": resumable_url,
-        }
-        headers2 = {
-            **_get_default_headers(USER_AGENT, content_type),
-            "range": "bytes=0-{:d}".format(CHUNK_SIZE - 1),
-        }
-        headers3 = _get_default_headers(USER_AGENT, content_type)
-        transport, responses = self._make_resumable_transport(
-            headers1, headers2, headers3, total_bytes, data_corruption=data_corruption
-        )
+        with patch.object(
+            _helpers, "_get_invocation_id", return_value=GCCL_INVOCATION_TEST_CONST
+        ):
+            headers1 = {
+                **_get_default_headers(USER_AGENT, content_type),
+                "location": resumable_url,
+            }
+            headers2 = {
+                **_get_default_headers(USER_AGENT, content_type),
+                "range": "bytes=0-{:d}".format(CHUNK_SIZE - 1),
+            }
+            headers3 = _get_default_headers(USER_AGENT, content_type)
+            transport, responses = self._make_resumable_transport(
+                headers1,
+                headers2,
+                headers3,
+                total_bytes,
+                data_corruption=data_corruption,
+            )
 
         # Create some mock arguments and call the method under test.
         client = mock.Mock(_http=transport, _connection=_Connection, spec=["_http"])
@@ -2963,66 +2994,70 @@ class Test_Blob(unittest.TestCase):
             expected_timeout = timeout
             timeout_kwarg = {"timeout": timeout}
 
-        response = blob._do_resumable_upload(
-            client,
-            stream,
-            content_type,
-            size,
-            num_retries,
-            predefined_acl,
-            if_generation_match,
-            if_generation_not_match,
-            if_metageneration_match,
-            if_metageneration_not_match,
-            retry=retry,
-            **timeout_kwarg
-        )
+        with patch.object(
+            _helpers, "_get_invocation_id", return_value=GCCL_INVOCATION_TEST_CONST
+        ):
 
-        # Check the returned values.
-        self.assertIs(response, responses[2])
-        self.assertEqual(stream.tell(), total_bytes)
+            response = blob._do_resumable_upload(
+                client,
+                stream,
+                content_type,
+                size,
+                num_retries,
+                predefined_acl,
+                if_generation_match,
+                if_generation_not_match,
+                if_metageneration_match,
+                if_metageneration_not_match,
+                retry=retry,
+                **timeout_kwarg
+            )
 
-        # Check the mocks.
-        call0 = self._do_resumable_upload_call0(
-            client,
-            blob,
-            content_type,
-            size=size,
-            predefined_acl=predefined_acl,
-            if_generation_match=if_generation_match,
-            if_generation_not_match=if_generation_not_match,
-            if_metageneration_match=if_metageneration_match,
-            if_metageneration_not_match=if_metageneration_not_match,
-            timeout=expected_timeout,
-        )
-        call1 = self._do_resumable_upload_call1(
-            client,
-            blob,
-            content_type,
-            data,
-            resumable_url,
-            size=size,
-            predefined_acl=predefined_acl,
-            if_generation_match=if_generation_match,
-            if_generation_not_match=if_generation_not_match,
-            if_metageneration_match=if_metageneration_match,
-            if_metageneration_not_match=if_metageneration_not_match,
-            timeout=expected_timeout,
-        )
-        call2 = self._do_resumable_upload_call2(
-            client,
-            blob,
-            content_type,
-            data,
-            resumable_url,
-            total_bytes,
-            predefined_acl=predefined_acl,
-            if_generation_match=if_generation_match,
-            if_generation_not_match=if_generation_not_match,
-            if_metageneration_match=if_metageneration_match,
-            if_metageneration_not_match=if_metageneration_not_match,
-            timeout=expected_timeout,
-        )
+            # Check the returned values.
+            self.assertIs(response, responses[2])
+            self.assertEqual(stream.tell(), total_bytes)
+
+            # Check the mocks.
+            call0 = self._do_resumable_upload_call0(
+                client,
+                blob,
+                content_type,
+                size=size,
+                predefined_acl=predefined_acl,
+                if_generation_match=if_generation_match,
+                if_generation_not_match=if_generation_not_match,
+                if_metageneration_match=if_metageneration_match,
+                if_metageneration_not_match=if_metageneration_not_match,
+                timeout=expected_timeout,
+            )
+            call1 = self._do_resumable_upload_call1(
+                client,
+                blob,
+                content_type,
+                data,
+                resumable_url,
+                size=size,
+                predefined_acl=predefined_acl,
+                if_generation_match=if_generation_match,
+                if_generation_not_match=if_generation_not_match,
+                if_metageneration_match=if_metageneration_match,
+                if_metageneration_not_match=if_metageneration_not_match,
+                timeout=expected_timeout,
+            )
+            call2 = self._do_resumable_upload_call2(
+                client,
+                blob,
+                content_type,
+                data,
+                resumable_url,
+                total_bytes,
+                predefined_acl=predefined_acl,
+                if_generation_match=if_generation_match,
+                if_generation_not_match=if_generation_not_match,
+                if_metageneration_match=if_metageneration_match,
+                if_metageneration_not_match=if_metageneration_not_match,
+                timeout=expected_timeout,
+            )
         self.assertEqual(transport.request.mock_calls, [call0, call1, call2])
 
     def test__do_resumable_upload_with_custom_timeout(self):
@@ -3574,19 +3609,21 @@ class Test_Blob(unittest.TestCase):
         else:
             expected_timeout = timeout
             timeout_kwarg = {"timeout": timeout}
-
-        new_url = blob.create_resumable_upload_session(
-            content_type=content_type,
-            size=size,
-            origin=origin,
-            client=client,
-            if_generation_match=if_generation_match,
-            if_generation_not_match=if_generation_not_match,
-            if_metageneration_match=if_metageneration_match,
-            if_metageneration_not_match=if_metageneration_not_match,
-            retry=retry,
-            **timeout_kwarg
-        )
+        with patch.object(
+            _helpers, "_get_invocation_id", return_value=GCCL_INVOCATION_TEST_CONST
+        ):
+            new_url = blob.create_resumable_upload_session(
+                content_type=content_type,
+                size=size,
+                origin=origin,
+                client=client,
+                if_generation_match=if_generation_match,
+                if_generation_not_match=if_generation_not_match,
+                if_metageneration_match=if_metageneration_match,
+                if_metageneration_not_match=if_metageneration_not_match,
+                retry=retry,
+                **timeout_kwarg
+            )
 
         # Check the returned value and (lack of) side-effect.
         self.assertEqual(new_url, resumable_url)
@@ -3612,13 +3649,16 @@ class Test_Blob(unittest.TestCase):
 
         upload_url += "?" + urlencode(qs_params)
         payload = b'{"name": "blob-name"}'
-        expected_headers = {
-            **_get_default_headers(
-                client._connection.user_agent, x_upload_content_type=content_type
-            ),
-            "x-upload-content-length": str(size),
-            "x-upload-content-type": content_type,
-        }
+        with patch.object(
+            _helpers, "_get_invocation_id", return_value=GCCL_INVOCATION_TEST_CONST
+        ):
+            expected_headers = {
+                **_get_default_headers(
+                    client._connection.user_agent, x_upload_content_type=content_type
+                ),
+                "x-upload-content-length": str(size),
+                "x-upload-content-type": content_type,
+            }
         if origin is not None:
             expected_headers["Origin"] = origin
         transport.request.assert_called_once_with(

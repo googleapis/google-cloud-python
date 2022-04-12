@@ -19,6 +19,8 @@ import mock
 from google.cloud.storage.retry import DEFAULT_RETRY
 from google.cloud.storage.retry import DEFAULT_RETRY_IF_METAGENERATION_SPECIFIED
 
+GCCL_INVOCATION_TEST_CONST = "gccl-invocation-id/test-invocation-123"
+
 
 class Test__get_storage_host(unittest.TestCase):
     @staticmethod
