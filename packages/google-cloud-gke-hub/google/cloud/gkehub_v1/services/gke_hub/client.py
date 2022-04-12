@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -890,7 +890,6 @@ class GkeHubClient(metaclass=GkeHubClientMeta):
         Cloud**. To register other clusters, follow the instructions at
         https://cloud.google.com/anthos/multicluster-management/connect/registering-a-cluster.
 
-
         .. code-block:: python
 
             from google.cloud import gkehub_v1
@@ -1159,7 +1158,6 @@ class GkeHubClient(metaclass=GkeHubClientMeta):
         Cloud**. To unregister other clusters, follow the instructions
         at
         https://cloud.google.com/anthos/multicluster-management/connect/unregistering-a-cluster.
-
 
         .. code-block:: python
 
@@ -1670,7 +1668,6 @@ class GkeHubClient(metaclass=GkeHubClientMeta):
 
         **This method is used internally by Google-provided libraries.**
         Most clients should not need to call this method directly.
-
 
         .. code-block:: python
 

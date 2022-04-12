@@ -77,7 +77,7 @@ class Membership(proto.Message):
             Which can be expressed as the regex:
             ``[a-z0-9]([-a-z0-9]*[a-z0-9])?``, with a maximum length of
             63 characters.
-        labels (Sequence[google.cloud.gkehub_v1beta1.types.Membership.LabelsEntry]):
+        labels (Mapping[str, str]):
             Optional. GCP labels for this membership.
         description (str):
             Optional. Description of this membership, limited to 63

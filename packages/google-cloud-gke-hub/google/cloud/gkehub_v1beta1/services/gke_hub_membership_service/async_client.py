@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -445,7 +445,6 @@ class GkeHubMembershipServiceAsyncClient:
         Cloud**. To register other clusters, follow the instructions at
         https://cloud.google.com/anthos/multicluster-management/connect/registering-a-cluster.
 
-
         .. code-block:: python
 
             from google.cloud import gkehub_v1beta1
@@ -588,7 +587,6 @@ class GkeHubMembershipServiceAsyncClient:
         Cloud**. To unregister other clusters, follow the instructions
         at
         https://cloud.google.com/anthos/multicluster-management/connect/unregistering-a-cluster.
-
 
         .. code-block:: python
 
@@ -850,7 +848,6 @@ class GkeHubMembershipServiceAsyncClient:
         **This method is used internally by Google-provided libraries.**
         Most clients should not need to call this method directly.
 
-
         .. code-block:: python
 
             from google.cloud import gkehub_v1beta1
@@ -927,7 +924,6 @@ class GkeHubMembershipServiceAsyncClient:
         r"""ValidateExclusivity validates the state of
         exclusivity in the cluster. The validation does not
         depend on an existing Hub membership resource.
-
 
         .. code-block:: python
 
@@ -1015,7 +1011,6 @@ class GkeHubMembershipServiceAsyncClient:
         newer version of the CRD and corresponding CR. The
         response will be the converted CRD and CR if there are
         any differences between the versions.
-
 
         .. code-block:: python
 

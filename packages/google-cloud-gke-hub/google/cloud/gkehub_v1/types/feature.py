@@ -42,7 +42,7 @@ class Feature(proto.Message):
         name (str):
             Output only. The full, unique name of this Feature resource
             in the format ``projects/*/locations/*/features/*``.
-        labels (Sequence[google.cloud.gkehub_v1.types.Feature.LabelsEntry]):
+        labels (Mapping[str, str]):
             GCP labels for this Feature.
         resource_state (google.cloud.gkehub_v1.types.FeatureResourceState):
             Output only. State of the Feature resource
@@ -51,7 +51,7 @@ class Feature(proto.Message):
             Optional. Hub-wide Feature configuration. If
             this Feature does not support any Hub-wide
             configuration, this field may be unused.
-        membership_specs (Sequence[google.cloud.gkehub_v1.types.Feature.MembershipSpecsEntry]):
+        membership_specs (Mapping[str, google.cloud.gkehub_v1.types.MembershipFeatureSpec]):
             Optional. Membership-specific configuration
             for this Feature. If this Feature does not
             support any per-Membership configuration, this
@@ -75,7 +75,7 @@ class Feature(proto.Message):
             mutating a Feature.
         state (google.cloud.gkehub_v1.types.CommonFeatureState):
             Output only. The Hub-wide Feature state.
-        membership_states (Sequence[google.cloud.gkehub_v1.types.Feature.MembershipStatesEntry]):
+        membership_states (Mapping[str, google.cloud.gkehub_v1.types.MembershipFeatureState]):
             Output only. Membership-specific Feature
             status. If this Feature does report any
             per-Membership status, this field may be unused.
