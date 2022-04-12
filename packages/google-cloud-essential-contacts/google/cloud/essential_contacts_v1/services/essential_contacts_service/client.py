@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -546,7 +546,6 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
         r"""Updates a contact.
         Note: A contact's email address cannot be changed.
 
-
         .. code-block:: python
 
             from google.cloud import essential_contacts_v1
@@ -947,7 +946,6 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
         subscribed to the specified notification categories,
         including contacts inherited from any parent resources.
 
-
         .. code-block:: python
 
             from google.cloud import essential_contacts_v1
@@ -1035,7 +1033,6 @@ class EssentialContactsServiceClient(metaclass=EssentialContactsServiceClientMet
     ) -> None:
         r"""Allows a contact admin to send a test message to
         contact to verify that it has been configured correctly.
-
 
         .. code-block:: python
 
