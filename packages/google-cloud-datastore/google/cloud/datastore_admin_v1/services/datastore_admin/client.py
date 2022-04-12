@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -468,7 +468,7 @@ class DatastoreAdminClient(metaclass=DatastoreAdminClientMeta):
         request: Union[datastore_admin.ExportEntitiesRequest, dict] = None,
         *,
         project_id: str = None,
-        labels: Dict[str, str] = None,
+        labels: Mapping[str, str] = None,
         entity_filter: datastore_admin.EntityFilter = None,
         output_url_prefix: str = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -485,7 +485,6 @@ class DatastoreAdminClient(metaclass=DatastoreAdminClientMeta):
         operation is done. If an export operation is cancelled
         before completion it may leave partial data behind in
         Google Cloud Storage.
-
 
         .. code-block:: python
 
@@ -522,7 +521,7 @@ class DatastoreAdminClient(metaclass=DatastoreAdminClientMeta):
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            labels (Dict[str, str]):
+            labels (Mapping[str, str]):
                 Client-assigned labels.
                 This corresponds to the ``labels`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -634,7 +633,7 @@ class DatastoreAdminClient(metaclass=DatastoreAdminClientMeta):
         request: Union[datastore_admin.ImportEntitiesRequest, dict] = None,
         *,
         project_id: str = None,
-        labels: Dict[str, str] = None,
+        labels: Mapping[str, str] = None,
         input_url: str = None,
         entity_filter: datastore_admin.EntityFilter = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
@@ -648,7 +647,6 @@ class DatastoreAdminClient(metaclass=DatastoreAdminClientMeta):
         created. If an ImportEntities operation is cancelled, it
         is possible that a subset of the data has already been
         imported to Cloud Datastore.
-
 
         .. code-block:: python
 
@@ -685,7 +683,7 @@ class DatastoreAdminClient(metaclass=DatastoreAdminClientMeta):
                 This corresponds to the ``project_id`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            labels (Dict[str, str]):
+            labels (Mapping[str, str]):
                 Client-assigned labels.
                 This corresponds to the ``labels`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -820,7 +818,6 @@ class DatastoreAdminClient(metaclass=DatastoreAdminClientMeta):
 
         Indexes with a single property cannot be created.
 
-
         .. code-block:: python
 
             from google.cloud import datastore_admin_v1
@@ -915,7 +912,6 @@ class DatastoreAdminClient(metaclass=DatastoreAdminClientMeta):
         error, followed by calling
         [delete][google.datastore.admin.v1.DatastoreAdmin.DeleteIndex]
         again.
-
 
         .. code-block:: python
 
@@ -1066,7 +1062,6 @@ class DatastoreAdminClient(metaclass=DatastoreAdminClientMeta):
         Datastore uses an eventually consistent query to fetch
         the list of indexes and may occasionally return stale
         results.
-
 
         .. code-block:: python
 

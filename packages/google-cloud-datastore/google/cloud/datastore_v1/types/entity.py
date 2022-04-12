@@ -346,7 +346,7 @@ class Entity(proto.Message):
             example, an entity in ``Value.entity_value`` may have no
             key). An entity's kind is its key path's last element's
             kind, or null if it has no key.
-        properties (Sequence[google.cloud.datastore_v1.types.Entity.PropertiesEntry]):
+        properties (Mapping[str, google.cloud.datastore_v1.types.Value]):
             The entity's properties. The map's keys are property names.
             A property name matching regex ``__.*__`` is reserved. A
             reserved property name is forbidden in certain documented

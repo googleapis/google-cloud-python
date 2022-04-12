@@ -16,6 +16,7 @@
 import proto  # type: ignore
 
 from google.cloud.datastore_v1.types import entity as gd_entity
+from google.protobuf import timestamp_pb2  # type: ignore
 from google.protobuf import wrappers_pb2  # type: ignore
 
 
@@ -56,6 +57,12 @@ class EntityResult(proto.Message):
             entities in ``LookupResponse``, this is the version of the
             snapshot that was used to look up the entity, and it is
             always set except for eventually consistent reads.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time at which the entity was last changed. This field is
+            set for
+            [``FULL``][google.datastore.v1.EntityResult.ResultType.FULL]
+            entity results. If this entity is missing, this field will
+            not be set.
         cursor (bytes):
             A cursor that points to the position after the result
             entity. Set only when the ``EntityResult`` is part of a
@@ -83,6 +90,11 @@ class EntityResult(proto.Message):
     version = proto.Field(
         proto.INT64,
         number=4,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=5,
+        message=timestamp_pb2.Timestamp,
     )
     cursor = proto.Field(
         proto.BYTES,
@@ -368,7 +380,7 @@ class GqlQuery(proto.Message):
             and instead must bind all values. For example,
             ``SELECT * FROM Kind WHERE a = 'string literal'`` is not
             allowed, while ``SELECT * FROM Kind WHERE a = @value`` is.
-        named_bindings (Sequence[google.cloud.datastore_v1.types.GqlQuery.NamedBindingsEntry]):
+        named_bindings (Mapping[str, google.cloud.datastore_v1.types.GqlQueryParameter]):
             For each non-reserved named binding site in the query
             string, there must be a named parameter with that name, but
             not necessarily the inverse.
@@ -473,6 +485,17 @@ class QueryResultBatch(proto.Message):
             Each batch's snapshot version is valid for all preceding
             batches. The value will be zero for eventually consistent
             queries.
+        read_time (google.protobuf.timestamp_pb2.Timestamp):
+            Read timestamp this batch was returned from. This applies to
+            the range of results from the query's ``start_cursor`` (or
+            the beginning of the query if no cursor was given) to this
+            batch's ``end_cursor`` (not the query's ``end_cursor``).
+
+            In a single transaction, subsequent query result batches for
+            the same query can have a greater timestamp. Each batch's
+            read timestamp is valid for all preceding batches. This
+            value will not be set for eventually consistent queries in
+            Cloud Datastore.
     """
 
     class MoreResultsType(proto.Enum):
@@ -513,6 +536,11 @@ class QueryResultBatch(proto.Message):
     snapshot_version = proto.Field(
         proto.INT64,
         number=7,
+    )
+    read_time = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=timestamp_pb2.Timestamp,
     )
 
 

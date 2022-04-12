@@ -31,7 +31,9 @@ from .datastore_admin import (
     Progress,
     OperationType,
 )
-from .index import Index
+from .index import (
+    Index,
+)
 from .migration import (
     MigrationProgressEvent,
     MigrationStateEvent,

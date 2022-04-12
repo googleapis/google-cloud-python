@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -37,6 +37,7 @@ except AttributeError:  # pragma: NO COVER
 from google.cloud.datastore_v1.types import datastore
 from google.cloud.datastore_v1.types import entity
 from google.cloud.datastore_v1.types import query
+from google.protobuf import timestamp_pb2  # type: ignore
 from .transports.base import DatastoreTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc import DatastoreGrpcTransport
 from .transports.grpc_asyncio import DatastoreGrpcAsyncIOTransport
@@ -689,7 +690,6 @@ class DatastoreClient(metaclass=DatastoreClientMeta):
         r"""Commits a transaction, optionally creating, deleting
         or modifying some entities.
 
-
         .. code-block:: python
 
             from google.cloud import datastore_v1
@@ -924,7 +924,6 @@ class DatastoreClient(metaclass=DatastoreClientMeta):
         r"""Allocates IDs for the given keys, which is useful for
         referencing an entity before it is inserted.
 
-
         .. code-block:: python
 
             from google.cloud import datastore_v1
@@ -1026,7 +1025,6 @@ class DatastoreClient(metaclass=DatastoreClientMeta):
     ) -> datastore.ReserveIdsResponse:
         r"""Prevents the supplied keys' IDs from being
         auto-allocated by Cloud Datastore.
-
 
         .. code-block:: python
 

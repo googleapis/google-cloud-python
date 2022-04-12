@@ -17,6 +17,7 @@ import proto  # type: ignore
 
 from google.cloud.datastore_v1.types import entity
 from google.cloud.datastore_v1.types import query as gd_query
+from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -92,6 +93,9 @@ class LookupResponse(proto.Message):
             resource constraints. The order of results in
             this field is undefined and has no relation to
             the order of the keys in the input.
+        read_time (google.protobuf.timestamp_pb2.Timestamp):
+            The time at which these entities were read or
+            found missing.
     """
 
     found = proto.RepeatedField(
@@ -108,6 +112,11 @@ class LookupResponse(proto.Message):
         proto.MESSAGE,
         number=3,
         message=entity.Key,
+    )
+    read_time = proto.Field(
+        proto.MESSAGE,
+        number=7,
+        message=timestamp_pb2.Timestamp,
     )
 
 
@@ -341,6 +350,9 @@ class CommitResponse(proto.Message):
         index_updates (int):
             The number of index entries updated during
             the commit, or zero if none were updated.
+        commit_time (google.protobuf.timestamp_pb2.Timestamp):
+            The transaction commit timestamp. Not set for
+            non-transactional commits.
     """
 
     mutation_results = proto.RepeatedField(
@@ -351,6 +363,11 @@ class CommitResponse(proto.Message):
     index_updates = proto.Field(
         proto.INT32,
         number=4,
+    )
+    commit_time = proto.Field(
+        proto.MESSAGE,
+        number=8,
+        message=timestamp_pb2.Timestamp,
     )
 
 
@@ -478,6 +495,13 @@ class Mutation(proto.Message):
             conflicts.
 
             This field is a member of `oneof`_ ``conflict_detection_strategy``.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            The update time of the entity that this
+            mutation is being applied to. If this does not
+            match the current update time on the server, the
+            mutation conflicts.
+
+            This field is a member of `oneof`_ ``conflict_detection_strategy``.
     """
 
     insert = proto.Field(
@@ -509,6 +533,12 @@ class Mutation(proto.Message):
         number=8,
         oneof="conflict_detection_strategy",
     )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=11,
+        oneof="conflict_detection_strategy",
+        message=timestamp_pb2.Timestamp,
+    )
 
 
 class MutationResult(proto.Message):
@@ -527,6 +557,13 @@ class MutationResult(proto.Message):
             greater than the version of any previous entity
             and less than the version of any possible future
             entity.
+        update_time (google.protobuf.timestamp_pb2.Timestamp):
+            The update time of the entity on the server
+            after processing the mutation. If the mutation
+            doesn't change anything on the server, then the
+            timestamp will be the update timestamp of the
+            current entity. This field will not be set after
+            a 'delete'.
         conflict_detected (bool):
             Whether a conflict was detected for this
             mutation. Always false when a conflict detection
@@ -541,6 +578,11 @@ class MutationResult(proto.Message):
     version = proto.Field(
         proto.INT64,
         number=4,
+    )
+    update_time = proto.Field(
+        proto.MESSAGE,
+        number=6,
+        message=timestamp_pb2.Timestamp,
     )
     conflict_detected = proto.Field(
         proto.BOOL,
@@ -570,6 +612,13 @@ class ReadOptions(proto.Message):
             [Datastore.BeginTransaction][google.datastore.v1.Datastore.BeginTransaction].
 
             This field is a member of `oneof`_ ``consistency_type``.
+        read_time (google.protobuf.timestamp_pb2.Timestamp):
+            Reads entities as they were at the given
+            time. This may not be older than 270 seconds.
+            This value is only supported for Cloud Firestore
+            in Datastore mode.
+
+            This field is a member of `oneof`_ ``consistency_type``.
     """
 
     class ReadConsistency(proto.Enum):
@@ -588,6 +637,12 @@ class ReadOptions(proto.Message):
         proto.BYTES,
         number=2,
         oneof="consistency_type",
+    )
+    read_time = proto.Field(
+        proto.MESSAGE,
+        number=4,
+        oneof="consistency_type",
+        message=timestamp_pb2.Timestamp,
     )
 
 
@@ -634,7 +689,19 @@ class TransactionOptions(proto.Message):
         )
 
     class ReadOnly(proto.Message):
-        r"""Options specific to read-only transactions."""
+        r"""Options specific to read-only transactions.
+
+        Attributes:
+            read_time (google.protobuf.timestamp_pb2.Timestamp):
+                Reads entities at the given time.
+                This may not be older than 60 seconds.
+        """
+
+        read_time = proto.Field(
+            proto.MESSAGE,
+            number=1,
+            message=timestamp_pb2.Timestamp,
+        )
 
     read_write = proto.Field(
         proto.MESSAGE,

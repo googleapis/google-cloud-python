@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -34,6 +34,7 @@ except AttributeError:  # pragma: NO COVER
 from google.cloud.datastore_v1.types import datastore
 from google.cloud.datastore_v1.types import entity
 from google.cloud.datastore_v1.types import query
+from google.protobuf import timestamp_pb2  # type: ignore
 from .transports.base import DatastoreTransport, DEFAULT_CLIENT_INFO
 from .transports.grpc_asyncio import DatastoreGrpcAsyncIOTransport
 from .client import DatastoreClient
@@ -299,8 +300,7 @@ class DatastoreAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=60.0,
             ),
@@ -376,8 +376,7 @@ class DatastoreAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=60.0,
             ),
@@ -499,7 +498,6 @@ class DatastoreAsyncClient:
     ) -> datastore.CommitResponse:
         r"""Commits a transaction, optionally creating, deleting
         or modifying some entities.
-
 
         .. code-block:: python
 
@@ -735,7 +733,6 @@ class DatastoreAsyncClient:
         r"""Allocates IDs for the given keys, which is useful for
         referencing an entity before it is inserted.
 
-
         .. code-block:: python
 
             from google.cloud import datastore_v1
@@ -838,7 +835,6 @@ class DatastoreAsyncClient:
         r"""Prevents the supplied keys' IDs from being
         auto-allocated by Cloud Datastore.
 
-
         .. code-block:: python
 
             from google.cloud import datastore_v1
@@ -917,8 +913,7 @@ class DatastoreAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=60.0,
             ),
