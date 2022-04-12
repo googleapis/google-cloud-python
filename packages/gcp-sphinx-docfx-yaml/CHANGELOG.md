@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.4.7](https://github.com/googleapis/sphinx-docfx-yaml/compare/v1.4.6...v1.4.7) (2022-04-12)
+
+
+### Bug Fixes
+
+* add markdown header if it is missing ([#203](https://github.com/googleapis/sphinx-docfx-yaml/issues/203)) ([ccd53bd](https://github.com/googleapis/sphinx-docfx-yaml/commit/ccd53bdba8cdfe08d900a7b05f235e635a2f0441))
+
 ### [1.4.6](https://github.com/googleapis/sphinx-docfx-yaml/compare/v1.4.5...v1.4.6) (2022-04-06)
 
 
