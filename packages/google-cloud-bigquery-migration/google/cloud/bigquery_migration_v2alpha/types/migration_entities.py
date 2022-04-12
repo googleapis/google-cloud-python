@@ -49,7 +49,7 @@ class MigrationWorkflow(proto.Message):
             The display name of the workflow. This can be
             set to give a workflow a descriptive name. There
             is no guarantee or enforcement of uniqueness.
-        tasks (Sequence[google.cloud.bigquery_migration_v2alpha.types.MigrationWorkflow.TasksEntry]):
+        tasks (Mapping[str, google.cloud.bigquery_migration_v2alpha.types.MigrationTask]):
             The tasks in a workflow in a named map. The
             name (i.e. key) has no meaning and is merely a
             convenient way to address a specific task in a

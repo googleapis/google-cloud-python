@@ -91,7 +91,7 @@ class TranslationTaskDetails(proto.Message):
             The file encoding type.
         identifier_settings (google.cloud.bigquery_migration_v2alpha.types.IdentifierSettings):
             The settings for SQL identifiers.
-        special_token_map (Sequence[google.cloud.bigquery_migration_v2alpha.types.TranslationTaskDetails.SpecialTokenMapEntry]):
+        special_token_map (Mapping[str, google.cloud.bigquery_migration_v2alpha.types.TranslationTaskDetails.TokenType]):
             The map capturing special tokens to be
             replaced during translation. The key is special
             token in string. The value is the token data
@@ -259,7 +259,7 @@ class BteqOptions(proto.Message):
             The Cloud Storage location to be used as the
             default path for files that are not otherwise
             specified in the file replacement map.
-        file_replacement_map (Sequence[google.cloud.bigquery_migration_v2alpha.types.BteqOptions.FileReplacementMapEntry]):
+        file_replacement_map (Mapping[str, str]):
             Maps the local paths that are used in BTEQ
             scripts (the keys) to the paths in Cloud Storage
             that should be used in their stead in the

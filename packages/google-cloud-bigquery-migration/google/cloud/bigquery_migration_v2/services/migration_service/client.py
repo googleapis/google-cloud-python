@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -869,7 +869,6 @@ class MigrationServiceClient(metaclass=MigrationServiceClientMeta):
         no-op if the state is already RUNNING. An error will be
         signaled if the state is anything other than DRAFT or
         RUNNING.
-
 
         .. code-block:: python
 
