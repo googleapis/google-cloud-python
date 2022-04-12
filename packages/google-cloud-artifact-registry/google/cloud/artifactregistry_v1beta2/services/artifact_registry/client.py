@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -612,7 +612,6 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         imported artifacts. Imported artifacts that conflict
         with existing resources are ignored.
 
-
         .. code-block:: python
 
             from google.cloud import artifactregistry_v1beta2
@@ -704,7 +703,6 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         Version, and File resources are created based on the
         imported artifacts. Imported artifacts that conflict
         with existing resources are ignored.
-
 
         .. code-block:: python
 
@@ -1002,7 +1000,6 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         finish once the repository has been created. Its
         response will be the created Repository.
 
-
         .. code-block:: python
 
             from google.cloud import artifactregistry_v1beta2
@@ -1239,7 +1236,6 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         returned Operation will finish once the repository has
         been deleted. It will not have any Operation metadata
         and will return a google.protobuf.Empty response.
-
 
         .. code-block:: python
 
@@ -1558,7 +1554,6 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         The returned operation will complete once the package
         has been deleted.
 
-
         .. code-block:: python
 
             from google.cloud import artifactregistry_v1beta2
@@ -1875,7 +1870,6 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
         r"""Deletes a version and all of its content. The
         returned operation will complete once the version has
         been deleted.
-
 
         .. code-block:: python
 
@@ -2952,7 +2946,6 @@ class ArtifactRegistryClient(metaclass=ArtifactRegistryClientMeta):
     ) -> iam_policy_pb2.TestIamPermissionsResponse:
         r"""Tests if the caller has a list of permissions on a
         resource.
-
 
         .. code-block:: python
 

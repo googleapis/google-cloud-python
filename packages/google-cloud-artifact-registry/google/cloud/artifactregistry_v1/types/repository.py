@@ -54,7 +54,7 @@ class Repository(proto.Message):
         description (str):
             The user-provided description of the
             repository.
-        labels (Sequence[google.cloud.artifactregistry_v1.types.Repository.LabelsEntry]):
+        labels (Mapping[str, str]):
             Labels with user-defined metadata.
             This field may contain up to 64 entries. Label
             keys and values may be no longer than 63
