@@ -60,7 +60,7 @@ class Api(proto.Message):
             Output only. Created time.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Updated time.
-        labels (Sequence[google.cloud.apigateway_v1.types.Api.LabelsEntry]):
+        labels (Mapping[str, str]):
             Optional. Resource labels to represent
             user-provided metadata. Refer to cloud
             documentation on labels for more details.
@@ -133,7 +133,7 @@ class ApiConfig(proto.Message):
             Output only. Created time.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Updated time.
-        labels (Sequence[google.cloud.apigateway_v1.types.ApiConfig.LabelsEntry]):
+        labels (Mapping[str, str]):
             Optional. Resource labels to represent
             user-provided metadata. Refer to cloud
             documentation on labels for more details.
@@ -321,7 +321,7 @@ class Gateway(proto.Message):
             Output only. Created time.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Updated time.
-        labels (Sequence[google.cloud.apigateway_v1.types.Gateway.LabelsEntry]):
+        labels (Mapping[str, str]):
             Optional. Resource labels to represent
             user-provided metadata. Refer to cloud
             documentation on labels for more details.

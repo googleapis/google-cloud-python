@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -746,7 +746,6 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
     ) -> operation.Operation:
         r"""Creates a new Gateway in a given project and
         location.
-
 
         .. code-block:: python
 
@@ -1909,7 +1908,6 @@ class ApiGatewayServiceClient(metaclass=ApiGatewayServiceClientMeta):
     ) -> operation.Operation:
         r"""Creates a new ApiConfig in a given project and
         location.
-
 
         .. code-block:: python
 
