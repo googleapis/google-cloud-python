@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -303,7 +303,6 @@ class FirewallAsyncClient:
         If the final rule does not match traffic with the '*' wildcard
         IP range, then an "allow all" rule is explicitly added to the
         end of the list.
-
 
         .. code-block:: python
 

@@ -148,7 +148,7 @@ class Version(proto.Message):
         vm (bool):
             Whether to deploy this version in a container
             on a virtual machine.
-        beta_settings (Sequence[google.cloud.appengine_admin_v1.types.Version.BetaSettingsEntry]):
+        beta_settings (Mapping[str, str]):
             Metadata settings that are supplied to this
             version to enable beta runtime features.
         env (str):
@@ -208,11 +208,11 @@ class Version(proto.Message):
             Endpoints <https://cloud.google.com/appengine/docs/python/endpoints/>`__.
 
             Only returned in ``GET`` requests if ``view=FULL`` is set.
-        env_variables (Sequence[google.cloud.appengine_admin_v1.types.Version.EnvVariablesEntry]):
+        env_variables (Mapping[str, str]):
             Environment variables available to the application.
 
             Only returned in ``GET`` requests if ``view=FULL`` is set.
-        build_env_variables (Sequence[google.cloud.appengine_admin_v1.types.Version.BuildEnvVariablesEntry]):
+        build_env_variables (Mapping[str, str]):
             Environment variables available to the build environment.
 
             Only returned in ``GET`` requests if ``view=FULL`` is set.

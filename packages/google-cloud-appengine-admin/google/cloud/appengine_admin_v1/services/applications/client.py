@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -500,7 +500,6 @@ class ApplicationsClient(metaclass=ApplicationsClientMeta):
         `Managing Projects, Applications, and
         Billing <https://cloud.google.com/appengine/docs/standard/python/console/>`__.
 
-
         .. code-block:: python
 
             from google.cloud import appengine_admin_v1
@@ -587,7 +586,6 @@ class ApplicationsClient(metaclass=ApplicationsClientMeta):
            controlling user access to the application.
         -  ``default_cookie_expiration`` - Cookie expiration policy for
            the application.
-
 
         .. code-block:: python
 
@@ -685,7 +683,6 @@ class ApplicationsClient(metaclass=ApplicationsClientMeta):
         https://cloud.google.com/iam/reference/rest/v1/projects.serviceAccounts/undelete?apix_params=%7B"name"%3A"projects%2F-%2FserviceAccounts%2Funique_id"%2C"resource"%3A%7B%7D%7D
         . If the deletion was recent, the numeric ID can be found in the
         Cloud Console Activity Log.
-
 
         .. code-block:: python
 

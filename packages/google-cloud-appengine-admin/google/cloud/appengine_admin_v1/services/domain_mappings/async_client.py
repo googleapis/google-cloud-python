@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -374,7 +374,6 @@ class DomainMappingsAsyncClient:
         list of available authorized domains, see
         ```AuthorizedDomains.ListAuthorizedDomains`` <>`__.
 
-
         .. code-block:: python
 
             from google.cloud import appengine_admin_v1
@@ -466,7 +465,6 @@ class DomainMappingsAsyncClient:
         administer the associated domain in order to update a
         ``DomainMapping`` resource.
 
-
         .. code-block:: python
 
             from google.cloud import appengine_admin_v1
@@ -555,7 +553,6 @@ class DomainMappingsAsyncClient:
         r"""Deletes the specified domain mapping. A user must be authorized
         to administer the associated domain in order to delete a
         ``DomainMapping`` resource.
-
 
         .. code-block:: python
 

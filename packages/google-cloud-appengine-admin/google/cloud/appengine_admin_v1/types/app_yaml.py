@@ -265,7 +265,7 @@ class StaticFilesHandler(proto.Message):
             Regular expression that matches the file
             paths for all files that should be referenced by
             this handler.
-        http_headers (Sequence[google.cloud.appengine_admin_v1.types.StaticFilesHandler.HttpHeadersEntry]):
+        http_headers (Mapping[str, str]):
             HTTP headers to use for all responses from
             these URLs.
         mime_type (str):

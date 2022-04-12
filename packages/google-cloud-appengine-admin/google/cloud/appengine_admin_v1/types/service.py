@@ -90,7 +90,7 @@ class TrafficSplit(proto.Message):
             request is sent to. The traffic selection
             algorithm will be stable for either type until
             allocations are changed.
-        allocations (Sequence[google.cloud.appengine_admin_v1.types.TrafficSplit.AllocationsEntry]):
+        allocations (Mapping[str, float]):
             Mapping from version IDs within the service to fractional
             (0.000, 1] allocations of traffic for that version. Each
             version can be specified only once, but some versions in the

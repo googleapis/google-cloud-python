@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -504,7 +504,6 @@ class ServicesClient(metaclass=ServicesClientMeta):
         r"""Gets the current configuration of the specified
         service.
 
-
         .. code-block:: python
 
             from google.cloud import appengine_admin_v1
@@ -682,7 +681,6 @@ class ServicesClient(metaclass=ServicesClientMeta):
     ) -> gac_operation.Operation:
         r"""Deletes the specified service and all enclosed
         versions.
-
 
         .. code-block:: python
 

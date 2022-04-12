@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -293,7 +293,6 @@ class ServicesAsyncClient:
         r"""Gets the current configuration of the specified
         service.
 
-
         .. code-block:: python
 
             from google.cloud import appengine_admin_v1
@@ -469,7 +468,6 @@ class ServicesAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Deletes the specified service and all enclosed
         versions.
-
 
         .. code-block:: python
 

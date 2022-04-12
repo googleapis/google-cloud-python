@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -446,7 +446,6 @@ class InstancesClient(metaclass=InstancesClientMeta):
         `Stackdriver Monitoring
         API <https://cloud.google.com/monitoring/api/ref_v3/rest/v3/projects.timeSeries/list>`__.
 
-
         .. code-block:: python
 
             from google.cloud import appengine_admin_v1
@@ -620,7 +619,6 @@ class InstancesClient(metaclass=InstancesClientMeta):
         ```apps.services.versions.patch`` <https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services.versions/patch>`__
         method.
 
-
         .. code-block:: python
 
             from google.cloud import appengine_admin_v1
@@ -727,7 +725,6 @@ class InstancesClient(metaclass=InstancesClientMeta):
 
         Only applicable for instances in App Engine flexible
         environment.
-
 
         .. code-block:: python
 

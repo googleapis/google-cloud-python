@@ -35,7 +35,7 @@ class Deployment(proto.Message):
     App Engine.
 
     Attributes:
-        files (Sequence[google.cloud.appengine_admin_v1.types.Deployment.FilesEntry]):
+        files (Mapping[str, google.cloud.appengine_admin_v1.types.FileInfo]):
             Manifest of the files stored in Google Cloud
             Storage that are included as part of this
             version. All files must be readable using the

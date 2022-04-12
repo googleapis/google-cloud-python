@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -508,7 +508,6 @@ class VersionsClient(metaclass=VersionsClientMeta):
         ``BASIC_VIEW`` will be returned. Specify the ``FULL_VIEW``
         parameter to get the full resource.
 
-
         .. code-block:: python
 
             from google.cloud import appengine_admin_v1
@@ -704,7 +703,6 @@ class VersionsClient(metaclass=VersionsClientMeta):
         *manual scaling* in the flexible environment:
 
         -  ```manual_scaling.instances`` <https://cloud.google.com/appengine/docs/admin-api/reference/rest/v1/apps.services.versions#manualscaling>`__
-
 
         .. code-block:: python
 

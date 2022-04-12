@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -218,7 +218,6 @@ class AuthorizedCertificatesAsyncClient:
     ) -> pagers.ListAuthorizedCertificatesAsyncPager:
         r"""Lists all SSL certificates the user is authorized to
         administer.
-
 
         .. code-block:: python
 
@@ -459,7 +458,6 @@ class AuthorizedCertificatesAsyncClient:
         must be applicable to the same domains as the original
         certificate. The certificate ``display_name`` may also be
         updated.
-
 
         .. code-block:: python
 

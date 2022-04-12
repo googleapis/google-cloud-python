@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -214,7 +214,6 @@ class AuthorizedDomainsAsyncClient:
     ) -> pagers.ListAuthorizedDomainsAsyncPager:
         r"""Lists all domains the user is authorized to
         administer.
-
 
         .. code-block:: python
 
