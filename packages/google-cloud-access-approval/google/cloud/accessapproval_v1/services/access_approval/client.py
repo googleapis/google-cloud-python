@@ -490,10 +490,9 @@ class AccessApprovalClient(metaclass=AccessApprovalClientMeta):
         filtered by state (pending, active, dismissed). The
         order is reverse chronological.
 
-
         .. code-block:: python
 
-                    from google.cloud import accessapproval_v1
+            from google.cloud import accessapproval_v1
 
             def sample_list_approval_requests():
                 # Create a client
@@ -600,10 +599,9 @@ class AccessApprovalClient(metaclass=AccessApprovalClientMeta):
         r"""Gets an approval request. Returns NOT_FOUND if the request does
         not exist.
 
-
         .. code-block:: python
 
-                    from google.cloud import accessapproval_v1
+            from google.cloud import accessapproval_v1
 
             def sample_get_approval_request():
                 # Create a client
@@ -697,10 +695,9 @@ class AccessApprovalClient(metaclass=AccessApprovalClientMeta):
         FAILED_PRECONDITION if the request exists but is not in a
         pending state.
 
-
         .. code-block:: python
 
-                    from google.cloud import accessapproval_v1
+            from google.cloud import accessapproval_v1
 
             def sample_approve_approval_request():
                 # Create a client
@@ -780,10 +777,9 @@ class AccessApprovalClient(metaclass=AccessApprovalClientMeta):
         Returns FAILED_PRECONDITION if the request exists but is not in
         a pending state.
 
-
         .. code-block:: python
 
-                    from google.cloud import accessapproval_v1
+            from google.cloud import accessapproval_v1
 
             def sample_dismiss_approval_request():
                 # Create a client
@@ -856,10 +852,9 @@ class AccessApprovalClient(metaclass=AccessApprovalClientMeta):
         r"""Gets the settings associated with a project, folder,
         or organization.
 
-
         .. code-block:: python
 
-                    from google.cloud import accessapproval_v1
+            from google.cloud import accessapproval_v1
 
             def sample_get_access_approval_settings():
                 # Create a client
@@ -958,10 +953,9 @@ class AccessApprovalClient(metaclass=AccessApprovalClientMeta):
         organization. Settings to update are determined by the value of
         field_mask.
 
-
         .. code-block:: python
 
-                    from google.cloud import accessapproval_v1
+            from google.cloud import accessapproval_v1
 
             def sample_update_access_approval_settings():
                 # Create a client
@@ -1081,10 +1075,9 @@ class AccessApprovalClient(metaclass=AccessApprovalClientMeta):
         still be enabled at this level as the settings are
         inherited.
 
-
         .. code-block:: python
 
-                    from google.cloud import accessapproval_v1
+            from google.cloud import accessapproval_v1
 
             def sample_delete_access_approval_settings():
                 # Create a client

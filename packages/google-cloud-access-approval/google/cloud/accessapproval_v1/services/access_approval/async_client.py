@@ -261,7 +261,6 @@ class AccessApprovalAsyncClient:
         filtered by state (pending, active, dismissed). The
         order is reverse chronological.
 
-
         .. code-block:: python
 
             from google.cloud import accessapproval_v1
@@ -380,7 +379,6 @@ class AccessApprovalAsyncClient:
         r"""Gets an approval request. Returns NOT_FOUND if the request does
         not exist.
 
-
         .. code-block:: python
 
             from google.cloud import accessapproval_v1
@@ -486,7 +484,6 @@ class AccessApprovalAsyncClient:
         FAILED_PRECONDITION if the request exists but is not in a
         pending state.
 
-
         .. code-block:: python
 
             from google.cloud import accessapproval_v1
@@ -568,7 +565,6 @@ class AccessApprovalAsyncClient:
         Returns FAILED_PRECONDITION if the request exists but is not in
         a pending state.
 
-
         .. code-block:: python
 
             from google.cloud import accessapproval_v1
@@ -642,7 +638,6 @@ class AccessApprovalAsyncClient:
     ) -> accessapproval.AccessApprovalSettings:
         r"""Gets the settings associated with a project, folder,
         or organization.
-
 
         .. code-block:: python
 
@@ -751,7 +746,6 @@ class AccessApprovalAsyncClient:
         r"""Updates the settings associated with a project, folder, or
         organization. Settings to update are determined by the value of
         field_mask.
-
 
         .. code-block:: python
 
@@ -872,7 +866,6 @@ class AccessApprovalAsyncClient:
         higher level of the hierarchy, then Access Approval will
         still be enabled at this level as the settings are
         inherited.
-
 
         .. code-block:: python
 
