@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -215,7 +215,6 @@ class WorkflowsAsyncClient:
     ) -> pagers.ListWorkflowsAsyncPager:
         r"""Lists Workflows in a given project and location.
         The default order is not specified.
-
 
         .. code-block:: python
 
@@ -431,7 +430,6 @@ class WorkflowsAsyncClient:
         running operation will return
         [ALREADY_EXISTS][google.rpc.Code.ALREADY_EXISTS] error.
 
-
         .. code-block:: python
 
             from google.cloud import workflows_v1beta
@@ -576,7 +574,6 @@ class WorkflowsAsyncClient:
         This method also cancels and deletes all running
         executions of the workflow.
 
-
         .. code-block:: python
 
             from google.cloud import workflows_v1beta
@@ -704,7 +701,6 @@ class WorkflowsAsyncClient:
         workflow may be created as a result of a successful
         update operation. In that case, such revision will be
         used in new workflow executions.
-
 
         .. code-block:: python
 

@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -216,7 +216,6 @@ class ExecutionsAsyncClient:
         executions are ordered by their start time (newest
         first).
 
-
         .. code-block:: python
 
             from google.cloud.workflows import executions_v1
@@ -330,7 +329,6 @@ class ExecutionsAsyncClient:
     ) -> executions.Execution:
         r"""Creates a new execution using the latest revision of
         the given workflow.
-
 
         .. code-block:: python
 

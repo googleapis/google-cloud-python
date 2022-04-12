@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -444,7 +444,6 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
         r"""Lists Workflows in a given project and location.
         The default order is not specified.
 
-
         .. code-block:: python
 
             from google.cloud import workflows_v1
@@ -659,7 +658,6 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
         running operation will return
         [ALREADY_EXISTS][google.rpc.Code.ALREADY_EXISTS] error.
 
-
         .. code-block:: python
 
             from google.cloud import workflows_v1
@@ -804,7 +802,6 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
         This method also cancels and deletes all running
         executions of the workflow.
 
-
         .. code-block:: python
 
             from google.cloud import workflows_v1
@@ -932,7 +929,6 @@ class WorkflowsClient(metaclass=WorkflowsClientMeta):
         workflow may be created as a result of a successful
         update operation. In that case, such revision will be
         used in new workflow executions.
-
 
         .. code-block:: python
 

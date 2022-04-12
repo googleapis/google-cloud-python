@@ -70,7 +70,7 @@ class Workflow(proto.Message):
         revision_create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The timestamp that the latest
             revision of the workflow was created.
-        labels (Sequence[google.cloud.workflows_v1beta.types.Workflow.LabelsEntry]):
+        labels (Mapping[str, str]):
             Labels associated with this workflow.
             Labels can contain at most 64 entries. Keys and
             values can be no longer than 63 characters and
