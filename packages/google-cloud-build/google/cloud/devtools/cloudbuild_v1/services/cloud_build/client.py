@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -611,7 +611,6 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         the build ID. Pass the build ID to ``GetBuild`` to determine the
         build status (such as ``SUCCESS`` or ``FAILURE``).
 
-
         .. code-block:: python
 
             from google.cloud.devtools import cloudbuild_v1
@@ -747,7 +746,6 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         ``SUCCESS``, ``FAILURE``, or ``WORKING``), and timing
         information.
 
-
         .. code-block:: python
 
             from google.cloud.devtools import cloudbuild_v1
@@ -865,7 +863,6 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         r"""Lists previously requested builds.
         Previously requested builds may still be in-progress, or
         may have finished successfully or unsuccessfully.
-
 
         .. code-block:: python
 
@@ -1120,7 +1117,6 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
            available depending on the bucket's lifecycle management
            settings.
 
-
         .. code-block:: python
 
             from google.cloud.devtools import cloudbuild_v1
@@ -1258,7 +1254,6 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         LRO returned from a CreateBuild call.
 
         If rejected, the returned LRO will be immediately done.
-
 
         .. code-block:: python
 
@@ -1402,7 +1397,6 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
         This API is experimental.
 
-
         .. code-block:: python
 
             from google.cloud.devtools import cloudbuild_v1
@@ -1507,7 +1501,6 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
         This API is experimental.
 
-
         .. code-block:: python
 
             from google.cloud.devtools import cloudbuild_v1
@@ -1609,7 +1602,6 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         r"""Lists existing ``BuildTrigger``\ s.
 
         This API is experimental.
-
 
         .. code-block:: python
 
@@ -1715,7 +1707,6 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
 
         This API is experimental.
 
-
         .. code-block:: python
 
             from google.cloud.devtools import cloudbuild_v1
@@ -1803,7 +1794,6 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
         r"""Updates a ``BuildTrigger`` by its project ID and trigger ID.
 
         This API is experimental.
-
 
         .. code-block:: python
 
@@ -2054,7 +2044,6 @@ class CloudBuildClient(metaclass=CloudBuildClientMeta):
     ) -> cloudbuild.ReceiveTriggerWebhookResponse:
         r"""ReceiveTriggerWebhook [Experimental] is called when the API
         receives a webhook request targeted at a specific trigger.
-
 
         .. code-block:: python
 

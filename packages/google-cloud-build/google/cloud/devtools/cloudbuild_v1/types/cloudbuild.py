@@ -225,7 +225,7 @@ class RepoSource(proto.Message):
         invert_regex (bool):
             Only trigger a build if the revision regex
             does NOT match the revision regex.
-        substitutions (Sequence[google.cloud.devtools.cloudbuild_v1.types.RepoSource.SubstitutionsEntry]):
+        substitutions (Mapping[str, str]):
             Substitutions to use in a triggered build.
             Should only be used with RunBuildTrigger
     """
@@ -755,7 +755,7 @@ class Build(proto.Message):
         log_url (str):
             Output only. URL to logs for this build in
             Google Cloud Console.
-        substitutions (Sequence[google.cloud.devtools.cloudbuild_v1.types.Build.SubstitutionsEntry]):
+        substitutions (Mapping[str, str]):
             Substitutions data for ``Build`` resource.
         tags (Sequence[str]):
             Tags for annotation of a ``Build``. These are not docker
@@ -767,7 +767,7 @@ class Build(proto.Message):
             to configure builds to access secrets from Secret Manager.
             For instructions, see:
             https://cloud.google.com/cloud-build/docs/securing-builds/use-secrets
-        timing (Sequence[google.cloud.devtools.cloudbuild_v1.types.Build.TimingEntry]):
+        timing (Mapping[str, google.cloud.devtools.cloudbuild_v1.types.TimeSpan]):
             Output only. Stores timing information for phases of the
             build. Valid keys are:
 
@@ -1139,7 +1139,7 @@ class SourceProvenance(proto.Message):
             A copy of the build's ``source.storage_source_manifest``, if
             exists, with any revisions resolved. This feature is in
             Preview.
-        file_hashes (Sequence[google.cloud.devtools.cloudbuild_v1.types.SourceProvenance.FileHashesEntry]):
+        file_hashes (Mapping[str, google.cloud.devtools.cloudbuild_v1.types.FileHashes]):
             Output only. Hash(es) of the build source, which can be used
             to verify that the original source integrity was maintained
             in the build. Note that ``FileHashes`` will only be
@@ -1255,7 +1255,7 @@ class InlineSecret(proto.Message):
             Resource name of Cloud KMS crypto key to decrypt the
             encrypted value. In format:
             projects/\ */locations/*/keyRings/*/cryptoKeys/*
-        env_map (Sequence[google.cloud.devtools.cloudbuild_v1.types.InlineSecret.EnvMapEntry]):
+        env_map (Mapping[str, bytes]):
             Map of environment variable name to its
             encrypted value.
             Secret environment variables must be unique
@@ -1312,7 +1312,7 @@ class Secret(proto.Message):
         kms_key_name (str):
             Cloud KMS key name to use to decrypt these
             envs.
-        secret_env (Sequence[google.cloud.devtools.cloudbuild_v1.types.Secret.SecretEnvEntry]):
+        secret_env (Mapping[str, bytes]):
             Map of environment variable name to its
             encrypted value.
             Secret environment variables must be unique
@@ -1711,7 +1711,7 @@ class BuildTrigger(proto.Message):
         disabled (bool):
             If true, the trigger will never automatically
             execute a build.
-        substitutions (Sequence[google.cloud.devtools.cloudbuild_v1.types.BuildTrigger.SubstitutionsEntry]):
+        substitutions (Mapping[str, str]):
             Substitutions for Build resource. The keys must match the
             following regular expression: ``^_[A-Z0-9_]+$``.
         ignored_files (Sequence[str]):
@@ -2543,7 +2543,7 @@ class WorkerPool(proto.Message):
             characters.
         uid (str):
             Output only. A unique identifier for the ``WorkerPool``.
-        annotations (Sequence[google.cloud.devtools.cloudbuild_v1.types.WorkerPool.AnnotationsEntry]):
+        annotations (Mapping[str, str]):
             User specified annotations. See
             https://google.aip.dev/128#annotations for more
             details such as format and size limitations.
