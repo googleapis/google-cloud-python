@@ -5,6 +5,7 @@ from docfx_yaml.extension import search_cross_references
 from docfx_yaml.extension import format_code
 from docfx_yaml.extension import extract_product_name
 from docfx_yaml.extension import highlight_md_codeblocks
+from docfx_yaml.extension import prepend_markdown_header
 
 import unittest
 from parameterized import parameterized
@@ -254,6 +255,41 @@ for i in range(10):
                 test_file.flush()
 
             highlight_md_codeblocks(test_file.name)
+            test_file.seek(0)
+
+            with open(want_filename) as mdfile_want:
+                self.assertEqual(test_file.read(), mdfile_want.read())
+
+
+    # Filenames to test prepending Markdown title..
+    test_markdown_filenames = [
+        [
+            "tests/markdown_example_bad_header.md",
+            "tests/markdown_example_bad_header_want.md"
+        ],
+        [
+            "tests/markdown_example_h2.md",
+            "tests/markdown_example_h2_want.md"
+        ],
+        [
+            "tests/markdown_example_alternate_bad.md",
+            "tests/markdown_example_alternate_bad_want.md"
+        ],
+    ]
+    @parameterized.expand(test_markdown_filenames)
+    def test_prepend_markdown_header(self, base_filename, want_filename):
+        # Ensure markdown titles are correctly prepended.
+
+        # Copy the base file we'll need to test.
+        with tempfile.NamedTemporaryFile(mode='r+', delete=False) as test_file:
+            with open(base_filename) as base_file:
+                # Use same file name extraction as original code.
+                file_name = base_file.name.split("/")[-1].split(".")[0].capitalize()
+                test_file.write(base_file.read())
+                test_file.flush()
+                test_file.seek(0)
+
+            prepend_markdown_header(file_name, test_file)
             test_file.seek(0)
 
             with open(want_filename) as mdfile_want:

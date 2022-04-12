@@ -29,7 +29,7 @@ import logging
 from pathlib import Path
 from functools import partial
 from itertools import zip_longest
-from typing import List
+from typing import List, Iterable
 from black import InvalidInput
 
 try:
@@ -1286,12 +1286,18 @@ def parse_markdown_header(header_line, prev_line):
     return ""
 
 
-# For a given markdown file, extract its header line.
-def extract_header_from_markdown(mdfile_iterator):
-    mdfile_name = mdfile_iterator.name.split("/")[-1].split(".")[0].capitalize()
+def extract_header_from_markdown(mdfile: Iterable[str]) -> str:
+    """For a given markdown file, extract its header line.
+
+    Args:
+        mdfile: iterator to the markdown file.
+
+    Returns:
+        A string for header or empty string if header is not found.
+    """
     prev_line = ""
 
-    for header_line in mdfile_iterator:
+    for header_line in mdfile:
 
         # Ignore licenses and other non-headers prior to the header.
         header = parse_markdown_header(header_line, prev_line)
@@ -1301,8 +1307,7 @@ def extract_header_from_markdown(mdfile_iterator):
 
         prev_line = header_line
 
-    print(f"Could not find a title for {mdfile_iterator.name}. Using {mdfile_name} as the title instead.")
-    return mdfile_name
+    return ""
 
 
 # For a given markdown file, adds syntax highlighting to code blocks.
@@ -1351,6 +1356,20 @@ def highlight_md_codeblocks(mdfile):
         mdfile_iterator.write(new_content)
 
 
+def prepend_markdown_header(filename: str, mdfile: Iterable[str]):
+    """Prepends the filename as a Markdown header.
+
+    Args:
+        filename: the name of the markdown file to prepend.
+        mdfile: iterator to the markdown file that is both readable
+          and writable.
+    """
+    file_content = f'# {filename}\n\n' + mdfile.read()
+    # Reset file position to the beginning to write
+    mdfile.seek(0)
+    mdfile.write(file_content)
+
+
 # Given generated markdown files, incorporate them into the docfx_yaml output.
 # The markdown file metadata will be added to top level of the TOC.
 def find_markdown_pages(app, outdir):
@@ -1374,12 +1393,23 @@ def find_markdown_pages(app, outdir):
     # For each file, if it is a markdown file move to the top level pages.
     for mdfile in markdown_dir.iterdir():
         if mdfile.is_file() and mdfile.name.lower() not in files_to_ignore:
+            mdfile_name = ""
             highlight_md_codeblocks(markdown_dir / mdfile.name)
-            shutil.copy(mdfile, f"{outdir}/{mdfile.name.lower()}")
 
             # Extract the header name for TOC.
             with open(mdfile) as mdfile_iterator:
                 name = extract_header_from_markdown(mdfile_iterator)
+
+            if not name:
+                with open(mdfile, 'r+') as mdfile_iterator:
+                    mdfile_name = mdfile_iterator.name.split("/")[-1].split(".")[0].capitalize()
+
+                    print(f"Could not find a title for {mdfile_iterator.name}. Using {mdfile_name} as the title instead.")
+                    name = mdfile_name
+
+                    prepend_markdown_header(name, mdfile_iterator)
+
+            shutil.copy(mdfile, f"{outdir}/{mdfile.name.lower()}")
 
             # Add the file to the TOC later.
             app.env.markdown_pages.append({
