@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -402,7 +402,6 @@ class AnalyticsAdminServiceAsyncClient:
         excluded by default. Returns an empty list if no
         relevant accounts are found.
 
-
         .. code-block:: python
 
             from google.analytics import admin_v1alpha
@@ -491,7 +490,6 @@ class AnalyticsAdminServiceAsyncClient:
         permanently purged.
         https://support.google.com/analytics/answer/6154772
         Returns an error if the target is not found.
-
 
         .. code-block:: python
 
@@ -756,7 +754,6 @@ class AnalyticsAdminServiceAsyncClient:
         r"""Returns summaries of all accounts accessible by the
         caller.
 
-
         .. code-block:: python
 
             from google.analytics import admin_v1alpha
@@ -936,7 +933,6 @@ class AnalyticsAdminServiceAsyncClient:
         excluded by default. Returns an empty list if no
         relevant properties are found.
 
-
         .. code-block:: python
 
             from google.analytics import admin_v1alpha
@@ -1018,7 +1014,6 @@ class AnalyticsAdminServiceAsyncClient:
     ) -> resources.Property:
         r"""Creates an "GA4" property with the specified location
         and attributes.
-
 
         .. code-block:: python
 
@@ -1124,7 +1119,6 @@ class AnalyticsAdminServiceAsyncClient:
         https://support.google.com/analytics/answer/6154772
         Returns an error if the target is not found, or is not
         an GA4 Property.
-
 
         .. code-block:: python
 
@@ -1338,7 +1332,6 @@ class AnalyticsAdminServiceAsyncClient:
         r"""Gets information about a user's link to an account or
         property.
 
-
         .. code-block:: python
 
             from google.analytics import admin_v1alpha
@@ -1433,7 +1426,6 @@ class AnalyticsAdminServiceAsyncClient:
     ) -> analytics_admin.BatchGetUserLinksResponse:
         r"""Gets information about multiple users' links to an
         account or property.
-
 
         .. code-block:: python
 
@@ -1627,7 +1619,6 @@ class AnalyticsAdminServiceAsyncClient:
         permissions, which is currently only usable/discoverable
         in the GA or GMP UIs.
 
-
         .. code-block:: python
 
             from google.analytics import admin_v1alpha
@@ -1719,7 +1710,6 @@ class AnalyticsAdminServiceAsyncClient:
         permissions on the account or property, then the user's
         existing permissions will be unioned with the
         permissions specified in the new UserLink.
-
 
         .. code-block:: python
 
@@ -1833,7 +1823,6 @@ class AnalyticsAdminServiceAsyncClient:
         account or property.
         This method is transactional. If any UserLink cannot be
         created, none of the UserLinks will be created.
-
 
         .. code-block:: python
 
@@ -2008,7 +1997,6 @@ class AnalyticsAdminServiceAsyncClient:
         r"""Updates information about multiple users' links to an
         account or property.
 
-
         .. code-block:: python
 
             from google.analytics import admin_v1alpha
@@ -2166,7 +2154,6 @@ class AnalyticsAdminServiceAsyncClient:
         r"""Deletes information about multiple users' links to an
         account or property.
 
-
         .. code-block:: python
 
             from google.analytics import admin_v1alpha
@@ -2234,7 +2221,6 @@ class AnalyticsAdminServiceAsyncClient:
     ) -> resources.FirebaseLink:
         r"""Creates a FirebaseLink.
         Properties can have at most one FirebaseLink.
-
 
         .. code-block:: python
 
@@ -2425,7 +2411,6 @@ class AnalyticsAdminServiceAsyncClient:
         r"""Lists FirebaseLinks on a property.
         Properties can have at most one FirebaseLink.
 
-
         .. code-block:: python
 
             from google.analytics import admin_v1alpha
@@ -2534,7 +2519,6 @@ class AnalyticsAdminServiceAsyncClient:
     ) -> resources.GlobalSiteTag:
         r"""Returns the Site Tag for the specified web stream.
         Site Tags are immutable singletons.
-
 
         .. code-block:: python
 
@@ -3040,7 +3024,6 @@ class AnalyticsAdminServiceAsyncClient:
         r"""Get data sharing settings on an account.
         Data sharing settings are singletons.
 
-
         .. code-block:: python
 
             from google.analytics import admin_v1alpha
@@ -3240,7 +3223,6 @@ class AnalyticsAdminServiceAsyncClient:
     ) -> pagers.ListMeasurementProtocolSecretsAsyncPager:
         r"""Returns child MeasurementProtocolSecrets under the
         specified parent Property.
-
 
         .. code-block:: python
 
@@ -3672,7 +3654,6 @@ class AnalyticsAdminServiceAsyncClient:
         Google Analytics UI or via this API) before
         MeasurementProtocolSecret resources may be created.
 
-
         .. code-block:: python
 
             from google.analytics import admin_v1alpha
@@ -3747,7 +3728,6 @@ class AnalyticsAdminServiceAsyncClient:
     ) -> pagers.SearchChangeHistoryEventsAsyncPager:
         r"""Searches through all changes to an account or its
         children given the specified set of filters.
-
 
         .. code-block:: python
 
@@ -4048,7 +4028,6 @@ class AnalyticsAdminServiceAsyncClient:
         r"""Creates a conversion event with the specified
         attributes.
 
-
         .. code-block:: python
 
             from google.analytics import admin_v1alpha
@@ -4339,7 +4318,6 @@ class AnalyticsAdminServiceAsyncClient:
         parent property.
         Returns an empty list if no conversion events are found.
 
-
         .. code-block:: python
 
             from google.analytics import admin_v1alpha
@@ -4551,7 +4529,6 @@ class AnalyticsAdminServiceAsyncClient:
         r"""Lists all DisplayVideo360AdvertiserLinks on a
         property.
 
-
         .. code-block:: python
 
             from google.analytics import admin_v1alpha
@@ -4668,7 +4645,6 @@ class AnalyticsAdminServiceAsyncClient:
         have access to the Display & Video 360 advertiser should
         instead seek to create a DisplayVideo360LinkProposal.
 
-
         .. code-block:: python
 
             from google.analytics import admin_v1alpha
@@ -4778,7 +4754,6 @@ class AnalyticsAdminServiceAsyncClient:
         r"""Deletes a DisplayVideo360AdvertiserLink on a
         property.
 
-
         .. code-block:: python
 
             from google.analytics import admin_v1alpha
@@ -4867,7 +4842,6 @@ class AnalyticsAdminServiceAsyncClient:
     ) -> resources.DisplayVideo360AdvertiserLink:
         r"""Updates a DisplayVideo360AdvertiserLink on a
         property.
-
 
         .. code-block:: python
 
@@ -4986,7 +4960,6 @@ class AnalyticsAdminServiceAsyncClient:
         r"""Lookup for a single
         DisplayVideo360AdvertiserLinkProposal.
 
-
         .. code-block:: python
 
             from google.analytics import admin_v1alpha
@@ -5095,7 +5068,6 @@ class AnalyticsAdminServiceAsyncClient:
     ) -> pagers.ListDisplayVideo360AdvertiserLinkProposalsAsyncPager:
         r"""Lists DisplayVideo360AdvertiserLinkProposals on a
         property.
-
 
         .. code-block:: python
 
@@ -5329,7 +5301,6 @@ class AnalyticsAdminServiceAsyncClient:
         r"""Deletes a DisplayVideo360AdvertiserLinkProposal on a
         property. This can only be used on cancelled proposals.
 
-
         .. code-block:: python
 
             from google.analytics import admin_v1alpha
@@ -5421,7 +5392,6 @@ class AnalyticsAdminServiceAsyncClient:
         deleted and a new DisplayVideo360AdvertiserLink will be
         created.
 
-
         .. code-block:: python
 
             from google.analytics import admin_v1alpha
@@ -5504,7 +5474,6 @@ class AnalyticsAdminServiceAsyncClient:
         360 - Withdrawing a proposal initiated from Google
         Analytics After being cancelled, a proposal will
         eventually be deleted automatically.
-
 
         .. code-block:: python
 
@@ -6588,7 +6557,6 @@ class AnalyticsAdminServiceAsyncClient:
         r"""Returns the singleton data retention settings for
         this property.
 
-
         .. code-block:: python
 
             from google.analytics import admin_v1alpha
@@ -6688,7 +6656,6 @@ class AnalyticsAdminServiceAsyncClient:
     ) -> resources.DataRetentionSettings:
         r"""Updates the singleton data retention settings for
         this property.
-
 
         .. code-block:: python
 
