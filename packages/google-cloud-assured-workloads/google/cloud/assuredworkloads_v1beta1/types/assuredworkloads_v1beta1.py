@@ -272,7 +272,7 @@ class Workload(proto.Message):
             calculated on the basis of the Workload
             contents. It will be used in Update & Delete
             operations.
-        labels (Sequence[google.cloud.assuredworkloads_v1beta1.types.Workload.LabelsEntry]):
+        labels (Mapping[str, str]):
             Optional. Labels applied to the workload.
         provisioned_resources_parent (str):
             Input only. The parent resource for the resources managed by

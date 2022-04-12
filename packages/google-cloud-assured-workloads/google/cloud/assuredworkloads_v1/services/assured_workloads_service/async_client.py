@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -351,7 +351,6 @@ class AssuredWorkloadsServiceAsyncClient:
         etag field in the Workload. Only one update operation per
         workload can be in progress.
 
-
         .. code-block:: python
 
             from google.cloud import assuredworkloads_v1
@@ -466,7 +465,6 @@ class AssuredWorkloadsServiceAsyncClient:
         r"""Deletes the workload. Make sure that workload's direct children
         are already in a deleted state, otherwise the request will fail
         with a FAILED_PRECONDITION error.
-
 
         .. code-block:: python
 

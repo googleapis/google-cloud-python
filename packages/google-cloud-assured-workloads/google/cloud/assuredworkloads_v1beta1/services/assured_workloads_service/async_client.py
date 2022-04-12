@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -352,7 +352,6 @@ class AssuredWorkloadsServiceAsyncClient:
         etag field in the Workload. Only one update operation per
         workload can be in progress.
 
-
         .. code-block:: python
 
             from google.cloud import assuredworkloads_v1beta1
@@ -467,7 +466,6 @@ class AssuredWorkloadsServiceAsyncClient:
         are already in a deleted state, otherwise the request will fail
         with a FAILED_PRECONDITION error.
 
-
         .. code-block:: python
 
             from google.cloud import assuredworkloads_v1beta1
@@ -527,7 +525,7 @@ class AssuredWorkloadsServiceAsyncClient:
                 maximum=30.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=60.0,
             ),
@@ -632,7 +630,7 @@ class AssuredWorkloadsServiceAsyncClient:
                 maximum=30.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=60.0,
             ),
@@ -740,7 +738,7 @@ class AssuredWorkloadsServiceAsyncClient:
                 maximum=30.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=60.0,
             ),
