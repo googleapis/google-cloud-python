@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -426,7 +426,6 @@ class WebRiskServiceClient(metaclass=WebRiskServiceClientMeta):
         ThreatList databases, this method needs to be called
         once for each list.
 
-
         .. code-block:: python
 
             from google.cloud import webrisk_v1
@@ -545,7 +544,6 @@ class WebRiskServiceClient(metaclass=WebRiskServiceClientMeta):
         not found on any of the requested ThreatList an empty
         response will be returned.
 
-
         .. code-block:: python
 
             from google.cloud import webrisk_v1
@@ -649,7 +647,6 @@ class WebRiskServiceClient(metaclass=WebRiskServiceClientMeta):
         threatList only holds partial hashes so the client must
         query this method to determine if there is a full hash
         match of a threat.
-
 
         .. code-block:: python
 
@@ -757,7 +754,6 @@ class WebRiskServiceClient(metaclass=WebRiskServiceClientMeta):
         in order to protect users that could get exposed to this threat
         in the future. Only projects with CREATE_SUBMISSION_USERS
         visibility can use this method.
-
 
         .. code-block:: python
 

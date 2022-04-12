@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -301,8 +301,7 @@ class WebRiskServiceV1Beta1AsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=600.0,
             ),
@@ -333,7 +332,6 @@ class WebRiskServiceV1Beta1AsyncClient:
     ) -> webrisk.SearchUrisResponse:
         r"""This method is used to check whether a URI is on a
         given threatList.
-
 
         .. code-block:: python
 
@@ -411,8 +409,7 @@ class WebRiskServiceV1Beta1AsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=600.0,
             ),
@@ -447,7 +444,6 @@ class WebRiskServiceV1Beta1AsyncClient:
         threatList only holds partial hashes so the client must
         query this method to determine if there is a full hash
         match of a threat.
-
 
         .. code-block:: python
 
@@ -526,8 +522,7 @@ class WebRiskServiceV1Beta1AsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=600.0,
             ),

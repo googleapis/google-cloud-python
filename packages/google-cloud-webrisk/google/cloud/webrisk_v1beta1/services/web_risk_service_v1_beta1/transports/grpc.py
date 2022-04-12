@@ -317,5 +317,9 @@ class WebRiskServiceV1Beta1GrpcTransport(WebRiskServiceV1Beta1Transport):
     def close(self):
         self.grpc_channel.close()
 
+    @property
+    def kind(self) -> str:
+        return "grpc"
+
 
 __all__ = ("WebRiskServiceV1Beta1GrpcTransport",)

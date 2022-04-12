@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -525,7 +525,6 @@ class WebRiskServiceV1Beta1Client(metaclass=WebRiskServiceV1Beta1ClientMeta):
         r"""This method is used to check whether a URI is on a
         given threatList.
 
-
         .. code-block:: python
 
             from google.cloud import webrisk_v1beta1
@@ -628,7 +627,6 @@ class WebRiskServiceV1Beta1Client(metaclass=WebRiskServiceV1Beta1ClientMeta):
         threatList only holds partial hashes so the client must
         query this method to determine if there is a full hash
         match of a threat.
-
 
         .. code-block:: python
 

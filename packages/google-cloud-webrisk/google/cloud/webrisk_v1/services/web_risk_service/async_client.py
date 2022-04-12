@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -222,7 +222,6 @@ class WebRiskServiceAsyncClient:
         ThreatList databases, this method needs to be called
         once for each list.
 
-
         .. code-block:: python
 
             from google.cloud import webrisk_v1
@@ -314,8 +313,7 @@ class WebRiskServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=600.0,
             ),
@@ -350,7 +348,6 @@ class WebRiskServiceAsyncClient:
         threatLists the URI was found to match. If the URI is
         not found on any of the requested ThreatList an empty
         response will be returned.
-
 
         .. code-block:: python
 
@@ -429,8 +426,7 @@ class WebRiskServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=600.0,
             ),
@@ -465,7 +461,6 @@ class WebRiskServiceAsyncClient:
         threatList only holds partial hashes so the client must
         query this method to determine if there is a full hash
         match of a threat.
-
 
         .. code-block:: python
 
@@ -545,8 +540,7 @@ class WebRiskServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=600.0,
             ),
@@ -583,7 +577,6 @@ class WebRiskServiceAsyncClient:
         in order to protect users that could get exposed to this threat
         in the future. Only projects with CREATE_SUBMISSION_USERS
         visibility can use this method.
-
 
         .. code-block:: python
 
