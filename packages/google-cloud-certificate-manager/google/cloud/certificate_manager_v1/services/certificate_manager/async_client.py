@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -349,7 +349,7 @@ class CertificateManagerAsyncClient:
                 maximum=10.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=60.0,
             ),
@@ -460,7 +460,7 @@ class CertificateManagerAsyncClient:
                 maximum=10.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=60.0,
             ),
@@ -498,7 +498,6 @@ class CertificateManagerAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Creates a new Certificate in a given project and
         location.
-
 
         .. code-block:: python
 
@@ -594,7 +593,7 @@ class CertificateManagerAsyncClient:
                 maximum=10.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=60.0,
             ),
@@ -723,7 +722,7 @@ class CertificateManagerAsyncClient:
                 maximum=10.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=60.0,
             ),
@@ -854,7 +853,7 @@ class CertificateManagerAsyncClient:
                 maximum=10.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=60.0,
             ),
@@ -898,7 +897,6 @@ class CertificateManagerAsyncClient:
     ) -> pagers.ListCertificateMapsAsyncPager:
         r"""Lists CertificateMaps in a given project and
         location.
-
 
         .. code-block:: python
 
@@ -972,7 +970,7 @@ class CertificateManagerAsyncClient:
                 maximum=10.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=60.0,
             ),
@@ -1086,7 +1084,7 @@ class CertificateManagerAsyncClient:
                 maximum=10.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=60.0,
             ),
@@ -1124,7 +1122,6 @@ class CertificateManagerAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Creates a new CertificateMap in a given project and
         location.
-
 
         .. code-block:: python
 
@@ -1220,7 +1217,7 @@ class CertificateManagerAsyncClient:
                 maximum=10.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=60.0,
             ),
@@ -1349,7 +1346,7 @@ class CertificateManagerAsyncClient:
                 maximum=10.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=60.0,
             ),
@@ -1397,7 +1394,6 @@ class CertificateManagerAsyncClient:
         can't be deleted if it contains Certificate Map Entries.
         Remove all the entries from the map before calling this
         method.
-
 
         .. code-block:: python
 
@@ -1485,7 +1481,7 @@ class CertificateManagerAsyncClient:
                 maximum=10.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=60.0,
             ),
@@ -1531,7 +1527,6 @@ class CertificateManagerAsyncClient:
     ) -> pagers.ListCertificateMapEntriesAsyncPager:
         r"""Lists CertificateMapEntries in a given project and
         location.
-
 
         .. code-block:: python
 
@@ -1606,7 +1601,7 @@ class CertificateManagerAsyncClient:
                 maximum=10.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=60.0,
             ),
@@ -1718,7 +1713,7 @@ class CertificateManagerAsyncClient:
                 maximum=10.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=60.0,
             ),
@@ -1758,7 +1753,6 @@ class CertificateManagerAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Creates a new CertificateMapEntry in a given project
         and location.
-
 
         .. code-block:: python
 
@@ -1861,7 +1855,7 @@ class CertificateManagerAsyncClient:
                 maximum=10.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=60.0,
             ),
@@ -1997,7 +1991,7 @@ class CertificateManagerAsyncClient:
                 maximum=10.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=60.0,
             ),
@@ -2131,7 +2125,7 @@ class CertificateManagerAsyncClient:
                 maximum=10.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=60.0,
             ),
@@ -2175,7 +2169,6 @@ class CertificateManagerAsyncClient:
     ) -> pagers.ListDnsAuthorizationsAsyncPager:
         r"""Lists DnsAuthorizations in a given project and
         location.
-
 
         .. code-block:: python
 
@@ -2249,7 +2242,7 @@ class CertificateManagerAsyncClient:
                 maximum=10.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=60.0,
             ),
@@ -2364,7 +2357,7 @@ class CertificateManagerAsyncClient:
                 maximum=10.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=60.0,
             ),
@@ -2402,7 +2395,6 @@ class CertificateManagerAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Creates a new DnsAuthorization in a given project and
         location.
-
 
         .. code-block:: python
 
@@ -2501,7 +2493,7 @@ class CertificateManagerAsyncClient:
                 maximum=10.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=60.0,
             ),
@@ -2633,7 +2625,7 @@ class CertificateManagerAsyncClient:
                 maximum=10.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=60.0,
             ),
@@ -2765,7 +2757,7 @@ class CertificateManagerAsyncClient:
                 maximum=10.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=60.0,
             ),

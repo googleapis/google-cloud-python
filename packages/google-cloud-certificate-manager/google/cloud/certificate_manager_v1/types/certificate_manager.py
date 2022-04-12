@@ -834,7 +834,7 @@ class Certificate(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The last update timestamp of a
             Certificate.
-        labels (Sequence[google.cloud.certificate_manager_v1.types.Certificate.LabelsEntry]):
+        labels (Mapping[str, str]):
             Set of labels associated with a Certificate.
         self_managed (google.cloud.certificate_manager_v1.types.Certificate.SelfManagedCertificate):
             If set, defines data of a self-managed
@@ -1105,7 +1105,7 @@ class CertificateMap(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The update timestamp of a
             Certificate Map.
-        labels (Sequence[google.cloud.certificate_manager_v1.types.CertificateMap.LabelsEntry]):
+        labels (Mapping[str, str]):
             Set of labels associated with a Certificate
             Map.
         gclb_targets (Sequence[google.cloud.certificate_manager_v1.types.CertificateMap.GclbTarget]):
@@ -1230,7 +1230,7 @@ class CertificateMapEntry(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The update timestamp of a
             Certificate Map Entry.
-        labels (Sequence[google.cloud.certificate_manager_v1.types.CertificateMapEntry.LabelsEntry]):
+        labels (Mapping[str, str]):
             Set of labels associated with a Certificate
             Map Entry.
         hostname (str):
@@ -1322,7 +1322,7 @@ class DnsAuthorization(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The last update timestamp of a
             DnsAuthorization.
-        labels (Sequence[google.cloud.certificate_manager_v1.types.DnsAuthorization.LabelsEntry]):
+        labels (Mapping[str, str]):
             Set of labels associated with a
             DnsAuthorization.
         description (str):

@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -788,7 +788,6 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
         r"""Creates a new Certificate in a given project and
         location.
 
-
         .. code-block:: python
 
             from google.cloud import certificate_manager_v1
@@ -1161,7 +1160,6 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
         r"""Lists CertificateMaps in a given project and
         location.
 
-
         .. code-block:: python
 
             from google.cloud import certificate_manager_v1
@@ -1368,7 +1366,6 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
     ) -> operation.Operation:
         r"""Creates a new CertificateMap in a given project and
         location.
-
 
         .. code-block:: python
 
@@ -1624,7 +1621,6 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
         Remove all the entries from the map before calling this
         method.
 
-
         .. code-block:: python
 
             from google.cloud import certificate_manager_v1
@@ -1748,7 +1744,6 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
     ) -> pagers.ListCertificateMapEntriesPager:
         r"""Lists CertificateMapEntries in a given project and
         location.
-
 
         .. code-block:: python
 
@@ -1963,7 +1958,6 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
     ) -> operation.Operation:
         r"""Creates a new CertificateMapEntry in a given project
         and location.
-
 
         .. code-block:: python
 
@@ -2366,7 +2360,6 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
         r"""Lists DnsAuthorizations in a given project and
         location.
 
-
         .. code-block:: python
 
             from google.cloud import certificate_manager_v1
@@ -2574,7 +2567,6 @@ class CertificateManagerClient(metaclass=CertificateManagerClientMeta):
     ) -> operation.Operation:
         r"""Creates a new DnsAuthorization in a given project and
         location.
-
 
         .. code-block:: python
 
