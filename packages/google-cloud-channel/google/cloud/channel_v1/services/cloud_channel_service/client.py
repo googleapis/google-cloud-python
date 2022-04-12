@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -570,7 +570,6 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         [Customer][google.cloud.channel.v1.Customer]s, or an empty list
         if there are no customers.
 
-
         .. code-block:: python
 
             from google.cloud import channel_v1
@@ -671,7 +670,6 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
         Return value: The [Customer][google.cloud.channel.v1.Customer]
         resource.
-
 
         .. code-block:: python
 
@@ -787,7 +785,6 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         [CloudIdentityCustomerAccount][google.cloud.channel.v1.CloudIdentityCustomerAccount]
         resources match the domain.
 
-
         .. code-block:: python
 
             from google.cloud import channel_v1
@@ -877,7 +874,6 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
         Return value: The newly created
         [Customer][google.cloud.channel.v1.Customer] resource.
-
 
         .. code-block:: python
 
@@ -971,7 +967,6 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         Return value: The updated
         [Customer][google.cloud.channel.v1.Customer] resource.
 
-
         .. code-block:: python
 
             from google.cloud import channel_v1
@@ -1063,7 +1058,6 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         -  FAILED_PRECONDITION: The customer has existing entitlements.
         -  NOT_FOUND: No [Customer][google.cloud.channel.v1.Customer]
            resource found for the name in the request.
-
 
         .. code-block:: python
 
@@ -1163,7 +1157,6 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
         Return value: The [Customer][google.cloud.channel.v1.Customer].
 
-
         .. code-block:: python
 
             from google.cloud import channel_v1
@@ -1261,7 +1254,6 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         method of CloudChannelOperationsService. The Operation metadata
         contains an instance of
         [OperationMetadata][google.cloud.channel.v1.OperationMetadata].
-
 
         .. code-block:: python
 
@@ -1362,7 +1354,6 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
         Return value: A list of the customer's
         [Entitlement][google.cloud.channel.v1.Entitlement]s.
-
 
         .. code-block:: python
 
@@ -1472,7 +1463,6 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
         Return value: A list of the customer's
         [TransferableSku][google.cloud.channel.v1.TransferableSku].
-
 
         .. code-block:: python
 
@@ -1586,7 +1576,6 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         [TransferableOffer][google.cloud.channel.v1.TransferableOffer]
         for the given customer and SKU.
 
-
         .. code-block:: python
 
             from google.cloud import channel_v1
@@ -1687,7 +1676,6 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
         Return value: The requested
         [Entitlement][google.cloud.channel.v1.Entitlement] resource.
-
 
         .. code-block:: python
 
@@ -1807,7 +1795,6 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         will contain an instance of
         [OperationMetadata][google.cloud.channel.v1.OperationMetadata].
 
-
         .. code-block:: python
 
             from google.cloud import channel_v1
@@ -1926,7 +1913,6 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         will contain an instance of
         [OperationMetadata][google.cloud.channel.v1.OperationMetadata].
 
-
         .. code-block:: python
 
             from google.cloud import channel_v1
@@ -2043,7 +2029,6 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         will contain an instance of
         [OperationMetadata][google.cloud.channel.v1.OperationMetadata].
 
-
         .. code-block:: python
 
             from google.cloud import channel_v1
@@ -2155,7 +2140,6 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         method of CloudChannelOperationsService. The Operation metadata
         will contain an instance of
         [OperationMetadata][google.cloud.channel.v1.OperationMetadata].
-
 
         .. code-block:: python
 
@@ -2273,7 +2257,6 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         will contain an instance of
         [OperationMetadata][google.cloud.channel.v1.OperationMetadata].
 
-
         .. code-block:: python
 
             from google.cloud import channel_v1
@@ -2385,7 +2368,6 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         method of CloudChannelOperationsService. The Operation metadata
         will contain an instance of
         [OperationMetadata][google.cloud.channel.v1.OperationMetadata].
-
 
         .. code-block:: python
 
@@ -2503,7 +2485,6 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         contain google.protobuf.Empty on success. The Operation metadata
         will contain an instance of
         [OperationMetadata][google.cloud.channel.v1.OperationMetadata].
-
 
         .. code-block:: python
 
@@ -2633,7 +2614,6 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         will contain an instance of
         [OperationMetadata][google.cloud.channel.v1.OperationMetadata].
 
-
         .. code-block:: python
 
             from google.cloud import channel_v1
@@ -2758,7 +2738,6 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         method of CloudChannelOperationsService. The Operation metadata
         will contain an instance of
         [OperationMetadata][google.cloud.channel.v1.OperationMetadata].
-
 
         .. code-block:: python
 
@@ -2888,7 +2867,6 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         will contain an instance of
         [OperationMetadata][google.cloud.channel.v1.OperationMetadata].
 
-
         .. code-block:: python
 
             from google.cloud import channel_v1
@@ -3008,7 +2986,6 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         [ChannelPartnerLink][google.cloud.channel.v1.ChannelPartnerLink]
         resources.
 
-
         .. code-block:: python
 
             from google.cloud import channel_v1
@@ -3113,7 +3090,6 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         [ChannelPartnerLink][google.cloud.channel.v1.ChannelPartnerLink]
         resource.
 
-
         .. code-block:: python
 
             from google.cloud import channel_v1
@@ -3212,7 +3188,6 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         Return value: The new
         [ChannelPartnerLink][google.cloud.channel.v1.ChannelPartnerLink]
         resource.
-
 
         .. code-block:: python
 
@@ -3320,7 +3295,6 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         [ChannelPartnerLink][google.cloud.channel.v1.ChannelPartnerLink]
         resource.
 
-
         .. code-block:: python
 
             from google.cloud import channel_v1
@@ -3415,7 +3389,6 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         Return value: The [Offer][google.cloud.channel.v1.Offer]
         resource.
 
-
         .. code-block:: python
 
             from google.cloud import channel_v1
@@ -3498,7 +3471,6 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
         -  INVALID_ARGUMENT: Required request parameters are missing or
            invalid.
-
 
         .. code-block:: python
 
@@ -3583,7 +3555,6 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
         -  INVALID_ARGUMENT: Required request parameters are missing or
            invalid.
-
 
         .. code-block:: python
 
@@ -3675,7 +3646,6 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
 
         -  INVALID_ARGUMENT: Required request parameters are missing or
            invalid.
-
 
         .. code-block:: python
 
@@ -3771,7 +3741,6 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
            reseller.
         -  INVALID_ARGUMENT: Required request parameters are missing or
            invalid.
-
 
         .. code-block:: python
 
@@ -3873,7 +3842,6 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
            reseller
         -  INVALID_ARGUMENT: Required request parameters are missing or
            invalid.
-
 
         .. code-block:: python
 
@@ -3984,7 +3952,6 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         Return value: The topic name with the registered service email
         address.
 
-
         .. code-block:: python
 
             from google.cloud import channel_v1
@@ -4081,7 +4048,6 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
         address. Returns a success response if the service email address
         wasn't registered with the topic.
 
-
         .. code-block:: python
 
             from google.cloud import channel_v1
@@ -4172,7 +4138,6 @@ class CloudChannelServiceClient(metaclass=CloudChannelServiceClientMeta):
            the backend. Contact Cloud Channel support.
 
         Return value: A list of service email addresses.
-
 
         .. code-block:: python
 

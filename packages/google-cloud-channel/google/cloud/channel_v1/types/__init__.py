@@ -56,7 +56,9 @@ from .offers import (
     PromotionalOrderType,
     ResourceType,
 )
-from .operations import OperationMetadata
+from .operations import (
+    OperationMetadata,
+)
 from .products import (
     MarketingInfo,
     Media,
