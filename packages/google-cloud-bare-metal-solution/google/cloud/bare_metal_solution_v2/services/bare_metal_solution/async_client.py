@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -442,7 +442,6 @@ class BareMetalSolutionAsyncClient:
         r"""Perform an ungraceful, hard reset on a server.
         Equivalent to shutting the power off and then turning it
         back on.
-
 
         .. code-block:: python
 
@@ -1077,7 +1076,6 @@ class BareMetalSolutionAsyncClient:
         r"""List snapshot schedule policies in a given project
         and location.
 
-
         .. code-block:: python
 
             from google.cloud import bare_metal_solution_v2
@@ -1283,7 +1281,6 @@ class BareMetalSolutionAsyncClient:
         r"""Create a snapshot schedule policy in the specified
         project.
 
-
         .. code-block:: python
 
             from google.cloud import bare_metal_solution_v2
@@ -1400,7 +1397,6 @@ class BareMetalSolutionAsyncClient:
     ) -> baremetalsolution.SnapshotSchedulePolicy:
         r"""Update a snapshot schedule policy in the specified
         project.
-
 
         .. code-block:: python
 
@@ -1600,7 +1596,6 @@ class BareMetalSolutionAsyncClient:
         r"""Create a storage volume snapshot in a containing
         volume.
 
-
         .. code-block:: python
 
             from google.cloud import bare_metal_solution_v2
@@ -1704,7 +1699,6 @@ class BareMetalSolutionAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Restore a storage volume snapshot to its containing
         volume.
-
 
         .. code-block:: python
 
@@ -1993,7 +1987,6 @@ class BareMetalSolutionAsyncClient:
         r"""List storage volume snapshots for given storage
         volume.
 
-
         .. code-block:: python
 
             from google.cloud import bare_metal_solution_v2
@@ -2102,7 +2095,6 @@ class BareMetalSolutionAsyncClient:
     ) -> baremetalsolution.Lun:
         r"""Get details of a single storage logical unit
         number(LUN).
-
 
         .. code-block:: python
 

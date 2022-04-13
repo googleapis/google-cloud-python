@@ -643,7 +643,7 @@ class Instance(proto.Message):
             True if you enable hyperthreading for the
             server, otherwise false. The default value is
             false.
-        labels (Sequence[google.cloud.bare_metal_solution_v2.types.Instance.LabelsEntry]):
+        labels (Mapping[str, str]):
             Labels as key value pairs.
         luns (Sequence[google.cloud.bare_metal_solution_v2.types.Lun]):
             List of LUNs associated with this server.

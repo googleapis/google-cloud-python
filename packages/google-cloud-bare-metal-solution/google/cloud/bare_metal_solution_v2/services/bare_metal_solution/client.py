@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -765,7 +765,6 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
         Equivalent to shutting the power off and then turning it
         back on.
 
-
         .. code-block:: python
 
             from google.cloud import bare_metal_solution_v2
@@ -1399,7 +1398,6 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
         r"""List snapshot schedule policies in a given project
         and location.
 
-
         .. code-block:: python
 
             from google.cloud import bare_metal_solution_v2
@@ -1611,7 +1609,6 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
         r"""Create a snapshot schedule policy in the specified
         project.
 
-
         .. code-block:: python
 
             from google.cloud import bare_metal_solution_v2
@@ -1732,7 +1729,6 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
     ) -> baremetalsolution.SnapshotSchedulePolicy:
         r"""Update a snapshot schedule policy in the specified
         project.
-
 
         .. code-block:: python
 
@@ -1940,7 +1936,6 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
         r"""Create a storage volume snapshot in a containing
         volume.
 
-
         .. code-block:: python
 
             from google.cloud import bare_metal_solution_v2
@@ -2044,7 +2039,6 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
     ) -> operation.Operation:
         r"""Restore a storage volume snapshot to its containing
         volume.
-
 
         .. code-block:: python
 
@@ -2333,7 +2327,6 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
         r"""List storage volume snapshots for given storage
         volume.
 
-
         .. code-block:: python
 
             from google.cloud import bare_metal_solution_v2
@@ -2442,7 +2435,6 @@ class BareMetalSolutionClient(metaclass=BareMetalSolutionClientMeta):
     ) -> baremetalsolution.Lun:
         r"""Get details of a single storage logical unit
         number(LUN).
-
 
         .. code-block:: python
 
