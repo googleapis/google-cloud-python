@@ -21,8 +21,6 @@ such as the library and Python version, to API services.
 import platform
 from typing import Union
 
-import pkg_resources
-
 from google.api_core import version as api_core_version
 
 _PY_VERSION = platform.python_version()
@@ -31,8 +29,10 @@ _API_CORE_VERSION = api_core_version.__version__
 _GRPC_VERSION: Union[str, None]
 
 try:
-    _GRPC_VERSION = pkg_resources.get_distribution("grpcio").version
-except pkg_resources.DistributionNotFound:  # pragma: NO COVER
+    import grpc
+
+    _GRPC_VERSION = grpc.__version__
+except ImportError:  # pragma: NO COVER
     _GRPC_VERSION = None
 
 

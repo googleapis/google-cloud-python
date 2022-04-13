@@ -18,7 +18,6 @@ import collections
 import functools
 
 import grpc
-import pkg_resources
 
 from google.api_core import exceptions
 import google.auth
@@ -33,14 +32,6 @@ try:
 except ImportError:
     HAS_GRPC_GCP = False
 
-try:
-    # google.auth.__version__ was added in 1.26.0
-    _GOOGLE_AUTH_VERSION = google.auth.__version__
-except AttributeError:
-    try:  # try pkg_resources if it is available
-        _GOOGLE_AUTH_VERSION = pkg_resources.get_distribution("google-auth").version
-    except pkg_resources.DistributionNotFound:  # pragma: NO COVER
-        _GOOGLE_AUTH_VERSION = None
 
 # The list of gRPC Callable interfaces that return iterators.
 _STREAM_WRAP_CLASSES = (grpc.UnaryStreamMultiCallable, grpc.StreamStreamMultiCallable)
