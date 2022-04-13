@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -435,7 +435,6 @@ class PublisherClient(metaclass=PublisherClientMeta):
     ) -> publisher.PublishChannelConnectionEventsResponse:
         r"""Publish events to a ChannelConnection in a partner's
         project.
-
 
         .. code-block:: python
 
