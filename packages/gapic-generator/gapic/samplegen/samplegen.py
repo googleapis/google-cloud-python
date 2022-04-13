@@ -305,6 +305,14 @@ class Validator:
         # the MessageType of the request object passed to the rpc e.g, `ListRequest`
         sample["request_type"] = rpc.input
 
+        # We check if the request object is part of the service proto package.
+        # If not, it comes from a different module.
+        address = rpc.input.meta.address
+        if address.proto_package.startswith(address.api_naming.proto_package):
+            sample["request_module_name"] = sample["module_name"]
+        else:
+            sample["request_module_name"] = address.python_import.module
+
         # If no request was specified in the config
         # Add reasonable default values as placeholders
         if "request" not in sample:
@@ -1079,6 +1087,22 @@ def _fill_sample_metadata(sample: dict, api_schema: api.API):
     return snippet_metadata
 
 
+def _get_sample_imports(sample: Dict, rpc: wrappers.Method) -> List[str]:
+    """Returns sorted sample import statements."""
+    module_namespace = ".".join(sample["module_namespace"])
+    module_name = sample["module_name"]
+    module_import = f"from {module_namespace} import {module_name}"
+
+    address = rpc.input.meta.address
+    # This checks if the request message is part of the service proto package.
+    # If not, we should try to include a separate import statement.
+    if address.proto_package.startswith(address.api_naming.proto_package):
+        return [module_import]
+    else:
+        request_import = str(address.python_import)
+        return sorted([module_import, request_import])
+
+
 def generate_sample(sample, api_schema, sample_template: jinja2.Template) -> Tuple[str, Any]:
     """Generate a standalone, runnable sample.
 
@@ -1119,9 +1143,12 @@ def generate_sample(sample, api_schema, sample_template: jinja2.Template) -> Tup
 
     snippet_metadata = _fill_sample_metadata(sample, api_schema)
 
+    # The sample must be preprocessed before calling _get_sample_imports.
+    imports = _get_sample_imports(sample, rpc)
+
     return sample_template.render(
         sample=sample,
-        imports=[],
+        imports=imports,
         calling_form=calling_form,
         calling_form_enum=types.CallingForm,
         trim_blocks=True,

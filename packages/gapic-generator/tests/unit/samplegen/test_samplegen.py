@@ -36,28 +36,67 @@ from ..common_types import (DummyApiSchema, DummyField, DummyIdent, DummyNaming,
 from gapic.samplegen_utils import utils
 
 
-# validate_response tests
+@pytest.fixture(scope="module")
+def api_naming():
+    return DummyNaming(
+        warehouse_package_name="mollusc-cephalopod-teuthida-",
+        versioned_module_name="teuthida_v1",
+        module_namespace=("mollusc", "cephalopod"),
+        proto_package="mollusc.cephalopod"
+    )
+
 
 @pytest.fixture(scope="module")
-def dummy_api_schema():
-    # For most of the unit tests in this file the internals of API Schema do not matter
-    classify_request_message = DummyMessage(
+def request_message():
+    return DummyMessage(
         fields={
             "parent": DummyField(is_primitive=True, type=str, required=True, name="parent"),
             },
         type=DummyMessageTypePB(name="ClassifyRequest"),
         ident=DummyIdent(name="ClassifyRequest")
-        )
+    )
 
+
+@pytest.fixture(scope="module")
+def request_message_from_another_package(api_naming):
+    return DummyMessage(
+        fields={
+            "parent": DummyField(is_primitive=True, type=str, required=True, name="parent"),
+            },
+        type=DummyMessageTypePB(name="ClassifyRequest"),
+        ident=DummyIdent(name="ClassifyRequest"),
+        meta=metadata.Metadata(
+            address=metadata.Address(
+                api_naming=api_naming,
+                package=('a', 'b',),
+                module='c'
+            )
+        )
+    )
+
+
+@pytest.fixture(scope="module")
+def dummy_api_schema(request_message, api_naming):
     return DummyApiSchema(
         services={"Mollusc": DummyService(
             methods={}, client_name="MolluscClient",
             resource_messages_dict={}
             )},
-        naming=DummyNaming(warehouse_package_name="mollusc-cephalopod-teuthida-",
-                           versioned_module_name="teuthida_v1", module_namespace="mollusc.cephalopod"),
-        messages=classify_request_message,
+        naming=api_naming,
+        messages=request_message,
+    )
 
+
+@pytest.fixture(scope="module")
+def dummy_api_schema_with_request_from_another_package(
+        request_message_from_another_package, api_naming):
+    return DummyApiSchema(
+        services={"Mollusc": DummyService(
+            methods={}, client_name="MolluscClient",
+            resource_messages_dict={}
+            )},
+        naming=api_naming,
+        messages=request_message_from_another_package,
     )
 
 
@@ -276,6 +315,44 @@ def test_preprocess_sample_void_method():
     samplegen.Validator.preprocess_sample(sample, api_schema, rpc)
 
     assert sample["response"] == []
+
+
+def test_preprocess_sample_with_request_module_name(
+        dummy_api_schema_with_request_from_another_package):
+    sample = {"service": "Mollusc", "rpc": "Classify"}
+    api_schema = dummy_api_schema_with_request_from_another_package
+    rpc = DummyMethod(input=api_schema.messages)
+
+    samplegen.Validator.preprocess_sample(sample, api_schema, rpc)
+
+    request_module_name = sample.get("request_module_name")
+    assert request_module_name == 'c_pb2'
+
+
+def test_get_sample_imports(dummy_api_schema):
+    sample = {"service": "Mollusc", "rpc": "Classify"}
+    api_schema = dummy_api_schema
+    rpc = DummyMethod(input=api_schema.messages)
+
+    samplegen.Validator.preprocess_sample(sample, api_schema, rpc)
+    imports = samplegen._get_sample_imports(sample, rpc)
+
+    assert imports == ["from mollusc.cephalopod import teuthida_v1"]
+
+
+def test_get_sample_imports_with_request_from_another_package(
+        dummy_api_schema_with_request_from_another_package):
+    sample = {"service": "Mollusc", "rpc": "Classify"}
+    api_schema = dummy_api_schema_with_request_from_another_package
+    rpc = DummyMethod(input=api_schema.messages)
+
+    samplegen.Validator.preprocess_sample(sample, api_schema, rpc)
+    imports = samplegen._get_sample_imports(sample, rpc)
+
+    assert imports == [
+        "from a.b import c_pb2  # type: ignore",
+        "from mollusc.cephalopod import teuthida_v1"
+    ]
 
 
 def test_define_input_param(dummy_api_schema):

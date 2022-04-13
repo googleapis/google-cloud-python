@@ -82,6 +82,7 @@ def test_snippet_init(sample_str):
     # and # [END ...] lines
     expected_full_snipppet = """from molluscs.v1 import molluscclient
 
+
 def sample_classify(video, location):
     # Create a client
     client = molluscclient.MolluscServiceClient()

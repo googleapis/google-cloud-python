@@ -88,7 +88,6 @@ class Snippet:
         """The portion between the START and END region tags."""
         start_idx = self._full_snippet.start - 1
         end_idx = self._full_snippet.end
-        self.sample_lines[start_idx] = self.sample_lines[start_idx].strip()
         return "".join(self.sample_lines[start_idx:end_idx])
 
 
