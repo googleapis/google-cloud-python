@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -490,7 +490,6 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
         r"""Lists all instances in a project for either a
         specified location or for all locations.
 
-
         .. code-block:: python
 
             from google.cloud import filestore_v1
@@ -701,7 +700,6 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
         instance needs to be equal to or larger than the
         capacity of the backup (and also equal to or larger than
         the minimum capacity of the tier).
-
 
         .. code-block:: python
 
@@ -962,7 +960,6 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
         larger than the capacity of the backup (and also equal
         to or larger than the minimum capacity of the tier).
 
-
         .. code-block:: python
 
             from google.cloud import filestore_v1
@@ -1175,7 +1172,6 @@ class CloudFilestoreManagerClient(metaclass=CloudFilestoreManagerClientMeta):
     ) -> pagers.ListBackupsPager:
         r"""Lists all backups in a project for either a specified
         location or for all locations.
-
 
         .. code-block:: python
 

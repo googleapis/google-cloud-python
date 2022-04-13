@@ -230,7 +230,7 @@ class Instance(proto.Message):
             created.
         tier (google.cloud.filestore_v1.types.Instance.Tier):
             The service tier of the instance.
-        labels (Sequence[google.cloud.filestore_v1.types.Instance.LabelsEntry]):
+        labels (Mapping[str, str]):
             Resource labels to represent user provided
             metadata.
         file_shares (Sequence[google.cloud.filestore_v1.types.FileShareConfig]):
@@ -550,7 +550,7 @@ class Backup(proto.Message):
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time when the backup was
             created.
-        labels (Sequence[google.cloud.filestore_v1.types.Backup.LabelsEntry]):
+        labels (Mapping[str, str]):
             Resource labels to represent user provided
             metadata.
         capacity_gb (int):

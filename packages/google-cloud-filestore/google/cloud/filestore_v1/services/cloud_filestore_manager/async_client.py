@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -249,7 +249,6 @@ class CloudFilestoreManagerAsyncClient:
         r"""Lists all instances in a project for either a
         specified location or for all locations.
 
-
         .. code-block:: python
 
             from google.cloud import filestore_v1
@@ -326,7 +325,7 @@ class CloudFilestoreManagerAsyncClient:
                 maximum=32.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=60.0,
             ),
@@ -437,7 +436,7 @@ class CloudFilestoreManagerAsyncClient:
                 maximum=32.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=60.0,
             ),
@@ -478,7 +477,6 @@ class CloudFilestoreManagerAsyncClient:
         instance needs to be equal to or larger than the
         capacity of the backup (and also equal to or larger than
         the minimum capacity of the tier).
-
 
         .. code-block:: python
 
@@ -739,7 +737,6 @@ class CloudFilestoreManagerAsyncClient:
         larger than the capacity of the backup (and also equal
         to or larger than the minimum capacity of the tier).
 
-
         .. code-block:: python
 
             from google.cloud import filestore_v1
@@ -952,7 +949,6 @@ class CloudFilestoreManagerAsyncClient:
         r"""Lists all backups in a project for either a specified
         location or for all locations.
 
-
         .. code-block:: python
 
             from google.cloud import filestore_v1
@@ -1028,7 +1024,7 @@ class CloudFilestoreManagerAsyncClient:
                 maximum=32.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=60.0,
             ),
@@ -1139,7 +1135,7 @@ class CloudFilestoreManagerAsyncClient:
                 maximum=32.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=60.0,
             ),
