@@ -178,7 +178,9 @@ class ConfigServiceV2Transport(abc.ABC):
                 self.list_sinks,
                 default_retry=retries.Retry(
 initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if_exception_type(
-                        core_exceptions.GoogleAPICallError,
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.InternalServerError,
+                        core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
                 ),
@@ -189,7 +191,9 @@ initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if
                 self.get_sink,
                 default_retry=retries.Retry(
 initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if_exception_type(
-                        core_exceptions.GoogleAPICallError,
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.InternalServerError,
+                        core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
                 ),
@@ -205,7 +209,9 @@ initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if
                 self.update_sink,
                 default_retry=retries.Retry(
 initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if_exception_type(
-                        core_exceptions.GoogleAPICallError,
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.InternalServerError,
+                        core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
                 ),
@@ -216,7 +222,9 @@ initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if
                 self.delete_sink,
                 default_retry=retries.Retry(
 initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if_exception_type(
-                        core_exceptions.GoogleAPICallError,
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.InternalServerError,
+                        core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
                 ),
@@ -227,7 +235,9 @@ initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if
                 self.list_exclusions,
                 default_retry=retries.Retry(
 initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if_exception_type(
-                        core_exceptions.GoogleAPICallError,
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.InternalServerError,
+                        core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
                 ),
@@ -238,7 +248,9 @@ initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if
                 self.get_exclusion,
                 default_retry=retries.Retry(
 initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if_exception_type(
-                        core_exceptions.GoogleAPICallError,
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.InternalServerError,
+                        core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
                 ),
@@ -259,7 +271,9 @@ initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if
                 self.delete_exclusion,
                 default_retry=retries.Retry(
 initial=0.1,maximum=60.0,multiplier=1.3,                    predicate=retries.if_exception_type(
-                        core_exceptions.GoogleAPICallError,
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.InternalServerError,
+                        core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
                 ),
