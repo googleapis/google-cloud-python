@@ -4,6 +4,24 @@
 
 [1]: https://pypi.org/project/google-cloud-storage/#history
 
+## [2.3.0](https://github.com/googleapis/python-storage/compare/v2.2.1...v2.3.0) (2022-04-12)
+
+
+### Features
+
+* add dual region bucket support and sample ([#748](https://github.com/googleapis/python-storage/issues/748)) ([752e8ab](https://github.com/googleapis/python-storage/commit/752e8ab42d23afd68738e4d7ca6cdeee416dfd50))
+* track invocation id for retry metrics ([#741](https://github.com/googleapis/python-storage/issues/741)) ([bd56931](https://github.com/googleapis/python-storage/commit/bd5693164e7331df5f14186fd002e72e5203d7ee))
+
+
+### Bug Fixes
+
+* **deps:** drop pkg_resources ([#744](https://github.com/googleapis/python-storage/issues/744)) ([e963f33](https://github.com/googleapis/python-storage/commit/e963f33ced2852b64d721d69928b54443461ec9c))
+
+
+### Documentation
+
+* fix links in blob module ([#759](https://github.com/googleapis/python-storage/issues/759)) ([9b29314](https://github.com/googleapis/python-storage/commit/9b2931430b0796ffb23ec4efacd82dacad36f40f))
+
 ### [2.2.1](https://github.com/googleapis/python-storage/compare/v2.2.0...v2.2.1) (2022-03-15)
 
 
