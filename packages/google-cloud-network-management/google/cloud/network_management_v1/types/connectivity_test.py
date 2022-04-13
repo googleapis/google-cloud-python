@@ -102,7 +102,7 @@ class ConnectivityTest(proto.Message):
         display_name (str):
             Output only. The display name of a
             Connectivity Test.
-        labels (Sequence[google.cloud.network_management_v1.types.ConnectivityTest.LabelsEntry]):
+        labels (Mapping[str, str]):
             Resource labels to represent user-provided
             metadata.
         create_time (google.protobuf.timestamp_pb2.Timestamp):

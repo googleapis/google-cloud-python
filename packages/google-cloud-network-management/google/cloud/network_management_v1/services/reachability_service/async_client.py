@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -452,7 +452,6 @@ class ReachabilityServiceAsyncClient:
         AMBIGUOUS. For more information, see the Connectivity Test
         documentation.
 
-
         .. code-block:: python
 
             from google.cloud import network_management_v1
@@ -607,7 +606,6 @@ class ReachabilityServiceAsyncClient:
         ``AMBIGUOUS``. See the documentation in ``ConnectivityTest`` for
         for more details.
 
-
         .. code-block:: python
 
             from google.cloud import network_management_v1
@@ -744,7 +742,6 @@ class ReachabilityServiceAsyncClient:
         network, or you lost read permissions to the network
         configurations of listed projects), then the reachability result
         returns a value of ``UNKNOWN``.
-
 
         .. code-block:: python
 
