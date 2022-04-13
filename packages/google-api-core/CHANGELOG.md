@@ -4,6 +4,14 @@
 
 [1]: https://pypi.org/project/google-api-core/#history
 
+### [2.7.2](https://github.com/googleapis/python-api-core/compare/v2.7.1...v2.7.2) (2022-04-13)
+
+
+### Bug Fixes
+
+* allow grpc without grpcio-status ([#355](https://github.com/googleapis/python-api-core/issues/355)) ([112049e](https://github.com/googleapis/python-api-core/commit/112049e79f5a5b0a989d85d438a1bd29485f46f7))
+* remove dependency on pkg_resources ([#361](https://github.com/googleapis/python-api-core/issues/361)) ([523dbd0](https://github.com/googleapis/python-api-core/commit/523dbd0b10d37ffcf83fa751f0bad313f162abf1))
+
 ### [2.7.1](https://github.com/googleapis/python-api-core/compare/v2.7.0...v2.7.1) (2022-03-09)
 
 
