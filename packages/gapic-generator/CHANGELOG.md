@@ -1,6 +1,14 @@
 # Changelog
 
 
+### [0.65.1](https://github.com/googleapis/gapic-generator-python/compare/v0.65.0...v0.65.1) (2022-04-13)
+
+
+### Bug Fixes
+
+* correct import for request message type ([#1273](https://github.com/googleapis/gapic-generator-python/issues/1273)) ([3406d9e](https://github.com/googleapis/gapic-generator-python/commit/3406d9e0336d2fe698b90a95e20f6aacec79763b))
+* use google-api-core==2.7.2 ([#1276](https://github.com/googleapis/gapic-generator-python/issues/1276)) ([5ab8eb5](https://github.com/googleapis/gapic-generator-python/commit/5ab8eb5a36c64e521b475cb0c045f507400d8f27))
+
 ## [0.65.0](https://github.com/googleapis/gapic-generator-python/compare/v0.64.0...v0.65.0) (2022-04-09)
 
 
