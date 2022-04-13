@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -291,8 +291,7 @@ class LanguageServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=600.0,
             ),
@@ -325,7 +324,6 @@ class LanguageServiceAsyncClient:
         common nouns) in the text along with entity types,
         salience, mentions for each entity, and other
         properties.
-
 
         .. code-block:: python
 
@@ -402,8 +400,7 @@ class LanguageServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=600.0,
             ),
@@ -436,7 +433,6 @@ class LanguageServiceAsyncClient:
         [AnalyzeEntities][google.cloud.language.v1.LanguageService.AnalyzeEntities]
         in the text and analyzes sentiment associated with each entity
         and its mentions.
-
 
         .. code-block:: python
 
@@ -516,8 +512,7 @@ class LanguageServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=600.0,
             ),
@@ -549,7 +544,6 @@ class LanguageServiceAsyncClient:
         r"""Analyzes the syntax of the text and provides sentence
         boundaries and tokenization along with part of speech
         tags, dependency trees, and other properties.
-
 
         .. code-block:: python
 
@@ -626,8 +620,7 @@ class LanguageServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=600.0,
             ),
@@ -726,8 +719,7 @@ class LanguageServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=600.0,
             ),
@@ -760,7 +752,6 @@ class LanguageServiceAsyncClient:
         r"""A convenience method that provides all the features
         that analyzeSentiment, analyzeEntities, and
         analyzeSyntax provide in one call.
-
 
         .. code-block:: python
 
@@ -848,8 +839,7 @@ class LanguageServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.DeadlineExceeded,
-                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.GoogleAPICallError,
                 ),
                 deadline=600.0,
             ),

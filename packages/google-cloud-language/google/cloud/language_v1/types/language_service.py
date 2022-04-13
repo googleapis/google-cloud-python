@@ -160,7 +160,7 @@ class Entity(proto.Message):
             The representative name for the entity.
         type_ (google.cloud.language_v1.types.Entity.Type):
             The entity type.
-        metadata (Sequence[google.cloud.language_v1.types.Entity.MetadataEntry]):
+        metadata (Mapping[str, str]):
             Metadata associated with the entity.
 
             For most entity types, the metadata is a Wikipedia URL

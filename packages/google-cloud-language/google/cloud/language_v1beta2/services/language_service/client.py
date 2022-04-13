@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -521,7 +521,6 @@ class LanguageServiceClient(metaclass=LanguageServiceClientMeta):
         salience, mentions for each entity, and other
         properties.
 
-
         .. code-block:: python
 
             from google.cloud import language_v1beta2
@@ -621,7 +620,6 @@ class LanguageServiceClient(metaclass=LanguageServiceClientMeta):
         [AnalyzeEntities][google.cloud.language.v1beta2.LanguageService.AnalyzeEntities]
         in the text and analyzes sentiment associated with each entity
         and its mentions.
-
 
         .. code-block:: python
 
@@ -724,7 +722,6 @@ class LanguageServiceClient(metaclass=LanguageServiceClientMeta):
         r"""Analyzes the syntax of the text and provides sentence
         boundaries and tokenization along with part-of-speech
         tags, dependency trees, and other properties.
-
 
         .. code-block:: python
 
@@ -915,7 +912,6 @@ class LanguageServiceClient(metaclass=LanguageServiceClientMeta):
         r"""A convenience method that provides all syntax,
         sentiment, entity, and classification features in one
         call.
-
 
         .. code-block:: python
 
