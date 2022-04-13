@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -232,7 +232,6 @@ class PhishingProtectionServiceV1Beta1AsyncClient:
         lists <https://support.google.com/webmasters/answer/6350487/>`__
         in order to protect users that could get exposed to this threat
         in the future.
-
 
         .. code-block:: python
 

@@ -269,5 +269,9 @@ class PhishingProtectionServiceV1Beta1GrpcTransport(
     def close(self):
         self.grpc_channel.close()
 
+    @property
+    def kind(self) -> str:
+        return "grpc"
+
 
 __all__ = ("PhishingProtectionServiceV1Beta1GrpcTransport",)
