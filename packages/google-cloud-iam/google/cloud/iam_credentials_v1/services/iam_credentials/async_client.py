@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -230,7 +230,6 @@ class IAMCredentialsAsyncClient:
         r"""Generates an OAuth 2.0 access token for a service
         account.
 
-
         .. code-block:: python
 
             from google.cloud import iam_credentials_v1
@@ -388,7 +387,6 @@ class IAMCredentialsAsyncClient:
         r"""Generates an OpenID Connect ID token for a service
         account.
 
-
         .. code-block:: python
 
             from google.cloud import iam_credentials_v1
@@ -539,7 +537,6 @@ class IAMCredentialsAsyncClient:
         r"""Signs a blob using a service account's system-managed
         private key.
 
-
         .. code-block:: python
 
             from google.cloud import iam_credentials_v1
@@ -676,7 +673,6 @@ class IAMCredentialsAsyncClient:
     ) -> common.SignJwtResponse:
         r"""Signs a JWT using a service account's system-managed
         private key.
-
 
         .. code-block:: python
 
