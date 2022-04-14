@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -566,7 +566,6 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
         r"""LRO endpoint to batch process many documents. The output is
         written to Cloud Storage as JSON in the [Document] format.
 
-
         .. code-block:: python
 
             from google.cloud import documentai_v1
@@ -677,7 +676,6 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
     ) -> operation.Operation:
         r"""Send a document for Human Review. The input document
         should be processed by the specified processor.
-
 
         .. code-block:: python
 

@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -594,7 +594,6 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
         r"""LRO endpoint to batch process many documents. The output is
         written to Cloud Storage as JSON in the [Document] format.
 
-
         .. code-block:: python
 
             from google.cloud import documentai_v1beta3
@@ -917,7 +916,6 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
         user chose. The processor will be at "ENABLED" state by
         default after its creation.
 
-
         .. code-block:: python
 
             from google.cloud import documentai_v1beta3
@@ -1030,7 +1028,6 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
         r"""Deletes the processor, unloads all deployed model
         artifacts if it was enabled and then deletes all
         artifacts associated with this processor.
-
 
         .. code-block:: python
 
@@ -1330,7 +1327,6 @@ class DocumentProcessorServiceClient(metaclass=DocumentProcessorServiceClientMet
     ) -> operation.Operation:
         r"""Send a document for Human Review. The input document
         should be processed by the specified processor.
-
 
         .. code-block:: python
 

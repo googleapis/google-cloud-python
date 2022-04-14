@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -226,7 +226,6 @@ class DocumentUnderstandingServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""LRO endpoint to batch process many documents. The output is
         written to Cloud Storage as JSON in the [Document] format.
-
 
         .. code-block:: python
 

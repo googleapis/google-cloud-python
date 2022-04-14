@@ -1,16 +1,61 @@
 {
+  "clientLibrary": {
+    "apis": [
+      {
+        "id": "google.cloud.documentai.v1beta3",
+        "version": "v1beta3"
+      }
+    ],
+    "language": "PYTHON",
+    "name": "google-cloud-documentai"
+  },
   "snippets": [
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.documentai_v1beta3.DocumentProcessorServiceAsyncClient",
+          "shortName": "DocumentProcessorServiceAsyncClient"
+        },
+        "fullName": "google.cloud.documentai_v1beta3.DocumentProcessorServiceAsyncClient.batch_process_documents",
         "method": {
+          "fullName": "google.cloud.documentai.v1beta3.DocumentProcessorService.BatchProcessDocuments",
           "service": {
+            "fullName": "google.cloud.documentai.v1beta3.DocumentProcessorService",
             "shortName": "DocumentProcessorService"
           },
           "shortName": "BatchProcessDocuments"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.documentai_v1beta3.types.BatchProcessRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "batch_process_documents"
       },
+      "description": "Sample for BatchProcessDocuments",
       "file": "documentai_v1beta3_generated_document_processor_service_batch_process_documents_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "documentai_v1beta3_generated_DocumentProcessorService_BatchProcessDocuments_async",
       "segments": [
         {
@@ -43,18 +88,54 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "documentai_v1beta3_generated_document_processor_service_batch_process_documents_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.documentai_v1beta3.DocumentProcessorServiceClient",
+          "shortName": "DocumentProcessorServiceClient"
+        },
+        "fullName": "google.cloud.documentai_v1beta3.DocumentProcessorServiceClient.batch_process_documents",
         "method": {
+          "fullName": "google.cloud.documentai.v1beta3.DocumentProcessorService.BatchProcessDocuments",
           "service": {
+            "fullName": "google.cloud.documentai.v1beta3.DocumentProcessorService",
             "shortName": "DocumentProcessorService"
           },
           "shortName": "BatchProcessDocuments"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.documentai_v1beta3.types.BatchProcessRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "batch_process_documents"
       },
+      "description": "Sample for BatchProcessDocuments",
       "file": "documentai_v1beta3_generated_document_processor_service_batch_process_documents_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "documentai_v1beta3_generated_DocumentProcessorService_BatchProcessDocuments_sync",
       "segments": [
         {
@@ -87,19 +168,59 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "documentai_v1beta3_generated_document_processor_service_batch_process_documents_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.documentai_v1beta3.DocumentProcessorServiceAsyncClient",
+          "shortName": "DocumentProcessorServiceAsyncClient"
+        },
+        "fullName": "google.cloud.documentai_v1beta3.DocumentProcessorServiceAsyncClient.create_processor",
         "method": {
+          "fullName": "google.cloud.documentai.v1beta3.DocumentProcessorService.CreateProcessor",
           "service": {
+            "fullName": "google.cloud.documentai.v1beta3.DocumentProcessorService",
             "shortName": "DocumentProcessorService"
           },
           "shortName": "CreateProcessor"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.documentai_v1beta3.types.CreateProcessorRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "processor",
+            "type": "google.cloud.documentai_v1beta3.types.Processor"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.documentai_v1beta3.types.Processor",
+        "shortName": "create_processor"
       },
+      "description": "Sample for CreateProcessor",
       "file": "documentai_v1beta3_generated_document_processor_service_create_processor_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "documentai_v1beta3_generated_DocumentProcessorService_CreateProcessor_async",
       "segments": [
         {
@@ -132,18 +253,58 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "documentai_v1beta3_generated_document_processor_service_create_processor_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.documentai_v1beta3.DocumentProcessorServiceClient",
+          "shortName": "DocumentProcessorServiceClient"
+        },
+        "fullName": "google.cloud.documentai_v1beta3.DocumentProcessorServiceClient.create_processor",
         "method": {
+          "fullName": "google.cloud.documentai.v1beta3.DocumentProcessorService.CreateProcessor",
           "service": {
+            "fullName": "google.cloud.documentai.v1beta3.DocumentProcessorService",
             "shortName": "DocumentProcessorService"
           },
           "shortName": "CreateProcessor"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.documentai_v1beta3.types.CreateProcessorRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "processor",
+            "type": "google.cloud.documentai_v1beta3.types.Processor"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.documentai_v1beta3.types.Processor",
+        "shortName": "create_processor"
       },
+      "description": "Sample for CreateProcessor",
       "file": "documentai_v1beta3_generated_document_processor_service_create_processor_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "documentai_v1beta3_generated_DocumentProcessorService_CreateProcessor_sync",
       "segments": [
         {
@@ -176,19 +337,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "documentai_v1beta3_generated_document_processor_service_create_processor_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.documentai_v1beta3.DocumentProcessorServiceAsyncClient",
+          "shortName": "DocumentProcessorServiceAsyncClient"
+        },
+        "fullName": "google.cloud.documentai_v1beta3.DocumentProcessorServiceAsyncClient.delete_processor",
         "method": {
+          "fullName": "google.cloud.documentai.v1beta3.DocumentProcessorService.DeleteProcessor",
           "service": {
+            "fullName": "google.cloud.documentai.v1beta3.DocumentProcessorService",
             "shortName": "DocumentProcessorService"
           },
           "shortName": "DeleteProcessor"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.documentai_v1beta3.types.DeleteProcessorRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "delete_processor"
       },
+      "description": "Sample for DeleteProcessor",
       "file": "documentai_v1beta3_generated_document_processor_service_delete_processor_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "documentai_v1beta3_generated_DocumentProcessorService_DeleteProcessor_async",
       "segments": [
         {
@@ -221,18 +418,54 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "documentai_v1beta3_generated_document_processor_service_delete_processor_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.documentai_v1beta3.DocumentProcessorServiceClient",
+          "shortName": "DocumentProcessorServiceClient"
+        },
+        "fullName": "google.cloud.documentai_v1beta3.DocumentProcessorServiceClient.delete_processor",
         "method": {
+          "fullName": "google.cloud.documentai.v1beta3.DocumentProcessorService.DeleteProcessor",
           "service": {
+            "fullName": "google.cloud.documentai.v1beta3.DocumentProcessorService",
             "shortName": "DocumentProcessorService"
           },
           "shortName": "DeleteProcessor"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.documentai_v1beta3.types.DeleteProcessorRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "delete_processor"
       },
+      "description": "Sample for DeleteProcessor",
       "file": "documentai_v1beta3_generated_document_processor_service_delete_processor_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "documentai_v1beta3_generated_DocumentProcessorService_DeleteProcessor_sync",
       "segments": [
         {
@@ -265,19 +498,51 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "documentai_v1beta3_generated_document_processor_service_delete_processor_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.documentai_v1beta3.DocumentProcessorServiceAsyncClient",
+          "shortName": "DocumentProcessorServiceAsyncClient"
+        },
+        "fullName": "google.cloud.documentai_v1beta3.DocumentProcessorServiceAsyncClient.disable_processor",
         "method": {
+          "fullName": "google.cloud.documentai.v1beta3.DocumentProcessorService.DisableProcessor",
           "service": {
+            "fullName": "google.cloud.documentai.v1beta3.DocumentProcessorService",
             "shortName": "DocumentProcessorService"
           },
           "shortName": "DisableProcessor"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.documentai_v1beta3.types.DisableProcessorRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "disable_processor"
       },
+      "description": "Sample for DisableProcessor",
       "file": "documentai_v1beta3_generated_document_processor_service_disable_processor_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "documentai_v1beta3_generated_DocumentProcessorService_DisableProcessor_async",
       "segments": [
         {
@@ -310,18 +575,50 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "documentai_v1beta3_generated_document_processor_service_disable_processor_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.documentai_v1beta3.DocumentProcessorServiceClient",
+          "shortName": "DocumentProcessorServiceClient"
+        },
+        "fullName": "google.cloud.documentai_v1beta3.DocumentProcessorServiceClient.disable_processor",
         "method": {
+          "fullName": "google.cloud.documentai.v1beta3.DocumentProcessorService.DisableProcessor",
           "service": {
+            "fullName": "google.cloud.documentai.v1beta3.DocumentProcessorService",
             "shortName": "DocumentProcessorService"
           },
           "shortName": "DisableProcessor"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.documentai_v1beta3.types.DisableProcessorRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "disable_processor"
       },
+      "description": "Sample for DisableProcessor",
       "file": "documentai_v1beta3_generated_document_processor_service_disable_processor_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "documentai_v1beta3_generated_DocumentProcessorService_DisableProcessor_sync",
       "segments": [
         {
@@ -354,19 +651,51 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "documentai_v1beta3_generated_document_processor_service_disable_processor_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.documentai_v1beta3.DocumentProcessorServiceAsyncClient",
+          "shortName": "DocumentProcessorServiceAsyncClient"
+        },
+        "fullName": "google.cloud.documentai_v1beta3.DocumentProcessorServiceAsyncClient.enable_processor",
         "method": {
+          "fullName": "google.cloud.documentai.v1beta3.DocumentProcessorService.EnableProcessor",
           "service": {
+            "fullName": "google.cloud.documentai.v1beta3.DocumentProcessorService",
             "shortName": "DocumentProcessorService"
           },
           "shortName": "EnableProcessor"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.documentai_v1beta3.types.EnableProcessorRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "enable_processor"
       },
+      "description": "Sample for EnableProcessor",
       "file": "documentai_v1beta3_generated_document_processor_service_enable_processor_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "documentai_v1beta3_generated_DocumentProcessorService_EnableProcessor_async",
       "segments": [
         {
@@ -399,18 +728,50 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "documentai_v1beta3_generated_document_processor_service_enable_processor_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.documentai_v1beta3.DocumentProcessorServiceClient",
+          "shortName": "DocumentProcessorServiceClient"
+        },
+        "fullName": "google.cloud.documentai_v1beta3.DocumentProcessorServiceClient.enable_processor",
         "method": {
+          "fullName": "google.cloud.documentai.v1beta3.DocumentProcessorService.EnableProcessor",
           "service": {
+            "fullName": "google.cloud.documentai.v1beta3.DocumentProcessorService",
             "shortName": "DocumentProcessorService"
           },
           "shortName": "EnableProcessor"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.documentai_v1beta3.types.EnableProcessorRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "enable_processor"
       },
+      "description": "Sample for EnableProcessor",
       "file": "documentai_v1beta3_generated_document_processor_service_enable_processor_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "documentai_v1beta3_generated_DocumentProcessorService_EnableProcessor_sync",
       "segments": [
         {
@@ -443,19 +804,55 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "documentai_v1beta3_generated_document_processor_service_enable_processor_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.documentai_v1beta3.DocumentProcessorServiceAsyncClient",
+          "shortName": "DocumentProcessorServiceAsyncClient"
+        },
+        "fullName": "google.cloud.documentai_v1beta3.DocumentProcessorServiceAsyncClient.fetch_processor_types",
         "method": {
+          "fullName": "google.cloud.documentai.v1beta3.DocumentProcessorService.FetchProcessorTypes",
           "service": {
+            "fullName": "google.cloud.documentai.v1beta3.DocumentProcessorService",
             "shortName": "DocumentProcessorService"
           },
           "shortName": "FetchProcessorTypes"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.documentai_v1beta3.types.FetchProcessorTypesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.documentai_v1beta3.types.FetchProcessorTypesResponse",
+        "shortName": "fetch_processor_types"
       },
+      "description": "Sample for FetchProcessorTypes",
       "file": "documentai_v1beta3_generated_document_processor_service_fetch_processor_types_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "documentai_v1beta3_generated_DocumentProcessorService_FetchProcessorTypes_async",
       "segments": [
         {
@@ -488,18 +885,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "documentai_v1beta3_generated_document_processor_service_fetch_processor_types_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.documentai_v1beta3.DocumentProcessorServiceClient",
+          "shortName": "DocumentProcessorServiceClient"
+        },
+        "fullName": "google.cloud.documentai_v1beta3.DocumentProcessorServiceClient.fetch_processor_types",
         "method": {
+          "fullName": "google.cloud.documentai.v1beta3.DocumentProcessorService.FetchProcessorTypes",
           "service": {
+            "fullName": "google.cloud.documentai.v1beta3.DocumentProcessorService",
             "shortName": "DocumentProcessorService"
           },
           "shortName": "FetchProcessorTypes"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.documentai_v1beta3.types.FetchProcessorTypesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.documentai_v1beta3.types.FetchProcessorTypesResponse",
+        "shortName": "fetch_processor_types"
       },
+      "description": "Sample for FetchProcessorTypes",
       "file": "documentai_v1beta3_generated_document_processor_service_fetch_processor_types_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "documentai_v1beta3_generated_DocumentProcessorService_FetchProcessorTypes_sync",
       "segments": [
         {
@@ -532,19 +965,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "documentai_v1beta3_generated_document_processor_service_fetch_processor_types_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.documentai_v1beta3.DocumentProcessorServiceAsyncClient",
+          "shortName": "DocumentProcessorServiceAsyncClient"
+        },
+        "fullName": "google.cloud.documentai_v1beta3.DocumentProcessorServiceAsyncClient.list_processors",
         "method": {
+          "fullName": "google.cloud.documentai.v1beta3.DocumentProcessorService.ListProcessors",
           "service": {
+            "fullName": "google.cloud.documentai.v1beta3.DocumentProcessorService",
             "shortName": "DocumentProcessorService"
           },
           "shortName": "ListProcessors"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.documentai_v1beta3.types.ListProcessorsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.documentai_v1beta3.services.document_processor_service.pagers.ListProcessorsAsyncPager",
+        "shortName": "list_processors"
       },
+      "description": "Sample for ListProcessors",
       "file": "documentai_v1beta3_generated_document_processor_service_list_processors_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "documentai_v1beta3_generated_DocumentProcessorService_ListProcessors_async",
       "segments": [
         {
@@ -577,18 +1046,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "documentai_v1beta3_generated_document_processor_service_list_processors_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.documentai_v1beta3.DocumentProcessorServiceClient",
+          "shortName": "DocumentProcessorServiceClient"
+        },
+        "fullName": "google.cloud.documentai_v1beta3.DocumentProcessorServiceClient.list_processors",
         "method": {
+          "fullName": "google.cloud.documentai.v1beta3.DocumentProcessorService.ListProcessors",
           "service": {
+            "fullName": "google.cloud.documentai.v1beta3.DocumentProcessorService",
             "shortName": "DocumentProcessorService"
           },
           "shortName": "ListProcessors"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.documentai_v1beta3.types.ListProcessorsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.documentai_v1beta3.services.document_processor_service.pagers.ListProcessorsPager",
+        "shortName": "list_processors"
       },
+      "description": "Sample for ListProcessors",
       "file": "documentai_v1beta3_generated_document_processor_service_list_processors_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "documentai_v1beta3_generated_DocumentProcessorService_ListProcessors_sync",
       "segments": [
         {
@@ -621,19 +1126,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "documentai_v1beta3_generated_document_processor_service_list_processors_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.documentai_v1beta3.DocumentProcessorServiceAsyncClient",
+          "shortName": "DocumentProcessorServiceAsyncClient"
+        },
+        "fullName": "google.cloud.documentai_v1beta3.DocumentProcessorServiceAsyncClient.process_document",
         "method": {
+          "fullName": "google.cloud.documentai.v1beta3.DocumentProcessorService.ProcessDocument",
           "service": {
+            "fullName": "google.cloud.documentai.v1beta3.DocumentProcessorService",
             "shortName": "DocumentProcessorService"
           },
           "shortName": "ProcessDocument"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.documentai_v1beta3.types.ProcessRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.documentai_v1beta3.types.ProcessResponse",
+        "shortName": "process_document"
       },
+      "description": "Sample for ProcessDocument",
       "file": "documentai_v1beta3_generated_document_processor_service_process_document_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "documentai_v1beta3_generated_DocumentProcessorService_ProcessDocument_async",
       "segments": [
         {
@@ -666,18 +1207,54 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "documentai_v1beta3_generated_document_processor_service_process_document_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.documentai_v1beta3.DocumentProcessorServiceClient",
+          "shortName": "DocumentProcessorServiceClient"
+        },
+        "fullName": "google.cloud.documentai_v1beta3.DocumentProcessorServiceClient.process_document",
         "method": {
+          "fullName": "google.cloud.documentai.v1beta3.DocumentProcessorService.ProcessDocument",
           "service": {
+            "fullName": "google.cloud.documentai.v1beta3.DocumentProcessorService",
             "shortName": "DocumentProcessorService"
           },
           "shortName": "ProcessDocument"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.documentai_v1beta3.types.ProcessRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.documentai_v1beta3.types.ProcessResponse",
+        "shortName": "process_document"
       },
+      "description": "Sample for ProcessDocument",
       "file": "documentai_v1beta3_generated_document_processor_service_process_document_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "documentai_v1beta3_generated_DocumentProcessorService_ProcessDocument_sync",
       "segments": [
         {
@@ -710,19 +1287,55 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "documentai_v1beta3_generated_document_processor_service_process_document_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.documentai_v1beta3.DocumentProcessorServiceAsyncClient",
+          "shortName": "DocumentProcessorServiceAsyncClient"
+        },
+        "fullName": "google.cloud.documentai_v1beta3.DocumentProcessorServiceAsyncClient.review_document",
         "method": {
+          "fullName": "google.cloud.documentai.v1beta3.DocumentProcessorService.ReviewDocument",
           "service": {
+            "fullName": "google.cloud.documentai.v1beta3.DocumentProcessorService",
             "shortName": "DocumentProcessorService"
           },
           "shortName": "ReviewDocument"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.documentai_v1beta3.types.ReviewDocumentRequest"
+          },
+          {
+            "name": "human_review_config",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "review_document"
       },
+      "description": "Sample for ReviewDocument",
       "file": "documentai_v1beta3_generated_document_processor_service_review_document_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "documentai_v1beta3_generated_DocumentProcessorService_ReviewDocument_async",
       "segments": [
         {
@@ -755,18 +1368,54 @@
           "start": 50,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "documentai_v1beta3_generated_document_processor_service_review_document_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.documentai_v1beta3.DocumentProcessorServiceClient",
+          "shortName": "DocumentProcessorServiceClient"
+        },
+        "fullName": "google.cloud.documentai_v1beta3.DocumentProcessorServiceClient.review_document",
         "method": {
+          "fullName": "google.cloud.documentai.v1beta3.DocumentProcessorService.ReviewDocument",
           "service": {
+            "fullName": "google.cloud.documentai.v1beta3.DocumentProcessorService",
             "shortName": "DocumentProcessorService"
           },
           "shortName": "ReviewDocument"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.documentai_v1beta3.types.ReviewDocumentRequest"
+          },
+          {
+            "name": "human_review_config",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "review_document"
       },
+      "description": "Sample for ReviewDocument",
       "file": "documentai_v1beta3_generated_document_processor_service_review_document_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "documentai_v1beta3_generated_DocumentProcessorService_ReviewDocument_sync",
       "segments": [
         {
@@ -799,7 +1448,8 @@
           "start": 50,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "documentai_v1beta3_generated_document_processor_service_review_document_sync.py"
     }
   ]
 }

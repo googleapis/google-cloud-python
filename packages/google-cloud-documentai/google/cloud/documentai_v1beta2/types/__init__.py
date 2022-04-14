@@ -13,7 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .document import Document
+from .document import (
+    Document,
+)
 from .document_understanding import (
     AutoMlParams,
     BatchProcessDocumentsRequest,

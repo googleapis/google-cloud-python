@@ -13,7 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .document import Document
+from .document import (
+    Document,
+)
 from .document_io import (
     BatchDocumentsInputConfig,
     DocumentOutputConfig,
@@ -51,9 +53,15 @@ from .geometry import (
     NormalizedVertex,
     Vertex,
 )
-from .operation_metadata import CommonOperationMetadata
-from .processor import Processor
-from .processor_type import ProcessorType
+from .operation_metadata import (
+    CommonOperationMetadata,
+)
+from .processor import (
+    Processor,
+)
+from .processor_type import (
+    ProcessorType,
+)
 
 __all__ = (
     "Document",

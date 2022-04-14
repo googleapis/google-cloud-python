@@ -1,16 +1,61 @@
 {
+  "clientLibrary": {
+    "apis": [
+      {
+        "id": "google.cloud.documentai.v1",
+        "version": "v1"
+      }
+    ],
+    "language": "PYTHON",
+    "name": "google-cloud-documentai"
+  },
   "snippets": [
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.documentai_v1.DocumentProcessorServiceAsyncClient",
+          "shortName": "DocumentProcessorServiceAsyncClient"
+        },
+        "fullName": "google.cloud.documentai_v1.DocumentProcessorServiceAsyncClient.batch_process_documents",
         "method": {
+          "fullName": "google.cloud.documentai.v1.DocumentProcessorService.BatchProcessDocuments",
           "service": {
+            "fullName": "google.cloud.documentai.v1.DocumentProcessorService",
             "shortName": "DocumentProcessorService"
           },
           "shortName": "BatchProcessDocuments"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.documentai_v1.types.BatchProcessRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "batch_process_documents"
       },
+      "description": "Sample for BatchProcessDocuments",
       "file": "documentai_v1_generated_document_processor_service_batch_process_documents_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "documentai_v1_generated_DocumentProcessorService_BatchProcessDocuments_async",
       "segments": [
         {
@@ -43,18 +88,54 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "documentai_v1_generated_document_processor_service_batch_process_documents_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.documentai_v1.DocumentProcessorServiceClient",
+          "shortName": "DocumentProcessorServiceClient"
+        },
+        "fullName": "google.cloud.documentai_v1.DocumentProcessorServiceClient.batch_process_documents",
         "method": {
+          "fullName": "google.cloud.documentai.v1.DocumentProcessorService.BatchProcessDocuments",
           "service": {
+            "fullName": "google.cloud.documentai.v1.DocumentProcessorService",
             "shortName": "DocumentProcessorService"
           },
           "shortName": "BatchProcessDocuments"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.documentai_v1.types.BatchProcessRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "batch_process_documents"
       },
+      "description": "Sample for BatchProcessDocuments",
       "file": "documentai_v1_generated_document_processor_service_batch_process_documents_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "documentai_v1_generated_DocumentProcessorService_BatchProcessDocuments_sync",
       "segments": [
         {
@@ -87,19 +168,55 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "documentai_v1_generated_document_processor_service_batch_process_documents_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.documentai_v1.DocumentProcessorServiceAsyncClient",
+          "shortName": "DocumentProcessorServiceAsyncClient"
+        },
+        "fullName": "google.cloud.documentai_v1.DocumentProcessorServiceAsyncClient.process_document",
         "method": {
+          "fullName": "google.cloud.documentai.v1.DocumentProcessorService.ProcessDocument",
           "service": {
+            "fullName": "google.cloud.documentai.v1.DocumentProcessorService",
             "shortName": "DocumentProcessorService"
           },
           "shortName": "ProcessDocument"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.documentai_v1.types.ProcessRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.documentai_v1.types.ProcessResponse",
+        "shortName": "process_document"
       },
+      "description": "Sample for ProcessDocument",
       "file": "documentai_v1_generated_document_processor_service_process_document_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "documentai_v1_generated_DocumentProcessorService_ProcessDocument_async",
       "segments": [
         {
@@ -132,18 +249,54 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "documentai_v1_generated_document_processor_service_process_document_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.documentai_v1.DocumentProcessorServiceClient",
+          "shortName": "DocumentProcessorServiceClient"
+        },
+        "fullName": "google.cloud.documentai_v1.DocumentProcessorServiceClient.process_document",
         "method": {
+          "fullName": "google.cloud.documentai.v1.DocumentProcessorService.ProcessDocument",
           "service": {
+            "fullName": "google.cloud.documentai.v1.DocumentProcessorService",
             "shortName": "DocumentProcessorService"
           },
           "shortName": "ProcessDocument"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.documentai_v1.types.ProcessRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.documentai_v1.types.ProcessResponse",
+        "shortName": "process_document"
       },
+      "description": "Sample for ProcessDocument",
       "file": "documentai_v1_generated_document_processor_service_process_document_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "documentai_v1_generated_DocumentProcessorService_ProcessDocument_sync",
       "segments": [
         {
@@ -176,19 +329,55 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "documentai_v1_generated_document_processor_service_process_document_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.documentai_v1.DocumentProcessorServiceAsyncClient",
+          "shortName": "DocumentProcessorServiceAsyncClient"
+        },
+        "fullName": "google.cloud.documentai_v1.DocumentProcessorServiceAsyncClient.review_document",
         "method": {
+          "fullName": "google.cloud.documentai.v1.DocumentProcessorService.ReviewDocument",
           "service": {
+            "fullName": "google.cloud.documentai.v1.DocumentProcessorService",
             "shortName": "DocumentProcessorService"
           },
           "shortName": "ReviewDocument"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.documentai_v1.types.ReviewDocumentRequest"
+          },
+          {
+            "name": "human_review_config",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "review_document"
       },
+      "description": "Sample for ReviewDocument",
       "file": "documentai_v1_generated_document_processor_service_review_document_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "documentai_v1_generated_DocumentProcessorService_ReviewDocument_async",
       "segments": [
         {
@@ -221,18 +410,54 @@
           "start": 50,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "documentai_v1_generated_document_processor_service_review_document_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.documentai_v1.DocumentProcessorServiceClient",
+          "shortName": "DocumentProcessorServiceClient"
+        },
+        "fullName": "google.cloud.documentai_v1.DocumentProcessorServiceClient.review_document",
         "method": {
+          "fullName": "google.cloud.documentai.v1.DocumentProcessorService.ReviewDocument",
           "service": {
+            "fullName": "google.cloud.documentai.v1.DocumentProcessorService",
             "shortName": "DocumentProcessorService"
           },
           "shortName": "ReviewDocument"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.documentai_v1.types.ReviewDocumentRequest"
+          },
+          {
+            "name": "human_review_config",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "review_document"
       },
+      "description": "Sample for ReviewDocument",
       "file": "documentai_v1_generated_document_processor_service_review_document_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "documentai_v1_generated_DocumentProcessorService_ReviewDocument_sync",
       "segments": [
         {
@@ -265,7 +490,8 @@
           "start": 50,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "documentai_v1_generated_document_processor_service_review_document_sync.py"
     }
   ]
 }
