@@ -29293,8 +29293,6 @@ class InsertFirewallPolicyRequest(proto.Message):
             "folders/[FOLDER_ID]" if the parent is a folder or
             "organizations/[ORGANIZATION_ID]" if the parent is an
             organization.
-
-            This field is a member of `oneof`_ ``_parent_id``.
         request_id (str):
             An optional request ID to identify requests.
             Specify a unique request ID so that if you must
@@ -29323,7 +29321,6 @@ class InsertFirewallPolicyRequest(proto.Message):
     parent_id = proto.Field(
         proto.STRING,
         number=459714768,
-        optional=True,
     )
     request_id = proto.Field(
         proto.STRING,
@@ -54278,6 +54275,11 @@ class Operation(proto.Message):
         number=3744684,
         optional=True,
     )
+
+    @property
+    def done(self) -> bool:
+        """Return True if the backing extended operation is completed, False otherwise."""
+        return self.status == type(self.status).DONE
 
 
 class OperationAggregatedList(proto.Message):

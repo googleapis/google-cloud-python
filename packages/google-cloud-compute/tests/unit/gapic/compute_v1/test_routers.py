@@ -30,6 +30,8 @@ from requests.sessions import Session
 
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
+from google.api_core import extended_operation  # type: ignore
+from google.api_core import future
 from google.api_core import gapic_v1
 from google.api_core import grpc_helpers
 from google.api_core import grpc_helpers_async
@@ -859,6 +861,326 @@ def test_aggregated_list_rest_pager(transport: str = "rest"):
         dict,
     ],
 )
+def test_delete_rest(request_type):
+    client = RoutersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "region": "sample2", "router": "sample3"}
+    request = request_type(request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation(
+            client_operation_id="client_operation_id_value",
+            creation_timestamp="creation_timestamp_value",
+            description="description_value",
+            end_time="end_time_value",
+            http_error_message="http_error_message_value",
+            http_error_status_code=2374,
+            id=205,
+            insert_time="insert_time_value",
+            kind="kind_value",
+            name="name_value",
+            operation_group_id="operation_group_id_value",
+            operation_type="operation_type_value",
+            progress=885,
+            region="region_value",
+            self_link="self_link_value",
+            start_time="start_time_value",
+            status=compute.Operation.Status.DONE,
+            status_message="status_message_value",
+            target_id=947,
+            target_link="target_link_value",
+            user="user_value",
+            zone="zone_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.delete(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, extended_operation.ExtendedOperation)
+    assert response.client_operation_id == "client_operation_id_value"
+    assert response.creation_timestamp == "creation_timestamp_value"
+    assert response.description == "description_value"
+    assert response.end_time == "end_time_value"
+    assert response.http_error_message == "http_error_message_value"
+    assert response.http_error_status_code == 2374
+    assert response.id == 205
+    assert response.insert_time == "insert_time_value"
+    assert response.kind == "kind_value"
+    assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
+    assert response.operation_type == "operation_type_value"
+    assert response.progress == 885
+    assert response.region == "region_value"
+    assert response.self_link == "self_link_value"
+    assert response.start_time == "start_time_value"
+    assert response.status == compute.Operation.Status.DONE
+    assert response.status_message == "status_message_value"
+    assert response.target_id == 947
+    assert response.target_link == "target_link_value"
+    assert response.user == "user_value"
+    assert response.zone == "zone_value"
+
+
+def test_delete_rest_required_fields(request_type=compute.DeleteRouterRequest):
+    transport_class = transports.RoutersRestTransport
+
+    request_init = {}
+    request_init["project"] = ""
+    request_init["region"] = ""
+    request_init["router"] = ""
+    request = request_type(request_init)
+    jsonified_request = json.loads(
+        request_type.to_json(
+            request, including_default_value_fields=False, use_integers_for_enums=False
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["project"] = "project_value"
+    jsonified_request["region"] = "region_value"
+    jsonified_request["router"] = "router_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).delete._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "region" in jsonified_request
+    assert jsonified_request["region"] == "region_value"
+    assert "router" in jsonified_request
+    assert jsonified_request["router"] == "router_value"
+
+    client = RoutersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "delete",
+                "query_params": request_init,
+            }
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = compute.Operation.to_json(return_value)
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.delete(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_delete_rest_unset_required_fields():
+    transport = transports.RoutersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.delete._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("requestId",))
+        & set(
+            (
+                "project",
+                "region",
+                "router",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_delete_rest_interceptors(null_interceptor):
+    transport = transports.RoutersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.RoutersRestInterceptor(),
+    )
+    client = RoutersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RoutersRestInterceptor, "post_delete"
+    ) as post, mock.patch.object(
+        transports.RoutersRestInterceptor, "pre_delete"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": None,
+            "query_params": {},
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.Operation.to_json(compute.Operation())
+
+        request = compute.DeleteRouterRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation
+
+        client.delete(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_delete_rest_bad_request(
+    transport: str = "rest", request_type=compute.DeleteRouterRequest
+):
+    client = RoutersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "region": "sample2", "router": "sample3"}
+    request = request_type(request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.delete(request)
+
+
+def test_delete_rest_flattened():
+    client = RoutersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "project": "sample1",
+            "region": "sample2",
+            "router": "sample3",
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project="project_value",
+            region="region_value",
+            router="router_value",
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.delete(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/compute/v1/projects/{project}/regions/{region}/routers/{router}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_delete_rest_flattened_error(transport: str = "rest"):
+    client = RoutersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete(
+            compute.DeleteRouterRequest(),
+            project="project_value",
+            region="region_value",
+            router="router_value",
+        )
+
+
+def test_delete_rest_error():
+    client = RoutersClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.DeleteRouterRequest,
+        dict,
+    ],
+)
 def test_delete_unary_rest(request_type):
     client = RoutersClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -907,28 +1229,6 @@ def test_delete_unary_rest(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Operation)
-    assert response.client_operation_id == "client_operation_id_value"
-    assert response.creation_timestamp == "creation_timestamp_value"
-    assert response.description == "description_value"
-    assert response.end_time == "end_time_value"
-    assert response.http_error_message == "http_error_message_value"
-    assert response.http_error_status_code == 2374
-    assert response.id == 205
-    assert response.insert_time == "insert_time_value"
-    assert response.kind == "kind_value"
-    assert response.name == "name_value"
-    assert response.operation_group_id == "operation_group_id_value"
-    assert response.operation_type == "operation_type_value"
-    assert response.progress == 885
-    assert response.region == "region_value"
-    assert response.self_link == "self_link_value"
-    assert response.start_time == "start_time_value"
-    assert response.status == compute.Operation.Status.DONE
-    assert response.status_message == "status_message_value"
-    assert response.target_id == 947
-    assert response.target_link == "target_link_value"
-    assert response.user == "user_value"
-    assert response.zone == "zone_value"
 
 
 def test_delete_unary_rest_required_fields(request_type=compute.DeleteRouterRequest):
@@ -2114,6 +2414,547 @@ def test_get_router_status_rest_error():
         dict,
     ],
 )
+def test_insert_rest(request_type):
+    client = RoutersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "region": "sample2"}
+    request_init["router_resource"] = {
+        "bgp": {
+            "advertise_mode": "advertise_mode_value",
+            "advertised_groups": [
+                "advertised_groups_value_1",
+                "advertised_groups_value_2",
+            ],
+            "advertised_ip_ranges": [
+                {"description": "description_value", "range_": "range__value"}
+            ],
+            "asn": 322,
+            "keepalive_interval": 1914,
+        },
+        "bgp_peers": [
+            {
+                "advertise_mode": "advertise_mode_value",
+                "advertised_groups": [
+                    "advertised_groups_value_1",
+                    "advertised_groups_value_2",
+                ],
+                "advertised_ip_ranges": {},
+                "advertised_route_priority": 2714,
+                "bfd": {
+                    "min_receive_interval": 2122,
+                    "min_transmit_interval": 2265,
+                    "multiplier": 1095,
+                    "session_initialization_mode": "session_initialization_mode_value",
+                },
+                "enable": "enable_value",
+                "enable_ipv6": True,
+                "interface_name": "interface_name_value",
+                "ip_address": "ip_address_value",
+                "ipv6_nexthop_address": "ipv6_nexthop_address_value",
+                "management_type": "management_type_value",
+                "name": "name_value",
+                "peer_asn": 845,
+                "peer_ip_address": "peer_ip_address_value",
+                "peer_ipv6_nexthop_address": "peer_ipv6_nexthop_address_value",
+                "router_appliance_instance": "router_appliance_instance_value",
+            }
+        ],
+        "creation_timestamp": "creation_timestamp_value",
+        "description": "description_value",
+        "encrypted_interconnect_router": True,
+        "id": 205,
+        "interfaces": [
+            {
+                "ip_range": "ip_range_value",
+                "linked_interconnect_attachment": "linked_interconnect_attachment_value",
+                "linked_vpn_tunnel": "linked_vpn_tunnel_value",
+                "management_type": "management_type_value",
+                "name": "name_value",
+                "private_ip_address": "private_ip_address_value",
+                "redundant_interface": "redundant_interface_value",
+                "subnetwork": "subnetwork_value",
+            }
+        ],
+        "kind": "kind_value",
+        "name": "name_value",
+        "nats": [
+            {
+                "drain_nat_ips": ["drain_nat_ips_value_1", "drain_nat_ips_value_2"],
+                "enable_dynamic_port_allocation": True,
+                "enable_endpoint_independent_mapping": True,
+                "icmp_idle_timeout_sec": 2214,
+                "log_config": {"enable": True, "filter": "filter_value"},
+                "max_ports_per_vm": 1733,
+                "min_ports_per_vm": 1731,
+                "name": "name_value",
+                "nat_ip_allocate_option": "nat_ip_allocate_option_value",
+                "nat_ips": ["nat_ips_value_1", "nat_ips_value_2"],
+                "rules": [
+                    {
+                        "action": {
+                            "source_nat_active_ips": [
+                                "source_nat_active_ips_value_1",
+                                "source_nat_active_ips_value_2",
+                            ],
+                            "source_nat_drain_ips": [
+                                "source_nat_drain_ips_value_1",
+                                "source_nat_drain_ips_value_2",
+                            ],
+                        },
+                        "description": "description_value",
+                        "match": "match_value",
+                        "rule_number": 1184,
+                    }
+                ],
+                "source_subnetwork_ip_ranges_to_nat": "source_subnetwork_ip_ranges_to_nat_value",
+                "subnetworks": [
+                    {
+                        "name": "name_value",
+                        "secondary_ip_range_names": [
+                            "secondary_ip_range_names_value_1",
+                            "secondary_ip_range_names_value_2",
+                        ],
+                        "source_ip_ranges_to_nat": [
+                            "source_ip_ranges_to_nat_value_1",
+                            "source_ip_ranges_to_nat_value_2",
+                        ],
+                    }
+                ],
+                "tcp_established_idle_timeout_sec": 3371,
+                "tcp_time_wait_timeout_sec": 2665,
+                "tcp_transitory_idle_timeout_sec": 3330,
+                "udp_idle_timeout_sec": 2118,
+            }
+        ],
+        "network": "network_value",
+        "region": "region_value",
+        "self_link": "self_link_value",
+    }
+    request = request_type(request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation(
+            client_operation_id="client_operation_id_value",
+            creation_timestamp="creation_timestamp_value",
+            description="description_value",
+            end_time="end_time_value",
+            http_error_message="http_error_message_value",
+            http_error_status_code=2374,
+            id=205,
+            insert_time="insert_time_value",
+            kind="kind_value",
+            name="name_value",
+            operation_group_id="operation_group_id_value",
+            operation_type="operation_type_value",
+            progress=885,
+            region="region_value",
+            self_link="self_link_value",
+            start_time="start_time_value",
+            status=compute.Operation.Status.DONE,
+            status_message="status_message_value",
+            target_id=947,
+            target_link="target_link_value",
+            user="user_value",
+            zone="zone_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.insert(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, extended_operation.ExtendedOperation)
+    assert response.client_operation_id == "client_operation_id_value"
+    assert response.creation_timestamp == "creation_timestamp_value"
+    assert response.description == "description_value"
+    assert response.end_time == "end_time_value"
+    assert response.http_error_message == "http_error_message_value"
+    assert response.http_error_status_code == 2374
+    assert response.id == 205
+    assert response.insert_time == "insert_time_value"
+    assert response.kind == "kind_value"
+    assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
+    assert response.operation_type == "operation_type_value"
+    assert response.progress == 885
+    assert response.region == "region_value"
+    assert response.self_link == "self_link_value"
+    assert response.start_time == "start_time_value"
+    assert response.status == compute.Operation.Status.DONE
+    assert response.status_message == "status_message_value"
+    assert response.target_id == 947
+    assert response.target_link == "target_link_value"
+    assert response.user == "user_value"
+    assert response.zone == "zone_value"
+
+
+def test_insert_rest_required_fields(request_type=compute.InsertRouterRequest):
+    transport_class = transports.RoutersRestTransport
+
+    request_init = {}
+    request_init["project"] = ""
+    request_init["region"] = ""
+    request = request_type(request_init)
+    jsonified_request = json.loads(
+        request_type.to_json(
+            request, including_default_value_fields=False, use_integers_for_enums=False
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).insert._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["project"] = "project_value"
+    jsonified_request["region"] = "region_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).insert._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "region" in jsonified_request
+    assert jsonified_request["region"] == "region_value"
+
+    client = RoutersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "post",
+                "query_params": request_init,
+            }
+            transcode_result["body"] = {}
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = compute.Operation.to_json(return_value)
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.insert(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_insert_rest_unset_required_fields():
+    transport = transports.RoutersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.insert._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("requestId",))
+        & set(
+            (
+                "project",
+                "region",
+                "routerResource",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_insert_rest_interceptors(null_interceptor):
+    transport = transports.RoutersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.RoutersRestInterceptor(),
+    )
+    client = RoutersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RoutersRestInterceptor, "post_insert"
+    ) as post, mock.patch.object(
+        transports.RoutersRestInterceptor, "pre_insert"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": None,
+            "query_params": {},
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.Operation.to_json(compute.Operation())
+
+        request = compute.InsertRouterRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation
+
+        client.insert(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_insert_rest_bad_request(
+    transport: str = "rest", request_type=compute.InsertRouterRequest
+):
+    client = RoutersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "region": "sample2"}
+    request_init["router_resource"] = {
+        "bgp": {
+            "advertise_mode": "advertise_mode_value",
+            "advertised_groups": [
+                "advertised_groups_value_1",
+                "advertised_groups_value_2",
+            ],
+            "advertised_ip_ranges": [
+                {"description": "description_value", "range_": "range__value"}
+            ],
+            "asn": 322,
+            "keepalive_interval": 1914,
+        },
+        "bgp_peers": [
+            {
+                "advertise_mode": "advertise_mode_value",
+                "advertised_groups": [
+                    "advertised_groups_value_1",
+                    "advertised_groups_value_2",
+                ],
+                "advertised_ip_ranges": {},
+                "advertised_route_priority": 2714,
+                "bfd": {
+                    "min_receive_interval": 2122,
+                    "min_transmit_interval": 2265,
+                    "multiplier": 1095,
+                    "session_initialization_mode": "session_initialization_mode_value",
+                },
+                "enable": "enable_value",
+                "enable_ipv6": True,
+                "interface_name": "interface_name_value",
+                "ip_address": "ip_address_value",
+                "ipv6_nexthop_address": "ipv6_nexthop_address_value",
+                "management_type": "management_type_value",
+                "name": "name_value",
+                "peer_asn": 845,
+                "peer_ip_address": "peer_ip_address_value",
+                "peer_ipv6_nexthop_address": "peer_ipv6_nexthop_address_value",
+                "router_appliance_instance": "router_appliance_instance_value",
+            }
+        ],
+        "creation_timestamp": "creation_timestamp_value",
+        "description": "description_value",
+        "encrypted_interconnect_router": True,
+        "id": 205,
+        "interfaces": [
+            {
+                "ip_range": "ip_range_value",
+                "linked_interconnect_attachment": "linked_interconnect_attachment_value",
+                "linked_vpn_tunnel": "linked_vpn_tunnel_value",
+                "management_type": "management_type_value",
+                "name": "name_value",
+                "private_ip_address": "private_ip_address_value",
+                "redundant_interface": "redundant_interface_value",
+                "subnetwork": "subnetwork_value",
+            }
+        ],
+        "kind": "kind_value",
+        "name": "name_value",
+        "nats": [
+            {
+                "drain_nat_ips": ["drain_nat_ips_value_1", "drain_nat_ips_value_2"],
+                "enable_dynamic_port_allocation": True,
+                "enable_endpoint_independent_mapping": True,
+                "icmp_idle_timeout_sec": 2214,
+                "log_config": {"enable": True, "filter": "filter_value"},
+                "max_ports_per_vm": 1733,
+                "min_ports_per_vm": 1731,
+                "name": "name_value",
+                "nat_ip_allocate_option": "nat_ip_allocate_option_value",
+                "nat_ips": ["nat_ips_value_1", "nat_ips_value_2"],
+                "rules": [
+                    {
+                        "action": {
+                            "source_nat_active_ips": [
+                                "source_nat_active_ips_value_1",
+                                "source_nat_active_ips_value_2",
+                            ],
+                            "source_nat_drain_ips": [
+                                "source_nat_drain_ips_value_1",
+                                "source_nat_drain_ips_value_2",
+                            ],
+                        },
+                        "description": "description_value",
+                        "match": "match_value",
+                        "rule_number": 1184,
+                    }
+                ],
+                "source_subnetwork_ip_ranges_to_nat": "source_subnetwork_ip_ranges_to_nat_value",
+                "subnetworks": [
+                    {
+                        "name": "name_value",
+                        "secondary_ip_range_names": [
+                            "secondary_ip_range_names_value_1",
+                            "secondary_ip_range_names_value_2",
+                        ],
+                        "source_ip_ranges_to_nat": [
+                            "source_ip_ranges_to_nat_value_1",
+                            "source_ip_ranges_to_nat_value_2",
+                        ],
+                    }
+                ],
+                "tcp_established_idle_timeout_sec": 3371,
+                "tcp_time_wait_timeout_sec": 2665,
+                "tcp_transitory_idle_timeout_sec": 3330,
+                "udp_idle_timeout_sec": 2118,
+            }
+        ],
+        "network": "network_value",
+        "region": "region_value",
+        "self_link": "self_link_value",
+    }
+    request = request_type(request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.insert(request)
+
+
+def test_insert_rest_flattened():
+    client = RoutersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {"project": "sample1", "region": "sample2"}
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project="project_value",
+            region="region_value",
+            router_resource=compute.Router(
+                bgp=compute.RouterBgp(advertise_mode="advertise_mode_value")
+            ),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.insert(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/compute/v1/projects/{project}/regions/{region}/routers"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_insert_rest_flattened_error(transport: str = "rest"):
+    client = RoutersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.insert(
+            compute.InsertRouterRequest(),
+            project="project_value",
+            region="region_value",
+            router_resource=compute.Router(
+                bgp=compute.RouterBgp(advertise_mode="advertise_mode_value")
+            ),
+        )
+
+
+def test_insert_rest_error():
+    client = RoutersClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.InsertRouterRequest,
+        dict,
+    ],
+)
 def test_insert_unary_rest(request_type):
     client = RoutersClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -2274,28 +3115,6 @@ def test_insert_unary_rest(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Operation)
-    assert response.client_operation_id == "client_operation_id_value"
-    assert response.creation_timestamp == "creation_timestamp_value"
-    assert response.description == "description_value"
-    assert response.end_time == "end_time_value"
-    assert response.http_error_message == "http_error_message_value"
-    assert response.http_error_status_code == 2374
-    assert response.id == 205
-    assert response.insert_time == "insert_time_value"
-    assert response.kind == "kind_value"
-    assert response.name == "name_value"
-    assert response.operation_group_id == "operation_group_id_value"
-    assert response.operation_type == "operation_type_value"
-    assert response.progress == 885
-    assert response.region == "region_value"
-    assert response.self_link == "self_link_value"
-    assert response.start_time == "start_time_value"
-    assert response.status == compute.Operation.Status.DONE
-    assert response.status_message == "status_message_value"
-    assert response.target_id == 947
-    assert response.target_link == "target_link_value"
-    assert response.user == "user_value"
-    assert response.zone == "zone_value"
 
 
 def test_insert_unary_rest_required_fields(request_type=compute.InsertRouterRequest):
@@ -2999,6 +3818,558 @@ def test_list_rest_pager(transport: str = "rest"):
         dict,
     ],
 )
+def test_patch_rest(request_type):
+    client = RoutersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "region": "sample2", "router": "sample3"}
+    request_init["router_resource"] = {
+        "bgp": {
+            "advertise_mode": "advertise_mode_value",
+            "advertised_groups": [
+                "advertised_groups_value_1",
+                "advertised_groups_value_2",
+            ],
+            "advertised_ip_ranges": [
+                {"description": "description_value", "range_": "range__value"}
+            ],
+            "asn": 322,
+            "keepalive_interval": 1914,
+        },
+        "bgp_peers": [
+            {
+                "advertise_mode": "advertise_mode_value",
+                "advertised_groups": [
+                    "advertised_groups_value_1",
+                    "advertised_groups_value_2",
+                ],
+                "advertised_ip_ranges": {},
+                "advertised_route_priority": 2714,
+                "bfd": {
+                    "min_receive_interval": 2122,
+                    "min_transmit_interval": 2265,
+                    "multiplier": 1095,
+                    "session_initialization_mode": "session_initialization_mode_value",
+                },
+                "enable": "enable_value",
+                "enable_ipv6": True,
+                "interface_name": "interface_name_value",
+                "ip_address": "ip_address_value",
+                "ipv6_nexthop_address": "ipv6_nexthop_address_value",
+                "management_type": "management_type_value",
+                "name": "name_value",
+                "peer_asn": 845,
+                "peer_ip_address": "peer_ip_address_value",
+                "peer_ipv6_nexthop_address": "peer_ipv6_nexthop_address_value",
+                "router_appliance_instance": "router_appliance_instance_value",
+            }
+        ],
+        "creation_timestamp": "creation_timestamp_value",
+        "description": "description_value",
+        "encrypted_interconnect_router": True,
+        "id": 205,
+        "interfaces": [
+            {
+                "ip_range": "ip_range_value",
+                "linked_interconnect_attachment": "linked_interconnect_attachment_value",
+                "linked_vpn_tunnel": "linked_vpn_tunnel_value",
+                "management_type": "management_type_value",
+                "name": "name_value",
+                "private_ip_address": "private_ip_address_value",
+                "redundant_interface": "redundant_interface_value",
+                "subnetwork": "subnetwork_value",
+            }
+        ],
+        "kind": "kind_value",
+        "name": "name_value",
+        "nats": [
+            {
+                "drain_nat_ips": ["drain_nat_ips_value_1", "drain_nat_ips_value_2"],
+                "enable_dynamic_port_allocation": True,
+                "enable_endpoint_independent_mapping": True,
+                "icmp_idle_timeout_sec": 2214,
+                "log_config": {"enable": True, "filter": "filter_value"},
+                "max_ports_per_vm": 1733,
+                "min_ports_per_vm": 1731,
+                "name": "name_value",
+                "nat_ip_allocate_option": "nat_ip_allocate_option_value",
+                "nat_ips": ["nat_ips_value_1", "nat_ips_value_2"],
+                "rules": [
+                    {
+                        "action": {
+                            "source_nat_active_ips": [
+                                "source_nat_active_ips_value_1",
+                                "source_nat_active_ips_value_2",
+                            ],
+                            "source_nat_drain_ips": [
+                                "source_nat_drain_ips_value_1",
+                                "source_nat_drain_ips_value_2",
+                            ],
+                        },
+                        "description": "description_value",
+                        "match": "match_value",
+                        "rule_number": 1184,
+                    }
+                ],
+                "source_subnetwork_ip_ranges_to_nat": "source_subnetwork_ip_ranges_to_nat_value",
+                "subnetworks": [
+                    {
+                        "name": "name_value",
+                        "secondary_ip_range_names": [
+                            "secondary_ip_range_names_value_1",
+                            "secondary_ip_range_names_value_2",
+                        ],
+                        "source_ip_ranges_to_nat": [
+                            "source_ip_ranges_to_nat_value_1",
+                            "source_ip_ranges_to_nat_value_2",
+                        ],
+                    }
+                ],
+                "tcp_established_idle_timeout_sec": 3371,
+                "tcp_time_wait_timeout_sec": 2665,
+                "tcp_transitory_idle_timeout_sec": 3330,
+                "udp_idle_timeout_sec": 2118,
+            }
+        ],
+        "network": "network_value",
+        "region": "region_value",
+        "self_link": "self_link_value",
+    }
+    request = request_type(request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation(
+            client_operation_id="client_operation_id_value",
+            creation_timestamp="creation_timestamp_value",
+            description="description_value",
+            end_time="end_time_value",
+            http_error_message="http_error_message_value",
+            http_error_status_code=2374,
+            id=205,
+            insert_time="insert_time_value",
+            kind="kind_value",
+            name="name_value",
+            operation_group_id="operation_group_id_value",
+            operation_type="operation_type_value",
+            progress=885,
+            region="region_value",
+            self_link="self_link_value",
+            start_time="start_time_value",
+            status=compute.Operation.Status.DONE,
+            status_message="status_message_value",
+            target_id=947,
+            target_link="target_link_value",
+            user="user_value",
+            zone="zone_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.patch(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, extended_operation.ExtendedOperation)
+    assert response.client_operation_id == "client_operation_id_value"
+    assert response.creation_timestamp == "creation_timestamp_value"
+    assert response.description == "description_value"
+    assert response.end_time == "end_time_value"
+    assert response.http_error_message == "http_error_message_value"
+    assert response.http_error_status_code == 2374
+    assert response.id == 205
+    assert response.insert_time == "insert_time_value"
+    assert response.kind == "kind_value"
+    assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
+    assert response.operation_type == "operation_type_value"
+    assert response.progress == 885
+    assert response.region == "region_value"
+    assert response.self_link == "self_link_value"
+    assert response.start_time == "start_time_value"
+    assert response.status == compute.Operation.Status.DONE
+    assert response.status_message == "status_message_value"
+    assert response.target_id == 947
+    assert response.target_link == "target_link_value"
+    assert response.user == "user_value"
+    assert response.zone == "zone_value"
+
+
+def test_patch_rest_required_fields(request_type=compute.PatchRouterRequest):
+    transport_class = transports.RoutersRestTransport
+
+    request_init = {}
+    request_init["project"] = ""
+    request_init["region"] = ""
+    request_init["router"] = ""
+    request = request_type(request_init)
+    jsonified_request = json.loads(
+        request_type.to_json(
+            request, including_default_value_fields=False, use_integers_for_enums=False
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).patch._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["project"] = "project_value"
+    jsonified_request["region"] = "region_value"
+    jsonified_request["router"] = "router_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).patch._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "region" in jsonified_request
+    assert jsonified_request["region"] == "region_value"
+    assert "router" in jsonified_request
+    assert jsonified_request["router"] == "router_value"
+
+    client = RoutersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "patch",
+                "query_params": request_init,
+            }
+            transcode_result["body"] = {}
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = compute.Operation.to_json(return_value)
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.patch(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_patch_rest_unset_required_fields():
+    transport = transports.RoutersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.patch._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("requestId",))
+        & set(
+            (
+                "project",
+                "region",
+                "router",
+                "routerResource",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_patch_rest_interceptors(null_interceptor):
+    transport = transports.RoutersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.RoutersRestInterceptor(),
+    )
+    client = RoutersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RoutersRestInterceptor, "post_patch"
+    ) as post, mock.patch.object(
+        transports.RoutersRestInterceptor, "pre_patch"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": None,
+            "query_params": {},
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.Operation.to_json(compute.Operation())
+
+        request = compute.PatchRouterRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation
+
+        client.patch(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_patch_rest_bad_request(
+    transport: str = "rest", request_type=compute.PatchRouterRequest
+):
+    client = RoutersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "region": "sample2", "router": "sample3"}
+    request_init["router_resource"] = {
+        "bgp": {
+            "advertise_mode": "advertise_mode_value",
+            "advertised_groups": [
+                "advertised_groups_value_1",
+                "advertised_groups_value_2",
+            ],
+            "advertised_ip_ranges": [
+                {"description": "description_value", "range_": "range__value"}
+            ],
+            "asn": 322,
+            "keepalive_interval": 1914,
+        },
+        "bgp_peers": [
+            {
+                "advertise_mode": "advertise_mode_value",
+                "advertised_groups": [
+                    "advertised_groups_value_1",
+                    "advertised_groups_value_2",
+                ],
+                "advertised_ip_ranges": {},
+                "advertised_route_priority": 2714,
+                "bfd": {
+                    "min_receive_interval": 2122,
+                    "min_transmit_interval": 2265,
+                    "multiplier": 1095,
+                    "session_initialization_mode": "session_initialization_mode_value",
+                },
+                "enable": "enable_value",
+                "enable_ipv6": True,
+                "interface_name": "interface_name_value",
+                "ip_address": "ip_address_value",
+                "ipv6_nexthop_address": "ipv6_nexthop_address_value",
+                "management_type": "management_type_value",
+                "name": "name_value",
+                "peer_asn": 845,
+                "peer_ip_address": "peer_ip_address_value",
+                "peer_ipv6_nexthop_address": "peer_ipv6_nexthop_address_value",
+                "router_appliance_instance": "router_appliance_instance_value",
+            }
+        ],
+        "creation_timestamp": "creation_timestamp_value",
+        "description": "description_value",
+        "encrypted_interconnect_router": True,
+        "id": 205,
+        "interfaces": [
+            {
+                "ip_range": "ip_range_value",
+                "linked_interconnect_attachment": "linked_interconnect_attachment_value",
+                "linked_vpn_tunnel": "linked_vpn_tunnel_value",
+                "management_type": "management_type_value",
+                "name": "name_value",
+                "private_ip_address": "private_ip_address_value",
+                "redundant_interface": "redundant_interface_value",
+                "subnetwork": "subnetwork_value",
+            }
+        ],
+        "kind": "kind_value",
+        "name": "name_value",
+        "nats": [
+            {
+                "drain_nat_ips": ["drain_nat_ips_value_1", "drain_nat_ips_value_2"],
+                "enable_dynamic_port_allocation": True,
+                "enable_endpoint_independent_mapping": True,
+                "icmp_idle_timeout_sec": 2214,
+                "log_config": {"enable": True, "filter": "filter_value"},
+                "max_ports_per_vm": 1733,
+                "min_ports_per_vm": 1731,
+                "name": "name_value",
+                "nat_ip_allocate_option": "nat_ip_allocate_option_value",
+                "nat_ips": ["nat_ips_value_1", "nat_ips_value_2"],
+                "rules": [
+                    {
+                        "action": {
+                            "source_nat_active_ips": [
+                                "source_nat_active_ips_value_1",
+                                "source_nat_active_ips_value_2",
+                            ],
+                            "source_nat_drain_ips": [
+                                "source_nat_drain_ips_value_1",
+                                "source_nat_drain_ips_value_2",
+                            ],
+                        },
+                        "description": "description_value",
+                        "match": "match_value",
+                        "rule_number": 1184,
+                    }
+                ],
+                "source_subnetwork_ip_ranges_to_nat": "source_subnetwork_ip_ranges_to_nat_value",
+                "subnetworks": [
+                    {
+                        "name": "name_value",
+                        "secondary_ip_range_names": [
+                            "secondary_ip_range_names_value_1",
+                            "secondary_ip_range_names_value_2",
+                        ],
+                        "source_ip_ranges_to_nat": [
+                            "source_ip_ranges_to_nat_value_1",
+                            "source_ip_ranges_to_nat_value_2",
+                        ],
+                    }
+                ],
+                "tcp_established_idle_timeout_sec": 3371,
+                "tcp_time_wait_timeout_sec": 2665,
+                "tcp_transitory_idle_timeout_sec": 3330,
+                "udp_idle_timeout_sec": 2118,
+            }
+        ],
+        "network": "network_value",
+        "region": "region_value",
+        "self_link": "self_link_value",
+    }
+    request = request_type(request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.patch(request)
+
+
+def test_patch_rest_flattened():
+    client = RoutersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "project": "sample1",
+            "region": "sample2",
+            "router": "sample3",
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project="project_value",
+            region="region_value",
+            router="router_value",
+            router_resource=compute.Router(
+                bgp=compute.RouterBgp(advertise_mode="advertise_mode_value")
+            ),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.patch(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/compute/v1/projects/{project}/regions/{region}/routers/{router}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_patch_rest_flattened_error(transport: str = "rest"):
+    client = RoutersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.patch(
+            compute.PatchRouterRequest(),
+            project="project_value",
+            region="region_value",
+            router="router_value",
+            router_resource=compute.Router(
+                bgp=compute.RouterBgp(advertise_mode="advertise_mode_value")
+            ),
+        )
+
+
+def test_patch_rest_error():
+    client = RoutersClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.PatchRouterRequest,
+        dict,
+    ],
+)
 def test_patch_unary_rest(request_type):
     client = RoutersClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -3159,28 +4530,6 @@ def test_patch_unary_rest(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Operation)
-    assert response.client_operation_id == "client_operation_id_value"
-    assert response.creation_timestamp == "creation_timestamp_value"
-    assert response.description == "description_value"
-    assert response.end_time == "end_time_value"
-    assert response.http_error_message == "http_error_message_value"
-    assert response.http_error_status_code == 2374
-    assert response.id == 205
-    assert response.insert_time == "insert_time_value"
-    assert response.kind == "kind_value"
-    assert response.name == "name_value"
-    assert response.operation_group_id == "operation_group_id_value"
-    assert response.operation_type == "operation_type_value"
-    assert response.progress == 885
-    assert response.region == "region_value"
-    assert response.self_link == "self_link_value"
-    assert response.start_time == "start_time_value"
-    assert response.status == compute.Operation.Status.DONE
-    assert response.status_message == "status_message_value"
-    assert response.target_id == 947
-    assert response.target_link == "target_link_value"
-    assert response.user == "user_value"
-    assert response.zone == "zone_value"
 
 
 def test_patch_unary_rest_required_fields(request_type=compute.PatchRouterRequest):
@@ -4058,6 +5407,558 @@ def test_preview_rest_error():
         dict,
     ],
 )
+def test_update_rest(request_type):
+    client = RoutersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "region": "sample2", "router": "sample3"}
+    request_init["router_resource"] = {
+        "bgp": {
+            "advertise_mode": "advertise_mode_value",
+            "advertised_groups": [
+                "advertised_groups_value_1",
+                "advertised_groups_value_2",
+            ],
+            "advertised_ip_ranges": [
+                {"description": "description_value", "range_": "range__value"}
+            ],
+            "asn": 322,
+            "keepalive_interval": 1914,
+        },
+        "bgp_peers": [
+            {
+                "advertise_mode": "advertise_mode_value",
+                "advertised_groups": [
+                    "advertised_groups_value_1",
+                    "advertised_groups_value_2",
+                ],
+                "advertised_ip_ranges": {},
+                "advertised_route_priority": 2714,
+                "bfd": {
+                    "min_receive_interval": 2122,
+                    "min_transmit_interval": 2265,
+                    "multiplier": 1095,
+                    "session_initialization_mode": "session_initialization_mode_value",
+                },
+                "enable": "enable_value",
+                "enable_ipv6": True,
+                "interface_name": "interface_name_value",
+                "ip_address": "ip_address_value",
+                "ipv6_nexthop_address": "ipv6_nexthop_address_value",
+                "management_type": "management_type_value",
+                "name": "name_value",
+                "peer_asn": 845,
+                "peer_ip_address": "peer_ip_address_value",
+                "peer_ipv6_nexthop_address": "peer_ipv6_nexthop_address_value",
+                "router_appliance_instance": "router_appliance_instance_value",
+            }
+        ],
+        "creation_timestamp": "creation_timestamp_value",
+        "description": "description_value",
+        "encrypted_interconnect_router": True,
+        "id": 205,
+        "interfaces": [
+            {
+                "ip_range": "ip_range_value",
+                "linked_interconnect_attachment": "linked_interconnect_attachment_value",
+                "linked_vpn_tunnel": "linked_vpn_tunnel_value",
+                "management_type": "management_type_value",
+                "name": "name_value",
+                "private_ip_address": "private_ip_address_value",
+                "redundant_interface": "redundant_interface_value",
+                "subnetwork": "subnetwork_value",
+            }
+        ],
+        "kind": "kind_value",
+        "name": "name_value",
+        "nats": [
+            {
+                "drain_nat_ips": ["drain_nat_ips_value_1", "drain_nat_ips_value_2"],
+                "enable_dynamic_port_allocation": True,
+                "enable_endpoint_independent_mapping": True,
+                "icmp_idle_timeout_sec": 2214,
+                "log_config": {"enable": True, "filter": "filter_value"},
+                "max_ports_per_vm": 1733,
+                "min_ports_per_vm": 1731,
+                "name": "name_value",
+                "nat_ip_allocate_option": "nat_ip_allocate_option_value",
+                "nat_ips": ["nat_ips_value_1", "nat_ips_value_2"],
+                "rules": [
+                    {
+                        "action": {
+                            "source_nat_active_ips": [
+                                "source_nat_active_ips_value_1",
+                                "source_nat_active_ips_value_2",
+                            ],
+                            "source_nat_drain_ips": [
+                                "source_nat_drain_ips_value_1",
+                                "source_nat_drain_ips_value_2",
+                            ],
+                        },
+                        "description": "description_value",
+                        "match": "match_value",
+                        "rule_number": 1184,
+                    }
+                ],
+                "source_subnetwork_ip_ranges_to_nat": "source_subnetwork_ip_ranges_to_nat_value",
+                "subnetworks": [
+                    {
+                        "name": "name_value",
+                        "secondary_ip_range_names": [
+                            "secondary_ip_range_names_value_1",
+                            "secondary_ip_range_names_value_2",
+                        ],
+                        "source_ip_ranges_to_nat": [
+                            "source_ip_ranges_to_nat_value_1",
+                            "source_ip_ranges_to_nat_value_2",
+                        ],
+                    }
+                ],
+                "tcp_established_idle_timeout_sec": 3371,
+                "tcp_time_wait_timeout_sec": 2665,
+                "tcp_transitory_idle_timeout_sec": 3330,
+                "udp_idle_timeout_sec": 2118,
+            }
+        ],
+        "network": "network_value",
+        "region": "region_value",
+        "self_link": "self_link_value",
+    }
+    request = request_type(request_init)
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation(
+            client_operation_id="client_operation_id_value",
+            creation_timestamp="creation_timestamp_value",
+            description="description_value",
+            end_time="end_time_value",
+            http_error_message="http_error_message_value",
+            http_error_status_code=2374,
+            id=205,
+            insert_time="insert_time_value",
+            kind="kind_value",
+            name="name_value",
+            operation_group_id="operation_group_id_value",
+            operation_type="operation_type_value",
+            progress=885,
+            region="region_value",
+            self_link="self_link_value",
+            start_time="start_time_value",
+            status=compute.Operation.Status.DONE,
+            status_message="status_message_value",
+            target_id=947,
+            target_link="target_link_value",
+            user="user_value",
+            zone="zone_value",
+        )
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+        response = client.update(request)
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, extended_operation.ExtendedOperation)
+    assert response.client_operation_id == "client_operation_id_value"
+    assert response.creation_timestamp == "creation_timestamp_value"
+    assert response.description == "description_value"
+    assert response.end_time == "end_time_value"
+    assert response.http_error_message == "http_error_message_value"
+    assert response.http_error_status_code == 2374
+    assert response.id == 205
+    assert response.insert_time == "insert_time_value"
+    assert response.kind == "kind_value"
+    assert response.name == "name_value"
+    assert response.operation_group_id == "operation_group_id_value"
+    assert response.operation_type == "operation_type_value"
+    assert response.progress == 885
+    assert response.region == "region_value"
+    assert response.self_link == "self_link_value"
+    assert response.start_time == "start_time_value"
+    assert response.status == compute.Operation.Status.DONE
+    assert response.status_message == "status_message_value"
+    assert response.target_id == 947
+    assert response.target_link == "target_link_value"
+    assert response.user == "user_value"
+    assert response.zone == "zone_value"
+
+
+def test_update_rest_required_fields(request_type=compute.UpdateRouterRequest):
+    transport_class = transports.RoutersRestTransport
+
+    request_init = {}
+    request_init["project"] = ""
+    request_init["region"] = ""
+    request_init["router"] = ""
+    request = request_type(request_init)
+    jsonified_request = json.loads(
+        request_type.to_json(
+            request, including_default_value_fields=False, use_integers_for_enums=False
+        )
+    )
+
+    # verify fields with default values are dropped
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update._get_unset_required_fields(jsonified_request)
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with default values are now present
+
+    jsonified_request["project"] = "project_value"
+    jsonified_request["region"] = "region_value"
+    jsonified_request["router"] = "router_value"
+
+    unset_fields = transport_class(
+        credentials=ga_credentials.AnonymousCredentials()
+    ).update._get_unset_required_fields(jsonified_request)
+    # Check that path parameters and body parameters are not mixing in.
+    assert not set(unset_fields) - set(("request_id",))
+    jsonified_request.update(unset_fields)
+
+    # verify required fields with non-default values are left alone
+    assert "project" in jsonified_request
+    assert jsonified_request["project"] == "project_value"
+    assert "region" in jsonified_request
+    assert jsonified_request["region"] == "region_value"
+    assert "router" in jsonified_request
+    assert jsonified_request["router"] == "router_value"
+
+    client = RoutersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+    request = request_type(request_init)
+
+    # Designate an appropriate value for the returned response.
+    return_value = compute.Operation()
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(Session, "request") as req:
+        # We need to mock transcode() because providing default values
+        # for required fields will fail the real version if the http_options
+        # expect actual values for those fields.
+        with mock.patch.object(path_template, "transcode") as transcode:
+            # A uri without fields and an empty body will force all the
+            # request fields to show up in the query_params.
+            transcode_result = {
+                "uri": "v1/sample_method",
+                "method": "put",
+                "query_params": request_init,
+            }
+            transcode_result["body"] = {}
+            transcode.return_value = transcode_result
+
+            response_value = Response()
+            response_value.status_code = 200
+            json_return_value = compute.Operation.to_json(return_value)
+            response_value._content = json_return_value.encode("UTF-8")
+            req.return_value = response_value
+
+            response = client.update(request)
+
+            expected_params = []
+            actual_params = req.call_args.kwargs["params"]
+            assert expected_params == actual_params
+
+
+def test_update_rest_unset_required_fields():
+    transport = transports.RoutersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials
+    )
+
+    unset_fields = transport.update._get_unset_required_fields({})
+    assert set(unset_fields) == (
+        set(("requestId",))
+        & set(
+            (
+                "project",
+                "region",
+                "router",
+                "routerResource",
+            )
+        )
+    )
+
+
+@pytest.mark.parametrize("null_interceptor", [True, False])
+def test_update_rest_interceptors(null_interceptor):
+    transport = transports.RoutersRestTransport(
+        credentials=ga_credentials.AnonymousCredentials(),
+        interceptor=None if null_interceptor else transports.RoutersRestInterceptor(),
+    )
+    client = RoutersClient(transport=transport)
+    with mock.patch.object(
+        type(client.transport._session), "request"
+    ) as req, mock.patch.object(
+        path_template, "transcode"
+    ) as transcode, mock.patch.object(
+        transports.RoutersRestInterceptor, "post_update"
+    ) as post, mock.patch.object(
+        transports.RoutersRestInterceptor, "pre_update"
+    ) as pre:
+        pre.assert_not_called()
+        post.assert_not_called()
+
+        transcode.return_value = {
+            "method": "post",
+            "uri": "my_uri",
+            "body": None,
+            "query_params": {},
+        }
+
+        req.return_value = Response()
+        req.return_value.status_code = 200
+        req.return_value.request = PreparedRequest()
+        req.return_value._content = compute.Operation.to_json(compute.Operation())
+
+        request = compute.UpdateRouterRequest()
+        metadata = [
+            ("key", "val"),
+            ("cephalopod", "squid"),
+        ]
+        pre.return_value = request, metadata
+        post.return_value = compute.Operation
+
+        client.update(
+            request,
+            metadata=[
+                ("key", "val"),
+                ("cephalopod", "squid"),
+            ],
+        )
+
+        pre.assert_called_once()
+        post.assert_called_once()
+
+
+def test_update_rest_bad_request(
+    transport: str = "rest", request_type=compute.UpdateRouterRequest
+):
+    client = RoutersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # send a request that will satisfy transcoding
+    request_init = {"project": "sample1", "region": "sample2", "router": "sample3"}
+    request_init["router_resource"] = {
+        "bgp": {
+            "advertise_mode": "advertise_mode_value",
+            "advertised_groups": [
+                "advertised_groups_value_1",
+                "advertised_groups_value_2",
+            ],
+            "advertised_ip_ranges": [
+                {"description": "description_value", "range_": "range__value"}
+            ],
+            "asn": 322,
+            "keepalive_interval": 1914,
+        },
+        "bgp_peers": [
+            {
+                "advertise_mode": "advertise_mode_value",
+                "advertised_groups": [
+                    "advertised_groups_value_1",
+                    "advertised_groups_value_2",
+                ],
+                "advertised_ip_ranges": {},
+                "advertised_route_priority": 2714,
+                "bfd": {
+                    "min_receive_interval": 2122,
+                    "min_transmit_interval": 2265,
+                    "multiplier": 1095,
+                    "session_initialization_mode": "session_initialization_mode_value",
+                },
+                "enable": "enable_value",
+                "enable_ipv6": True,
+                "interface_name": "interface_name_value",
+                "ip_address": "ip_address_value",
+                "ipv6_nexthop_address": "ipv6_nexthop_address_value",
+                "management_type": "management_type_value",
+                "name": "name_value",
+                "peer_asn": 845,
+                "peer_ip_address": "peer_ip_address_value",
+                "peer_ipv6_nexthop_address": "peer_ipv6_nexthop_address_value",
+                "router_appliance_instance": "router_appliance_instance_value",
+            }
+        ],
+        "creation_timestamp": "creation_timestamp_value",
+        "description": "description_value",
+        "encrypted_interconnect_router": True,
+        "id": 205,
+        "interfaces": [
+            {
+                "ip_range": "ip_range_value",
+                "linked_interconnect_attachment": "linked_interconnect_attachment_value",
+                "linked_vpn_tunnel": "linked_vpn_tunnel_value",
+                "management_type": "management_type_value",
+                "name": "name_value",
+                "private_ip_address": "private_ip_address_value",
+                "redundant_interface": "redundant_interface_value",
+                "subnetwork": "subnetwork_value",
+            }
+        ],
+        "kind": "kind_value",
+        "name": "name_value",
+        "nats": [
+            {
+                "drain_nat_ips": ["drain_nat_ips_value_1", "drain_nat_ips_value_2"],
+                "enable_dynamic_port_allocation": True,
+                "enable_endpoint_independent_mapping": True,
+                "icmp_idle_timeout_sec": 2214,
+                "log_config": {"enable": True, "filter": "filter_value"},
+                "max_ports_per_vm": 1733,
+                "min_ports_per_vm": 1731,
+                "name": "name_value",
+                "nat_ip_allocate_option": "nat_ip_allocate_option_value",
+                "nat_ips": ["nat_ips_value_1", "nat_ips_value_2"],
+                "rules": [
+                    {
+                        "action": {
+                            "source_nat_active_ips": [
+                                "source_nat_active_ips_value_1",
+                                "source_nat_active_ips_value_2",
+                            ],
+                            "source_nat_drain_ips": [
+                                "source_nat_drain_ips_value_1",
+                                "source_nat_drain_ips_value_2",
+                            ],
+                        },
+                        "description": "description_value",
+                        "match": "match_value",
+                        "rule_number": 1184,
+                    }
+                ],
+                "source_subnetwork_ip_ranges_to_nat": "source_subnetwork_ip_ranges_to_nat_value",
+                "subnetworks": [
+                    {
+                        "name": "name_value",
+                        "secondary_ip_range_names": [
+                            "secondary_ip_range_names_value_1",
+                            "secondary_ip_range_names_value_2",
+                        ],
+                        "source_ip_ranges_to_nat": [
+                            "source_ip_ranges_to_nat_value_1",
+                            "source_ip_ranges_to_nat_value_2",
+                        ],
+                    }
+                ],
+                "tcp_established_idle_timeout_sec": 3371,
+                "tcp_time_wait_timeout_sec": 2665,
+                "tcp_transitory_idle_timeout_sec": 3330,
+                "udp_idle_timeout_sec": 2118,
+            }
+        ],
+        "network": "network_value",
+        "region": "region_value",
+        "self_link": "self_link_value",
+    }
+    request = request_type(request_init)
+
+    # Mock the http request call within the method and fake a BadRequest error.
+    with mock.patch.object(Session, "request") as req, pytest.raises(
+        core_exceptions.BadRequest
+    ):
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 400
+        response_value.request = Request()
+        req.return_value = response_value
+        client.update(request)
+
+
+def test_update_rest_flattened():
+    client = RoutersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="rest",
+    )
+
+    # Mock the http request call within the method and fake a response.
+    with mock.patch.object(type(client.transport._session), "request") as req:
+        # Designate an appropriate value for the returned response.
+        return_value = compute.Operation()
+
+        # get arguments that satisfy an http rule for this method
+        sample_request = {
+            "project": "sample1",
+            "region": "sample2",
+            "router": "sample3",
+        }
+
+        # get truthy value for each flattened field
+        mock_args = dict(
+            project="project_value",
+            region="region_value",
+            router="router_value",
+            router_resource=compute.Router(
+                bgp=compute.RouterBgp(advertise_mode="advertise_mode_value")
+            ),
+        )
+        mock_args.update(sample_request)
+
+        # Wrap the value into a proper Response obj
+        response_value = Response()
+        response_value.status_code = 200
+        json_return_value = compute.Operation.to_json(return_value)
+
+        response_value._content = json_return_value.encode("UTF-8")
+        req.return_value = response_value
+
+        client.update(**mock_args)
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(req.mock_calls) == 1
+        _, args, _ = req.mock_calls[0]
+        assert path_template.validate(
+            "%s/compute/v1/projects/{project}/regions/{region}/routers/{router}"
+            % client.transport._host,
+            args[1],
+        )
+
+
+def test_update_rest_flattened_error(transport: str = "rest"):
+    client = RoutersClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update(
+            compute.UpdateRouterRequest(),
+            project="project_value",
+            region="region_value",
+            router="router_value",
+            router_resource=compute.Router(
+                bgp=compute.RouterBgp(advertise_mode="advertise_mode_value")
+            ),
+        )
+
+
+def test_update_rest_error():
+    client = RoutersClient(
+        credentials=ga_credentials.AnonymousCredentials(), transport="rest"
+    )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        compute.UpdateRouterRequest,
+        dict,
+    ],
+)
 def test_update_unary_rest(request_type):
     client = RoutersClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -4218,28 +6119,6 @@ def test_update_unary_rest(request_type):
 
     # Establish that the response is the type that we expect.
     assert isinstance(response, compute.Operation)
-    assert response.client_operation_id == "client_operation_id_value"
-    assert response.creation_timestamp == "creation_timestamp_value"
-    assert response.description == "description_value"
-    assert response.end_time == "end_time_value"
-    assert response.http_error_message == "http_error_message_value"
-    assert response.http_error_status_code == 2374
-    assert response.id == 205
-    assert response.insert_time == "insert_time_value"
-    assert response.kind == "kind_value"
-    assert response.name == "name_value"
-    assert response.operation_group_id == "operation_group_id_value"
-    assert response.operation_type == "operation_type_value"
-    assert response.progress == 885
-    assert response.region == "region_value"
-    assert response.self_link == "self_link_value"
-    assert response.start_time == "start_time_value"
-    assert response.status == compute.Operation.Status.DONE
-    assert response.status_message == "status_message_value"
-    assert response.target_id == 947
-    assert response.target_link == "target_link_value"
-    assert response.user == "user_value"
-    assert response.zone == "zone_value"
 
 
 def test_update_unary_rest_required_fields(request_type=compute.UpdateRouterRequest):
@@ -4678,6 +6557,19 @@ def test_transport_adc(transport_class):
         adc.assert_called_once()
 
 
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "rest",
+    ],
+)
+def test_transport_kind(transport_name):
+    transport = RoutersClient.get_transport_class(transport_name)(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    assert transport.kind == transport_name
+
+
 def test_routers_base_transport_error():
     # Passing both a credentials object and credentials_file should raise an error
     with pytest.raises(core_exceptions.DuplicateCredentialArgs):
@@ -4717,6 +6609,14 @@ def test_routers_base_transport():
 
     with pytest.raises(NotImplementedError):
         transport.close()
+
+    # Catch all for all remaining methods and properties
+    remainder = [
+        "kind",
+    ]
+    for r in remainder:
+        with pytest.raises(NotImplementedError):
+            getattr(transport, r)()
 
 
 def test_routers_base_transport_with_credentials_file():

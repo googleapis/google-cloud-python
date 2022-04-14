@@ -1533,7 +1533,9 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
         def __hash__(self):
             return hash("Insert")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+            "parentId": "",
+        }
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
@@ -2835,6 +2837,10 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
         # The return type is fine, but mypy isn't sophisticated enough to determine what's going on here.
         # In C++ this would require a dynamic_cast
         return stub  # type: ignore
+
+    @property
+    def kind(self) -> str:
+        return "rest"
 
     def close(self):
         self._session.close()

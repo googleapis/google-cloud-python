@@ -934,6 +934,10 @@ class GlobalPublicDelegatedPrefixesRestTransport(
         # In C++ this would require a dynamic_cast
         return stub  # type: ignore
 
+    @property
+    def kind(self) -> str:
+        return "rest"
+
     def close(self):
         self._session.close()
 

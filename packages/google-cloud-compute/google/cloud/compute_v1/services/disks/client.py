@@ -14,13 +14,15 @@
 # limitations under the License.
 #
 from collections import OrderedDict
+import functools
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
+from google.api_core import extended_operation
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
@@ -34,6 +36,7 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
+from google.api_core import extended_operation  # type: ignore
 from google.cloud.compute_v1.services.disks import pagers
 from google.cloud.compute_v1.types import compute
 from .transports.base import DisksTransport, DEFAULT_CLIENT_INFO
@@ -450,22 +453,9 @@ class DisksClient(metaclass=DisksClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.Operation:
-                Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                [Global](/compute/docs/reference/rest/v1/globalOperations)
-                \*
-                [Regional](/compute/docs/reference/rest/v1/regionOperations)
-                \*
-                [Zonal](/compute/docs/reference/rest/v1/zoneOperations)
-                You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the globalOperations
-                resource. - For regional operations, use the
-                regionOperations resource. - For zonal operations, use
-                the zonalOperations resource. For more information, read
-                Global, Regional, and Zonal Resources.
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
 
         """
         # Create or coerce a protobuf request object.
@@ -510,6 +500,132 @@ class DisksClient(metaclass=DisksClientMeta):
             timeout=timeout,
             metadata=metadata,
         )
+
+        # Done; return the response.
+        return response
+
+    def add_resource_policies(
+        self,
+        request: Union[compute.AddResourcePoliciesDiskRequest, dict] = None,
+        *,
+        project: str = None,
+        zone: str = None,
+        disk: str = None,
+        disks_add_resource_policies_request_resource: compute.DisksAddResourcePoliciesRequest = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> extended_operation.ExtendedOperation:
+        r"""Adds existing resource policies to a disk. You can
+        only add one policy which will be applied to this disk
+        for scheduling snapshot creation.
+
+        Args:
+            request (Union[google.cloud.compute_v1.types.AddResourcePoliciesDiskRequest, dict]):
+                The request object. A request message for
+                Disks.AddResourcePolicies. See the method description
+                for details.
+            project (str):
+                Project ID for this request.
+                This corresponds to the ``project`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            zone (str):
+                The name of the zone for this
+                request.
+
+                This corresponds to the ``zone`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            disk (str):
+                The disk name for this request.
+                This corresponds to the ``disk`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            disks_add_resource_policies_request_resource (google.cloud.compute_v1.types.DisksAddResourcePoliciesRequest):
+                The body resource for this request
+                This corresponds to the ``disks_add_resource_policies_request_resource`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any(
+            [project, zone, disk, disks_add_resource_policies_request_resource]
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a compute.AddResourcePoliciesDiskRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, compute.AddResourcePoliciesDiskRequest):
+            request = compute.AddResourcePoliciesDiskRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if project is not None:
+                request.project = project
+            if zone is not None:
+                request.zone = zone
+            if disk is not None:
+                request.disk = disk
+            if disks_add_resource_policies_request_resource is not None:
+                request.disks_add_resource_policies_request_resource = (
+                    disks_add_resource_policies_request_resource
+                )
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.add_resource_policies]
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        operation_service = self._transport._zone_operations_client
+        operation_request = compute.GetZoneOperationRequest()
+        operation_request.project = request.project
+        operation_request.zone = request.zone
+        operation_request.operation = response.name
+
+        get_operation = functools.partial(operation_service.get, operation_request)
+        # Cancel is not part of extended operations yet.
+        cancel_operation = lambda: None
+
+        # Note: this class is an implementation detail to provide a uniform
+        # set of names for certain fields in the extended operation proto message.
+        # See google.api_core.extended_operation.ExtendedOperation for details
+        # on these properties and the  expected interface.
+        class _CustomOperation(extended_operation.ExtendedOperation):
+            @property
+            def error_message(self):
+                return self._extended_operation.http_error_message
+
+            @property
+            def error_code(self):
+                return self._extended_operation.http_error_status_code
+
+        response = _CustomOperation.make(get_operation, cancel_operation, response)
 
         # Done; return the response.
         return response
@@ -647,22 +763,9 @@ class DisksClient(metaclass=DisksClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.Operation:
-                Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                [Global](/compute/docs/reference/rest/v1/globalOperations)
-                \*
-                [Regional](/compute/docs/reference/rest/v1/regionOperations)
-                \*
-                [Zonal](/compute/docs/reference/rest/v1/zoneOperations)
-                You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the globalOperations
-                resource. - For regional operations, use the
-                regionOperations resource. - For zonal operations, use
-                the zonalOperations resource. For more information, read
-                Global, Regional, and Zonal Resources.
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
 
         """
         # Create or coerce a protobuf request object.
@@ -703,6 +806,132 @@ class DisksClient(metaclass=DisksClientMeta):
             timeout=timeout,
             metadata=metadata,
         )
+
+        # Done; return the response.
+        return response
+
+    def create_snapshot(
+        self,
+        request: Union[compute.CreateSnapshotDiskRequest, dict] = None,
+        *,
+        project: str = None,
+        zone: str = None,
+        disk: str = None,
+        snapshot_resource: compute.Snapshot = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> extended_operation.ExtendedOperation:
+        r"""Creates a snapshot of a specified persistent disk.
+        For regular snapshot creation, consider using
+        snapshots.insert instead, as that method supports more
+        features, such as creating snapshots in a project
+        different from the source disk project.
+
+        Args:
+            request (Union[google.cloud.compute_v1.types.CreateSnapshotDiskRequest, dict]):
+                The request object. A request message for
+                Disks.CreateSnapshot. See the method description for
+                details.
+            project (str):
+                Project ID for this request.
+                This corresponds to the ``project`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            zone (str):
+                The name of the zone for this
+                request.
+
+                This corresponds to the ``zone`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            disk (str):
+                Name of the persistent disk to
+                snapshot.
+
+                This corresponds to the ``disk`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            snapshot_resource (google.cloud.compute_v1.types.Snapshot):
+                The body resource for this request
+                This corresponds to the ``snapshot_resource`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([project, zone, disk, snapshot_resource])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a compute.CreateSnapshotDiskRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, compute.CreateSnapshotDiskRequest):
+            request = compute.CreateSnapshotDiskRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if project is not None:
+                request.project = project
+            if zone is not None:
+                request.zone = zone
+            if disk is not None:
+                request.disk = disk
+            if snapshot_resource is not None:
+                request.snapshot_resource = snapshot_resource
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.create_snapshot]
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        operation_service = self._transport._zone_operations_client
+        operation_request = compute.GetZoneOperationRequest()
+        operation_request.project = request.project
+        operation_request.zone = request.zone
+        operation_request.operation = response.name
+
+        get_operation = functools.partial(operation_service.get, operation_request)
+        # Cancel is not part of extended operations yet.
+        cancel_operation = lambda: None
+
+        # Note: this class is an implementation detail to provide a uniform
+        # set of names for certain fields in the extended operation proto message.
+        # See google.api_core.extended_operation.ExtendedOperation for details
+        # on these properties and the  expected interface.
+        class _CustomOperation(extended_operation.ExtendedOperation):
+            @property
+            def error_message(self):
+                return self._extended_operation.http_error_message
+
+            @property
+            def error_code(self):
+                return self._extended_operation.http_error_status_code
+
+        response = _CustomOperation.make(get_operation, cancel_operation, response)
 
         # Done; return the response.
         return response
@@ -754,22 +983,9 @@ class DisksClient(metaclass=DisksClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.Operation:
-                Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                [Global](/compute/docs/reference/rest/v1/globalOperations)
-                \*
-                [Regional](/compute/docs/reference/rest/v1/regionOperations)
-                \*
-                [Zonal](/compute/docs/reference/rest/v1/zoneOperations)
-                You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the globalOperations
-                resource. - For regional operations, use the
-                regionOperations resource. - For zonal operations, use
-                the zonalOperations resource. For more information, read
-                Global, Regional, and Zonal Resources.
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
 
         """
         # Create or coerce a protobuf request object.
@@ -808,6 +1024,123 @@ class DisksClient(metaclass=DisksClientMeta):
             timeout=timeout,
             metadata=metadata,
         )
+
+        # Done; return the response.
+        return response
+
+    def delete(
+        self,
+        request: Union[compute.DeleteDiskRequest, dict] = None,
+        *,
+        project: str = None,
+        zone: str = None,
+        disk: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> extended_operation.ExtendedOperation:
+        r"""Deletes the specified persistent disk. Deleting a
+        disk removes its data permanently and is irreversible.
+        However, deleting a disk does not delete any snapshots
+        previously made from the disk. You must separately
+        delete snapshots.
+
+        Args:
+            request (Union[google.cloud.compute_v1.types.DeleteDiskRequest, dict]):
+                The request object. A request message for Disks.Delete.
+                See the method description for details.
+            project (str):
+                Project ID for this request.
+                This corresponds to the ``project`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            zone (str):
+                The name of the zone for this
+                request.
+
+                This corresponds to the ``zone`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            disk (str):
+                Name of the persistent disk to
+                delete.
+
+                This corresponds to the ``disk`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([project, zone, disk])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a compute.DeleteDiskRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, compute.DeleteDiskRequest):
+            request = compute.DeleteDiskRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if project is not None:
+                request.project = project
+            if zone is not None:
+                request.zone = zone
+            if disk is not None:
+                request.disk = disk
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.delete]
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        operation_service = self._transport._zone_operations_client
+        operation_request = compute.GetZoneOperationRequest()
+        operation_request.project = request.project
+        operation_request.zone = request.zone
+        operation_request.operation = response.name
+
+        get_operation = functools.partial(operation_service.get, operation_request)
+        # Cancel is not part of extended operations yet.
+        cancel_operation = lambda: None
+
+        # Note: this class is an implementation detail to provide a uniform
+        # set of names for certain fields in the extended operation proto message.
+        # See google.api_core.extended_operation.ExtendedOperation for details
+        # on these properties and the  expected interface.
+        class _CustomOperation(extended_operation.ExtendedOperation):
+            @property
+            def error_message(self):
+                return self._extended_operation.http_error_message
+
+            @property
+            def error_code(self):
+                return self._extended_operation.http_error_status_code
+
+        response = _CustomOperation.make(get_operation, cancel_operation, response)
 
         # Done; return the response.
         return response
@@ -1086,22 +1419,9 @@ class DisksClient(metaclass=DisksClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.Operation:
-                Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                [Global](/compute/docs/reference/rest/v1/globalOperations)
-                \*
-                [Regional](/compute/docs/reference/rest/v1/regionOperations)
-                \*
-                [Zonal](/compute/docs/reference/rest/v1/zoneOperations)
-                You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the globalOperations
-                resource. - For regional operations, use the
-                regionOperations resource. - For zonal operations, use
-                the zonalOperations resource. For more information, read
-                Global, Regional, and Zonal Resources.
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
 
         """
         # Create or coerce a protobuf request object.
@@ -1140,6 +1460,123 @@ class DisksClient(metaclass=DisksClientMeta):
             timeout=timeout,
             metadata=metadata,
         )
+
+        # Done; return the response.
+        return response
+
+    def insert(
+        self,
+        request: Union[compute.InsertDiskRequest, dict] = None,
+        *,
+        project: str = None,
+        zone: str = None,
+        disk_resource: compute.Disk = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> extended_operation.ExtendedOperation:
+        r"""Creates a persistent disk in the specified project
+        using the data in the request. You can create a disk
+        from a source (sourceImage, sourceSnapshot, or
+        sourceDisk) or create an empty 500 GB data disk by
+        omitting all properties. You can also create a disk that
+        is larger than the default size by specifying the sizeGb
+        property.
+
+        Args:
+            request (Union[google.cloud.compute_v1.types.InsertDiskRequest, dict]):
+                The request object. A request message for Disks.Insert.
+                See the method description for details.
+            project (str):
+                Project ID for this request.
+                This corresponds to the ``project`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            zone (str):
+                The name of the zone for this
+                request.
+
+                This corresponds to the ``zone`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            disk_resource (google.cloud.compute_v1.types.Disk):
+                The body resource for this request
+                This corresponds to the ``disk_resource`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([project, zone, disk_resource])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a compute.InsertDiskRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, compute.InsertDiskRequest):
+            request = compute.InsertDiskRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if project is not None:
+                request.project = project
+            if zone is not None:
+                request.zone = zone
+            if disk_resource is not None:
+                request.disk_resource = disk_resource
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.insert]
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        operation_service = self._transport._zone_operations_client
+        operation_request = compute.GetZoneOperationRequest()
+        operation_request.project = request.project
+        operation_request.zone = request.zone
+        operation_request.operation = response.name
+
+        get_operation = functools.partial(operation_service.get, operation_request)
+        # Cancel is not part of extended operations yet.
+        cancel_operation = lambda: None
+
+        # Note: this class is an implementation detail to provide a uniform
+        # set of names for certain fields in the extended operation proto message.
+        # See google.api_core.extended_operation.ExtendedOperation for details
+        # on these properties and the  expected interface.
+        class _CustomOperation(extended_operation.ExtendedOperation):
+            @property
+            def error_message(self):
+                return self._extended_operation.http_error_message
+
+            @property
+            def error_code(self):
+                return self._extended_operation.http_error_status_code
+
+        response = _CustomOperation.make(get_operation, cancel_operation, response)
 
         # Done; return the response.
         return response
@@ -1282,22 +1719,9 @@ class DisksClient(metaclass=DisksClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.Operation:
-                Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                [Global](/compute/docs/reference/rest/v1/globalOperations)
-                \*
-                [Regional](/compute/docs/reference/rest/v1/regionOperations)
-                \*
-                [Zonal](/compute/docs/reference/rest/v1/zoneOperations)
-                You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the globalOperations
-                resource. - For regional operations, use the
-                regionOperations resource. - For zonal operations, use
-                the zonalOperations resource. For more information, read
-                Global, Regional, and Zonal Resources.
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
 
         """
         # Create or coerce a protobuf request object.
@@ -1342,6 +1766,130 @@ class DisksClient(metaclass=DisksClientMeta):
             timeout=timeout,
             metadata=metadata,
         )
+
+        # Done; return the response.
+        return response
+
+    def remove_resource_policies(
+        self,
+        request: Union[compute.RemoveResourcePoliciesDiskRequest, dict] = None,
+        *,
+        project: str = None,
+        zone: str = None,
+        disk: str = None,
+        disks_remove_resource_policies_request_resource: compute.DisksRemoveResourcePoliciesRequest = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> extended_operation.ExtendedOperation:
+        r"""Removes resource policies from a disk.
+
+        Args:
+            request (Union[google.cloud.compute_v1.types.RemoveResourcePoliciesDiskRequest, dict]):
+                The request object. A request message for
+                Disks.RemoveResourcePolicies. See the method description
+                for details.
+            project (str):
+                Project ID for this request.
+                This corresponds to the ``project`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            zone (str):
+                The name of the zone for this
+                request.
+
+                This corresponds to the ``zone`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            disk (str):
+                The disk name for this request.
+                This corresponds to the ``disk`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            disks_remove_resource_policies_request_resource (google.cloud.compute_v1.types.DisksRemoveResourcePoliciesRequest):
+                The body resource for this request
+                This corresponds to the ``disks_remove_resource_policies_request_resource`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any(
+            [project, zone, disk, disks_remove_resource_policies_request_resource]
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a compute.RemoveResourcePoliciesDiskRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, compute.RemoveResourcePoliciesDiskRequest):
+            request = compute.RemoveResourcePoliciesDiskRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if project is not None:
+                request.project = project
+            if zone is not None:
+                request.zone = zone
+            if disk is not None:
+                request.disk = disk
+            if disks_remove_resource_policies_request_resource is not None:
+                request.disks_remove_resource_policies_request_resource = (
+                    disks_remove_resource_policies_request_resource
+                )
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.remove_resource_policies]
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        operation_service = self._transport._zone_operations_client
+        operation_request = compute.GetZoneOperationRequest()
+        operation_request.project = request.project
+        operation_request.zone = request.zone
+        operation_request.operation = response.name
+
+        get_operation = functools.partial(operation_service.get, operation_request)
+        # Cancel is not part of extended operations yet.
+        cancel_operation = lambda: None
+
+        # Note: this class is an implementation detail to provide a uniform
+        # set of names for certain fields in the extended operation proto message.
+        # See google.api_core.extended_operation.ExtendedOperation for details
+        # on these properties and the  expected interface.
+        class _CustomOperation(extended_operation.ExtendedOperation):
+            @property
+            def error_message(self):
+                return self._extended_operation.http_error_message
+
+            @property
+            def error_code(self):
+                return self._extended_operation.http_error_status_code
+
+        response = _CustomOperation.make(get_operation, cancel_operation, response)
 
         # Done; return the response.
         return response
@@ -1394,22 +1942,9 @@ class DisksClient(metaclass=DisksClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.Operation:
-                Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                [Global](/compute/docs/reference/rest/v1/globalOperations)
-                \*
-                [Regional](/compute/docs/reference/rest/v1/regionOperations)
-                \*
-                [Zonal](/compute/docs/reference/rest/v1/zoneOperations)
-                You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the globalOperations
-                resource. - For regional operations, use the
-                regionOperations resource. - For zonal operations, use
-                the zonalOperations resource. For more information, read
-                Global, Regional, and Zonal Resources.
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
 
         """
         # Create or coerce a protobuf request object.
@@ -1450,6 +1985,126 @@ class DisksClient(metaclass=DisksClientMeta):
             timeout=timeout,
             metadata=metadata,
         )
+
+        # Done; return the response.
+        return response
+
+    def resize(
+        self,
+        request: Union[compute.ResizeDiskRequest, dict] = None,
+        *,
+        project: str = None,
+        zone: str = None,
+        disk: str = None,
+        disks_resize_request_resource: compute.DisksResizeRequest = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> extended_operation.ExtendedOperation:
+        r"""Resizes the specified persistent disk. You can only
+        increase the size of the disk.
+
+        Args:
+            request (Union[google.cloud.compute_v1.types.ResizeDiskRequest, dict]):
+                The request object. A request message for Disks.Resize.
+                See the method description for details.
+            project (str):
+                Project ID for this request.
+                This corresponds to the ``project`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            zone (str):
+                The name of the zone for this
+                request.
+
+                This corresponds to the ``zone`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            disk (str):
+                The name of the persistent disk.
+                This corresponds to the ``disk`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            disks_resize_request_resource (google.cloud.compute_v1.types.DisksResizeRequest):
+                The body resource for this request
+                This corresponds to the ``disks_resize_request_resource`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([project, zone, disk, disks_resize_request_resource])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a compute.ResizeDiskRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, compute.ResizeDiskRequest):
+            request = compute.ResizeDiskRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if project is not None:
+                request.project = project
+            if zone is not None:
+                request.zone = zone
+            if disk is not None:
+                request.disk = disk
+            if disks_resize_request_resource is not None:
+                request.disks_resize_request_resource = disks_resize_request_resource
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.resize]
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        operation_service = self._transport._zone_operations_client
+        operation_request = compute.GetZoneOperationRequest()
+        operation_request.project = request.project
+        operation_request.zone = request.zone
+        operation_request.operation = response.name
+
+        get_operation = functools.partial(operation_service.get, operation_request)
+        # Cancel is not part of extended operations yet.
+        cancel_operation = lambda: None
+
+        # Note: this class is an implementation detail to provide a uniform
+        # set of names for certain fields in the extended operation proto message.
+        # See google.api_core.extended_operation.ExtendedOperation for details
+        # on these properties and the  expected interface.
+        class _CustomOperation(extended_operation.ExtendedOperation):
+            @property
+            def error_message(self):
+                return self._extended_operation.http_error_message
+
+            @property
+            def error_code(self):
+                return self._extended_operation.http_error_status_code
+
+        response = _CustomOperation.make(get_operation, cancel_operation, response)
 
         # Done; return the response.
         return response
@@ -1644,22 +2299,9 @@ class DisksClient(metaclass=DisksClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.Operation:
-                Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                [Global](/compute/docs/reference/rest/v1/globalOperations)
-                \*
-                [Regional](/compute/docs/reference/rest/v1/regionOperations)
-                \*
-                [Zonal](/compute/docs/reference/rest/v1/zoneOperations)
-                You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the globalOperations
-                resource. - For regional operations, use the
-                regionOperations resource. - For zonal operations, use
-                the zonalOperations resource. For more information, read
-                Global, Regional, and Zonal Resources.
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
 
         """
         # Create or coerce a protobuf request object.
@@ -1704,6 +2346,132 @@ class DisksClient(metaclass=DisksClientMeta):
             timeout=timeout,
             metadata=metadata,
         )
+
+        # Done; return the response.
+        return response
+
+    def set_labels(
+        self,
+        request: Union[compute.SetLabelsDiskRequest, dict] = None,
+        *,
+        project: str = None,
+        zone: str = None,
+        resource: str = None,
+        zone_set_labels_request_resource: compute.ZoneSetLabelsRequest = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> extended_operation.ExtendedOperation:
+        r"""Sets the labels on a disk. To learn more about
+        labels, read the Labeling Resources documentation.
+
+        Args:
+            request (Union[google.cloud.compute_v1.types.SetLabelsDiskRequest, dict]):
+                The request object. A request message for
+                Disks.SetLabels. See the method description for details.
+            project (str):
+                Project ID for this request.
+                This corresponds to the ``project`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            zone (str):
+                The name of the zone for this
+                request.
+
+                This corresponds to the ``zone`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            resource (str):
+                Name or id of the resource for this
+                request.
+
+                This corresponds to the ``resource`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            zone_set_labels_request_resource (google.cloud.compute_v1.types.ZoneSetLabelsRequest):
+                The body resource for this request
+                This corresponds to the ``zone_set_labels_request_resource`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any(
+            [project, zone, resource, zone_set_labels_request_resource]
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a compute.SetLabelsDiskRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, compute.SetLabelsDiskRequest):
+            request = compute.SetLabelsDiskRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if project is not None:
+                request.project = project
+            if zone is not None:
+                request.zone = zone
+            if resource is not None:
+                request.resource = resource
+            if zone_set_labels_request_resource is not None:
+                request.zone_set_labels_request_resource = (
+                    zone_set_labels_request_resource
+                )
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.set_labels]
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        operation_service = self._transport._zone_operations_client
+        operation_request = compute.GetZoneOperationRequest()
+        operation_request.project = request.project
+        operation_request.zone = request.zone
+        operation_request.operation = response.name
+
+        get_operation = functools.partial(operation_service.get, operation_request)
+        # Cancel is not part of extended operations yet.
+        cancel_operation = lambda: None
+
+        # Note: this class is an implementation detail to provide a uniform
+        # set of names for certain fields in the extended operation proto message.
+        # See google.api_core.extended_operation.ExtendedOperation for details
+        # on these properties and the  expected interface.
+        class _CustomOperation(extended_operation.ExtendedOperation):
+            @property
+            def error_message(self):
+                return self._extended_operation.http_error_message
+
+            @property
+            def error_code(self):
+                return self._extended_operation.http_error_status_code
+
+        response = _CustomOperation.make(get_operation, cancel_operation, response)
 
         # Done; return the response.
         return response

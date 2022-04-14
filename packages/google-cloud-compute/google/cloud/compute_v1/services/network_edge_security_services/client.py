@@ -14,13 +14,15 @@
 # limitations under the License.
 #
 from collections import OrderedDict
+import functools
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
+from google.api_core import extended_operation
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
@@ -34,6 +36,7 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
+from google.api_core import extended_operation  # type: ignore
 from google.cloud.compute_v1.services.network_edge_security_services import pagers
 from google.cloud.compute_v1.types import compute
 from .transports.base import NetworkEdgeSecurityServicesTransport, DEFAULT_CLIENT_INFO
@@ -534,22 +537,9 @@ class NetworkEdgeSecurityServicesClient(
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.Operation:
-                Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                [Global](/compute/docs/reference/rest/v1/globalOperations)
-                \*
-                [Regional](/compute/docs/reference/rest/v1/regionOperations)
-                \*
-                [Zonal](/compute/docs/reference/rest/v1/zoneOperations)
-                You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the globalOperations
-                resource. - For regional operations, use the
-                regionOperations resource. - For zonal operations, use
-                the zonalOperations resource. For more information, read
-                Global, Regional, and Zonal Resources.
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
 
         """
         # Create or coerce a protobuf request object.
@@ -588,6 +578,120 @@ class NetworkEdgeSecurityServicesClient(
             timeout=timeout,
             metadata=metadata,
         )
+
+        # Done; return the response.
+        return response
+
+    def delete(
+        self,
+        request: Union[compute.DeleteNetworkEdgeSecurityServiceRequest, dict] = None,
+        *,
+        project: str = None,
+        region: str = None,
+        network_edge_security_service: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> extended_operation.ExtendedOperation:
+        r"""Deletes the specified service.
+
+        Args:
+            request (Union[google.cloud.compute_v1.types.DeleteNetworkEdgeSecurityServiceRequest, dict]):
+                The request object. A request message for
+                NetworkEdgeSecurityServices.Delete. See the method
+                description for details.
+            project (str):
+                Project ID for this request.
+                This corresponds to the ``project`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            region (str):
+                Name of the region scoping this
+                request.
+
+                This corresponds to the ``region`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            network_edge_security_service (str):
+                Name of the network edge security
+                service to delete.
+
+                This corresponds to the ``network_edge_security_service`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([project, region, network_edge_security_service])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a compute.DeleteNetworkEdgeSecurityServiceRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, compute.DeleteNetworkEdgeSecurityServiceRequest):
+            request = compute.DeleteNetworkEdgeSecurityServiceRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if project is not None:
+                request.project = project
+            if region is not None:
+                request.region = region
+            if network_edge_security_service is not None:
+                request.network_edge_security_service = network_edge_security_service
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.delete]
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        operation_service = self._transport._region_operations_client
+        operation_request = compute.GetRegionOperationRequest()
+        operation_request.project = request.project
+        operation_request.region = request.region
+        operation_request.operation = response.name
+
+        get_operation = functools.partial(operation_service.get, operation_request)
+        # Cancel is not part of extended operations yet.
+        cancel_operation = lambda: None
+
+        # Note: this class is an implementation detail to provide a uniform
+        # set of names for certain fields in the extended operation proto message.
+        # See google.api_core.extended_operation.ExtendedOperation for details
+        # on these properties and the  expected interface.
+        class _CustomOperation(extended_operation.ExtendedOperation):
+            @property
+            def error_message(self):
+                return self._extended_operation.http_error_message
+
+            @property
+            def error_code(self):
+                return self._extended_operation.http_error_status_code
+
+        response = _CustomOperation.make(get_operation, cancel_operation, response)
 
         # Done; return the response.
         return response
@@ -724,22 +828,9 @@ class NetworkEdgeSecurityServicesClient(
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.Operation:
-                Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                [Global](/compute/docs/reference/rest/v1/globalOperations)
-                \*
-                [Regional](/compute/docs/reference/rest/v1/regionOperations)
-                \*
-                [Zonal](/compute/docs/reference/rest/v1/zoneOperations)
-                You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the globalOperations
-                resource. - For regional operations, use the
-                regionOperations resource. - For zonal operations, use
-                the zonalOperations resource. For more information, read
-                Global, Regional, and Zonal Resources.
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
 
         """
         # Create or coerce a protobuf request object.
@@ -782,6 +873,123 @@ class NetworkEdgeSecurityServicesClient(
             timeout=timeout,
             metadata=metadata,
         )
+
+        # Done; return the response.
+        return response
+
+    def insert(
+        self,
+        request: Union[compute.InsertNetworkEdgeSecurityServiceRequest, dict] = None,
+        *,
+        project: str = None,
+        region: str = None,
+        network_edge_security_service_resource: compute.NetworkEdgeSecurityService = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> extended_operation.ExtendedOperation:
+        r"""Creates a new service in the specified project using
+        the data included in the request.
+
+        Args:
+            request (Union[google.cloud.compute_v1.types.InsertNetworkEdgeSecurityServiceRequest, dict]):
+                The request object. A request message for
+                NetworkEdgeSecurityServices.Insert. See the method
+                description for details.
+            project (str):
+                Project ID for this request.
+                This corresponds to the ``project`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            region (str):
+                Name of the region scoping this
+                request.
+
+                This corresponds to the ``region`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            network_edge_security_service_resource (google.cloud.compute_v1.types.NetworkEdgeSecurityService):
+                The body resource for this request
+                This corresponds to the ``network_edge_security_service_resource`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any(
+            [project, region, network_edge_security_service_resource]
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a compute.InsertNetworkEdgeSecurityServiceRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, compute.InsertNetworkEdgeSecurityServiceRequest):
+            request = compute.InsertNetworkEdgeSecurityServiceRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if project is not None:
+                request.project = project
+            if region is not None:
+                request.region = region
+            if network_edge_security_service_resource is not None:
+                request.network_edge_security_service_resource = (
+                    network_edge_security_service_resource
+                )
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.insert]
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        operation_service = self._transport._region_operations_client
+        operation_request = compute.GetRegionOperationRequest()
+        operation_request.project = request.project
+        operation_request.region = request.region
+        operation_request.operation = response.name
+
+        get_operation = functools.partial(operation_service.get, operation_request)
+        # Cancel is not part of extended operations yet.
+        cancel_operation = lambda: None
+
+        # Note: this class is an implementation detail to provide a uniform
+        # set of names for certain fields in the extended operation proto message.
+        # See google.api_core.extended_operation.ExtendedOperation for details
+        # on these properties and the  expected interface.
+        class _CustomOperation(extended_operation.ExtendedOperation):
+            @property
+            def error_message(self):
+                return self._extended_operation.http_error_message
+
+            @property
+            def error_code(self):
+                return self._extended_operation.http_error_status_code
+
+        response = _CustomOperation.make(get_operation, cancel_operation, response)
 
         # Done; return the response.
         return response
@@ -837,22 +1045,9 @@ class NetworkEdgeSecurityServicesClient(
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.Operation:
-                Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                [Global](/compute/docs/reference/rest/v1/globalOperations)
-                \*
-                [Regional](/compute/docs/reference/rest/v1/regionOperations)
-                \*
-                [Zonal](/compute/docs/reference/rest/v1/zoneOperations)
-                You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the globalOperations
-                resource. - For regional operations, use the
-                regionOperations resource. - For zonal operations, use
-                the zonalOperations resource. For more information, read
-                Global, Regional, and Zonal Resources.
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
 
         """
         # Create or coerce a protobuf request object.
@@ -902,6 +1097,138 @@ class NetworkEdgeSecurityServicesClient(
             timeout=timeout,
             metadata=metadata,
         )
+
+        # Done; return the response.
+        return response
+
+    def patch(
+        self,
+        request: Union[compute.PatchNetworkEdgeSecurityServiceRequest, dict] = None,
+        *,
+        project: str = None,
+        region: str = None,
+        network_edge_security_service: str = None,
+        network_edge_security_service_resource: compute.NetworkEdgeSecurityService = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> extended_operation.ExtendedOperation:
+        r"""Patches the specified policy with the data included
+        in the request.
+
+        Args:
+            request (Union[google.cloud.compute_v1.types.PatchNetworkEdgeSecurityServiceRequest, dict]):
+                The request object. A request message for
+                NetworkEdgeSecurityServices.Patch. See the method
+                description for details.
+            project (str):
+                Project ID for this request.
+                This corresponds to the ``project`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            region (str):
+                Name of the region scoping this
+                request.
+
+                This corresponds to the ``region`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            network_edge_security_service (str):
+                Name of the network edge security
+                service to update.
+
+                This corresponds to the ``network_edge_security_service`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            network_edge_security_service_resource (google.cloud.compute_v1.types.NetworkEdgeSecurityService):
+                The body resource for this request
+                This corresponds to the ``network_edge_security_service_resource`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any(
+            [
+                project,
+                region,
+                network_edge_security_service,
+                network_edge_security_service_resource,
+            ]
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a compute.PatchNetworkEdgeSecurityServiceRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, compute.PatchNetworkEdgeSecurityServiceRequest):
+            request = compute.PatchNetworkEdgeSecurityServiceRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if project is not None:
+                request.project = project
+            if region is not None:
+                request.region = region
+            if network_edge_security_service is not None:
+                request.network_edge_security_service = network_edge_security_service
+            if network_edge_security_service_resource is not None:
+                request.network_edge_security_service_resource = (
+                    network_edge_security_service_resource
+                )
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.patch]
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        operation_service = self._transport._region_operations_client
+        operation_request = compute.GetRegionOperationRequest()
+        operation_request.project = request.project
+        operation_request.region = request.region
+        operation_request.operation = response.name
+
+        get_operation = functools.partial(operation_service.get, operation_request)
+        # Cancel is not part of extended operations yet.
+        cancel_operation = lambda: None
+
+        # Note: this class is an implementation detail to provide a uniform
+        # set of names for certain fields in the extended operation proto message.
+        # See google.api_core.extended_operation.ExtendedOperation for details
+        # on these properties and the  expected interface.
+        class _CustomOperation(extended_operation.ExtendedOperation):
+            @property
+            def error_message(self):
+                return self._extended_operation.http_error_message
+
+            @property
+            def error_code(self):
+                return self._extended_operation.http_error_status_code
+
+        response = _CustomOperation.make(get_operation, cancel_operation, response)
 
         # Done; return the response.
         return response

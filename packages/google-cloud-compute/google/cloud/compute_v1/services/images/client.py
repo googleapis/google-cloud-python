@@ -14,13 +14,15 @@
 # limitations under the License.
 #
 from collections import OrderedDict
+import functools
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
+from google.api_core import extended_operation
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
@@ -34,6 +36,7 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
+from google.api_core import extended_operation  # type: ignore
 from google.cloud.compute_v1.services.images import pagers
 from google.cloud.compute_v1.types import compute
 from .transports.base import ImagesTransport, DEFAULT_CLIENT_INFO
@@ -433,22 +436,9 @@ class ImagesClient(metaclass=ImagesClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.Operation:
-                Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                [Global](/compute/docs/reference/rest/v1/globalOperations)
-                \*
-                [Regional](/compute/docs/reference/rest/v1/regionOperations)
-                \*
-                [Zonal](/compute/docs/reference/rest/v1/zoneOperations)
-                You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the globalOperations
-                resource. - For regional operations, use the
-                regionOperations resource. - For zonal operations, use
-                the zonalOperations resource. For more information, read
-                Global, Regional, and Zonal Resources.
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
 
         """
         # Create or coerce a protobuf request object.
@@ -485,6 +475,106 @@ class ImagesClient(metaclass=ImagesClientMeta):
             timeout=timeout,
             metadata=metadata,
         )
+
+        # Done; return the response.
+        return response
+
+    def delete(
+        self,
+        request: Union[compute.DeleteImageRequest, dict] = None,
+        *,
+        project: str = None,
+        image: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> extended_operation.ExtendedOperation:
+        r"""Deletes the specified image.
+
+        Args:
+            request (Union[google.cloud.compute_v1.types.DeleteImageRequest, dict]):
+                The request object. A request message for Images.Delete.
+                See the method description for details.
+            project (str):
+                Project ID for this request.
+                This corresponds to the ``project`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            image (str):
+                Name of the image resource to delete.
+                This corresponds to the ``image`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([project, image])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a compute.DeleteImageRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, compute.DeleteImageRequest):
+            request = compute.DeleteImageRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if project is not None:
+                request.project = project
+            if image is not None:
+                request.image = image
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.delete]
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        operation_service = self._transport._global_operations_client
+        operation_request = compute.GetGlobalOperationRequest()
+        operation_request.project = request.project
+        operation_request.operation = response.name
+
+        get_operation = functools.partial(operation_service.get, operation_request)
+        # Cancel is not part of extended operations yet.
+        cancel_operation = lambda: None
+
+        # Note: this class is an implementation detail to provide a uniform
+        # set of names for certain fields in the extended operation proto message.
+        # See google.api_core.extended_operation.ExtendedOperation for details
+        # on these properties and the  expected interface.
+        class _CustomOperation(extended_operation.ExtendedOperation):
+            @property
+            def error_message(self):
+                return self._extended_operation.http_error_message
+
+            @property
+            def error_code(self):
+                return self._extended_operation.http_error_status_code
+
+        response = _CustomOperation.make(get_operation, cancel_operation, response)
 
         # Done; return the response.
         return response
@@ -531,22 +621,9 @@ class ImagesClient(metaclass=ImagesClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.Operation:
-                Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                [Global](/compute/docs/reference/rest/v1/globalOperations)
-                \*
-                [Regional](/compute/docs/reference/rest/v1/regionOperations)
-                \*
-                [Zonal](/compute/docs/reference/rest/v1/zoneOperations)
-                You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the globalOperations
-                resource. - For regional operations, use the
-                regionOperations resource. - For zonal operations, use
-                the zonalOperations resource. For more information, read
-                Global, Regional, and Zonal Resources.
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
 
         """
         # Create or coerce a protobuf request object.
@@ -585,6 +662,117 @@ class ImagesClient(metaclass=ImagesClientMeta):
             timeout=timeout,
             metadata=metadata,
         )
+
+        # Done; return the response.
+        return response
+
+    def deprecate(
+        self,
+        request: Union[compute.DeprecateImageRequest, dict] = None,
+        *,
+        project: str = None,
+        image: str = None,
+        deprecation_status_resource: compute.DeprecationStatus = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> extended_operation.ExtendedOperation:
+        r"""Sets the deprecation status of an image. If an empty
+        request body is given, clears the deprecation status
+        instead.
+
+        Args:
+            request (Union[google.cloud.compute_v1.types.DeprecateImageRequest, dict]):
+                The request object. A request message for
+                Images.Deprecate. See the method description for
+                details.
+            project (str):
+                Project ID for this request.
+                This corresponds to the ``project`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            image (str):
+                Image name.
+                This corresponds to the ``image`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            deprecation_status_resource (google.cloud.compute_v1.types.DeprecationStatus):
+                The body resource for this request
+                This corresponds to the ``deprecation_status_resource`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([project, image, deprecation_status_resource])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a compute.DeprecateImageRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, compute.DeprecateImageRequest):
+            request = compute.DeprecateImageRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if project is not None:
+                request.project = project
+            if image is not None:
+                request.image = image
+            if deprecation_status_resource is not None:
+                request.deprecation_status_resource = deprecation_status_resource
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.deprecate]
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        operation_service = self._transport._global_operations_client
+        operation_request = compute.GetGlobalOperationRequest()
+        operation_request.project = request.project
+        operation_request.operation = response.name
+
+        get_operation = functools.partial(operation_service.get, operation_request)
+        # Cancel is not part of extended operations yet.
+        cancel_operation = lambda: None
+
+        # Note: this class is an implementation detail to provide a uniform
+        # set of names for certain fields in the extended operation proto message.
+        # See google.api_core.extended_operation.ExtendedOperation for details
+        # on these properties and the  expected interface.
+        class _CustomOperation(extended_operation.ExtendedOperation):
+            @property
+            def error_message(self):
+                return self._extended_operation.http_error_message
+
+            @property
+            def error_code(self):
+                return self._extended_operation.http_error_status_code
+
+        response = _CustomOperation.make(get_operation, cancel_operation, response)
 
         # Done; return the response.
         return response
@@ -902,22 +1090,9 @@ class ImagesClient(metaclass=ImagesClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.Operation:
-                Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                [Global](/compute/docs/reference/rest/v1/globalOperations)
-                \*
-                [Regional](/compute/docs/reference/rest/v1/regionOperations)
-                \*
-                [Zonal](/compute/docs/reference/rest/v1/zoneOperations)
-                You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the globalOperations
-                resource. - For regional operations, use the
-                regionOperations resource. - For zonal operations, use
-                the zonalOperations resource. For more information, read
-                Global, Regional, and Zonal Resources.
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
 
         """
         # Create or coerce a protobuf request object.
@@ -954,6 +1129,107 @@ class ImagesClient(metaclass=ImagesClientMeta):
             timeout=timeout,
             metadata=metadata,
         )
+
+        # Done; return the response.
+        return response
+
+    def insert(
+        self,
+        request: Union[compute.InsertImageRequest, dict] = None,
+        *,
+        project: str = None,
+        image_resource: compute.Image = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> extended_operation.ExtendedOperation:
+        r"""Creates an image in the specified project using the
+        data included in the request.
+
+        Args:
+            request (Union[google.cloud.compute_v1.types.InsertImageRequest, dict]):
+                The request object. A request message for Images.Insert.
+                See the method description for details.
+            project (str):
+                Project ID for this request.
+                This corresponds to the ``project`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            image_resource (google.cloud.compute_v1.types.Image):
+                The body resource for this request
+                This corresponds to the ``image_resource`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([project, image_resource])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a compute.InsertImageRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, compute.InsertImageRequest):
+            request = compute.InsertImageRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if project is not None:
+                request.project = project
+            if image_resource is not None:
+                request.image_resource = image_resource
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.insert]
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        operation_service = self._transport._global_operations_client
+        operation_request = compute.GetGlobalOperationRequest()
+        operation_request.project = request.project
+        operation_request.operation = response.name
+
+        get_operation = functools.partial(operation_service.get, operation_request)
+        # Cancel is not part of extended operations yet.
+        cancel_operation = lambda: None
+
+        # Note: this class is an implementation detail to provide a uniform
+        # set of names for certain fields in the extended operation proto message.
+        # See google.api_core.extended_operation.ExtendedOperation for details
+        # on these properties and the  expected interface.
+        class _CustomOperation(extended_operation.ExtendedOperation):
+            @property
+            def error_message(self):
+                return self._extended_operation.http_error_message
+
+            @property
+            def error_code(self):
+                return self._extended_operation.http_error_status_code
+
+        response = _CustomOperation.make(get_operation, cancel_operation, response)
 
         # Done; return the response.
         return response
@@ -1085,22 +1361,9 @@ class ImagesClient(metaclass=ImagesClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.Operation:
-                Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                [Global](/compute/docs/reference/rest/v1/globalOperations)
-                \*
-                [Regional](/compute/docs/reference/rest/v1/regionOperations)
-                \*
-                [Zonal](/compute/docs/reference/rest/v1/zoneOperations)
-                You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the globalOperations
-                resource. - For regional operations, use the
-                regionOperations resource. - For zonal operations, use
-                the zonalOperations resource. For more information, read
-                Global, Regional, and Zonal Resources.
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
 
         """
         # Create or coerce a protobuf request object.
@@ -1139,6 +1402,116 @@ class ImagesClient(metaclass=ImagesClientMeta):
             timeout=timeout,
             metadata=metadata,
         )
+
+        # Done; return the response.
+        return response
+
+    def patch(
+        self,
+        request: Union[compute.PatchImageRequest, dict] = None,
+        *,
+        project: str = None,
+        image: str = None,
+        image_resource: compute.Image = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> extended_operation.ExtendedOperation:
+        r"""Patches the specified image with the data included in
+        the request. Only the following fields can be modified:
+        family, description, deprecation status.
+
+        Args:
+            request (Union[google.cloud.compute_v1.types.PatchImageRequest, dict]):
+                The request object. A request message for Images.Patch.
+                See the method description for details.
+            project (str):
+                Project ID for this request.
+                This corresponds to the ``project`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            image (str):
+                Name of the image resource to patch.
+                This corresponds to the ``image`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            image_resource (google.cloud.compute_v1.types.Image):
+                The body resource for this request
+                This corresponds to the ``image_resource`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([project, image, image_resource])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a compute.PatchImageRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, compute.PatchImageRequest):
+            request = compute.PatchImageRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if project is not None:
+                request.project = project
+            if image is not None:
+                request.image = image
+            if image_resource is not None:
+                request.image_resource = image_resource
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.patch]
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        operation_service = self._transport._global_operations_client
+        operation_request = compute.GetGlobalOperationRequest()
+        operation_request.project = request.project
+        operation_request.operation = response.name
+
+        get_operation = functools.partial(operation_service.get, operation_request)
+        # Cancel is not part of extended operations yet.
+        cancel_operation = lambda: None
+
+        # Note: this class is an implementation detail to provide a uniform
+        # set of names for certain fields in the extended operation proto message.
+        # See google.api_core.extended_operation.ExtendedOperation for details
+        # on these properties and the  expected interface.
+        class _CustomOperation(extended_operation.ExtendedOperation):
+            @property
+            def error_message(self):
+                return self._extended_operation.http_error_message
+
+            @property
+            def error_code(self):
+                return self._extended_operation.http_error_status_code
+
+        response = _CustomOperation.make(get_operation, cancel_operation, response)
 
         # Done; return the response.
         return response
@@ -1316,22 +1689,9 @@ class ImagesClient(metaclass=ImagesClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.Operation:
-                Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                [Global](/compute/docs/reference/rest/v1/globalOperations)
-                \*
-                [Regional](/compute/docs/reference/rest/v1/regionOperations)
-                \*
-                [Zonal](/compute/docs/reference/rest/v1/zoneOperations)
-                You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the globalOperations
-                resource. - For regional operations, use the
-                regionOperations resource. - For zonal operations, use
-                the zonalOperations resource. For more information, read
-                Global, Regional, and Zonal Resources.
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
 
         """
         # Create or coerce a protobuf request object.
@@ -1374,6 +1734,122 @@ class ImagesClient(metaclass=ImagesClientMeta):
             timeout=timeout,
             metadata=metadata,
         )
+
+        # Done; return the response.
+        return response
+
+    def set_labels(
+        self,
+        request: Union[compute.SetLabelsImageRequest, dict] = None,
+        *,
+        project: str = None,
+        resource: str = None,
+        global_set_labels_request_resource: compute.GlobalSetLabelsRequest = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> extended_operation.ExtendedOperation:
+        r"""Sets the labels on an image. To learn more about
+        labels, read the Labeling Resources documentation.
+
+        Args:
+            request (Union[google.cloud.compute_v1.types.SetLabelsImageRequest, dict]):
+                The request object. A request message for
+                Images.SetLabels. See the method description for
+                details.
+            project (str):
+                Project ID for this request.
+                This corresponds to the ``project`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            resource (str):
+                Name or id of the resource for this
+                request.
+
+                This corresponds to the ``resource`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            global_set_labels_request_resource (google.cloud.compute_v1.types.GlobalSetLabelsRequest):
+                The body resource for this request
+                This corresponds to the ``global_set_labels_request_resource`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any(
+            [project, resource, global_set_labels_request_resource]
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a compute.SetLabelsImageRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, compute.SetLabelsImageRequest):
+            request = compute.SetLabelsImageRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if project is not None:
+                request.project = project
+            if resource is not None:
+                request.resource = resource
+            if global_set_labels_request_resource is not None:
+                request.global_set_labels_request_resource = (
+                    global_set_labels_request_resource
+                )
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.set_labels]
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        operation_service = self._transport._global_operations_client
+        operation_request = compute.GetGlobalOperationRequest()
+        operation_request.project = request.project
+        operation_request.operation = response.name
+
+        get_operation = functools.partial(operation_service.get, operation_request)
+        # Cancel is not part of extended operations yet.
+        cancel_operation = lambda: None
+
+        # Note: this class is an implementation detail to provide a uniform
+        # set of names for certain fields in the extended operation proto message.
+        # See google.api_core.extended_operation.ExtendedOperation for details
+        # on these properties and the  expected interface.
+        class _CustomOperation(extended_operation.ExtendedOperation):
+            @property
+            def error_message(self):
+                return self._extended_operation.http_error_message
+
+            @property
+            def error_code(self):
+                return self._extended_operation.http_error_status_code
+
+        response = _CustomOperation.make(get_operation, cancel_operation, response)
 
         # Done; return the response.
         return response

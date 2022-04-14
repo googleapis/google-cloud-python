@@ -14,13 +14,15 @@
 # limitations under the License.
 #
 from collections import OrderedDict
+import functools
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
+from google.api_core import extended_operation
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
@@ -34,6 +36,7 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
+from google.api_core import extended_operation  # type: ignore
 from google.cloud.compute_v1.services.target_ssl_proxies import pagers
 from google.cloud.compute_v1.types import compute
 from .transports.base import TargetSslProxiesTransport, DEFAULT_CLIENT_INFO
@@ -438,22 +441,9 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.Operation:
-                Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                [Global](/compute/docs/reference/rest/v1/globalOperations)
-                \*
-                [Regional](/compute/docs/reference/rest/v1/regionOperations)
-                \*
-                [Zonal](/compute/docs/reference/rest/v1/zoneOperations)
-                You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the globalOperations
-                resource. - For regional operations, use the
-                regionOperations resource. - For zonal operations, use
-                the zonalOperations resource. For more information, read
-                Global, Regional, and Zonal Resources.
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
 
         """
         # Create or coerce a protobuf request object.
@@ -490,6 +480,109 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
             timeout=timeout,
             metadata=metadata,
         )
+
+        # Done; return the response.
+        return response
+
+    def delete(
+        self,
+        request: Union[compute.DeleteTargetSslProxyRequest, dict] = None,
+        *,
+        project: str = None,
+        target_ssl_proxy: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> extended_operation.ExtendedOperation:
+        r"""Deletes the specified TargetSslProxy resource.
+
+        Args:
+            request (Union[google.cloud.compute_v1.types.DeleteTargetSslProxyRequest, dict]):
+                The request object. A request message for
+                TargetSslProxies.Delete. See the method description for
+                details.
+            project (str):
+                Project ID for this request.
+                This corresponds to the ``project`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            target_ssl_proxy (str):
+                Name of the TargetSslProxy resource
+                to delete.
+
+                This corresponds to the ``target_ssl_proxy`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([project, target_ssl_proxy])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a compute.DeleteTargetSslProxyRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, compute.DeleteTargetSslProxyRequest):
+            request = compute.DeleteTargetSslProxyRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if project is not None:
+                request.project = project
+            if target_ssl_proxy is not None:
+                request.target_ssl_proxy = target_ssl_proxy
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.delete]
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        operation_service = self._transport._global_operations_client
+        operation_request = compute.GetGlobalOperationRequest()
+        operation_request.project = request.project
+        operation_request.operation = response.name
+
+        get_operation = functools.partial(operation_service.get, operation_request)
+        # Cancel is not part of extended operations yet.
+        cancel_operation = lambda: None
+
+        # Note: this class is an implementation detail to provide a uniform
+        # set of names for certain fields in the extended operation proto message.
+        # See google.api_core.extended_operation.ExtendedOperation for details
+        # on these properties and the  expected interface.
+        class _CustomOperation(extended_operation.ExtendedOperation):
+            @property
+            def error_message(self):
+                return self._extended_operation.http_error_message
+
+            @property
+            def error_code(self):
+                return self._extended_operation.http_error_status_code
+
+        response = _CustomOperation.make(get_operation, cancel_operation, response)
 
         # Done; return the response.
         return response
@@ -616,22 +709,9 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.Operation:
-                Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                [Global](/compute/docs/reference/rest/v1/globalOperations)
-                \*
-                [Regional](/compute/docs/reference/rest/v1/regionOperations)
-                \*
-                [Zonal](/compute/docs/reference/rest/v1/zoneOperations)
-                You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the globalOperations
-                resource. - For regional operations, use the
-                regionOperations resource. - For zonal operations, use
-                the zonalOperations resource. For more information, read
-                Global, Regional, and Zonal Resources.
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
 
         """
         # Create or coerce a protobuf request object.
@@ -668,6 +748,108 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
             timeout=timeout,
             metadata=metadata,
         )
+
+        # Done; return the response.
+        return response
+
+    def insert(
+        self,
+        request: Union[compute.InsertTargetSslProxyRequest, dict] = None,
+        *,
+        project: str = None,
+        target_ssl_proxy_resource: compute.TargetSslProxy = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> extended_operation.ExtendedOperation:
+        r"""Creates a TargetSslProxy resource in the specified
+        project using the data included in the request.
+
+        Args:
+            request (Union[google.cloud.compute_v1.types.InsertTargetSslProxyRequest, dict]):
+                The request object. A request message for
+                TargetSslProxies.Insert. See the method description for
+                details.
+            project (str):
+                Project ID for this request.
+                This corresponds to the ``project`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            target_ssl_proxy_resource (google.cloud.compute_v1.types.TargetSslProxy):
+                The body resource for this request
+                This corresponds to the ``target_ssl_proxy_resource`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([project, target_ssl_proxy_resource])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a compute.InsertTargetSslProxyRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, compute.InsertTargetSslProxyRequest):
+            request = compute.InsertTargetSslProxyRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if project is not None:
+                request.project = project
+            if target_ssl_proxy_resource is not None:
+                request.target_ssl_proxy_resource = target_ssl_proxy_resource
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.insert]
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        operation_service = self._transport._global_operations_client
+        operation_request = compute.GetGlobalOperationRequest()
+        operation_request.project = request.project
+        operation_request.operation = response.name
+
+        get_operation = functools.partial(operation_service.get, operation_request)
+        # Cancel is not part of extended operations yet.
+        cancel_operation = lambda: None
+
+        # Note: this class is an implementation detail to provide a uniform
+        # set of names for certain fields in the extended operation proto message.
+        # See google.api_core.extended_operation.ExtendedOperation for details
+        # on these properties and the  expected interface.
+        class _CustomOperation(extended_operation.ExtendedOperation):
+            @property
+            def error_message(self):
+                return self._extended_operation.http_error_message
+
+            @property
+            def error_code(self):
+                return self._extended_operation.http_error_status_code
+
+        response = _CustomOperation.make(get_operation, cancel_operation, response)
 
         # Done; return the response.
         return response
@@ -797,22 +979,9 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.Operation:
-                Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                [Global](/compute/docs/reference/rest/v1/globalOperations)
-                \*
-                [Regional](/compute/docs/reference/rest/v1/regionOperations)
-                \*
-                [Zonal](/compute/docs/reference/rest/v1/zoneOperations)
-                You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the globalOperations
-                resource. - For regional operations, use the
-                regionOperations resource. - For zonal operations, use
-                the zonalOperations resource. For more information, read
-                Global, Regional, and Zonal Resources.
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
 
         """
         # Create or coerce a protobuf request object.
@@ -863,6 +1032,126 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
         # Done; return the response.
         return response
 
+    def set_backend_service(
+        self,
+        request: Union[compute.SetBackendServiceTargetSslProxyRequest, dict] = None,
+        *,
+        project: str = None,
+        target_ssl_proxy: str = None,
+        target_ssl_proxies_set_backend_service_request_resource: compute.TargetSslProxiesSetBackendServiceRequest = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> extended_operation.ExtendedOperation:
+        r"""Changes the BackendService for TargetSslProxy.
+
+        Args:
+            request (Union[google.cloud.compute_v1.types.SetBackendServiceTargetSslProxyRequest, dict]):
+                The request object. A request message for
+                TargetSslProxies.SetBackendService. See the method
+                description for details.
+            project (str):
+                Project ID for this request.
+                This corresponds to the ``project`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            target_ssl_proxy (str):
+                Name of the TargetSslProxy resource
+                whose BackendService resource is to be
+                set.
+
+                This corresponds to the ``target_ssl_proxy`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            target_ssl_proxies_set_backend_service_request_resource (google.cloud.compute_v1.types.TargetSslProxiesSetBackendServiceRequest):
+                The body resource for this request
+                This corresponds to the ``target_ssl_proxies_set_backend_service_request_resource`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any(
+            [
+                project,
+                target_ssl_proxy,
+                target_ssl_proxies_set_backend_service_request_resource,
+            ]
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a compute.SetBackendServiceTargetSslProxyRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, compute.SetBackendServiceTargetSslProxyRequest):
+            request = compute.SetBackendServiceTargetSslProxyRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if project is not None:
+                request.project = project
+            if target_ssl_proxy is not None:
+                request.target_ssl_proxy = target_ssl_proxy
+            if target_ssl_proxies_set_backend_service_request_resource is not None:
+                request.target_ssl_proxies_set_backend_service_request_resource = (
+                    target_ssl_proxies_set_backend_service_request_resource
+                )
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.set_backend_service]
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        operation_service = self._transport._global_operations_client
+        operation_request = compute.GetGlobalOperationRequest()
+        operation_request.project = request.project
+        operation_request.operation = response.name
+
+        get_operation = functools.partial(operation_service.get, operation_request)
+        # Cancel is not part of extended operations yet.
+        cancel_operation = lambda: None
+
+        # Note: this class is an implementation detail to provide a uniform
+        # set of names for certain fields in the extended operation proto message.
+        # See google.api_core.extended_operation.ExtendedOperation for details
+        # on these properties and the  expected interface.
+        class _CustomOperation(extended_operation.ExtendedOperation):
+            @property
+            def error_message(self):
+                return self._extended_operation.http_error_message
+
+            @property
+            def error_code(self):
+                return self._extended_operation.http_error_status_code
+
+        response = _CustomOperation.make(get_operation, cancel_operation, response)
+
+        # Done; return the response.
+        return response
+
     def set_proxy_header_unary(
         self,
         request: Union[compute.SetProxyHeaderTargetSslProxyRequest, dict] = None,
@@ -905,22 +1194,9 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.Operation:
-                Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                [Global](/compute/docs/reference/rest/v1/globalOperations)
-                \*
-                [Regional](/compute/docs/reference/rest/v1/regionOperations)
-                \*
-                [Zonal](/compute/docs/reference/rest/v1/zoneOperations)
-                You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the globalOperations
-                resource. - For regional operations, use the
-                regionOperations resource. - For zonal operations, use
-                the zonalOperations resource. For more information, read
-                Global, Regional, and Zonal Resources.
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
 
         """
         # Create or coerce a protobuf request object.
@@ -971,6 +1247,125 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
         # Done; return the response.
         return response
 
+    def set_proxy_header(
+        self,
+        request: Union[compute.SetProxyHeaderTargetSslProxyRequest, dict] = None,
+        *,
+        project: str = None,
+        target_ssl_proxy: str = None,
+        target_ssl_proxies_set_proxy_header_request_resource: compute.TargetSslProxiesSetProxyHeaderRequest = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> extended_operation.ExtendedOperation:
+        r"""Changes the ProxyHeaderType for TargetSslProxy.
+
+        Args:
+            request (Union[google.cloud.compute_v1.types.SetProxyHeaderTargetSslProxyRequest, dict]):
+                The request object. A request message for
+                TargetSslProxies.SetProxyHeader. See the method
+                description for details.
+            project (str):
+                Project ID for this request.
+                This corresponds to the ``project`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            target_ssl_proxy (str):
+                Name of the TargetSslProxy resource
+                whose ProxyHeader is to be set.
+
+                This corresponds to the ``target_ssl_proxy`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            target_ssl_proxies_set_proxy_header_request_resource (google.cloud.compute_v1.types.TargetSslProxiesSetProxyHeaderRequest):
+                The body resource for this request
+                This corresponds to the ``target_ssl_proxies_set_proxy_header_request_resource`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any(
+            [
+                project,
+                target_ssl_proxy,
+                target_ssl_proxies_set_proxy_header_request_resource,
+            ]
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a compute.SetProxyHeaderTargetSslProxyRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, compute.SetProxyHeaderTargetSslProxyRequest):
+            request = compute.SetProxyHeaderTargetSslProxyRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if project is not None:
+                request.project = project
+            if target_ssl_proxy is not None:
+                request.target_ssl_proxy = target_ssl_proxy
+            if target_ssl_proxies_set_proxy_header_request_resource is not None:
+                request.target_ssl_proxies_set_proxy_header_request_resource = (
+                    target_ssl_proxies_set_proxy_header_request_resource
+                )
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.set_proxy_header]
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        operation_service = self._transport._global_operations_client
+        operation_request = compute.GetGlobalOperationRequest()
+        operation_request.project = request.project
+        operation_request.operation = response.name
+
+        get_operation = functools.partial(operation_service.get, operation_request)
+        # Cancel is not part of extended operations yet.
+        cancel_operation = lambda: None
+
+        # Note: this class is an implementation detail to provide a uniform
+        # set of names for certain fields in the extended operation proto message.
+        # See google.api_core.extended_operation.ExtendedOperation for details
+        # on these properties and the  expected interface.
+        class _CustomOperation(extended_operation.ExtendedOperation):
+            @property
+            def error_message(self):
+                return self._extended_operation.http_error_message
+
+            @property
+            def error_code(self):
+                return self._extended_operation.http_error_status_code
+
+        response = _CustomOperation.make(get_operation, cancel_operation, response)
+
+        # Done; return the response.
+        return response
+
     def set_ssl_certificates_unary(
         self,
         request: Union[compute.SetSslCertificatesTargetSslProxyRequest, dict] = None,
@@ -1014,22 +1409,9 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.Operation:
-                Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                [Global](/compute/docs/reference/rest/v1/globalOperations)
-                \*
-                [Regional](/compute/docs/reference/rest/v1/regionOperations)
-                \*
-                [Zonal](/compute/docs/reference/rest/v1/zoneOperations)
-                You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the globalOperations
-                resource. - For regional operations, use the
-                regionOperations resource. - For zonal operations, use
-                the zonalOperations resource. For more information, read
-                Global, Regional, and Zonal Resources.
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
 
         """
         # Create or coerce a protobuf request object.
@@ -1076,6 +1458,126 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
             timeout=timeout,
             metadata=metadata,
         )
+
+        # Done; return the response.
+        return response
+
+    def set_ssl_certificates(
+        self,
+        request: Union[compute.SetSslCertificatesTargetSslProxyRequest, dict] = None,
+        *,
+        project: str = None,
+        target_ssl_proxy: str = None,
+        target_ssl_proxies_set_ssl_certificates_request_resource: compute.TargetSslProxiesSetSslCertificatesRequest = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> extended_operation.ExtendedOperation:
+        r"""Changes SslCertificates for TargetSslProxy.
+
+        Args:
+            request (Union[google.cloud.compute_v1.types.SetSslCertificatesTargetSslProxyRequest, dict]):
+                The request object. A request message for
+                TargetSslProxies.SetSslCertificates. See the method
+                description for details.
+            project (str):
+                Project ID for this request.
+                This corresponds to the ``project`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            target_ssl_proxy (str):
+                Name of the TargetSslProxy resource
+                whose SslCertificate resource is to be
+                set.
+
+                This corresponds to the ``target_ssl_proxy`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            target_ssl_proxies_set_ssl_certificates_request_resource (google.cloud.compute_v1.types.TargetSslProxiesSetSslCertificatesRequest):
+                The body resource for this request
+                This corresponds to the ``target_ssl_proxies_set_ssl_certificates_request_resource`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any(
+            [
+                project,
+                target_ssl_proxy,
+                target_ssl_proxies_set_ssl_certificates_request_resource,
+            ]
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a compute.SetSslCertificatesTargetSslProxyRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, compute.SetSslCertificatesTargetSslProxyRequest):
+            request = compute.SetSslCertificatesTargetSslProxyRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if project is not None:
+                request.project = project
+            if target_ssl_proxy is not None:
+                request.target_ssl_proxy = target_ssl_proxy
+            if target_ssl_proxies_set_ssl_certificates_request_resource is not None:
+                request.target_ssl_proxies_set_ssl_certificates_request_resource = (
+                    target_ssl_proxies_set_ssl_certificates_request_resource
+                )
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.set_ssl_certificates]
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        operation_service = self._transport._global_operations_client
+        operation_request = compute.GetGlobalOperationRequest()
+        operation_request.project = request.project
+        operation_request.operation = response.name
+
+        get_operation = functools.partial(operation_service.get, operation_request)
+        # Cancel is not part of extended operations yet.
+        cancel_operation = lambda: None
+
+        # Note: this class is an implementation detail to provide a uniform
+        # set of names for certain fields in the extended operation proto message.
+        # See google.api_core.extended_operation.ExtendedOperation for details
+        # on these properties and the  expected interface.
+        class _CustomOperation(extended_operation.ExtendedOperation):
+            @property
+            def error_message(self):
+                return self._extended_operation.http_error_message
+
+            @property
+            def error_code(self):
+                return self._extended_operation.http_error_status_code
+
+        response = _CustomOperation.make(get_operation, cancel_operation, response)
 
         # Done; return the response.
         return response
@@ -1128,22 +1630,9 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.Operation:
-                Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                [Global](/compute/docs/reference/rest/v1/globalOperations)
-                \*
-                [Regional](/compute/docs/reference/rest/v1/regionOperations)
-                \*
-                [Zonal](/compute/docs/reference/rest/v1/zoneOperations)
-                You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the globalOperations
-                resource. - For regional operations, use the
-                regionOperations resource. - For zonal operations, use
-                the zonalOperations resource. For more information, read
-                Global, Regional, and Zonal Resources.
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
 
         """
         # Create or coerce a protobuf request object.
@@ -1184,6 +1673,125 @@ class TargetSslProxiesClient(metaclass=TargetSslProxiesClientMeta):
             timeout=timeout,
             metadata=metadata,
         )
+
+        # Done; return the response.
+        return response
+
+    def set_ssl_policy(
+        self,
+        request: Union[compute.SetSslPolicyTargetSslProxyRequest, dict] = None,
+        *,
+        project: str = None,
+        target_ssl_proxy: str = None,
+        ssl_policy_reference_resource: compute.SslPolicyReference = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> extended_operation.ExtendedOperation:
+        r"""Sets the SSL policy for TargetSslProxy. The SSL
+        policy specifies the server-side support for SSL
+        features. This affects connections between clients and
+        the SSL proxy load balancer. They do not affect the
+        connection between the load balancer and the backends.
+
+        Args:
+            request (Union[google.cloud.compute_v1.types.SetSslPolicyTargetSslProxyRequest, dict]):
+                The request object. A request message for
+                TargetSslProxies.SetSslPolicy. See the method
+                description for details.
+            project (str):
+                Project ID for this request.
+                This corresponds to the ``project`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            target_ssl_proxy (str):
+                Name of the TargetSslProxy resource
+                whose SSL policy is to be set. The name
+                must be 1-63 characters long, and comply
+                with RFC1035.
+
+                This corresponds to the ``target_ssl_proxy`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            ssl_policy_reference_resource (google.cloud.compute_v1.types.SslPolicyReference):
+                The body resource for this request
+                This corresponds to the ``ssl_policy_reference_resource`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any(
+            [project, target_ssl_proxy, ssl_policy_reference_resource]
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a compute.SetSslPolicyTargetSslProxyRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, compute.SetSslPolicyTargetSslProxyRequest):
+            request = compute.SetSslPolicyTargetSslProxyRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if project is not None:
+                request.project = project
+            if target_ssl_proxy is not None:
+                request.target_ssl_proxy = target_ssl_proxy
+            if ssl_policy_reference_resource is not None:
+                request.ssl_policy_reference_resource = ssl_policy_reference_resource
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.set_ssl_policy]
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        operation_service = self._transport._global_operations_client
+        operation_request = compute.GetGlobalOperationRequest()
+        operation_request.project = request.project
+        operation_request.operation = response.name
+
+        get_operation = functools.partial(operation_service.get, operation_request)
+        # Cancel is not part of extended operations yet.
+        cancel_operation = lambda: None
+
+        # Note: this class is an implementation detail to provide a uniform
+        # set of names for certain fields in the extended operation proto message.
+        # See google.api_core.extended_operation.ExtendedOperation for details
+        # on these properties and the  expected interface.
+        class _CustomOperation(extended_operation.ExtendedOperation):
+            @property
+            def error_message(self):
+                return self._extended_operation.http_error_message
+
+            @property
+            def error_code(self):
+                return self._extended_operation.http_error_status_code
+
+        response = _CustomOperation.make(get_operation, cancel_operation, response)
 
         # Done; return the response.
         return response

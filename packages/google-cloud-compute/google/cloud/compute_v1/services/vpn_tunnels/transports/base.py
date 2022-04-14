@@ -26,6 +26,7 @@ from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
 
 from google.cloud.compute_v1.types import compute
+from google.cloud.compute_v1.services import region_operations
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
@@ -83,6 +84,8 @@ class VpnTunnelsTransport(abc.ABC):
             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
                 be used for service account credentials.
         """
+        self._extended_operations_services: Dict[str, Any] = {}
+
         # Save the hostname. Default to port 443 (HTTPS) if none is specified.
         if ":" not in host:
             host += ":443"
@@ -205,6 +208,22 @@ class VpnTunnelsTransport(abc.ABC):
         Union[compute.VpnTunnelList, Awaitable[compute.VpnTunnelList]],
     ]:
         raise NotImplementedError()
+
+    @property
+    def kind(self) -> str:
+        raise NotImplementedError()
+
+    @property
+    def _region_operations_client(self) -> region_operations.RegionOperationsClient:
+        ex_op_service = self._extended_operations_services.get("region_operations")
+        if not ex_op_service:
+            ex_op_service = region_operations.RegionOperationsClient(
+                credentials=self._credentials,
+                transport=self.kind,
+            )
+            self._extended_operations_services["region_operations"] = ex_op_service
+
+        return ex_op_service
 
 
 __all__ = ("VpnTunnelsTransport",)

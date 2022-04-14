@@ -14,13 +14,15 @@
 # limitations under the License.
 #
 from collections import OrderedDict
+import functools
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
+from google.api_core import extended_operation
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
@@ -34,6 +36,7 @@ try:
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
+from google.api_core import extended_operation  # type: ignore
 from google.cloud.compute_v1.services.region_instance_group_managers import pagers
 from google.cloud.compute_v1.types import compute
 from .transports.base import RegionInstanceGroupManagersTransport, DEFAULT_CLIENT_INFO
@@ -469,22 +472,9 @@ class RegionInstanceGroupManagersClient(
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.Operation:
-                Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                [Global](/compute/docs/reference/rest/v1/globalOperations)
-                \*
-                [Regional](/compute/docs/reference/rest/v1/regionOperations)
-                \*
-                [Zonal](/compute/docs/reference/rest/v1/zoneOperations)
-                You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the globalOperations
-                resource. - For regional operations, use the
-                regionOperations resource. - For zonal operations, use
-                the zonalOperations resource. For more information, read
-                Global, Regional, and Zonal Resources.
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
 
         """
         # Create or coerce a protobuf request object.
@@ -543,6 +533,157 @@ class RegionInstanceGroupManagersClient(
         # Done; return the response.
         return response
 
+    def abandon_instances(
+        self,
+        request: Union[
+            compute.AbandonInstancesRegionInstanceGroupManagerRequest, dict
+        ] = None,
+        *,
+        project: str = None,
+        region: str = None,
+        instance_group_manager: str = None,
+        region_instance_group_managers_abandon_instances_request_resource: compute.RegionInstanceGroupManagersAbandonInstancesRequest = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> extended_operation.ExtendedOperation:
+        r"""Flags the specified instances to be immediately
+        removed from the managed instance group. Abandoning an
+        instance does not delete the instance, but it does
+        remove the instance from any target pools that are
+        applied by the managed instance group. This method
+        reduces the targetSize of the managed instance group by
+        the number of instances that you abandon. This operation
+        is marked as DONE when the action is scheduled even if
+        the instances have not yet been removed from the group.
+        You must separately verify the status of the abandoning
+        action with the listmanagedinstances method. If the
+        group is part of a backend service that has enabled
+        connection draining, it can take up to 60 seconds after
+        the connection draining duration has elapsed before the
+        VM instance is removed or deleted. You can specify a
+        maximum of 1000 instances with this method per request.
+
+        Args:
+            request (Union[google.cloud.compute_v1.types.AbandonInstancesRegionInstanceGroupManagerRequest, dict]):
+                The request object. A request message for
+                RegionInstanceGroupManagers.AbandonInstances. See the
+                method description for details.
+            project (str):
+                Project ID for this request.
+                This corresponds to the ``project`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            region (str):
+                Name of the region scoping this
+                request.
+
+                This corresponds to the ``region`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            instance_group_manager (str):
+                Name of the managed instance group.
+                This corresponds to the ``instance_group_manager`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            region_instance_group_managers_abandon_instances_request_resource (google.cloud.compute_v1.types.RegionInstanceGroupManagersAbandonInstancesRequest):
+                The body resource for this request
+                This corresponds to the ``region_instance_group_managers_abandon_instances_request_resource`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any(
+            [
+                project,
+                region,
+                instance_group_manager,
+                region_instance_group_managers_abandon_instances_request_resource,
+            ]
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a compute.AbandonInstancesRegionInstanceGroupManagerRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(
+            request, compute.AbandonInstancesRegionInstanceGroupManagerRequest
+        ):
+            request = compute.AbandonInstancesRegionInstanceGroupManagerRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if project is not None:
+                request.project = project
+            if region is not None:
+                request.region = region
+            if instance_group_manager is not None:
+                request.instance_group_manager = instance_group_manager
+            if (
+                region_instance_group_managers_abandon_instances_request_resource
+                is not None
+            ):
+                request.region_instance_group_managers_abandon_instances_request_resource = (
+                    region_instance_group_managers_abandon_instances_request_resource
+                )
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.abandon_instances]
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        operation_service = self._transport._region_operations_client
+        operation_request = compute.GetRegionOperationRequest()
+        operation_request.project = request.project
+        operation_request.region = request.region
+        operation_request.operation = response.name
+
+        get_operation = functools.partial(operation_service.get, operation_request)
+        # Cancel is not part of extended operations yet.
+        cancel_operation = lambda: None
+
+        # Note: this class is an implementation detail to provide a uniform
+        # set of names for certain fields in the extended operation proto message.
+        # See google.api_core.extended_operation.ExtendedOperation for details
+        # on these properties and the  expected interface.
+        class _CustomOperation(extended_operation.ExtendedOperation):
+            @property
+            def error_message(self):
+                return self._extended_operation.http_error_message
+
+            @property
+            def error_code(self):
+                return self._extended_operation.http_error_status_code
+
+        response = _CustomOperation.make(get_operation, cancel_operation, response)
+
+        # Done; return the response.
+        return response
+
     def apply_updates_to_instances_unary(
         self,
         request: Union[
@@ -596,22 +737,9 @@ class RegionInstanceGroupManagersClient(
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.Operation:
-                Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                [Global](/compute/docs/reference/rest/v1/globalOperations)
-                \*
-                [Regional](/compute/docs/reference/rest/v1/regionOperations)
-                \*
-                [Zonal](/compute/docs/reference/rest/v1/zoneOperations)
-                You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the globalOperations
-                resource. - For regional operations, use the
-                regionOperations resource. - For zonal operations, use
-                the zonalOperations resource. For more information, read
-                Global, Regional, and Zonal Resources.
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
 
         """
         # Create or coerce a protobuf request object.
@@ -670,6 +798,149 @@ class RegionInstanceGroupManagersClient(
             timeout=timeout,
             metadata=metadata,
         )
+
+        # Done; return the response.
+        return response
+
+    def apply_updates_to_instances(
+        self,
+        request: Union[
+            compute.ApplyUpdatesToInstancesRegionInstanceGroupManagerRequest, dict
+        ] = None,
+        *,
+        project: str = None,
+        region: str = None,
+        instance_group_manager: str = None,
+        region_instance_group_managers_apply_updates_request_resource: compute.RegionInstanceGroupManagersApplyUpdatesRequest = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> extended_operation.ExtendedOperation:
+        r"""Apply updates to selected instances the managed
+        instance group.
+
+        Args:
+            request (Union[google.cloud.compute_v1.types.ApplyUpdatesToInstancesRegionInstanceGroupManagerRequest, dict]):
+                The request object. A request message for
+                RegionInstanceGroupManagers.ApplyUpdatesToInstances. See
+                the method description for details.
+            project (str):
+                Project ID for this request.
+                This corresponds to the ``project`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            region (str):
+                Name of the region scoping this
+                request, should conform to RFC1035.
+
+                This corresponds to the ``region`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            instance_group_manager (str):
+                The name of the managed instance
+                group, should conform to RFC1035.
+
+                This corresponds to the ``instance_group_manager`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            region_instance_group_managers_apply_updates_request_resource (google.cloud.compute_v1.types.RegionInstanceGroupManagersApplyUpdatesRequest):
+                The body resource for this request
+                This corresponds to the ``region_instance_group_managers_apply_updates_request_resource`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any(
+            [
+                project,
+                region,
+                instance_group_manager,
+                region_instance_group_managers_apply_updates_request_resource,
+            ]
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a compute.ApplyUpdatesToInstancesRegionInstanceGroupManagerRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(
+            request, compute.ApplyUpdatesToInstancesRegionInstanceGroupManagerRequest
+        ):
+            request = compute.ApplyUpdatesToInstancesRegionInstanceGroupManagerRequest(
+                request
+            )
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if project is not None:
+                request.project = project
+            if region is not None:
+                request.region = region
+            if instance_group_manager is not None:
+                request.instance_group_manager = instance_group_manager
+            if (
+                region_instance_group_managers_apply_updates_request_resource
+                is not None
+            ):
+                request.region_instance_group_managers_apply_updates_request_resource = (
+                    region_instance_group_managers_apply_updates_request_resource
+                )
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.apply_updates_to_instances
+        ]
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        operation_service = self._transport._region_operations_client
+        operation_request = compute.GetRegionOperationRequest()
+        operation_request.project = request.project
+        operation_request.region = request.region
+        operation_request.operation = response.name
+
+        get_operation = functools.partial(operation_service.get, operation_request)
+        # Cancel is not part of extended operations yet.
+        cancel_operation = lambda: None
+
+        # Note: this class is an implementation detail to provide a uniform
+        # set of names for certain fields in the extended operation proto message.
+        # See google.api_core.extended_operation.ExtendedOperation for details
+        # on these properties and the  expected interface.
+        class _CustomOperation(extended_operation.ExtendedOperation):
+            @property
+            def error_message(self):
+                return self._extended_operation.http_error_message
+
+            @property
+            def error_code(self):
+                return self._extended_operation.http_error_status_code
+
+        response = _CustomOperation.make(get_operation, cancel_operation, response)
 
         # Done; return the response.
         return response
@@ -734,22 +1005,9 @@ class RegionInstanceGroupManagersClient(
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.Operation:
-                Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                [Global](/compute/docs/reference/rest/v1/globalOperations)
-                \*
-                [Regional](/compute/docs/reference/rest/v1/regionOperations)
-                \*
-                [Zonal](/compute/docs/reference/rest/v1/zoneOperations)
-                You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the globalOperations
-                resource. - For regional operations, use the
-                regionOperations resource. - For zonal operations, use
-                the zonalOperations resource. For more information, read
-                Global, Regional, and Zonal Resources.
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
 
         """
         # Create or coerce a protobuf request object.
@@ -808,6 +1066,152 @@ class RegionInstanceGroupManagersClient(
         # Done; return the response.
         return response
 
+    def create_instances(
+        self,
+        request: Union[
+            compute.CreateInstancesRegionInstanceGroupManagerRequest, dict
+        ] = None,
+        *,
+        project: str = None,
+        region: str = None,
+        instance_group_manager: str = None,
+        region_instance_group_managers_create_instances_request_resource: compute.RegionInstanceGroupManagersCreateInstancesRequest = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> extended_operation.ExtendedOperation:
+        r"""Creates instances with per-instance configs in this
+        regional managed instance group. Instances are created
+        using the current instance template. The create
+        instances operation is marked DONE if the
+        createInstances request is successful. The underlying
+        actions take additional time. You must separately verify
+        the status of the creating or actions with the
+        listmanagedinstances method.
+
+        Args:
+            request (Union[google.cloud.compute_v1.types.CreateInstancesRegionInstanceGroupManagerRequest, dict]):
+                The request object. A request message for
+                RegionInstanceGroupManagers.CreateInstances. See the
+                method description for details.
+            project (str):
+                Project ID for this request.
+                This corresponds to the ``project`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            region (str):
+                The name of the region where the
+                managed instance group is located. It
+                should conform to RFC1035.
+
+                This corresponds to the ``region`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            instance_group_manager (str):
+                The name of the managed instance
+                group. It should conform to RFC1035.
+
+                This corresponds to the ``instance_group_manager`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            region_instance_group_managers_create_instances_request_resource (google.cloud.compute_v1.types.RegionInstanceGroupManagersCreateInstancesRequest):
+                The body resource for this request
+                This corresponds to the ``region_instance_group_managers_create_instances_request_resource`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any(
+            [
+                project,
+                region,
+                instance_group_manager,
+                region_instance_group_managers_create_instances_request_resource,
+            ]
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a compute.CreateInstancesRegionInstanceGroupManagerRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(
+            request, compute.CreateInstancesRegionInstanceGroupManagerRequest
+        ):
+            request = compute.CreateInstancesRegionInstanceGroupManagerRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if project is not None:
+                request.project = project
+            if region is not None:
+                request.region = region
+            if instance_group_manager is not None:
+                request.instance_group_manager = instance_group_manager
+            if (
+                region_instance_group_managers_create_instances_request_resource
+                is not None
+            ):
+                request.region_instance_group_managers_create_instances_request_resource = (
+                    region_instance_group_managers_create_instances_request_resource
+                )
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.create_instances]
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        operation_service = self._transport._region_operations_client
+        operation_request = compute.GetRegionOperationRequest()
+        operation_request.project = request.project
+        operation_request.region = request.region
+        operation_request.operation = response.name
+
+        get_operation = functools.partial(operation_service.get, operation_request)
+        # Cancel is not part of extended operations yet.
+        cancel_operation = lambda: None
+
+        # Note: this class is an implementation detail to provide a uniform
+        # set of names for certain fields in the extended operation proto message.
+        # See google.api_core.extended_operation.ExtendedOperation for details
+        # on these properties and the  expected interface.
+        class _CustomOperation(extended_operation.ExtendedOperation):
+            @property
+            def error_message(self):
+                return self._extended_operation.http_error_message
+
+            @property
+            def error_code(self):
+                return self._extended_operation.http_error_status_code
+
+        response = _CustomOperation.make(get_operation, cancel_operation, response)
+
+        # Done; return the response.
+        return response
+
     def delete_unary(
         self,
         request: Union[compute.DeleteRegionInstanceGroupManagerRequest, dict] = None,
@@ -853,22 +1257,9 @@ class RegionInstanceGroupManagersClient(
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.Operation:
-                Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                [Global](/compute/docs/reference/rest/v1/globalOperations)
-                \*
-                [Regional](/compute/docs/reference/rest/v1/regionOperations)
-                \*
-                [Zonal](/compute/docs/reference/rest/v1/zoneOperations)
-                You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the globalOperations
-                resource. - For regional operations, use the
-                regionOperations resource. - For zonal operations, use
-                the zonalOperations resource. For more information, read
-                Global, Regional, and Zonal Resources.
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
 
         """
         # Create or coerce a protobuf request object.
@@ -907,6 +1298,121 @@ class RegionInstanceGroupManagersClient(
             timeout=timeout,
             metadata=metadata,
         )
+
+        # Done; return the response.
+        return response
+
+    def delete(
+        self,
+        request: Union[compute.DeleteRegionInstanceGroupManagerRequest, dict] = None,
+        *,
+        project: str = None,
+        region: str = None,
+        instance_group_manager: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> extended_operation.ExtendedOperation:
+        r"""Deletes the specified managed instance group and all
+        of the instances in that group.
+
+        Args:
+            request (Union[google.cloud.compute_v1.types.DeleteRegionInstanceGroupManagerRequest, dict]):
+                The request object. A request message for
+                RegionInstanceGroupManagers.Delete. See the method
+                description for details.
+            project (str):
+                Project ID for this request.
+                This corresponds to the ``project`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            region (str):
+                Name of the region scoping this
+                request.
+
+                This corresponds to the ``region`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            instance_group_manager (str):
+                Name of the managed instance group to
+                delete.
+
+                This corresponds to the ``instance_group_manager`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([project, region, instance_group_manager])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a compute.DeleteRegionInstanceGroupManagerRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, compute.DeleteRegionInstanceGroupManagerRequest):
+            request = compute.DeleteRegionInstanceGroupManagerRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if project is not None:
+                request.project = project
+            if region is not None:
+                request.region = region
+            if instance_group_manager is not None:
+                request.instance_group_manager = instance_group_manager
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.delete]
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        operation_service = self._transport._region_operations_client
+        operation_request = compute.GetRegionOperationRequest()
+        operation_request.project = request.project
+        operation_request.region = request.region
+        operation_request.operation = response.name
+
+        get_operation = functools.partial(operation_service.get, operation_request)
+        # Cancel is not part of extended operations yet.
+        cancel_operation = lambda: None
+
+        # Note: this class is an implementation detail to provide a uniform
+        # set of names for certain fields in the extended operation proto message.
+        # See google.api_core.extended_operation.ExtendedOperation for details
+        # on these properties and the  expected interface.
+        class _CustomOperation(extended_operation.ExtendedOperation):
+            @property
+            def error_message(self):
+                return self._extended_operation.http_error_message
+
+            @property
+            def error_code(self):
+                return self._extended_operation.http_error_status_code
+
+        response = _CustomOperation.make(get_operation, cancel_operation, response)
 
         # Done; return the response.
         return response
@@ -975,22 +1481,9 @@ class RegionInstanceGroupManagersClient(
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.Operation:
-                Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                [Global](/compute/docs/reference/rest/v1/globalOperations)
-                \*
-                [Regional](/compute/docs/reference/rest/v1/regionOperations)
-                \*
-                [Zonal](/compute/docs/reference/rest/v1/zoneOperations)
-                You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the globalOperations
-                resource. - For regional operations, use the
-                regionOperations resource. - For zonal operations, use
-                the zonalOperations resource. For more information, read
-                Global, Regional, and Zonal Resources.
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
 
         """
         # Create or coerce a protobuf request object.
@@ -1049,6 +1542,156 @@ class RegionInstanceGroupManagersClient(
         # Done; return the response.
         return response
 
+    def delete_instances(
+        self,
+        request: Union[
+            compute.DeleteInstancesRegionInstanceGroupManagerRequest, dict
+        ] = None,
+        *,
+        project: str = None,
+        region: str = None,
+        instance_group_manager: str = None,
+        region_instance_group_managers_delete_instances_request_resource: compute.RegionInstanceGroupManagersDeleteInstancesRequest = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> extended_operation.ExtendedOperation:
+        r"""Flags the specified instances in the managed instance
+        group to be immediately deleted. The instances are also
+        removed from any target pools of which they were a
+        member. This method reduces the targetSize of the
+        managed instance group by the number of instances that
+        you delete. The deleteInstances operation is marked DONE
+        if the deleteInstances request is successful. The
+        underlying actions take additional time. You must
+        separately verify the status of the deleting action with
+        the listmanagedinstances method. If the group is part of
+        a backend service that has enabled connection draining,
+        it can take up to 60 seconds after the connection
+        draining duration has elapsed before the VM instance is
+        removed or deleted. You can specify a maximum of 1000
+        instances with this method per request.
+
+        Args:
+            request (Union[google.cloud.compute_v1.types.DeleteInstancesRegionInstanceGroupManagerRequest, dict]):
+                The request object. A request message for
+                RegionInstanceGroupManagers.DeleteInstances. See the
+                method description for details.
+            project (str):
+                Project ID for this request.
+                This corresponds to the ``project`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            region (str):
+                Name of the region scoping this
+                request.
+
+                This corresponds to the ``region`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            instance_group_manager (str):
+                Name of the managed instance group.
+                This corresponds to the ``instance_group_manager`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            region_instance_group_managers_delete_instances_request_resource (google.cloud.compute_v1.types.RegionInstanceGroupManagersDeleteInstancesRequest):
+                The body resource for this request
+                This corresponds to the ``region_instance_group_managers_delete_instances_request_resource`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any(
+            [
+                project,
+                region,
+                instance_group_manager,
+                region_instance_group_managers_delete_instances_request_resource,
+            ]
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a compute.DeleteInstancesRegionInstanceGroupManagerRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(
+            request, compute.DeleteInstancesRegionInstanceGroupManagerRequest
+        ):
+            request = compute.DeleteInstancesRegionInstanceGroupManagerRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if project is not None:
+                request.project = project
+            if region is not None:
+                request.region = region
+            if instance_group_manager is not None:
+                request.instance_group_manager = instance_group_manager
+            if (
+                region_instance_group_managers_delete_instances_request_resource
+                is not None
+            ):
+                request.region_instance_group_managers_delete_instances_request_resource = (
+                    region_instance_group_managers_delete_instances_request_resource
+                )
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.delete_instances]
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        operation_service = self._transport._region_operations_client
+        operation_request = compute.GetRegionOperationRequest()
+        operation_request.project = request.project
+        operation_request.region = request.region
+        operation_request.operation = response.name
+
+        get_operation = functools.partial(operation_service.get, operation_request)
+        # Cancel is not part of extended operations yet.
+        cancel_operation = lambda: None
+
+        # Note: this class is an implementation detail to provide a uniform
+        # set of names for certain fields in the extended operation proto message.
+        # See google.api_core.extended_operation.ExtendedOperation for details
+        # on these properties and the  expected interface.
+        class _CustomOperation(extended_operation.ExtendedOperation):
+            @property
+            def error_message(self):
+                return self._extended_operation.http_error_message
+
+            @property
+            def error_code(self):
+                return self._extended_operation.http_error_status_code
+
+        response = _CustomOperation.make(get_operation, cancel_operation, response)
+
+        # Done; return the response.
+        return response
+
     def delete_per_instance_configs_unary(
         self,
         request: Union[
@@ -1102,22 +1745,9 @@ class RegionInstanceGroupManagersClient(
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.Operation:
-                Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                [Global](/compute/docs/reference/rest/v1/globalOperations)
-                \*
-                [Regional](/compute/docs/reference/rest/v1/regionOperations)
-                \*
-                [Zonal](/compute/docs/reference/rest/v1/zoneOperations)
-                You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the globalOperations
-                resource. - For regional operations, use the
-                regionOperations resource. - For zonal operations, use
-                the zonalOperations resource. For more information, read
-                Global, Regional, and Zonal Resources.
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
 
         """
         # Create or coerce a protobuf request object.
@@ -1176,6 +1806,149 @@ class RegionInstanceGroupManagersClient(
             timeout=timeout,
             metadata=metadata,
         )
+
+        # Done; return the response.
+        return response
+
+    def delete_per_instance_configs(
+        self,
+        request: Union[
+            compute.DeletePerInstanceConfigsRegionInstanceGroupManagerRequest, dict
+        ] = None,
+        *,
+        project: str = None,
+        region: str = None,
+        instance_group_manager: str = None,
+        region_instance_group_manager_delete_instance_config_req_resource: compute.RegionInstanceGroupManagerDeleteInstanceConfigReq = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> extended_operation.ExtendedOperation:
+        r"""Deletes selected per-instance configs for the managed
+        instance group.
+
+        Args:
+            request (Union[google.cloud.compute_v1.types.DeletePerInstanceConfigsRegionInstanceGroupManagerRequest, dict]):
+                The request object. A request message for
+                RegionInstanceGroupManagers.DeletePerInstanceConfigs.
+                See the method description for details.
+            project (str):
+                Project ID for this request.
+                This corresponds to the ``project`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            region (str):
+                Name of the region scoping this
+                request, should conform to RFC1035.
+
+                This corresponds to the ``region`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            instance_group_manager (str):
+                The name of the managed instance
+                group. It should conform to RFC1035.
+
+                This corresponds to the ``instance_group_manager`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            region_instance_group_manager_delete_instance_config_req_resource (google.cloud.compute_v1.types.RegionInstanceGroupManagerDeleteInstanceConfigReq):
+                The body resource for this request
+                This corresponds to the ``region_instance_group_manager_delete_instance_config_req_resource`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any(
+            [
+                project,
+                region,
+                instance_group_manager,
+                region_instance_group_manager_delete_instance_config_req_resource,
+            ]
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a compute.DeletePerInstanceConfigsRegionInstanceGroupManagerRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(
+            request, compute.DeletePerInstanceConfigsRegionInstanceGroupManagerRequest
+        ):
+            request = compute.DeletePerInstanceConfigsRegionInstanceGroupManagerRequest(
+                request
+            )
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if project is not None:
+                request.project = project
+            if region is not None:
+                request.region = region
+            if instance_group_manager is not None:
+                request.instance_group_manager = instance_group_manager
+            if (
+                region_instance_group_manager_delete_instance_config_req_resource
+                is not None
+            ):
+                request.region_instance_group_manager_delete_instance_config_req_resource = (
+                    region_instance_group_manager_delete_instance_config_req_resource
+                )
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.delete_per_instance_configs
+        ]
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        operation_service = self._transport._region_operations_client
+        operation_request = compute.GetRegionOperationRequest()
+        operation_request.project = request.project
+        operation_request.region = request.region
+        operation_request.operation = response.name
+
+        get_operation = functools.partial(operation_service.get, operation_request)
+        # Cancel is not part of extended operations yet.
+        cancel_operation = lambda: None
+
+        # Note: this class is an implementation detail to provide a uniform
+        # set of names for certain fields in the extended operation proto message.
+        # See google.api_core.extended_operation.ExtendedOperation for details
+        # on these properties and the  expected interface.
+        class _CustomOperation(extended_operation.ExtendedOperation):
+            @property
+            def error_message(self):
+                return self._extended_operation.http_error_message
+
+            @property
+            def error_code(self):
+                return self._extended_operation.http_error_status_code
+
+        response = _CustomOperation.make(get_operation, cancel_operation, response)
 
         # Done; return the response.
         return response
@@ -1328,22 +2101,9 @@ class RegionInstanceGroupManagersClient(
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.Operation:
-                Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                [Global](/compute/docs/reference/rest/v1/globalOperations)
-                \*
-                [Regional](/compute/docs/reference/rest/v1/regionOperations)
-                \*
-                [Zonal](/compute/docs/reference/rest/v1/zoneOperations)
-                You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the globalOperations
-                resource. - For regional operations, use the
-                regionOperations resource. - For zonal operations, use
-                the zonalOperations resource. For more information, read
-                Global, Regional, and Zonal Resources.
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
 
         """
         # Create or coerce a protobuf request object.
@@ -1384,6 +2144,129 @@ class RegionInstanceGroupManagersClient(
             timeout=timeout,
             metadata=metadata,
         )
+
+        # Done; return the response.
+        return response
+
+    def insert(
+        self,
+        request: Union[compute.InsertRegionInstanceGroupManagerRequest, dict] = None,
+        *,
+        project: str = None,
+        region: str = None,
+        instance_group_manager_resource: compute.InstanceGroupManager = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> extended_operation.ExtendedOperation:
+        r"""Creates a managed instance group using the
+        information that you specify in the request. After the
+        group is created, instances in the group are created
+        using the specified instance template. This operation is
+        marked as DONE when the group is created even if the
+        instances in the group have not yet been created. You
+        must separately verify the status of the individual
+        instances with the listmanagedinstances method. A
+        regional managed instance group can contain up to 2000
+        instances.
+
+        Args:
+            request (Union[google.cloud.compute_v1.types.InsertRegionInstanceGroupManagerRequest, dict]):
+                The request object. A request message for
+                RegionInstanceGroupManagers.Insert. See the method
+                description for details.
+            project (str):
+                Project ID for this request.
+                This corresponds to the ``project`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            region (str):
+                Name of the region scoping this
+                request.
+
+                This corresponds to the ``region`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            instance_group_manager_resource (google.cloud.compute_v1.types.InstanceGroupManager):
+                The body resource for this request
+                This corresponds to the ``instance_group_manager_resource`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([project, region, instance_group_manager_resource])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a compute.InsertRegionInstanceGroupManagerRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, compute.InsertRegionInstanceGroupManagerRequest):
+            request = compute.InsertRegionInstanceGroupManagerRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if project is not None:
+                request.project = project
+            if region is not None:
+                request.region = region
+            if instance_group_manager_resource is not None:
+                request.instance_group_manager_resource = (
+                    instance_group_manager_resource
+                )
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.insert]
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        operation_service = self._transport._region_operations_client
+        operation_request = compute.GetRegionOperationRequest()
+        operation_request.project = request.project
+        operation_request.region = request.region
+        operation_request.operation = response.name
+
+        get_operation = functools.partial(operation_service.get, operation_request)
+        # Cancel is not part of extended operations yet.
+        cancel_operation = lambda: None
+
+        # Note: this class is an implementation detail to provide a uniform
+        # set of names for certain fields in the extended operation proto message.
+        # See google.api_core.extended_operation.ExtendedOperation for details
+        # on these properties and the  expected interface.
+        class _CustomOperation(extended_operation.ExtendedOperation):
+            @property
+            def error_message(self):
+                return self._extended_operation.http_error_message
+
+            @property
+            def error_code(self):
+                return self._extended_operation.http_error_status_code
+
+        response = _CustomOperation.make(get_operation, cancel_operation, response)
 
         # Done; return the response.
         return response
@@ -1868,22 +2751,9 @@ class RegionInstanceGroupManagersClient(
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.Operation:
-                Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                [Global](/compute/docs/reference/rest/v1/globalOperations)
-                \*
-                [Regional](/compute/docs/reference/rest/v1/regionOperations)
-                \*
-                [Zonal](/compute/docs/reference/rest/v1/zoneOperations)
-                You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the globalOperations
-                resource. - For regional operations, use the
-                regionOperations resource. - For zonal operations, use
-                the zonalOperations resource. For more information, read
-                Global, Regional, and Zonal Resources.
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
 
         """
         # Create or coerce a protobuf request object.
@@ -1928,6 +2798,145 @@ class RegionInstanceGroupManagersClient(
             timeout=timeout,
             metadata=metadata,
         )
+
+        # Done; return the response.
+        return response
+
+    def patch(
+        self,
+        request: Union[compute.PatchRegionInstanceGroupManagerRequest, dict] = None,
+        *,
+        project: str = None,
+        region: str = None,
+        instance_group_manager: str = None,
+        instance_group_manager_resource: compute.InstanceGroupManager = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> extended_operation.ExtendedOperation:
+        r"""Updates a managed instance group using the
+        information that you specify in the request. This
+        operation is marked as DONE when the group is patched
+        even if the instances in the group are still in the
+        process of being patched. You must separately verify the
+        status of the individual instances with the
+        listmanagedinstances method. This method supports PATCH
+        semantics and uses the JSON merge patch format and
+        processing rules. If you update your group to specify a
+        new template or instance configuration, it's possible
+        that your intended specification for each VM in the
+        group is different from the current state of that VM. To
+        learn how to apply an updated configuration to the VMs
+        in a MIG, see Updating instances in a MIG.
+
+        Args:
+            request (Union[google.cloud.compute_v1.types.PatchRegionInstanceGroupManagerRequest, dict]):
+                The request object. A request message for
+                RegionInstanceGroupManagers.Patch. See the method
+                description for details.
+            project (str):
+                Project ID for this request.
+                This corresponds to the ``project`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            region (str):
+                Name of the region scoping this
+                request.
+
+                This corresponds to the ``region`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            instance_group_manager (str):
+                The name of the instance group
+                manager.
+
+                This corresponds to the ``instance_group_manager`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            instance_group_manager_resource (google.cloud.compute_v1.types.InstanceGroupManager):
+                The body resource for this request
+                This corresponds to the ``instance_group_manager_resource`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any(
+            [project, region, instance_group_manager, instance_group_manager_resource]
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a compute.PatchRegionInstanceGroupManagerRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, compute.PatchRegionInstanceGroupManagerRequest):
+            request = compute.PatchRegionInstanceGroupManagerRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if project is not None:
+                request.project = project
+            if region is not None:
+                request.region = region
+            if instance_group_manager is not None:
+                request.instance_group_manager = instance_group_manager
+            if instance_group_manager_resource is not None:
+                request.instance_group_manager_resource = (
+                    instance_group_manager_resource
+                )
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.patch]
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        operation_service = self._transport._region_operations_client
+        operation_request = compute.GetRegionOperationRequest()
+        operation_request.project = request.project
+        operation_request.region = request.region
+        operation_request.operation = response.name
+
+        get_operation = functools.partial(operation_service.get, operation_request)
+        # Cancel is not part of extended operations yet.
+        cancel_operation = lambda: None
+
+        # Note: this class is an implementation detail to provide a uniform
+        # set of names for certain fields in the extended operation proto message.
+        # See google.api_core.extended_operation.ExtendedOperation for details
+        # on these properties and the  expected interface.
+        class _CustomOperation(extended_operation.ExtendedOperation):
+            @property
+            def error_message(self):
+                return self._extended_operation.http_error_message
+
+            @property
+            def error_code(self):
+                return self._extended_operation.http_error_status_code
+
+        response = _CustomOperation.make(get_operation, cancel_operation, response)
 
         # Done; return the response.
         return response
@@ -1987,22 +2996,9 @@ class RegionInstanceGroupManagersClient(
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.Operation:
-                Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                [Global](/compute/docs/reference/rest/v1/globalOperations)
-                \*
-                [Regional](/compute/docs/reference/rest/v1/regionOperations)
-                \*
-                [Zonal](/compute/docs/reference/rest/v1/zoneOperations)
-                You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the globalOperations
-                resource. - For regional operations, use the
-                regionOperations resource. - For zonal operations, use
-                the zonalOperations resource. For more information, read
-                Global, Regional, and Zonal Resources.
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
 
         """
         # Create or coerce a protobuf request object.
@@ -2061,6 +3057,151 @@ class RegionInstanceGroupManagersClient(
             timeout=timeout,
             metadata=metadata,
         )
+
+        # Done; return the response.
+        return response
+
+    def patch_per_instance_configs(
+        self,
+        request: Union[
+            compute.PatchPerInstanceConfigsRegionInstanceGroupManagerRequest, dict
+        ] = None,
+        *,
+        project: str = None,
+        region: str = None,
+        instance_group_manager: str = None,
+        region_instance_group_manager_patch_instance_config_req_resource: compute.RegionInstanceGroupManagerPatchInstanceConfigReq = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> extended_operation.ExtendedOperation:
+        r"""Inserts or patches per-instance configs for the
+        managed instance group. perInstanceConfig.name serves as
+        a key used to distinguish whether to perform insert or
+        patch.
+
+        Args:
+            request (Union[google.cloud.compute_v1.types.PatchPerInstanceConfigsRegionInstanceGroupManagerRequest, dict]):
+                The request object. A request message for
+                RegionInstanceGroupManagers.PatchPerInstanceConfigs. See
+                the method description for details.
+            project (str):
+                Project ID for this request.
+                This corresponds to the ``project`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            region (str):
+                Name of the region scoping this
+                request, should conform to RFC1035.
+
+                This corresponds to the ``region`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            instance_group_manager (str):
+                The name of the managed instance
+                group. It should conform to RFC1035.
+
+                This corresponds to the ``instance_group_manager`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            region_instance_group_manager_patch_instance_config_req_resource (google.cloud.compute_v1.types.RegionInstanceGroupManagerPatchInstanceConfigReq):
+                The body resource for this request
+                This corresponds to the ``region_instance_group_manager_patch_instance_config_req_resource`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any(
+            [
+                project,
+                region,
+                instance_group_manager,
+                region_instance_group_manager_patch_instance_config_req_resource,
+            ]
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a compute.PatchPerInstanceConfigsRegionInstanceGroupManagerRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(
+            request, compute.PatchPerInstanceConfigsRegionInstanceGroupManagerRequest
+        ):
+            request = compute.PatchPerInstanceConfigsRegionInstanceGroupManagerRequest(
+                request
+            )
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if project is not None:
+                request.project = project
+            if region is not None:
+                request.region = region
+            if instance_group_manager is not None:
+                request.instance_group_manager = instance_group_manager
+            if (
+                region_instance_group_manager_patch_instance_config_req_resource
+                is not None
+            ):
+                request.region_instance_group_manager_patch_instance_config_req_resource = (
+                    region_instance_group_manager_patch_instance_config_req_resource
+                )
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.patch_per_instance_configs
+        ]
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        operation_service = self._transport._region_operations_client
+        operation_request = compute.GetRegionOperationRequest()
+        operation_request.project = request.project
+        operation_request.region = request.region
+        operation_request.operation = response.name
+
+        get_operation = functools.partial(operation_service.get, operation_request)
+        # Cancel is not part of extended operations yet.
+        cancel_operation = lambda: None
+
+        # Note: this class is an implementation detail to provide a uniform
+        # set of names for certain fields in the extended operation proto message.
+        # See google.api_core.extended_operation.ExtendedOperation for details
+        # on these properties and the  expected interface.
+        class _CustomOperation(extended_operation.ExtendedOperation):
+            @property
+            def error_message(self):
+                return self._extended_operation.http_error_message
+
+            @property
+            def error_code(self):
+                return self._extended_operation.http_error_status_code
+
+        response = _CustomOperation.make(get_operation, cancel_operation, response)
 
         # Done; return the response.
         return response
@@ -2128,22 +3269,9 @@ class RegionInstanceGroupManagersClient(
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.Operation:
-                Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                [Global](/compute/docs/reference/rest/v1/globalOperations)
-                \*
-                [Regional](/compute/docs/reference/rest/v1/regionOperations)
-                \*
-                [Zonal](/compute/docs/reference/rest/v1/zoneOperations)
-                You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the globalOperations
-                resource. - For regional operations, use the
-                regionOperations resource. - For zonal operations, use
-                the zonalOperations resource. For more information, read
-                Global, Regional, and Zonal Resources.
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
 
         """
         # Create or coerce a protobuf request object.
@@ -2197,6 +3325,154 @@ class RegionInstanceGroupManagersClient(
             timeout=timeout,
             metadata=metadata,
         )
+
+        # Done; return the response.
+        return response
+
+    def recreate_instances(
+        self,
+        request: Union[
+            compute.RecreateInstancesRegionInstanceGroupManagerRequest, dict
+        ] = None,
+        *,
+        project: str = None,
+        region: str = None,
+        instance_group_manager: str = None,
+        region_instance_group_managers_recreate_request_resource: compute.RegionInstanceGroupManagersRecreateRequest = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> extended_operation.ExtendedOperation:
+        r"""Flags the specified VM instances in the managed
+        instance group to be immediately recreated. Each
+        instance is recreated using the group's current
+        configuration. This operation is marked as DONE when the
+        flag is set even if the instances have not yet been
+        recreated. You must separately verify the status of each
+        instance by checking its currentAction field; for more
+        information, see Checking the status of managed
+        instances. If the group is part of a backend service
+        that has enabled connection draining, it can take up to
+        60 seconds after the connection draining duration has
+        elapsed before the VM instance is removed or deleted.
+        You can specify a maximum of 1000 instances with this
+        method per request.
+
+        Args:
+            request (Union[google.cloud.compute_v1.types.RecreateInstancesRegionInstanceGroupManagerRequest, dict]):
+                The request object. A request message for
+                RegionInstanceGroupManagers.RecreateInstances. See the
+                method description for details.
+            project (str):
+                Project ID for this request.
+                This corresponds to the ``project`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            region (str):
+                Name of the region scoping this
+                request.
+
+                This corresponds to the ``region`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            instance_group_manager (str):
+                Name of the managed instance group.
+                This corresponds to the ``instance_group_manager`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            region_instance_group_managers_recreate_request_resource (google.cloud.compute_v1.types.RegionInstanceGroupManagersRecreateRequest):
+                The body resource for this request
+                This corresponds to the ``region_instance_group_managers_recreate_request_resource`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any(
+            [
+                project,
+                region,
+                instance_group_manager,
+                region_instance_group_managers_recreate_request_resource,
+            ]
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a compute.RecreateInstancesRegionInstanceGroupManagerRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(
+            request, compute.RecreateInstancesRegionInstanceGroupManagerRequest
+        ):
+            request = compute.RecreateInstancesRegionInstanceGroupManagerRequest(
+                request
+            )
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if project is not None:
+                request.project = project
+            if region is not None:
+                request.region = region
+            if instance_group_manager is not None:
+                request.instance_group_manager = instance_group_manager
+            if region_instance_group_managers_recreate_request_resource is not None:
+                request.region_instance_group_managers_recreate_request_resource = (
+                    region_instance_group_managers_recreate_request_resource
+                )
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.recreate_instances]
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        operation_service = self._transport._region_operations_client
+        operation_request = compute.GetRegionOperationRequest()
+        operation_request.project = request.project
+        operation_request.region = request.region
+        operation_request.operation = response.name
+
+        get_operation = functools.partial(operation_service.get, operation_request)
+        # Cancel is not part of extended operations yet.
+        cancel_operation = lambda: None
+
+        # Note: this class is an implementation detail to provide a uniform
+        # set of names for certain fields in the extended operation proto message.
+        # See google.api_core.extended_operation.ExtendedOperation for details
+        # on these properties and the  expected interface.
+        class _CustomOperation(extended_operation.ExtendedOperation):
+            @property
+            def error_message(self):
+                return self._extended_operation.http_error_message
+
+            @property
+            def error_code(self):
+                return self._extended_operation.http_error_status_code
+
+        response = _CustomOperation.make(get_operation, cancel_operation, response)
 
         # Done; return the response.
         return response
@@ -2263,22 +3539,9 @@ class RegionInstanceGroupManagersClient(
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.Operation:
-                Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                [Global](/compute/docs/reference/rest/v1/globalOperations)
-                \*
-                [Regional](/compute/docs/reference/rest/v1/regionOperations)
-                \*
-                [Zonal](/compute/docs/reference/rest/v1/zoneOperations)
-                You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the globalOperations
-                resource. - For regional operations, use the
-                regionOperations resource. - For zonal operations, use
-                the zonalOperations resource. For more information, read
-                Global, Regional, and Zonal Resources.
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
 
         """
         # Create or coerce a protobuf request object.
@@ -2319,6 +3582,140 @@ class RegionInstanceGroupManagersClient(
             timeout=timeout,
             metadata=metadata,
         )
+
+        # Done; return the response.
+        return response
+
+    def resize(
+        self,
+        request: Union[compute.ResizeRegionInstanceGroupManagerRequest, dict] = None,
+        *,
+        project: str = None,
+        region: str = None,
+        instance_group_manager: str = None,
+        size: int = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> extended_operation.ExtendedOperation:
+        r"""Changes the intended size of the managed instance
+        group. If you increase the size, the group creates new
+        instances using the current instance template. If you
+        decrease the size, the group deletes one or more
+        instances. The resize operation is marked DONE if the
+        resize request is successful. The underlying actions
+        take additional time. You must separately verify the
+        status of the creating or deleting actions with the
+        listmanagedinstances method. If the group is part of a
+        backend service that has enabled connection draining, it
+        can take up to 60 seconds after the connection draining
+        duration has elapsed before the VM instance is removed
+        or deleted.
+
+        Args:
+            request (Union[google.cloud.compute_v1.types.ResizeRegionInstanceGroupManagerRequest, dict]):
+                The request object. A request message for
+                RegionInstanceGroupManagers.Resize. See the method
+                description for details.
+            project (str):
+                Project ID for this request.
+                This corresponds to the ``project`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            region (str):
+                Name of the region scoping this
+                request.
+
+                This corresponds to the ``region`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            instance_group_manager (str):
+                Name of the managed instance group.
+                This corresponds to the ``instance_group_manager`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            size (int):
+                Number of instances that should exist
+                in this instance group manager.
+
+                This corresponds to the ``size`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([project, region, instance_group_manager, size])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a compute.ResizeRegionInstanceGroupManagerRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, compute.ResizeRegionInstanceGroupManagerRequest):
+            request = compute.ResizeRegionInstanceGroupManagerRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if project is not None:
+                request.project = project
+            if region is not None:
+                request.region = region
+            if instance_group_manager is not None:
+                request.instance_group_manager = instance_group_manager
+            if size is not None:
+                request.size = size
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.resize]
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        operation_service = self._transport._region_operations_client
+        operation_request = compute.GetRegionOperationRequest()
+        operation_request.project = request.project
+        operation_request.region = request.region
+        operation_request.operation = response.name
+
+        get_operation = functools.partial(operation_service.get, operation_request)
+        # Cancel is not part of extended operations yet.
+        cancel_operation = lambda: None
+
+        # Note: this class is an implementation detail to provide a uniform
+        # set of names for certain fields in the extended operation proto message.
+        # See google.api_core.extended_operation.ExtendedOperation for details
+        # on these properties and the  expected interface.
+        class _CustomOperation(extended_operation.ExtendedOperation):
+            @property
+            def error_message(self):
+                return self._extended_operation.http_error_message
+
+            @property
+            def error_code(self):
+                return self._extended_operation.http_error_status_code
+
+        response = _CustomOperation.make(get_operation, cancel_operation, response)
 
         # Done; return the response.
         return response
@@ -2377,22 +3774,9 @@ class RegionInstanceGroupManagersClient(
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.Operation:
-                Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                [Global](/compute/docs/reference/rest/v1/globalOperations)
-                \*
-                [Regional](/compute/docs/reference/rest/v1/regionOperations)
-                \*
-                [Zonal](/compute/docs/reference/rest/v1/zoneOperations)
-                You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the globalOperations
-                resource. - For regional operations, use the
-                regionOperations resource. - For zonal operations, use
-                the zonalOperations resource. For more information, read
-                Global, Regional, and Zonal Resources.
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
 
         """
         # Create or coerce a protobuf request object.
@@ -2450,6 +3834,145 @@ class RegionInstanceGroupManagersClient(
         # Done; return the response.
         return response
 
+    def set_instance_template(
+        self,
+        request: Union[
+            compute.SetInstanceTemplateRegionInstanceGroupManagerRequest, dict
+        ] = None,
+        *,
+        project: str = None,
+        region: str = None,
+        instance_group_manager: str = None,
+        region_instance_group_managers_set_template_request_resource: compute.RegionInstanceGroupManagersSetTemplateRequest = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> extended_operation.ExtendedOperation:
+        r"""Sets the instance template to use when creating new
+        instances or recreating instances in this group.
+        Existing instances are not affected.
+
+        Args:
+            request (Union[google.cloud.compute_v1.types.SetInstanceTemplateRegionInstanceGroupManagerRequest, dict]):
+                The request object. A request message for
+                RegionInstanceGroupManagers.SetInstanceTemplate. See the
+                method description for details.
+            project (str):
+                Project ID for this request.
+                This corresponds to the ``project`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            region (str):
+                Name of the region scoping this
+                request.
+
+                This corresponds to the ``region`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            instance_group_manager (str):
+                The name of the managed instance
+                group.
+
+                This corresponds to the ``instance_group_manager`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            region_instance_group_managers_set_template_request_resource (google.cloud.compute_v1.types.RegionInstanceGroupManagersSetTemplateRequest):
+                The body resource for this request
+                This corresponds to the ``region_instance_group_managers_set_template_request_resource`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any(
+            [
+                project,
+                region,
+                instance_group_manager,
+                region_instance_group_managers_set_template_request_resource,
+            ]
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a compute.SetInstanceTemplateRegionInstanceGroupManagerRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(
+            request, compute.SetInstanceTemplateRegionInstanceGroupManagerRequest
+        ):
+            request = compute.SetInstanceTemplateRegionInstanceGroupManagerRequest(
+                request
+            )
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if project is not None:
+                request.project = project
+            if region is not None:
+                request.region = region
+            if instance_group_manager is not None:
+                request.instance_group_manager = instance_group_manager
+            if region_instance_group_managers_set_template_request_resource is not None:
+                request.region_instance_group_managers_set_template_request_resource = (
+                    region_instance_group_managers_set_template_request_resource
+                )
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.set_instance_template]
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        operation_service = self._transport._region_operations_client
+        operation_request = compute.GetRegionOperationRequest()
+        operation_request.project = request.project
+        operation_request.region = request.region
+        operation_request.operation = response.name
+
+        get_operation = functools.partial(operation_service.get, operation_request)
+        # Cancel is not part of extended operations yet.
+        cancel_operation = lambda: None
+
+        # Note: this class is an implementation detail to provide a uniform
+        # set of names for certain fields in the extended operation proto message.
+        # See google.api_core.extended_operation.ExtendedOperation for details
+        # on these properties and the  expected interface.
+        class _CustomOperation(extended_operation.ExtendedOperation):
+            @property
+            def error_message(self):
+                return self._extended_operation.http_error_message
+
+            @property
+            def error_code(self):
+                return self._extended_operation.http_error_status_code
+
+        response = _CustomOperation.make(get_operation, cancel_operation, response)
+
+        # Done; return the response.
+        return response
+
     def set_target_pools_unary(
         self,
         request: Union[
@@ -2502,22 +4025,9 @@ class RegionInstanceGroupManagersClient(
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.Operation:
-                Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                [Global](/compute/docs/reference/rest/v1/globalOperations)
-                \*
-                [Regional](/compute/docs/reference/rest/v1/regionOperations)
-                \*
-                [Zonal](/compute/docs/reference/rest/v1/zoneOperations)
-                You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the globalOperations
-                resource. - For regional operations, use the
-                regionOperations resource. - For zonal operations, use
-                the zonalOperations resource. For more information, read
-                Global, Regional, and Zonal Resources.
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
 
         """
         # Create or coerce a protobuf request object.
@@ -2572,6 +4082,144 @@ class RegionInstanceGroupManagersClient(
             timeout=timeout,
             metadata=metadata,
         )
+
+        # Done; return the response.
+        return response
+
+    def set_target_pools(
+        self,
+        request: Union[
+            compute.SetTargetPoolsRegionInstanceGroupManagerRequest, dict
+        ] = None,
+        *,
+        project: str = None,
+        region: str = None,
+        instance_group_manager: str = None,
+        region_instance_group_managers_set_target_pools_request_resource: compute.RegionInstanceGroupManagersSetTargetPoolsRequest = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> extended_operation.ExtendedOperation:
+        r"""Modifies the target pools to which all new instances
+        in this group are assigned. Existing instances in the
+        group are not affected.
+
+        Args:
+            request (Union[google.cloud.compute_v1.types.SetTargetPoolsRegionInstanceGroupManagerRequest, dict]):
+                The request object. A request message for
+                RegionInstanceGroupManagers.SetTargetPools. See the
+                method description for details.
+            project (str):
+                Project ID for this request.
+                This corresponds to the ``project`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            region (str):
+                Name of the region scoping this
+                request.
+
+                This corresponds to the ``region`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            instance_group_manager (str):
+                Name of the managed instance group.
+                This corresponds to the ``instance_group_manager`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            region_instance_group_managers_set_target_pools_request_resource (google.cloud.compute_v1.types.RegionInstanceGroupManagersSetTargetPoolsRequest):
+                The body resource for this request
+                This corresponds to the ``region_instance_group_managers_set_target_pools_request_resource`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any(
+            [
+                project,
+                region,
+                instance_group_manager,
+                region_instance_group_managers_set_target_pools_request_resource,
+            ]
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a compute.SetTargetPoolsRegionInstanceGroupManagerRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(
+            request, compute.SetTargetPoolsRegionInstanceGroupManagerRequest
+        ):
+            request = compute.SetTargetPoolsRegionInstanceGroupManagerRequest(request)
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if project is not None:
+                request.project = project
+            if region is not None:
+                request.region = region
+            if instance_group_manager is not None:
+                request.instance_group_manager = instance_group_manager
+            if (
+                region_instance_group_managers_set_target_pools_request_resource
+                is not None
+            ):
+                request.region_instance_group_managers_set_target_pools_request_resource = (
+                    region_instance_group_managers_set_target_pools_request_resource
+                )
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[self._transport.set_target_pools]
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        operation_service = self._transport._region_operations_client
+        operation_request = compute.GetRegionOperationRequest()
+        operation_request.project = request.project
+        operation_request.region = request.region
+        operation_request.operation = response.name
+
+        get_operation = functools.partial(operation_service.get, operation_request)
+        # Cancel is not part of extended operations yet.
+        cancel_operation = lambda: None
+
+        # Note: this class is an implementation detail to provide a uniform
+        # set of names for certain fields in the extended operation proto message.
+        # See google.api_core.extended_operation.ExtendedOperation for details
+        # on these properties and the  expected interface.
+        class _CustomOperation(extended_operation.ExtendedOperation):
+            @property
+            def error_message(self):
+                return self._extended_operation.http_error_message
+
+            @property
+            def error_code(self):
+                return self._extended_operation.http_error_status_code
+
+        response = _CustomOperation.make(get_operation, cancel_operation, response)
 
         # Done; return the response.
         return response
@@ -2631,22 +4279,9 @@ class RegionInstanceGroupManagersClient(
                 sent along with the request as metadata.
 
         Returns:
-            google.cloud.compute_v1.types.Operation:
-                Represents an Operation resource. Google Compute Engine
-                has three Operation resources: \*
-                [Global](/compute/docs/reference/rest/v1/globalOperations)
-                \*
-                [Regional](/compute/docs/reference/rest/v1/regionOperations)
-                \*
-                [Zonal](/compute/docs/reference/rest/v1/zoneOperations)
-                You can use an operation resource to manage asynchronous
-                API requests. For more information, read Handling API
-                responses. Operations can be global, regional or zonal.
-                - For global operations, use the globalOperations
-                resource. - For regional operations, use the
-                regionOperations resource. - For zonal operations, use
-                the zonalOperations resource. For more information, read
-                Global, Regional, and Zonal Resources.
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
 
         """
         # Create or coerce a protobuf request object.
@@ -2705,6 +4340,151 @@ class RegionInstanceGroupManagersClient(
             timeout=timeout,
             metadata=metadata,
         )
+
+        # Done; return the response.
+        return response
+
+    def update_per_instance_configs(
+        self,
+        request: Union[
+            compute.UpdatePerInstanceConfigsRegionInstanceGroupManagerRequest, dict
+        ] = None,
+        *,
+        project: str = None,
+        region: str = None,
+        instance_group_manager: str = None,
+        region_instance_group_manager_update_instance_config_req_resource: compute.RegionInstanceGroupManagerUpdateInstanceConfigReq = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> extended_operation.ExtendedOperation:
+        r"""Inserts or updates per-instance configs for the
+        managed instance group. perInstanceConfig.name serves as
+        a key used to distinguish whether to perform insert or
+        patch.
+
+        Args:
+            request (Union[google.cloud.compute_v1.types.UpdatePerInstanceConfigsRegionInstanceGroupManagerRequest, dict]):
+                The request object. A request message for
+                RegionInstanceGroupManagers.UpdatePerInstanceConfigs.
+                See the method description for details.
+            project (str):
+                Project ID for this request.
+                This corresponds to the ``project`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            region (str):
+                Name of the region scoping this
+                request, should conform to RFC1035.
+
+                This corresponds to the ``region`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            instance_group_manager (str):
+                The name of the managed instance
+                group. It should conform to RFC1035.
+
+                This corresponds to the ``instance_group_manager`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            region_instance_group_manager_update_instance_config_req_resource (google.cloud.compute_v1.types.RegionInstanceGroupManagerUpdateInstanceConfigReq):
+                The body resource for this request
+                This corresponds to the ``region_instance_group_manager_update_instance_config_req_resource`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.api_core.extended_operation.ExtendedOperation:
+                An object representing a extended
+                long-running operation.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any(
+            [
+                project,
+                region,
+                instance_group_manager,
+                region_instance_group_manager_update_instance_config_req_resource,
+            ]
+        )
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        # Minor optimization to avoid making a copy if the user passes
+        # in a compute.UpdatePerInstanceConfigsRegionInstanceGroupManagerRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(
+            request, compute.UpdatePerInstanceConfigsRegionInstanceGroupManagerRequest
+        ):
+            request = compute.UpdatePerInstanceConfigsRegionInstanceGroupManagerRequest(
+                request
+            )
+            # If we have keyword arguments corresponding to fields on the
+            # request, apply these.
+            if project is not None:
+                request.project = project
+            if region is not None:
+                request.region = region
+            if instance_group_manager is not None:
+                request.instance_group_manager = instance_group_manager
+            if (
+                region_instance_group_manager_update_instance_config_req_resource
+                is not None
+            ):
+                request.region_instance_group_manager_update_instance_config_req_resource = (
+                    region_instance_group_manager_update_instance_config_req_resource
+                )
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.update_per_instance_configs
+        ]
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        operation_service = self._transport._region_operations_client
+        operation_request = compute.GetRegionOperationRequest()
+        operation_request.project = request.project
+        operation_request.region = request.region
+        operation_request.operation = response.name
+
+        get_operation = functools.partial(operation_service.get, operation_request)
+        # Cancel is not part of extended operations yet.
+        cancel_operation = lambda: None
+
+        # Note: this class is an implementation detail to provide a uniform
+        # set of names for certain fields in the extended operation proto message.
+        # See google.api_core.extended_operation.ExtendedOperation for details
+        # on these properties and the  expected interface.
+        class _CustomOperation(extended_operation.ExtendedOperation):
+            @property
+            def error_message(self):
+                return self._extended_operation.http_error_message
+
+            @property
+            def error_code(self):
+                return self._extended_operation.http_error_status_code
+
+        response = _CustomOperation.make(get_operation, cancel_operation, response)
 
         # Done; return the response.
         return response
