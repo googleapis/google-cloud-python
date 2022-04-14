@@ -1,16 +1,69 @@
 {
+  "clientLibrary": {
+    "apis": [
+      {
+        "id": "google.storagetransfer.v1",
+        "version": "v1"
+      }
+    ],
+    "language": "PYTHON",
+    "name": "google-cloud-storage-transfer"
+  },
   "snippets": [
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.storage_transfer_v1.StorageTransferServiceAsyncClient",
+          "shortName": "StorageTransferServiceAsyncClient"
+        },
+        "fullName": "google.cloud.storage_transfer_v1.StorageTransferServiceAsyncClient.create_agent_pool",
         "method": {
+          "fullName": "google.storagetransfer.v1.StorageTransferService.CreateAgentPool",
           "service": {
+            "fullName": "google.storagetransfer.v1.StorageTransferService",
             "shortName": "StorageTransferService"
           },
           "shortName": "CreateAgentPool"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.storage_transfer_v1.types.CreateAgentPoolRequest"
+          },
+          {
+            "name": "project_id",
+            "type": "str"
+          },
+          {
+            "name": "agent_pool",
+            "type": "google.cloud.storage_transfer_v1.types.AgentPool"
+          },
+          {
+            "name": "agent_pool_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.storage_transfer_v1.types.AgentPool",
+        "shortName": "create_agent_pool"
       },
+      "description": "Sample for CreateAgentPool",
       "file": "storagetransfer_v1_generated_storage_transfer_service_create_agent_pool_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "storagetransfer_v1_generated_StorageTransferService_CreateAgentPool_async",
       "segments": [
         {
@@ -43,18 +96,62 @@
           "start": 47,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "storagetransfer_v1_generated_storage_transfer_service_create_agent_pool_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.storage_transfer_v1.StorageTransferServiceClient",
+          "shortName": "StorageTransferServiceClient"
+        },
+        "fullName": "google.cloud.storage_transfer_v1.StorageTransferServiceClient.create_agent_pool",
         "method": {
+          "fullName": "google.storagetransfer.v1.StorageTransferService.CreateAgentPool",
           "service": {
+            "fullName": "google.storagetransfer.v1.StorageTransferService",
             "shortName": "StorageTransferService"
           },
           "shortName": "CreateAgentPool"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.storage_transfer_v1.types.CreateAgentPoolRequest"
+          },
+          {
+            "name": "project_id",
+            "type": "str"
+          },
+          {
+            "name": "agent_pool",
+            "type": "google.cloud.storage_transfer_v1.types.AgentPool"
+          },
+          {
+            "name": "agent_pool_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.storage_transfer_v1.types.AgentPool",
+        "shortName": "create_agent_pool"
       },
+      "description": "Sample for CreateAgentPool",
       "file": "storagetransfer_v1_generated_storage_transfer_service_create_agent_pool_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "storagetransfer_v1_generated_StorageTransferService_CreateAgentPool_sync",
       "segments": [
         {
@@ -87,19 +184,51 @@
           "start": 47,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "storagetransfer_v1_generated_storage_transfer_service_create_agent_pool_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.storage_transfer_v1.StorageTransferServiceAsyncClient",
+          "shortName": "StorageTransferServiceAsyncClient"
+        },
+        "fullName": "google.cloud.storage_transfer_v1.StorageTransferServiceAsyncClient.create_transfer_job",
         "method": {
+          "fullName": "google.storagetransfer.v1.StorageTransferService.CreateTransferJob",
           "service": {
+            "fullName": "google.storagetransfer.v1.StorageTransferService",
             "shortName": "StorageTransferService"
           },
           "shortName": "CreateTransferJob"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.storage_transfer_v1.types.CreateTransferJobRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.storage_transfer_v1.types.TransferJob",
+        "shortName": "create_transfer_job"
       },
+      "description": "Sample for CreateTransferJob",
       "file": "storagetransfer_v1_generated_storage_transfer_service_create_transfer_job_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "storagetransfer_v1_generated_StorageTransferService_CreateTransferJob_async",
       "segments": [
         {
@@ -132,18 +261,50 @@
           "start": 41,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "storagetransfer_v1_generated_storage_transfer_service_create_transfer_job_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.storage_transfer_v1.StorageTransferServiceClient",
+          "shortName": "StorageTransferServiceClient"
+        },
+        "fullName": "google.cloud.storage_transfer_v1.StorageTransferServiceClient.create_transfer_job",
         "method": {
+          "fullName": "google.storagetransfer.v1.StorageTransferService.CreateTransferJob",
           "service": {
+            "fullName": "google.storagetransfer.v1.StorageTransferService",
             "shortName": "StorageTransferService"
           },
           "shortName": "CreateTransferJob"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.storage_transfer_v1.types.CreateTransferJobRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.storage_transfer_v1.types.TransferJob",
+        "shortName": "create_transfer_job"
       },
+      "description": "Sample for CreateTransferJob",
       "file": "storagetransfer_v1_generated_storage_transfer_service_create_transfer_job_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "storagetransfer_v1_generated_StorageTransferService_CreateTransferJob_sync",
       "segments": [
         {
@@ -176,19 +337,54 @@
           "start": 41,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "storagetransfer_v1_generated_storage_transfer_service_create_transfer_job_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.storage_transfer_v1.StorageTransferServiceAsyncClient",
+          "shortName": "StorageTransferServiceAsyncClient"
+        },
+        "fullName": "google.cloud.storage_transfer_v1.StorageTransferServiceAsyncClient.delete_agent_pool",
         "method": {
+          "fullName": "google.storagetransfer.v1.StorageTransferService.DeleteAgentPool",
           "service": {
+            "fullName": "google.storagetransfer.v1.StorageTransferService",
             "shortName": "StorageTransferService"
           },
           "shortName": "DeleteAgentPool"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.storage_transfer_v1.types.DeleteAgentPoolRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_agent_pool"
       },
+      "description": "Sample for DeleteAgentPool",
       "file": "storagetransfer_v1_generated_storage_transfer_service_delete_agent_pool_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "storagetransfer_v1_generated_StorageTransferService_DeleteAgentPool_async",
       "segments": [
         {
@@ -219,18 +415,53 @@
           "end": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "storagetransfer_v1_generated_storage_transfer_service_delete_agent_pool_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.storage_transfer_v1.StorageTransferServiceClient",
+          "shortName": "StorageTransferServiceClient"
+        },
+        "fullName": "google.cloud.storage_transfer_v1.StorageTransferServiceClient.delete_agent_pool",
         "method": {
+          "fullName": "google.storagetransfer.v1.StorageTransferService.DeleteAgentPool",
           "service": {
+            "fullName": "google.storagetransfer.v1.StorageTransferService",
             "shortName": "StorageTransferService"
           },
           "shortName": "DeleteAgentPool"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.storage_transfer_v1.types.DeleteAgentPoolRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_agent_pool"
       },
+      "description": "Sample for DeleteAgentPool",
       "file": "storagetransfer_v1_generated_storage_transfer_service_delete_agent_pool_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "storagetransfer_v1_generated_StorageTransferService_DeleteAgentPool_sync",
       "segments": [
         {
@@ -261,19 +492,55 @@
           "end": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "storagetransfer_v1_generated_storage_transfer_service_delete_agent_pool_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.storage_transfer_v1.StorageTransferServiceAsyncClient",
+          "shortName": "StorageTransferServiceAsyncClient"
+        },
+        "fullName": "google.cloud.storage_transfer_v1.StorageTransferServiceAsyncClient.get_agent_pool",
         "method": {
+          "fullName": "google.storagetransfer.v1.StorageTransferService.GetAgentPool",
           "service": {
+            "fullName": "google.storagetransfer.v1.StorageTransferService",
             "shortName": "StorageTransferService"
           },
           "shortName": "GetAgentPool"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.storage_transfer_v1.types.GetAgentPoolRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.storage_transfer_v1.types.AgentPool",
+        "shortName": "get_agent_pool"
       },
+      "description": "Sample for GetAgentPool",
       "file": "storagetransfer_v1_generated_storage_transfer_service_get_agent_pool_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "storagetransfer_v1_generated_StorageTransferService_GetAgentPool_async",
       "segments": [
         {
@@ -306,18 +573,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "storagetransfer_v1_generated_storage_transfer_service_get_agent_pool_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.storage_transfer_v1.StorageTransferServiceClient",
+          "shortName": "StorageTransferServiceClient"
+        },
+        "fullName": "google.cloud.storage_transfer_v1.StorageTransferServiceClient.get_agent_pool",
         "method": {
+          "fullName": "google.storagetransfer.v1.StorageTransferService.GetAgentPool",
           "service": {
+            "fullName": "google.storagetransfer.v1.StorageTransferService",
             "shortName": "StorageTransferService"
           },
           "shortName": "GetAgentPool"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.storage_transfer_v1.types.GetAgentPoolRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.storage_transfer_v1.types.AgentPool",
+        "shortName": "get_agent_pool"
       },
+      "description": "Sample for GetAgentPool",
       "file": "storagetransfer_v1_generated_storage_transfer_service_get_agent_pool_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "storagetransfer_v1_generated_StorageTransferService_GetAgentPool_sync",
       "segments": [
         {
@@ -350,19 +653,51 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "storagetransfer_v1_generated_storage_transfer_service_get_agent_pool_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.storage_transfer_v1.StorageTransferServiceAsyncClient",
+          "shortName": "StorageTransferServiceAsyncClient"
+        },
+        "fullName": "google.cloud.storage_transfer_v1.StorageTransferServiceAsyncClient.get_google_service_account",
         "method": {
+          "fullName": "google.storagetransfer.v1.StorageTransferService.GetGoogleServiceAccount",
           "service": {
+            "fullName": "google.storagetransfer.v1.StorageTransferService",
             "shortName": "StorageTransferService"
           },
           "shortName": "GetGoogleServiceAccount"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.storage_transfer_v1.types.GetGoogleServiceAccountRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.storage_transfer_v1.types.GoogleServiceAccount",
+        "shortName": "get_google_service_account"
       },
+      "description": "Sample for GetGoogleServiceAccount",
       "file": "storagetransfer_v1_generated_storage_transfer_service_get_google_service_account_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "storagetransfer_v1_generated_StorageTransferService_GetGoogleServiceAccount_async",
       "segments": [
         {
@@ -395,18 +730,50 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "storagetransfer_v1_generated_storage_transfer_service_get_google_service_account_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.storage_transfer_v1.StorageTransferServiceClient",
+          "shortName": "StorageTransferServiceClient"
+        },
+        "fullName": "google.cloud.storage_transfer_v1.StorageTransferServiceClient.get_google_service_account",
         "method": {
+          "fullName": "google.storagetransfer.v1.StorageTransferService.GetGoogleServiceAccount",
           "service": {
+            "fullName": "google.storagetransfer.v1.StorageTransferService",
             "shortName": "StorageTransferService"
           },
           "shortName": "GetGoogleServiceAccount"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.storage_transfer_v1.types.GetGoogleServiceAccountRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.storage_transfer_v1.types.GoogleServiceAccount",
+        "shortName": "get_google_service_account"
       },
+      "description": "Sample for GetGoogleServiceAccount",
       "file": "storagetransfer_v1_generated_storage_transfer_service_get_google_service_account_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "storagetransfer_v1_generated_StorageTransferService_GetGoogleServiceAccount_sync",
       "segments": [
         {
@@ -439,19 +806,51 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "storagetransfer_v1_generated_storage_transfer_service_get_google_service_account_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.storage_transfer_v1.StorageTransferServiceAsyncClient",
+          "shortName": "StorageTransferServiceAsyncClient"
+        },
+        "fullName": "google.cloud.storage_transfer_v1.StorageTransferServiceAsyncClient.get_transfer_job",
         "method": {
+          "fullName": "google.storagetransfer.v1.StorageTransferService.GetTransferJob",
           "service": {
+            "fullName": "google.storagetransfer.v1.StorageTransferService",
             "shortName": "StorageTransferService"
           },
           "shortName": "GetTransferJob"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.storage_transfer_v1.types.GetTransferJobRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.storage_transfer_v1.types.TransferJob",
+        "shortName": "get_transfer_job"
       },
+      "description": "Sample for GetTransferJob",
       "file": "storagetransfer_v1_generated_storage_transfer_service_get_transfer_job_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "storagetransfer_v1_generated_StorageTransferService_GetTransferJob_async",
       "segments": [
         {
@@ -484,18 +883,50 @@
           "start": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "storagetransfer_v1_generated_storage_transfer_service_get_transfer_job_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.storage_transfer_v1.StorageTransferServiceClient",
+          "shortName": "StorageTransferServiceClient"
+        },
+        "fullName": "google.cloud.storage_transfer_v1.StorageTransferServiceClient.get_transfer_job",
         "method": {
+          "fullName": "google.storagetransfer.v1.StorageTransferService.GetTransferJob",
           "service": {
+            "fullName": "google.storagetransfer.v1.StorageTransferService",
             "shortName": "StorageTransferService"
           },
           "shortName": "GetTransferJob"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.storage_transfer_v1.types.GetTransferJobRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.storage_transfer_v1.types.TransferJob",
+        "shortName": "get_transfer_job"
       },
+      "description": "Sample for GetTransferJob",
       "file": "storagetransfer_v1_generated_storage_transfer_service_get_transfer_job_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "storagetransfer_v1_generated_StorageTransferService_GetTransferJob_sync",
       "segments": [
         {
@@ -528,19 +959,55 @@
           "start": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "storagetransfer_v1_generated_storage_transfer_service_get_transfer_job_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.storage_transfer_v1.StorageTransferServiceAsyncClient",
+          "shortName": "StorageTransferServiceAsyncClient"
+        },
+        "fullName": "google.cloud.storage_transfer_v1.StorageTransferServiceAsyncClient.list_agent_pools",
         "method": {
+          "fullName": "google.storagetransfer.v1.StorageTransferService.ListAgentPools",
           "service": {
+            "fullName": "google.storagetransfer.v1.StorageTransferService",
             "shortName": "StorageTransferService"
           },
           "shortName": "ListAgentPools"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.storage_transfer_v1.types.ListAgentPoolsRequest"
+          },
+          {
+            "name": "project_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.storage_transfer_v1.services.storage_transfer_service.pagers.ListAgentPoolsAsyncPager",
+        "shortName": "list_agent_pools"
       },
+      "description": "Sample for ListAgentPools",
       "file": "storagetransfer_v1_generated_storage_transfer_service_list_agent_pools_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "storagetransfer_v1_generated_StorageTransferService_ListAgentPools_async",
       "segments": [
         {
@@ -573,18 +1040,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "storagetransfer_v1_generated_storage_transfer_service_list_agent_pools_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.storage_transfer_v1.StorageTransferServiceClient",
+          "shortName": "StorageTransferServiceClient"
+        },
+        "fullName": "google.cloud.storage_transfer_v1.StorageTransferServiceClient.list_agent_pools",
         "method": {
+          "fullName": "google.storagetransfer.v1.StorageTransferService.ListAgentPools",
           "service": {
+            "fullName": "google.storagetransfer.v1.StorageTransferService",
             "shortName": "StorageTransferService"
           },
           "shortName": "ListAgentPools"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.storage_transfer_v1.types.ListAgentPoolsRequest"
+          },
+          {
+            "name": "project_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.storage_transfer_v1.services.storage_transfer_service.pagers.ListAgentPoolsPager",
+        "shortName": "list_agent_pools"
       },
+      "description": "Sample for ListAgentPools",
       "file": "storagetransfer_v1_generated_storage_transfer_service_list_agent_pools_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "storagetransfer_v1_generated_StorageTransferService_ListAgentPools_sync",
       "segments": [
         {
@@ -617,19 +1120,51 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "storagetransfer_v1_generated_storage_transfer_service_list_agent_pools_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.storage_transfer_v1.StorageTransferServiceAsyncClient",
+          "shortName": "StorageTransferServiceAsyncClient"
+        },
+        "fullName": "google.cloud.storage_transfer_v1.StorageTransferServiceAsyncClient.list_transfer_jobs",
         "method": {
+          "fullName": "google.storagetransfer.v1.StorageTransferService.ListTransferJobs",
           "service": {
+            "fullName": "google.storagetransfer.v1.StorageTransferService",
             "shortName": "StorageTransferService"
           },
           "shortName": "ListTransferJobs"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.storage_transfer_v1.types.ListTransferJobsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.storage_transfer_v1.services.storage_transfer_service.pagers.ListTransferJobsAsyncPager",
+        "shortName": "list_transfer_jobs"
       },
+      "description": "Sample for ListTransferJobs",
       "file": "storagetransfer_v1_generated_storage_transfer_service_list_transfer_jobs_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "storagetransfer_v1_generated_StorageTransferService_ListTransferJobs_async",
       "segments": [
         {
@@ -662,18 +1197,50 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "storagetransfer_v1_generated_storage_transfer_service_list_transfer_jobs_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.storage_transfer_v1.StorageTransferServiceClient",
+          "shortName": "StorageTransferServiceClient"
+        },
+        "fullName": "google.cloud.storage_transfer_v1.StorageTransferServiceClient.list_transfer_jobs",
         "method": {
+          "fullName": "google.storagetransfer.v1.StorageTransferService.ListTransferJobs",
           "service": {
+            "fullName": "google.storagetransfer.v1.StorageTransferService",
             "shortName": "StorageTransferService"
           },
           "shortName": "ListTransferJobs"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.storage_transfer_v1.types.ListTransferJobsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.storage_transfer_v1.services.storage_transfer_service.pagers.ListTransferJobsPager",
+        "shortName": "list_transfer_jobs"
       },
+      "description": "Sample for ListTransferJobs",
       "file": "storagetransfer_v1_generated_storage_transfer_service_list_transfer_jobs_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "storagetransfer_v1_generated_StorageTransferService_ListTransferJobs_sync",
       "segments": [
         {
@@ -706,19 +1273,50 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "storagetransfer_v1_generated_storage_transfer_service_list_transfer_jobs_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.storage_transfer_v1.StorageTransferServiceAsyncClient",
+          "shortName": "StorageTransferServiceAsyncClient"
+        },
+        "fullName": "google.cloud.storage_transfer_v1.StorageTransferServiceAsyncClient.pause_transfer_operation",
         "method": {
+          "fullName": "google.storagetransfer.v1.StorageTransferService.PauseTransferOperation",
           "service": {
+            "fullName": "google.storagetransfer.v1.StorageTransferService",
             "shortName": "StorageTransferService"
           },
           "shortName": "PauseTransferOperation"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.storage_transfer_v1.types.PauseTransferOperationRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "pause_transfer_operation"
       },
+      "description": "Sample for PauseTransferOperation",
       "file": "storagetransfer_v1_generated_storage_transfer_service_pause_transfer_operation_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "storagetransfer_v1_generated_StorageTransferService_PauseTransferOperation_async",
       "segments": [
         {
@@ -749,18 +1347,49 @@
           "end": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "storagetransfer_v1_generated_storage_transfer_service_pause_transfer_operation_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.storage_transfer_v1.StorageTransferServiceClient",
+          "shortName": "StorageTransferServiceClient"
+        },
+        "fullName": "google.cloud.storage_transfer_v1.StorageTransferServiceClient.pause_transfer_operation",
         "method": {
+          "fullName": "google.storagetransfer.v1.StorageTransferService.PauseTransferOperation",
           "service": {
+            "fullName": "google.storagetransfer.v1.StorageTransferService",
             "shortName": "StorageTransferService"
           },
           "shortName": "PauseTransferOperation"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.storage_transfer_v1.types.PauseTransferOperationRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "pause_transfer_operation"
       },
+      "description": "Sample for PauseTransferOperation",
       "file": "storagetransfer_v1_generated_storage_transfer_service_pause_transfer_operation_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "storagetransfer_v1_generated_StorageTransferService_PauseTransferOperation_sync",
       "segments": [
         {
@@ -791,19 +1420,50 @@
           "end": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "storagetransfer_v1_generated_storage_transfer_service_pause_transfer_operation_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.storage_transfer_v1.StorageTransferServiceAsyncClient",
+          "shortName": "StorageTransferServiceAsyncClient"
+        },
+        "fullName": "google.cloud.storage_transfer_v1.StorageTransferServiceAsyncClient.resume_transfer_operation",
         "method": {
+          "fullName": "google.storagetransfer.v1.StorageTransferService.ResumeTransferOperation",
           "service": {
+            "fullName": "google.storagetransfer.v1.StorageTransferService",
             "shortName": "StorageTransferService"
           },
           "shortName": "ResumeTransferOperation"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.storage_transfer_v1.types.ResumeTransferOperationRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "resume_transfer_operation"
       },
+      "description": "Sample for ResumeTransferOperation",
       "file": "storagetransfer_v1_generated_storage_transfer_service_resume_transfer_operation_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "storagetransfer_v1_generated_StorageTransferService_ResumeTransferOperation_async",
       "segments": [
         {
@@ -834,18 +1494,49 @@
           "end": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "storagetransfer_v1_generated_storage_transfer_service_resume_transfer_operation_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.storage_transfer_v1.StorageTransferServiceClient",
+          "shortName": "StorageTransferServiceClient"
+        },
+        "fullName": "google.cloud.storage_transfer_v1.StorageTransferServiceClient.resume_transfer_operation",
         "method": {
+          "fullName": "google.storagetransfer.v1.StorageTransferService.ResumeTransferOperation",
           "service": {
+            "fullName": "google.storagetransfer.v1.StorageTransferService",
             "shortName": "StorageTransferService"
           },
           "shortName": "ResumeTransferOperation"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.storage_transfer_v1.types.ResumeTransferOperationRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "resume_transfer_operation"
       },
+      "description": "Sample for ResumeTransferOperation",
       "file": "storagetransfer_v1_generated_storage_transfer_service_resume_transfer_operation_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "storagetransfer_v1_generated_StorageTransferService_ResumeTransferOperation_sync",
       "segments": [
         {
@@ -876,19 +1567,51 @@
           "end": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "storagetransfer_v1_generated_storage_transfer_service_resume_transfer_operation_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.storage_transfer_v1.StorageTransferServiceAsyncClient",
+          "shortName": "StorageTransferServiceAsyncClient"
+        },
+        "fullName": "google.cloud.storage_transfer_v1.StorageTransferServiceAsyncClient.run_transfer_job",
         "method": {
+          "fullName": "google.storagetransfer.v1.StorageTransferService.RunTransferJob",
           "service": {
+            "fullName": "google.storagetransfer.v1.StorageTransferService",
             "shortName": "StorageTransferService"
           },
           "shortName": "RunTransferJob"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.storage_transfer_v1.types.RunTransferJobRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "run_transfer_job"
       },
+      "description": "Sample for RunTransferJob",
       "file": "storagetransfer_v1_generated_storage_transfer_service_run_transfer_job_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "storagetransfer_v1_generated_StorageTransferService_RunTransferJob_async",
       "segments": [
         {
@@ -921,18 +1644,50 @@
           "start": 47,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "storagetransfer_v1_generated_storage_transfer_service_run_transfer_job_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.storage_transfer_v1.StorageTransferServiceClient",
+          "shortName": "StorageTransferServiceClient"
+        },
+        "fullName": "google.cloud.storage_transfer_v1.StorageTransferServiceClient.run_transfer_job",
         "method": {
+          "fullName": "google.storagetransfer.v1.StorageTransferService.RunTransferJob",
           "service": {
+            "fullName": "google.storagetransfer.v1.StorageTransferService",
             "shortName": "StorageTransferService"
           },
           "shortName": "RunTransferJob"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.storage_transfer_v1.types.RunTransferJobRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "run_transfer_job"
       },
+      "description": "Sample for RunTransferJob",
       "file": "storagetransfer_v1_generated_storage_transfer_service_run_transfer_job_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "storagetransfer_v1_generated_StorageTransferService_RunTransferJob_sync",
       "segments": [
         {
@@ -965,19 +1720,59 @@
           "start": 47,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "storagetransfer_v1_generated_storage_transfer_service_run_transfer_job_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.storage_transfer_v1.StorageTransferServiceAsyncClient",
+          "shortName": "StorageTransferServiceAsyncClient"
+        },
+        "fullName": "google.cloud.storage_transfer_v1.StorageTransferServiceAsyncClient.update_agent_pool",
         "method": {
+          "fullName": "google.storagetransfer.v1.StorageTransferService.UpdateAgentPool",
           "service": {
+            "fullName": "google.storagetransfer.v1.StorageTransferService",
             "shortName": "StorageTransferService"
           },
           "shortName": "UpdateAgentPool"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.storage_transfer_v1.types.UpdateAgentPoolRequest"
+          },
+          {
+            "name": "agent_pool",
+            "type": "google.cloud.storage_transfer_v1.types.AgentPool"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.storage_transfer_v1.types.AgentPool",
+        "shortName": "update_agent_pool"
       },
+      "description": "Sample for UpdateAgentPool",
       "file": "storagetransfer_v1_generated_storage_transfer_service_update_agent_pool_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "storagetransfer_v1_generated_StorageTransferService_UpdateAgentPool_async",
       "segments": [
         {
@@ -1010,18 +1805,58 @@
           "start": 45,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "storagetransfer_v1_generated_storage_transfer_service_update_agent_pool_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.storage_transfer_v1.StorageTransferServiceClient",
+          "shortName": "StorageTransferServiceClient"
+        },
+        "fullName": "google.cloud.storage_transfer_v1.StorageTransferServiceClient.update_agent_pool",
         "method": {
+          "fullName": "google.storagetransfer.v1.StorageTransferService.UpdateAgentPool",
           "service": {
+            "fullName": "google.storagetransfer.v1.StorageTransferService",
             "shortName": "StorageTransferService"
           },
           "shortName": "UpdateAgentPool"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.storage_transfer_v1.types.UpdateAgentPoolRequest"
+          },
+          {
+            "name": "agent_pool",
+            "type": "google.cloud.storage_transfer_v1.types.AgentPool"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.storage_transfer_v1.types.AgentPool",
+        "shortName": "update_agent_pool"
       },
+      "description": "Sample for UpdateAgentPool",
       "file": "storagetransfer_v1_generated_storage_transfer_service_update_agent_pool_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "storagetransfer_v1_generated_StorageTransferService_UpdateAgentPool_sync",
       "segments": [
         {
@@ -1054,19 +1889,51 @@
           "start": 45,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "storagetransfer_v1_generated_storage_transfer_service_update_agent_pool_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.storage_transfer_v1.StorageTransferServiceAsyncClient",
+          "shortName": "StorageTransferServiceAsyncClient"
+        },
+        "fullName": "google.cloud.storage_transfer_v1.StorageTransferServiceAsyncClient.update_transfer_job",
         "method": {
+          "fullName": "google.storagetransfer.v1.StorageTransferService.UpdateTransferJob",
           "service": {
+            "fullName": "google.storagetransfer.v1.StorageTransferService",
             "shortName": "StorageTransferService"
           },
           "shortName": "UpdateTransferJob"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.storage_transfer_v1.types.UpdateTransferJobRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.storage_transfer_v1.types.TransferJob",
+        "shortName": "update_transfer_job"
       },
+      "description": "Sample for UpdateTransferJob",
       "file": "storagetransfer_v1_generated_storage_transfer_service_update_transfer_job_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "storagetransfer_v1_generated_StorageTransferService_UpdateTransferJob_async",
       "segments": [
         {
@@ -1099,18 +1966,50 @@
           "start": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "storagetransfer_v1_generated_storage_transfer_service_update_transfer_job_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.storage_transfer_v1.StorageTransferServiceClient",
+          "shortName": "StorageTransferServiceClient"
+        },
+        "fullName": "google.cloud.storage_transfer_v1.StorageTransferServiceClient.update_transfer_job",
         "method": {
+          "fullName": "google.storagetransfer.v1.StorageTransferService.UpdateTransferJob",
           "service": {
+            "fullName": "google.storagetransfer.v1.StorageTransferService",
             "shortName": "StorageTransferService"
           },
           "shortName": "UpdateTransferJob"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.storage_transfer_v1.types.UpdateTransferJobRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.storage_transfer_v1.types.TransferJob",
+        "shortName": "update_transfer_job"
       },
+      "description": "Sample for UpdateTransferJob",
       "file": "storagetransfer_v1_generated_storage_transfer_service_update_transfer_job_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "storagetransfer_v1_generated_StorageTransferService_UpdateTransferJob_sync",
       "segments": [
         {
@@ -1143,7 +2042,8 @@
           "start": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "storagetransfer_v1_generated_storage_transfer_service_update_transfer_job_sync.py"
     }
   ]
 }
