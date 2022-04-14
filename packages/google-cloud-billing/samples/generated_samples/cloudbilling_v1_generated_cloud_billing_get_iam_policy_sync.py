@@ -25,6 +25,7 @@
 
 # [START cloudbilling_v1_generated_CloudBilling_GetIamPolicy_sync]
 from google.cloud import billing_v1
+from google.iam.v1 import iam_policy_pb2  # type: ignore
 
 
 def sample_get_iam_policy():
@@ -32,7 +33,7 @@ def sample_get_iam_policy():
     client = billing_v1.CloudBillingClient()
 
     # Initialize request argument(s)
-    request = billing_v1.GetIamPolicyRequest(
+    request = iam_policy_pb2.GetIamPolicyRequest(
         resource="resource_value",
     )
 

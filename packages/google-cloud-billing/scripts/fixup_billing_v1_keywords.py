@@ -47,7 +47,7 @@ class billingCallTransformer(cst.CSTTransformer):
         'list_project_billing_info': ('name', 'page_size', 'page_token', ),
         'list_services': ('page_size', 'page_token', ),
         'list_skus': ('parent', 'start_time', 'end_time', 'currency_code', 'page_size', 'page_token', ),
-        'set_iam_policy': ('resource', 'policy', ),
+        'set_iam_policy': ('resource', 'policy', 'update_mask', ),
         'test_iam_permissions': ('resource', 'permissions', ),
         'update_billing_account': ('name', 'account', 'update_mask', ),
         'update_project_billing_info': ('name', 'project_billing_info', ),

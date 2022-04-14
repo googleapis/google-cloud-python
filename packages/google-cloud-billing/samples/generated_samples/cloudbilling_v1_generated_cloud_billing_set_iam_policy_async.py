@@ -25,6 +25,7 @@
 
 # [START cloudbilling_v1_generated_CloudBilling_SetIamPolicy_async]
 from google.cloud import billing_v1
+from google.iam.v1 import iam_policy_pb2  # type: ignore
 
 
 async def sample_set_iam_policy():
@@ -32,7 +33,7 @@ async def sample_set_iam_policy():
     client = billing_v1.CloudBillingAsyncClient()
 
     # Initialize request argument(s)
-    request = billing_v1.SetIamPolicyRequest(
+    request = iam_policy_pb2.SetIamPolicyRequest(
         resource="resource_value",
     )
 

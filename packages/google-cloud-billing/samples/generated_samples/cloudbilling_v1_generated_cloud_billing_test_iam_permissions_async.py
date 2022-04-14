@@ -25,6 +25,7 @@
 
 # [START cloudbilling_v1_generated_CloudBilling_TestIamPermissions_async]
 from google.cloud import billing_v1
+from google.iam.v1 import iam_policy_pb2  # type: ignore
 
 
 async def sample_test_iam_permissions():
@@ -32,7 +33,7 @@ async def sample_test_iam_permissions():
     client = billing_v1.CloudBillingAsyncClient()
 
     # Initialize request argument(s)
-    request = billing_v1.TestIamPermissionsRequest(
+    request = iam_policy_pb2.TestIamPermissionsRequest(
         resource="resource_value",
         permissions=['permissions_value_1', 'permissions_value_2'],
     )
