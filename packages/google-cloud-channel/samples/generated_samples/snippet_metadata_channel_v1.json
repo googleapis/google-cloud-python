@@ -1,16 +1,57 @@
 {
+  "clientLibrary": {
+    "apis": [
+      {
+        "id": "google.cloud.channel.v1",
+        "version": "v1"
+      }
+    ],
+    "language": "PYTHON",
+    "name": "google-cloud-channel"
+  },
   "snippets": [
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient",
+          "shortName": "CloudChannelServiceAsyncClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient.activate_entitlement",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.ActivateEntitlement",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "ActivateEntitlement"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.ActivateEntitlementRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "activate_entitlement"
       },
+      "description": "Sample for ActivateEntitlement",
       "file": "cloudchannel_v1_generated_cloud_channel_service_activate_entitlement_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ActivateEntitlement_async",
       "segments": [
         {
@@ -43,18 +84,50 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_activate_entitlement_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceClient",
+          "shortName": "CloudChannelServiceClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceClient.activate_entitlement",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.ActivateEntitlement",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "ActivateEntitlement"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.ActivateEntitlementRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "activate_entitlement"
       },
+      "description": "Sample for ActivateEntitlement",
       "file": "cloudchannel_v1_generated_cloud_channel_service_activate_entitlement_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ActivateEntitlement_sync",
       "segments": [
         {
@@ -87,19 +160,51 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_activate_entitlement_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient",
+          "shortName": "CloudChannelServiceAsyncClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient.cancel_entitlement",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.CancelEntitlement",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "CancelEntitlement"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.CancelEntitlementRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "cancel_entitlement"
       },
+      "description": "Sample for CancelEntitlement",
       "file": "cloudchannel_v1_generated_cloud_channel_service_cancel_entitlement_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_CancelEntitlement_async",
       "segments": [
         {
@@ -132,18 +237,50 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_cancel_entitlement_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceClient",
+          "shortName": "CloudChannelServiceClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceClient.cancel_entitlement",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.CancelEntitlement",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "CancelEntitlement"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.CancelEntitlementRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "cancel_entitlement"
       },
+      "description": "Sample for CancelEntitlement",
       "file": "cloudchannel_v1_generated_cloud_channel_service_cancel_entitlement_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_CancelEntitlement_sync",
       "segments": [
         {
@@ -176,19 +313,51 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_cancel_entitlement_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient",
+          "shortName": "CloudChannelServiceAsyncClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient.change_offer",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.ChangeOffer",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "ChangeOffer"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.ChangeOfferRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "change_offer"
       },
+      "description": "Sample for ChangeOffer",
       "file": "cloudchannel_v1_generated_cloud_channel_service_change_offer_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ChangeOffer_async",
       "segments": [
         {
@@ -221,18 +390,50 @@
           "start": 47,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_change_offer_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceClient",
+          "shortName": "CloudChannelServiceClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceClient.change_offer",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.ChangeOffer",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "ChangeOffer"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.ChangeOfferRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "change_offer"
       },
+      "description": "Sample for ChangeOffer",
       "file": "cloudchannel_v1_generated_cloud_channel_service_change_offer_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ChangeOffer_sync",
       "segments": [
         {
@@ -265,19 +466,51 @@
           "start": 47,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_change_offer_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient",
+          "shortName": "CloudChannelServiceAsyncClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient.change_parameters",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.ChangeParameters",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "ChangeParameters"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.ChangeParametersRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "change_parameters"
       },
+      "description": "Sample for ChangeParameters",
       "file": "cloudchannel_v1_generated_cloud_channel_service_change_parameters_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ChangeParameters_async",
       "segments": [
         {
@@ -310,18 +543,50 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_change_parameters_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceClient",
+          "shortName": "CloudChannelServiceClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceClient.change_parameters",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.ChangeParameters",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "ChangeParameters"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.ChangeParametersRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "change_parameters"
       },
+      "description": "Sample for ChangeParameters",
       "file": "cloudchannel_v1_generated_cloud_channel_service_change_parameters_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ChangeParameters_sync",
       "segments": [
         {
@@ -354,19 +619,51 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_change_parameters_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient",
+          "shortName": "CloudChannelServiceAsyncClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient.change_renewal_settings",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.ChangeRenewalSettings",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "ChangeRenewalSettings"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.ChangeRenewalSettingsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "change_renewal_settings"
       },
+      "description": "Sample for ChangeRenewalSettings",
       "file": "cloudchannel_v1_generated_cloud_channel_service_change_renewal_settings_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ChangeRenewalSettings_async",
       "segments": [
         {
@@ -399,18 +696,50 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_change_renewal_settings_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceClient",
+          "shortName": "CloudChannelServiceClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceClient.change_renewal_settings",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.ChangeRenewalSettings",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "ChangeRenewalSettings"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.ChangeRenewalSettingsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "change_renewal_settings"
       },
+      "description": "Sample for ChangeRenewalSettings",
       "file": "cloudchannel_v1_generated_cloud_channel_service_change_renewal_settings_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ChangeRenewalSettings_sync",
       "segments": [
         {
@@ -443,19 +772,51 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_change_renewal_settings_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient",
+          "shortName": "CloudChannelServiceAsyncClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient.check_cloud_identity_accounts_exist",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.CheckCloudIdentityAccountsExist",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "CheckCloudIdentityAccountsExist"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.CheckCloudIdentityAccountsExistRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.channel_v1.types.CheckCloudIdentityAccountsExistResponse",
+        "shortName": "check_cloud_identity_accounts_exist"
       },
+      "description": "Sample for CheckCloudIdentityAccountsExist",
       "file": "cloudchannel_v1_generated_cloud_channel_service_check_cloud_identity_accounts_exist_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_CheckCloudIdentityAccountsExist_async",
       "segments": [
         {
@@ -488,18 +849,50 @@
           "start": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_check_cloud_identity_accounts_exist_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceClient",
+          "shortName": "CloudChannelServiceClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceClient.check_cloud_identity_accounts_exist",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.CheckCloudIdentityAccountsExist",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "CheckCloudIdentityAccountsExist"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.CheckCloudIdentityAccountsExistRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.channel_v1.types.CheckCloudIdentityAccountsExistResponse",
+        "shortName": "check_cloud_identity_accounts_exist"
       },
+      "description": "Sample for CheckCloudIdentityAccountsExist",
       "file": "cloudchannel_v1_generated_cloud_channel_service_check_cloud_identity_accounts_exist_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_CheckCloudIdentityAccountsExist_sync",
       "segments": [
         {
@@ -532,19 +925,51 @@
           "start": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_check_cloud_identity_accounts_exist_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient",
+          "shortName": "CloudChannelServiceAsyncClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient.create_channel_partner_link",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.CreateChannelPartnerLink",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "CreateChannelPartnerLink"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.CreateChannelPartnerLinkRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.channel_v1.types.ChannelPartnerLink",
+        "shortName": "create_channel_partner_link"
       },
+      "description": "Sample for CreateChannelPartnerLink",
       "file": "cloudchannel_v1_generated_cloud_channel_service_create_channel_partner_link_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_CreateChannelPartnerLink_async",
       "segments": [
         {
@@ -577,18 +1002,50 @@
           "start": 47,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_create_channel_partner_link_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceClient",
+          "shortName": "CloudChannelServiceClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceClient.create_channel_partner_link",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.CreateChannelPartnerLink",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "CreateChannelPartnerLink"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.CreateChannelPartnerLinkRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.channel_v1.types.ChannelPartnerLink",
+        "shortName": "create_channel_partner_link"
       },
+      "description": "Sample for CreateChannelPartnerLink",
       "file": "cloudchannel_v1_generated_cloud_channel_service_create_channel_partner_link_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_CreateChannelPartnerLink_sync",
       "segments": [
         {
@@ -621,19 +1078,51 @@
           "start": 47,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_create_channel_partner_link_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient",
+          "shortName": "CloudChannelServiceAsyncClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient.create_customer",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.CreateCustomer",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "CreateCustomer"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.CreateCustomerRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.channel_v1.types.Customer",
+        "shortName": "create_customer"
       },
+      "description": "Sample for CreateCustomer",
       "file": "cloudchannel_v1_generated_cloud_channel_service_create_customer_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_CreateCustomer_async",
       "segments": [
         {
@@ -666,18 +1155,50 @@
           "start": 47,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_create_customer_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceClient",
+          "shortName": "CloudChannelServiceClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceClient.create_customer",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.CreateCustomer",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "CreateCustomer"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.CreateCustomerRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.channel_v1.types.Customer",
+        "shortName": "create_customer"
       },
+      "description": "Sample for CreateCustomer",
       "file": "cloudchannel_v1_generated_cloud_channel_service_create_customer_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_CreateCustomer_sync",
       "segments": [
         {
@@ -710,19 +1231,51 @@
           "start": 47,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_create_customer_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient",
+          "shortName": "CloudChannelServiceAsyncClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient.create_entitlement",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.CreateEntitlement",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "CreateEntitlement"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.CreateEntitlementRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "create_entitlement"
       },
+      "description": "Sample for CreateEntitlement",
       "file": "cloudchannel_v1_generated_cloud_channel_service_create_entitlement_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_CreateEntitlement_async",
       "segments": [
         {
@@ -755,18 +1308,50 @@
           "start": 50,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_create_entitlement_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceClient",
+          "shortName": "CloudChannelServiceClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceClient.create_entitlement",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.CreateEntitlement",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "CreateEntitlement"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.CreateEntitlementRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "create_entitlement"
       },
+      "description": "Sample for CreateEntitlement",
       "file": "cloudchannel_v1_generated_cloud_channel_service_create_entitlement_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_CreateEntitlement_sync",
       "segments": [
         {
@@ -799,19 +1384,54 @@
           "start": 50,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_create_entitlement_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient",
+          "shortName": "CloudChannelServiceAsyncClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient.delete_customer",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.DeleteCustomer",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "DeleteCustomer"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.DeleteCustomerRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_customer"
       },
+      "description": "Sample for DeleteCustomer",
       "file": "cloudchannel_v1_generated_cloud_channel_service_delete_customer_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_DeleteCustomer_async",
       "segments": [
         {
@@ -842,18 +1462,53 @@
           "end": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_delete_customer_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceClient",
+          "shortName": "CloudChannelServiceClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceClient.delete_customer",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.DeleteCustomer",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "DeleteCustomer"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.DeleteCustomerRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_customer"
       },
+      "description": "Sample for DeleteCustomer",
       "file": "cloudchannel_v1_generated_cloud_channel_service_delete_customer_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_DeleteCustomer_sync",
       "segments": [
         {
@@ -884,19 +1539,51 @@
           "end": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_delete_customer_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient",
+          "shortName": "CloudChannelServiceAsyncClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient.get_channel_partner_link",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.GetChannelPartnerLink",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "GetChannelPartnerLink"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.GetChannelPartnerLinkRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.channel_v1.types.ChannelPartnerLink",
+        "shortName": "get_channel_partner_link"
       },
+      "description": "Sample for GetChannelPartnerLink",
       "file": "cloudchannel_v1_generated_cloud_channel_service_get_channel_partner_link_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_GetChannelPartnerLink_async",
       "segments": [
         {
@@ -929,18 +1616,50 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_get_channel_partner_link_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceClient",
+          "shortName": "CloudChannelServiceClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceClient.get_channel_partner_link",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.GetChannelPartnerLink",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "GetChannelPartnerLink"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.GetChannelPartnerLinkRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.channel_v1.types.ChannelPartnerLink",
+        "shortName": "get_channel_partner_link"
       },
+      "description": "Sample for GetChannelPartnerLink",
       "file": "cloudchannel_v1_generated_cloud_channel_service_get_channel_partner_link_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_GetChannelPartnerLink_sync",
       "segments": [
         {
@@ -973,19 +1692,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_get_channel_partner_link_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient",
+          "shortName": "CloudChannelServiceAsyncClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient.get_customer",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.GetCustomer",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "GetCustomer"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.GetCustomerRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.channel_v1.types.Customer",
+        "shortName": "get_customer"
       },
+      "description": "Sample for GetCustomer",
       "file": "cloudchannel_v1_generated_cloud_channel_service_get_customer_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_GetCustomer_async",
       "segments": [
         {
@@ -1018,18 +1773,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_get_customer_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceClient",
+          "shortName": "CloudChannelServiceClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceClient.get_customer",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.GetCustomer",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "GetCustomer"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.GetCustomerRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.channel_v1.types.Customer",
+        "shortName": "get_customer"
       },
+      "description": "Sample for GetCustomer",
       "file": "cloudchannel_v1_generated_cloud_channel_service_get_customer_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_GetCustomer_sync",
       "segments": [
         {
@@ -1062,19 +1853,51 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_get_customer_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient",
+          "shortName": "CloudChannelServiceAsyncClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient.get_entitlement",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.GetEntitlement",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "GetEntitlement"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.GetEntitlementRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.channel_v1.types.Entitlement",
+        "shortName": "get_entitlement"
       },
+      "description": "Sample for GetEntitlement",
       "file": "cloudchannel_v1_generated_cloud_channel_service_get_entitlement_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_GetEntitlement_async",
       "segments": [
         {
@@ -1107,18 +1930,50 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_get_entitlement_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceClient",
+          "shortName": "CloudChannelServiceClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceClient.get_entitlement",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.GetEntitlement",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "GetEntitlement"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.GetEntitlementRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.channel_v1.types.Entitlement",
+        "shortName": "get_entitlement"
       },
+      "description": "Sample for GetEntitlement",
       "file": "cloudchannel_v1_generated_cloud_channel_service_get_entitlement_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_GetEntitlement_sync",
       "segments": [
         {
@@ -1151,19 +2006,51 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_get_entitlement_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient",
+          "shortName": "CloudChannelServiceAsyncClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient.import_customer",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.ImportCustomer",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "ImportCustomer"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.ImportCustomerRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.channel_v1.types.Customer",
+        "shortName": "import_customer"
       },
+      "description": "Sample for ImportCustomer",
       "file": "cloudchannel_v1_generated_cloud_channel_service_import_customer_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ImportCustomer_async",
       "segments": [
         {
@@ -1196,18 +2083,50 @@
           "start": 44,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_import_customer_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceClient",
+          "shortName": "CloudChannelServiceClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceClient.import_customer",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.ImportCustomer",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "ImportCustomer"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.ImportCustomerRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.channel_v1.types.Customer",
+        "shortName": "import_customer"
       },
+      "description": "Sample for ImportCustomer",
       "file": "cloudchannel_v1_generated_cloud_channel_service_import_customer_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ImportCustomer_sync",
       "segments": [
         {
@@ -1240,19 +2159,51 @@
           "start": 44,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_import_customer_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient",
+          "shortName": "CloudChannelServiceAsyncClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient.list_channel_partner_links",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.ListChannelPartnerLinks",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "ListChannelPartnerLinks"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.ListChannelPartnerLinksRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.channel_v1.services.cloud_channel_service.pagers.ListChannelPartnerLinksAsyncPager",
+        "shortName": "list_channel_partner_links"
       },
+      "description": "Sample for ListChannelPartnerLinks",
       "file": "cloudchannel_v1_generated_cloud_channel_service_list_channel_partner_links_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListChannelPartnerLinks_async",
       "segments": [
         {
@@ -1285,18 +2236,50 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_list_channel_partner_links_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceClient",
+          "shortName": "CloudChannelServiceClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceClient.list_channel_partner_links",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.ListChannelPartnerLinks",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "ListChannelPartnerLinks"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.ListChannelPartnerLinksRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.channel_v1.services.cloud_channel_service.pagers.ListChannelPartnerLinksPager",
+        "shortName": "list_channel_partner_links"
       },
+      "description": "Sample for ListChannelPartnerLinks",
       "file": "cloudchannel_v1_generated_cloud_channel_service_list_channel_partner_links_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListChannelPartnerLinks_sync",
       "segments": [
         {
@@ -1329,19 +2312,51 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_list_channel_partner_links_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient",
+          "shortName": "CloudChannelServiceAsyncClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient.list_customers",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.ListCustomers",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "ListCustomers"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.ListCustomersRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.channel_v1.services.cloud_channel_service.pagers.ListCustomersAsyncPager",
+        "shortName": "list_customers"
       },
+      "description": "Sample for ListCustomers",
       "file": "cloudchannel_v1_generated_cloud_channel_service_list_customers_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListCustomers_async",
       "segments": [
         {
@@ -1374,18 +2389,50 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_list_customers_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceClient",
+          "shortName": "CloudChannelServiceClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceClient.list_customers",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.ListCustomers",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "ListCustomers"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.ListCustomersRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.channel_v1.services.cloud_channel_service.pagers.ListCustomersPager",
+        "shortName": "list_customers"
       },
+      "description": "Sample for ListCustomers",
       "file": "cloudchannel_v1_generated_cloud_channel_service_list_customers_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListCustomers_sync",
       "segments": [
         {
@@ -1418,19 +2465,51 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_list_customers_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient",
+          "shortName": "CloudChannelServiceAsyncClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient.list_entitlements",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.ListEntitlements",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "ListEntitlements"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.ListEntitlementsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.channel_v1.services.cloud_channel_service.pagers.ListEntitlementsAsyncPager",
+        "shortName": "list_entitlements"
       },
+      "description": "Sample for ListEntitlements",
       "file": "cloudchannel_v1_generated_cloud_channel_service_list_entitlements_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListEntitlements_async",
       "segments": [
         {
@@ -1463,18 +2542,50 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_list_entitlements_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceClient",
+          "shortName": "CloudChannelServiceClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceClient.list_entitlements",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.ListEntitlements",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "ListEntitlements"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.ListEntitlementsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.channel_v1.services.cloud_channel_service.pagers.ListEntitlementsPager",
+        "shortName": "list_entitlements"
       },
+      "description": "Sample for ListEntitlements",
       "file": "cloudchannel_v1_generated_cloud_channel_service_list_entitlements_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListEntitlements_sync",
       "segments": [
         {
@@ -1507,19 +2618,51 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_list_entitlements_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient",
+          "shortName": "CloudChannelServiceAsyncClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient.list_offers",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.ListOffers",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "ListOffers"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.ListOffersRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.channel_v1.services.cloud_channel_service.pagers.ListOffersAsyncPager",
+        "shortName": "list_offers"
       },
+      "description": "Sample for ListOffers",
       "file": "cloudchannel_v1_generated_cloud_channel_service_list_offers_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListOffers_async",
       "segments": [
         {
@@ -1552,18 +2695,50 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_list_offers_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceClient",
+          "shortName": "CloudChannelServiceClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceClient.list_offers",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.ListOffers",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "ListOffers"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.ListOffersRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.channel_v1.services.cloud_channel_service.pagers.ListOffersPager",
+        "shortName": "list_offers"
       },
+      "description": "Sample for ListOffers",
       "file": "cloudchannel_v1_generated_cloud_channel_service_list_offers_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListOffers_sync",
       "segments": [
         {
@@ -1596,19 +2771,51 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_list_offers_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient",
+          "shortName": "CloudChannelServiceAsyncClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient.list_products",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.ListProducts",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "ListProducts"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.ListProductsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.channel_v1.services.cloud_channel_service.pagers.ListProductsAsyncPager",
+        "shortName": "list_products"
       },
+      "description": "Sample for ListProducts",
       "file": "cloudchannel_v1_generated_cloud_channel_service_list_products_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListProducts_async",
       "segments": [
         {
@@ -1641,18 +2848,50 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_list_products_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceClient",
+          "shortName": "CloudChannelServiceClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceClient.list_products",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.ListProducts",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "ListProducts"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.ListProductsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.channel_v1.services.cloud_channel_service.pagers.ListProductsPager",
+        "shortName": "list_products"
       },
+      "description": "Sample for ListProducts",
       "file": "cloudchannel_v1_generated_cloud_channel_service_list_products_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListProducts_sync",
       "segments": [
         {
@@ -1685,19 +2924,51 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_list_products_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient",
+          "shortName": "CloudChannelServiceAsyncClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient.list_purchasable_offers",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.ListPurchasableOffers",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "ListPurchasableOffers"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.ListPurchasableOffersRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.channel_v1.services.cloud_channel_service.pagers.ListPurchasableOffersAsyncPager",
+        "shortName": "list_purchasable_offers"
       },
+      "description": "Sample for ListPurchasableOffers",
       "file": "cloudchannel_v1_generated_cloud_channel_service_list_purchasable_offers_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListPurchasableOffers_async",
       "segments": [
         {
@@ -1730,18 +3001,50 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_list_purchasable_offers_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceClient",
+          "shortName": "CloudChannelServiceClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceClient.list_purchasable_offers",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.ListPurchasableOffers",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "ListPurchasableOffers"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.ListPurchasableOffersRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.channel_v1.services.cloud_channel_service.pagers.ListPurchasableOffersPager",
+        "shortName": "list_purchasable_offers"
       },
+      "description": "Sample for ListPurchasableOffers",
       "file": "cloudchannel_v1_generated_cloud_channel_service_list_purchasable_offers_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListPurchasableOffers_sync",
       "segments": [
         {
@@ -1774,19 +3077,51 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_list_purchasable_offers_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient",
+          "shortName": "CloudChannelServiceAsyncClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient.list_purchasable_skus",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.ListPurchasableSkus",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "ListPurchasableSkus"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.ListPurchasableSkusRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.channel_v1.services.cloud_channel_service.pagers.ListPurchasableSkusAsyncPager",
+        "shortName": "list_purchasable_skus"
       },
+      "description": "Sample for ListPurchasableSkus",
       "file": "cloudchannel_v1_generated_cloud_channel_service_list_purchasable_skus_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListPurchasableSkus_async",
       "segments": [
         {
@@ -1819,18 +3154,50 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_list_purchasable_skus_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceClient",
+          "shortName": "CloudChannelServiceClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceClient.list_purchasable_skus",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.ListPurchasableSkus",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "ListPurchasableSkus"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.ListPurchasableSkusRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.channel_v1.services.cloud_channel_service.pagers.ListPurchasableSkusPager",
+        "shortName": "list_purchasable_skus"
       },
+      "description": "Sample for ListPurchasableSkus",
       "file": "cloudchannel_v1_generated_cloud_channel_service_list_purchasable_skus_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListPurchasableSkus_sync",
       "segments": [
         {
@@ -1863,19 +3230,51 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_list_purchasable_skus_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient",
+          "shortName": "CloudChannelServiceAsyncClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient.list_skus",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.ListSkus",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "ListSkus"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.ListSkusRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.channel_v1.services.cloud_channel_service.pagers.ListSkusAsyncPager",
+        "shortName": "list_skus"
       },
+      "description": "Sample for ListSkus",
       "file": "cloudchannel_v1_generated_cloud_channel_service_list_skus_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListSkus_async",
       "segments": [
         {
@@ -1908,18 +3307,50 @@
           "start": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_list_skus_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceClient",
+          "shortName": "CloudChannelServiceClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceClient.list_skus",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.ListSkus",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "ListSkus"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.ListSkusRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.channel_v1.services.cloud_channel_service.pagers.ListSkusPager",
+        "shortName": "list_skus"
       },
+      "description": "Sample for ListSkus",
       "file": "cloudchannel_v1_generated_cloud_channel_service_list_skus_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListSkus_sync",
       "segments": [
         {
@@ -1952,19 +3383,51 @@
           "start": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_list_skus_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient",
+          "shortName": "CloudChannelServiceAsyncClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient.list_subscribers",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.ListSubscribers",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "ListSubscribers"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.ListSubscribersRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.channel_v1.services.cloud_channel_service.pagers.ListSubscribersAsyncPager",
+        "shortName": "list_subscribers"
       },
+      "description": "Sample for ListSubscribers",
       "file": "cloudchannel_v1_generated_cloud_channel_service_list_subscribers_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListSubscribers_async",
       "segments": [
         {
@@ -1997,18 +3460,50 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_list_subscribers_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceClient",
+          "shortName": "CloudChannelServiceClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceClient.list_subscribers",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.ListSubscribers",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "ListSubscribers"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.ListSubscribersRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.channel_v1.services.cloud_channel_service.pagers.ListSubscribersPager",
+        "shortName": "list_subscribers"
       },
+      "description": "Sample for ListSubscribers",
       "file": "cloudchannel_v1_generated_cloud_channel_service_list_subscribers_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListSubscribers_sync",
       "segments": [
         {
@@ -2041,19 +3536,51 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_list_subscribers_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient",
+          "shortName": "CloudChannelServiceAsyncClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient.list_transferable_offers",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.ListTransferableOffers",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "ListTransferableOffers"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.ListTransferableOffersRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.channel_v1.services.cloud_channel_service.pagers.ListTransferableOffersAsyncPager",
+        "shortName": "list_transferable_offers"
       },
+      "description": "Sample for ListTransferableOffers",
       "file": "cloudchannel_v1_generated_cloud_channel_service_list_transferable_offers_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListTransferableOffers_async",
       "segments": [
         {
@@ -2086,18 +3613,50 @@
           "start": 44,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_list_transferable_offers_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceClient",
+          "shortName": "CloudChannelServiceClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceClient.list_transferable_offers",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.ListTransferableOffers",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "ListTransferableOffers"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.ListTransferableOffersRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.channel_v1.services.cloud_channel_service.pagers.ListTransferableOffersPager",
+        "shortName": "list_transferable_offers"
       },
+      "description": "Sample for ListTransferableOffers",
       "file": "cloudchannel_v1_generated_cloud_channel_service_list_transferable_offers_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListTransferableOffers_sync",
       "segments": [
         {
@@ -2130,19 +3689,51 @@
           "start": 44,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_list_transferable_offers_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient",
+          "shortName": "CloudChannelServiceAsyncClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient.list_transferable_skus",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.ListTransferableSkus",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "ListTransferableSkus"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.ListTransferableSkusRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.channel_v1.services.cloud_channel_service.pagers.ListTransferableSkusAsyncPager",
+        "shortName": "list_transferable_skus"
       },
+      "description": "Sample for ListTransferableSkus",
       "file": "cloudchannel_v1_generated_cloud_channel_service_list_transferable_skus_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListTransferableSkus_async",
       "segments": [
         {
@@ -2175,18 +3766,50 @@
           "start": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_list_transferable_skus_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceClient",
+          "shortName": "CloudChannelServiceClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceClient.list_transferable_skus",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.ListTransferableSkus",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "ListTransferableSkus"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.ListTransferableSkusRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.channel_v1.services.cloud_channel_service.pagers.ListTransferableSkusPager",
+        "shortName": "list_transferable_skus"
       },
+      "description": "Sample for ListTransferableSkus",
       "file": "cloudchannel_v1_generated_cloud_channel_service_list_transferable_skus_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListTransferableSkus_sync",
       "segments": [
         {
@@ -2219,19 +3842,51 @@
           "start": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_list_transferable_skus_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient",
+          "shortName": "CloudChannelServiceAsyncClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient.lookup_offer",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.LookupOffer",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "LookupOffer"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.LookupOfferRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.channel_v1.types.Offer",
+        "shortName": "lookup_offer"
       },
+      "description": "Sample for LookupOffer",
       "file": "cloudchannel_v1_generated_cloud_channel_service_lookup_offer_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_LookupOffer_async",
       "segments": [
         {
@@ -2264,18 +3919,50 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_lookup_offer_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceClient",
+          "shortName": "CloudChannelServiceClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceClient.lookup_offer",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.LookupOffer",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "LookupOffer"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.LookupOfferRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.channel_v1.types.Offer",
+        "shortName": "lookup_offer"
       },
+      "description": "Sample for LookupOffer",
       "file": "cloudchannel_v1_generated_cloud_channel_service_lookup_offer_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_LookupOffer_sync",
       "segments": [
         {
@@ -2308,19 +3995,51 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_lookup_offer_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient",
+          "shortName": "CloudChannelServiceAsyncClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient.provision_cloud_identity",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.ProvisionCloudIdentity",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "ProvisionCloudIdentity"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.ProvisionCloudIdentityRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "provision_cloud_identity"
       },
+      "description": "Sample for ProvisionCloudIdentity",
       "file": "cloudchannel_v1_generated_cloud_channel_service_provision_cloud_identity_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ProvisionCloudIdentity_async",
       "segments": [
         {
@@ -2353,18 +4072,50 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_provision_cloud_identity_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceClient",
+          "shortName": "CloudChannelServiceClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceClient.provision_cloud_identity",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.ProvisionCloudIdentity",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "ProvisionCloudIdentity"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.ProvisionCloudIdentityRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "provision_cloud_identity"
       },
+      "description": "Sample for ProvisionCloudIdentity",
       "file": "cloudchannel_v1_generated_cloud_channel_service_provision_cloud_identity_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_ProvisionCloudIdentity_sync",
       "segments": [
         {
@@ -2397,19 +4148,51 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_provision_cloud_identity_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient",
+          "shortName": "CloudChannelServiceAsyncClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient.register_subscriber",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.RegisterSubscriber",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "RegisterSubscriber"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.RegisterSubscriberRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.channel_v1.types.RegisterSubscriberResponse",
+        "shortName": "register_subscriber"
       },
+      "description": "Sample for RegisterSubscriber",
       "file": "cloudchannel_v1_generated_cloud_channel_service_register_subscriber_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_RegisterSubscriber_async",
       "segments": [
         {
@@ -2442,18 +4225,50 @@
           "start": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_register_subscriber_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceClient",
+          "shortName": "CloudChannelServiceClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceClient.register_subscriber",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.RegisterSubscriber",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "RegisterSubscriber"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.RegisterSubscriberRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.channel_v1.types.RegisterSubscriberResponse",
+        "shortName": "register_subscriber"
       },
+      "description": "Sample for RegisterSubscriber",
       "file": "cloudchannel_v1_generated_cloud_channel_service_register_subscriber_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_RegisterSubscriber_sync",
       "segments": [
         {
@@ -2486,19 +4301,51 @@
           "start": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_register_subscriber_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient",
+          "shortName": "CloudChannelServiceAsyncClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient.start_paid_service",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.StartPaidService",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "StartPaidService"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.StartPaidServiceRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "start_paid_service"
       },
+      "description": "Sample for StartPaidService",
       "file": "cloudchannel_v1_generated_cloud_channel_service_start_paid_service_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_StartPaidService_async",
       "segments": [
         {
@@ -2531,18 +4378,50 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_start_paid_service_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceClient",
+          "shortName": "CloudChannelServiceClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceClient.start_paid_service",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.StartPaidService",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "StartPaidService"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.StartPaidServiceRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "start_paid_service"
       },
+      "description": "Sample for StartPaidService",
       "file": "cloudchannel_v1_generated_cloud_channel_service_start_paid_service_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_StartPaidService_sync",
       "segments": [
         {
@@ -2575,19 +4454,51 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_start_paid_service_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient",
+          "shortName": "CloudChannelServiceAsyncClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient.suspend_entitlement",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.SuspendEntitlement",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "SuspendEntitlement"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.SuspendEntitlementRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "suspend_entitlement"
       },
+      "description": "Sample for SuspendEntitlement",
       "file": "cloudchannel_v1_generated_cloud_channel_service_suspend_entitlement_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_SuspendEntitlement_async",
       "segments": [
         {
@@ -2620,18 +4531,50 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_suspend_entitlement_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceClient",
+          "shortName": "CloudChannelServiceClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceClient.suspend_entitlement",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.SuspendEntitlement",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "SuspendEntitlement"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.SuspendEntitlementRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "suspend_entitlement"
       },
+      "description": "Sample for SuspendEntitlement",
       "file": "cloudchannel_v1_generated_cloud_channel_service_suspend_entitlement_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_SuspendEntitlement_sync",
       "segments": [
         {
@@ -2664,19 +4607,51 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_suspend_entitlement_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient",
+          "shortName": "CloudChannelServiceAsyncClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient.transfer_entitlements_to_google",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.TransferEntitlementsToGoogle",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "TransferEntitlementsToGoogle"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.TransferEntitlementsToGoogleRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "transfer_entitlements_to_google"
       },
+      "description": "Sample for TransferEntitlementsToGoogle",
       "file": "cloudchannel_v1_generated_cloud_channel_service_transfer_entitlements_to_google_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_TransferEntitlementsToGoogle_async",
       "segments": [
         {
@@ -2709,18 +4684,50 @@
           "start": 50,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_transfer_entitlements_to_google_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceClient",
+          "shortName": "CloudChannelServiceClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceClient.transfer_entitlements_to_google",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.TransferEntitlementsToGoogle",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "TransferEntitlementsToGoogle"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.TransferEntitlementsToGoogleRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "transfer_entitlements_to_google"
       },
+      "description": "Sample for TransferEntitlementsToGoogle",
       "file": "cloudchannel_v1_generated_cloud_channel_service_transfer_entitlements_to_google_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_TransferEntitlementsToGoogle_sync",
       "segments": [
         {
@@ -2753,19 +4760,51 @@
           "start": 50,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_transfer_entitlements_to_google_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient",
+          "shortName": "CloudChannelServiceAsyncClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient.transfer_entitlements",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.TransferEntitlements",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "TransferEntitlements"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.TransferEntitlementsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "transfer_entitlements"
       },
+      "description": "Sample for TransferEntitlements",
       "file": "cloudchannel_v1_generated_cloud_channel_service_transfer_entitlements_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_TransferEntitlements_async",
       "segments": [
         {
@@ -2798,18 +4837,50 @@
           "start": 50,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_transfer_entitlements_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceClient",
+          "shortName": "CloudChannelServiceClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceClient.transfer_entitlements",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.TransferEntitlements",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "TransferEntitlements"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.TransferEntitlementsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "transfer_entitlements"
       },
+      "description": "Sample for TransferEntitlements",
       "file": "cloudchannel_v1_generated_cloud_channel_service_transfer_entitlements_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_TransferEntitlements_sync",
       "segments": [
         {
@@ -2842,19 +4913,51 @@
           "start": 50,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_transfer_entitlements_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient",
+          "shortName": "CloudChannelServiceAsyncClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient.unregister_subscriber",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.UnregisterSubscriber",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "UnregisterSubscriber"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.UnregisterSubscriberRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.channel_v1.types.UnregisterSubscriberResponse",
+        "shortName": "unregister_subscriber"
       },
+      "description": "Sample for UnregisterSubscriber",
       "file": "cloudchannel_v1_generated_cloud_channel_service_unregister_subscriber_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_UnregisterSubscriber_async",
       "segments": [
         {
@@ -2887,18 +4990,50 @@
           "start": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_unregister_subscriber_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceClient",
+          "shortName": "CloudChannelServiceClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceClient.unregister_subscriber",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.UnregisterSubscriber",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "UnregisterSubscriber"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.UnregisterSubscriberRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.channel_v1.types.UnregisterSubscriberResponse",
+        "shortName": "unregister_subscriber"
       },
+      "description": "Sample for UnregisterSubscriber",
       "file": "cloudchannel_v1_generated_cloud_channel_service_unregister_subscriber_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_UnregisterSubscriber_sync",
       "segments": [
         {
@@ -2931,19 +5066,51 @@
           "start": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_unregister_subscriber_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient",
+          "shortName": "CloudChannelServiceAsyncClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient.update_channel_partner_link",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.UpdateChannelPartnerLink",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "UpdateChannelPartnerLink"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.UpdateChannelPartnerLinkRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.channel_v1.types.ChannelPartnerLink",
+        "shortName": "update_channel_partner_link"
       },
+      "description": "Sample for UpdateChannelPartnerLink",
       "file": "cloudchannel_v1_generated_cloud_channel_service_update_channel_partner_link_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_UpdateChannelPartnerLink_async",
       "segments": [
         {
@@ -2976,18 +5143,50 @@
           "start": 47,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_update_channel_partner_link_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceClient",
+          "shortName": "CloudChannelServiceClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceClient.update_channel_partner_link",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.UpdateChannelPartnerLink",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "UpdateChannelPartnerLink"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.UpdateChannelPartnerLinkRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.channel_v1.types.ChannelPartnerLink",
+        "shortName": "update_channel_partner_link"
       },
+      "description": "Sample for UpdateChannelPartnerLink",
       "file": "cloudchannel_v1_generated_cloud_channel_service_update_channel_partner_link_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_UpdateChannelPartnerLink_sync",
       "segments": [
         {
@@ -3020,19 +5219,51 @@
           "start": 47,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_update_channel_partner_link_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient",
+          "shortName": "CloudChannelServiceAsyncClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient.update_customer",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.UpdateCustomer",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "UpdateCustomer"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.UpdateCustomerRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.channel_v1.types.Customer",
+        "shortName": "update_customer"
       },
+      "description": "Sample for UpdateCustomer",
       "file": "cloudchannel_v1_generated_cloud_channel_service_update_customer_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_UpdateCustomer_async",
       "segments": [
         {
@@ -3065,18 +5296,50 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_update_customer_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceClient",
+          "shortName": "CloudChannelServiceClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceClient.update_customer",
         "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.UpdateCustomer",
           "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
             "shortName": "CloudChannelService"
           },
           "shortName": "UpdateCustomer"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.UpdateCustomerRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.channel_v1.types.Customer",
+        "shortName": "update_customer"
       },
+      "description": "Sample for UpdateCustomer",
       "file": "cloudchannel_v1_generated_cloud_channel_service_update_customer_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudchannel_v1_generated_CloudChannelService_UpdateCustomer_sync",
       "segments": [
         {
@@ -3109,7 +5372,8 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_update_customer_sync.py"
     }
   ]
 }
