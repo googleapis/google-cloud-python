@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+### [2.6.5](https://github.com/googleapis/google-auth-library-python/compare/v2.6.4...v2.6.5) (2022-04-14)
+
+
+### Bug Fixes
+
+* add additional missing import in _default.py ([#1018](https://github.com/googleapis/google-auth-library-python/issues/1018)) ([638331b](https://github.com/googleapis/google-auth-library-python/commit/638331b5b89c807b40c23c1e6333845d9b7e169a))
+
 ### [2.6.4](https://github.com/googleapis/google-auth-library-python/compare/v2.6.3...v2.6.4) (2022-04-12)
 
 
