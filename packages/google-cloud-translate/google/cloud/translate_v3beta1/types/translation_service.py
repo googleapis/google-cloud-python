@@ -150,7 +150,7 @@ class TranslateTextRequest(proto.Message):
             within the same region (have the same location-id) as the
             model, otherwise an INVALID_ARGUMENT (400) error is
             returned.
-        labels (Sequence[google.cloud.translate_v3beta1.types.TranslateTextRequest.LabelsEntry]):
+        labels (Mapping[str, str]):
             Optional. The labels with user-defined
             metadata for the request.
             Label keys and values can be no longer than 63
@@ -314,7 +314,7 @@ class DetectLanguageRequest(proto.Message):
             Optional. The format of the source text, for
             example, "text/html", "text/plain". If left
             blank, the MIME type defaults to "text/html".
-        labels (Sequence[google.cloud.translate_v3beta1.types.DetectLanguageRequest.LabelsEntry]):
+        labels (Mapping[str, str]):
             Optional. The labels with user-defined
             metadata for the request.
             Label keys and values can be no longer than 63
@@ -871,7 +871,7 @@ class TranslateDocumentRequest(proto.Message):
             within the same region (have the same location-id) as the
             model, otherwise an INVALID_ARGUMENT (400) error is
             returned.
-        labels (Sequence[google.cloud.translate_v3beta1.types.TranslateDocumentRequest.LabelsEntry]):
+        labels (Mapping[str, str]):
             Optional. The labels with user-defined
             metadata for the request.
             Label keys and values can be no longer than 63
@@ -1025,7 +1025,7 @@ class BatchTranslateTextRequest(proto.Message):
         target_language_codes (Sequence[str]):
             Required. Specify up to 10 language codes
             here.
-        models (Sequence[google.cloud.translate_v3beta1.types.BatchTranslateTextRequest.ModelsEntry]):
+        models (Mapping[str, str]):
             Optional. The models to use for translation. Map's key is
             target language code. Map's value is model name. Value can
             be a built-in general model, or an AutoML Translation model.
@@ -1051,10 +1051,10 @@ class BatchTranslateTextRequest(proto.Message):
             If 2 input configs match to the same file (that
             is, same input path), we don't generate output
             for duplicate inputs.
-        glossaries (Sequence[google.cloud.translate_v3beta1.types.BatchTranslateTextRequest.GlossariesEntry]):
+        glossaries (Mapping[str, google.cloud.translate_v3beta1.types.TranslateTextGlossaryConfig]):
             Optional. Glossaries to be applied for
             translation. It's keyed by target language code.
-        labels (Sequence[google.cloud.translate_v3beta1.types.BatchTranslateTextRequest.LabelsEntry]):
+        labels (Mapping[str, str]):
             Optional. The labels with user-defined
             metadata for the request.
             Label keys and values can be no longer than 63
@@ -1667,7 +1667,7 @@ class BatchTranslateDocumentRequest(proto.Message):
             If 2 input configs match to the same file (that
             is, same input path), we don't generate output
             for duplicate inputs.
-        models (Sequence[google.cloud.translate_v3beta1.types.BatchTranslateDocumentRequest.ModelsEntry]):
+        models (Mapping[str, str]):
             Optional. The models to use for translation. Map's key is
             target language code. Map's value is the model name. Value
             can be a built-in general model, or an AutoML Translation
@@ -1683,10 +1683,10 @@ class BatchTranslateDocumentRequest(proto.Message):
 
             If the map is empty or a specific model is not requested for
             a language pair, then default google model (nmt) is used.
-        glossaries (Sequence[google.cloud.translate_v3beta1.types.BatchTranslateDocumentRequest.GlossariesEntry]):
+        glossaries (Mapping[str, google.cloud.translate_v3beta1.types.TranslateTextGlossaryConfig]):
             Optional. Glossaries to be applied. It's
             keyed by target language code.
-        format_conversions (Sequence[google.cloud.translate_v3beta1.types.BatchTranslateDocumentRequest.FormatConversionsEntry]):
+        format_conversions (Mapping[str, str]):
             Optional. File format conversion map to be applied to all
             input files. Map's key is the original mime_type. Map's
             value is the target mime_type of translated documents.

@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -787,7 +787,6 @@ class TranslationServiceClient(metaclass=TranslationServiceClientMeta):
         r"""Returns a list of supported languages for
         translation.
 
-
         .. code-block:: python
 
             from google.cloud import translate_v3
@@ -1013,7 +1012,6 @@ class TranslationServiceClient(metaclass=TranslationServiceClientMeta):
         use google.longrunning.Operation.name to poll the status
         of the call.
 
-
         .. code-block:: python
 
             from google.cloud import translate_v3
@@ -1125,7 +1123,6 @@ class TranslationServiceClient(metaclass=TranslationServiceClientMeta):
         This call returns immediately and you can use
         google.longrunning.Operation.name to poll the status of
         the call.
-
 
         .. code-block:: python
 
@@ -1315,7 +1312,6 @@ class TranslationServiceClient(metaclass=TranslationServiceClientMeta):
         r"""Creates a glossary and returns the long-running operation.
         Returns NOT_FOUND, if the project doesn't exist.
 
-
         .. code-block:: python
 
             from google.cloud import translate_v3
@@ -1435,7 +1431,6 @@ class TranslationServiceClient(metaclass=TranslationServiceClientMeta):
         r"""Lists glossaries in a project. Returns NOT_FOUND, if the project
         doesn't exist.
 
-
         .. code-block:: python
 
             from google.cloud import translate_v3
@@ -1544,7 +1539,6 @@ class TranslationServiceClient(metaclass=TranslationServiceClientMeta):
         r"""Gets a glossary. Returns NOT_FOUND, if the glossary doesn't
         exist.
 
-
         .. code-block:: python
 
             from google.cloud import translate_v3
@@ -1640,7 +1634,6 @@ class TranslationServiceClient(metaclass=TranslationServiceClientMeta):
         r"""Deletes a glossary, or cancels glossary construction if the
         glossary isn't created yet. Returns NOT_FOUND, if the glossary
         doesn't exist.
-
 
         .. code-block:: python
 
