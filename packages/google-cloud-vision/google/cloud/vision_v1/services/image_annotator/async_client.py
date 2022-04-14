@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -221,7 +221,6 @@ class ImageAnnotatorAsyncClient:
         r"""Run image detection and annotation for a batch of
         images.
 
-
         .. code-block:: python
 
             from google.cloud import vision_v1
@@ -326,7 +325,6 @@ class ImageAnnotatorAsyncClient:
         (gif) or pages (pdf or tiff) from each file provided and
         perform detection and annotation for each image
         extracted.
-
 
         .. code-block:: python
 
@@ -437,7 +435,6 @@ class ImageAnnotatorAsyncClient:
         This service will write image annotation outputs to json files
         in customer GCS bucket, each json file containing
         BatchAnnotateImagesResponse proto.
-
 
         .. code-block:: python
 
@@ -566,7 +563,6 @@ class ImageAnnotatorAsyncClient:
         interface. ``Operation.metadata`` contains ``OperationMetadata``
         (metadata). ``Operation.response`` contains
         ``AsyncBatchAnnotateFilesResponse`` (results).
-
 
         .. code-block:: python
 

@@ -1,16 +1,61 @@
 {
+  "clientLibrary": {
+    "apis": [
+      {
+        "id": "google.cloud.vision.v1p3beta1",
+        "version": "v1p3beta1"
+      }
+    ],
+    "language": "PYTHON",
+    "name": "google-cloud-vision"
+  },
   "snippets": [
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.vision_v1p3beta1.ImageAnnotatorAsyncClient",
+          "shortName": "ImageAnnotatorAsyncClient"
+        },
+        "fullName": "google.cloud.vision_v1p3beta1.ImageAnnotatorAsyncClient.async_batch_annotate_files",
         "method": {
+          "fullName": "google.cloud.vision.v1p3beta1.ImageAnnotator.AsyncBatchAnnotateFiles",
           "service": {
+            "fullName": "google.cloud.vision.v1p3beta1.ImageAnnotator",
             "shortName": "ImageAnnotator"
           },
           "shortName": "AsyncBatchAnnotateFiles"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.vision_v1p3beta1.types.AsyncBatchAnnotateFilesRequest"
+          },
+          {
+            "name": "requests",
+            "type": "Sequence[google.cloud.vision_v1p3beta1.types.AsyncAnnotateFileRequest]"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "async_batch_annotate_files"
       },
+      "description": "Sample for AsyncBatchAnnotateFiles",
       "file": "vision_v1p3beta1_generated_image_annotator_async_batch_annotate_files_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "vision_v1p3beta1_generated_ImageAnnotator_AsyncBatchAnnotateFiles_async",
       "segments": [
         {
@@ -43,18 +88,54 @@
           "start": 45,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "vision_v1p3beta1_generated_image_annotator_async_batch_annotate_files_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.vision_v1p3beta1.ImageAnnotatorClient",
+          "shortName": "ImageAnnotatorClient"
+        },
+        "fullName": "google.cloud.vision_v1p3beta1.ImageAnnotatorClient.async_batch_annotate_files",
         "method": {
+          "fullName": "google.cloud.vision.v1p3beta1.ImageAnnotator.AsyncBatchAnnotateFiles",
           "service": {
+            "fullName": "google.cloud.vision.v1p3beta1.ImageAnnotator",
             "shortName": "ImageAnnotator"
           },
           "shortName": "AsyncBatchAnnotateFiles"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.vision_v1p3beta1.types.AsyncBatchAnnotateFilesRequest"
+          },
+          {
+            "name": "requests",
+            "type": "Sequence[google.cloud.vision_v1p3beta1.types.AsyncAnnotateFileRequest]"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "async_batch_annotate_files"
       },
+      "description": "Sample for AsyncBatchAnnotateFiles",
       "file": "vision_v1p3beta1_generated_image_annotator_async_batch_annotate_files_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "vision_v1p3beta1_generated_ImageAnnotator_AsyncBatchAnnotateFiles_sync",
       "segments": [
         {
@@ -87,19 +168,55 @@
           "start": 45,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "vision_v1p3beta1_generated_image_annotator_async_batch_annotate_files_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.vision_v1p3beta1.ImageAnnotatorAsyncClient",
+          "shortName": "ImageAnnotatorAsyncClient"
+        },
+        "fullName": "google.cloud.vision_v1p3beta1.ImageAnnotatorAsyncClient.batch_annotate_images",
         "method": {
+          "fullName": "google.cloud.vision.v1p3beta1.ImageAnnotator.BatchAnnotateImages",
           "service": {
+            "fullName": "google.cloud.vision.v1p3beta1.ImageAnnotator",
             "shortName": "ImageAnnotator"
           },
           "shortName": "BatchAnnotateImages"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.vision_v1p3beta1.types.BatchAnnotateImagesRequest"
+          },
+          {
+            "name": "requests",
+            "type": "Sequence[google.cloud.vision_v1p3beta1.types.AnnotateImageRequest]"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.vision_v1p3beta1.types.BatchAnnotateImagesResponse",
+        "shortName": "batch_annotate_images"
       },
+      "description": "Sample for BatchAnnotateImages",
       "file": "vision_v1p3beta1_generated_image_annotator_batch_annotate_images_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "vision_v1p3beta1_generated_ImageAnnotator_BatchAnnotateImages_async",
       "segments": [
         {
@@ -132,18 +249,54 @@
           "start": 41,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "vision_v1p3beta1_generated_image_annotator_batch_annotate_images_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.vision_v1p3beta1.ImageAnnotatorClient",
+          "shortName": "ImageAnnotatorClient"
+        },
+        "fullName": "google.cloud.vision_v1p3beta1.ImageAnnotatorClient.batch_annotate_images",
         "method": {
+          "fullName": "google.cloud.vision.v1p3beta1.ImageAnnotator.BatchAnnotateImages",
           "service": {
+            "fullName": "google.cloud.vision.v1p3beta1.ImageAnnotator",
             "shortName": "ImageAnnotator"
           },
           "shortName": "BatchAnnotateImages"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.vision_v1p3beta1.types.BatchAnnotateImagesRequest"
+          },
+          {
+            "name": "requests",
+            "type": "Sequence[google.cloud.vision_v1p3beta1.types.AnnotateImageRequest]"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.vision_v1p3beta1.types.BatchAnnotateImagesResponse",
+        "shortName": "batch_annotate_images"
       },
+      "description": "Sample for BatchAnnotateImages",
       "file": "vision_v1p3beta1_generated_image_annotator_batch_annotate_images_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "vision_v1p3beta1_generated_ImageAnnotator_BatchAnnotateImages_sync",
       "segments": [
         {
@@ -176,19 +329,58 @@
           "start": 41,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "vision_v1p3beta1_generated_image_annotator_batch_annotate_images_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.vision_v1p3beta1.ProductSearchAsyncClient",
+          "shortName": "ProductSearchAsyncClient"
+        },
+        "fullName": "google.cloud.vision_v1p3beta1.ProductSearchAsyncClient.add_product_to_product_set",
         "method": {
+          "fullName": "google.cloud.vision.v1p3beta1.ProductSearch.AddProductToProductSet",
           "service": {
+            "fullName": "google.cloud.vision.v1p3beta1.ProductSearch",
             "shortName": "ProductSearch"
           },
           "shortName": "AddProductToProductSet"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.vision_v1p3beta1.types.AddProductToProductSetRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "product",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "add_product_to_product_set"
       },
+      "description": "Sample for AddProductToProductSet",
       "file": "vision_v1p3beta1_generated_product_search_add_product_to_product_set_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "vision_v1p3beta1_generated_ProductSearch_AddProductToProductSet_async",
       "segments": [
         {
@@ -219,18 +411,57 @@
           "end": 44,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "vision_v1p3beta1_generated_product_search_add_product_to_product_set_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.vision_v1p3beta1.ProductSearchClient",
+          "shortName": "ProductSearchClient"
+        },
+        "fullName": "google.cloud.vision_v1p3beta1.ProductSearchClient.add_product_to_product_set",
         "method": {
+          "fullName": "google.cloud.vision.v1p3beta1.ProductSearch.AddProductToProductSet",
           "service": {
+            "fullName": "google.cloud.vision.v1p3beta1.ProductSearch",
             "shortName": "ProductSearch"
           },
           "shortName": "AddProductToProductSet"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.vision_v1p3beta1.types.AddProductToProductSetRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "product",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "add_product_to_product_set"
       },
+      "description": "Sample for AddProductToProductSet",
       "file": "vision_v1p3beta1_generated_product_search_add_product_to_product_set_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "vision_v1p3beta1_generated_ProductSearch_AddProductToProductSet_sync",
       "segments": [
         {
@@ -261,19 +492,63 @@
           "end": 44,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "vision_v1p3beta1_generated_product_search_add_product_to_product_set_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.vision_v1p3beta1.ProductSearchAsyncClient",
+          "shortName": "ProductSearchAsyncClient"
+        },
+        "fullName": "google.cloud.vision_v1p3beta1.ProductSearchAsyncClient.create_product_set",
         "method": {
+          "fullName": "google.cloud.vision.v1p3beta1.ProductSearch.CreateProductSet",
           "service": {
+            "fullName": "google.cloud.vision.v1p3beta1.ProductSearch",
             "shortName": "ProductSearch"
           },
           "shortName": "CreateProductSet"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.vision_v1p3beta1.types.CreateProductSetRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "product_set",
+            "type": "google.cloud.vision_v1p3beta1.types.ProductSet"
+          },
+          {
+            "name": "product_set_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.vision_v1p3beta1.types.ProductSet",
+        "shortName": "create_product_set"
       },
+      "description": "Sample for CreateProductSet",
       "file": "vision_v1p3beta1_generated_product_search_create_product_set_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "vision_v1p3beta1_generated_ProductSearch_CreateProductSet_async",
       "segments": [
         {
@@ -306,18 +581,62 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "vision_v1p3beta1_generated_product_search_create_product_set_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.vision_v1p3beta1.ProductSearchClient",
+          "shortName": "ProductSearchClient"
+        },
+        "fullName": "google.cloud.vision_v1p3beta1.ProductSearchClient.create_product_set",
         "method": {
+          "fullName": "google.cloud.vision.v1p3beta1.ProductSearch.CreateProductSet",
           "service": {
+            "fullName": "google.cloud.vision.v1p3beta1.ProductSearch",
             "shortName": "ProductSearch"
           },
           "shortName": "CreateProductSet"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.vision_v1p3beta1.types.CreateProductSetRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "product_set",
+            "type": "google.cloud.vision_v1p3beta1.types.ProductSet"
+          },
+          {
+            "name": "product_set_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.vision_v1p3beta1.types.ProductSet",
+        "shortName": "create_product_set"
       },
+      "description": "Sample for CreateProductSet",
       "file": "vision_v1p3beta1_generated_product_search_create_product_set_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "vision_v1p3beta1_generated_ProductSearch_CreateProductSet_sync",
       "segments": [
         {
@@ -350,19 +669,63 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "vision_v1p3beta1_generated_product_search_create_product_set_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.vision_v1p3beta1.ProductSearchAsyncClient",
+          "shortName": "ProductSearchAsyncClient"
+        },
+        "fullName": "google.cloud.vision_v1p3beta1.ProductSearchAsyncClient.create_product",
         "method": {
+          "fullName": "google.cloud.vision.v1p3beta1.ProductSearch.CreateProduct",
           "service": {
+            "fullName": "google.cloud.vision.v1p3beta1.ProductSearch",
             "shortName": "ProductSearch"
           },
           "shortName": "CreateProduct"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.vision_v1p3beta1.types.CreateProductRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "product",
+            "type": "google.cloud.vision_v1p3beta1.types.Product"
+          },
+          {
+            "name": "product_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.vision_v1p3beta1.types.Product",
+        "shortName": "create_product"
       },
+      "description": "Sample for CreateProduct",
       "file": "vision_v1p3beta1_generated_product_search_create_product_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "vision_v1p3beta1_generated_ProductSearch_CreateProduct_async",
       "segments": [
         {
@@ -395,18 +758,62 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "vision_v1p3beta1_generated_product_search_create_product_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.vision_v1p3beta1.ProductSearchClient",
+          "shortName": "ProductSearchClient"
+        },
+        "fullName": "google.cloud.vision_v1p3beta1.ProductSearchClient.create_product",
         "method": {
+          "fullName": "google.cloud.vision.v1p3beta1.ProductSearch.CreateProduct",
           "service": {
+            "fullName": "google.cloud.vision.v1p3beta1.ProductSearch",
             "shortName": "ProductSearch"
           },
           "shortName": "CreateProduct"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.vision_v1p3beta1.types.CreateProductRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "product",
+            "type": "google.cloud.vision_v1p3beta1.types.Product"
+          },
+          {
+            "name": "product_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.vision_v1p3beta1.types.Product",
+        "shortName": "create_product"
       },
+      "description": "Sample for CreateProduct",
       "file": "vision_v1p3beta1_generated_product_search_create_product_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "vision_v1p3beta1_generated_ProductSearch_CreateProduct_sync",
       "segments": [
         {
@@ -439,19 +846,63 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "vision_v1p3beta1_generated_product_search_create_product_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.vision_v1p3beta1.ProductSearchAsyncClient",
+          "shortName": "ProductSearchAsyncClient"
+        },
+        "fullName": "google.cloud.vision_v1p3beta1.ProductSearchAsyncClient.create_reference_image",
         "method": {
+          "fullName": "google.cloud.vision.v1p3beta1.ProductSearch.CreateReferenceImage",
           "service": {
+            "fullName": "google.cloud.vision.v1p3beta1.ProductSearch",
             "shortName": "ProductSearch"
           },
           "shortName": "CreateReferenceImage"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.vision_v1p3beta1.types.CreateReferenceImageRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "reference_image",
+            "type": "google.cloud.vision_v1p3beta1.types.ReferenceImage"
+          },
+          {
+            "name": "reference_image_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.vision_v1p3beta1.types.ReferenceImage",
+        "shortName": "create_reference_image"
       },
+      "description": "Sample for CreateReferenceImage",
       "file": "vision_v1p3beta1_generated_product_search_create_reference_image_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "vision_v1p3beta1_generated_ProductSearch_CreateReferenceImage_async",
       "segments": [
         {
@@ -484,18 +935,62 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "vision_v1p3beta1_generated_product_search_create_reference_image_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.vision_v1p3beta1.ProductSearchClient",
+          "shortName": "ProductSearchClient"
+        },
+        "fullName": "google.cloud.vision_v1p3beta1.ProductSearchClient.create_reference_image",
         "method": {
+          "fullName": "google.cloud.vision.v1p3beta1.ProductSearch.CreateReferenceImage",
           "service": {
+            "fullName": "google.cloud.vision.v1p3beta1.ProductSearch",
             "shortName": "ProductSearch"
           },
           "shortName": "CreateReferenceImage"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.vision_v1p3beta1.types.CreateReferenceImageRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "reference_image",
+            "type": "google.cloud.vision_v1p3beta1.types.ReferenceImage"
+          },
+          {
+            "name": "reference_image_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.vision_v1p3beta1.types.ReferenceImage",
+        "shortName": "create_reference_image"
       },
+      "description": "Sample for CreateReferenceImage",
       "file": "vision_v1p3beta1_generated_product_search_create_reference_image_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "vision_v1p3beta1_generated_ProductSearch_CreateReferenceImage_sync",
       "segments": [
         {
@@ -528,19 +1023,54 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "vision_v1p3beta1_generated_product_search_create_reference_image_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.vision_v1p3beta1.ProductSearchAsyncClient",
+          "shortName": "ProductSearchAsyncClient"
+        },
+        "fullName": "google.cloud.vision_v1p3beta1.ProductSearchAsyncClient.delete_product_set",
         "method": {
+          "fullName": "google.cloud.vision.v1p3beta1.ProductSearch.DeleteProductSet",
           "service": {
+            "fullName": "google.cloud.vision.v1p3beta1.ProductSearch",
             "shortName": "ProductSearch"
           },
           "shortName": "DeleteProductSet"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.vision_v1p3beta1.types.DeleteProductSetRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_product_set"
       },
+      "description": "Sample for DeleteProductSet",
       "file": "vision_v1p3beta1_generated_product_search_delete_product_set_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "vision_v1p3beta1_generated_ProductSearch_DeleteProductSet_async",
       "segments": [
         {
@@ -571,18 +1101,53 @@
           "end": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "vision_v1p3beta1_generated_product_search_delete_product_set_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.vision_v1p3beta1.ProductSearchClient",
+          "shortName": "ProductSearchClient"
+        },
+        "fullName": "google.cloud.vision_v1p3beta1.ProductSearchClient.delete_product_set",
         "method": {
+          "fullName": "google.cloud.vision.v1p3beta1.ProductSearch.DeleteProductSet",
           "service": {
+            "fullName": "google.cloud.vision.v1p3beta1.ProductSearch",
             "shortName": "ProductSearch"
           },
           "shortName": "DeleteProductSet"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.vision_v1p3beta1.types.DeleteProductSetRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_product_set"
       },
+      "description": "Sample for DeleteProductSet",
       "file": "vision_v1p3beta1_generated_product_search_delete_product_set_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "vision_v1p3beta1_generated_ProductSearch_DeleteProductSet_sync",
       "segments": [
         {
@@ -613,19 +1178,54 @@
           "end": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "vision_v1p3beta1_generated_product_search_delete_product_set_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.vision_v1p3beta1.ProductSearchAsyncClient",
+          "shortName": "ProductSearchAsyncClient"
+        },
+        "fullName": "google.cloud.vision_v1p3beta1.ProductSearchAsyncClient.delete_product",
         "method": {
+          "fullName": "google.cloud.vision.v1p3beta1.ProductSearch.DeleteProduct",
           "service": {
+            "fullName": "google.cloud.vision.v1p3beta1.ProductSearch",
             "shortName": "ProductSearch"
           },
           "shortName": "DeleteProduct"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.vision_v1p3beta1.types.DeleteProductRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_product"
       },
+      "description": "Sample for DeleteProduct",
       "file": "vision_v1p3beta1_generated_product_search_delete_product_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "vision_v1p3beta1_generated_ProductSearch_DeleteProduct_async",
       "segments": [
         {
@@ -656,18 +1256,53 @@
           "end": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "vision_v1p3beta1_generated_product_search_delete_product_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.vision_v1p3beta1.ProductSearchClient",
+          "shortName": "ProductSearchClient"
+        },
+        "fullName": "google.cloud.vision_v1p3beta1.ProductSearchClient.delete_product",
         "method": {
+          "fullName": "google.cloud.vision.v1p3beta1.ProductSearch.DeleteProduct",
           "service": {
+            "fullName": "google.cloud.vision.v1p3beta1.ProductSearch",
             "shortName": "ProductSearch"
           },
           "shortName": "DeleteProduct"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.vision_v1p3beta1.types.DeleteProductRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_product"
       },
+      "description": "Sample for DeleteProduct",
       "file": "vision_v1p3beta1_generated_product_search_delete_product_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "vision_v1p3beta1_generated_ProductSearch_DeleteProduct_sync",
       "segments": [
         {
@@ -698,19 +1333,54 @@
           "end": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "vision_v1p3beta1_generated_product_search_delete_product_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.vision_v1p3beta1.ProductSearchAsyncClient",
+          "shortName": "ProductSearchAsyncClient"
+        },
+        "fullName": "google.cloud.vision_v1p3beta1.ProductSearchAsyncClient.delete_reference_image",
         "method": {
+          "fullName": "google.cloud.vision.v1p3beta1.ProductSearch.DeleteReferenceImage",
           "service": {
+            "fullName": "google.cloud.vision.v1p3beta1.ProductSearch",
             "shortName": "ProductSearch"
           },
           "shortName": "DeleteReferenceImage"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.vision_v1p3beta1.types.DeleteReferenceImageRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_reference_image"
       },
+      "description": "Sample for DeleteReferenceImage",
       "file": "vision_v1p3beta1_generated_product_search_delete_reference_image_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "vision_v1p3beta1_generated_ProductSearch_DeleteReferenceImage_async",
       "segments": [
         {
@@ -741,18 +1411,53 @@
           "end": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "vision_v1p3beta1_generated_product_search_delete_reference_image_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.vision_v1p3beta1.ProductSearchClient",
+          "shortName": "ProductSearchClient"
+        },
+        "fullName": "google.cloud.vision_v1p3beta1.ProductSearchClient.delete_reference_image",
         "method": {
+          "fullName": "google.cloud.vision.v1p3beta1.ProductSearch.DeleteReferenceImage",
           "service": {
+            "fullName": "google.cloud.vision.v1p3beta1.ProductSearch",
             "shortName": "ProductSearch"
           },
           "shortName": "DeleteReferenceImage"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.vision_v1p3beta1.types.DeleteReferenceImageRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_reference_image"
       },
+      "description": "Sample for DeleteReferenceImage",
       "file": "vision_v1p3beta1_generated_product_search_delete_reference_image_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "vision_v1p3beta1_generated_ProductSearch_DeleteReferenceImage_sync",
       "segments": [
         {
@@ -783,19 +1488,55 @@
           "end": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "vision_v1p3beta1_generated_product_search_delete_reference_image_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.vision_v1p3beta1.ProductSearchAsyncClient",
+          "shortName": "ProductSearchAsyncClient"
+        },
+        "fullName": "google.cloud.vision_v1p3beta1.ProductSearchAsyncClient.get_product_set",
         "method": {
+          "fullName": "google.cloud.vision.v1p3beta1.ProductSearch.GetProductSet",
           "service": {
+            "fullName": "google.cloud.vision.v1p3beta1.ProductSearch",
             "shortName": "ProductSearch"
           },
           "shortName": "GetProductSet"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.vision_v1p3beta1.types.GetProductSetRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.vision_v1p3beta1.types.ProductSet",
+        "shortName": "get_product_set"
       },
+      "description": "Sample for GetProductSet",
       "file": "vision_v1p3beta1_generated_product_search_get_product_set_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "vision_v1p3beta1_generated_ProductSearch_GetProductSet_async",
       "segments": [
         {
@@ -828,18 +1569,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "vision_v1p3beta1_generated_product_search_get_product_set_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.vision_v1p3beta1.ProductSearchClient",
+          "shortName": "ProductSearchClient"
+        },
+        "fullName": "google.cloud.vision_v1p3beta1.ProductSearchClient.get_product_set",
         "method": {
+          "fullName": "google.cloud.vision.v1p3beta1.ProductSearch.GetProductSet",
           "service": {
+            "fullName": "google.cloud.vision.v1p3beta1.ProductSearch",
             "shortName": "ProductSearch"
           },
           "shortName": "GetProductSet"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.vision_v1p3beta1.types.GetProductSetRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.vision_v1p3beta1.types.ProductSet",
+        "shortName": "get_product_set"
       },
+      "description": "Sample for GetProductSet",
       "file": "vision_v1p3beta1_generated_product_search_get_product_set_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "vision_v1p3beta1_generated_ProductSearch_GetProductSet_sync",
       "segments": [
         {
@@ -872,19 +1649,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "vision_v1p3beta1_generated_product_search_get_product_set_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.vision_v1p3beta1.ProductSearchAsyncClient",
+          "shortName": "ProductSearchAsyncClient"
+        },
+        "fullName": "google.cloud.vision_v1p3beta1.ProductSearchAsyncClient.get_product",
         "method": {
+          "fullName": "google.cloud.vision.v1p3beta1.ProductSearch.GetProduct",
           "service": {
+            "fullName": "google.cloud.vision.v1p3beta1.ProductSearch",
             "shortName": "ProductSearch"
           },
           "shortName": "GetProduct"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.vision_v1p3beta1.types.GetProductRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.vision_v1p3beta1.types.Product",
+        "shortName": "get_product"
       },
+      "description": "Sample for GetProduct",
       "file": "vision_v1p3beta1_generated_product_search_get_product_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "vision_v1p3beta1_generated_ProductSearch_GetProduct_async",
       "segments": [
         {
@@ -917,18 +1730,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "vision_v1p3beta1_generated_product_search_get_product_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.vision_v1p3beta1.ProductSearchClient",
+          "shortName": "ProductSearchClient"
+        },
+        "fullName": "google.cloud.vision_v1p3beta1.ProductSearchClient.get_product",
         "method": {
+          "fullName": "google.cloud.vision.v1p3beta1.ProductSearch.GetProduct",
           "service": {
+            "fullName": "google.cloud.vision.v1p3beta1.ProductSearch",
             "shortName": "ProductSearch"
           },
           "shortName": "GetProduct"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.vision_v1p3beta1.types.GetProductRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.vision_v1p3beta1.types.Product",
+        "shortName": "get_product"
       },
+      "description": "Sample for GetProduct",
       "file": "vision_v1p3beta1_generated_product_search_get_product_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "vision_v1p3beta1_generated_ProductSearch_GetProduct_sync",
       "segments": [
         {
@@ -961,19 +1810,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "vision_v1p3beta1_generated_product_search_get_product_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.vision_v1p3beta1.ProductSearchAsyncClient",
+          "shortName": "ProductSearchAsyncClient"
+        },
+        "fullName": "google.cloud.vision_v1p3beta1.ProductSearchAsyncClient.get_reference_image",
         "method": {
+          "fullName": "google.cloud.vision.v1p3beta1.ProductSearch.GetReferenceImage",
           "service": {
+            "fullName": "google.cloud.vision.v1p3beta1.ProductSearch",
             "shortName": "ProductSearch"
           },
           "shortName": "GetReferenceImage"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.vision_v1p3beta1.types.GetReferenceImageRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.vision_v1p3beta1.types.ReferenceImage",
+        "shortName": "get_reference_image"
       },
+      "description": "Sample for GetReferenceImage",
       "file": "vision_v1p3beta1_generated_product_search_get_reference_image_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "vision_v1p3beta1_generated_ProductSearch_GetReferenceImage_async",
       "segments": [
         {
@@ -1006,18 +1891,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "vision_v1p3beta1_generated_product_search_get_reference_image_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.vision_v1p3beta1.ProductSearchClient",
+          "shortName": "ProductSearchClient"
+        },
+        "fullName": "google.cloud.vision_v1p3beta1.ProductSearchClient.get_reference_image",
         "method": {
+          "fullName": "google.cloud.vision.v1p3beta1.ProductSearch.GetReferenceImage",
           "service": {
+            "fullName": "google.cloud.vision.v1p3beta1.ProductSearch",
             "shortName": "ProductSearch"
           },
           "shortName": "GetReferenceImage"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.vision_v1p3beta1.types.GetReferenceImageRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.vision_v1p3beta1.types.ReferenceImage",
+        "shortName": "get_reference_image"
       },
+      "description": "Sample for GetReferenceImage",
       "file": "vision_v1p3beta1_generated_product_search_get_reference_image_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "vision_v1p3beta1_generated_ProductSearch_GetReferenceImage_sync",
       "segments": [
         {
@@ -1050,19 +1971,59 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "vision_v1p3beta1_generated_product_search_get_reference_image_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.vision_v1p3beta1.ProductSearchAsyncClient",
+          "shortName": "ProductSearchAsyncClient"
+        },
+        "fullName": "google.cloud.vision_v1p3beta1.ProductSearchAsyncClient.import_product_sets",
         "method": {
+          "fullName": "google.cloud.vision.v1p3beta1.ProductSearch.ImportProductSets",
           "service": {
+            "fullName": "google.cloud.vision.v1p3beta1.ProductSearch",
             "shortName": "ProductSearch"
           },
           "shortName": "ImportProductSets"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.vision_v1p3beta1.types.ImportProductSetsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "input_config",
+            "type": "google.cloud.vision_v1p3beta1.types.ImportProductSetsInputConfig"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "import_product_sets"
       },
+      "description": "Sample for ImportProductSets",
       "file": "vision_v1p3beta1_generated_product_search_import_product_sets_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "vision_v1p3beta1_generated_ProductSearch_ImportProductSets_async",
       "segments": [
         {
@@ -1095,18 +2056,58 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "vision_v1p3beta1_generated_product_search_import_product_sets_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.vision_v1p3beta1.ProductSearchClient",
+          "shortName": "ProductSearchClient"
+        },
+        "fullName": "google.cloud.vision_v1p3beta1.ProductSearchClient.import_product_sets",
         "method": {
+          "fullName": "google.cloud.vision.v1p3beta1.ProductSearch.ImportProductSets",
           "service": {
+            "fullName": "google.cloud.vision.v1p3beta1.ProductSearch",
             "shortName": "ProductSearch"
           },
           "shortName": "ImportProductSets"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.vision_v1p3beta1.types.ImportProductSetsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "input_config",
+            "type": "google.cloud.vision_v1p3beta1.types.ImportProductSetsInputConfig"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "import_product_sets"
       },
+      "description": "Sample for ImportProductSets",
       "file": "vision_v1p3beta1_generated_product_search_import_product_sets_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "vision_v1p3beta1_generated_ProductSearch_ImportProductSets_sync",
       "segments": [
         {
@@ -1139,19 +2140,55 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "vision_v1p3beta1_generated_product_search_import_product_sets_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.vision_v1p3beta1.ProductSearchAsyncClient",
+          "shortName": "ProductSearchAsyncClient"
+        },
+        "fullName": "google.cloud.vision_v1p3beta1.ProductSearchAsyncClient.list_product_sets",
         "method": {
+          "fullName": "google.cloud.vision.v1p3beta1.ProductSearch.ListProductSets",
           "service": {
+            "fullName": "google.cloud.vision.v1p3beta1.ProductSearch",
             "shortName": "ProductSearch"
           },
           "shortName": "ListProductSets"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.vision_v1p3beta1.types.ListProductSetsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.vision_v1p3beta1.services.product_search.pagers.ListProductSetsAsyncPager",
+        "shortName": "list_product_sets"
       },
+      "description": "Sample for ListProductSets",
       "file": "vision_v1p3beta1_generated_product_search_list_product_sets_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "vision_v1p3beta1_generated_ProductSearch_ListProductSets_async",
       "segments": [
         {
@@ -1184,18 +2221,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "vision_v1p3beta1_generated_product_search_list_product_sets_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.vision_v1p3beta1.ProductSearchClient",
+          "shortName": "ProductSearchClient"
+        },
+        "fullName": "google.cloud.vision_v1p3beta1.ProductSearchClient.list_product_sets",
         "method": {
+          "fullName": "google.cloud.vision.v1p3beta1.ProductSearch.ListProductSets",
           "service": {
+            "fullName": "google.cloud.vision.v1p3beta1.ProductSearch",
             "shortName": "ProductSearch"
           },
           "shortName": "ListProductSets"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.vision_v1p3beta1.types.ListProductSetsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.vision_v1p3beta1.services.product_search.pagers.ListProductSetsPager",
+        "shortName": "list_product_sets"
       },
+      "description": "Sample for ListProductSets",
       "file": "vision_v1p3beta1_generated_product_search_list_product_sets_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "vision_v1p3beta1_generated_ProductSearch_ListProductSets_sync",
       "segments": [
         {
@@ -1228,19 +2301,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "vision_v1p3beta1_generated_product_search_list_product_sets_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.vision_v1p3beta1.ProductSearchAsyncClient",
+          "shortName": "ProductSearchAsyncClient"
+        },
+        "fullName": "google.cloud.vision_v1p3beta1.ProductSearchAsyncClient.list_products_in_product_set",
         "method": {
+          "fullName": "google.cloud.vision.v1p3beta1.ProductSearch.ListProductsInProductSet",
           "service": {
+            "fullName": "google.cloud.vision.v1p3beta1.ProductSearch",
             "shortName": "ProductSearch"
           },
           "shortName": "ListProductsInProductSet"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.vision_v1p3beta1.types.ListProductsInProductSetRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.vision_v1p3beta1.services.product_search.pagers.ListProductsInProductSetAsyncPager",
+        "shortName": "list_products_in_product_set"
       },
+      "description": "Sample for ListProductsInProductSet",
       "file": "vision_v1p3beta1_generated_product_search_list_products_in_product_set_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "vision_v1p3beta1_generated_ProductSearch_ListProductsInProductSet_async",
       "segments": [
         {
@@ -1273,18 +2382,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "vision_v1p3beta1_generated_product_search_list_products_in_product_set_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.vision_v1p3beta1.ProductSearchClient",
+          "shortName": "ProductSearchClient"
+        },
+        "fullName": "google.cloud.vision_v1p3beta1.ProductSearchClient.list_products_in_product_set",
         "method": {
+          "fullName": "google.cloud.vision.v1p3beta1.ProductSearch.ListProductsInProductSet",
           "service": {
+            "fullName": "google.cloud.vision.v1p3beta1.ProductSearch",
             "shortName": "ProductSearch"
           },
           "shortName": "ListProductsInProductSet"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.vision_v1p3beta1.types.ListProductsInProductSetRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.vision_v1p3beta1.services.product_search.pagers.ListProductsInProductSetPager",
+        "shortName": "list_products_in_product_set"
       },
+      "description": "Sample for ListProductsInProductSet",
       "file": "vision_v1p3beta1_generated_product_search_list_products_in_product_set_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "vision_v1p3beta1_generated_ProductSearch_ListProductsInProductSet_sync",
       "segments": [
         {
@@ -1317,19 +2462,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "vision_v1p3beta1_generated_product_search_list_products_in_product_set_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.vision_v1p3beta1.ProductSearchAsyncClient",
+          "shortName": "ProductSearchAsyncClient"
+        },
+        "fullName": "google.cloud.vision_v1p3beta1.ProductSearchAsyncClient.list_products",
         "method": {
+          "fullName": "google.cloud.vision.v1p3beta1.ProductSearch.ListProducts",
           "service": {
+            "fullName": "google.cloud.vision.v1p3beta1.ProductSearch",
             "shortName": "ProductSearch"
           },
           "shortName": "ListProducts"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.vision_v1p3beta1.types.ListProductsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.vision_v1p3beta1.services.product_search.pagers.ListProductsAsyncPager",
+        "shortName": "list_products"
       },
+      "description": "Sample for ListProducts",
       "file": "vision_v1p3beta1_generated_product_search_list_products_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "vision_v1p3beta1_generated_ProductSearch_ListProducts_async",
       "segments": [
         {
@@ -1362,18 +2543,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "vision_v1p3beta1_generated_product_search_list_products_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.vision_v1p3beta1.ProductSearchClient",
+          "shortName": "ProductSearchClient"
+        },
+        "fullName": "google.cloud.vision_v1p3beta1.ProductSearchClient.list_products",
         "method": {
+          "fullName": "google.cloud.vision.v1p3beta1.ProductSearch.ListProducts",
           "service": {
+            "fullName": "google.cloud.vision.v1p3beta1.ProductSearch",
             "shortName": "ProductSearch"
           },
           "shortName": "ListProducts"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.vision_v1p3beta1.types.ListProductsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.vision_v1p3beta1.services.product_search.pagers.ListProductsPager",
+        "shortName": "list_products"
       },
+      "description": "Sample for ListProducts",
       "file": "vision_v1p3beta1_generated_product_search_list_products_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "vision_v1p3beta1_generated_ProductSearch_ListProducts_sync",
       "segments": [
         {
@@ -1406,19 +2623,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "vision_v1p3beta1_generated_product_search_list_products_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.vision_v1p3beta1.ProductSearchAsyncClient",
+          "shortName": "ProductSearchAsyncClient"
+        },
+        "fullName": "google.cloud.vision_v1p3beta1.ProductSearchAsyncClient.list_reference_images",
         "method": {
+          "fullName": "google.cloud.vision.v1p3beta1.ProductSearch.ListReferenceImages",
           "service": {
+            "fullName": "google.cloud.vision.v1p3beta1.ProductSearch",
             "shortName": "ProductSearch"
           },
           "shortName": "ListReferenceImages"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.vision_v1p3beta1.types.ListReferenceImagesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.vision_v1p3beta1.services.product_search.pagers.ListReferenceImagesAsyncPager",
+        "shortName": "list_reference_images"
       },
+      "description": "Sample for ListReferenceImages",
       "file": "vision_v1p3beta1_generated_product_search_list_reference_images_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "vision_v1p3beta1_generated_ProductSearch_ListReferenceImages_async",
       "segments": [
         {
@@ -1451,18 +2704,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "vision_v1p3beta1_generated_product_search_list_reference_images_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.vision_v1p3beta1.ProductSearchClient",
+          "shortName": "ProductSearchClient"
+        },
+        "fullName": "google.cloud.vision_v1p3beta1.ProductSearchClient.list_reference_images",
         "method": {
+          "fullName": "google.cloud.vision.v1p3beta1.ProductSearch.ListReferenceImages",
           "service": {
+            "fullName": "google.cloud.vision.v1p3beta1.ProductSearch",
             "shortName": "ProductSearch"
           },
           "shortName": "ListReferenceImages"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.vision_v1p3beta1.types.ListReferenceImagesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.vision_v1p3beta1.services.product_search.pagers.ListReferenceImagesPager",
+        "shortName": "list_reference_images"
       },
+      "description": "Sample for ListReferenceImages",
       "file": "vision_v1p3beta1_generated_product_search_list_reference_images_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "vision_v1p3beta1_generated_ProductSearch_ListReferenceImages_sync",
       "segments": [
         {
@@ -1495,19 +2784,58 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "vision_v1p3beta1_generated_product_search_list_reference_images_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.vision_v1p3beta1.ProductSearchAsyncClient",
+          "shortName": "ProductSearchAsyncClient"
+        },
+        "fullName": "google.cloud.vision_v1p3beta1.ProductSearchAsyncClient.remove_product_from_product_set",
         "method": {
+          "fullName": "google.cloud.vision.v1p3beta1.ProductSearch.RemoveProductFromProductSet",
           "service": {
+            "fullName": "google.cloud.vision.v1p3beta1.ProductSearch",
             "shortName": "ProductSearch"
           },
           "shortName": "RemoveProductFromProductSet"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.vision_v1p3beta1.types.RemoveProductFromProductSetRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "product",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "remove_product_from_product_set"
       },
+      "description": "Sample for RemoveProductFromProductSet",
       "file": "vision_v1p3beta1_generated_product_search_remove_product_from_product_set_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "vision_v1p3beta1_generated_ProductSearch_RemoveProductFromProductSet_async",
       "segments": [
         {
@@ -1538,18 +2866,57 @@
           "end": 44,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "vision_v1p3beta1_generated_product_search_remove_product_from_product_set_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.vision_v1p3beta1.ProductSearchClient",
+          "shortName": "ProductSearchClient"
+        },
+        "fullName": "google.cloud.vision_v1p3beta1.ProductSearchClient.remove_product_from_product_set",
         "method": {
+          "fullName": "google.cloud.vision.v1p3beta1.ProductSearch.RemoveProductFromProductSet",
           "service": {
+            "fullName": "google.cloud.vision.v1p3beta1.ProductSearch",
             "shortName": "ProductSearch"
           },
           "shortName": "RemoveProductFromProductSet"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.vision_v1p3beta1.types.RemoveProductFromProductSetRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "product",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "remove_product_from_product_set"
       },
+      "description": "Sample for RemoveProductFromProductSet",
       "file": "vision_v1p3beta1_generated_product_search_remove_product_from_product_set_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "vision_v1p3beta1_generated_ProductSearch_RemoveProductFromProductSet_sync",
       "segments": [
         {
@@ -1580,19 +2947,59 @@
           "end": 44,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "vision_v1p3beta1_generated_product_search_remove_product_from_product_set_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.vision_v1p3beta1.ProductSearchAsyncClient",
+          "shortName": "ProductSearchAsyncClient"
+        },
+        "fullName": "google.cloud.vision_v1p3beta1.ProductSearchAsyncClient.update_product_set",
         "method": {
+          "fullName": "google.cloud.vision.v1p3beta1.ProductSearch.UpdateProductSet",
           "service": {
+            "fullName": "google.cloud.vision.v1p3beta1.ProductSearch",
             "shortName": "ProductSearch"
           },
           "shortName": "UpdateProductSet"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.vision_v1p3beta1.types.UpdateProductSetRequest"
+          },
+          {
+            "name": "product_set",
+            "type": "google.cloud.vision_v1p3beta1.types.ProductSet"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.vision_v1p3beta1.types.ProductSet",
+        "shortName": "update_product_set"
       },
+      "description": "Sample for UpdateProductSet",
       "file": "vision_v1p3beta1_generated_product_search_update_product_set_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "vision_v1p3beta1_generated_ProductSearch_UpdateProductSet_async",
       "segments": [
         {
@@ -1625,18 +3032,58 @@
           "start": 41,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "vision_v1p3beta1_generated_product_search_update_product_set_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.vision_v1p3beta1.ProductSearchClient",
+          "shortName": "ProductSearchClient"
+        },
+        "fullName": "google.cloud.vision_v1p3beta1.ProductSearchClient.update_product_set",
         "method": {
+          "fullName": "google.cloud.vision.v1p3beta1.ProductSearch.UpdateProductSet",
           "service": {
+            "fullName": "google.cloud.vision.v1p3beta1.ProductSearch",
             "shortName": "ProductSearch"
           },
           "shortName": "UpdateProductSet"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.vision_v1p3beta1.types.UpdateProductSetRequest"
+          },
+          {
+            "name": "product_set",
+            "type": "google.cloud.vision_v1p3beta1.types.ProductSet"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.vision_v1p3beta1.types.ProductSet",
+        "shortName": "update_product_set"
       },
+      "description": "Sample for UpdateProductSet",
       "file": "vision_v1p3beta1_generated_product_search_update_product_set_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "vision_v1p3beta1_generated_ProductSearch_UpdateProductSet_sync",
       "segments": [
         {
@@ -1669,19 +3116,59 @@
           "start": 41,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "vision_v1p3beta1_generated_product_search_update_product_set_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.vision_v1p3beta1.ProductSearchAsyncClient",
+          "shortName": "ProductSearchAsyncClient"
+        },
+        "fullName": "google.cloud.vision_v1p3beta1.ProductSearchAsyncClient.update_product",
         "method": {
+          "fullName": "google.cloud.vision.v1p3beta1.ProductSearch.UpdateProduct",
           "service": {
+            "fullName": "google.cloud.vision.v1p3beta1.ProductSearch",
             "shortName": "ProductSearch"
           },
           "shortName": "UpdateProduct"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.vision_v1p3beta1.types.UpdateProductRequest"
+          },
+          {
+            "name": "product",
+            "type": "google.cloud.vision_v1p3beta1.types.Product"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.vision_v1p3beta1.types.Product",
+        "shortName": "update_product"
       },
+      "description": "Sample for UpdateProduct",
       "file": "vision_v1p3beta1_generated_product_search_update_product_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "vision_v1p3beta1_generated_ProductSearch_UpdateProduct_async",
       "segments": [
         {
@@ -1714,18 +3201,58 @@
           "start": 41,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "vision_v1p3beta1_generated_product_search_update_product_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.vision_v1p3beta1.ProductSearchClient",
+          "shortName": "ProductSearchClient"
+        },
+        "fullName": "google.cloud.vision_v1p3beta1.ProductSearchClient.update_product",
         "method": {
+          "fullName": "google.cloud.vision.v1p3beta1.ProductSearch.UpdateProduct",
           "service": {
+            "fullName": "google.cloud.vision.v1p3beta1.ProductSearch",
             "shortName": "ProductSearch"
           },
           "shortName": "UpdateProduct"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.vision_v1p3beta1.types.UpdateProductRequest"
+          },
+          {
+            "name": "product",
+            "type": "google.cloud.vision_v1p3beta1.types.Product"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.vision_v1p3beta1.types.Product",
+        "shortName": "update_product"
       },
+      "description": "Sample for UpdateProduct",
       "file": "vision_v1p3beta1_generated_product_search_update_product_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "vision_v1p3beta1_generated_ProductSearch_UpdateProduct_sync",
       "segments": [
         {
@@ -1758,7 +3285,8 @@
           "start": 41,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "vision_v1p3beta1_generated_product_search_update_product_sync.py"
     }
   ]
 }

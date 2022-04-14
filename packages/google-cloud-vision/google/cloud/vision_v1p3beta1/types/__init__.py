@@ -102,7 +102,9 @@ from .text_annotation import (
     TextAnnotation,
     Word,
 )
-from .web_detection import WebDetection
+from .web_detection import (
+    WebDetection,
+)
 
 __all__ = (
     "BoundingPoly",

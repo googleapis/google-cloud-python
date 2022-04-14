@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -467,7 +467,6 @@ class ImageAnnotatorClient(metaclass=ImageAnnotatorClientMeta):
         r"""Run image detection and annotation for a batch of
         images.
 
-
         .. code-block:: python
 
             from google.cloud import vision_v1p3beta1
@@ -564,7 +563,6 @@ class ImageAnnotatorClient(metaclass=ImageAnnotatorClientMeta):
         interface. ``Operation.metadata`` contains ``OperationMetadata``
         (metadata). ``Operation.response`` contains
         ``AsyncBatchAnnotateFilesResponse`` (results).
-
 
         .. code-block:: python
 
