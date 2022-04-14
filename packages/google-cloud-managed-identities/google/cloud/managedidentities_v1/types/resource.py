@@ -34,7 +34,7 @@ class Domain(proto.Message):
         name (str):
             Required. The unique name of the domain using the form:
             ``projects/{project_id}/locations/global/domains/{domain_name}``.
-        labels (Sequence[google.cloud.managedidentities_v1.types.Domain.LabelsEntry]):
+        labels (Mapping[str, str]):
             Optional. Resource labels that can contain
             user-provided metadata.
         authorized_networks (Sequence[str]):
