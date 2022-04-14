@@ -51,7 +51,7 @@ class Instance(proto.Message):
             (``OutputOnly``) The current state of the instance.
         type_ (google.cloud.bigtable_admin_v2.types.Instance.Type):
             The type of the instance. Defaults to ``PRODUCTION``.
-        labels (Sequence[google.cloud.bigtable_admin_v2.types.Instance.LabelsEntry]):
+        labels (Mapping[str, str]):
             Labels are a flexible and lightweight mechanism for
             organizing cloud resources into groups that reflect a
             customer's organizational needs and deployment strategies.

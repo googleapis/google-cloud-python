@@ -68,7 +68,7 @@ class CreateInstanceRequest(proto.Message):
         instance (google.cloud.bigtable_admin_v2.types.Instance):
             Required. The instance to create. Fields marked
             ``OutputOnly`` must be left blank.
-        clusters (Sequence[google.cloud.bigtable_admin_v2.types.CreateInstanceRequest.ClustersEntry]):
+        clusters (Mapping[str, google.cloud.bigtable_admin_v2.types.Cluster]):
             Required. The clusters to be created within the instance,
             mapped by desired cluster ID, e.g., just ``mycluster``
             rather than

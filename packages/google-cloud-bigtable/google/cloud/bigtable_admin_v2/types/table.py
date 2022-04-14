@@ -81,14 +81,14 @@ class Table(proto.Message):
             ``projects/{project}/instances/{instance}/tables/[_a-zA-Z0-9][-_.a-zA-Z0-9]*``.
             Views: ``NAME_ONLY``, ``SCHEMA_VIEW``, ``REPLICATION_VIEW``,
             ``FULL``
-        cluster_states (Sequence[google.cloud.bigtable_admin_v2.types.Table.ClusterStatesEntry]):
+        cluster_states (Mapping[str, google.cloud.bigtable_admin_v2.types.Table.ClusterState]):
             Output only. Map from cluster ID to per-cluster table state.
             If it could not be determined whether or not the table has
             data in a particular cluster (for example, if its zone is
             unavailable), then there will be an entry for the cluster
             with UNKNOWN ``replication_status``. Views:
             ``REPLICATION_VIEW``, ``ENCRYPTION_VIEW``, ``FULL``
-        column_families (Sequence[google.cloud.bigtable_admin_v2.types.Table.ColumnFamiliesEntry]):
+        column_families (Mapping[str, google.cloud.bigtable_admin_v2.types.ColumnFamily]):
             (``CreationOnly``) The column families configured for this
             table, mapped by column family ID. Views: ``SCHEMA_VIEW``,
             ``FULL``

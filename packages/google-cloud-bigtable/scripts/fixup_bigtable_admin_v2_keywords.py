@@ -72,7 +72,7 @@ class bigtable_adminCallTransformer(cst.CSTTransformer):
         'partial_update_cluster': ('cluster', 'update_mask', ),
         'partial_update_instance': ('instance', 'update_mask', ),
         'restore_table': ('parent', 'table_id', 'backup', ),
-        'set_iam_policy': ('resource', 'policy', ),
+        'set_iam_policy': ('resource', 'policy', 'update_mask', ),
         'snapshot_table': ('name', 'cluster', 'snapshot_id', 'ttl', 'description', ),
         'test_iam_permissions': ('resource', 'permissions', ),
         'update_app_profile': ('app_profile', 'update_mask', 'ignore_warnings', ),
