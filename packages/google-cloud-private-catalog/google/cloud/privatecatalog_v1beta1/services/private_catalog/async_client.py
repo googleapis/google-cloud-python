@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -240,7 +240,6 @@ class PrivateCatalogAsyncClient:
         resources that consumers have access to, within the scope of the
         consumer cloud resource hierarchy context.
 
-
         .. code-block:: python
 
             from google.cloud import privatecatalog_v1beta1
@@ -329,7 +328,6 @@ class PrivateCatalogAsyncClient:
         resources that consumers have access to, within the scope of the
         consumer cloud resource hierarchy context.
 
-
         .. code-block:: python
 
             from google.cloud import privatecatalog_v1beta1
@@ -417,7 +415,6 @@ class PrivateCatalogAsyncClient:
         r"""Search [Version][google.cloud.privatecatalog.v1beta1.Version]
         resources that consumers have access to, within the scope of the
         consumer cloud resource hierarchy context.
-
 
         .. code-block:: python
 
