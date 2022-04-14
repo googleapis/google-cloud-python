@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -473,7 +473,6 @@ class OrgPolicyClient(metaclass=OrgPolicyClientMeta):
         r"""Lists ``Constraints`` that could be applied on the specified
         resource.
 
-
         .. code-block:: python
 
             from google.cloud import orgpolicy_v2
@@ -590,7 +589,6 @@ class OrgPolicyClient(metaclass=OrgPolicyClientMeta):
     ) -> pagers.ListPoliciesPager:
         r"""Retrieves all of the ``Policies`` that exist on a particular
         resource.
-
 
         .. code-block:: python
 
@@ -714,7 +712,6 @@ class OrgPolicyClient(metaclass=OrgPolicyClientMeta):
         The ``etag`` value can be used with ``UpdatePolicy()`` to update
         a ``Policy`` during read-modify-write.
 
-
         .. code-block:: python
 
             from google.cloud import orgpolicy_v2
@@ -814,7 +811,6 @@ class OrgPolicyClient(metaclass=OrgPolicyClientMeta):
         ``condition`` set because it is a computed ``Policy`` across
         multiple resources. Subtrees of Resource Manager resource
         hierarchy with 'under:' prefix will not be expanded.
-
 
         .. code-block:: python
 
@@ -919,7 +915,6 @@ class OrgPolicyClient(metaclass=OrgPolicyClientMeta):
         Returns a ``google.rpc.Status`` with
         ``google.rpc.Code.ALREADY_EXISTS`` if the policy already exists
         on the given Cloud resource.
-
 
         .. code-block:: python
 
@@ -1039,7 +1034,6 @@ class OrgPolicyClient(metaclass=OrgPolicyClientMeta):
         Note: the supplied policy will perform a full overwrite of all
         fields.
 
-
         .. code-block:: python
 
             from google.cloud import orgpolicy_v2
@@ -1139,7 +1133,6 @@ class OrgPolicyClient(metaclass=OrgPolicyClientMeta):
         Returns a ``google.rpc.Status`` with
         ``google.rpc.Code.NOT_FOUND`` if the constraint or Org Policy
         does not exist.
-
 
         .. code-block:: python
 
