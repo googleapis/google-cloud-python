@@ -138,7 +138,8 @@ class RecommenderTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        core_exceptions.GoogleAPICallError,
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
                 ),
@@ -152,7 +153,8 @@ class RecommenderTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        core_exceptions.GoogleAPICallError,
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
                 ),
@@ -171,7 +173,8 @@ class RecommenderTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        core_exceptions.GoogleAPICallError,
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
                 ),
@@ -185,7 +188,8 @@ class RecommenderTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        core_exceptions.GoogleAPICallError,
+                        core_exceptions.DeadlineExceeded,
+                        core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
                 ),
