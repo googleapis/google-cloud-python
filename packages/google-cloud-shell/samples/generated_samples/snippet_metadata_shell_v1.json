@@ -1,16 +1,57 @@
 {
+  "clientLibrary": {
+    "apis": [
+      {
+        "id": "google.cloud.shell.v1",
+        "version": "v1"
+      }
+    ],
+    "language": "PYTHON",
+    "name": "google-cloud-shell"
+  },
   "snippets": [
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.shell_v1.CloudShellServiceAsyncClient",
+          "shortName": "CloudShellServiceAsyncClient"
+        },
+        "fullName": "google.cloud.shell_v1.CloudShellServiceAsyncClient.add_public_key",
         "method": {
+          "fullName": "google.cloud.shell.v1.CloudShellService.AddPublicKey",
           "service": {
+            "fullName": "google.cloud.shell.v1.CloudShellService",
             "shortName": "CloudShellService"
           },
           "shortName": "AddPublicKey"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.shell_v1.types.AddPublicKeyRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "add_public_key"
       },
+      "description": "Sample for AddPublicKey",
       "file": "cloudshell_v1_generated_cloud_shell_service_add_public_key_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudshell_v1_generated_CloudShellService_AddPublicKey_async",
       "segments": [
         {
@@ -43,18 +84,50 @@
           "start": 45,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudshell_v1_generated_cloud_shell_service_add_public_key_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.shell_v1.CloudShellServiceClient",
+          "shortName": "CloudShellServiceClient"
+        },
+        "fullName": "google.cloud.shell_v1.CloudShellServiceClient.add_public_key",
         "method": {
+          "fullName": "google.cloud.shell.v1.CloudShellService.AddPublicKey",
           "service": {
+            "fullName": "google.cloud.shell.v1.CloudShellService",
             "shortName": "CloudShellService"
           },
           "shortName": "AddPublicKey"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.shell_v1.types.AddPublicKeyRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "add_public_key"
       },
+      "description": "Sample for AddPublicKey",
       "file": "cloudshell_v1_generated_cloud_shell_service_add_public_key_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudshell_v1_generated_CloudShellService_AddPublicKey_sync",
       "segments": [
         {
@@ -87,19 +160,51 @@
           "start": 45,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudshell_v1_generated_cloud_shell_service_add_public_key_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.shell_v1.CloudShellServiceAsyncClient",
+          "shortName": "CloudShellServiceAsyncClient"
+        },
+        "fullName": "google.cloud.shell_v1.CloudShellServiceAsyncClient.authorize_environment",
         "method": {
+          "fullName": "google.cloud.shell.v1.CloudShellService.AuthorizeEnvironment",
           "service": {
+            "fullName": "google.cloud.shell.v1.CloudShellService",
             "shortName": "CloudShellService"
           },
           "shortName": "AuthorizeEnvironment"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.shell_v1.types.AuthorizeEnvironmentRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "authorize_environment"
       },
+      "description": "Sample for AuthorizeEnvironment",
       "file": "cloudshell_v1_generated_cloud_shell_service_authorize_environment_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudshell_v1_generated_CloudShellService_AuthorizeEnvironment_async",
       "segments": [
         {
@@ -132,18 +237,50 @@
           "start": 45,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudshell_v1_generated_cloud_shell_service_authorize_environment_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.shell_v1.CloudShellServiceClient",
+          "shortName": "CloudShellServiceClient"
+        },
+        "fullName": "google.cloud.shell_v1.CloudShellServiceClient.authorize_environment",
         "method": {
+          "fullName": "google.cloud.shell.v1.CloudShellService.AuthorizeEnvironment",
           "service": {
+            "fullName": "google.cloud.shell.v1.CloudShellService",
             "shortName": "CloudShellService"
           },
           "shortName": "AuthorizeEnvironment"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.shell_v1.types.AuthorizeEnvironmentRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "authorize_environment"
       },
+      "description": "Sample for AuthorizeEnvironment",
       "file": "cloudshell_v1_generated_cloud_shell_service_authorize_environment_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudshell_v1_generated_CloudShellService_AuthorizeEnvironment_sync",
       "segments": [
         {
@@ -176,19 +313,55 @@
           "start": 45,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudshell_v1_generated_cloud_shell_service_authorize_environment_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.shell_v1.CloudShellServiceAsyncClient",
+          "shortName": "CloudShellServiceAsyncClient"
+        },
+        "fullName": "google.cloud.shell_v1.CloudShellServiceAsyncClient.get_environment",
         "method": {
+          "fullName": "google.cloud.shell.v1.CloudShellService.GetEnvironment",
           "service": {
+            "fullName": "google.cloud.shell.v1.CloudShellService",
             "shortName": "CloudShellService"
           },
           "shortName": "GetEnvironment"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.shell_v1.types.GetEnvironmentRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.shell_v1.types.Environment",
+        "shortName": "get_environment"
       },
+      "description": "Sample for GetEnvironment",
       "file": "cloudshell_v1_generated_cloud_shell_service_get_environment_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudshell_v1_generated_CloudShellService_GetEnvironment_async",
       "segments": [
         {
@@ -221,18 +394,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudshell_v1_generated_cloud_shell_service_get_environment_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.shell_v1.CloudShellServiceClient",
+          "shortName": "CloudShellServiceClient"
+        },
+        "fullName": "google.cloud.shell_v1.CloudShellServiceClient.get_environment",
         "method": {
+          "fullName": "google.cloud.shell.v1.CloudShellService.GetEnvironment",
           "service": {
+            "fullName": "google.cloud.shell.v1.CloudShellService",
             "shortName": "CloudShellService"
           },
           "shortName": "GetEnvironment"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.shell_v1.types.GetEnvironmentRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.shell_v1.types.Environment",
+        "shortName": "get_environment"
       },
+      "description": "Sample for GetEnvironment",
       "file": "cloudshell_v1_generated_cloud_shell_service_get_environment_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudshell_v1_generated_CloudShellService_GetEnvironment_sync",
       "segments": [
         {
@@ -265,19 +474,51 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudshell_v1_generated_cloud_shell_service_get_environment_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.shell_v1.CloudShellServiceAsyncClient",
+          "shortName": "CloudShellServiceAsyncClient"
+        },
+        "fullName": "google.cloud.shell_v1.CloudShellServiceAsyncClient.remove_public_key",
         "method": {
+          "fullName": "google.cloud.shell.v1.CloudShellService.RemovePublicKey",
           "service": {
+            "fullName": "google.cloud.shell.v1.CloudShellService",
             "shortName": "CloudShellService"
           },
           "shortName": "RemovePublicKey"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.shell_v1.types.RemovePublicKeyRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "remove_public_key"
       },
+      "description": "Sample for RemovePublicKey",
       "file": "cloudshell_v1_generated_cloud_shell_service_remove_public_key_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudshell_v1_generated_CloudShellService_RemovePublicKey_async",
       "segments": [
         {
@@ -310,18 +551,50 @@
           "start": 45,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudshell_v1_generated_cloud_shell_service_remove_public_key_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.shell_v1.CloudShellServiceClient",
+          "shortName": "CloudShellServiceClient"
+        },
+        "fullName": "google.cloud.shell_v1.CloudShellServiceClient.remove_public_key",
         "method": {
+          "fullName": "google.cloud.shell.v1.CloudShellService.RemovePublicKey",
           "service": {
+            "fullName": "google.cloud.shell.v1.CloudShellService",
             "shortName": "CloudShellService"
           },
           "shortName": "RemovePublicKey"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.shell_v1.types.RemovePublicKeyRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "remove_public_key"
       },
+      "description": "Sample for RemovePublicKey",
       "file": "cloudshell_v1_generated_cloud_shell_service_remove_public_key_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudshell_v1_generated_CloudShellService_RemovePublicKey_sync",
       "segments": [
         {
@@ -354,19 +627,51 @@
           "start": 45,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudshell_v1_generated_cloud_shell_service_remove_public_key_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.shell_v1.CloudShellServiceAsyncClient",
+          "shortName": "CloudShellServiceAsyncClient"
+        },
+        "fullName": "google.cloud.shell_v1.CloudShellServiceAsyncClient.start_environment",
         "method": {
+          "fullName": "google.cloud.shell.v1.CloudShellService.StartEnvironment",
           "service": {
+            "fullName": "google.cloud.shell.v1.CloudShellService",
             "shortName": "CloudShellService"
           },
           "shortName": "StartEnvironment"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.shell_v1.types.StartEnvironmentRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "start_environment"
       },
+      "description": "Sample for StartEnvironment",
       "file": "cloudshell_v1_generated_cloud_shell_service_start_environment_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudshell_v1_generated_CloudShellService_StartEnvironment_async",
       "segments": [
         {
@@ -399,18 +704,50 @@
           "start": 45,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudshell_v1_generated_cloud_shell_service_start_environment_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.shell_v1.CloudShellServiceClient",
+          "shortName": "CloudShellServiceClient"
+        },
+        "fullName": "google.cloud.shell_v1.CloudShellServiceClient.start_environment",
         "method": {
+          "fullName": "google.cloud.shell.v1.CloudShellService.StartEnvironment",
           "service": {
+            "fullName": "google.cloud.shell.v1.CloudShellService",
             "shortName": "CloudShellService"
           },
           "shortName": "StartEnvironment"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.shell_v1.types.StartEnvironmentRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "start_environment"
       },
+      "description": "Sample for StartEnvironment",
       "file": "cloudshell_v1_generated_cloud_shell_service_start_environment_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudshell_v1_generated_CloudShellService_StartEnvironment_sync",
       "segments": [
         {
@@ -443,7 +780,8 @@
           "start": 45,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudshell_v1_generated_cloud_shell_service_start_environment_sync.py"
     }
   ]
 }
