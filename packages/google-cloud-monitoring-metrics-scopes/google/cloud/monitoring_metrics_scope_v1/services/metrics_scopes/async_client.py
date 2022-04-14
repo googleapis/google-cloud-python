@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -328,7 +328,6 @@ class MetricsScopesAsyncClient:
         representing the specified monitored project will always be the
         first entry in the response.
 
-
         .. code-block:: python
 
             from google.cloud import monitoring_metrics_scope_v1
@@ -398,7 +397,6 @@ class MetricsScopesAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Adds a ``MonitoredProject`` with the given project ID to the
         specified ``Metrics Scope``.
-
 
         .. code-block:: python
 
@@ -525,7 +523,6 @@ class MetricsScopesAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Deletes a ``MonitoredProject`` from the specified
         ``Metrics Scope``.
-
 
         .. code-block:: python
 

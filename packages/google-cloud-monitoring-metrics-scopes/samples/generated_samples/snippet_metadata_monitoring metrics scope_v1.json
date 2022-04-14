@@ -1,16 +1,65 @@
 {
+  "clientLibrary": {
+    "apis": [
+      {
+        "id": "google.monitoring.metricsscope.v1",
+        "version": "v1"
+      }
+    ],
+    "language": "PYTHON",
+    "name": "google-cloud-monitoring-metrics-scope"
+  },
   "snippets": [
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.monitoring_metrics_scope_v1.MetricsScopesAsyncClient",
+          "shortName": "MetricsScopesAsyncClient"
+        },
+        "fullName": "google.cloud.monitoring_metrics_scope_v1.MetricsScopesAsyncClient.create_monitored_project",
         "method": {
+          "fullName": "google.monitoring.metricsscope.v1.MetricsScopes.CreateMonitoredProject",
           "service": {
+            "fullName": "google.monitoring.metricsscope.v1.MetricsScopes",
             "shortName": "MetricsScopes"
           },
           "shortName": "CreateMonitoredProject"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.monitoring_metrics_scope_v1.types.CreateMonitoredProjectRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "monitored_project",
+            "type": "google.cloud.monitoring_metrics_scope_v1.types.MonitoredProject"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "create_monitored_project"
       },
+      "description": "Sample for CreateMonitoredProject",
       "file": "monitoring_v1_generated_metrics_scopes_create_monitored_project_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "monitoring_v1_generated_MetricsScopes_CreateMonitoredProject_async",
       "segments": [
         {
@@ -43,18 +92,58 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "monitoring_v1_generated_metrics_scopes_create_monitored_project_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.monitoring_metrics_scope_v1.MetricsScopesClient",
+          "shortName": "MetricsScopesClient"
+        },
+        "fullName": "google.cloud.monitoring_metrics_scope_v1.MetricsScopesClient.create_monitored_project",
         "method": {
+          "fullName": "google.monitoring.metricsscope.v1.MetricsScopes.CreateMonitoredProject",
           "service": {
+            "fullName": "google.monitoring.metricsscope.v1.MetricsScopes",
             "shortName": "MetricsScopes"
           },
           "shortName": "CreateMonitoredProject"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.monitoring_metrics_scope_v1.types.CreateMonitoredProjectRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "monitored_project",
+            "type": "google.cloud.monitoring_metrics_scope_v1.types.MonitoredProject"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "create_monitored_project"
       },
+      "description": "Sample for CreateMonitoredProject",
       "file": "monitoring_v1_generated_metrics_scopes_create_monitored_project_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "monitoring_v1_generated_MetricsScopes_CreateMonitoredProject_sync",
       "segments": [
         {
@@ -87,19 +176,55 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "monitoring_v1_generated_metrics_scopes_create_monitored_project_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.monitoring_metrics_scope_v1.MetricsScopesAsyncClient",
+          "shortName": "MetricsScopesAsyncClient"
+        },
+        "fullName": "google.cloud.monitoring_metrics_scope_v1.MetricsScopesAsyncClient.delete_monitored_project",
         "method": {
+          "fullName": "google.monitoring.metricsscope.v1.MetricsScopes.DeleteMonitoredProject",
           "service": {
+            "fullName": "google.monitoring.metricsscope.v1.MetricsScopes",
             "shortName": "MetricsScopes"
           },
           "shortName": "DeleteMonitoredProject"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.monitoring_metrics_scope_v1.types.DeleteMonitoredProjectRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "delete_monitored_project"
       },
+      "description": "Sample for DeleteMonitoredProject",
       "file": "monitoring_v1_generated_metrics_scopes_delete_monitored_project_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "monitoring_v1_generated_MetricsScopes_DeleteMonitoredProject_async",
       "segments": [
         {
@@ -132,18 +257,54 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "monitoring_v1_generated_metrics_scopes_delete_monitored_project_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.monitoring_metrics_scope_v1.MetricsScopesClient",
+          "shortName": "MetricsScopesClient"
+        },
+        "fullName": "google.cloud.monitoring_metrics_scope_v1.MetricsScopesClient.delete_monitored_project",
         "method": {
+          "fullName": "google.monitoring.metricsscope.v1.MetricsScopes.DeleteMonitoredProject",
           "service": {
+            "fullName": "google.monitoring.metricsscope.v1.MetricsScopes",
             "shortName": "MetricsScopes"
           },
           "shortName": "DeleteMonitoredProject"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.monitoring_metrics_scope_v1.types.DeleteMonitoredProjectRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "delete_monitored_project"
       },
+      "description": "Sample for DeleteMonitoredProject",
       "file": "monitoring_v1_generated_metrics_scopes_delete_monitored_project_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "monitoring_v1_generated_MetricsScopes_DeleteMonitoredProject_sync",
       "segments": [
         {
@@ -176,19 +337,55 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "monitoring_v1_generated_metrics_scopes_delete_monitored_project_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.monitoring_metrics_scope_v1.MetricsScopesAsyncClient",
+          "shortName": "MetricsScopesAsyncClient"
+        },
+        "fullName": "google.cloud.monitoring_metrics_scope_v1.MetricsScopesAsyncClient.get_metrics_scope",
         "method": {
+          "fullName": "google.monitoring.metricsscope.v1.MetricsScopes.GetMetricsScope",
           "service": {
+            "fullName": "google.monitoring.metricsscope.v1.MetricsScopes",
             "shortName": "MetricsScopes"
           },
           "shortName": "GetMetricsScope"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.monitoring_metrics_scope_v1.types.GetMetricsScopeRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.monitoring_metrics_scope_v1.types.MetricsScope",
+        "shortName": "get_metrics_scope"
       },
+      "description": "Sample for GetMetricsScope",
       "file": "monitoring_v1_generated_metrics_scopes_get_metrics_scope_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "monitoring_v1_generated_MetricsScopes_GetMetricsScope_async",
       "segments": [
         {
@@ -221,18 +418,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "monitoring_v1_generated_metrics_scopes_get_metrics_scope_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.monitoring_metrics_scope_v1.MetricsScopesClient",
+          "shortName": "MetricsScopesClient"
+        },
+        "fullName": "google.cloud.monitoring_metrics_scope_v1.MetricsScopesClient.get_metrics_scope",
         "method": {
+          "fullName": "google.monitoring.metricsscope.v1.MetricsScopes.GetMetricsScope",
           "service": {
+            "fullName": "google.monitoring.metricsscope.v1.MetricsScopes",
             "shortName": "MetricsScopes"
           },
           "shortName": "GetMetricsScope"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.monitoring_metrics_scope_v1.types.GetMetricsScopeRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.monitoring_metrics_scope_v1.types.MetricsScope",
+        "shortName": "get_metrics_scope"
       },
+      "description": "Sample for GetMetricsScope",
       "file": "monitoring_v1_generated_metrics_scopes_get_metrics_scope_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "monitoring_v1_generated_MetricsScopes_GetMetricsScope_sync",
       "segments": [
         {
@@ -265,19 +498,51 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "monitoring_v1_generated_metrics_scopes_get_metrics_scope_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.monitoring_metrics_scope_v1.MetricsScopesAsyncClient",
+          "shortName": "MetricsScopesAsyncClient"
+        },
+        "fullName": "google.cloud.monitoring_metrics_scope_v1.MetricsScopesAsyncClient.list_metrics_scopes_by_monitored_project",
         "method": {
+          "fullName": "google.monitoring.metricsscope.v1.MetricsScopes.ListMetricsScopesByMonitoredProject",
           "service": {
+            "fullName": "google.monitoring.metricsscope.v1.MetricsScopes",
             "shortName": "MetricsScopes"
           },
           "shortName": "ListMetricsScopesByMonitoredProject"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.monitoring_metrics_scope_v1.types.ListMetricsScopesByMonitoredProjectRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.monitoring_metrics_scope_v1.types.ListMetricsScopesByMonitoredProjectResponse",
+        "shortName": "list_metrics_scopes_by_monitored_project"
       },
+      "description": "Sample for ListMetricsScopesByMonitoredProject",
       "file": "monitoring_v1_generated_metrics_scopes_list_metrics_scopes_by_monitored_project_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "monitoring_v1_generated_MetricsScopes_ListMetricsScopesByMonitoredProject_async",
       "segments": [
         {
@@ -310,18 +575,50 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "monitoring_v1_generated_metrics_scopes_list_metrics_scopes_by_monitored_project_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.monitoring_metrics_scope_v1.MetricsScopesClient",
+          "shortName": "MetricsScopesClient"
+        },
+        "fullName": "google.cloud.monitoring_metrics_scope_v1.MetricsScopesClient.list_metrics_scopes_by_monitored_project",
         "method": {
+          "fullName": "google.monitoring.metricsscope.v1.MetricsScopes.ListMetricsScopesByMonitoredProject",
           "service": {
+            "fullName": "google.monitoring.metricsscope.v1.MetricsScopes",
             "shortName": "MetricsScopes"
           },
           "shortName": "ListMetricsScopesByMonitoredProject"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.monitoring_metrics_scope_v1.types.ListMetricsScopesByMonitoredProjectRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.monitoring_metrics_scope_v1.types.ListMetricsScopesByMonitoredProjectResponse",
+        "shortName": "list_metrics_scopes_by_monitored_project"
       },
+      "description": "Sample for ListMetricsScopesByMonitoredProject",
       "file": "monitoring_v1_generated_metrics_scopes_list_metrics_scopes_by_monitored_project_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "monitoring_v1_generated_MetricsScopes_ListMetricsScopesByMonitoredProject_sync",
       "segments": [
         {
@@ -354,7 +651,8 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "monitoring_v1_generated_metrics_scopes_list_metrics_scopes_by_monitored_project_sync.py"
     }
   ]
 }

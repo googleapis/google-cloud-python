@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -559,7 +559,6 @@ class MetricsScopesClient(metaclass=MetricsScopesClientMeta):
         representing the specified monitored project will always be the
         first entry in the response.
 
-
         .. code-block:: python
 
             from google.cloud import monitoring_metrics_scope_v1
@@ -634,7 +633,6 @@ class MetricsScopesClient(metaclass=MetricsScopesClientMeta):
     ) -> operation.Operation:
         r"""Adds a ``MonitoredProject`` with the given project ID to the
         specified ``Metrics Scope``.
-
 
         .. code-block:: python
 
@@ -761,7 +759,6 @@ class MetricsScopesClient(metaclass=MetricsScopesClientMeta):
     ) -> operation.Operation:
         r"""Deletes a ``MonitoredProject`` from the specified
         ``Metrics Scope``.
-
 
         .. code-block:: python
 
