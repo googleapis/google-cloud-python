@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -242,7 +242,6 @@ class ServiceManagerAsyncClient:
         also returns all services the calling user has
         "servicemanagement.services.get" permission for.
 
-
         .. code-block:: python
 
             from google.cloud import servicemanagement_v1
@@ -357,7 +356,6 @@ class ServiceManagerAsyncClient:
         r"""Gets a managed service. Authentication is required
         unless the service is public.
 
-
         .. code-block:: python
 
             from google.cloud import servicemanagement_v1
@@ -458,7 +456,6 @@ class ServiceManagerAsyncClient:
         project.
 
         Operation<response: ManagedService>
-
 
         .. code-block:: python
 
@@ -568,7 +565,6 @@ class ServiceManagerAsyncClient:
         permanently deleted.
 
         Operation<response: google.protobuf.Empty>
-
 
         .. code-block:: python
 
@@ -691,7 +687,6 @@ class ServiceManagerAsyncClient:
 
         Operation<response: UndeleteServiceResponse>
 
-
         .. code-block:: python
 
             from google.cloud import servicemanagement_v1
@@ -798,7 +793,6 @@ class ServiceManagerAsyncClient:
         r"""Lists the history of the service configuration for a
         managed service, from the newest to the oldest.
 
-
         .. code-block:: python
 
             from google.cloud import servicemanagement_v1
@@ -904,7 +898,6 @@ class ServiceManagerAsyncClient:
     ) -> service_pb2.Service:
         r"""Gets a service configuration (version) for a managed
         service.
-
 
         .. code-block:: python
 
@@ -1044,7 +1037,6 @@ class ServiceManagerAsyncClient:
         referenced by existing rollouts are kept for each service. The
         rest will be deleted eventually.
 
-
         .. code-block:: python
 
             from google.cloud import servicemanagement_v1
@@ -1175,7 +1167,6 @@ class ServiceManagerAsyncClient:
 
         Operation<response: SubmitConfigSourceResponse>
 
-
         .. code-block:: python
 
             from google.cloud import servicemanagement_v1
@@ -1304,7 +1295,6 @@ class ServiceManagerAsyncClient:
         rollouts for a managed service, from the newest to the
         oldest.
 
-
         .. code-block:: python
 
             from google.cloud import servicemanagement_v1
@@ -1427,7 +1417,6 @@ class ServiceManagerAsyncClient:
         r"""Gets a service configuration
         [rollout][google.api.servicemanagement.v1.Rollout].
 
-
         .. code-block:: python
 
             from google.cloud import servicemanagement_v1
@@ -1548,7 +1537,6 @@ class ServiceManagerAsyncClient:
         will be deleted eventually.
 
         Operation<response: Rollout>
-
 
         .. code-block:: python
 
@@ -1676,7 +1664,6 @@ class ServiceManagerAsyncClient:
         GenerateConfigReportRequest.old_value is not specified, this
         method will compare GenerateConfigReportRequest.new_value with
         the last pushed service configuration.
-
 
         .. code-block:: python
 

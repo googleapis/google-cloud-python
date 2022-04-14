@@ -1,16 +1,65 @@
 {
+  "clientLibrary": {
+    "apis": [
+      {
+        "id": "google.api.servicemanagement.v1",
+        "version": "v1"
+      }
+    ],
+    "language": "PYTHON",
+    "name": "google-cloud-service-management"
+  },
   "snippets": [
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.servicemanagement_v1.ServiceManagerAsyncClient",
+          "shortName": "ServiceManagerAsyncClient"
+        },
+        "fullName": "google.cloud.servicemanagement_v1.ServiceManagerAsyncClient.create_service_config",
         "method": {
+          "fullName": "google.api.servicemanagement.v1.ServiceManager.CreateServiceConfig",
           "service": {
+            "fullName": "google.api.servicemanagement.v1.ServiceManager",
             "shortName": "ServiceManager"
           },
           "shortName": "CreateServiceConfig"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.servicemanagement_v1.types.CreateServiceConfigRequest"
+          },
+          {
+            "name": "service_name",
+            "type": "str"
+          },
+          {
+            "name": "service_config",
+            "type": "google.api.service_pb2.Service"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api.service_pb2.Service",
+        "shortName": "create_service_config"
       },
+      "description": "Sample for CreateServiceConfig",
       "file": "servicemanagement_v1_generated_service_manager_create_service_config_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "servicemanagement_v1_generated_ServiceManager_CreateServiceConfig_async",
       "segments": [
         {
@@ -43,18 +92,58 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "servicemanagement_v1_generated_service_manager_create_service_config_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.servicemanagement_v1.ServiceManagerClient",
+          "shortName": "ServiceManagerClient"
+        },
+        "fullName": "google.cloud.servicemanagement_v1.ServiceManagerClient.create_service_config",
         "method": {
+          "fullName": "google.api.servicemanagement.v1.ServiceManager.CreateServiceConfig",
           "service": {
+            "fullName": "google.api.servicemanagement.v1.ServiceManager",
             "shortName": "ServiceManager"
           },
           "shortName": "CreateServiceConfig"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.servicemanagement_v1.types.CreateServiceConfigRequest"
+          },
+          {
+            "name": "service_name",
+            "type": "str"
+          },
+          {
+            "name": "service_config",
+            "type": "google.api.service_pb2.Service"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api.service_pb2.Service",
+        "shortName": "create_service_config"
       },
+      "description": "Sample for CreateServiceConfig",
       "file": "servicemanagement_v1_generated_service_manager_create_service_config_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "servicemanagement_v1_generated_ServiceManager_CreateServiceConfig_sync",
       "segments": [
         {
@@ -87,19 +176,59 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "servicemanagement_v1_generated_service_manager_create_service_config_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.servicemanagement_v1.ServiceManagerAsyncClient",
+          "shortName": "ServiceManagerAsyncClient"
+        },
+        "fullName": "google.cloud.servicemanagement_v1.ServiceManagerAsyncClient.create_service_rollout",
         "method": {
+          "fullName": "google.api.servicemanagement.v1.ServiceManager.CreateServiceRollout",
           "service": {
+            "fullName": "google.api.servicemanagement.v1.ServiceManager",
             "shortName": "ServiceManager"
           },
           "shortName": "CreateServiceRollout"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.servicemanagement_v1.types.CreateServiceRolloutRequest"
+          },
+          {
+            "name": "service_name",
+            "type": "str"
+          },
+          {
+            "name": "rollout",
+            "type": "google.cloud.servicemanagement_v1.types.Rollout"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "create_service_rollout"
       },
+      "description": "Sample for CreateServiceRollout",
       "file": "servicemanagement_v1_generated_service_manager_create_service_rollout_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "servicemanagement_v1_generated_ServiceManager_CreateServiceRollout_async",
       "segments": [
         {
@@ -132,18 +261,58 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "servicemanagement_v1_generated_service_manager_create_service_rollout_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.servicemanagement_v1.ServiceManagerClient",
+          "shortName": "ServiceManagerClient"
+        },
+        "fullName": "google.cloud.servicemanagement_v1.ServiceManagerClient.create_service_rollout",
         "method": {
+          "fullName": "google.api.servicemanagement.v1.ServiceManager.CreateServiceRollout",
           "service": {
+            "fullName": "google.api.servicemanagement.v1.ServiceManager",
             "shortName": "ServiceManager"
           },
           "shortName": "CreateServiceRollout"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.servicemanagement_v1.types.CreateServiceRolloutRequest"
+          },
+          {
+            "name": "service_name",
+            "type": "str"
+          },
+          {
+            "name": "rollout",
+            "type": "google.cloud.servicemanagement_v1.types.Rollout"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "create_service_rollout"
       },
+      "description": "Sample for CreateServiceRollout",
       "file": "servicemanagement_v1_generated_service_manager_create_service_rollout_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "servicemanagement_v1_generated_ServiceManager_CreateServiceRollout_sync",
       "segments": [
         {
@@ -176,19 +345,55 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "servicemanagement_v1_generated_service_manager_create_service_rollout_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.servicemanagement_v1.ServiceManagerAsyncClient",
+          "shortName": "ServiceManagerAsyncClient"
+        },
+        "fullName": "google.cloud.servicemanagement_v1.ServiceManagerAsyncClient.create_service",
         "method": {
+          "fullName": "google.api.servicemanagement.v1.ServiceManager.CreateService",
           "service": {
+            "fullName": "google.api.servicemanagement.v1.ServiceManager",
             "shortName": "ServiceManager"
           },
           "shortName": "CreateService"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.servicemanagement_v1.types.CreateServiceRequest"
+          },
+          {
+            "name": "service",
+            "type": "google.cloud.servicemanagement_v1.types.ManagedService"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "create_service"
       },
+      "description": "Sample for CreateService",
       "file": "servicemanagement_v1_generated_service_manager_create_service_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "servicemanagement_v1_generated_ServiceManager_CreateService_async",
       "segments": [
         {
@@ -221,18 +426,54 @@
           "start": 45,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "servicemanagement_v1_generated_service_manager_create_service_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.servicemanagement_v1.ServiceManagerClient",
+          "shortName": "ServiceManagerClient"
+        },
+        "fullName": "google.cloud.servicemanagement_v1.ServiceManagerClient.create_service",
         "method": {
+          "fullName": "google.api.servicemanagement.v1.ServiceManager.CreateService",
           "service": {
+            "fullName": "google.api.servicemanagement.v1.ServiceManager",
             "shortName": "ServiceManager"
           },
           "shortName": "CreateService"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.servicemanagement_v1.types.CreateServiceRequest"
+          },
+          {
+            "name": "service",
+            "type": "google.cloud.servicemanagement_v1.types.ManagedService"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "create_service"
       },
+      "description": "Sample for CreateService",
       "file": "servicemanagement_v1_generated_service_manager_create_service_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "servicemanagement_v1_generated_ServiceManager_CreateService_sync",
       "segments": [
         {
@@ -265,19 +506,55 @@
           "start": 45,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "servicemanagement_v1_generated_service_manager_create_service_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.servicemanagement_v1.ServiceManagerAsyncClient",
+          "shortName": "ServiceManagerAsyncClient"
+        },
+        "fullName": "google.cloud.servicemanagement_v1.ServiceManagerAsyncClient.delete_service",
         "method": {
+          "fullName": "google.api.servicemanagement.v1.ServiceManager.DeleteService",
           "service": {
+            "fullName": "google.api.servicemanagement.v1.ServiceManager",
             "shortName": "ServiceManager"
           },
           "shortName": "DeleteService"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.servicemanagement_v1.types.DeleteServiceRequest"
+          },
+          {
+            "name": "service_name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "delete_service"
       },
+      "description": "Sample for DeleteService",
       "file": "servicemanagement_v1_generated_service_manager_delete_service_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "servicemanagement_v1_generated_ServiceManager_DeleteService_async",
       "segments": [
         {
@@ -310,18 +587,54 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "servicemanagement_v1_generated_service_manager_delete_service_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.servicemanagement_v1.ServiceManagerClient",
+          "shortName": "ServiceManagerClient"
+        },
+        "fullName": "google.cloud.servicemanagement_v1.ServiceManagerClient.delete_service",
         "method": {
+          "fullName": "google.api.servicemanagement.v1.ServiceManager.DeleteService",
           "service": {
+            "fullName": "google.api.servicemanagement.v1.ServiceManager",
             "shortName": "ServiceManager"
           },
           "shortName": "DeleteService"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.servicemanagement_v1.types.DeleteServiceRequest"
+          },
+          {
+            "name": "service_name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "delete_service"
       },
+      "description": "Sample for DeleteService",
       "file": "servicemanagement_v1_generated_service_manager_delete_service_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "servicemanagement_v1_generated_ServiceManager_DeleteService_sync",
       "segments": [
         {
@@ -354,19 +667,59 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "servicemanagement_v1_generated_service_manager_delete_service_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.servicemanagement_v1.ServiceManagerAsyncClient",
+          "shortName": "ServiceManagerAsyncClient"
+        },
+        "fullName": "google.cloud.servicemanagement_v1.ServiceManagerAsyncClient.generate_config_report",
         "method": {
+          "fullName": "google.api.servicemanagement.v1.ServiceManager.GenerateConfigReport",
           "service": {
+            "fullName": "google.api.servicemanagement.v1.ServiceManager",
             "shortName": "ServiceManager"
           },
           "shortName": "GenerateConfigReport"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.servicemanagement_v1.types.GenerateConfigReportRequest"
+          },
+          {
+            "name": "new_config",
+            "type": "google.protobuf.any_pb2.Any"
+          },
+          {
+            "name": "old_config",
+            "type": "google.protobuf.any_pb2.Any"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.servicemanagement_v1.types.GenerateConfigReportResponse",
+        "shortName": "generate_config_report"
       },
+      "description": "Sample for GenerateConfigReport",
       "file": "servicemanagement_v1_generated_service_manager_generate_config_report_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "servicemanagement_v1_generated_ServiceManager_GenerateConfigReport_async",
       "segments": [
         {
@@ -399,18 +752,58 @@
           "start": 41,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "servicemanagement_v1_generated_service_manager_generate_config_report_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.servicemanagement_v1.ServiceManagerClient",
+          "shortName": "ServiceManagerClient"
+        },
+        "fullName": "google.cloud.servicemanagement_v1.ServiceManagerClient.generate_config_report",
         "method": {
+          "fullName": "google.api.servicemanagement.v1.ServiceManager.GenerateConfigReport",
           "service": {
+            "fullName": "google.api.servicemanagement.v1.ServiceManager",
             "shortName": "ServiceManager"
           },
           "shortName": "GenerateConfigReport"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.servicemanagement_v1.types.GenerateConfigReportRequest"
+          },
+          {
+            "name": "new_config",
+            "type": "google.protobuf.any_pb2.Any"
+          },
+          {
+            "name": "old_config",
+            "type": "google.protobuf.any_pb2.Any"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.servicemanagement_v1.types.GenerateConfigReportResponse",
+        "shortName": "generate_config_report"
       },
+      "description": "Sample for GenerateConfigReport",
       "file": "servicemanagement_v1_generated_service_manager_generate_config_report_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "servicemanagement_v1_generated_ServiceManager_GenerateConfigReport_sync",
       "segments": [
         {
@@ -443,19 +836,63 @@
           "start": 41,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "servicemanagement_v1_generated_service_manager_generate_config_report_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.servicemanagement_v1.ServiceManagerAsyncClient",
+          "shortName": "ServiceManagerAsyncClient"
+        },
+        "fullName": "google.cloud.servicemanagement_v1.ServiceManagerAsyncClient.get_service_config",
         "method": {
+          "fullName": "google.api.servicemanagement.v1.ServiceManager.GetServiceConfig",
           "service": {
+            "fullName": "google.api.servicemanagement.v1.ServiceManager",
             "shortName": "ServiceManager"
           },
           "shortName": "GetServiceConfig"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.servicemanagement_v1.types.GetServiceConfigRequest"
+          },
+          {
+            "name": "service_name",
+            "type": "str"
+          },
+          {
+            "name": "config_id",
+            "type": "str"
+          },
+          {
+            "name": "view",
+            "type": "google.cloud.servicemanagement_v1.types.GetServiceConfigRequest.ConfigView"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api.service_pb2.Service",
+        "shortName": "get_service_config"
       },
+      "description": "Sample for GetServiceConfig",
       "file": "servicemanagement_v1_generated_service_manager_get_service_config_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "servicemanagement_v1_generated_ServiceManager_GetServiceConfig_async",
       "segments": [
         {
@@ -488,18 +925,62 @@
           "start": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "servicemanagement_v1_generated_service_manager_get_service_config_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.servicemanagement_v1.ServiceManagerClient",
+          "shortName": "ServiceManagerClient"
+        },
+        "fullName": "google.cloud.servicemanagement_v1.ServiceManagerClient.get_service_config",
         "method": {
+          "fullName": "google.api.servicemanagement.v1.ServiceManager.GetServiceConfig",
           "service": {
+            "fullName": "google.api.servicemanagement.v1.ServiceManager",
             "shortName": "ServiceManager"
           },
           "shortName": "GetServiceConfig"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.servicemanagement_v1.types.GetServiceConfigRequest"
+          },
+          {
+            "name": "service_name",
+            "type": "str"
+          },
+          {
+            "name": "config_id",
+            "type": "str"
+          },
+          {
+            "name": "view",
+            "type": "google.cloud.servicemanagement_v1.types.GetServiceConfigRequest.ConfigView"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api.service_pb2.Service",
+        "shortName": "get_service_config"
       },
+      "description": "Sample for GetServiceConfig",
       "file": "servicemanagement_v1_generated_service_manager_get_service_config_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "servicemanagement_v1_generated_ServiceManager_GetServiceConfig_sync",
       "segments": [
         {
@@ -532,19 +1013,59 @@
           "start": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "servicemanagement_v1_generated_service_manager_get_service_config_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.servicemanagement_v1.ServiceManagerAsyncClient",
+          "shortName": "ServiceManagerAsyncClient"
+        },
+        "fullName": "google.cloud.servicemanagement_v1.ServiceManagerAsyncClient.get_service_rollout",
         "method": {
+          "fullName": "google.api.servicemanagement.v1.ServiceManager.GetServiceRollout",
           "service": {
+            "fullName": "google.api.servicemanagement.v1.ServiceManager",
             "shortName": "ServiceManager"
           },
           "shortName": "GetServiceRollout"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.servicemanagement_v1.types.GetServiceRolloutRequest"
+          },
+          {
+            "name": "service_name",
+            "type": "str"
+          },
+          {
+            "name": "rollout_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.servicemanagement_v1.types.Rollout",
+        "shortName": "get_service_rollout"
       },
+      "description": "Sample for GetServiceRollout",
       "file": "servicemanagement_v1_generated_service_manager_get_service_rollout_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "servicemanagement_v1_generated_ServiceManager_GetServiceRollout_async",
       "segments": [
         {
@@ -577,18 +1098,58 @@
           "start": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "servicemanagement_v1_generated_service_manager_get_service_rollout_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.servicemanagement_v1.ServiceManagerClient",
+          "shortName": "ServiceManagerClient"
+        },
+        "fullName": "google.cloud.servicemanagement_v1.ServiceManagerClient.get_service_rollout",
         "method": {
+          "fullName": "google.api.servicemanagement.v1.ServiceManager.GetServiceRollout",
           "service": {
+            "fullName": "google.api.servicemanagement.v1.ServiceManager",
             "shortName": "ServiceManager"
           },
           "shortName": "GetServiceRollout"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.servicemanagement_v1.types.GetServiceRolloutRequest"
+          },
+          {
+            "name": "service_name",
+            "type": "str"
+          },
+          {
+            "name": "rollout_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.servicemanagement_v1.types.Rollout",
+        "shortName": "get_service_rollout"
       },
+      "description": "Sample for GetServiceRollout",
       "file": "servicemanagement_v1_generated_service_manager_get_service_rollout_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "servicemanagement_v1_generated_ServiceManager_GetServiceRollout_sync",
       "segments": [
         {
@@ -621,19 +1182,55 @@
           "start": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "servicemanagement_v1_generated_service_manager_get_service_rollout_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.servicemanagement_v1.ServiceManagerAsyncClient",
+          "shortName": "ServiceManagerAsyncClient"
+        },
+        "fullName": "google.cloud.servicemanagement_v1.ServiceManagerAsyncClient.get_service",
         "method": {
+          "fullName": "google.api.servicemanagement.v1.ServiceManager.GetService",
           "service": {
+            "fullName": "google.api.servicemanagement.v1.ServiceManager",
             "shortName": "ServiceManager"
           },
           "shortName": "GetService"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.servicemanagement_v1.types.GetServiceRequest"
+          },
+          {
+            "name": "service_name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.servicemanagement_v1.types.ManagedService",
+        "shortName": "get_service"
       },
+      "description": "Sample for GetService",
       "file": "servicemanagement_v1_generated_service_manager_get_service_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "servicemanagement_v1_generated_ServiceManager_GetService_async",
       "segments": [
         {
@@ -666,18 +1263,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "servicemanagement_v1_generated_service_manager_get_service_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.servicemanagement_v1.ServiceManagerClient",
+          "shortName": "ServiceManagerClient"
+        },
+        "fullName": "google.cloud.servicemanagement_v1.ServiceManagerClient.get_service",
         "method": {
+          "fullName": "google.api.servicemanagement.v1.ServiceManager.GetService",
           "service": {
+            "fullName": "google.api.servicemanagement.v1.ServiceManager",
             "shortName": "ServiceManager"
           },
           "shortName": "GetService"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.servicemanagement_v1.types.GetServiceRequest"
+          },
+          {
+            "name": "service_name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.servicemanagement_v1.types.ManagedService",
+        "shortName": "get_service"
       },
+      "description": "Sample for GetService",
       "file": "servicemanagement_v1_generated_service_manager_get_service_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "servicemanagement_v1_generated_ServiceManager_GetService_sync",
       "segments": [
         {
@@ -710,19 +1343,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "servicemanagement_v1_generated_service_manager_get_service_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.servicemanagement_v1.ServiceManagerAsyncClient",
+          "shortName": "ServiceManagerAsyncClient"
+        },
+        "fullName": "google.cloud.servicemanagement_v1.ServiceManagerAsyncClient.list_service_configs",
         "method": {
+          "fullName": "google.api.servicemanagement.v1.ServiceManager.ListServiceConfigs",
           "service": {
+            "fullName": "google.api.servicemanagement.v1.ServiceManager",
             "shortName": "ServiceManager"
           },
           "shortName": "ListServiceConfigs"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.servicemanagement_v1.types.ListServiceConfigsRequest"
+          },
+          {
+            "name": "service_name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.servicemanagement_v1.services.service_manager.pagers.ListServiceConfigsAsyncPager",
+        "shortName": "list_service_configs"
       },
+      "description": "Sample for ListServiceConfigs",
       "file": "servicemanagement_v1_generated_service_manager_list_service_configs_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "servicemanagement_v1_generated_ServiceManager_ListServiceConfigs_async",
       "segments": [
         {
@@ -755,18 +1424,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "servicemanagement_v1_generated_service_manager_list_service_configs_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.servicemanagement_v1.ServiceManagerClient",
+          "shortName": "ServiceManagerClient"
+        },
+        "fullName": "google.cloud.servicemanagement_v1.ServiceManagerClient.list_service_configs",
         "method": {
+          "fullName": "google.api.servicemanagement.v1.ServiceManager.ListServiceConfigs",
           "service": {
+            "fullName": "google.api.servicemanagement.v1.ServiceManager",
             "shortName": "ServiceManager"
           },
           "shortName": "ListServiceConfigs"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.servicemanagement_v1.types.ListServiceConfigsRequest"
+          },
+          {
+            "name": "service_name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.servicemanagement_v1.services.service_manager.pagers.ListServiceConfigsPager",
+        "shortName": "list_service_configs"
       },
+      "description": "Sample for ListServiceConfigs",
       "file": "servicemanagement_v1_generated_service_manager_list_service_configs_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "servicemanagement_v1_generated_ServiceManager_ListServiceConfigs_sync",
       "segments": [
         {
@@ -799,19 +1504,59 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "servicemanagement_v1_generated_service_manager_list_service_configs_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.servicemanagement_v1.ServiceManagerAsyncClient",
+          "shortName": "ServiceManagerAsyncClient"
+        },
+        "fullName": "google.cloud.servicemanagement_v1.ServiceManagerAsyncClient.list_service_rollouts",
         "method": {
+          "fullName": "google.api.servicemanagement.v1.ServiceManager.ListServiceRollouts",
           "service": {
+            "fullName": "google.api.servicemanagement.v1.ServiceManager",
             "shortName": "ServiceManager"
           },
           "shortName": "ListServiceRollouts"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.servicemanagement_v1.types.ListServiceRolloutsRequest"
+          },
+          {
+            "name": "service_name",
+            "type": "str"
+          },
+          {
+            "name": "filter",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.servicemanagement_v1.services.service_manager.pagers.ListServiceRolloutsAsyncPager",
+        "shortName": "list_service_rollouts"
       },
+      "description": "Sample for ListServiceRollouts",
       "file": "servicemanagement_v1_generated_service_manager_list_service_rollouts_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "servicemanagement_v1_generated_ServiceManager_ListServiceRollouts_async",
       "segments": [
         {
@@ -844,18 +1589,58 @@
           "start": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "servicemanagement_v1_generated_service_manager_list_service_rollouts_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.servicemanagement_v1.ServiceManagerClient",
+          "shortName": "ServiceManagerClient"
+        },
+        "fullName": "google.cloud.servicemanagement_v1.ServiceManagerClient.list_service_rollouts",
         "method": {
+          "fullName": "google.api.servicemanagement.v1.ServiceManager.ListServiceRollouts",
           "service": {
+            "fullName": "google.api.servicemanagement.v1.ServiceManager",
             "shortName": "ServiceManager"
           },
           "shortName": "ListServiceRollouts"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.servicemanagement_v1.types.ListServiceRolloutsRequest"
+          },
+          {
+            "name": "service_name",
+            "type": "str"
+          },
+          {
+            "name": "filter",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.servicemanagement_v1.services.service_manager.pagers.ListServiceRolloutsPager",
+        "shortName": "list_service_rollouts"
       },
+      "description": "Sample for ListServiceRollouts",
       "file": "servicemanagement_v1_generated_service_manager_list_service_rollouts_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "servicemanagement_v1_generated_ServiceManager_ListServiceRollouts_sync",
       "segments": [
         {
@@ -888,19 +1673,59 @@
           "start": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "servicemanagement_v1_generated_service_manager_list_service_rollouts_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.servicemanagement_v1.ServiceManagerAsyncClient",
+          "shortName": "ServiceManagerAsyncClient"
+        },
+        "fullName": "google.cloud.servicemanagement_v1.ServiceManagerAsyncClient.list_services",
         "method": {
+          "fullName": "google.api.servicemanagement.v1.ServiceManager.ListServices",
           "service": {
+            "fullName": "google.api.servicemanagement.v1.ServiceManager",
             "shortName": "ServiceManager"
           },
           "shortName": "ListServices"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.servicemanagement_v1.types.ListServicesRequest"
+          },
+          {
+            "name": "producer_project_id",
+            "type": "str"
+          },
+          {
+            "name": "consumer_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.servicemanagement_v1.services.service_manager.pagers.ListServicesAsyncPager",
+        "shortName": "list_services"
       },
+      "description": "Sample for ListServices",
       "file": "servicemanagement_v1_generated_service_manager_list_services_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "servicemanagement_v1_generated_ServiceManager_ListServices_async",
       "segments": [
         {
@@ -933,18 +1758,58 @@
           "start": 41,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "servicemanagement_v1_generated_service_manager_list_services_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.servicemanagement_v1.ServiceManagerClient",
+          "shortName": "ServiceManagerClient"
+        },
+        "fullName": "google.cloud.servicemanagement_v1.ServiceManagerClient.list_services",
         "method": {
+          "fullName": "google.api.servicemanagement.v1.ServiceManager.ListServices",
           "service": {
+            "fullName": "google.api.servicemanagement.v1.ServiceManager",
             "shortName": "ServiceManager"
           },
           "shortName": "ListServices"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.servicemanagement_v1.types.ListServicesRequest"
+          },
+          {
+            "name": "producer_project_id",
+            "type": "str"
+          },
+          {
+            "name": "consumer_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.servicemanagement_v1.services.service_manager.pagers.ListServicesPager",
+        "shortName": "list_services"
       },
+      "description": "Sample for ListServices",
       "file": "servicemanagement_v1_generated_service_manager_list_services_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "servicemanagement_v1_generated_ServiceManager_ListServices_sync",
       "segments": [
         {
@@ -977,19 +1842,63 @@
           "start": 41,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "servicemanagement_v1_generated_service_manager_list_services_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.servicemanagement_v1.ServiceManagerAsyncClient",
+          "shortName": "ServiceManagerAsyncClient"
+        },
+        "fullName": "google.cloud.servicemanagement_v1.ServiceManagerAsyncClient.submit_config_source",
         "method": {
+          "fullName": "google.api.servicemanagement.v1.ServiceManager.SubmitConfigSource",
           "service": {
+            "fullName": "google.api.servicemanagement.v1.ServiceManager",
             "shortName": "ServiceManager"
           },
           "shortName": "SubmitConfigSource"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.servicemanagement_v1.types.SubmitConfigSourceRequest"
+          },
+          {
+            "name": "service_name",
+            "type": "str"
+          },
+          {
+            "name": "config_source",
+            "type": "google.cloud.servicemanagement_v1.types.ConfigSource"
+          },
+          {
+            "name": "validate_only",
+            "type": "bool"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "submit_config_source"
       },
+      "description": "Sample for SubmitConfigSource",
       "file": "servicemanagement_v1_generated_service_manager_submit_config_source_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "servicemanagement_v1_generated_ServiceManager_SubmitConfigSource_async",
       "segments": [
         {
@@ -1022,18 +1931,62 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "servicemanagement_v1_generated_service_manager_submit_config_source_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.servicemanagement_v1.ServiceManagerClient",
+          "shortName": "ServiceManagerClient"
+        },
+        "fullName": "google.cloud.servicemanagement_v1.ServiceManagerClient.submit_config_source",
         "method": {
+          "fullName": "google.api.servicemanagement.v1.ServiceManager.SubmitConfigSource",
           "service": {
+            "fullName": "google.api.servicemanagement.v1.ServiceManager",
             "shortName": "ServiceManager"
           },
           "shortName": "SubmitConfigSource"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.servicemanagement_v1.types.SubmitConfigSourceRequest"
+          },
+          {
+            "name": "service_name",
+            "type": "str"
+          },
+          {
+            "name": "config_source",
+            "type": "google.cloud.servicemanagement_v1.types.ConfigSource"
+          },
+          {
+            "name": "validate_only",
+            "type": "bool"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "submit_config_source"
       },
+      "description": "Sample for SubmitConfigSource",
       "file": "servicemanagement_v1_generated_service_manager_submit_config_source_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "servicemanagement_v1_generated_ServiceManager_SubmitConfigSource_sync",
       "segments": [
         {
@@ -1066,19 +2019,55 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "servicemanagement_v1_generated_service_manager_submit_config_source_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.servicemanagement_v1.ServiceManagerAsyncClient",
+          "shortName": "ServiceManagerAsyncClient"
+        },
+        "fullName": "google.cloud.servicemanagement_v1.ServiceManagerAsyncClient.undelete_service",
         "method": {
+          "fullName": "google.api.servicemanagement.v1.ServiceManager.UndeleteService",
           "service": {
+            "fullName": "google.api.servicemanagement.v1.ServiceManager",
             "shortName": "ServiceManager"
           },
           "shortName": "UndeleteService"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.servicemanagement_v1.types.UndeleteServiceRequest"
+          },
+          {
+            "name": "service_name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "undelete_service"
       },
+      "description": "Sample for UndeleteService",
       "file": "servicemanagement_v1_generated_service_manager_undelete_service_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "servicemanagement_v1_generated_ServiceManager_UndeleteService_async",
       "segments": [
         {
@@ -1111,18 +2100,54 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "servicemanagement_v1_generated_service_manager_undelete_service_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.servicemanagement_v1.ServiceManagerClient",
+          "shortName": "ServiceManagerClient"
+        },
+        "fullName": "google.cloud.servicemanagement_v1.ServiceManagerClient.undelete_service",
         "method": {
+          "fullName": "google.api.servicemanagement.v1.ServiceManager.UndeleteService",
           "service": {
+            "fullName": "google.api.servicemanagement.v1.ServiceManager",
             "shortName": "ServiceManager"
           },
           "shortName": "UndeleteService"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.servicemanagement_v1.types.UndeleteServiceRequest"
+          },
+          {
+            "name": "service_name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "undelete_service"
       },
+      "description": "Sample for UndeleteService",
       "file": "servicemanagement_v1_generated_service_manager_undelete_service_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "servicemanagement_v1_generated_ServiceManager_UndeleteService_sync",
       "segments": [
         {
@@ -1155,7 +2180,8 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "servicemanagement_v1_generated_service_manager_undelete_service_sync.py"
     }
   ]
 }

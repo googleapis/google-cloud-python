@@ -356,7 +356,7 @@ class Rollout(proto.Message):
             }
 
         Attributes:
-            percentages (Sequence[google.cloud.servicemanagement_v1.types.Rollout.TrafficPercentStrategy.PercentagesEntry]):
+            percentages (Mapping[str, float]):
                 Maps service configuration IDs to their
                 corresponding traffic percentage. Key is the
                 service configuration ID, Value is the traffic
