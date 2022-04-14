@@ -53,7 +53,7 @@ class AuthorizationPolicy(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The timestamp when the resource
             was updated.
-        labels (Sequence[google.cloud.network_security_v1beta1.types.AuthorizationPolicy.LabelsEntry]):
+        labels (Mapping[str, str]):
             Optional. Set of label tags associated with
             the AuthorizationPolicy resource.
         action (google.cloud.network_security_v1beta1.types.AuthorizationPolicy.Action):

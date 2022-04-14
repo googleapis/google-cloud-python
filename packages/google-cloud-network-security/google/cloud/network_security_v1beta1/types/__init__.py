@@ -31,7 +31,9 @@ from .client_tls_policy import (
     ListClientTlsPoliciesResponse,
     UpdateClientTlsPolicyRequest,
 )
-from .common import OperationMetadata
+from .common import (
+    OperationMetadata,
+)
 from .server_tls_policy import (
     CreateServerTlsPolicyRequest,
     DeleteServerTlsPolicyRequest,

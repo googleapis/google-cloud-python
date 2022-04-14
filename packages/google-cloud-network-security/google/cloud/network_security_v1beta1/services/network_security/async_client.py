@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -249,7 +249,6 @@ class NetworkSecurityAsyncClient:
         r"""Lists AuthorizationPolicies in a given project and
         location.
 
-
         .. code-block:: python
 
             from google.cloud import network_security_v1beta1
@@ -465,7 +464,6 @@ class NetworkSecurityAsyncClient:
         r"""Creates a new AuthorizationPolicy in a given project
         and location.
 
-
         .. code-block:: python
 
             from google.cloud import network_security_v1beta1
@@ -611,7 +609,6 @@ class NetworkSecurityAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Updates the parameters of a single
         AuthorizationPolicy.
-
 
         .. code-block:: python
 
@@ -869,7 +866,6 @@ class NetworkSecurityAsyncClient:
         r"""Lists ServerTlsPolicies in a given project and
         location.
 
-
         .. code-block:: python
 
             from google.cloud import network_security_v1beta1
@@ -1082,7 +1078,6 @@ class NetworkSecurityAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Creates a new ServerTlsPolicy in a given project and
         location.
-
 
         .. code-block:: python
 
@@ -1477,7 +1472,6 @@ class NetworkSecurityAsyncClient:
         r"""Lists ClientTlsPolicies in a given project and
         location.
 
-
         .. code-block:: python
 
             from google.cloud import network_security_v1beta1
@@ -1689,7 +1683,6 @@ class NetworkSecurityAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Creates a new ClientTlsPolicy in a given project and
         location.
-
 
         .. code-block:: python
 

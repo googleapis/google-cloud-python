@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -505,7 +505,6 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
         r"""Lists AuthorizationPolicies in a given project and
         location.
 
-
         .. code-block:: python
 
             from google.cloud import network_security_v1beta1
@@ -725,7 +724,6 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
         r"""Creates a new AuthorizationPolicy in a given project
         and location.
 
-
         .. code-block:: python
 
             from google.cloud import network_security_v1beta1
@@ -875,7 +873,6 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
     ) -> operation.Operation:
         r"""Updates the parameters of a single
         AuthorizationPolicy.
-
 
         .. code-block:: python
 
@@ -1141,7 +1138,6 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
         r"""Lists ServerTlsPolicies in a given project and
         location.
 
-
         .. code-block:: python
 
             from google.cloud import network_security_v1beta1
@@ -1354,7 +1350,6 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
     ) -> operation.Operation:
         r"""Creates a new ServerTlsPolicy in a given project and
         location.
-
 
         .. code-block:: python
 
@@ -1749,7 +1744,6 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
         r"""Lists ClientTlsPolicies in a given project and
         location.
 
-
         .. code-block:: python
 
             from google.cloud import network_security_v1beta1
@@ -1961,7 +1955,6 @@ class NetworkSecurityClient(metaclass=NetworkSecurityClientMeta):
     ) -> operation.Operation:
         r"""Creates a new ClientTlsPolicy in a given project and
         location.
-
 
         .. code-block:: python
 

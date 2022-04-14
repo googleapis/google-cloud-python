@@ -1,16 +1,69 @@
 {
+  "clientLibrary": {
+    "apis": [
+      {
+        "id": "google.cloud.networksecurity.v1beta1",
+        "version": "v1beta1"
+      }
+    ],
+    "language": "PYTHON",
+    "name": "google-cloud-network-security"
+  },
   "snippets": [
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.network_security_v1beta1.NetworkSecurityAsyncClient",
+          "shortName": "NetworkSecurityAsyncClient"
+        },
+        "fullName": "google.cloud.network_security_v1beta1.NetworkSecurityAsyncClient.create_authorization_policy",
         "method": {
+          "fullName": "google.cloud.networksecurity.v1beta1.NetworkSecurity.CreateAuthorizationPolicy",
           "service": {
+            "fullName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
             "shortName": "NetworkSecurity"
           },
           "shortName": "CreateAuthorizationPolicy"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_security_v1beta1.types.CreateAuthorizationPolicyRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "authorization_policy",
+            "type": "google.cloud.network_security_v1beta1.types.AuthorizationPolicy"
+          },
+          {
+            "name": "authorization_policy_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "create_authorization_policy"
       },
+      "description": "Sample for CreateAuthorizationPolicy",
       "file": "networksecurity_v1beta1_generated_network_security_create_authorization_policy_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "networksecurity_v1beta1_generated_NetworkSecurity_CreateAuthorizationPolicy_async",
       "segments": [
         {
@@ -43,18 +96,62 @@
           "start": 52,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "networksecurity_v1beta1_generated_network_security_create_authorization_policy_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.network_security_v1beta1.NetworkSecurityClient",
+          "shortName": "NetworkSecurityClient"
+        },
+        "fullName": "google.cloud.network_security_v1beta1.NetworkSecurityClient.create_authorization_policy",
         "method": {
+          "fullName": "google.cloud.networksecurity.v1beta1.NetworkSecurity.CreateAuthorizationPolicy",
           "service": {
+            "fullName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
             "shortName": "NetworkSecurity"
           },
           "shortName": "CreateAuthorizationPolicy"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_security_v1beta1.types.CreateAuthorizationPolicyRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "authorization_policy",
+            "type": "google.cloud.network_security_v1beta1.types.AuthorizationPolicy"
+          },
+          {
+            "name": "authorization_policy_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "create_authorization_policy"
       },
+      "description": "Sample for CreateAuthorizationPolicy",
       "file": "networksecurity_v1beta1_generated_network_security_create_authorization_policy_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "networksecurity_v1beta1_generated_NetworkSecurity_CreateAuthorizationPolicy_sync",
       "segments": [
         {
@@ -87,19 +184,63 @@
           "start": 52,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "networksecurity_v1beta1_generated_network_security_create_authorization_policy_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.network_security_v1beta1.NetworkSecurityAsyncClient",
+          "shortName": "NetworkSecurityAsyncClient"
+        },
+        "fullName": "google.cloud.network_security_v1beta1.NetworkSecurityAsyncClient.create_client_tls_policy",
         "method": {
+          "fullName": "google.cloud.networksecurity.v1beta1.NetworkSecurity.CreateClientTlsPolicy",
           "service": {
+            "fullName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
             "shortName": "NetworkSecurity"
           },
           "shortName": "CreateClientTlsPolicy"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_security_v1beta1.types.CreateClientTlsPolicyRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "client_tls_policy",
+            "type": "google.cloud.network_security_v1beta1.types.ClientTlsPolicy"
+          },
+          {
+            "name": "client_tls_policy_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "create_client_tls_policy"
       },
+      "description": "Sample for CreateClientTlsPolicy",
       "file": "networksecurity_v1beta1_generated_network_security_create_client_tls_policy_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "networksecurity_v1beta1_generated_NetworkSecurity_CreateClientTlsPolicy_async",
       "segments": [
         {
@@ -132,18 +273,62 @@
           "start": 51,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "networksecurity_v1beta1_generated_network_security_create_client_tls_policy_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.network_security_v1beta1.NetworkSecurityClient",
+          "shortName": "NetworkSecurityClient"
+        },
+        "fullName": "google.cloud.network_security_v1beta1.NetworkSecurityClient.create_client_tls_policy",
         "method": {
+          "fullName": "google.cloud.networksecurity.v1beta1.NetworkSecurity.CreateClientTlsPolicy",
           "service": {
+            "fullName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
             "shortName": "NetworkSecurity"
           },
           "shortName": "CreateClientTlsPolicy"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_security_v1beta1.types.CreateClientTlsPolicyRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "client_tls_policy",
+            "type": "google.cloud.network_security_v1beta1.types.ClientTlsPolicy"
+          },
+          {
+            "name": "client_tls_policy_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "create_client_tls_policy"
       },
+      "description": "Sample for CreateClientTlsPolicy",
       "file": "networksecurity_v1beta1_generated_network_security_create_client_tls_policy_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "networksecurity_v1beta1_generated_NetworkSecurity_CreateClientTlsPolicy_sync",
       "segments": [
         {
@@ -176,19 +361,63 @@
           "start": 51,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "networksecurity_v1beta1_generated_network_security_create_client_tls_policy_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.network_security_v1beta1.NetworkSecurityAsyncClient",
+          "shortName": "NetworkSecurityAsyncClient"
+        },
+        "fullName": "google.cloud.network_security_v1beta1.NetworkSecurityAsyncClient.create_server_tls_policy",
         "method": {
+          "fullName": "google.cloud.networksecurity.v1beta1.NetworkSecurity.CreateServerTlsPolicy",
           "service": {
+            "fullName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
             "shortName": "NetworkSecurity"
           },
           "shortName": "CreateServerTlsPolicy"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_security_v1beta1.types.CreateServerTlsPolicyRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "server_tls_policy",
+            "type": "google.cloud.network_security_v1beta1.types.ServerTlsPolicy"
+          },
+          {
+            "name": "server_tls_policy_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "create_server_tls_policy"
       },
+      "description": "Sample for CreateServerTlsPolicy",
       "file": "networksecurity_v1beta1_generated_network_security_create_server_tls_policy_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "networksecurity_v1beta1_generated_NetworkSecurity_CreateServerTlsPolicy_async",
       "segments": [
         {
@@ -221,18 +450,62 @@
           "start": 51,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "networksecurity_v1beta1_generated_network_security_create_server_tls_policy_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.network_security_v1beta1.NetworkSecurityClient",
+          "shortName": "NetworkSecurityClient"
+        },
+        "fullName": "google.cloud.network_security_v1beta1.NetworkSecurityClient.create_server_tls_policy",
         "method": {
+          "fullName": "google.cloud.networksecurity.v1beta1.NetworkSecurity.CreateServerTlsPolicy",
           "service": {
+            "fullName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
             "shortName": "NetworkSecurity"
           },
           "shortName": "CreateServerTlsPolicy"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_security_v1beta1.types.CreateServerTlsPolicyRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "server_tls_policy",
+            "type": "google.cloud.network_security_v1beta1.types.ServerTlsPolicy"
+          },
+          {
+            "name": "server_tls_policy_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "create_server_tls_policy"
       },
+      "description": "Sample for CreateServerTlsPolicy",
       "file": "networksecurity_v1beta1_generated_network_security_create_server_tls_policy_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "networksecurity_v1beta1_generated_NetworkSecurity_CreateServerTlsPolicy_sync",
       "segments": [
         {
@@ -265,19 +538,55 @@
           "start": 51,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "networksecurity_v1beta1_generated_network_security_create_server_tls_policy_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.network_security_v1beta1.NetworkSecurityAsyncClient",
+          "shortName": "NetworkSecurityAsyncClient"
+        },
+        "fullName": "google.cloud.network_security_v1beta1.NetworkSecurityAsyncClient.delete_authorization_policy",
         "method": {
+          "fullName": "google.cloud.networksecurity.v1beta1.NetworkSecurity.DeleteAuthorizationPolicy",
           "service": {
+            "fullName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
             "shortName": "NetworkSecurity"
           },
           "shortName": "DeleteAuthorizationPolicy"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_security_v1beta1.types.DeleteAuthorizationPolicyRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "delete_authorization_policy"
       },
+      "description": "Sample for DeleteAuthorizationPolicy",
       "file": "networksecurity_v1beta1_generated_network_security_delete_authorization_policy_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "networksecurity_v1beta1_generated_NetworkSecurity_DeleteAuthorizationPolicy_async",
       "segments": [
         {
@@ -310,18 +619,54 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "networksecurity_v1beta1_generated_network_security_delete_authorization_policy_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.network_security_v1beta1.NetworkSecurityClient",
+          "shortName": "NetworkSecurityClient"
+        },
+        "fullName": "google.cloud.network_security_v1beta1.NetworkSecurityClient.delete_authorization_policy",
         "method": {
+          "fullName": "google.cloud.networksecurity.v1beta1.NetworkSecurity.DeleteAuthorizationPolicy",
           "service": {
+            "fullName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
             "shortName": "NetworkSecurity"
           },
           "shortName": "DeleteAuthorizationPolicy"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_security_v1beta1.types.DeleteAuthorizationPolicyRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "delete_authorization_policy"
       },
+      "description": "Sample for DeleteAuthorizationPolicy",
       "file": "networksecurity_v1beta1_generated_network_security_delete_authorization_policy_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "networksecurity_v1beta1_generated_NetworkSecurity_DeleteAuthorizationPolicy_sync",
       "segments": [
         {
@@ -354,19 +699,55 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "networksecurity_v1beta1_generated_network_security_delete_authorization_policy_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.network_security_v1beta1.NetworkSecurityAsyncClient",
+          "shortName": "NetworkSecurityAsyncClient"
+        },
+        "fullName": "google.cloud.network_security_v1beta1.NetworkSecurityAsyncClient.delete_client_tls_policy",
         "method": {
+          "fullName": "google.cloud.networksecurity.v1beta1.NetworkSecurity.DeleteClientTlsPolicy",
           "service": {
+            "fullName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
             "shortName": "NetworkSecurity"
           },
           "shortName": "DeleteClientTlsPolicy"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_security_v1beta1.types.DeleteClientTlsPolicyRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "delete_client_tls_policy"
       },
+      "description": "Sample for DeleteClientTlsPolicy",
       "file": "networksecurity_v1beta1_generated_network_security_delete_client_tls_policy_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "networksecurity_v1beta1_generated_NetworkSecurity_DeleteClientTlsPolicy_async",
       "segments": [
         {
@@ -399,18 +780,54 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "networksecurity_v1beta1_generated_network_security_delete_client_tls_policy_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.network_security_v1beta1.NetworkSecurityClient",
+          "shortName": "NetworkSecurityClient"
+        },
+        "fullName": "google.cloud.network_security_v1beta1.NetworkSecurityClient.delete_client_tls_policy",
         "method": {
+          "fullName": "google.cloud.networksecurity.v1beta1.NetworkSecurity.DeleteClientTlsPolicy",
           "service": {
+            "fullName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
             "shortName": "NetworkSecurity"
           },
           "shortName": "DeleteClientTlsPolicy"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_security_v1beta1.types.DeleteClientTlsPolicyRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "delete_client_tls_policy"
       },
+      "description": "Sample for DeleteClientTlsPolicy",
       "file": "networksecurity_v1beta1_generated_network_security_delete_client_tls_policy_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "networksecurity_v1beta1_generated_NetworkSecurity_DeleteClientTlsPolicy_sync",
       "segments": [
         {
@@ -443,19 +860,55 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "networksecurity_v1beta1_generated_network_security_delete_client_tls_policy_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.network_security_v1beta1.NetworkSecurityAsyncClient",
+          "shortName": "NetworkSecurityAsyncClient"
+        },
+        "fullName": "google.cloud.network_security_v1beta1.NetworkSecurityAsyncClient.delete_server_tls_policy",
         "method": {
+          "fullName": "google.cloud.networksecurity.v1beta1.NetworkSecurity.DeleteServerTlsPolicy",
           "service": {
+            "fullName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
             "shortName": "NetworkSecurity"
           },
           "shortName": "DeleteServerTlsPolicy"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_security_v1beta1.types.DeleteServerTlsPolicyRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "delete_server_tls_policy"
       },
+      "description": "Sample for DeleteServerTlsPolicy",
       "file": "networksecurity_v1beta1_generated_network_security_delete_server_tls_policy_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "networksecurity_v1beta1_generated_NetworkSecurity_DeleteServerTlsPolicy_async",
       "segments": [
         {
@@ -488,18 +941,54 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "networksecurity_v1beta1_generated_network_security_delete_server_tls_policy_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.network_security_v1beta1.NetworkSecurityClient",
+          "shortName": "NetworkSecurityClient"
+        },
+        "fullName": "google.cloud.network_security_v1beta1.NetworkSecurityClient.delete_server_tls_policy",
         "method": {
+          "fullName": "google.cloud.networksecurity.v1beta1.NetworkSecurity.DeleteServerTlsPolicy",
           "service": {
+            "fullName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
             "shortName": "NetworkSecurity"
           },
           "shortName": "DeleteServerTlsPolicy"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_security_v1beta1.types.DeleteServerTlsPolicyRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "delete_server_tls_policy"
       },
+      "description": "Sample for DeleteServerTlsPolicy",
       "file": "networksecurity_v1beta1_generated_network_security_delete_server_tls_policy_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "networksecurity_v1beta1_generated_NetworkSecurity_DeleteServerTlsPolicy_sync",
       "segments": [
         {
@@ -532,19 +1021,55 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "networksecurity_v1beta1_generated_network_security_delete_server_tls_policy_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.network_security_v1beta1.NetworkSecurityAsyncClient",
+          "shortName": "NetworkSecurityAsyncClient"
+        },
+        "fullName": "google.cloud.network_security_v1beta1.NetworkSecurityAsyncClient.get_authorization_policy",
         "method": {
+          "fullName": "google.cloud.networksecurity.v1beta1.NetworkSecurity.GetAuthorizationPolicy",
           "service": {
+            "fullName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
             "shortName": "NetworkSecurity"
           },
           "shortName": "GetAuthorizationPolicy"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_security_v1beta1.types.GetAuthorizationPolicyRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.network_security_v1beta1.types.AuthorizationPolicy",
+        "shortName": "get_authorization_policy"
       },
+      "description": "Sample for GetAuthorizationPolicy",
       "file": "networksecurity_v1beta1_generated_network_security_get_authorization_policy_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "networksecurity_v1beta1_generated_NetworkSecurity_GetAuthorizationPolicy_async",
       "segments": [
         {
@@ -577,18 +1102,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "networksecurity_v1beta1_generated_network_security_get_authorization_policy_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.network_security_v1beta1.NetworkSecurityClient",
+          "shortName": "NetworkSecurityClient"
+        },
+        "fullName": "google.cloud.network_security_v1beta1.NetworkSecurityClient.get_authorization_policy",
         "method": {
+          "fullName": "google.cloud.networksecurity.v1beta1.NetworkSecurity.GetAuthorizationPolicy",
           "service": {
+            "fullName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
             "shortName": "NetworkSecurity"
           },
           "shortName": "GetAuthorizationPolicy"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_security_v1beta1.types.GetAuthorizationPolicyRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.network_security_v1beta1.types.AuthorizationPolicy",
+        "shortName": "get_authorization_policy"
       },
+      "description": "Sample for GetAuthorizationPolicy",
       "file": "networksecurity_v1beta1_generated_network_security_get_authorization_policy_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "networksecurity_v1beta1_generated_NetworkSecurity_GetAuthorizationPolicy_sync",
       "segments": [
         {
@@ -621,19 +1182,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "networksecurity_v1beta1_generated_network_security_get_authorization_policy_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.network_security_v1beta1.NetworkSecurityAsyncClient",
+          "shortName": "NetworkSecurityAsyncClient"
+        },
+        "fullName": "google.cloud.network_security_v1beta1.NetworkSecurityAsyncClient.get_client_tls_policy",
         "method": {
+          "fullName": "google.cloud.networksecurity.v1beta1.NetworkSecurity.GetClientTlsPolicy",
           "service": {
+            "fullName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
             "shortName": "NetworkSecurity"
           },
           "shortName": "GetClientTlsPolicy"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_security_v1beta1.types.GetClientTlsPolicyRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.network_security_v1beta1.types.ClientTlsPolicy",
+        "shortName": "get_client_tls_policy"
       },
+      "description": "Sample for GetClientTlsPolicy",
       "file": "networksecurity_v1beta1_generated_network_security_get_client_tls_policy_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "networksecurity_v1beta1_generated_NetworkSecurity_GetClientTlsPolicy_async",
       "segments": [
         {
@@ -666,18 +1263,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "networksecurity_v1beta1_generated_network_security_get_client_tls_policy_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.network_security_v1beta1.NetworkSecurityClient",
+          "shortName": "NetworkSecurityClient"
+        },
+        "fullName": "google.cloud.network_security_v1beta1.NetworkSecurityClient.get_client_tls_policy",
         "method": {
+          "fullName": "google.cloud.networksecurity.v1beta1.NetworkSecurity.GetClientTlsPolicy",
           "service": {
+            "fullName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
             "shortName": "NetworkSecurity"
           },
           "shortName": "GetClientTlsPolicy"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_security_v1beta1.types.GetClientTlsPolicyRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.network_security_v1beta1.types.ClientTlsPolicy",
+        "shortName": "get_client_tls_policy"
       },
+      "description": "Sample for GetClientTlsPolicy",
       "file": "networksecurity_v1beta1_generated_network_security_get_client_tls_policy_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "networksecurity_v1beta1_generated_NetworkSecurity_GetClientTlsPolicy_sync",
       "segments": [
         {
@@ -710,19 +1343,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "networksecurity_v1beta1_generated_network_security_get_client_tls_policy_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.network_security_v1beta1.NetworkSecurityAsyncClient",
+          "shortName": "NetworkSecurityAsyncClient"
+        },
+        "fullName": "google.cloud.network_security_v1beta1.NetworkSecurityAsyncClient.get_server_tls_policy",
         "method": {
+          "fullName": "google.cloud.networksecurity.v1beta1.NetworkSecurity.GetServerTlsPolicy",
           "service": {
+            "fullName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
             "shortName": "NetworkSecurity"
           },
           "shortName": "GetServerTlsPolicy"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_security_v1beta1.types.GetServerTlsPolicyRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.network_security_v1beta1.types.ServerTlsPolicy",
+        "shortName": "get_server_tls_policy"
       },
+      "description": "Sample for GetServerTlsPolicy",
       "file": "networksecurity_v1beta1_generated_network_security_get_server_tls_policy_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "networksecurity_v1beta1_generated_NetworkSecurity_GetServerTlsPolicy_async",
       "segments": [
         {
@@ -755,18 +1424,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "networksecurity_v1beta1_generated_network_security_get_server_tls_policy_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.network_security_v1beta1.NetworkSecurityClient",
+          "shortName": "NetworkSecurityClient"
+        },
+        "fullName": "google.cloud.network_security_v1beta1.NetworkSecurityClient.get_server_tls_policy",
         "method": {
+          "fullName": "google.cloud.networksecurity.v1beta1.NetworkSecurity.GetServerTlsPolicy",
           "service": {
+            "fullName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
             "shortName": "NetworkSecurity"
           },
           "shortName": "GetServerTlsPolicy"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_security_v1beta1.types.GetServerTlsPolicyRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.network_security_v1beta1.types.ServerTlsPolicy",
+        "shortName": "get_server_tls_policy"
       },
+      "description": "Sample for GetServerTlsPolicy",
       "file": "networksecurity_v1beta1_generated_network_security_get_server_tls_policy_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "networksecurity_v1beta1_generated_NetworkSecurity_GetServerTlsPolicy_sync",
       "segments": [
         {
@@ -799,19 +1504,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "networksecurity_v1beta1_generated_network_security_get_server_tls_policy_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.network_security_v1beta1.NetworkSecurityAsyncClient",
+          "shortName": "NetworkSecurityAsyncClient"
+        },
+        "fullName": "google.cloud.network_security_v1beta1.NetworkSecurityAsyncClient.list_authorization_policies",
         "method": {
+          "fullName": "google.cloud.networksecurity.v1beta1.NetworkSecurity.ListAuthorizationPolicies",
           "service": {
+            "fullName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
             "shortName": "NetworkSecurity"
           },
           "shortName": "ListAuthorizationPolicies"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_security_v1beta1.types.ListAuthorizationPoliciesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.network_security_v1beta1.services.network_security.pagers.ListAuthorizationPoliciesAsyncPager",
+        "shortName": "list_authorization_policies"
       },
+      "description": "Sample for ListAuthorizationPolicies",
       "file": "networksecurity_v1beta1_generated_network_security_list_authorization_policies_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "networksecurity_v1beta1_generated_NetworkSecurity_ListAuthorizationPolicies_async",
       "segments": [
         {
@@ -844,18 +1585,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "networksecurity_v1beta1_generated_network_security_list_authorization_policies_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.network_security_v1beta1.NetworkSecurityClient",
+          "shortName": "NetworkSecurityClient"
+        },
+        "fullName": "google.cloud.network_security_v1beta1.NetworkSecurityClient.list_authorization_policies",
         "method": {
+          "fullName": "google.cloud.networksecurity.v1beta1.NetworkSecurity.ListAuthorizationPolicies",
           "service": {
+            "fullName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
             "shortName": "NetworkSecurity"
           },
           "shortName": "ListAuthorizationPolicies"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_security_v1beta1.types.ListAuthorizationPoliciesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.network_security_v1beta1.services.network_security.pagers.ListAuthorizationPoliciesPager",
+        "shortName": "list_authorization_policies"
       },
+      "description": "Sample for ListAuthorizationPolicies",
       "file": "networksecurity_v1beta1_generated_network_security_list_authorization_policies_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "networksecurity_v1beta1_generated_NetworkSecurity_ListAuthorizationPolicies_sync",
       "segments": [
         {
@@ -888,19 +1665,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "networksecurity_v1beta1_generated_network_security_list_authorization_policies_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.network_security_v1beta1.NetworkSecurityAsyncClient",
+          "shortName": "NetworkSecurityAsyncClient"
+        },
+        "fullName": "google.cloud.network_security_v1beta1.NetworkSecurityAsyncClient.list_client_tls_policies",
         "method": {
+          "fullName": "google.cloud.networksecurity.v1beta1.NetworkSecurity.ListClientTlsPolicies",
           "service": {
+            "fullName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
             "shortName": "NetworkSecurity"
           },
           "shortName": "ListClientTlsPolicies"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_security_v1beta1.types.ListClientTlsPoliciesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.network_security_v1beta1.services.network_security.pagers.ListClientTlsPoliciesAsyncPager",
+        "shortName": "list_client_tls_policies"
       },
+      "description": "Sample for ListClientTlsPolicies",
       "file": "networksecurity_v1beta1_generated_network_security_list_client_tls_policies_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "networksecurity_v1beta1_generated_NetworkSecurity_ListClientTlsPolicies_async",
       "segments": [
         {
@@ -933,18 +1746,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "networksecurity_v1beta1_generated_network_security_list_client_tls_policies_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.network_security_v1beta1.NetworkSecurityClient",
+          "shortName": "NetworkSecurityClient"
+        },
+        "fullName": "google.cloud.network_security_v1beta1.NetworkSecurityClient.list_client_tls_policies",
         "method": {
+          "fullName": "google.cloud.networksecurity.v1beta1.NetworkSecurity.ListClientTlsPolicies",
           "service": {
+            "fullName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
             "shortName": "NetworkSecurity"
           },
           "shortName": "ListClientTlsPolicies"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_security_v1beta1.types.ListClientTlsPoliciesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.network_security_v1beta1.services.network_security.pagers.ListClientTlsPoliciesPager",
+        "shortName": "list_client_tls_policies"
       },
+      "description": "Sample for ListClientTlsPolicies",
       "file": "networksecurity_v1beta1_generated_network_security_list_client_tls_policies_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "networksecurity_v1beta1_generated_NetworkSecurity_ListClientTlsPolicies_sync",
       "segments": [
         {
@@ -977,19 +1826,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "networksecurity_v1beta1_generated_network_security_list_client_tls_policies_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.network_security_v1beta1.NetworkSecurityAsyncClient",
+          "shortName": "NetworkSecurityAsyncClient"
+        },
+        "fullName": "google.cloud.network_security_v1beta1.NetworkSecurityAsyncClient.list_server_tls_policies",
         "method": {
+          "fullName": "google.cloud.networksecurity.v1beta1.NetworkSecurity.ListServerTlsPolicies",
           "service": {
+            "fullName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
             "shortName": "NetworkSecurity"
           },
           "shortName": "ListServerTlsPolicies"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_security_v1beta1.types.ListServerTlsPoliciesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.network_security_v1beta1.services.network_security.pagers.ListServerTlsPoliciesAsyncPager",
+        "shortName": "list_server_tls_policies"
       },
+      "description": "Sample for ListServerTlsPolicies",
       "file": "networksecurity_v1beta1_generated_network_security_list_server_tls_policies_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "networksecurity_v1beta1_generated_NetworkSecurity_ListServerTlsPolicies_async",
       "segments": [
         {
@@ -1022,18 +1907,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "networksecurity_v1beta1_generated_network_security_list_server_tls_policies_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.network_security_v1beta1.NetworkSecurityClient",
+          "shortName": "NetworkSecurityClient"
+        },
+        "fullName": "google.cloud.network_security_v1beta1.NetworkSecurityClient.list_server_tls_policies",
         "method": {
+          "fullName": "google.cloud.networksecurity.v1beta1.NetworkSecurity.ListServerTlsPolicies",
           "service": {
+            "fullName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
             "shortName": "NetworkSecurity"
           },
           "shortName": "ListServerTlsPolicies"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_security_v1beta1.types.ListServerTlsPoliciesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.network_security_v1beta1.services.network_security.pagers.ListServerTlsPoliciesPager",
+        "shortName": "list_server_tls_policies"
       },
+      "description": "Sample for ListServerTlsPolicies",
       "file": "networksecurity_v1beta1_generated_network_security_list_server_tls_policies_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "networksecurity_v1beta1_generated_NetworkSecurity_ListServerTlsPolicies_sync",
       "segments": [
         {
@@ -1066,19 +1987,59 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "networksecurity_v1beta1_generated_network_security_list_server_tls_policies_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.network_security_v1beta1.NetworkSecurityAsyncClient",
+          "shortName": "NetworkSecurityAsyncClient"
+        },
+        "fullName": "google.cloud.network_security_v1beta1.NetworkSecurityAsyncClient.update_authorization_policy",
         "method": {
+          "fullName": "google.cloud.networksecurity.v1beta1.NetworkSecurity.UpdateAuthorizationPolicy",
           "service": {
+            "fullName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
             "shortName": "NetworkSecurity"
           },
           "shortName": "UpdateAuthorizationPolicy"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_security_v1beta1.types.UpdateAuthorizationPolicyRequest"
+          },
+          {
+            "name": "authorization_policy",
+            "type": "google.cloud.network_security_v1beta1.types.AuthorizationPolicy"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "update_authorization_policy"
       },
+      "description": "Sample for UpdateAuthorizationPolicy",
       "file": "networksecurity_v1beta1_generated_network_security_update_authorization_policy_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "networksecurity_v1beta1_generated_NetworkSecurity_UpdateAuthorizationPolicy_async",
       "segments": [
         {
@@ -1111,18 +2072,58 @@
           "start": 50,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "networksecurity_v1beta1_generated_network_security_update_authorization_policy_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.network_security_v1beta1.NetworkSecurityClient",
+          "shortName": "NetworkSecurityClient"
+        },
+        "fullName": "google.cloud.network_security_v1beta1.NetworkSecurityClient.update_authorization_policy",
         "method": {
+          "fullName": "google.cloud.networksecurity.v1beta1.NetworkSecurity.UpdateAuthorizationPolicy",
           "service": {
+            "fullName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
             "shortName": "NetworkSecurity"
           },
           "shortName": "UpdateAuthorizationPolicy"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_security_v1beta1.types.UpdateAuthorizationPolicyRequest"
+          },
+          {
+            "name": "authorization_policy",
+            "type": "google.cloud.network_security_v1beta1.types.AuthorizationPolicy"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "update_authorization_policy"
       },
+      "description": "Sample for UpdateAuthorizationPolicy",
       "file": "networksecurity_v1beta1_generated_network_security_update_authorization_policy_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "networksecurity_v1beta1_generated_NetworkSecurity_UpdateAuthorizationPolicy_sync",
       "segments": [
         {
@@ -1155,19 +2156,59 @@
           "start": 50,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "networksecurity_v1beta1_generated_network_security_update_authorization_policy_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.network_security_v1beta1.NetworkSecurityAsyncClient",
+          "shortName": "NetworkSecurityAsyncClient"
+        },
+        "fullName": "google.cloud.network_security_v1beta1.NetworkSecurityAsyncClient.update_client_tls_policy",
         "method": {
+          "fullName": "google.cloud.networksecurity.v1beta1.NetworkSecurity.UpdateClientTlsPolicy",
           "service": {
+            "fullName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
             "shortName": "NetworkSecurity"
           },
           "shortName": "UpdateClientTlsPolicy"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_security_v1beta1.types.UpdateClientTlsPolicyRequest"
+          },
+          {
+            "name": "client_tls_policy",
+            "type": "google.cloud.network_security_v1beta1.types.ClientTlsPolicy"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "update_client_tls_policy"
       },
+      "description": "Sample for UpdateClientTlsPolicy",
       "file": "networksecurity_v1beta1_generated_network_security_update_client_tls_policy_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "networksecurity_v1beta1_generated_NetworkSecurity_UpdateClientTlsPolicy_async",
       "segments": [
         {
@@ -1200,18 +2241,58 @@
           "start": 49,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "networksecurity_v1beta1_generated_network_security_update_client_tls_policy_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.network_security_v1beta1.NetworkSecurityClient",
+          "shortName": "NetworkSecurityClient"
+        },
+        "fullName": "google.cloud.network_security_v1beta1.NetworkSecurityClient.update_client_tls_policy",
         "method": {
+          "fullName": "google.cloud.networksecurity.v1beta1.NetworkSecurity.UpdateClientTlsPolicy",
           "service": {
+            "fullName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
             "shortName": "NetworkSecurity"
           },
           "shortName": "UpdateClientTlsPolicy"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_security_v1beta1.types.UpdateClientTlsPolicyRequest"
+          },
+          {
+            "name": "client_tls_policy",
+            "type": "google.cloud.network_security_v1beta1.types.ClientTlsPolicy"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "update_client_tls_policy"
       },
+      "description": "Sample for UpdateClientTlsPolicy",
       "file": "networksecurity_v1beta1_generated_network_security_update_client_tls_policy_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "networksecurity_v1beta1_generated_NetworkSecurity_UpdateClientTlsPolicy_sync",
       "segments": [
         {
@@ -1244,19 +2325,59 @@
           "start": 49,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "networksecurity_v1beta1_generated_network_security_update_client_tls_policy_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.network_security_v1beta1.NetworkSecurityAsyncClient",
+          "shortName": "NetworkSecurityAsyncClient"
+        },
+        "fullName": "google.cloud.network_security_v1beta1.NetworkSecurityAsyncClient.update_server_tls_policy",
         "method": {
+          "fullName": "google.cloud.networksecurity.v1beta1.NetworkSecurity.UpdateServerTlsPolicy",
           "service": {
+            "fullName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
             "shortName": "NetworkSecurity"
           },
           "shortName": "UpdateServerTlsPolicy"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_security_v1beta1.types.UpdateServerTlsPolicyRequest"
+          },
+          {
+            "name": "server_tls_policy",
+            "type": "google.cloud.network_security_v1beta1.types.ServerTlsPolicy"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "update_server_tls_policy"
       },
+      "description": "Sample for UpdateServerTlsPolicy",
       "file": "networksecurity_v1beta1_generated_network_security_update_server_tls_policy_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "networksecurity_v1beta1_generated_NetworkSecurity_UpdateServerTlsPolicy_async",
       "segments": [
         {
@@ -1289,18 +2410,58 @@
           "start": 49,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "networksecurity_v1beta1_generated_network_security_update_server_tls_policy_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.network_security_v1beta1.NetworkSecurityClient",
+          "shortName": "NetworkSecurityClient"
+        },
+        "fullName": "google.cloud.network_security_v1beta1.NetworkSecurityClient.update_server_tls_policy",
         "method": {
+          "fullName": "google.cloud.networksecurity.v1beta1.NetworkSecurity.UpdateServerTlsPolicy",
           "service": {
+            "fullName": "google.cloud.networksecurity.v1beta1.NetworkSecurity",
             "shortName": "NetworkSecurity"
           },
           "shortName": "UpdateServerTlsPolicy"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_security_v1beta1.types.UpdateServerTlsPolicyRequest"
+          },
+          {
+            "name": "server_tls_policy",
+            "type": "google.cloud.network_security_v1beta1.types.ServerTlsPolicy"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "update_server_tls_policy"
       },
+      "description": "Sample for UpdateServerTlsPolicy",
       "file": "networksecurity_v1beta1_generated_network_security_update_server_tls_policy_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "networksecurity_v1beta1_generated_NetworkSecurity_UpdateServerTlsPolicy_sync",
       "segments": [
         {
@@ -1333,7 +2494,8 @@
           "start": 49,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "networksecurity_v1beta1_generated_network_security_update_server_tls_policy_sync.py"
     }
   ]
 }
