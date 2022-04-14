@@ -1,16 +1,69 @@
 {
+  "clientLibrary": {
+    "apis": [
+      {
+        "id": "google.cloud.datastream.v1alpha1",
+        "version": "v1alpha1"
+      }
+    ],
+    "language": "PYTHON",
+    "name": "google-cloud-datastream"
+  },
   "snippets": [
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.datastream_v1alpha1.DatastreamAsyncClient",
+          "shortName": "DatastreamAsyncClient"
+        },
+        "fullName": "google.cloud.datastream_v1alpha1.DatastreamAsyncClient.create_connection_profile",
         "method": {
+          "fullName": "google.cloud.datastream.v1alpha1.Datastream.CreateConnectionProfile",
           "service": {
+            "fullName": "google.cloud.datastream.v1alpha1.Datastream",
             "shortName": "Datastream"
           },
           "shortName": "CreateConnectionProfile"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.datastream_v1alpha1.types.CreateConnectionProfileRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "connection_profile",
+            "type": "google.cloud.datastream_v1alpha1.types.ConnectionProfile"
+          },
+          {
+            "name": "connection_profile_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "create_connection_profile"
       },
+      "description": "Sample for CreateConnectionProfile",
       "file": "datastream_v1alpha1_generated_datastream_create_connection_profile_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "datastream_v1alpha1_generated_Datastream_CreateConnectionProfile_async",
       "segments": [
         {
@@ -43,18 +96,62 @@
           "start": 55,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "datastream_v1alpha1_generated_datastream_create_connection_profile_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.datastream_v1alpha1.DatastreamClient",
+          "shortName": "DatastreamClient"
+        },
+        "fullName": "google.cloud.datastream_v1alpha1.DatastreamClient.create_connection_profile",
         "method": {
+          "fullName": "google.cloud.datastream.v1alpha1.Datastream.CreateConnectionProfile",
           "service": {
+            "fullName": "google.cloud.datastream.v1alpha1.Datastream",
             "shortName": "Datastream"
           },
           "shortName": "CreateConnectionProfile"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.datastream_v1alpha1.types.CreateConnectionProfileRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "connection_profile",
+            "type": "google.cloud.datastream_v1alpha1.types.ConnectionProfile"
+          },
+          {
+            "name": "connection_profile_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "create_connection_profile"
       },
+      "description": "Sample for CreateConnectionProfile",
       "file": "datastream_v1alpha1_generated_datastream_create_connection_profile_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "datastream_v1alpha1_generated_Datastream_CreateConnectionProfile_sync",
       "segments": [
         {
@@ -87,19 +184,63 @@
           "start": 55,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "datastream_v1alpha1_generated_datastream_create_connection_profile_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.datastream_v1alpha1.DatastreamAsyncClient",
+          "shortName": "DatastreamAsyncClient"
+        },
+        "fullName": "google.cloud.datastream_v1alpha1.DatastreamAsyncClient.create_private_connection",
         "method": {
+          "fullName": "google.cloud.datastream.v1alpha1.Datastream.CreatePrivateConnection",
           "service": {
+            "fullName": "google.cloud.datastream.v1alpha1.Datastream",
             "shortName": "Datastream"
           },
           "shortName": "CreatePrivateConnection"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.datastream_v1alpha1.types.CreatePrivateConnectionRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "private_connection",
+            "type": "google.cloud.datastream_v1alpha1.types.PrivateConnection"
+          },
+          {
+            "name": "private_connection_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "create_private_connection"
       },
+      "description": "Sample for CreatePrivateConnection",
       "file": "datastream_v1alpha1_generated_datastream_create_private_connection_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "datastream_v1alpha1_generated_Datastream_CreatePrivateConnection_async",
       "segments": [
         {
@@ -132,18 +273,62 @@
           "start": 51,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "datastream_v1alpha1_generated_datastream_create_private_connection_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.datastream_v1alpha1.DatastreamClient",
+          "shortName": "DatastreamClient"
+        },
+        "fullName": "google.cloud.datastream_v1alpha1.DatastreamClient.create_private_connection",
         "method": {
+          "fullName": "google.cloud.datastream.v1alpha1.Datastream.CreatePrivateConnection",
           "service": {
+            "fullName": "google.cloud.datastream.v1alpha1.Datastream",
             "shortName": "Datastream"
           },
           "shortName": "CreatePrivateConnection"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.datastream_v1alpha1.types.CreatePrivateConnectionRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "private_connection",
+            "type": "google.cloud.datastream_v1alpha1.types.PrivateConnection"
+          },
+          {
+            "name": "private_connection_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "create_private_connection"
       },
+      "description": "Sample for CreatePrivateConnection",
       "file": "datastream_v1alpha1_generated_datastream_create_private_connection_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "datastream_v1alpha1_generated_Datastream_CreatePrivateConnection_sync",
       "segments": [
         {
@@ -176,19 +361,63 @@
           "start": 51,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "datastream_v1alpha1_generated_datastream_create_private_connection_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.datastream_v1alpha1.DatastreamAsyncClient",
+          "shortName": "DatastreamAsyncClient"
+        },
+        "fullName": "google.cloud.datastream_v1alpha1.DatastreamAsyncClient.create_route",
         "method": {
+          "fullName": "google.cloud.datastream.v1alpha1.Datastream.CreateRoute",
           "service": {
+            "fullName": "google.cloud.datastream.v1alpha1.Datastream",
             "shortName": "Datastream"
           },
           "shortName": "CreateRoute"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.datastream_v1alpha1.types.CreateRouteRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "route",
+            "type": "google.cloud.datastream_v1alpha1.types.Route"
+          },
+          {
+            "name": "route_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "create_route"
       },
+      "description": "Sample for CreateRoute",
       "file": "datastream_v1alpha1_generated_datastream_create_route_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "datastream_v1alpha1_generated_Datastream_CreateRoute_async",
       "segments": [
         {
@@ -221,18 +450,62 @@
           "start": 52,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "datastream_v1alpha1_generated_datastream_create_route_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.datastream_v1alpha1.DatastreamClient",
+          "shortName": "DatastreamClient"
+        },
+        "fullName": "google.cloud.datastream_v1alpha1.DatastreamClient.create_route",
         "method": {
+          "fullName": "google.cloud.datastream.v1alpha1.Datastream.CreateRoute",
           "service": {
+            "fullName": "google.cloud.datastream.v1alpha1.Datastream",
             "shortName": "Datastream"
           },
           "shortName": "CreateRoute"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.datastream_v1alpha1.types.CreateRouteRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "route",
+            "type": "google.cloud.datastream_v1alpha1.types.Route"
+          },
+          {
+            "name": "route_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "create_route"
       },
+      "description": "Sample for CreateRoute",
       "file": "datastream_v1alpha1_generated_datastream_create_route_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "datastream_v1alpha1_generated_Datastream_CreateRoute_sync",
       "segments": [
         {
@@ -265,19 +538,63 @@
           "start": 52,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "datastream_v1alpha1_generated_datastream_create_route_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.datastream_v1alpha1.DatastreamAsyncClient",
+          "shortName": "DatastreamAsyncClient"
+        },
+        "fullName": "google.cloud.datastream_v1alpha1.DatastreamAsyncClient.create_stream",
         "method": {
+          "fullName": "google.cloud.datastream.v1alpha1.Datastream.CreateStream",
           "service": {
+            "fullName": "google.cloud.datastream.v1alpha1.Datastream",
             "shortName": "Datastream"
           },
           "shortName": "CreateStream"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.datastream_v1alpha1.types.CreateStreamRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "stream",
+            "type": "google.cloud.datastream_v1alpha1.types.Stream"
+          },
+          {
+            "name": "stream_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "create_stream"
       },
+      "description": "Sample for CreateStream",
       "file": "datastream_v1alpha1_generated_datastream_create_stream_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "datastream_v1alpha1_generated_Datastream_CreateStream_async",
       "segments": [
         {
@@ -310,18 +627,62 @@
           "start": 53,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "datastream_v1alpha1_generated_datastream_create_stream_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.datastream_v1alpha1.DatastreamClient",
+          "shortName": "DatastreamClient"
+        },
+        "fullName": "google.cloud.datastream_v1alpha1.DatastreamClient.create_stream",
         "method": {
+          "fullName": "google.cloud.datastream.v1alpha1.Datastream.CreateStream",
           "service": {
+            "fullName": "google.cloud.datastream.v1alpha1.Datastream",
             "shortName": "Datastream"
           },
           "shortName": "CreateStream"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.datastream_v1alpha1.types.CreateStreamRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "stream",
+            "type": "google.cloud.datastream_v1alpha1.types.Stream"
+          },
+          {
+            "name": "stream_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "create_stream"
       },
+      "description": "Sample for CreateStream",
       "file": "datastream_v1alpha1_generated_datastream_create_stream_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "datastream_v1alpha1_generated_Datastream_CreateStream_sync",
       "segments": [
         {
@@ -354,19 +715,55 @@
           "start": 53,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "datastream_v1alpha1_generated_datastream_create_stream_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.datastream_v1alpha1.DatastreamAsyncClient",
+          "shortName": "DatastreamAsyncClient"
+        },
+        "fullName": "google.cloud.datastream_v1alpha1.DatastreamAsyncClient.delete_connection_profile",
         "method": {
+          "fullName": "google.cloud.datastream.v1alpha1.Datastream.DeleteConnectionProfile",
           "service": {
+            "fullName": "google.cloud.datastream.v1alpha1.Datastream",
             "shortName": "Datastream"
           },
           "shortName": "DeleteConnectionProfile"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.datastream_v1alpha1.types.DeleteConnectionProfileRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "delete_connection_profile"
       },
+      "description": "Sample for DeleteConnectionProfile",
       "file": "datastream_v1alpha1_generated_datastream_delete_connection_profile_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "datastream_v1alpha1_generated_Datastream_DeleteConnectionProfile_async",
       "segments": [
         {
@@ -399,18 +796,54 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "datastream_v1alpha1_generated_datastream_delete_connection_profile_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.datastream_v1alpha1.DatastreamClient",
+          "shortName": "DatastreamClient"
+        },
+        "fullName": "google.cloud.datastream_v1alpha1.DatastreamClient.delete_connection_profile",
         "method": {
+          "fullName": "google.cloud.datastream.v1alpha1.Datastream.DeleteConnectionProfile",
           "service": {
+            "fullName": "google.cloud.datastream.v1alpha1.Datastream",
             "shortName": "Datastream"
           },
           "shortName": "DeleteConnectionProfile"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.datastream_v1alpha1.types.DeleteConnectionProfileRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "delete_connection_profile"
       },
+      "description": "Sample for DeleteConnectionProfile",
       "file": "datastream_v1alpha1_generated_datastream_delete_connection_profile_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "datastream_v1alpha1_generated_Datastream_DeleteConnectionProfile_sync",
       "segments": [
         {
@@ -443,19 +876,55 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "datastream_v1alpha1_generated_datastream_delete_connection_profile_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.datastream_v1alpha1.DatastreamAsyncClient",
+          "shortName": "DatastreamAsyncClient"
+        },
+        "fullName": "google.cloud.datastream_v1alpha1.DatastreamAsyncClient.delete_private_connection",
         "method": {
+          "fullName": "google.cloud.datastream.v1alpha1.Datastream.DeletePrivateConnection",
           "service": {
+            "fullName": "google.cloud.datastream.v1alpha1.Datastream",
             "shortName": "Datastream"
           },
           "shortName": "DeletePrivateConnection"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.datastream_v1alpha1.types.DeletePrivateConnectionRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "delete_private_connection"
       },
+      "description": "Sample for DeletePrivateConnection",
       "file": "datastream_v1alpha1_generated_datastream_delete_private_connection_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "datastream_v1alpha1_generated_Datastream_DeletePrivateConnection_async",
       "segments": [
         {
@@ -488,18 +957,54 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "datastream_v1alpha1_generated_datastream_delete_private_connection_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.datastream_v1alpha1.DatastreamClient",
+          "shortName": "DatastreamClient"
+        },
+        "fullName": "google.cloud.datastream_v1alpha1.DatastreamClient.delete_private_connection",
         "method": {
+          "fullName": "google.cloud.datastream.v1alpha1.Datastream.DeletePrivateConnection",
           "service": {
+            "fullName": "google.cloud.datastream.v1alpha1.Datastream",
             "shortName": "Datastream"
           },
           "shortName": "DeletePrivateConnection"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.datastream_v1alpha1.types.DeletePrivateConnectionRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "delete_private_connection"
       },
+      "description": "Sample for DeletePrivateConnection",
       "file": "datastream_v1alpha1_generated_datastream_delete_private_connection_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "datastream_v1alpha1_generated_Datastream_DeletePrivateConnection_sync",
       "segments": [
         {
@@ -532,19 +1037,55 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "datastream_v1alpha1_generated_datastream_delete_private_connection_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.datastream_v1alpha1.DatastreamAsyncClient",
+          "shortName": "DatastreamAsyncClient"
+        },
+        "fullName": "google.cloud.datastream_v1alpha1.DatastreamAsyncClient.delete_route",
         "method": {
+          "fullName": "google.cloud.datastream.v1alpha1.Datastream.DeleteRoute",
           "service": {
+            "fullName": "google.cloud.datastream.v1alpha1.Datastream",
             "shortName": "Datastream"
           },
           "shortName": "DeleteRoute"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.datastream_v1alpha1.types.DeleteRouteRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "delete_route"
       },
+      "description": "Sample for DeleteRoute",
       "file": "datastream_v1alpha1_generated_datastream_delete_route_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "datastream_v1alpha1_generated_Datastream_DeleteRoute_async",
       "segments": [
         {
@@ -577,18 +1118,54 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "datastream_v1alpha1_generated_datastream_delete_route_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.datastream_v1alpha1.DatastreamClient",
+          "shortName": "DatastreamClient"
+        },
+        "fullName": "google.cloud.datastream_v1alpha1.DatastreamClient.delete_route",
         "method": {
+          "fullName": "google.cloud.datastream.v1alpha1.Datastream.DeleteRoute",
           "service": {
+            "fullName": "google.cloud.datastream.v1alpha1.Datastream",
             "shortName": "Datastream"
           },
           "shortName": "DeleteRoute"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.datastream_v1alpha1.types.DeleteRouteRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "delete_route"
       },
+      "description": "Sample for DeleteRoute",
       "file": "datastream_v1alpha1_generated_datastream_delete_route_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "datastream_v1alpha1_generated_Datastream_DeleteRoute_sync",
       "segments": [
         {
@@ -621,19 +1198,55 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "datastream_v1alpha1_generated_datastream_delete_route_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.datastream_v1alpha1.DatastreamAsyncClient",
+          "shortName": "DatastreamAsyncClient"
+        },
+        "fullName": "google.cloud.datastream_v1alpha1.DatastreamAsyncClient.delete_stream",
         "method": {
+          "fullName": "google.cloud.datastream.v1alpha1.Datastream.DeleteStream",
           "service": {
+            "fullName": "google.cloud.datastream.v1alpha1.Datastream",
             "shortName": "Datastream"
           },
           "shortName": "DeleteStream"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.datastream_v1alpha1.types.DeleteStreamRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "delete_stream"
       },
+      "description": "Sample for DeleteStream",
       "file": "datastream_v1alpha1_generated_datastream_delete_stream_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "datastream_v1alpha1_generated_Datastream_DeleteStream_async",
       "segments": [
         {
@@ -666,18 +1279,54 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "datastream_v1alpha1_generated_datastream_delete_stream_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.datastream_v1alpha1.DatastreamClient",
+          "shortName": "DatastreamClient"
+        },
+        "fullName": "google.cloud.datastream_v1alpha1.DatastreamClient.delete_stream",
         "method": {
+          "fullName": "google.cloud.datastream.v1alpha1.Datastream.DeleteStream",
           "service": {
+            "fullName": "google.cloud.datastream.v1alpha1.Datastream",
             "shortName": "Datastream"
           },
           "shortName": "DeleteStream"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.datastream_v1alpha1.types.DeleteStreamRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "delete_stream"
       },
+      "description": "Sample for DeleteStream",
       "file": "datastream_v1alpha1_generated_datastream_delete_stream_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "datastream_v1alpha1_generated_Datastream_DeleteStream_sync",
       "segments": [
         {
@@ -710,19 +1359,51 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "datastream_v1alpha1_generated_datastream_delete_stream_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.datastream_v1alpha1.DatastreamAsyncClient",
+          "shortName": "DatastreamAsyncClient"
+        },
+        "fullName": "google.cloud.datastream_v1alpha1.DatastreamAsyncClient.discover_connection_profile",
         "method": {
+          "fullName": "google.cloud.datastream.v1alpha1.Datastream.DiscoverConnectionProfile",
           "service": {
+            "fullName": "google.cloud.datastream.v1alpha1.Datastream",
             "shortName": "Datastream"
           },
           "shortName": "DiscoverConnectionProfile"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.datastream_v1alpha1.types.DiscoverConnectionProfileRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.datastream_v1alpha1.types.DiscoverConnectionProfileResponse",
+        "shortName": "discover_connection_profile"
       },
+      "description": "Sample for DiscoverConnectionProfile",
       "file": "datastream_v1alpha1_generated_datastream_discover_connection_profile_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "datastream_v1alpha1_generated_Datastream_DiscoverConnectionProfile_async",
       "segments": [
         {
@@ -755,18 +1436,50 @@
           "start": 51,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "datastream_v1alpha1_generated_datastream_discover_connection_profile_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.datastream_v1alpha1.DatastreamClient",
+          "shortName": "DatastreamClient"
+        },
+        "fullName": "google.cloud.datastream_v1alpha1.DatastreamClient.discover_connection_profile",
         "method": {
+          "fullName": "google.cloud.datastream.v1alpha1.Datastream.DiscoverConnectionProfile",
           "service": {
+            "fullName": "google.cloud.datastream.v1alpha1.Datastream",
             "shortName": "Datastream"
           },
           "shortName": "DiscoverConnectionProfile"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.datastream_v1alpha1.types.DiscoverConnectionProfileRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.datastream_v1alpha1.types.DiscoverConnectionProfileResponse",
+        "shortName": "discover_connection_profile"
       },
+      "description": "Sample for DiscoverConnectionProfile",
       "file": "datastream_v1alpha1_generated_datastream_discover_connection_profile_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "datastream_v1alpha1_generated_Datastream_DiscoverConnectionProfile_sync",
       "segments": [
         {
@@ -799,19 +1512,51 @@
           "start": 51,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "datastream_v1alpha1_generated_datastream_discover_connection_profile_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.datastream_v1alpha1.DatastreamAsyncClient",
+          "shortName": "DatastreamAsyncClient"
+        },
+        "fullName": "google.cloud.datastream_v1alpha1.DatastreamAsyncClient.fetch_errors",
         "method": {
+          "fullName": "google.cloud.datastream.v1alpha1.Datastream.FetchErrors",
           "service": {
+            "fullName": "google.cloud.datastream.v1alpha1.Datastream",
             "shortName": "Datastream"
           },
           "shortName": "FetchErrors"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.datastream_v1alpha1.types.FetchErrorsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "fetch_errors"
       },
+      "description": "Sample for FetchErrors",
       "file": "datastream_v1alpha1_generated_datastream_fetch_errors_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "datastream_v1alpha1_generated_Datastream_FetchErrors_async",
       "segments": [
         {
@@ -844,18 +1589,50 @@
           "start": 45,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "datastream_v1alpha1_generated_datastream_fetch_errors_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.datastream_v1alpha1.DatastreamClient",
+          "shortName": "DatastreamClient"
+        },
+        "fullName": "google.cloud.datastream_v1alpha1.DatastreamClient.fetch_errors",
         "method": {
+          "fullName": "google.cloud.datastream.v1alpha1.Datastream.FetchErrors",
           "service": {
+            "fullName": "google.cloud.datastream.v1alpha1.Datastream",
             "shortName": "Datastream"
           },
           "shortName": "FetchErrors"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.datastream_v1alpha1.types.FetchErrorsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "fetch_errors"
       },
+      "description": "Sample for FetchErrors",
       "file": "datastream_v1alpha1_generated_datastream_fetch_errors_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "datastream_v1alpha1_generated_Datastream_FetchErrors_sync",
       "segments": [
         {
@@ -888,19 +1665,55 @@
           "start": 45,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "datastream_v1alpha1_generated_datastream_fetch_errors_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.datastream_v1alpha1.DatastreamAsyncClient",
+          "shortName": "DatastreamAsyncClient"
+        },
+        "fullName": "google.cloud.datastream_v1alpha1.DatastreamAsyncClient.fetch_static_ips",
         "method": {
+          "fullName": "google.cloud.datastream.v1alpha1.Datastream.FetchStaticIps",
           "service": {
+            "fullName": "google.cloud.datastream.v1alpha1.Datastream",
             "shortName": "Datastream"
           },
           "shortName": "FetchStaticIps"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.datastream_v1alpha1.types.FetchStaticIpsRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.datastream_v1alpha1.services.datastream.pagers.FetchStaticIpsAsyncPager",
+        "shortName": "fetch_static_ips"
       },
+      "description": "Sample for FetchStaticIps",
       "file": "datastream_v1alpha1_generated_datastream_fetch_static_ips_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "datastream_v1alpha1_generated_Datastream_FetchStaticIps_async",
       "segments": [
         {
@@ -933,18 +1746,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "datastream_v1alpha1_generated_datastream_fetch_static_ips_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.datastream_v1alpha1.DatastreamClient",
+          "shortName": "DatastreamClient"
+        },
+        "fullName": "google.cloud.datastream_v1alpha1.DatastreamClient.fetch_static_ips",
         "method": {
+          "fullName": "google.cloud.datastream.v1alpha1.Datastream.FetchStaticIps",
           "service": {
+            "fullName": "google.cloud.datastream.v1alpha1.Datastream",
             "shortName": "Datastream"
           },
           "shortName": "FetchStaticIps"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.datastream_v1alpha1.types.FetchStaticIpsRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.datastream_v1alpha1.services.datastream.pagers.FetchStaticIpsPager",
+        "shortName": "fetch_static_ips"
       },
+      "description": "Sample for FetchStaticIps",
       "file": "datastream_v1alpha1_generated_datastream_fetch_static_ips_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "datastream_v1alpha1_generated_Datastream_FetchStaticIps_sync",
       "segments": [
         {
@@ -977,19 +1826,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "datastream_v1alpha1_generated_datastream_fetch_static_ips_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.datastream_v1alpha1.DatastreamAsyncClient",
+          "shortName": "DatastreamAsyncClient"
+        },
+        "fullName": "google.cloud.datastream_v1alpha1.DatastreamAsyncClient.get_connection_profile",
         "method": {
+          "fullName": "google.cloud.datastream.v1alpha1.Datastream.GetConnectionProfile",
           "service": {
+            "fullName": "google.cloud.datastream.v1alpha1.Datastream",
             "shortName": "Datastream"
           },
           "shortName": "GetConnectionProfile"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.datastream_v1alpha1.types.GetConnectionProfileRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.datastream_v1alpha1.types.ConnectionProfile",
+        "shortName": "get_connection_profile"
       },
+      "description": "Sample for GetConnectionProfile",
       "file": "datastream_v1alpha1_generated_datastream_get_connection_profile_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "datastream_v1alpha1_generated_Datastream_GetConnectionProfile_async",
       "segments": [
         {
@@ -1022,18 +1907,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "datastream_v1alpha1_generated_datastream_get_connection_profile_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.datastream_v1alpha1.DatastreamClient",
+          "shortName": "DatastreamClient"
+        },
+        "fullName": "google.cloud.datastream_v1alpha1.DatastreamClient.get_connection_profile",
         "method": {
+          "fullName": "google.cloud.datastream.v1alpha1.Datastream.GetConnectionProfile",
           "service": {
+            "fullName": "google.cloud.datastream.v1alpha1.Datastream",
             "shortName": "Datastream"
           },
           "shortName": "GetConnectionProfile"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.datastream_v1alpha1.types.GetConnectionProfileRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.datastream_v1alpha1.types.ConnectionProfile",
+        "shortName": "get_connection_profile"
       },
+      "description": "Sample for GetConnectionProfile",
       "file": "datastream_v1alpha1_generated_datastream_get_connection_profile_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "datastream_v1alpha1_generated_Datastream_GetConnectionProfile_sync",
       "segments": [
         {
@@ -1066,19 +1987,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "datastream_v1alpha1_generated_datastream_get_connection_profile_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.datastream_v1alpha1.DatastreamAsyncClient",
+          "shortName": "DatastreamAsyncClient"
+        },
+        "fullName": "google.cloud.datastream_v1alpha1.DatastreamAsyncClient.get_private_connection",
         "method": {
+          "fullName": "google.cloud.datastream.v1alpha1.Datastream.GetPrivateConnection",
           "service": {
+            "fullName": "google.cloud.datastream.v1alpha1.Datastream",
             "shortName": "Datastream"
           },
           "shortName": "GetPrivateConnection"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.datastream_v1alpha1.types.GetPrivateConnectionRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.datastream_v1alpha1.types.PrivateConnection",
+        "shortName": "get_private_connection"
       },
+      "description": "Sample for GetPrivateConnection",
       "file": "datastream_v1alpha1_generated_datastream_get_private_connection_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "datastream_v1alpha1_generated_Datastream_GetPrivateConnection_async",
       "segments": [
         {
@@ -1111,18 +2068,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "datastream_v1alpha1_generated_datastream_get_private_connection_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.datastream_v1alpha1.DatastreamClient",
+          "shortName": "DatastreamClient"
+        },
+        "fullName": "google.cloud.datastream_v1alpha1.DatastreamClient.get_private_connection",
         "method": {
+          "fullName": "google.cloud.datastream.v1alpha1.Datastream.GetPrivateConnection",
           "service": {
+            "fullName": "google.cloud.datastream.v1alpha1.Datastream",
             "shortName": "Datastream"
           },
           "shortName": "GetPrivateConnection"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.datastream_v1alpha1.types.GetPrivateConnectionRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.datastream_v1alpha1.types.PrivateConnection",
+        "shortName": "get_private_connection"
       },
+      "description": "Sample for GetPrivateConnection",
       "file": "datastream_v1alpha1_generated_datastream_get_private_connection_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "datastream_v1alpha1_generated_Datastream_GetPrivateConnection_sync",
       "segments": [
         {
@@ -1155,19 +2148,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "datastream_v1alpha1_generated_datastream_get_private_connection_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.datastream_v1alpha1.DatastreamAsyncClient",
+          "shortName": "DatastreamAsyncClient"
+        },
+        "fullName": "google.cloud.datastream_v1alpha1.DatastreamAsyncClient.get_route",
         "method": {
+          "fullName": "google.cloud.datastream.v1alpha1.Datastream.GetRoute",
           "service": {
+            "fullName": "google.cloud.datastream.v1alpha1.Datastream",
             "shortName": "Datastream"
           },
           "shortName": "GetRoute"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.datastream_v1alpha1.types.GetRouteRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.datastream_v1alpha1.types.Route",
+        "shortName": "get_route"
       },
+      "description": "Sample for GetRoute",
       "file": "datastream_v1alpha1_generated_datastream_get_route_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "datastream_v1alpha1_generated_Datastream_GetRoute_async",
       "segments": [
         {
@@ -1200,18 +2229,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "datastream_v1alpha1_generated_datastream_get_route_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.datastream_v1alpha1.DatastreamClient",
+          "shortName": "DatastreamClient"
+        },
+        "fullName": "google.cloud.datastream_v1alpha1.DatastreamClient.get_route",
         "method": {
+          "fullName": "google.cloud.datastream.v1alpha1.Datastream.GetRoute",
           "service": {
+            "fullName": "google.cloud.datastream.v1alpha1.Datastream",
             "shortName": "Datastream"
           },
           "shortName": "GetRoute"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.datastream_v1alpha1.types.GetRouteRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.datastream_v1alpha1.types.Route",
+        "shortName": "get_route"
       },
+      "description": "Sample for GetRoute",
       "file": "datastream_v1alpha1_generated_datastream_get_route_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "datastream_v1alpha1_generated_Datastream_GetRoute_sync",
       "segments": [
         {
@@ -1244,19 +2309,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "datastream_v1alpha1_generated_datastream_get_route_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.datastream_v1alpha1.DatastreamAsyncClient",
+          "shortName": "DatastreamAsyncClient"
+        },
+        "fullName": "google.cloud.datastream_v1alpha1.DatastreamAsyncClient.get_stream",
         "method": {
+          "fullName": "google.cloud.datastream.v1alpha1.Datastream.GetStream",
           "service": {
+            "fullName": "google.cloud.datastream.v1alpha1.Datastream",
             "shortName": "Datastream"
           },
           "shortName": "GetStream"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.datastream_v1alpha1.types.GetStreamRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.datastream_v1alpha1.types.Stream",
+        "shortName": "get_stream"
       },
+      "description": "Sample for GetStream",
       "file": "datastream_v1alpha1_generated_datastream_get_stream_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "datastream_v1alpha1_generated_Datastream_GetStream_async",
       "segments": [
         {
@@ -1289,18 +2390,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "datastream_v1alpha1_generated_datastream_get_stream_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.datastream_v1alpha1.DatastreamClient",
+          "shortName": "DatastreamClient"
+        },
+        "fullName": "google.cloud.datastream_v1alpha1.DatastreamClient.get_stream",
         "method": {
+          "fullName": "google.cloud.datastream.v1alpha1.Datastream.GetStream",
           "service": {
+            "fullName": "google.cloud.datastream.v1alpha1.Datastream",
             "shortName": "Datastream"
           },
           "shortName": "GetStream"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.datastream_v1alpha1.types.GetStreamRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.datastream_v1alpha1.types.Stream",
+        "shortName": "get_stream"
       },
+      "description": "Sample for GetStream",
       "file": "datastream_v1alpha1_generated_datastream_get_stream_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "datastream_v1alpha1_generated_Datastream_GetStream_sync",
       "segments": [
         {
@@ -1333,19 +2470,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "datastream_v1alpha1_generated_datastream_get_stream_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.datastream_v1alpha1.DatastreamAsyncClient",
+          "shortName": "DatastreamAsyncClient"
+        },
+        "fullName": "google.cloud.datastream_v1alpha1.DatastreamAsyncClient.list_connection_profiles",
         "method": {
+          "fullName": "google.cloud.datastream.v1alpha1.Datastream.ListConnectionProfiles",
           "service": {
+            "fullName": "google.cloud.datastream.v1alpha1.Datastream",
             "shortName": "Datastream"
           },
           "shortName": "ListConnectionProfiles"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.datastream_v1alpha1.types.ListConnectionProfilesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.datastream_v1alpha1.services.datastream.pagers.ListConnectionProfilesAsyncPager",
+        "shortName": "list_connection_profiles"
       },
+      "description": "Sample for ListConnectionProfiles",
       "file": "datastream_v1alpha1_generated_datastream_list_connection_profiles_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "datastream_v1alpha1_generated_Datastream_ListConnectionProfiles_async",
       "segments": [
         {
@@ -1378,18 +2551,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "datastream_v1alpha1_generated_datastream_list_connection_profiles_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.datastream_v1alpha1.DatastreamClient",
+          "shortName": "DatastreamClient"
+        },
+        "fullName": "google.cloud.datastream_v1alpha1.DatastreamClient.list_connection_profiles",
         "method": {
+          "fullName": "google.cloud.datastream.v1alpha1.Datastream.ListConnectionProfiles",
           "service": {
+            "fullName": "google.cloud.datastream.v1alpha1.Datastream",
             "shortName": "Datastream"
           },
           "shortName": "ListConnectionProfiles"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.datastream_v1alpha1.types.ListConnectionProfilesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.datastream_v1alpha1.services.datastream.pagers.ListConnectionProfilesPager",
+        "shortName": "list_connection_profiles"
       },
+      "description": "Sample for ListConnectionProfiles",
       "file": "datastream_v1alpha1_generated_datastream_list_connection_profiles_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "datastream_v1alpha1_generated_Datastream_ListConnectionProfiles_sync",
       "segments": [
         {
@@ -1422,19 +2631,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "datastream_v1alpha1_generated_datastream_list_connection_profiles_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.datastream_v1alpha1.DatastreamAsyncClient",
+          "shortName": "DatastreamAsyncClient"
+        },
+        "fullName": "google.cloud.datastream_v1alpha1.DatastreamAsyncClient.list_private_connections",
         "method": {
+          "fullName": "google.cloud.datastream.v1alpha1.Datastream.ListPrivateConnections",
           "service": {
+            "fullName": "google.cloud.datastream.v1alpha1.Datastream",
             "shortName": "Datastream"
           },
           "shortName": "ListPrivateConnections"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.datastream_v1alpha1.types.ListPrivateConnectionsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.datastream_v1alpha1.services.datastream.pagers.ListPrivateConnectionsAsyncPager",
+        "shortName": "list_private_connections"
       },
+      "description": "Sample for ListPrivateConnections",
       "file": "datastream_v1alpha1_generated_datastream_list_private_connections_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "datastream_v1alpha1_generated_Datastream_ListPrivateConnections_async",
       "segments": [
         {
@@ -1467,18 +2712,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "datastream_v1alpha1_generated_datastream_list_private_connections_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.datastream_v1alpha1.DatastreamClient",
+          "shortName": "DatastreamClient"
+        },
+        "fullName": "google.cloud.datastream_v1alpha1.DatastreamClient.list_private_connections",
         "method": {
+          "fullName": "google.cloud.datastream.v1alpha1.Datastream.ListPrivateConnections",
           "service": {
+            "fullName": "google.cloud.datastream.v1alpha1.Datastream",
             "shortName": "Datastream"
           },
           "shortName": "ListPrivateConnections"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.datastream_v1alpha1.types.ListPrivateConnectionsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.datastream_v1alpha1.services.datastream.pagers.ListPrivateConnectionsPager",
+        "shortName": "list_private_connections"
       },
+      "description": "Sample for ListPrivateConnections",
       "file": "datastream_v1alpha1_generated_datastream_list_private_connections_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "datastream_v1alpha1_generated_Datastream_ListPrivateConnections_sync",
       "segments": [
         {
@@ -1511,19 +2792,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "datastream_v1alpha1_generated_datastream_list_private_connections_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.datastream_v1alpha1.DatastreamAsyncClient",
+          "shortName": "DatastreamAsyncClient"
+        },
+        "fullName": "google.cloud.datastream_v1alpha1.DatastreamAsyncClient.list_routes",
         "method": {
+          "fullName": "google.cloud.datastream.v1alpha1.Datastream.ListRoutes",
           "service": {
+            "fullName": "google.cloud.datastream.v1alpha1.Datastream",
             "shortName": "Datastream"
           },
           "shortName": "ListRoutes"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.datastream_v1alpha1.types.ListRoutesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.datastream_v1alpha1.services.datastream.pagers.ListRoutesAsyncPager",
+        "shortName": "list_routes"
       },
+      "description": "Sample for ListRoutes",
       "file": "datastream_v1alpha1_generated_datastream_list_routes_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "datastream_v1alpha1_generated_Datastream_ListRoutes_async",
       "segments": [
         {
@@ -1556,18 +2873,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "datastream_v1alpha1_generated_datastream_list_routes_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.datastream_v1alpha1.DatastreamClient",
+          "shortName": "DatastreamClient"
+        },
+        "fullName": "google.cloud.datastream_v1alpha1.DatastreamClient.list_routes",
         "method": {
+          "fullName": "google.cloud.datastream.v1alpha1.Datastream.ListRoutes",
           "service": {
+            "fullName": "google.cloud.datastream.v1alpha1.Datastream",
             "shortName": "Datastream"
           },
           "shortName": "ListRoutes"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.datastream_v1alpha1.types.ListRoutesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.datastream_v1alpha1.services.datastream.pagers.ListRoutesPager",
+        "shortName": "list_routes"
       },
+      "description": "Sample for ListRoutes",
       "file": "datastream_v1alpha1_generated_datastream_list_routes_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "datastream_v1alpha1_generated_Datastream_ListRoutes_sync",
       "segments": [
         {
@@ -1600,19 +2953,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "datastream_v1alpha1_generated_datastream_list_routes_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.datastream_v1alpha1.DatastreamAsyncClient",
+          "shortName": "DatastreamAsyncClient"
+        },
+        "fullName": "google.cloud.datastream_v1alpha1.DatastreamAsyncClient.list_streams",
         "method": {
+          "fullName": "google.cloud.datastream.v1alpha1.Datastream.ListStreams",
           "service": {
+            "fullName": "google.cloud.datastream.v1alpha1.Datastream",
             "shortName": "Datastream"
           },
           "shortName": "ListStreams"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.datastream_v1alpha1.types.ListStreamsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.datastream_v1alpha1.services.datastream.pagers.ListStreamsAsyncPager",
+        "shortName": "list_streams"
       },
+      "description": "Sample for ListStreams",
       "file": "datastream_v1alpha1_generated_datastream_list_streams_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "datastream_v1alpha1_generated_Datastream_ListStreams_async",
       "segments": [
         {
@@ -1645,18 +3034,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "datastream_v1alpha1_generated_datastream_list_streams_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.datastream_v1alpha1.DatastreamClient",
+          "shortName": "DatastreamClient"
+        },
+        "fullName": "google.cloud.datastream_v1alpha1.DatastreamClient.list_streams",
         "method": {
+          "fullName": "google.cloud.datastream.v1alpha1.Datastream.ListStreams",
           "service": {
+            "fullName": "google.cloud.datastream.v1alpha1.Datastream",
             "shortName": "Datastream"
           },
           "shortName": "ListStreams"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.datastream_v1alpha1.types.ListStreamsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.datastream_v1alpha1.services.datastream.pagers.ListStreamsPager",
+        "shortName": "list_streams"
       },
+      "description": "Sample for ListStreams",
       "file": "datastream_v1alpha1_generated_datastream_list_streams_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "datastream_v1alpha1_generated_Datastream_ListStreams_sync",
       "segments": [
         {
@@ -1689,19 +3114,59 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "datastream_v1alpha1_generated_datastream_list_streams_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.datastream_v1alpha1.DatastreamAsyncClient",
+          "shortName": "DatastreamAsyncClient"
+        },
+        "fullName": "google.cloud.datastream_v1alpha1.DatastreamAsyncClient.update_connection_profile",
         "method": {
+          "fullName": "google.cloud.datastream.v1alpha1.Datastream.UpdateConnectionProfile",
           "service": {
+            "fullName": "google.cloud.datastream.v1alpha1.Datastream",
             "shortName": "Datastream"
           },
           "shortName": "UpdateConnectionProfile"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.datastream_v1alpha1.types.UpdateConnectionProfileRequest"
+          },
+          {
+            "name": "connection_profile",
+            "type": "google.cloud.datastream_v1alpha1.types.ConnectionProfile"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "update_connection_profile"
       },
+      "description": "Sample for UpdateConnectionProfile",
       "file": "datastream_v1alpha1_generated_datastream_update_connection_profile_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "datastream_v1alpha1_generated_Datastream_UpdateConnectionProfile_async",
       "segments": [
         {
@@ -1734,18 +3199,58 @@
           "start": 53,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "datastream_v1alpha1_generated_datastream_update_connection_profile_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.datastream_v1alpha1.DatastreamClient",
+          "shortName": "DatastreamClient"
+        },
+        "fullName": "google.cloud.datastream_v1alpha1.DatastreamClient.update_connection_profile",
         "method": {
+          "fullName": "google.cloud.datastream.v1alpha1.Datastream.UpdateConnectionProfile",
           "service": {
+            "fullName": "google.cloud.datastream.v1alpha1.Datastream",
             "shortName": "Datastream"
           },
           "shortName": "UpdateConnectionProfile"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.datastream_v1alpha1.types.UpdateConnectionProfileRequest"
+          },
+          {
+            "name": "connection_profile",
+            "type": "google.cloud.datastream_v1alpha1.types.ConnectionProfile"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "update_connection_profile"
       },
+      "description": "Sample for UpdateConnectionProfile",
       "file": "datastream_v1alpha1_generated_datastream_update_connection_profile_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "datastream_v1alpha1_generated_Datastream_UpdateConnectionProfile_sync",
       "segments": [
         {
@@ -1778,19 +3283,59 @@
           "start": 53,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "datastream_v1alpha1_generated_datastream_update_connection_profile_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.datastream_v1alpha1.DatastreamAsyncClient",
+          "shortName": "DatastreamAsyncClient"
+        },
+        "fullName": "google.cloud.datastream_v1alpha1.DatastreamAsyncClient.update_stream",
         "method": {
+          "fullName": "google.cloud.datastream.v1alpha1.Datastream.UpdateStream",
           "service": {
+            "fullName": "google.cloud.datastream.v1alpha1.Datastream",
             "shortName": "Datastream"
           },
           "shortName": "UpdateStream"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.datastream_v1alpha1.types.UpdateStreamRequest"
+          },
+          {
+            "name": "stream",
+            "type": "google.cloud.datastream_v1alpha1.types.Stream"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "update_stream"
       },
+      "description": "Sample for UpdateStream",
       "file": "datastream_v1alpha1_generated_datastream_update_stream_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "datastream_v1alpha1_generated_Datastream_UpdateStream_async",
       "segments": [
         {
@@ -1823,18 +3368,58 @@
           "start": 51,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "datastream_v1alpha1_generated_datastream_update_stream_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.datastream_v1alpha1.DatastreamClient",
+          "shortName": "DatastreamClient"
+        },
+        "fullName": "google.cloud.datastream_v1alpha1.DatastreamClient.update_stream",
         "method": {
+          "fullName": "google.cloud.datastream.v1alpha1.Datastream.UpdateStream",
           "service": {
+            "fullName": "google.cloud.datastream.v1alpha1.Datastream",
             "shortName": "Datastream"
           },
           "shortName": "UpdateStream"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.datastream_v1alpha1.types.UpdateStreamRequest"
+          },
+          {
+            "name": "stream",
+            "type": "google.cloud.datastream_v1alpha1.types.Stream"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "update_stream"
       },
+      "description": "Sample for UpdateStream",
       "file": "datastream_v1alpha1_generated_datastream_update_stream_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "datastream_v1alpha1_generated_Datastream_UpdateStream_sync",
       "segments": [
         {
@@ -1867,7 +3452,8 @@
           "start": 51,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "datastream_v1alpha1_generated_datastream_update_stream_sync.py"
     }
   ]
 }
