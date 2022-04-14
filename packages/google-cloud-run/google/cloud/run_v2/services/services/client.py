@@ -1151,13 +1151,14 @@ class ServicesClient(metaclass=ServicesClientMeta):
         .. code-block:: python
 
             from google.cloud import run_v2
+            from google.iam.v1 import iam_policy_pb2  # type: ignore
 
             def sample_get_iam_policy():
                 # Create a client
                 client = run_v2.ServicesClient()
 
                 # Initialize request argument(s)
-                request = run_v2.GetIamPolicyRequest(
+                request = iam_policy_pb2.GetIamPolicyRequest(
                     resource="resource_value",
                 )
 
@@ -1286,13 +1287,14 @@ class ServicesClient(metaclass=ServicesClientMeta):
         .. code-block:: python
 
             from google.cloud import run_v2
+            from google.iam.v1 import iam_policy_pb2  # type: ignore
 
             def sample_set_iam_policy():
                 # Create a client
                 client = run_v2.ServicesClient()
 
                 # Initialize request argument(s)
-                request = run_v2.SetIamPolicyRequest(
+                request = iam_policy_pb2.SetIamPolicyRequest(
                     resource="resource_value",
                 )
 
@@ -1423,13 +1425,14 @@ class ServicesClient(metaclass=ServicesClientMeta):
         .. code-block:: python
 
             from google.cloud import run_v2
+            from google.iam.v1 import iam_policy_pb2  # type: ignore
 
             def sample_test_iam_permissions():
                 # Create a client
                 client = run_v2.ServicesClient()
 
                 # Initialize request argument(s)
-                request = run_v2.TestIamPermissionsRequest(
+                request = iam_policy_pb2.TestIamPermissionsRequest(
                     resource="resource_value",
                     permissions=['permissions_value_1', 'permissions_value_2'],
                 )

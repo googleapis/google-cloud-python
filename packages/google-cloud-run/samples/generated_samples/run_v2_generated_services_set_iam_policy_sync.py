@@ -25,6 +25,7 @@
 
 # [START run_v2_generated_Services_SetIamPolicy_sync]
 from google.cloud import run_v2
+from google.iam.v1 import iam_policy_pb2  # type: ignore
 
 
 def sample_set_iam_policy():
@@ -32,7 +33,7 @@ def sample_set_iam_policy():
     client = run_v2.ServicesClient()
 
     # Initialize request argument(s)
-    request = run_v2.SetIamPolicyRequest(
+    request = iam_policy_pb2.SetIamPolicyRequest(
         resource="resource_value",
     )
 
