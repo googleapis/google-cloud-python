@@ -1,16 +1,57 @@
 {
+  "clientLibrary": {
+    "apis": [
+      {
+        "id": "google.cloud.eventarc.publishing.v1",
+        "version": "v1"
+      }
+    ],
+    "language": "PYTHON",
+    "name": "google-cloud-eventarc-publishing"
+  },
   "snippets": [
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.eventarc_publishing_v1.PublisherAsyncClient",
+          "shortName": "PublisherAsyncClient"
+        },
+        "fullName": "google.cloud.eventarc_publishing_v1.PublisherAsyncClient.publish_channel_connection_events",
         "method": {
+          "fullName": "google.cloud.eventarc.publishing.v1.Publisher.PublishChannelConnectionEvents",
           "service": {
+            "fullName": "google.cloud.eventarc.publishing.v1.Publisher",
             "shortName": "Publisher"
           },
           "shortName": "PublishChannelConnectionEvents"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.eventarc_publishing_v1.types.PublishChannelConnectionEventsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.eventarc_publishing_v1.types.PublishChannelConnectionEventsResponse",
+        "shortName": "publish_channel_connection_events"
       },
+      "description": "Sample for PublishChannelConnectionEvents",
       "file": "eventarcpublishing_v1_generated_publisher_publish_channel_connection_events_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "eventarcpublishing_v1_generated_Publisher_PublishChannelConnectionEvents_async",
       "segments": [
         {
@@ -43,18 +84,50 @@
           "start": 41,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "eventarcpublishing_v1_generated_publisher_publish_channel_connection_events_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.eventarc_publishing_v1.PublisherClient",
+          "shortName": "PublisherClient"
+        },
+        "fullName": "google.cloud.eventarc_publishing_v1.PublisherClient.publish_channel_connection_events",
         "method": {
+          "fullName": "google.cloud.eventarc.publishing.v1.Publisher.PublishChannelConnectionEvents",
           "service": {
+            "fullName": "google.cloud.eventarc.publishing.v1.Publisher",
             "shortName": "Publisher"
           },
           "shortName": "PublishChannelConnectionEvents"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.eventarc_publishing_v1.types.PublishChannelConnectionEventsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.eventarc_publishing_v1.types.PublishChannelConnectionEventsResponse",
+        "shortName": "publish_channel_connection_events"
       },
+      "description": "Sample for PublishChannelConnectionEvents",
       "file": "eventarcpublishing_v1_generated_publisher_publish_channel_connection_events_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "eventarcpublishing_v1_generated_Publisher_PublishChannelConnectionEvents_sync",
       "segments": [
         {
@@ -87,7 +160,8 @@
           "start": 41,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "eventarcpublishing_v1_generated_publisher_publish_channel_connection_events_sync.py"
     }
   ]
 }
