@@ -95,7 +95,7 @@ class DiscoveryEvent(proto.Message):
         r"""Details about configuration events.
 
         Attributes:
-            parameters (Sequence[google.cloud.dataplex_v1.types.DiscoveryEvent.ConfigDetails.ParametersEntry]):
+            parameters (Mapping[str, str]):
                 A list of discovery configuration parameters
                 in effect. The keys are the field paths within
                 DiscoverySpec. Eg. includePatterns,

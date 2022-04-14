@@ -71,7 +71,7 @@ class Lake(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time when the lake was last
             updated.
-        labels (Sequence[google.cloud.dataplex_v1.types.Lake.LabelsEntry]):
+        labels (Mapping[str, str]):
             Optional. User-defined labels for the lake.
         description (str):
             Optional. Description of the lake.
@@ -265,7 +265,7 @@ class Zone(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time when the zone was last
             updated.
-        labels (Sequence[google.cloud.dataplex_v1.types.Zone.LabelsEntry]):
+        labels (Mapping[str, str]):
             Optional. User defined labels for the zone.
         description (str):
             Optional. Description of the zone.
@@ -846,7 +846,7 @@ class Asset(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time when the asset was last
             updated.
-        labels (Sequence[google.cloud.dataplex_v1.types.Asset.LabelsEntry]):
+        labels (Mapping[str, str]):
             Optional. User defined labels for the asset.
         description (str):
             Optional. Description of the asset.

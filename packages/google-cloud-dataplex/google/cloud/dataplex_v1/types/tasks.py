@@ -57,7 +57,7 @@ class Task(proto.Message):
             Optional. User friendly display name.
         state (google.cloud.dataplex_v1.types.State):
             Output only. Current state of the task.
-        labels (Sequence[google.cloud.dataplex_v1.types.Task.LabelsEntry]):
+        labels (Mapping[str, str]):
             Optional. User-defined labels for the task.
         trigger_spec (google.cloud.dataplex_v1.types.Task.TriggerSpec):
             Required. Spec related to how often and when
@@ -128,7 +128,7 @@ class Task(proto.Message):
                     formats include Cloud Storage URI to a PIP installable
                     library. For example,
                     ``gs://bucket-name/my/path/to/lib.tar.gz``.
-                properties (Sequence[google.cloud.dataplex_v1.types.Task.InfrastructureSpec.ContainerImageRuntime.PropertiesEntry]):
+                properties (Mapping[str, str]):
                     Optional. Override to common configuration of open source
                     components installed on the Dataproc cluster. The properties
                     to set on daemon config files. Property keys are specified
@@ -282,7 +282,7 @@ class Task(proto.Message):
         r"""Execution related settings, like retry and service_account.
 
         Attributes:
-            args (Sequence[google.cloud.dataplex_v1.types.Task.ExecutionSpec.ArgsEntry]):
+            args (Mapping[str, str]):
                 Optional. The arguments to pass to the task. The args can
                 use placeholders of the format ${placeholder} as part of
                 key/value string. These will be interpolated before passing

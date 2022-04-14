@@ -51,7 +51,7 @@ class Environment(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time when the environment
             was last updated.
-        labels (Sequence[google.cloud.dataplex_v1.types.Environment.LabelsEntry]):
+        labels (Mapping[str, str]):
             Optional. User defined labels for the
             environment.
         description (str):
@@ -138,7 +138,7 @@ class Environment(proto.Message):
                     installed. Valid formats include Cloud Storage
                     URI to a PIP installable library. For example,
                     gs://bucket-name/my/path/to/lib.tar.gz
-                properties (Sequence[google.cloud.dataplex_v1.types.Environment.InfrastructureSpec.OsImageRuntime.PropertiesEntry]):
+                properties (Mapping[str, str]):
                     Optional. Spark properties to provide configuration for use
                     in sessions created for this environment. The properties to
                     set on daemon config files. Property keys are specified in
@@ -327,7 +327,7 @@ class Content(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time when the content was
             last updated.
-        labels (Sequence[google.cloud.dataplex_v1.types.Content.LabelsEntry]):
+        labels (Mapping[str, str]):
             Optional. User defined labels for the
             content.
         description (str):

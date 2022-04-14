@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -904,7 +904,6 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         r"""Deletes a lake resource. All zones within the lake
         must be deleted before the lake can be deleted.
 
-
         .. code-block:: python
 
             from google.cloud import dataplex_v1
@@ -1618,7 +1617,6 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         r"""Deletes a zone resource. All assets within a zone
         must be deleted before the zone can be deleted.
 
-
         .. code-block:: python
 
             from google.cloud import dataplex_v1
@@ -2311,7 +2309,6 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         r"""Deletes an asset resource. The referenced storage
         resource is detached (default) or deleted based on the
         associated Lifecycle policy.
-
 
         .. code-block:: python
 
@@ -3855,7 +3852,6 @@ class DataplexServiceClient(metaclass=DataplexServiceClientMeta):
         r"""Delete the environment resource. All the child
         resources must have been deleted before environment
         deletion can be initiated.
-
 
         .. code-block:: python
 

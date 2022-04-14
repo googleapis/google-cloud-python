@@ -1,16 +1,65 @@
 {
+  "clientLibrary": {
+    "apis": [
+      {
+        "id": "google.cloud.dataplex.v1",
+        "version": "v1"
+      }
+    ],
+    "language": "PYTHON",
+    "name": "google-cloud-dataplex"
+  },
   "snippets": [
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.ContentServiceAsyncClient",
+          "shortName": "ContentServiceAsyncClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.ContentServiceAsyncClient.create_content",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.ContentService.CreateContent",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.ContentService",
             "shortName": "ContentService"
           },
           "shortName": "CreateContent"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.CreateContentRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "content",
+            "type": "google.cloud.dataplex_v1.types.Content"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.types.Content",
+        "shortName": "create_content"
       },
+      "description": "Sample for CreateContent",
       "file": "dataplex_v1_generated_content_service_create_content_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_ContentService_CreateContent_async",
       "segments": [
         {
@@ -43,18 +92,58 @@
           "start": 48,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_content_service_create_content_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.ContentServiceClient",
+          "shortName": "ContentServiceClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.ContentServiceClient.create_content",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.ContentService.CreateContent",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.ContentService",
             "shortName": "ContentService"
           },
           "shortName": "CreateContent"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.CreateContentRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "content",
+            "type": "google.cloud.dataplex_v1.types.Content"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.types.Content",
+        "shortName": "create_content"
       },
+      "description": "Sample for CreateContent",
       "file": "dataplex_v1_generated_content_service_create_content_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_ContentService_CreateContent_sync",
       "segments": [
         {
@@ -87,19 +176,54 @@
           "start": 48,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_content_service_create_content_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.ContentServiceAsyncClient",
+          "shortName": "ContentServiceAsyncClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.ContentServiceAsyncClient.delete_content",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.ContentService.DeleteContent",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.ContentService",
             "shortName": "ContentService"
           },
           "shortName": "DeleteContent"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.DeleteContentRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_content"
       },
+      "description": "Sample for DeleteContent",
       "file": "dataplex_v1_generated_content_service_delete_content_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_ContentService_DeleteContent_async",
       "segments": [
         {
@@ -130,18 +254,53 @@
           "end": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_content_service_delete_content_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.ContentServiceClient",
+          "shortName": "ContentServiceClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.ContentServiceClient.delete_content",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.ContentService.DeleteContent",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.ContentService",
             "shortName": "ContentService"
           },
           "shortName": "DeleteContent"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.DeleteContentRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_content"
       },
+      "description": "Sample for DeleteContent",
       "file": "dataplex_v1_generated_content_service_delete_content_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_ContentService_DeleteContent_sync",
       "segments": [
         {
@@ -172,19 +331,55 @@
           "end": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_content_service_delete_content_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.ContentServiceAsyncClient",
+          "shortName": "ContentServiceAsyncClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.ContentServiceAsyncClient.get_content",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.ContentService.GetContent",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.ContentService",
             "shortName": "ContentService"
           },
           "shortName": "GetContent"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.GetContentRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.types.Content",
+        "shortName": "get_content"
       },
+      "description": "Sample for GetContent",
       "file": "dataplex_v1_generated_content_service_get_content_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_ContentService_GetContent_async",
       "segments": [
         {
@@ -217,18 +412,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_content_service_get_content_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.ContentServiceClient",
+          "shortName": "ContentServiceClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.ContentServiceClient.get_content",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.ContentService.GetContent",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.ContentService",
             "shortName": "ContentService"
           },
           "shortName": "GetContent"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.GetContentRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.types.Content",
+        "shortName": "get_content"
       },
+      "description": "Sample for GetContent",
       "file": "dataplex_v1_generated_content_service_get_content_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_ContentService_GetContent_sync",
       "segments": [
         {
@@ -261,19 +492,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_content_service_get_content_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.ContentServiceAsyncClient",
+          "shortName": "ContentServiceAsyncClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.ContentServiceAsyncClient.list_content",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.ContentService.ListContent",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.ContentService",
             "shortName": "ContentService"
           },
           "shortName": "ListContent"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.ListContentRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.services.content_service.pagers.ListContentAsyncPager",
+        "shortName": "list_content"
       },
+      "description": "Sample for ListContent",
       "file": "dataplex_v1_generated_content_service_list_content_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_ContentService_ListContent_async",
       "segments": [
         {
@@ -306,18 +573,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_content_service_list_content_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.ContentServiceClient",
+          "shortName": "ContentServiceClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.ContentServiceClient.list_content",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.ContentService.ListContent",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.ContentService",
             "shortName": "ContentService"
           },
           "shortName": "ListContent"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.ListContentRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.services.content_service.pagers.ListContentPager",
+        "shortName": "list_content"
       },
+      "description": "Sample for ListContent",
       "file": "dataplex_v1_generated_content_service_list_content_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_ContentService_ListContent_sync",
       "segments": [
         {
@@ -350,19 +653,59 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_content_service_list_content_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.ContentServiceAsyncClient",
+          "shortName": "ContentServiceAsyncClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.ContentServiceAsyncClient.update_content",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.ContentService.UpdateContent",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.ContentService",
             "shortName": "ContentService"
           },
           "shortName": "UpdateContent"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.UpdateContentRequest"
+          },
+          {
+            "name": "content",
+            "type": "google.cloud.dataplex_v1.types.Content"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.types.Content",
+        "shortName": "update_content"
       },
+      "description": "Sample for UpdateContent",
       "file": "dataplex_v1_generated_content_service_update_content_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_ContentService_UpdateContent_async",
       "segments": [
         {
@@ -395,18 +738,58 @@
           "start": 47,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_content_service_update_content_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.ContentServiceClient",
+          "shortName": "ContentServiceClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.ContentServiceClient.update_content",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.ContentService.UpdateContent",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.ContentService",
             "shortName": "ContentService"
           },
           "shortName": "UpdateContent"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.UpdateContentRequest"
+          },
+          {
+            "name": "content",
+            "type": "google.cloud.dataplex_v1.types.Content"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.types.Content",
+        "shortName": "update_content"
       },
+      "description": "Sample for UpdateContent",
       "file": "dataplex_v1_generated_content_service_update_content_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_ContentService_UpdateContent_sync",
       "segments": [
         {
@@ -439,19 +822,54 @@
           "start": 47,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_content_service_update_content_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataplexServiceAsyncClient",
+          "shortName": "DataplexServiceAsyncClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataplexServiceAsyncClient.cancel_job",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.DataplexService.CancelJob",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.DataplexService",
             "shortName": "DataplexService"
           },
           "shortName": "CancelJob"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.CancelJobRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "cancel_job"
       },
+      "description": "Sample for CancelJob",
       "file": "dataplex_v1_generated_dataplex_service_cancel_job_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_DataplexService_CancelJob_async",
       "segments": [
         {
@@ -482,18 +900,53 @@
           "end": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_dataplex_service_cancel_job_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataplexServiceClient",
+          "shortName": "DataplexServiceClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataplexServiceClient.cancel_job",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.DataplexService.CancelJob",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.DataplexService",
             "shortName": "DataplexService"
           },
           "shortName": "CancelJob"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.CancelJobRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "cancel_job"
       },
+      "description": "Sample for CancelJob",
       "file": "dataplex_v1_generated_dataplex_service_cancel_job_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_DataplexService_CancelJob_sync",
       "segments": [
         {
@@ -524,19 +977,63 @@
           "end": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_dataplex_service_cancel_job_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataplexServiceAsyncClient",
+          "shortName": "DataplexServiceAsyncClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataplexServiceAsyncClient.create_asset",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.DataplexService.CreateAsset",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.DataplexService",
             "shortName": "DataplexService"
           },
           "shortName": "CreateAsset"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.CreateAssetRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "asset",
+            "type": "google.cloud.dataplex_v1.types.Asset"
+          },
+          {
+            "name": "asset_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "create_asset"
       },
+      "description": "Sample for CreateAsset",
       "file": "dataplex_v1_generated_dataplex_service_create_asset_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_DataplexService_CreateAsset_async",
       "segments": [
         {
@@ -569,18 +1066,62 @@
           "start": 51,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_dataplex_service_create_asset_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataplexServiceClient",
+          "shortName": "DataplexServiceClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataplexServiceClient.create_asset",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.DataplexService.CreateAsset",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.DataplexService",
             "shortName": "DataplexService"
           },
           "shortName": "CreateAsset"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.CreateAssetRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "asset",
+            "type": "google.cloud.dataplex_v1.types.Asset"
+          },
+          {
+            "name": "asset_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "create_asset"
       },
+      "description": "Sample for CreateAsset",
       "file": "dataplex_v1_generated_dataplex_service_create_asset_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_DataplexService_CreateAsset_sync",
       "segments": [
         {
@@ -613,19 +1154,63 @@
           "start": 51,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_dataplex_service_create_asset_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataplexServiceAsyncClient",
+          "shortName": "DataplexServiceAsyncClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataplexServiceAsyncClient.create_environment",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.DataplexService.CreateEnvironment",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.DataplexService",
             "shortName": "DataplexService"
           },
           "shortName": "CreateEnvironment"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.CreateEnvironmentRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "environment",
+            "type": "google.cloud.dataplex_v1.types.Environment"
+          },
+          {
+            "name": "environment_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "create_environment"
       },
+      "description": "Sample for CreateEnvironment",
       "file": "dataplex_v1_generated_dataplex_service_create_environment_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_DataplexService_CreateEnvironment_async",
       "segments": [
         {
@@ -658,18 +1243,62 @@
           "start": 51,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_dataplex_service_create_environment_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataplexServiceClient",
+          "shortName": "DataplexServiceClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataplexServiceClient.create_environment",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.DataplexService.CreateEnvironment",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.DataplexService",
             "shortName": "DataplexService"
           },
           "shortName": "CreateEnvironment"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.CreateEnvironmentRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "environment",
+            "type": "google.cloud.dataplex_v1.types.Environment"
+          },
+          {
+            "name": "environment_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "create_environment"
       },
+      "description": "Sample for CreateEnvironment",
       "file": "dataplex_v1_generated_dataplex_service_create_environment_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_DataplexService_CreateEnvironment_sync",
       "segments": [
         {
@@ -702,19 +1331,63 @@
           "start": 51,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_dataplex_service_create_environment_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataplexServiceAsyncClient",
+          "shortName": "DataplexServiceAsyncClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataplexServiceAsyncClient.create_lake",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.DataplexService.CreateLake",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.DataplexService",
             "shortName": "DataplexService"
           },
           "shortName": "CreateLake"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.CreateLakeRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "lake",
+            "type": "google.cloud.dataplex_v1.types.Lake"
+          },
+          {
+            "name": "lake_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "create_lake"
       },
+      "description": "Sample for CreateLake",
       "file": "dataplex_v1_generated_dataplex_service_create_lake_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_DataplexService_CreateLake_async",
       "segments": [
         {
@@ -747,18 +1420,62 @@
           "start": 47,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_dataplex_service_create_lake_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataplexServiceClient",
+          "shortName": "DataplexServiceClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataplexServiceClient.create_lake",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.DataplexService.CreateLake",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.DataplexService",
             "shortName": "DataplexService"
           },
           "shortName": "CreateLake"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.CreateLakeRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "lake",
+            "type": "google.cloud.dataplex_v1.types.Lake"
+          },
+          {
+            "name": "lake_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "create_lake"
       },
+      "description": "Sample for CreateLake",
       "file": "dataplex_v1_generated_dataplex_service_create_lake_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_DataplexService_CreateLake_sync",
       "segments": [
         {
@@ -791,19 +1508,63 @@
           "start": 47,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_dataplex_service_create_lake_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataplexServiceAsyncClient",
+          "shortName": "DataplexServiceAsyncClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataplexServiceAsyncClient.create_task",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.DataplexService.CreateTask",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.DataplexService",
             "shortName": "DataplexService"
           },
           "shortName": "CreateTask"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.CreateTaskRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "task",
+            "type": "google.cloud.dataplex_v1.types.Task"
+          },
+          {
+            "name": "task_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "create_task"
       },
+      "description": "Sample for CreateTask",
       "file": "dataplex_v1_generated_dataplex_service_create_task_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_DataplexService_CreateTask_async",
       "segments": [
         {
@@ -836,18 +1597,62 @@
           "start": 54,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_dataplex_service_create_task_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataplexServiceClient",
+          "shortName": "DataplexServiceClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataplexServiceClient.create_task",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.DataplexService.CreateTask",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.DataplexService",
             "shortName": "DataplexService"
           },
           "shortName": "CreateTask"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.CreateTaskRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "task",
+            "type": "google.cloud.dataplex_v1.types.Task"
+          },
+          {
+            "name": "task_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "create_task"
       },
+      "description": "Sample for CreateTask",
       "file": "dataplex_v1_generated_dataplex_service_create_task_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_DataplexService_CreateTask_sync",
       "segments": [
         {
@@ -880,19 +1685,63 @@
           "start": 54,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_dataplex_service_create_task_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataplexServiceAsyncClient",
+          "shortName": "DataplexServiceAsyncClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataplexServiceAsyncClient.create_zone",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.DataplexService.CreateZone",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.DataplexService",
             "shortName": "DataplexService"
           },
           "shortName": "CreateZone"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.CreateZoneRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "zone",
+            "type": "google.cloud.dataplex_v1.types.Zone"
+          },
+          {
+            "name": "zone_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "create_zone"
       },
+      "description": "Sample for CreateZone",
       "file": "dataplex_v1_generated_dataplex_service_create_zone_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_DataplexService_CreateZone_async",
       "segments": [
         {
@@ -925,18 +1774,62 @@
           "start": 52,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_dataplex_service_create_zone_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataplexServiceClient",
+          "shortName": "DataplexServiceClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataplexServiceClient.create_zone",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.DataplexService.CreateZone",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.DataplexService",
             "shortName": "DataplexService"
           },
           "shortName": "CreateZone"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.CreateZoneRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "zone",
+            "type": "google.cloud.dataplex_v1.types.Zone"
+          },
+          {
+            "name": "zone_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "create_zone"
       },
+      "description": "Sample for CreateZone",
       "file": "dataplex_v1_generated_dataplex_service_create_zone_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_DataplexService_CreateZone_sync",
       "segments": [
         {
@@ -969,19 +1862,55 @@
           "start": 52,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_dataplex_service_create_zone_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataplexServiceAsyncClient",
+          "shortName": "DataplexServiceAsyncClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataplexServiceAsyncClient.delete_asset",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.DataplexService.DeleteAsset",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.DataplexService",
             "shortName": "DataplexService"
           },
           "shortName": "DeleteAsset"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.DeleteAssetRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "delete_asset"
       },
+      "description": "Sample for DeleteAsset",
       "file": "dataplex_v1_generated_dataplex_service_delete_asset_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_DataplexService_DeleteAsset_async",
       "segments": [
         {
@@ -1014,18 +1943,54 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_dataplex_service_delete_asset_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataplexServiceClient",
+          "shortName": "DataplexServiceClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataplexServiceClient.delete_asset",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.DataplexService.DeleteAsset",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.DataplexService",
             "shortName": "DataplexService"
           },
           "shortName": "DeleteAsset"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.DeleteAssetRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "delete_asset"
       },
+      "description": "Sample for DeleteAsset",
       "file": "dataplex_v1_generated_dataplex_service_delete_asset_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_DataplexService_DeleteAsset_sync",
       "segments": [
         {
@@ -1058,19 +2023,55 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_dataplex_service_delete_asset_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataplexServiceAsyncClient",
+          "shortName": "DataplexServiceAsyncClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataplexServiceAsyncClient.delete_environment",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.DataplexService.DeleteEnvironment",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.DataplexService",
             "shortName": "DataplexService"
           },
           "shortName": "DeleteEnvironment"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.DeleteEnvironmentRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "delete_environment"
       },
+      "description": "Sample for DeleteEnvironment",
       "file": "dataplex_v1_generated_dataplex_service_delete_environment_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_DataplexService_DeleteEnvironment_async",
       "segments": [
         {
@@ -1103,18 +2104,54 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_dataplex_service_delete_environment_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataplexServiceClient",
+          "shortName": "DataplexServiceClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataplexServiceClient.delete_environment",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.DataplexService.DeleteEnvironment",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.DataplexService",
             "shortName": "DataplexService"
           },
           "shortName": "DeleteEnvironment"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.DeleteEnvironmentRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "delete_environment"
       },
+      "description": "Sample for DeleteEnvironment",
       "file": "dataplex_v1_generated_dataplex_service_delete_environment_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_DataplexService_DeleteEnvironment_sync",
       "segments": [
         {
@@ -1147,19 +2184,55 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_dataplex_service_delete_environment_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataplexServiceAsyncClient",
+          "shortName": "DataplexServiceAsyncClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataplexServiceAsyncClient.delete_lake",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.DataplexService.DeleteLake",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.DataplexService",
             "shortName": "DataplexService"
           },
           "shortName": "DeleteLake"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.DeleteLakeRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "delete_lake"
       },
+      "description": "Sample for DeleteLake",
       "file": "dataplex_v1_generated_dataplex_service_delete_lake_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_DataplexService_DeleteLake_async",
       "segments": [
         {
@@ -1192,18 +2265,54 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_dataplex_service_delete_lake_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataplexServiceClient",
+          "shortName": "DataplexServiceClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataplexServiceClient.delete_lake",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.DataplexService.DeleteLake",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.DataplexService",
             "shortName": "DataplexService"
           },
           "shortName": "DeleteLake"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.DeleteLakeRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "delete_lake"
       },
+      "description": "Sample for DeleteLake",
       "file": "dataplex_v1_generated_dataplex_service_delete_lake_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_DataplexService_DeleteLake_sync",
       "segments": [
         {
@@ -1236,19 +2345,55 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_dataplex_service_delete_lake_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataplexServiceAsyncClient",
+          "shortName": "DataplexServiceAsyncClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataplexServiceAsyncClient.delete_task",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.DataplexService.DeleteTask",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.DataplexService",
             "shortName": "DataplexService"
           },
           "shortName": "DeleteTask"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.DeleteTaskRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "delete_task"
       },
+      "description": "Sample for DeleteTask",
       "file": "dataplex_v1_generated_dataplex_service_delete_task_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_DataplexService_DeleteTask_async",
       "segments": [
         {
@@ -1281,18 +2426,54 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_dataplex_service_delete_task_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataplexServiceClient",
+          "shortName": "DataplexServiceClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataplexServiceClient.delete_task",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.DataplexService.DeleteTask",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.DataplexService",
             "shortName": "DataplexService"
           },
           "shortName": "DeleteTask"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.DeleteTaskRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "delete_task"
       },
+      "description": "Sample for DeleteTask",
       "file": "dataplex_v1_generated_dataplex_service_delete_task_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_DataplexService_DeleteTask_sync",
       "segments": [
         {
@@ -1325,19 +2506,55 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_dataplex_service_delete_task_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataplexServiceAsyncClient",
+          "shortName": "DataplexServiceAsyncClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataplexServiceAsyncClient.delete_zone",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.DataplexService.DeleteZone",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.DataplexService",
             "shortName": "DataplexService"
           },
           "shortName": "DeleteZone"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.DeleteZoneRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "delete_zone"
       },
+      "description": "Sample for DeleteZone",
       "file": "dataplex_v1_generated_dataplex_service_delete_zone_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_DataplexService_DeleteZone_async",
       "segments": [
         {
@@ -1370,18 +2587,54 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_dataplex_service_delete_zone_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataplexServiceClient",
+          "shortName": "DataplexServiceClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataplexServiceClient.delete_zone",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.DataplexService.DeleteZone",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.DataplexService",
             "shortName": "DataplexService"
           },
           "shortName": "DeleteZone"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.DeleteZoneRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "delete_zone"
       },
+      "description": "Sample for DeleteZone",
       "file": "dataplex_v1_generated_dataplex_service_delete_zone_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_DataplexService_DeleteZone_sync",
       "segments": [
         {
@@ -1414,19 +2667,55 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_dataplex_service_delete_zone_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataplexServiceAsyncClient",
+          "shortName": "DataplexServiceAsyncClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataplexServiceAsyncClient.get_asset",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.DataplexService.GetAsset",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.DataplexService",
             "shortName": "DataplexService"
           },
           "shortName": "GetAsset"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.GetAssetRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.types.Asset",
+        "shortName": "get_asset"
       },
+      "description": "Sample for GetAsset",
       "file": "dataplex_v1_generated_dataplex_service_get_asset_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_DataplexService_GetAsset_async",
       "segments": [
         {
@@ -1459,18 +2748,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_dataplex_service_get_asset_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataplexServiceClient",
+          "shortName": "DataplexServiceClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataplexServiceClient.get_asset",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.DataplexService.GetAsset",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.DataplexService",
             "shortName": "DataplexService"
           },
           "shortName": "GetAsset"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.GetAssetRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.types.Asset",
+        "shortName": "get_asset"
       },
+      "description": "Sample for GetAsset",
       "file": "dataplex_v1_generated_dataplex_service_get_asset_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_DataplexService_GetAsset_sync",
       "segments": [
         {
@@ -1503,19 +2828,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_dataplex_service_get_asset_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataplexServiceAsyncClient",
+          "shortName": "DataplexServiceAsyncClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataplexServiceAsyncClient.get_environment",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.DataplexService.GetEnvironment",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.DataplexService",
             "shortName": "DataplexService"
           },
           "shortName": "GetEnvironment"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.GetEnvironmentRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.types.Environment",
+        "shortName": "get_environment"
       },
+      "description": "Sample for GetEnvironment",
       "file": "dataplex_v1_generated_dataplex_service_get_environment_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_DataplexService_GetEnvironment_async",
       "segments": [
         {
@@ -1548,18 +2909,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_dataplex_service_get_environment_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataplexServiceClient",
+          "shortName": "DataplexServiceClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataplexServiceClient.get_environment",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.DataplexService.GetEnvironment",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.DataplexService",
             "shortName": "DataplexService"
           },
           "shortName": "GetEnvironment"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.GetEnvironmentRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.types.Environment",
+        "shortName": "get_environment"
       },
+      "description": "Sample for GetEnvironment",
       "file": "dataplex_v1_generated_dataplex_service_get_environment_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_DataplexService_GetEnvironment_sync",
       "segments": [
         {
@@ -1592,19 +2989,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_dataplex_service_get_environment_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataplexServiceAsyncClient",
+          "shortName": "DataplexServiceAsyncClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataplexServiceAsyncClient.get_job",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.DataplexService.GetJob",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.DataplexService",
             "shortName": "DataplexService"
           },
           "shortName": "GetJob"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.GetJobRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.types.Job",
+        "shortName": "get_job"
       },
+      "description": "Sample for GetJob",
       "file": "dataplex_v1_generated_dataplex_service_get_job_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_DataplexService_GetJob_async",
       "segments": [
         {
@@ -1637,18 +3070,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_dataplex_service_get_job_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataplexServiceClient",
+          "shortName": "DataplexServiceClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataplexServiceClient.get_job",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.DataplexService.GetJob",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.DataplexService",
             "shortName": "DataplexService"
           },
           "shortName": "GetJob"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.GetJobRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.types.Job",
+        "shortName": "get_job"
       },
+      "description": "Sample for GetJob",
       "file": "dataplex_v1_generated_dataplex_service_get_job_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_DataplexService_GetJob_sync",
       "segments": [
         {
@@ -1681,19 +3150,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_dataplex_service_get_job_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataplexServiceAsyncClient",
+          "shortName": "DataplexServiceAsyncClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataplexServiceAsyncClient.get_lake",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.DataplexService.GetLake",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.DataplexService",
             "shortName": "DataplexService"
           },
           "shortName": "GetLake"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.GetLakeRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.types.Lake",
+        "shortName": "get_lake"
       },
+      "description": "Sample for GetLake",
       "file": "dataplex_v1_generated_dataplex_service_get_lake_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_DataplexService_GetLake_async",
       "segments": [
         {
@@ -1726,18 +3231,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_dataplex_service_get_lake_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataplexServiceClient",
+          "shortName": "DataplexServiceClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataplexServiceClient.get_lake",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.DataplexService.GetLake",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.DataplexService",
             "shortName": "DataplexService"
           },
           "shortName": "GetLake"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.GetLakeRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.types.Lake",
+        "shortName": "get_lake"
       },
+      "description": "Sample for GetLake",
       "file": "dataplex_v1_generated_dataplex_service_get_lake_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_DataplexService_GetLake_sync",
       "segments": [
         {
@@ -1770,19 +3311,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_dataplex_service_get_lake_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataplexServiceAsyncClient",
+          "shortName": "DataplexServiceAsyncClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataplexServiceAsyncClient.get_task",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.DataplexService.GetTask",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.DataplexService",
             "shortName": "DataplexService"
           },
           "shortName": "GetTask"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.GetTaskRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.types.Task",
+        "shortName": "get_task"
       },
+      "description": "Sample for GetTask",
       "file": "dataplex_v1_generated_dataplex_service_get_task_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_DataplexService_GetTask_async",
       "segments": [
         {
@@ -1815,18 +3392,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_dataplex_service_get_task_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataplexServiceClient",
+          "shortName": "DataplexServiceClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataplexServiceClient.get_task",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.DataplexService.GetTask",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.DataplexService",
             "shortName": "DataplexService"
           },
           "shortName": "GetTask"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.GetTaskRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.types.Task",
+        "shortName": "get_task"
       },
+      "description": "Sample for GetTask",
       "file": "dataplex_v1_generated_dataplex_service_get_task_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_DataplexService_GetTask_sync",
       "segments": [
         {
@@ -1859,19 +3472,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_dataplex_service_get_task_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataplexServiceAsyncClient",
+          "shortName": "DataplexServiceAsyncClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataplexServiceAsyncClient.get_zone",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.DataplexService.GetZone",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.DataplexService",
             "shortName": "DataplexService"
           },
           "shortName": "GetZone"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.GetZoneRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.types.Zone",
+        "shortName": "get_zone"
       },
+      "description": "Sample for GetZone",
       "file": "dataplex_v1_generated_dataplex_service_get_zone_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_DataplexService_GetZone_async",
       "segments": [
         {
@@ -1904,18 +3553,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_dataplex_service_get_zone_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataplexServiceClient",
+          "shortName": "DataplexServiceClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataplexServiceClient.get_zone",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.DataplexService.GetZone",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.DataplexService",
             "shortName": "DataplexService"
           },
           "shortName": "GetZone"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.GetZoneRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.types.Zone",
+        "shortName": "get_zone"
       },
+      "description": "Sample for GetZone",
       "file": "dataplex_v1_generated_dataplex_service_get_zone_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_DataplexService_GetZone_sync",
       "segments": [
         {
@@ -1948,19 +3633,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_dataplex_service_get_zone_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataplexServiceAsyncClient",
+          "shortName": "DataplexServiceAsyncClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataplexServiceAsyncClient.list_asset_actions",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.DataplexService.ListAssetActions",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.DataplexService",
             "shortName": "DataplexService"
           },
           "shortName": "ListAssetActions"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.ListAssetActionsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.services.dataplex_service.pagers.ListAssetActionsAsyncPager",
+        "shortName": "list_asset_actions"
       },
+      "description": "Sample for ListAssetActions",
       "file": "dataplex_v1_generated_dataplex_service_list_asset_actions_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_DataplexService_ListAssetActions_async",
       "segments": [
         {
@@ -1993,18 +3714,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_dataplex_service_list_asset_actions_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataplexServiceClient",
+          "shortName": "DataplexServiceClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataplexServiceClient.list_asset_actions",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.DataplexService.ListAssetActions",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.DataplexService",
             "shortName": "DataplexService"
           },
           "shortName": "ListAssetActions"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.ListAssetActionsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.services.dataplex_service.pagers.ListAssetActionsPager",
+        "shortName": "list_asset_actions"
       },
+      "description": "Sample for ListAssetActions",
       "file": "dataplex_v1_generated_dataplex_service_list_asset_actions_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_DataplexService_ListAssetActions_sync",
       "segments": [
         {
@@ -2037,19 +3794,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_dataplex_service_list_asset_actions_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataplexServiceAsyncClient",
+          "shortName": "DataplexServiceAsyncClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataplexServiceAsyncClient.list_assets",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.DataplexService.ListAssets",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.DataplexService",
             "shortName": "DataplexService"
           },
           "shortName": "ListAssets"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.ListAssetsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.services.dataplex_service.pagers.ListAssetsAsyncPager",
+        "shortName": "list_assets"
       },
+      "description": "Sample for ListAssets",
       "file": "dataplex_v1_generated_dataplex_service_list_assets_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_DataplexService_ListAssets_async",
       "segments": [
         {
@@ -2082,18 +3875,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_dataplex_service_list_assets_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataplexServiceClient",
+          "shortName": "DataplexServiceClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataplexServiceClient.list_assets",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.DataplexService.ListAssets",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.DataplexService",
             "shortName": "DataplexService"
           },
           "shortName": "ListAssets"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.ListAssetsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.services.dataplex_service.pagers.ListAssetsPager",
+        "shortName": "list_assets"
       },
+      "description": "Sample for ListAssets",
       "file": "dataplex_v1_generated_dataplex_service_list_assets_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_DataplexService_ListAssets_sync",
       "segments": [
         {
@@ -2126,19 +3955,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_dataplex_service_list_assets_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataplexServiceAsyncClient",
+          "shortName": "DataplexServiceAsyncClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataplexServiceAsyncClient.list_environments",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.DataplexService.ListEnvironments",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.DataplexService",
             "shortName": "DataplexService"
           },
           "shortName": "ListEnvironments"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.ListEnvironmentsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.services.dataplex_service.pagers.ListEnvironmentsAsyncPager",
+        "shortName": "list_environments"
       },
+      "description": "Sample for ListEnvironments",
       "file": "dataplex_v1_generated_dataplex_service_list_environments_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_DataplexService_ListEnvironments_async",
       "segments": [
         {
@@ -2171,18 +4036,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_dataplex_service_list_environments_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataplexServiceClient",
+          "shortName": "DataplexServiceClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataplexServiceClient.list_environments",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.DataplexService.ListEnvironments",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.DataplexService",
             "shortName": "DataplexService"
           },
           "shortName": "ListEnvironments"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.ListEnvironmentsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.services.dataplex_service.pagers.ListEnvironmentsPager",
+        "shortName": "list_environments"
       },
+      "description": "Sample for ListEnvironments",
       "file": "dataplex_v1_generated_dataplex_service_list_environments_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_DataplexService_ListEnvironments_sync",
       "segments": [
         {
@@ -2215,19 +4116,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_dataplex_service_list_environments_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataplexServiceAsyncClient",
+          "shortName": "DataplexServiceAsyncClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataplexServiceAsyncClient.list_jobs",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.DataplexService.ListJobs",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.DataplexService",
             "shortName": "DataplexService"
           },
           "shortName": "ListJobs"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.ListJobsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.services.dataplex_service.pagers.ListJobsAsyncPager",
+        "shortName": "list_jobs"
       },
+      "description": "Sample for ListJobs",
       "file": "dataplex_v1_generated_dataplex_service_list_jobs_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_DataplexService_ListJobs_async",
       "segments": [
         {
@@ -2260,18 +4197,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_dataplex_service_list_jobs_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataplexServiceClient",
+          "shortName": "DataplexServiceClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataplexServiceClient.list_jobs",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.DataplexService.ListJobs",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.DataplexService",
             "shortName": "DataplexService"
           },
           "shortName": "ListJobs"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.ListJobsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.services.dataplex_service.pagers.ListJobsPager",
+        "shortName": "list_jobs"
       },
+      "description": "Sample for ListJobs",
       "file": "dataplex_v1_generated_dataplex_service_list_jobs_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_DataplexService_ListJobs_sync",
       "segments": [
         {
@@ -2304,19 +4277,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_dataplex_service_list_jobs_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataplexServiceAsyncClient",
+          "shortName": "DataplexServiceAsyncClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataplexServiceAsyncClient.list_lake_actions",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.DataplexService.ListLakeActions",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.DataplexService",
             "shortName": "DataplexService"
           },
           "shortName": "ListLakeActions"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.ListLakeActionsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.services.dataplex_service.pagers.ListLakeActionsAsyncPager",
+        "shortName": "list_lake_actions"
       },
+      "description": "Sample for ListLakeActions",
       "file": "dataplex_v1_generated_dataplex_service_list_lake_actions_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_DataplexService_ListLakeActions_async",
       "segments": [
         {
@@ -2349,18 +4358,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_dataplex_service_list_lake_actions_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataplexServiceClient",
+          "shortName": "DataplexServiceClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataplexServiceClient.list_lake_actions",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.DataplexService.ListLakeActions",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.DataplexService",
             "shortName": "DataplexService"
           },
           "shortName": "ListLakeActions"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.ListLakeActionsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.services.dataplex_service.pagers.ListLakeActionsPager",
+        "shortName": "list_lake_actions"
       },
+      "description": "Sample for ListLakeActions",
       "file": "dataplex_v1_generated_dataplex_service_list_lake_actions_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_DataplexService_ListLakeActions_sync",
       "segments": [
         {
@@ -2393,19 +4438,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_dataplex_service_list_lake_actions_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataplexServiceAsyncClient",
+          "shortName": "DataplexServiceAsyncClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataplexServiceAsyncClient.list_lakes",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.DataplexService.ListLakes",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.DataplexService",
             "shortName": "DataplexService"
           },
           "shortName": "ListLakes"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.ListLakesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.services.dataplex_service.pagers.ListLakesAsyncPager",
+        "shortName": "list_lakes"
       },
+      "description": "Sample for ListLakes",
       "file": "dataplex_v1_generated_dataplex_service_list_lakes_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_DataplexService_ListLakes_async",
       "segments": [
         {
@@ -2438,18 +4519,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_dataplex_service_list_lakes_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataplexServiceClient",
+          "shortName": "DataplexServiceClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataplexServiceClient.list_lakes",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.DataplexService.ListLakes",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.DataplexService",
             "shortName": "DataplexService"
           },
           "shortName": "ListLakes"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.ListLakesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.services.dataplex_service.pagers.ListLakesPager",
+        "shortName": "list_lakes"
       },
+      "description": "Sample for ListLakes",
       "file": "dataplex_v1_generated_dataplex_service_list_lakes_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_DataplexService_ListLakes_sync",
       "segments": [
         {
@@ -2482,19 +4599,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_dataplex_service_list_lakes_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataplexServiceAsyncClient",
+          "shortName": "DataplexServiceAsyncClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataplexServiceAsyncClient.list_sessions",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.DataplexService.ListSessions",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.DataplexService",
             "shortName": "DataplexService"
           },
           "shortName": "ListSessions"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.ListSessionsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.services.dataplex_service.pagers.ListSessionsAsyncPager",
+        "shortName": "list_sessions"
       },
+      "description": "Sample for ListSessions",
       "file": "dataplex_v1_generated_dataplex_service_list_sessions_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_DataplexService_ListSessions_async",
       "segments": [
         {
@@ -2527,18 +4680,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_dataplex_service_list_sessions_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataplexServiceClient",
+          "shortName": "DataplexServiceClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataplexServiceClient.list_sessions",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.DataplexService.ListSessions",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.DataplexService",
             "shortName": "DataplexService"
           },
           "shortName": "ListSessions"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.ListSessionsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.services.dataplex_service.pagers.ListSessionsPager",
+        "shortName": "list_sessions"
       },
+      "description": "Sample for ListSessions",
       "file": "dataplex_v1_generated_dataplex_service_list_sessions_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_DataplexService_ListSessions_sync",
       "segments": [
         {
@@ -2571,19 +4760,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_dataplex_service_list_sessions_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataplexServiceAsyncClient",
+          "shortName": "DataplexServiceAsyncClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataplexServiceAsyncClient.list_tasks",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.DataplexService.ListTasks",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.DataplexService",
             "shortName": "DataplexService"
           },
           "shortName": "ListTasks"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.ListTasksRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.services.dataplex_service.pagers.ListTasksAsyncPager",
+        "shortName": "list_tasks"
       },
+      "description": "Sample for ListTasks",
       "file": "dataplex_v1_generated_dataplex_service_list_tasks_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_DataplexService_ListTasks_async",
       "segments": [
         {
@@ -2616,18 +4841,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_dataplex_service_list_tasks_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataplexServiceClient",
+          "shortName": "DataplexServiceClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataplexServiceClient.list_tasks",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.DataplexService.ListTasks",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.DataplexService",
             "shortName": "DataplexService"
           },
           "shortName": "ListTasks"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.ListTasksRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.services.dataplex_service.pagers.ListTasksPager",
+        "shortName": "list_tasks"
       },
+      "description": "Sample for ListTasks",
       "file": "dataplex_v1_generated_dataplex_service_list_tasks_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_DataplexService_ListTasks_sync",
       "segments": [
         {
@@ -2660,19 +4921,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_dataplex_service_list_tasks_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataplexServiceAsyncClient",
+          "shortName": "DataplexServiceAsyncClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataplexServiceAsyncClient.list_zone_actions",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.DataplexService.ListZoneActions",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.DataplexService",
             "shortName": "DataplexService"
           },
           "shortName": "ListZoneActions"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.ListZoneActionsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.services.dataplex_service.pagers.ListZoneActionsAsyncPager",
+        "shortName": "list_zone_actions"
       },
+      "description": "Sample for ListZoneActions",
       "file": "dataplex_v1_generated_dataplex_service_list_zone_actions_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_DataplexService_ListZoneActions_async",
       "segments": [
         {
@@ -2705,18 +5002,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_dataplex_service_list_zone_actions_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataplexServiceClient",
+          "shortName": "DataplexServiceClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataplexServiceClient.list_zone_actions",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.DataplexService.ListZoneActions",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.DataplexService",
             "shortName": "DataplexService"
           },
           "shortName": "ListZoneActions"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.ListZoneActionsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.services.dataplex_service.pagers.ListZoneActionsPager",
+        "shortName": "list_zone_actions"
       },
+      "description": "Sample for ListZoneActions",
       "file": "dataplex_v1_generated_dataplex_service_list_zone_actions_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_DataplexService_ListZoneActions_sync",
       "segments": [
         {
@@ -2749,19 +5082,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_dataplex_service_list_zone_actions_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataplexServiceAsyncClient",
+          "shortName": "DataplexServiceAsyncClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataplexServiceAsyncClient.list_zones",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.DataplexService.ListZones",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.DataplexService",
             "shortName": "DataplexService"
           },
           "shortName": "ListZones"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.ListZonesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.services.dataplex_service.pagers.ListZonesAsyncPager",
+        "shortName": "list_zones"
       },
+      "description": "Sample for ListZones",
       "file": "dataplex_v1_generated_dataplex_service_list_zones_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_DataplexService_ListZones_async",
       "segments": [
         {
@@ -2794,18 +5163,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_dataplex_service_list_zones_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataplexServiceClient",
+          "shortName": "DataplexServiceClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataplexServiceClient.list_zones",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.DataplexService.ListZones",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.DataplexService",
             "shortName": "DataplexService"
           },
           "shortName": "ListZones"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.ListZonesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.services.dataplex_service.pagers.ListZonesPager",
+        "shortName": "list_zones"
       },
+      "description": "Sample for ListZones",
       "file": "dataplex_v1_generated_dataplex_service_list_zones_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_DataplexService_ListZones_sync",
       "segments": [
         {
@@ -2838,19 +5243,59 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_dataplex_service_list_zones_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataplexServiceAsyncClient",
+          "shortName": "DataplexServiceAsyncClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataplexServiceAsyncClient.update_asset",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.DataplexService.UpdateAsset",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.DataplexService",
             "shortName": "DataplexService"
           },
           "shortName": "UpdateAsset"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.UpdateAssetRequest"
+          },
+          {
+            "name": "asset",
+            "type": "google.cloud.dataplex_v1.types.Asset"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "update_asset"
       },
+      "description": "Sample for UpdateAsset",
       "file": "dataplex_v1_generated_dataplex_service_update_asset_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_DataplexService_UpdateAsset_async",
       "segments": [
         {
@@ -2883,18 +5328,58 @@
           "start": 49,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_dataplex_service_update_asset_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataplexServiceClient",
+          "shortName": "DataplexServiceClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataplexServiceClient.update_asset",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.DataplexService.UpdateAsset",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.DataplexService",
             "shortName": "DataplexService"
           },
           "shortName": "UpdateAsset"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.UpdateAssetRequest"
+          },
+          {
+            "name": "asset",
+            "type": "google.cloud.dataplex_v1.types.Asset"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "update_asset"
       },
+      "description": "Sample for UpdateAsset",
       "file": "dataplex_v1_generated_dataplex_service_update_asset_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_DataplexService_UpdateAsset_sync",
       "segments": [
         {
@@ -2927,19 +5412,59 @@
           "start": 49,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_dataplex_service_update_asset_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataplexServiceAsyncClient",
+          "shortName": "DataplexServiceAsyncClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataplexServiceAsyncClient.update_environment",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.DataplexService.UpdateEnvironment",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.DataplexService",
             "shortName": "DataplexService"
           },
           "shortName": "UpdateEnvironment"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.UpdateEnvironmentRequest"
+          },
+          {
+            "name": "environment",
+            "type": "google.cloud.dataplex_v1.types.Environment"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "update_environment"
       },
+      "description": "Sample for UpdateEnvironment",
       "file": "dataplex_v1_generated_dataplex_service_update_environment_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_DataplexService_UpdateEnvironment_async",
       "segments": [
         {
@@ -2972,18 +5497,58 @@
           "start": 49,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_dataplex_service_update_environment_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataplexServiceClient",
+          "shortName": "DataplexServiceClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataplexServiceClient.update_environment",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.DataplexService.UpdateEnvironment",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.DataplexService",
             "shortName": "DataplexService"
           },
           "shortName": "UpdateEnvironment"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.UpdateEnvironmentRequest"
+          },
+          {
+            "name": "environment",
+            "type": "google.cloud.dataplex_v1.types.Environment"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "update_environment"
       },
+      "description": "Sample for UpdateEnvironment",
       "file": "dataplex_v1_generated_dataplex_service_update_environment_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_DataplexService_UpdateEnvironment_sync",
       "segments": [
         {
@@ -3016,19 +5581,59 @@
           "start": 49,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_dataplex_service_update_environment_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataplexServiceAsyncClient",
+          "shortName": "DataplexServiceAsyncClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataplexServiceAsyncClient.update_lake",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.DataplexService.UpdateLake",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.DataplexService",
             "shortName": "DataplexService"
           },
           "shortName": "UpdateLake"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.UpdateLakeRequest"
+          },
+          {
+            "name": "lake",
+            "type": "google.cloud.dataplex_v1.types.Lake"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "update_lake"
       },
+      "description": "Sample for UpdateLake",
       "file": "dataplex_v1_generated_dataplex_service_update_lake_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_DataplexService_UpdateLake_async",
       "segments": [
         {
@@ -3061,18 +5666,58 @@
           "start": 45,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_dataplex_service_update_lake_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataplexServiceClient",
+          "shortName": "DataplexServiceClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataplexServiceClient.update_lake",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.DataplexService.UpdateLake",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.DataplexService",
             "shortName": "DataplexService"
           },
           "shortName": "UpdateLake"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.UpdateLakeRequest"
+          },
+          {
+            "name": "lake",
+            "type": "google.cloud.dataplex_v1.types.Lake"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "update_lake"
       },
+      "description": "Sample for UpdateLake",
       "file": "dataplex_v1_generated_dataplex_service_update_lake_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_DataplexService_UpdateLake_sync",
       "segments": [
         {
@@ -3105,19 +5750,59 @@
           "start": 45,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_dataplex_service_update_lake_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataplexServiceAsyncClient",
+          "shortName": "DataplexServiceAsyncClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataplexServiceAsyncClient.update_task",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.DataplexService.UpdateTask",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.DataplexService",
             "shortName": "DataplexService"
           },
           "shortName": "UpdateTask"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.UpdateTaskRequest"
+          },
+          {
+            "name": "task",
+            "type": "google.cloud.dataplex_v1.types.Task"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "update_task"
       },
+      "description": "Sample for UpdateTask",
       "file": "dataplex_v1_generated_dataplex_service_update_task_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_DataplexService_UpdateTask_async",
       "segments": [
         {
@@ -3150,18 +5835,58 @@
           "start": 52,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_dataplex_service_update_task_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataplexServiceClient",
+          "shortName": "DataplexServiceClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataplexServiceClient.update_task",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.DataplexService.UpdateTask",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.DataplexService",
             "shortName": "DataplexService"
           },
           "shortName": "UpdateTask"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.UpdateTaskRequest"
+          },
+          {
+            "name": "task",
+            "type": "google.cloud.dataplex_v1.types.Task"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "update_task"
       },
+      "description": "Sample for UpdateTask",
       "file": "dataplex_v1_generated_dataplex_service_update_task_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_DataplexService_UpdateTask_sync",
       "segments": [
         {
@@ -3194,19 +5919,59 @@
           "start": 52,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_dataplex_service_update_task_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataplexServiceAsyncClient",
+          "shortName": "DataplexServiceAsyncClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataplexServiceAsyncClient.update_zone",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.DataplexService.UpdateZone",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.DataplexService",
             "shortName": "DataplexService"
           },
           "shortName": "UpdateZone"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.UpdateZoneRequest"
+          },
+          {
+            "name": "zone",
+            "type": "google.cloud.dataplex_v1.types.Zone"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "update_zone"
       },
+      "description": "Sample for UpdateZone",
       "file": "dataplex_v1_generated_dataplex_service_update_zone_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_DataplexService_UpdateZone_async",
       "segments": [
         {
@@ -3239,18 +6004,58 @@
           "start": 50,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_dataplex_service_update_zone_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.DataplexServiceClient",
+          "shortName": "DataplexServiceClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.DataplexServiceClient.update_zone",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.DataplexService.UpdateZone",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.DataplexService",
             "shortName": "DataplexService"
           },
           "shortName": "UpdateZone"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.UpdateZoneRequest"
+          },
+          {
+            "name": "zone",
+            "type": "google.cloud.dataplex_v1.types.Zone"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "update_zone"
       },
+      "description": "Sample for UpdateZone",
       "file": "dataplex_v1_generated_dataplex_service_update_zone_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_DataplexService_UpdateZone_sync",
       "segments": [
         {
@@ -3283,19 +6088,59 @@
           "start": 50,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_dataplex_service_update_zone_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.MetadataServiceAsyncClient",
+          "shortName": "MetadataServiceAsyncClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.MetadataServiceAsyncClient.create_entity",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.MetadataService.CreateEntity",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.MetadataService",
             "shortName": "MetadataService"
           },
           "shortName": "CreateEntity"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.CreateEntityRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "entity",
+            "type": "google.cloud.dataplex_v1.types.Entity"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.types.Entity",
+        "shortName": "create_entity"
       },
+      "description": "Sample for CreateEntity",
       "file": "dataplex_v1_generated_metadata_service_create_entity_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_MetadataService_CreateEntity_async",
       "segments": [
         {
@@ -3328,18 +6173,58 @@
           "start": 52,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_metadata_service_create_entity_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.MetadataServiceClient",
+          "shortName": "MetadataServiceClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.MetadataServiceClient.create_entity",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.MetadataService.CreateEntity",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.MetadataService",
             "shortName": "MetadataService"
           },
           "shortName": "CreateEntity"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.CreateEntityRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "entity",
+            "type": "google.cloud.dataplex_v1.types.Entity"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.types.Entity",
+        "shortName": "create_entity"
       },
+      "description": "Sample for CreateEntity",
       "file": "dataplex_v1_generated_metadata_service_create_entity_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_MetadataService_CreateEntity_sync",
       "segments": [
         {
@@ -3372,19 +6257,59 @@
           "start": 52,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_metadata_service_create_entity_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.MetadataServiceAsyncClient",
+          "shortName": "MetadataServiceAsyncClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.MetadataServiceAsyncClient.create_partition",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.MetadataService.CreatePartition",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.MetadataService",
             "shortName": "MetadataService"
           },
           "shortName": "CreatePartition"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.CreatePartitionRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "partition",
+            "type": "google.cloud.dataplex_v1.types.Partition"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.types.Partition",
+        "shortName": "create_partition"
       },
+      "description": "Sample for CreatePartition",
       "file": "dataplex_v1_generated_metadata_service_create_partition_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_MetadataService_CreatePartition_async",
       "segments": [
         {
@@ -3417,18 +6342,58 @@
           "start": 47,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_metadata_service_create_partition_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.MetadataServiceClient",
+          "shortName": "MetadataServiceClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.MetadataServiceClient.create_partition",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.MetadataService.CreatePartition",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.MetadataService",
             "shortName": "MetadataService"
           },
           "shortName": "CreatePartition"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.CreatePartitionRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "partition",
+            "type": "google.cloud.dataplex_v1.types.Partition"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.types.Partition",
+        "shortName": "create_partition"
       },
+      "description": "Sample for CreatePartition",
       "file": "dataplex_v1_generated_metadata_service_create_partition_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_MetadataService_CreatePartition_sync",
       "segments": [
         {
@@ -3461,19 +6426,54 @@
           "start": 47,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_metadata_service_create_partition_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.MetadataServiceAsyncClient",
+          "shortName": "MetadataServiceAsyncClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.MetadataServiceAsyncClient.delete_entity",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.MetadataService.DeleteEntity",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.MetadataService",
             "shortName": "MetadataService"
           },
           "shortName": "DeleteEntity"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.DeleteEntityRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_entity"
       },
+      "description": "Sample for DeleteEntity",
       "file": "dataplex_v1_generated_metadata_service_delete_entity_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_MetadataService_DeleteEntity_async",
       "segments": [
         {
@@ -3504,18 +6504,53 @@
           "end": 44,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_metadata_service_delete_entity_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.MetadataServiceClient",
+          "shortName": "MetadataServiceClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.MetadataServiceClient.delete_entity",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.MetadataService.DeleteEntity",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.MetadataService",
             "shortName": "MetadataService"
           },
           "shortName": "DeleteEntity"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.DeleteEntityRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_entity"
       },
+      "description": "Sample for DeleteEntity",
       "file": "dataplex_v1_generated_metadata_service_delete_entity_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_MetadataService_DeleteEntity_sync",
       "segments": [
         {
@@ -3546,19 +6581,54 @@
           "end": 44,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_metadata_service_delete_entity_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.MetadataServiceAsyncClient",
+          "shortName": "MetadataServiceAsyncClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.MetadataServiceAsyncClient.delete_partition",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.MetadataService.DeletePartition",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.MetadataService",
             "shortName": "MetadataService"
           },
           "shortName": "DeletePartition"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.DeletePartitionRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_partition"
       },
+      "description": "Sample for DeletePartition",
       "file": "dataplex_v1_generated_metadata_service_delete_partition_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_MetadataService_DeletePartition_async",
       "segments": [
         {
@@ -3589,18 +6659,53 @@
           "end": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_metadata_service_delete_partition_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.MetadataServiceClient",
+          "shortName": "MetadataServiceClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.MetadataServiceClient.delete_partition",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.MetadataService.DeletePartition",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.MetadataService",
             "shortName": "MetadataService"
           },
           "shortName": "DeletePartition"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.DeletePartitionRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_partition"
       },
+      "description": "Sample for DeletePartition",
       "file": "dataplex_v1_generated_metadata_service_delete_partition_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_MetadataService_DeletePartition_sync",
       "segments": [
         {
@@ -3631,19 +6736,55 @@
           "end": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_metadata_service_delete_partition_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.MetadataServiceAsyncClient",
+          "shortName": "MetadataServiceAsyncClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.MetadataServiceAsyncClient.get_entity",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.MetadataService.GetEntity",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.MetadataService",
             "shortName": "MetadataService"
           },
           "shortName": "GetEntity"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.GetEntityRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.types.Entity",
+        "shortName": "get_entity"
       },
+      "description": "Sample for GetEntity",
       "file": "dataplex_v1_generated_metadata_service_get_entity_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_MetadataService_GetEntity_async",
       "segments": [
         {
@@ -3676,18 +6817,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_metadata_service_get_entity_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.MetadataServiceClient",
+          "shortName": "MetadataServiceClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.MetadataServiceClient.get_entity",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.MetadataService.GetEntity",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.MetadataService",
             "shortName": "MetadataService"
           },
           "shortName": "GetEntity"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.GetEntityRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.types.Entity",
+        "shortName": "get_entity"
       },
+      "description": "Sample for GetEntity",
       "file": "dataplex_v1_generated_metadata_service_get_entity_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_MetadataService_GetEntity_sync",
       "segments": [
         {
@@ -3720,19 +6897,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_metadata_service_get_entity_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.MetadataServiceAsyncClient",
+          "shortName": "MetadataServiceAsyncClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.MetadataServiceAsyncClient.get_partition",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.MetadataService.GetPartition",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.MetadataService",
             "shortName": "MetadataService"
           },
           "shortName": "GetPartition"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.GetPartitionRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.types.Partition",
+        "shortName": "get_partition"
       },
+      "description": "Sample for GetPartition",
       "file": "dataplex_v1_generated_metadata_service_get_partition_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_MetadataService_GetPartition_async",
       "segments": [
         {
@@ -3765,18 +6978,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_metadata_service_get_partition_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.MetadataServiceClient",
+          "shortName": "MetadataServiceClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.MetadataServiceClient.get_partition",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.MetadataService.GetPartition",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.MetadataService",
             "shortName": "MetadataService"
           },
           "shortName": "GetPartition"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.GetPartitionRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.types.Partition",
+        "shortName": "get_partition"
       },
+      "description": "Sample for GetPartition",
       "file": "dataplex_v1_generated_metadata_service_get_partition_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_MetadataService_GetPartition_sync",
       "segments": [
         {
@@ -3809,19 +7058,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_metadata_service_get_partition_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.MetadataServiceAsyncClient",
+          "shortName": "MetadataServiceAsyncClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.MetadataServiceAsyncClient.list_entities",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.MetadataService.ListEntities",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.MetadataService",
             "shortName": "MetadataService"
           },
           "shortName": "ListEntities"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.ListEntitiesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.services.metadata_service.pagers.ListEntitiesAsyncPager",
+        "shortName": "list_entities"
       },
+      "description": "Sample for ListEntities",
       "file": "dataplex_v1_generated_metadata_service_list_entities_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_MetadataService_ListEntities_async",
       "segments": [
         {
@@ -3854,18 +7139,54 @@
           "start": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_metadata_service_list_entities_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.MetadataServiceClient",
+          "shortName": "MetadataServiceClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.MetadataServiceClient.list_entities",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.MetadataService.ListEntities",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.MetadataService",
             "shortName": "MetadataService"
           },
           "shortName": "ListEntities"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.ListEntitiesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.services.metadata_service.pagers.ListEntitiesPager",
+        "shortName": "list_entities"
       },
+      "description": "Sample for ListEntities",
       "file": "dataplex_v1_generated_metadata_service_list_entities_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_MetadataService_ListEntities_sync",
       "segments": [
         {
@@ -3898,19 +7219,55 @@
           "start": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_metadata_service_list_entities_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.MetadataServiceAsyncClient",
+          "shortName": "MetadataServiceAsyncClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.MetadataServiceAsyncClient.list_partitions",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.MetadataService.ListPartitions",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.MetadataService",
             "shortName": "MetadataService"
           },
           "shortName": "ListPartitions"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.ListPartitionsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.services.metadata_service.pagers.ListPartitionsAsyncPager",
+        "shortName": "list_partitions"
       },
+      "description": "Sample for ListPartitions",
       "file": "dataplex_v1_generated_metadata_service_list_partitions_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_MetadataService_ListPartitions_async",
       "segments": [
         {
@@ -3943,18 +7300,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_metadata_service_list_partitions_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.MetadataServiceClient",
+          "shortName": "MetadataServiceClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.MetadataServiceClient.list_partitions",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.MetadataService.ListPartitions",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.MetadataService",
             "shortName": "MetadataService"
           },
           "shortName": "ListPartitions"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.ListPartitionsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.services.metadata_service.pagers.ListPartitionsPager",
+        "shortName": "list_partitions"
       },
+      "description": "Sample for ListPartitions",
       "file": "dataplex_v1_generated_metadata_service_list_partitions_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_MetadataService_ListPartitions_sync",
       "segments": [
         {
@@ -3987,19 +7380,51 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_metadata_service_list_partitions_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.MetadataServiceAsyncClient",
+          "shortName": "MetadataServiceAsyncClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.MetadataServiceAsyncClient.update_entity",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.MetadataService.UpdateEntity",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.MetadataService",
             "shortName": "MetadataService"
           },
           "shortName": "UpdateEntity"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.UpdateEntityRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.types.Entity",
+        "shortName": "update_entity"
       },
+      "description": "Sample for UpdateEntity",
       "file": "dataplex_v1_generated_metadata_service_update_entity_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_MetadataService_UpdateEntity_async",
       "segments": [
         {
@@ -4032,18 +7457,50 @@
           "start": 51,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_metadata_service_update_entity_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.dataplex_v1.MetadataServiceClient",
+          "shortName": "MetadataServiceClient"
+        },
+        "fullName": "google.cloud.dataplex_v1.MetadataServiceClient.update_entity",
         "method": {
+          "fullName": "google.cloud.dataplex.v1.MetadataService.UpdateEntity",
           "service": {
+            "fullName": "google.cloud.dataplex.v1.MetadataService",
             "shortName": "MetadataService"
           },
           "shortName": "UpdateEntity"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.dataplex_v1.types.UpdateEntityRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.dataplex_v1.types.Entity",
+        "shortName": "update_entity"
       },
+      "description": "Sample for UpdateEntity",
       "file": "dataplex_v1_generated_metadata_service_update_entity_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "dataplex_v1_generated_MetadataService_UpdateEntity_sync",
       "segments": [
         {
@@ -4076,7 +7533,8 @@
           "start": 51,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "dataplex_v1_generated_metadata_service_update_entity_sync.py"
     }
   ]
 }
