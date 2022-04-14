@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -232,7 +232,6 @@ class EnvironmentsAsyncClient:
         r"""Returns the list of all environments in the specified
         [Agent][google.cloud.dialogflow.cx.v3beta1.Agent].
 
-
         .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
@@ -343,7 +342,6 @@ class EnvironmentsAsyncClient:
     ) -> environment.Environment:
         r"""Retrieves the specified
         [Environment][google.cloud.dialogflow.cx.v3beta1.Environment].
-
 
         .. code-block:: python
 
@@ -467,7 +465,6 @@ class EnvironmentsAsyncClient:
            message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
         -  ``response``:
            [Environment][google.cloud.dialogflow.cx.v3beta1.Environment]
-
 
         .. code-block:: python
 
@@ -615,7 +612,6 @@ class EnvironmentsAsyncClient:
         -  ``response``:
            [Environment][google.cloud.dialogflow.cx.v3beta1.Environment]
 
-
         .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
@@ -748,7 +744,6 @@ class EnvironmentsAsyncClient:
         r"""Deletes the specified
         [Environment][google.cloud.dialogflow.cx.v3beta1.Environment].
 
-
         .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
@@ -834,7 +829,6 @@ class EnvironmentsAsyncClient:
     ) -> pagers.LookupEnvironmentHistoryAsyncPager:
         r"""Looks up the history of the specified
         [Environment][google.cloud.dialogflow.cx.v3beta1.Environment].
-
 
         .. code-block:: python
 
@@ -955,7 +949,6 @@ class EnvironmentsAsyncClient:
         -  ``response``:
            [RunContinuousTestResponse][google.cloud.dialogflow.cx.v3beta1.RunContinuousTestResponse]
 
-
         .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
@@ -1048,7 +1041,6 @@ class EnvironmentsAsyncClient:
     ) -> pagers.ListContinuousTestResultsAsyncPager:
         r"""Fetches a list of continuous test results for a given
         environment.
-
 
         .. code-block:: python
 
@@ -1167,7 +1159,6 @@ class EnvironmentsAsyncClient:
            [DeployFlowMetadata][google.cloud.dialogflow.cx.v3beta1.DeployFlowMetadata]
         -  ``response``:
            [DeployFlowResponse][google.cloud.dialogflow.cx.v3beta1.DeployFlowResponse]
-
 
         .. code-block:: python
 

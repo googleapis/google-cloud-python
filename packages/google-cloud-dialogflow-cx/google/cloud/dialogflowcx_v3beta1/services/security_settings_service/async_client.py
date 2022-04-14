@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -358,7 +358,6 @@ class SecuritySettingsServiceAsyncClient:
         [SecuritySettings][google.cloud.dialogflow.cx.v3beta1.SecuritySettings].
         The returned settings may be stale by up to 1 minute.
 
-
         .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
@@ -461,7 +460,6 @@ class SecuritySettingsServiceAsyncClient:
     ) -> gcdc_security_settings.SecuritySettings:
         r"""Updates the specified
         [SecuritySettings][google.cloud.dialogflow.cx.v3beta1.SecuritySettings].
-
 
         .. code-block:: python
 
@@ -579,7 +577,6 @@ class SecuritySettingsServiceAsyncClient:
         r"""Returns the list of all security settings in the
         specified location.
 
-
         .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
@@ -689,7 +686,6 @@ class SecuritySettingsServiceAsyncClient:
     ) -> None:
         r"""Deletes the specified
         [SecuritySettings][google.cloud.dialogflow.cx.v3beta1.SecuritySettings].
-
 
         .. code-block:: python
 

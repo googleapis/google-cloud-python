@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -450,7 +450,6 @@ class VersionsClient(metaclass=VersionsClientMeta):
         r"""Returns the list of all versions in the specified
         [Flow][google.cloud.dialogflow.cx.v3.Flow].
 
-
         .. code-block:: python
 
             from google.cloud import dialogflowcx_v3
@@ -561,7 +560,6 @@ class VersionsClient(metaclass=VersionsClientMeta):
         r"""Retrieves the specified
         [Version][google.cloud.dialogflow.cx.v3.Version].
 
-
         .. code-block:: python
 
             from google.cloud import dialogflowcx_v3
@@ -668,7 +666,6 @@ class VersionsClient(metaclass=VersionsClientMeta):
            [CreateVersionOperationMetadata][google.cloud.dialogflow.cx.v3.CreateVersionOperationMetadata]
         -  ``response``:
            [Version][google.cloud.dialogflow.cx.v3.Version]
-
 
         .. code-block:: python
 
@@ -796,7 +793,6 @@ class VersionsClient(metaclass=VersionsClientMeta):
         r"""Updates the specified
         [Version][google.cloud.dialogflow.cx.v3.Version].
 
-
         .. code-block:: python
 
             from google.cloud import dialogflowcx_v3
@@ -904,7 +900,6 @@ class VersionsClient(metaclass=VersionsClientMeta):
         r"""Deletes the specified
         [Version][google.cloud.dialogflow.cx.v3.Version].
 
-
         .. code-block:: python
 
             from google.cloud import dialogflowcx_v3
@@ -999,7 +994,6 @@ class VersionsClient(metaclass=VersionsClientMeta):
            message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
         -  ``response``: An `Empty
            message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
-
 
         .. code-block:: python
 
@@ -1123,7 +1117,6 @@ class VersionsClient(metaclass=VersionsClientMeta):
     ) -> version.CompareVersionsResponse:
         r"""Compares the specified base version with target
         version.
-
 
         .. code-block:: python
 

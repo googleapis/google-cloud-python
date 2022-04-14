@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -216,7 +216,6 @@ class VersionsAsyncClient:
         r"""Returns the list of all versions in the specified
         [Flow][google.cloud.dialogflow.cx.v3.Flow].
 
-
         .. code-block:: python
 
             from google.cloud import dialogflowcx_v3
@@ -327,7 +326,6 @@ class VersionsAsyncClient:
         r"""Retrieves the specified
         [Version][google.cloud.dialogflow.cx.v3.Version].
 
-
         .. code-block:: python
 
             from google.cloud import dialogflowcx_v3
@@ -434,7 +432,6 @@ class VersionsAsyncClient:
            [CreateVersionOperationMetadata][google.cloud.dialogflow.cx.v3.CreateVersionOperationMetadata]
         -  ``response``:
            [Version][google.cloud.dialogflow.cx.v3.Version]
-
 
         .. code-block:: python
 
@@ -562,7 +559,6 @@ class VersionsAsyncClient:
         r"""Updates the specified
         [Version][google.cloud.dialogflow.cx.v3.Version].
 
-
         .. code-block:: python
 
             from google.cloud import dialogflowcx_v3
@@ -670,7 +666,6 @@ class VersionsAsyncClient:
         r"""Deletes the specified
         [Version][google.cloud.dialogflow.cx.v3.Version].
 
-
         .. code-block:: python
 
             from google.cloud import dialogflowcx_v3
@@ -765,7 +760,6 @@ class VersionsAsyncClient:
            message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
         -  ``response``: An `Empty
            message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
-
 
         .. code-block:: python
 
@@ -889,7 +883,6 @@ class VersionsAsyncClient:
     ) -> version.CompareVersionsResponse:
         r"""Compares the specified base version with target
         version.
-
 
         .. code-block:: python
 

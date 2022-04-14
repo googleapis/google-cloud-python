@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -1174,7 +1174,6 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
         -  ``response``:
            [RunTestCaseResponse][google.cloud.dialogflow.cx.v3beta1.RunTestCaseResponse]
 
-
         .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
@@ -1274,7 +1273,6 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
            [BatchRunTestCasesMetadata][google.cloud.dialogflow.cx.v3beta1.BatchRunTestCasesMetadata]
         -  ``response``:
            [BatchRunTestCasesResponse][google.cloud.dialogflow.cx.v3beta1.BatchRunTestCasesResponse]
-
 
         .. code-block:: python
 
@@ -1455,7 +1453,6 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
         -  ``response``:
            [ImportTestCasesResponse][google.cloud.dialogflow.cx.v3beta1.ImportTestCasesResponse]
 
-
         .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
@@ -1558,7 +1555,6 @@ class TestCasesClient(metaclass=TestCasesClientMeta):
            [ExportTestCasesMetadata][google.cloud.dialogflow.cx.v3beta1.ExportTestCasesMetadata]
         -  ``response``:
            [ExportTestCasesResponse][google.cloud.dialogflow.cx.v3beta1.ExportTestCasesResponse]
-
 
         .. code-block:: python
 

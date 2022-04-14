@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -472,7 +472,6 @@ class ExperimentsClient(metaclass=ExperimentsClientMeta):
         r"""Returns the list of all experiments in the specified
         [Environment][google.cloud.dialogflow.cx.v3.Environment].
 
-
         .. code-block:: python
 
             from google.cloud import dialogflowcx_v3
@@ -584,7 +583,6 @@ class ExperimentsClient(metaclass=ExperimentsClientMeta):
         r"""Retrieves the specified
         [Experiment][google.cloud.dialogflow.cx.v3.Experiment].
 
-
         .. code-block:: python
 
             from google.cloud import dialogflowcx_v3
@@ -685,7 +683,6 @@ class ExperimentsClient(metaclass=ExperimentsClientMeta):
         [Experiment][google.cloud.dialogflow.cx.v3.Experiment] in the
         specified
         [Environment][google.cloud.dialogflow.cx.v3.Environment].
-
 
         .. code-block:: python
 
@@ -799,7 +796,6 @@ class ExperimentsClient(metaclass=ExperimentsClientMeta):
         r"""Updates the specified
         [Experiment][google.cloud.dialogflow.cx.v3.Experiment].
 
-
         .. code-block:: python
 
             from google.cloud import dialogflowcx_v3
@@ -908,7 +904,6 @@ class ExperimentsClient(metaclass=ExperimentsClientMeta):
         r"""Deletes the specified
         [Experiment][google.cloud.dialogflow.cx.v3.Experiment].
 
-
         .. code-block:: python
 
             from google.cloud import dialogflowcx_v3
@@ -995,7 +990,6 @@ class ExperimentsClient(metaclass=ExperimentsClientMeta):
         r"""Starts the specified
         [Experiment][google.cloud.dialogflow.cx.v3.Experiment]. This rpc
         only changes the state of experiment from PENDING to RUNNING.
-
 
         .. code-block:: python
 
@@ -1094,7 +1088,6 @@ class ExperimentsClient(metaclass=ExperimentsClientMeta):
         r"""Stops the specified
         [Experiment][google.cloud.dialogflow.cx.v3.Experiment]. This rpc
         only changes the state of experiment from RUNNING to DONE.
-
 
         .. code-block:: python
 

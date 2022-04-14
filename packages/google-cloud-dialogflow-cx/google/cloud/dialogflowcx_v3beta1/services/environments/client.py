@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -548,7 +548,6 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         r"""Returns the list of all environments in the specified
         [Agent][google.cloud.dialogflow.cx.v3beta1.Agent].
 
-
         .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
@@ -659,7 +658,6 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
     ) -> environment.Environment:
         r"""Retrieves the specified
         [Environment][google.cloud.dialogflow.cx.v3beta1.Environment].
-
 
         .. code-block:: python
 
@@ -783,7 +781,6 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
            message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#struct>`__
         -  ``response``:
            [Environment][google.cloud.dialogflow.cx.v3beta1.Environment]
-
 
         .. code-block:: python
 
@@ -931,7 +928,6 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         -  ``response``:
            [Environment][google.cloud.dialogflow.cx.v3beta1.Environment]
 
-
         .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
@@ -1064,7 +1060,6 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         r"""Deletes the specified
         [Environment][google.cloud.dialogflow.cx.v3beta1.Environment].
 
-
         .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
@@ -1150,7 +1145,6 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
     ) -> pagers.LookupEnvironmentHistoryPager:
         r"""Looks up the history of the specified
         [Environment][google.cloud.dialogflow.cx.v3beta1.Environment].
-
 
         .. code-block:: python
 
@@ -1273,7 +1267,6 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
         -  ``response``:
            [RunContinuousTestResponse][google.cloud.dialogflow.cx.v3beta1.RunContinuousTestResponse]
 
-
         .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
@@ -1367,7 +1360,6 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
     ) -> pagers.ListContinuousTestResultsPager:
         r"""Fetches a list of continuous test results for a given
         environment.
-
 
         .. code-block:: python
 
@@ -1488,7 +1480,6 @@ class EnvironmentsClient(metaclass=EnvironmentsClientMeta):
            [DeployFlowMetadata][google.cloud.dialogflow.cx.v3beta1.DeployFlowMetadata]
         -  ``response``:
            [DeployFlowResponse][google.cloud.dialogflow.cx.v3beta1.DeployFlowResponse]
-
 
         .. code-block:: python
 

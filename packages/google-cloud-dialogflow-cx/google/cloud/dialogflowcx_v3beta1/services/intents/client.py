@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -466,7 +466,6 @@ class IntentsClient(metaclass=IntentsClientMeta):
         r"""Returns the list of all intents in the specified
         agent.
 
-
         .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
@@ -680,7 +679,6 @@ class IntentsClient(metaclass=IntentsClientMeta):
         queries. See the `training
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
-
         .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
@@ -796,7 +794,6 @@ class IntentsClient(metaclass=IntentsClientMeta):
         Note: You should always train a flow prior to sending it
         queries. See the `training
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
-
 
         .. code-block:: python
 
@@ -914,7 +911,6 @@ class IntentsClient(metaclass=IntentsClientMeta):
         Note: You should always train a flow prior to sending it
         queries. See the `training
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
-
 
         .. code-block:: python
 

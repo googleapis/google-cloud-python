@@ -87,7 +87,7 @@ class Intent(proto.Message):
             mistakenly matched, since training phrases
             assigned to fallback intents act as negative
             examples that triggers no-match event.
-        labels (Sequence[google.cloud.dialogflowcx_v3beta1.types.Intent.LabelsEntry]):
+        labels (Mapping[str, str]):
             The key/value metadata to label an intent. Labels can
             contain lowercase letters, digits and the symbols '-' and
             '_'. International characters are allowed, including letters

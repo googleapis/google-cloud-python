@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -218,7 +218,6 @@ class ExperimentsAsyncClient:
         r"""Returns the list of all experiments in the specified
         [Environment][google.cloud.dialogflow.cx.v3beta1.Environment].
 
-
         .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
@@ -330,7 +329,6 @@ class ExperimentsAsyncClient:
         r"""Retrieves the specified
         [Experiment][google.cloud.dialogflow.cx.v3beta1.Experiment].
 
-
         .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
@@ -431,7 +429,6 @@ class ExperimentsAsyncClient:
         [Experiment][google.cloud.dialogflow.cx.v3beta1.Experiment] in
         the specified
         [Environment][google.cloud.dialogflow.cx.v3beta1.Environment].
-
 
         .. code-block:: python
 
@@ -545,7 +542,6 @@ class ExperimentsAsyncClient:
         r"""Updates the specified
         [Experiment][google.cloud.dialogflow.cx.v3beta1.Experiment].
 
-
         .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
@@ -654,7 +650,6 @@ class ExperimentsAsyncClient:
         r"""Deletes the specified
         [Experiment][google.cloud.dialogflow.cx.v3beta1.Experiment].
 
-
         .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
@@ -742,7 +737,6 @@ class ExperimentsAsyncClient:
         [Experiment][google.cloud.dialogflow.cx.v3beta1.Experiment].
         This rpc only changes the state of experiment from PENDING to
         RUNNING.
-
 
         .. code-block:: python
 
@@ -842,7 +836,6 @@ class ExperimentsAsyncClient:
         [Experiment][google.cloud.dialogflow.cx.v3beta1.Experiment].
         This rpc only changes the state of experiment from RUNNING to
         DONE.
-
 
         .. code-block:: python
 

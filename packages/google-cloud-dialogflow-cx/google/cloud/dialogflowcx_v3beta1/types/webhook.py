@@ -95,7 +95,7 @@ class Webhook(proto.Message):
                 The user name for HTTP Basic authentication.
             password (str):
                 The password for HTTP Basic authentication.
-            request_headers (Sequence[google.cloud.dialogflowcx_v3beta1.types.Webhook.GenericWebService.RequestHeadersEntry]):
+            request_headers (Mapping[str, str]):
                 The HTTP request headers to send together
                 with webhook requests.
             allowed_ca_certs (Sequence[bytes]):
@@ -448,7 +448,7 @@ class WebhookRequest(proto.Message):
             display_name (str):
                 Always present. The display name of the last matched
                 [intent][google.cloud.dialogflow.cx.v3beta1.Intent].
-            parameters (Sequence[google.cloud.dialogflowcx_v3beta1.types.WebhookRequest.IntentInfo.ParametersEntry]):
+            parameters (Mapping[str, google.cloud.dialogflowcx_v3beta1.types.WebhookRequest.IntentInfo.IntentParameterValue]):
                 Parameters identified as a result of intent
                 matching. This is a map of the name of the
                 identified parameter to the value of the
@@ -841,7 +841,7 @@ class SessionInfo(proto.Message):
             or
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/environments/<Environment ID>/sessions/<Session ID>``
             if environment is specified.
-        parameters (Sequence[google.cloud.dialogflowcx_v3beta1.types.SessionInfo.ParametersEntry]):
+        parameters (Mapping[str, google.protobuf.struct_pb2.Value]):
             Optional for
             [WebhookRequest][google.cloud.dialogflow.cx.v3beta1.WebhookRequest].
             Optional for

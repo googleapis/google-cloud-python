@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -221,7 +221,6 @@ class DeploymentsAsyncClient:
         r"""Returns the list of all deployments in the specified
         [Environment][google.cloud.dialogflow.cx.v3beta1.Environment].
 
-
         .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
@@ -332,7 +331,6 @@ class DeploymentsAsyncClient:
     ) -> deployment.Deployment:
         r"""Retrieves the specified
         [Deployment][google.cloud.dialogflow.cx.v3beta1.Deployment].
-
 
         .. code-block:: python
 

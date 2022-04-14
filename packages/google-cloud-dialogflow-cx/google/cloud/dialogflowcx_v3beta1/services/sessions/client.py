@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Iterable, Iterator, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    Optional,
+    Iterable,
+    Iterator,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -648,7 +658,6 @@ class SessionsClient(metaclass=SessionsClientMeta):
         `Versions and
         environments <https://cloud.google.com/dialogflow/cx/docs/concept/version>`__.
 
-
         .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
@@ -733,7 +742,6 @@ class SessionsClient(metaclass=SessionsClientMeta):
         Note: Always use agent versions for production traffic. See
         `Versions and
         environments <https://cloud.google.com/dialogflow/cx/docs/concept/version>`__.
-
 
         .. code-block:: python
 
@@ -874,7 +882,6 @@ class SessionsClient(metaclass=SessionsClientMeta):
         r"""Returns preliminary intent match results, doesn't
         change the session status.
 
-
         .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
@@ -956,7 +963,6 @@ class SessionsClient(metaclass=SessionsClientMeta):
         with input from
         [MatchIntentResponse][google.cloud.dialogflow.cx.v3beta1.MatchIntentResponse].
         Otherwise, the behavior is undefined.
-
 
         .. code-block:: python
 

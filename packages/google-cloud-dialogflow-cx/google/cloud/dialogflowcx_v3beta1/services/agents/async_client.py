@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -231,7 +231,6 @@ class AgentsAsyncClient:
     ) -> pagers.ListAgentsAsyncPager:
         r"""Returns the list of all agents in the specified
         location.
-
 
         .. code-block:: python
 
@@ -453,7 +452,6 @@ class AgentsAsyncClient:
         queries. See the `training
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
-
         .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
@@ -578,7 +576,6 @@ class AgentsAsyncClient:
         Note: You should always train a flow prior to sending it
         queries. See the `training
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
-
 
         .. code-block:: python
 
@@ -794,7 +791,6 @@ class AgentsAsyncClient:
         -  ``response``:
            [ExportAgentResponse][google.cloud.dialogflow.cx.v3beta1.ExportAgentResponse]
 
-
         .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
@@ -902,7 +898,6 @@ class AgentsAsyncClient:
         queries. See the `training
         documentation <https://cloud.google.com/dialogflow/cx/docs/concept/training>`__.
 
-
         .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
@@ -1005,7 +1000,6 @@ class AgentsAsyncClient:
         validated. Please call this API after the training is
         completed to get the complete validation results.
 
-
         .. code-block:: python
 
             from google.cloud import dialogflowcx_v3beta1
@@ -1080,7 +1074,6 @@ class AgentsAsyncClient:
     ) -> agent.AgentValidationResult:
         r"""Gets the latest agent validation result. Agent
         validation is performed when ValidateAgent is called.
-
 
         .. code-block:: python
 
