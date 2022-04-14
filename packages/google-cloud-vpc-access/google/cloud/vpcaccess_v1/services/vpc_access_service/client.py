@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -446,7 +446,6 @@ class VpcAccessServiceClient(metaclass=VpcAccessServiceClientMeta):
         r"""Creates a Serverless VPC Access connector, returns an
         operation.
 
-
         .. code-block:: python
 
             from google.cloud import vpcaccess_v1
@@ -575,7 +574,6 @@ class VpcAccessServiceClient(metaclass=VpcAccessServiceClientMeta):
     ) -> vpc_access.Connector:
         r"""Gets a Serverless VPC Access connector. Returns NOT_FOUND if the
         resource does not exist.
-
 
         .. code-block:: python
 
@@ -780,7 +778,6 @@ class VpcAccessServiceClient(metaclass=VpcAccessServiceClientMeta):
     ) -> operation.Operation:
         r"""Deletes a Serverless VPC Access connector. Returns NOT_FOUND if
         the resource does not exist.
-
 
         .. code-block:: python
 
