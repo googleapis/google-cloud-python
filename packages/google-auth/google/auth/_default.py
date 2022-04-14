@@ -340,6 +340,8 @@ def _get_external_account_credentials(
                 "Failed to load external account credentials from {}".format(filename)
             )
     if request is None:
+        import google.auth.transport.requests
+
         request = google.auth.transport.requests.Request()
 
     return credentials, credentials.get_project_id(request=request)
