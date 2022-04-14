@@ -51,7 +51,7 @@ class secretmanagerCallTransformer(cst.CSTTransformer):
         'get_secret_version': ('name', ),
         'list_secrets': ('parent', 'page_size', 'page_token', 'filter', ),
         'list_secret_versions': ('parent', 'page_size', 'page_token', 'filter', ),
-        'set_iam_policy': ('resource', 'policy', ),
+        'set_iam_policy': ('resource', 'policy', 'update_mask', ),
         'test_iam_permissions': ('resource', 'permissions', ),
         'update_secret': ('secret', 'update_mask', ),
     }

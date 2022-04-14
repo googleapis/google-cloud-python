@@ -66,7 +66,7 @@ class Secret(proto.Message):
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time at which the
             [Secret][google.cloud.secretmanager.v1.Secret] was created.
-        labels (Sequence[google.cloud.secretmanager_v1.types.Secret.LabelsEntry]):
+        labels (Mapping[str, str]):
             The labels assigned to this Secret.
 
             Label keys must be between 1 and 63 characters long, have a
@@ -104,7 +104,7 @@ class Secret(proto.Message):
             Optional. Rotation policy attached to the
             [Secret][google.cloud.secretmanager.v1.Secret]. May be
             excluded if there is no rotation policy.
-        version_aliases (Sequence[google.cloud.secretmanager_v1.types.Secret.VersionAliasesEntry]):
+        version_aliases (Mapping[str, int]):
             Optional. Mapping from version alias to version name.
 
             A version alias is a string with a maximum length of 63

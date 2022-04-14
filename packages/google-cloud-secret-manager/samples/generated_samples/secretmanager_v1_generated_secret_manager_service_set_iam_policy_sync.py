@@ -25,6 +25,7 @@
 
 # [START secretmanager_v1_generated_SecretManagerService_SetIamPolicy_sync]
 from google.cloud import secretmanager_v1
+from google.iam.v1 import iam_policy_pb2  # type: ignore
 
 
 def sample_set_iam_policy():
@@ -32,7 +33,7 @@ def sample_set_iam_policy():
     client = secretmanager_v1.SecretManagerServiceClient()
 
     # Initialize request argument(s)
-    request = secretmanager_v1.SetIamPolicyRequest(
+    request = iam_policy_pb2.SetIamPolicyRequest(
         resource="resource_value",
     )
 
