@@ -20,7 +20,9 @@ from .trace import (
     StackTrace,
     TruncatableString,
 )
-from .tracing import BatchWriteSpansRequest
+from .tracing import (
+    BatchWriteSpansRequest,
+)
 
 __all__ = (
     "AttributeValue",

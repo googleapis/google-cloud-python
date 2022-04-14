@@ -115,7 +115,7 @@ class TraceSpan(proto.Message):
             UNIX epoch.
         parent_span_id (int):
             Optional. ID of the parent span, if any.
-        labels (Sequence[google.cloud.trace_v1.types.TraceSpan.LabelsEntry]):
+        labels (Mapping[str, str]):
             Collection of labels associated with the span. Label keys
             must be less than 128 bytes. Label values must be less than
             16 kilobytes (10MB for ``/stacktrace`` values).

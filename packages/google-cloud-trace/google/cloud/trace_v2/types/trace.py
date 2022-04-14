@@ -133,7 +133,7 @@ class Span(proto.Message):
         r"""A set of attributes, each in the format ``[KEY]:[VALUE]``.
 
         Attributes:
-            attribute_map (Sequence[google.cloud.trace_v2.types.Span.Attributes.AttributeMapEntry]):
+            attribute_map (Mapping[str, google.cloud.trace_v2.types.AttributeValue]):
                 The set of attributes. Each attribute's key can be up to 128
                 bytes long. The value can be a string up to 256 bytes, a
                 signed 64-bit integer, or the Boolean values ``true`` and

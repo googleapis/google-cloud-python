@@ -1,16 +1,64 @@
 {
+  "clientLibrary": {
+    "apis": [
+      {
+        "id": "google.devtools.cloudtrace.v2",
+        "version": "v2"
+      }
+    ],
+    "language": "PYTHON",
+    "name": "google-cloud-trace"
+  },
   "snippets": [
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.trace_v2.TraceServiceAsyncClient",
+          "shortName": "TraceServiceAsyncClient"
+        },
+        "fullName": "google.cloud.trace_v2.TraceServiceAsyncClient.batch_write_spans",
         "method": {
+          "fullName": "google.devtools.cloudtrace.v2.TraceService.BatchWriteSpans",
           "service": {
+            "fullName": "google.devtools.cloudtrace.v2.TraceService",
             "shortName": "TraceService"
           },
           "shortName": "BatchWriteSpans"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.trace_v2.types.BatchWriteSpansRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "spans",
+            "type": "Sequence[google.cloud.trace_v2.types.Span]"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "batch_write_spans"
       },
+      "description": "Sample for BatchWriteSpans",
       "file": "cloudtrace_v2_generated_trace_service_batch_write_spans_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudtrace_v2_generated_TraceService_BatchWriteSpans_async",
       "segments": [
         {
@@ -41,18 +89,57 @@
           "end": 48,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudtrace_v2_generated_trace_service_batch_write_spans_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.trace_v2.TraceServiceClient",
+          "shortName": "TraceServiceClient"
+        },
+        "fullName": "google.cloud.trace_v2.TraceServiceClient.batch_write_spans",
         "method": {
+          "fullName": "google.devtools.cloudtrace.v2.TraceService.BatchWriteSpans",
           "service": {
+            "fullName": "google.devtools.cloudtrace.v2.TraceService",
             "shortName": "TraceService"
           },
           "shortName": "BatchWriteSpans"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.trace_v2.types.BatchWriteSpansRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "spans",
+            "type": "Sequence[google.cloud.trace_v2.types.Span]"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "batch_write_spans"
       },
+      "description": "Sample for BatchWriteSpans",
       "file": "cloudtrace_v2_generated_trace_service_batch_write_spans_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudtrace_v2_generated_TraceService_BatchWriteSpans_sync",
       "segments": [
         {
@@ -83,19 +170,51 @@
           "end": 48,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudtrace_v2_generated_trace_service_batch_write_spans_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.trace_v2.TraceServiceAsyncClient",
+          "shortName": "TraceServiceAsyncClient"
+        },
+        "fullName": "google.cloud.trace_v2.TraceServiceAsyncClient.create_span",
         "method": {
+          "fullName": "google.devtools.cloudtrace.v2.TraceService.CreateSpan",
           "service": {
+            "fullName": "google.devtools.cloudtrace.v2.TraceService",
             "shortName": "TraceService"
           },
           "shortName": "CreateSpan"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.trace_v2.types.Span"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.trace_v2.types.Span",
+        "shortName": "create_span"
       },
+      "description": "Sample for CreateSpan",
       "file": "cloudtrace_v2_generated_trace_service_create_span_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudtrace_v2_generated_TraceService_CreateSpan_async",
       "segments": [
         {
@@ -128,18 +247,50 @@
           "start": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudtrace_v2_generated_trace_service_create_span_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.trace_v2.TraceServiceClient",
+          "shortName": "TraceServiceClient"
+        },
+        "fullName": "google.cloud.trace_v2.TraceServiceClient.create_span",
         "method": {
+          "fullName": "google.devtools.cloudtrace.v2.TraceService.CreateSpan",
           "service": {
+            "fullName": "google.devtools.cloudtrace.v2.TraceService",
             "shortName": "TraceService"
           },
           "shortName": "CreateSpan"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.trace_v2.types.Span"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.trace_v2.types.Span",
+        "shortName": "create_span"
       },
+      "description": "Sample for CreateSpan",
       "file": "cloudtrace_v2_generated_trace_service_create_span_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "cloudtrace_v2_generated_TraceService_CreateSpan_sync",
       "segments": [
         {
@@ -172,7 +323,8 @@
           "start": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "cloudtrace_v2_generated_trace_service_create_span_sync.py"
     }
   ]
 }

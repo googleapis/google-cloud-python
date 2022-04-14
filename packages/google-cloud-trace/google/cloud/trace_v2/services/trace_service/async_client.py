@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -219,7 +219,6 @@ class TraceServiceAsyncClient:
     ) -> None:
         r"""Sends new spans to new or existing traces. You cannot
         update existing spans.
-
 
         .. code-block:: python
 
