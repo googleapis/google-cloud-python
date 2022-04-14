@@ -18,6 +18,7 @@ import functools
 import re
 from typing import (
     Dict,
+    Mapping,
     Optional,
     AsyncIterable,
     Awaitable,
@@ -244,7 +245,6 @@ class SubscriberAsyncClient:
         generated name is populated in the returned Subscription object.
         Note that for REST API requests, you must specify a name in the
         request.
-
 
         .. code-block:: python
 
@@ -518,7 +518,6 @@ class SubscriberAsyncClient:
         properties of a subscription, such as its topic, are not
         modifiable.
 
-
         .. code-block:: python
 
             from google import pubsub_v1
@@ -729,7 +728,6 @@ class SubscriberAsyncClient:
         new one has no association with the old subscription or its
         topic unless the same topic is specified.
 
-
         .. code-block:: python
 
             from google import pubsub_v1
@@ -830,7 +828,6 @@ class SubscriberAsyncClient:
         redelivery if the processing was interrupted. Note that this
         does not modify the subscription-level ``ackDeadlineSeconds``
         used for subsequent messages.
-
 
         .. code-block:: python
 
@@ -961,7 +958,6 @@ class SubscriberAsyncClient:
         Acknowledging a message more than once will not result in an
         error.
 
-
         .. code-block:: python
 
             from google import pubsub_v1
@@ -1070,7 +1066,6 @@ class SubscriberAsyncClient:
         r"""Pulls messages from the server. The server may return
         ``UNAVAILABLE`` if there are too many concurrent pull requests
         pending for the given subscription.
-
 
         .. code-block:: python
 
@@ -1219,7 +1214,6 @@ class SubscriberAsyncClient:
         re-establish the stream. Flow control can be achieved by
         configuring the underlying RPC channel.
 
-
         .. code-block:: python
 
             from google import pubsub_v1
@@ -1320,7 +1314,6 @@ class SubscriberAsyncClient:
         the endpoint URL and other attributes of a push subscription.
         Messages will accumulate for delivery continuously through the
         call regardless of changes to the ``PushConfig``.
-
 
         .. code-block:: python
 
@@ -1436,7 +1429,6 @@ class SubscriberAsyncClient:
         acknowledgment state of messages in an existing
         subscription to the state captured by a snapshot.
 
-
         .. code-block:: python
 
             from google import pubsub_v1
@@ -1549,7 +1541,6 @@ class SubscriberAsyncClient:
         operations, which allow you to manage message acknowledgments in
         bulk. That is, you can set the acknowledgment state of messages
         in an existing subscription to the state captured by a snapshot.
-
 
         .. code-block:: python
 
@@ -1688,7 +1679,6 @@ class SubscriberAsyncClient:
         Note that for REST API requests, you must specify a name in the
         request.
 
-
         .. code-block:: python
 
             from google import pubsub_v1
@@ -1826,7 +1816,6 @@ class SubscriberAsyncClient:
         existing subscription to the state captured by a
         snapshot.
 
-
         .. code-block:: python
 
             from google import pubsub_v1
@@ -1923,7 +1912,6 @@ class SubscriberAsyncClient:
         new one may be created with the same name, but the new one has
         no association with the old snapshot or its subscription, unless
         the same subscription is specified.
-
 
         .. code-block:: python
 
@@ -2023,7 +2011,6 @@ class SubscriberAsyncClient:
         in an existing subscription to the state captured by a snapshot.
         Note that both the subscription and the snapshot must be on the
         same topic.
-
 
         .. code-block:: python
 

@@ -17,7 +17,17 @@ from collections import OrderedDict
 import functools
 import os
 import re
-from typing import Dict, Optional, Iterable, Iterator, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    Optional,
+    Iterable,
+    Iterator,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 import warnings
 import pkg_resources
 
@@ -518,7 +528,6 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
         Note that for REST API requests, you must specify a name in the
         request.
 
-
         .. code-block:: python
 
             from google import pubsub_v1
@@ -771,7 +780,6 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
         properties of a subscription, such as its topic, are not
         modifiable.
 
-
         .. code-block:: python
 
             from google import pubsub_v1
@@ -965,7 +973,6 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
         new one has no association with the old subscription or its
         topic unless the same topic is specified.
 
-
         .. code-block:: python
 
             from google import pubsub_v1
@@ -1058,7 +1065,6 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
         redelivery if the processing was interrupted. Note that this
         does not modify the subscription-level ``ackDeadlineSeconds``
         used for subsequent messages.
-
 
         .. code-block:: python
 
@@ -1181,7 +1187,6 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
         Acknowledging a message more than once will not result in an
         error.
 
-
         .. code-block:: python
 
             from google import pubsub_v1
@@ -1282,7 +1287,6 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
         r"""Pulls messages from the server. The server may return
         ``UNAVAILABLE`` if there are too many concurrent pull requests
         pending for the given subscription.
-
 
         .. code-block:: python
 
@@ -1421,7 +1425,6 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
         re-establish the stream. Flow control can be achieved by
         configuring the underlying RPC channel.
 
-
         .. code-block:: python
 
             from google import pubsub_v1
@@ -1511,7 +1514,6 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
         the endpoint URL and other attributes of a push subscription.
         Messages will accumulate for delivery continuously through the
         call regardless of changes to the ``PushConfig``.
-
 
         .. code-block:: python
 
@@ -1619,7 +1621,6 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
         acknowledgment state of messages in an existing
         subscription to the state captured by a snapshot.
 
-
         .. code-block:: python
 
             from google import pubsub_v1
@@ -1722,7 +1723,6 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
         operations, which allow you to manage message acknowledgments in
         bulk. That is, you can set the acknowledgment state of messages
         in an existing subscription to the state captured by a snapshot.
-
 
         .. code-block:: python
 
@@ -1850,7 +1850,6 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
         generated name is populated in the returned Snapshot object.
         Note that for REST API requests, you must specify a name in the
         request.
-
 
         .. code-block:: python
 
@@ -1981,7 +1980,6 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
         existing subscription to the state captured by a
         snapshot.
 
-
         .. code-block:: python
 
             from google import pubsub_v1
@@ -2071,7 +2069,6 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
         new one may be created with the same name, but the new one has
         no association with the old snapshot or its subscription, unless
         the same subscription is specified.
-
 
         .. code-block:: python
 
@@ -2163,7 +2160,6 @@ class SubscriberClient(metaclass=SubscriberClientMeta):
         in an existing subscription to the state captured by a snapshot.
         Note that both the subscription and the snapshot must be on the
         same topic.
-
 
         .. code-block:: python
 

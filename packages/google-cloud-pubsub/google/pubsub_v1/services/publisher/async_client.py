@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -220,7 +220,6 @@ class PublisherAsyncClient:
         name rules]
         (https://cloud.google.com/pubsub/docs/admin#resource_names).
 
-
         .. code-block:: python
 
             from google import pubsub_v1
@@ -329,7 +328,6 @@ class PublisherAsyncClient:
         r"""Updates an existing topic. Note that certain
         properties of a topic are not modifiable.
 
-
         .. code-block:: python
 
             from google import pubsub_v1
@@ -417,7 +415,6 @@ class PublisherAsyncClient:
     ) -> pubsub.PublishResponse:
         r"""Adds one or more messages to the topic. Returns ``NOT_FOUND`` if
         the topic does not exist.
-
 
         .. code-block:: python
 
@@ -758,7 +755,6 @@ class PublisherAsyncClient:
         r"""Lists the names of the attached subscriptions on this
         topic.
 
-
         .. code-block:: python
 
             from google import pubsub_v1
@@ -883,7 +879,6 @@ class PublisherAsyncClient:
         operations, which allow you to manage message acknowledgments in
         bulk. That is, you can set the acknowledgment state of messages
         in an existing subscription to the state captured by a snapshot.
-
 
         .. code-block:: python
 
@@ -1010,7 +1005,6 @@ class PublisherAsyncClient:
         subscriptions to this topic are not deleted, but their ``topic``
         field is set to ``_deleted-topic_``.
 
-
         .. code-block:: python
 
             from google import pubsub_v1
@@ -1106,7 +1100,6 @@ class PublisherAsyncClient:
         ``StreamingPull`` requests will return FAILED_PRECONDITION. If
         the subscription is a push subscription, pushes to the endpoint
         will stop.
-
 
         .. code-block:: python
 

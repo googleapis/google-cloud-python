@@ -132,7 +132,7 @@ class Topic(proto.Message):
             (``+``) or percent signs (``%``). It must be between 3 and
             255 characters in length, and it must not start with
             ``"goog"``.
-        labels (Sequence[google.pubsub_v1.types.Topic.LabelsEntry]):
+        labels (Mapping[str, str]):
             See [Creating and managing labels]
             (https://cloud.google.com/pubsub/docs/labels).
         message_storage_policy (google.pubsub_v1.types.MessageStoragePolicy):
@@ -217,7 +217,7 @@ class PubsubMessage(proto.Message):
             The message data field. If this field is
             empty, the message must contain at least one
             attribute.
-        attributes (Sequence[google.pubsub_v1.types.PubsubMessage.AttributesEntry]):
+        attributes (Mapping[str, str]):
             Attributes for this message. If this field is
             empty, the message must contain non-empty data.
             This can be used to filter messages on the
@@ -623,7 +623,7 @@ class Subscription(proto.Message):
             thus configures how far back in time a ``Seek`` can be done.
             Defaults to 7 days. Cannot be more than 7 days or less than
             10 minutes.
-        labels (Sequence[google.pubsub_v1.types.Subscription.LabelsEntry]):
+        labels (Mapping[str, str]):
             See <a
             href="https://cloud.google.com/pubsub/docs/labels">
             Creating and managing labels</a>.
@@ -891,7 +891,7 @@ class PushConfig(proto.Message):
             A URL locating the endpoint to which messages should be
             pushed. For example, a Webhook endpoint might use
             ``https://example.com/push``.
-        attributes (Sequence[google.pubsub_v1.types.PushConfig.AttributesEntry]):
+        attributes (Mapping[str, str]):
             Endpoint configuration attributes that can be used to
             control different aspects of the message delivery.
 
@@ -1533,7 +1533,7 @@ class CreateSnapshotRequest(proto.Message):
             topic following the successful completion of the
             CreateSnapshot request. Format is
             ``projects/{project}/subscriptions/{sub}``.
-        labels (Sequence[google.pubsub_v1.types.CreateSnapshotRequest.LabelsEntry]):
+        labels (Mapping[str, str]):
             See <a
             href="https://cloud.google.com/pubsub/docs/labels">
             Creating and managing labels</a>.
@@ -1605,7 +1605,7 @@ class Snapshot(proto.Message):
             expire in 4 days. The service will refuse to create a
             snapshot that would expire in less than 1 hour after
             creation.
-        labels (Sequence[google.pubsub_v1.types.Snapshot.LabelsEntry]):
+        labels (Mapping[str, str]):
             See [Creating and managing labels]
             (https://cloud.google.com/pubsub/docs/labels).
     """

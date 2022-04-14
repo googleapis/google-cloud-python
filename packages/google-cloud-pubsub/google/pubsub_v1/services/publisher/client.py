@@ -17,7 +17,7 @@ from collections import OrderedDict
 import functools
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -503,7 +503,6 @@ class PublisherClient(metaclass=PublisherClientMeta):
         name rules]
         (https://cloud.google.com/pubsub/docs/admin#resource_names).
 
-
         .. code-block:: python
 
             from google import pubsub_v1
@@ -604,7 +603,6 @@ class PublisherClient(metaclass=PublisherClientMeta):
         r"""Updates an existing topic. Note that certain
         properties of a topic are not modifiable.
 
-
         .. code-block:: python
 
             from google import pubsub_v1
@@ -685,7 +683,6 @@ class PublisherClient(metaclass=PublisherClientMeta):
     ) -> pubsub.PublishResponse:
         r"""Adds one or more messages to the topic. Returns ``NOT_FOUND`` if
         the topic does not exist.
-
 
         .. code-block:: python
 
@@ -992,7 +989,6 @@ class PublisherClient(metaclass=PublisherClientMeta):
         r"""Lists the names of the attached subscriptions on this
         topic.
 
-
         .. code-block:: python
 
             from google import pubsub_v1
@@ -1107,7 +1103,6 @@ class PublisherClient(metaclass=PublisherClientMeta):
         operations, which allow you to manage message acknowledgments in
         bulk. That is, you can set the acknowledgment state of messages
         in an existing subscription to the state captured by a snapshot.
-
 
         .. code-block:: python
 
@@ -1224,7 +1219,6 @@ class PublisherClient(metaclass=PublisherClientMeta):
         subscriptions to this topic are not deleted, but their ``topic``
         field is set to ``_deleted-topic_``.
 
-
         .. code-block:: python
 
             from google import pubsub_v1
@@ -1312,7 +1306,6 @@ class PublisherClient(metaclass=PublisherClientMeta):
         ``StreamingPull`` requests will return FAILED_PRECONDITION. If
         the subscription is a push subscription, pushes to the endpoint
         will stop.
-
 
         .. code-block:: python
 
