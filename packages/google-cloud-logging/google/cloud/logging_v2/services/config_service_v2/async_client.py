@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -421,7 +421,6 @@ class ConfigServiceV2AsyncClient:
         entries. After a bucket has been created, the bucket's
         location cannot be changed.
 
-
         .. code-block:: python
 
             from google.cloud import logging_v2
@@ -506,7 +505,6 @@ class ConfigServiceV2AsyncClient:
         After a bucket has been created, the bucket's location cannot be
         changed.
 
-
         .. code-block:: python
 
             from google.cloud import logging_v2
@@ -584,7 +582,6 @@ class ConfigServiceV2AsyncClient:
         purged and all log entries in the bucket will be permanently
         deleted.
 
-
         .. code-block:: python
 
             from google.cloud import logging_v2
@@ -646,7 +643,6 @@ class ConfigServiceV2AsyncClient:
         r"""Undeletes a log bucket. A bucket that has been
         deleted can be undeleted within the grace period of 7
         days.
-
 
         .. code-block:: python
 
@@ -890,7 +886,6 @@ class ConfigServiceV2AsyncClient:
         r"""Creates a view over log entries in a log bucket. A
         bucket may contain a maximum of 30 views.
 
-
         .. code-block:: python
 
             from google.cloud import logging_v2
@@ -968,7 +963,6 @@ class ConfigServiceV2AsyncClient:
         indicates that system is not in a state where it can update the
         view. If this occurs, please try again in a few minutes.
 
-
         .. code-block:: python
 
             from google.cloud import logging_v2
@@ -1043,7 +1037,6 @@ class ConfigServiceV2AsyncClient:
         returned, this indicates that system is not in a state where it
         can delete the view. If this occurs, please try again in a few
         minutes.
-
 
         .. code-block:: python
 
@@ -1359,7 +1352,6 @@ class ConfigServiceV2AsyncClient:
         permitted to write to the destination. A sink can export log
         entries only from the resource owning the sink.
 
-
         .. code-block:: python
 
             from google.cloud import logging_v2
@@ -1491,7 +1483,6 @@ class ConfigServiceV2AsyncClient:
 
         The updated sink might also have a new ``writer_identity``; see
         the ``unique_writer_identity`` field.
-
 
         .. code-block:: python
 
@@ -1657,7 +1648,6 @@ class ConfigServiceV2AsyncClient:
         r"""Deletes a sink. If the sink has a unique ``writer_identity``,
         then that service account is also deleted.
 
-
         .. code-block:: python
 
             from google.cloud import logging_v2
@@ -1764,7 +1754,6 @@ class ConfigServiceV2AsyncClient:
     ) -> pagers.ListExclusionsAsyncPager:
         r"""Lists all the exclusions on the \_Default sink in a parent
         resource.
-
 
         .. code-block:: python
 
@@ -2013,7 +2002,6 @@ class ConfigServiceV2AsyncClient:
         parent resource. Only log entries belonging to that resource can
         be excluded. You can have up to 10 exclusions in a resource.
 
-
         .. code-block:: python
 
             from google.cloud import logging_v2
@@ -2142,7 +2130,6 @@ class ConfigServiceV2AsyncClient:
     ) -> logging_config.LogExclusion:
         r"""Changes one or more properties of an existing exclusion in the
         \_Default sink.
-
 
         .. code-block:: python
 
@@ -2396,7 +2383,6 @@ class ConfigServiceV2AsyncClient:
         Router <https://cloud.google.com/logging/docs/routing/managed-encryption>`__
         for more information.
 
-
         .. code-block:: python
 
             from google.cloud import logging_v2
@@ -2497,7 +2483,6 @@ class ConfigServiceV2AsyncClient:
         Router <https://cloud.google.com/logging/docs/routing/managed-encryption>`__
         for more information.
 
-
         .. code-block:: python
 
             from google.cloud import logging_v2
@@ -2594,7 +2579,6 @@ class ConfigServiceV2AsyncClient:
         See `Enabling CMEK for Log
         Router <https://cloud.google.com/logging/docs/routing/managed-encryption>`__
         for more information.
-
 
         .. code-block:: python
 
@@ -2730,7 +2714,6 @@ class ConfigServiceV2AsyncClient:
         Router <https://cloud.google.com/logging/docs/routing/managed-encryption>`__
         for more information.
 
-
         .. code-block:: python
 
             from google.cloud import logging_v2
@@ -2848,7 +2831,6 @@ class ConfigServiceV2AsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Copies a set of log entries from a log bucket to a
         Cloud Storage bucket.
-
 
         .. code-block:: python
 

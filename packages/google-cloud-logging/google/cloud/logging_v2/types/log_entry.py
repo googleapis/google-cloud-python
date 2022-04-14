@@ -144,7 +144,7 @@ class LogEntry(proto.Message):
         http_request (google.logging.type.http_request_pb2.HttpRequest):
             Optional. Information about the HTTP request
             associated with this log entry, if applicable.
-        labels (Sequence[google.cloud.logging_v2.types.LogEntry.LabelsEntry]):
+        labels (Mapping[str, str]):
             Optional. A map of key, value pairs that provides additional
             information about the log entry. The labels can be
             user-defined or system-defined.
