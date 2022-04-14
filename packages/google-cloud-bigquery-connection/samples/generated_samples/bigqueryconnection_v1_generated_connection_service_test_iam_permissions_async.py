@@ -25,6 +25,7 @@
 
 # [START bigqueryconnection_v1_generated_ConnectionService_TestIamPermissions_async]
 from google.cloud import bigquery_connection_v1
+from google.iam.v1 import iam_policy_pb2  # type: ignore
 
 
 async def sample_test_iam_permissions():
@@ -32,7 +33,7 @@ async def sample_test_iam_permissions():
     client = bigquery_connection_v1.ConnectionServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = bigquery_connection_v1.TestIamPermissionsRequest(
+    request = iam_policy_pb2.TestIamPermissionsRequest(
         resource="resource_value",
         permissions=['permissions_value_1', 'permissions_value_2'],
     )

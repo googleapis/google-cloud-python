@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -766,7 +766,6 @@ class ConnectionServiceClient(metaclass=ConnectionServiceClientMeta):
         reasons, also resets credential if connection properties
         are in the update field mask.
 
-
         .. code-block:: python
 
             from google.cloud import bigquery_connection_v1
@@ -966,17 +965,17 @@ class ConnectionServiceClient(metaclass=ConnectionServiceClientMeta):
         Returns an empty policy if the resource exists and does
         not have a policy set.
 
-
         .. code-block:: python
 
             from google.cloud import bigquery_connection_v1
+            from google.iam.v1 import iam_policy_pb2  # type: ignore
 
             def sample_get_iam_policy():
                 # Create a client
                 client = bigquery_connection_v1.ConnectionServiceClient()
 
                 # Initialize request argument(s)
-                request = bigquery_connection_v1.GetIamPolicyRequest(
+                request = iam_policy_pb2.GetIamPolicyRequest(
                     resource="resource_value",
                 )
 
@@ -1126,17 +1125,17 @@ class ConnectionServiceClient(metaclass=ConnectionServiceClientMeta):
         Can return ``NOT_FOUND``, ``INVALID_ARGUMENT``, and
         ``PERMISSION_DENIED`` errors.
 
-
         .. code-block:: python
 
             from google.cloud import bigquery_connection_v1
+            from google.iam.v1 import iam_policy_pb2  # type: ignore
 
             def sample_set_iam_policy():
                 # Create a client
                 client = bigquery_connection_v1.ConnectionServiceClient()
 
                 # Initialize request argument(s)
-                request = bigquery_connection_v1.SetIamPolicyRequest(
+                request = iam_policy_pb2.SetIamPolicyRequest(
                     resource="resource_value",
                 )
 
@@ -1290,17 +1289,17 @@ class ConnectionServiceClient(metaclass=ConnectionServiceClientMeta):
         authorization checking. This operation may "fail open" without
         warning.
 
-
         .. code-block:: python
 
             from google.cloud import bigquery_connection_v1
+            from google.iam.v1 import iam_policy_pb2  # type: ignore
 
             def sample_test_iam_permissions():
                 # Create a client
                 client = bigquery_connection_v1.ConnectionServiceClient()
 
                 # Initialize request argument(s)
-                request = bigquery_connection_v1.TestIamPermissionsRequest(
+                request = iam_policy_pb2.TestIamPermissionsRequest(
                     resource="resource_value",
                     permissions=['permissions_value_1', 'permissions_value_2'],
                 )
