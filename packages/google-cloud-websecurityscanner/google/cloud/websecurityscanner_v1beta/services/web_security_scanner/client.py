@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -610,7 +610,6 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
         r"""Deletes an existing ScanConfig and its child
         resources.
 
-
         .. code-block:: python
 
             from google.cloud import websecurityscanner_v1beta
@@ -902,7 +901,6 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
     ) -> gcw_scan_config.ScanConfig:
         r"""Updates a ScanConfig. This method support partial
         update of a ScanConfig.
-
 
         .. code-block:: python
 
@@ -1213,7 +1211,6 @@ class WebSecurityScannerClient(metaclass=WebSecurityScannerClientMeta):
     ) -> pagers.ListScanRunsPager:
         r"""Lists ScanRuns under a given ScanConfig, in
         descending order of ScanRun stop time.
-
 
         .. code-block:: python
 
