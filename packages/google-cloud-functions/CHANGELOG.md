@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.6.0](https://github.com/googleapis/python-functions/compare/v1.5.2...v1.6.0) (2022-04-14)
+
+
+### Features
+
+* AuditConfig for IAM v1 ([784539c](https://github.com/googleapis/python-functions/commit/784539cbe13583722195f21780781c682ba8c7ac))
+
+
+### Bug Fixes
+
+* **deps:** require grpc-google-iam-v1 >=0.12.4 ([784539c](https://github.com/googleapis/python-functions/commit/784539cbe13583722195f21780781c682ba8c7ac))
+
 ### [1.5.2](https://github.com/googleapis/python-functions/compare/v1.5.1...v1.5.2) (2022-03-05)
 
 
