@@ -113,7 +113,7 @@ class Conversation(proto.Message):
         agent_id (str):
             An opaque, user-specified string representing
             the human agent who handled the conversation.
-        labels (Sequence[google.cloud.contact_center_insights_v1.types.Conversation.LabelsEntry]):
+        labels (Mapping[str, str]):
             A map for the user to specify any custom
             fields. A maximum of 20 labels per conversation
             is allowed, with a maximum of 256 characters per
@@ -136,7 +136,7 @@ class Conversation(proto.Message):
             Output only. The annotations that were
             generated during the customer and agent
             interaction.
-        dialogflow_intents (Sequence[google.cloud.contact_center_insights_v1.types.Conversation.DialogflowIntentsEntry]):
+        dialogflow_intents (Mapping[str, google.cloud.contact_center_insights_v1.types.DialogflowIntent]):
             Output only. All the matched Dialogflow
             intents in the call. The key corresponds to a
             Dialogflow intent, format:
@@ -562,14 +562,14 @@ class AnalysisResult(proto.Message):
             annotations (Sequence[google.cloud.contact_center_insights_v1.types.CallAnnotation]):
                 A list of call annotations that apply to this
                 call.
-            entities (Sequence[google.cloud.contact_center_insights_v1.types.AnalysisResult.CallAnalysisMetadata.EntitiesEntry]):
+            entities (Mapping[str, google.cloud.contact_center_insights_v1.types.Entity]):
                 All the entities in the call.
             sentiments (Sequence[google.cloud.contact_center_insights_v1.types.ConversationLevelSentiment]):
                 Overall conversation-level sentiment for each
                 channel of the call.
-            intents (Sequence[google.cloud.contact_center_insights_v1.types.AnalysisResult.CallAnalysisMetadata.IntentsEntry]):
+            intents (Mapping[str, google.cloud.contact_center_insights_v1.types.Intent]):
                 All the matched intents in the call.
-            phrase_matchers (Sequence[google.cloud.contact_center_insights_v1.types.AnalysisResult.CallAnalysisMetadata.PhraseMatchersEntry]):
+            phrase_matchers (Mapping[str, google.cloud.contact_center_insights_v1.types.PhraseMatchData]):
                 All the matched phrase matchers in the call.
             issue_model_result (google.cloud.contact_center_insights_v1.types.IssueModelResult):
                 Overall conversation-level issue modeling
@@ -846,7 +846,7 @@ class Entity(proto.Message):
             The representative name for the entity.
         type_ (google.cloud.contact_center_insights_v1.types.Entity.Type):
             The entity type.
-        metadata (Sequence[google.cloud.contact_center_insights_v1.types.Entity.MetadataEntry]):
+        metadata (Mapping[str, str]):
             Metadata associated with the entity.
 
             For most entity types, the metadata is a Wikipedia URL
@@ -1210,7 +1210,7 @@ class IssueModelLabelStats(proto.Message):
         unclassified_conversations_count (int):
             Number of analyzed conversations for which no
             issue was applicable at this point in time.
-        issue_stats (Sequence[google.cloud.contact_center_insights_v1.types.IssueModelLabelStats.IssueStatsEntry]):
+        issue_stats (Mapping[str, google.cloud.contact_center_insights_v1.types.IssueModelLabelStats.IssueStats]):
             Statistics on each issue. Key is the issue's
             resource name.
     """
@@ -1487,7 +1487,7 @@ class Settings(proto.Message):
             expiration of existing conversations.
             Conversations with no expire time persist until
             they are deleted.
-        pubsub_notification_settings (Sequence[google.cloud.contact_center_insights_v1.types.Settings.PubsubNotificationSettingsEntry]):
+        pubsub_notification_settings (Mapping[str, str]):
             A map that maps a notification trigger to a Pub/Sub topic.
             Each time a specified trigger occurs, Insights will notify
             the corresponding Pub/Sub topic.
@@ -1716,7 +1716,7 @@ class ArticleSuggestionData(proto.Message):
             article is a good match for this conversation,
             ranging from 0.0 (completely uncertain) to 1.0
             (completely certain).
-        metadata (Sequence[google.cloud.contact_center_insights_v1.types.ArticleSuggestionData.MetadataEntry]):
+        metadata (Mapping[str, str]):
             Map that contains metadata about the Article
             Suggestion and the document that it originates
             from.
@@ -1770,7 +1770,7 @@ class FaqAnswerData(proto.Message):
             (completely certain).
         question (str):
             The corresponding FAQ question.
-        metadata (Sequence[google.cloud.contact_center_insights_v1.types.FaqAnswerData.MetadataEntry]):
+        metadata (Mapping[str, str]):
             Map that contains metadata about the FAQ
             answer and the document that it originates from.
         query_record (str):
@@ -1820,7 +1820,7 @@ class SmartReplyData(proto.Message):
             is a good match for this conversation, ranging
             from 0.0 (completely uncertain) to 1.0
             (completely certain).
-        metadata (Sequence[google.cloud.contact_center_insights_v1.types.SmartReplyData.MetadataEntry]):
+        metadata (Mapping[str, str]):
             Map that contains metadata about the Smart
             Reply and the document from which it originates.
         query_record (str):
@@ -1858,7 +1858,7 @@ class SmartComposeSuggestionData(proto.Message):
             suggestion is a good match for this
             conversation, ranging from 0.0 (completely
             uncertain) to 1.0 (completely certain).
-        metadata (Sequence[google.cloud.contact_center_insights_v1.types.SmartComposeSuggestionData.MetadataEntry]):
+        metadata (Mapping[str, str]):
             Map that contains metadata about the Smart
             Compose suggestion and the document from which
             it originates.

@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -753,7 +753,6 @@ class ContactCenterInsightsAsyncClient:
         r"""Creates an analysis. The long running operation is
         done when the analysis has completed.
 
-
         .. code-block:: python
 
             from google.cloud import contact_center_insights_v1
@@ -1150,7 +1149,6 @@ class ContactCenterInsightsAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Export insights data to a destination defined in the
         request body.
-
 
         .. code-block:: python
 
@@ -1791,7 +1789,6 @@ class ContactCenterInsightsAsyncClient:
         is already deployed. An issue model can only be used in
         analysis after it has been deployed.
 
-
         .. code-block:: python
 
             from google.cloud import contact_center_insights_v1
@@ -1901,7 +1898,6 @@ class ContactCenterInsightsAsyncClient:
         r"""Undeploys an issue model.
         An issue model can not be used in analysis after it has
         been undeployed.
-
 
         .. code-block:: python
 

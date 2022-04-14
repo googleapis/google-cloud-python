@@ -123,21 +123,21 @@ class CalculateStatsResponse(proto.Message):
             The average number of turns per conversation.
         conversation_count (int):
             The total number of conversations.
-        smart_highlighter_matches (Sequence[google.cloud.contact_center_insights_v1.types.CalculateStatsResponse.SmartHighlighterMatchesEntry]):
+        smart_highlighter_matches (Mapping[str, int]):
             A map associating each smart highlighter
             display name with its respective number of
             matches in the set of conversations.
-        custom_highlighter_matches (Sequence[google.cloud.contact_center_insights_v1.types.CalculateStatsResponse.CustomHighlighterMatchesEntry]):
+        custom_highlighter_matches (Mapping[str, int]):
             A map associating each custom highlighter
             resource name with its respective number of
             matches in the set of conversations.
-        issue_matches (Sequence[google.cloud.contact_center_insights_v1.types.CalculateStatsResponse.IssueMatchesEntry]):
+        issue_matches (Mapping[str, int]):
             A map associating each issue resource name with its
             respective number of matches in the set of conversations.
             Key has the format:
             ``projects/<Project-ID>/locations/<Location-ID>/issueModels/<Issue-Model-ID>/issues/<Issue-ID>``
             Deprecated, use ``issue_matches_stats`` field instead.
-        issue_matches_stats (Sequence[google.cloud.contact_center_insights_v1.types.CalculateStatsResponse.IssueMatchesStatsEntry]):
+        issue_matches_stats (Mapping[str, google.cloud.contact_center_insights_v1.types.IssueModelLabelStats.IssueStats]):
             A map associating each issue resource name with its
             respective number of matches in the set of conversations.
             Key has the format:

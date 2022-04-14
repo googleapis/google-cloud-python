@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -1109,7 +1109,6 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         r"""Creates an analysis. The long running operation is
         done when the analysis has completed.
 
-
         .. code-block:: python
 
             from google.cloud import contact_center_insights_v1
@@ -1506,7 +1505,6 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
     ) -> operation.Operation:
         r"""Export insights data to a destination defined in the
         request body.
-
 
         .. code-block:: python
 
@@ -2147,7 +2145,6 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         is already deployed. An issue model can only be used in
         analysis after it has been deployed.
 
-
         .. code-block:: python
 
             from google.cloud import contact_center_insights_v1
@@ -2257,7 +2254,6 @@ class ContactCenterInsightsClient(metaclass=ContactCenterInsightsClientMeta):
         r"""Undeploys an issue model.
         An issue model can not be used in analysis after it has
         been undeployed.
-
 
         .. code-block:: python
 
