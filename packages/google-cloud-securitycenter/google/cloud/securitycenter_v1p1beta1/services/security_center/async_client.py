@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -372,7 +372,6 @@ class SecurityCenterAsyncClient:
         r"""Creates a finding. The corresponding source must
         exist for finding creation to succeed.
 
-
         .. code-block:: python
 
             from google.cloud import securitycenter_v1p1beta1
@@ -711,17 +710,17 @@ class SecurityCenterAsyncClient:
         r"""Gets the access control policy on the specified
         Source.
 
-
         .. code-block:: python
 
             from google.cloud import securitycenter_v1p1beta1
+            from google.iam.v1 import iam_policy_pb2  # type: ignore
 
             def sample_get_iam_policy():
                 # Create a client
                 client = securitycenter_v1p1beta1.SecurityCenterClient()
 
                 # Initialize request argument(s)
-                request = securitycenter_v1p1beta1.GetIamPolicyRequest(
+                request = iam_policy_pb2.GetIamPolicyRequest(
                     resource="resource_value",
                 )
 
@@ -1212,7 +1211,6 @@ class SecurityCenterAsyncClient:
         r"""Filters an organization's assets and  groups them by
         their specified properties.
 
-
         .. code-block:: python
 
             from google.cloud import securitycenter_v1p1beta1
@@ -1317,7 +1315,6 @@ class SecurityCenterAsyncClient:
         Example: /v1/organizations/{organization_id}/sources/-/findings,
         /v1/folders/{folder_id}/sources/-/findings,
         /v1/projects/{project_id}/sources/-/findings
-
 
         .. code-block:: python
 
@@ -1588,7 +1585,6 @@ class SecurityCenterAsyncClient:
         To list across all sources provide a ``-`` as the source id.
         Example:
         /v1p1beta1/organizations/{organization_id}/sources/-/findings
-
 
         .. code-block:: python
 
@@ -1959,7 +1955,6 @@ class SecurityCenterAsyncClient:
         organization. If it is called too frequently the caller will
         receive a TOO_MANY_REQUESTS error.
 
-
         .. code-block:: python
 
             from google.cloud import securitycenter_v1p1beta1
@@ -2198,17 +2193,17 @@ class SecurityCenterAsyncClient:
         r"""Sets the access control policy on the specified
         Source.
 
-
         .. code-block:: python
 
             from google.cloud import securitycenter_v1p1beta1
+            from google.iam.v1 import iam_policy_pb2  # type: ignore
 
             def sample_set_iam_policy():
                 # Create a client
                 client = securitycenter_v1p1beta1.SecurityCenterClient()
 
                 # Initialize request argument(s)
-                request = securitycenter_v1p1beta1.SetIamPolicyRequest(
+                request = iam_policy_pb2.SetIamPolicyRequest(
                     resource="resource_value",
                 )
 
@@ -2359,17 +2354,17 @@ class SecurityCenterAsyncClient:
         r"""Returns the permissions that a caller has on the
         specified source.
 
-
         .. code-block:: python
 
             from google.cloud import securitycenter_v1p1beta1
+            from google.iam.v1 import iam_policy_pb2  # type: ignore
 
             def sample_test_iam_permissions():
                 # Create a client
                 client = securitycenter_v1p1beta1.SecurityCenterClient()
 
                 # Initialize request argument(s)
-                request = securitycenter_v1p1beta1.TestIamPermissionsRequest(
+                request = iam_policy_pb2.TestIamPermissionsRequest(
                     resource="resource_value",
                     permissions=['permissions_value_1', 'permissions_value_2'],
                 )
@@ -2479,7 +2474,6 @@ class SecurityCenterAsyncClient:
     ) -> gcs_finding.Finding:
         r"""Creates or updates a finding. The corresponding
         source must exist for a finding creation to succeed.
-
 
         .. code-block:: python
 
@@ -2608,7 +2602,6 @@ class SecurityCenterAsyncClient:
     ) -> gcs_notification_config.NotificationConfig:
         r"""Updates a notification config. The following update fields are
         allowed: description, pubsub_topic, streaming_config.filter
-
 
         .. code-block:: python
 

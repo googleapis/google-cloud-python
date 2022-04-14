@@ -25,6 +25,7 @@
 
 # [START securitycenter_v1beta1_generated_SecurityCenter_SetIamPolicy_async]
 from google.cloud import securitycenter_v1beta1
+from google.iam.v1 import iam_policy_pb2  # type: ignore
 
 
 async def sample_set_iam_policy():
@@ -32,7 +33,7 @@ async def sample_set_iam_policy():
     client = securitycenter_v1beta1.SecurityCenterAsyncClient()
 
     # Initialize request argument(s)
-    request = securitycenter_v1beta1.SetIamPolicyRequest(
+    request = iam_policy_pb2.SetIamPolicyRequest(
         resource="resource_value",
     )
 

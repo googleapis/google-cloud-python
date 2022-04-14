@@ -25,6 +25,7 @@
 
 # [START securitycenter_v1beta1_generated_SecurityCenter_TestIamPermissions_async]
 from google.cloud import securitycenter_v1beta1
+from google.iam.v1 import iam_policy_pb2  # type: ignore
 
 
 async def sample_test_iam_permissions():
@@ -32,7 +33,7 @@ async def sample_test_iam_permissions():
     client = securitycenter_v1beta1.SecurityCenterAsyncClient()
 
     # Initialize request argument(s)
-    request = securitycenter_v1beta1.TestIamPermissionsRequest(
+    request = iam_policy_pb2.TestIamPermissionsRequest(
         resource="resource_value",
         permissions=['permissions_value_1', 'permissions_value_2'],
     )
