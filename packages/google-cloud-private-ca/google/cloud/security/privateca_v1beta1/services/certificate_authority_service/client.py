@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -527,7 +527,6 @@ class CertificateAuthorityServiceClient(
         in a given Project, Location from a particular
         [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority].
 
-
         .. code-block:: python
 
             from google.cloud.security import privateca_v1beta1
@@ -656,7 +655,6 @@ class CertificateAuthorityServiceClient(
         r"""Returns a
         [Certificate][google.cloud.security.privateca.v1beta1.Certificate].
 
-
         .. code-block:: python
 
             from google.cloud.security import privateca_v1beta1
@@ -755,7 +753,6 @@ class CertificateAuthorityServiceClient(
     ) -> pagers.ListCertificatesPager:
         r"""Lists
         [Certificates][google.cloud.security.privateca.v1beta1.Certificate].
-
 
         .. code-block:: python
 
@@ -869,7 +866,6 @@ class CertificateAuthorityServiceClient(
         r"""Revoke a
         [Certificate][google.cloud.security.privateca.v1beta1.Certificate].
 
-
         .. code-block:: python
 
             from google.cloud.security import privateca_v1beta1
@@ -972,7 +968,6 @@ class CertificateAuthorityServiceClient(
         Currently, the only field you can update is the
         [labels][google.cloud.security.privateca.v1beta1.Certificate.labels]
         field.
-
 
         .. code-block:: python
 
@@ -1092,7 +1087,6 @@ class CertificateAuthorityServiceClient(
         signing request from
         [FetchCertificateAuthorityCsr][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.FetchCertificateAuthorityCsr],
         this method can complete the activation process.
-
 
         .. code-block:: python
 
@@ -1218,7 +1212,6 @@ class CertificateAuthorityServiceClient(
         r"""Create a new
         [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority]
         in a given Project and Location.
-
 
         .. code-block:: python
 
@@ -1366,7 +1359,6 @@ class CertificateAuthorityServiceClient(
         r"""Disable a
         [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority].
 
-
         .. code-block:: python
 
             from google.cloud.security import privateca_v1beta1
@@ -1483,7 +1475,6 @@ class CertificateAuthorityServiceClient(
     ) -> operation.Operation:
         r"""Enable a
         [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority].
-
 
         .. code-block:: python
 
@@ -1611,7 +1602,6 @@ class CertificateAuthorityServiceClient(
         resource, or could be an on-prem certificate authority. See also
         [ActivateCertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthorityService.ActivateCertificateAuthority].
 
-
         .. code-block:: python
 
             from google.cloud.security import privateca_v1beta1
@@ -1711,7 +1701,6 @@ class CertificateAuthorityServiceClient(
     ) -> resources.CertificateAuthority:
         r"""Returns a
         [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority].
-
 
         .. code-block:: python
 
@@ -1816,7 +1805,6 @@ class CertificateAuthorityServiceClient(
     ) -> pagers.ListCertificateAuthoritiesPager:
         r"""Lists
         [CertificateAuthorities][google.cloud.security.privateca.v1beta1.CertificateAuthority].
-
 
         .. code-block:: python
 
@@ -1931,7 +1919,6 @@ class CertificateAuthorityServiceClient(
         r"""Restore a
         [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority]
         that is scheduled for deletion.
-
 
         .. code-block:: python
 
@@ -2051,7 +2038,6 @@ class CertificateAuthorityServiceClient(
         [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority]
         for deletion.
 
-
         .. code-block:: python
 
             from google.cloud.security import privateca_v1beta1
@@ -2169,7 +2155,6 @@ class CertificateAuthorityServiceClient(
     ) -> operation.Operation:
         r"""Update a
         [CertificateAuthority][google.cloud.security.privateca.v1beta1.CertificateAuthority].
-
 
         .. code-block:: python
 
@@ -2304,7 +2289,6 @@ class CertificateAuthorityServiceClient(
         r"""Returns a
         [CertificateRevocationList][google.cloud.security.privateca.v1beta1.CertificateRevocationList].
 
-
         .. code-block:: python
 
             from google.cloud.security import privateca_v1beta1
@@ -2407,7 +2391,6 @@ class CertificateAuthorityServiceClient(
     ) -> pagers.ListCertificateRevocationListsPager:
         r"""Lists
         [CertificateRevocationLists][google.cloud.security.privateca.v1beta1.CertificateRevocationList].
-
 
         .. code-block:: python
 
@@ -2523,7 +2506,6 @@ class CertificateAuthorityServiceClient(
     ) -> operation.Operation:
         r"""Update a
         [CertificateRevocationList][google.cloud.security.privateca.v1beta1.CertificateRevocationList].
-
 
         .. code-block:: python
 
@@ -2655,7 +2637,6 @@ class CertificateAuthorityServiceClient(
         r"""Returns a
         [ReusableConfig][google.cloud.security.privateca.v1beta1.ReusableConfig].
 
-
         .. code-block:: python
 
             from google.cloud.security import privateca_v1beta1
@@ -2754,7 +2735,6 @@ class CertificateAuthorityServiceClient(
     ) -> pagers.ListReusableConfigsPager:
         r"""Lists
         [ReusableConfigs][google.cloud.security.privateca.v1beta1.ReusableConfig].
-
 
         .. code-block:: python
 
