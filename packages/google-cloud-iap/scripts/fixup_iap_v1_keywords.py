@@ -49,7 +49,7 @@ class iapCallTransformer(cst.CSTTransformer):
         'list_brands': ('parent', ),
         'list_identity_aware_proxy_clients': ('parent', 'page_size', 'page_token', ),
         'reset_identity_aware_proxy_client_secret': ('name', ),
-        'set_iam_policy': ('resource', 'policy', ),
+        'set_iam_policy': ('resource', 'policy', 'update_mask', ),
         'test_iam_permissions': ('resource', 'permissions', ),
         'update_iap_settings': ('iap_settings', 'update_mask', ),
     }

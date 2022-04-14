@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -302,7 +302,6 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
         project, and that the specified support email is owned
         by the caller.
 
-
         .. code-block:: python
 
             from google.cloud import iap_v1
@@ -451,7 +450,6 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
         The client is owned by IAP. Requires that the brand for
         the project exists and that it is set for internal-only
         use.
-
 
         .. code-block:: python
 
@@ -613,7 +611,6 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
         r"""Retrieves an Identity Aware Proxy (IAP) OAuth client.
         Requires that the client is owned by IAP.
 
-
         .. code-block:: python
 
             from google.cloud import iap_v1
@@ -688,7 +685,6 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
         r"""Resets an Identity Aware Proxy (IAP) OAuth client
         secret. Useful if the secret was compromised. Requires
         that the client is owned by IAP.
-
 
         .. code-block:: python
 
@@ -765,7 +761,6 @@ class IdentityAwareProxyOAuthServiceAsyncClient:
         Useful for removing obsolete clients, managing the
         number of clients in a given project, and cleaning up
         after tests. Requires that the client is owned by IAP.
-
 
         .. code-block:: python
 
