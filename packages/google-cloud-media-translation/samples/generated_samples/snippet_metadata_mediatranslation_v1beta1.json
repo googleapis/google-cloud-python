@@ -1,16 +1,57 @@
 {
+  "clientLibrary": {
+    "apis": [
+      {
+        "id": "google.cloud.mediatranslation.v1beta1",
+        "version": "v1beta1"
+      }
+    ],
+    "language": "PYTHON",
+    "name": "google-cloud-media-translation"
+  },
   "snippets": [
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.mediatranslation_v1beta1.SpeechTranslationServiceAsyncClient",
+          "shortName": "SpeechTranslationServiceAsyncClient"
+        },
+        "fullName": "google.cloud.mediatranslation_v1beta1.SpeechTranslationServiceAsyncClient.streaming_translate_speech",
         "method": {
+          "fullName": "google.cloud.mediatranslation.v1beta1.SpeechTranslationService.StreamingTranslateSpeech",
           "service": {
+            "fullName": "google.cloud.mediatranslation.v1beta1.SpeechTranslationService",
             "shortName": "SpeechTranslationService"
           },
           "shortName": "StreamingTranslateSpeech"
-        }
+        },
+        "parameters": [
+          {
+            "name": "requests",
+            "type": "Iterator[google.cloud.mediatranslation_v1beta1.types.StreamingTranslateSpeechRequest]"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "Iterable[google.cloud.mediatranslation_v1beta1.types.StreamingTranslateSpeechResponse]",
+        "shortName": "streaming_translate_speech"
       },
+      "description": "Sample for StreamingTranslateSpeech",
       "file": "mediatranslation_v1beta1_generated_speech_translation_service_streaming_translate_speech_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "mediatranslation_v1beta1_generated_SpeechTranslationService_StreamingTranslateSpeech_async",
       "segments": [
         {
@@ -43,18 +84,50 @@
           "start": 57,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "mediatranslation_v1beta1_generated_speech_translation_service_streaming_translate_speech_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.mediatranslation_v1beta1.SpeechTranslationServiceClient",
+          "shortName": "SpeechTranslationServiceClient"
+        },
+        "fullName": "google.cloud.mediatranslation_v1beta1.SpeechTranslationServiceClient.streaming_translate_speech",
         "method": {
+          "fullName": "google.cloud.mediatranslation.v1beta1.SpeechTranslationService.StreamingTranslateSpeech",
           "service": {
+            "fullName": "google.cloud.mediatranslation.v1beta1.SpeechTranslationService",
             "shortName": "SpeechTranslationService"
           },
           "shortName": "StreamingTranslateSpeech"
-        }
+        },
+        "parameters": [
+          {
+            "name": "requests",
+            "type": "Iterator[google.cloud.mediatranslation_v1beta1.types.StreamingTranslateSpeechRequest]"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "Iterable[google.cloud.mediatranslation_v1beta1.types.StreamingTranslateSpeechResponse]",
+        "shortName": "streaming_translate_speech"
       },
+      "description": "Sample for StreamingTranslateSpeech",
       "file": "mediatranslation_v1beta1_generated_speech_translation_service_streaming_translate_speech_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "mediatranslation_v1beta1_generated_SpeechTranslationService_StreamingTranslateSpeech_sync",
       "segments": [
         {
@@ -87,7 +160,8 @@
           "start": 57,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "mediatranslation_v1beta1_generated_speech_translation_service_streaming_translate_speech_sync.py"
     }
   ]
 }

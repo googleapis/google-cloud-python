@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Iterable, Iterator, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    Optional,
+    Iterable,
+    Iterator,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -415,7 +425,6 @@ class SpeechTranslationServiceClient(metaclass=SpeechTranslationServiceClientMet
         r"""Performs bidirectional streaming speech translation:
         receive results while sending audio. This method is only
         available via the gRPC API (not REST).
-
 
         .. code-block:: python
 

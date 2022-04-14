@@ -18,6 +18,7 @@ import functools
 import re
 from typing import (
     Dict,
+    Mapping,
     Optional,
     AsyncIterable,
     Awaitable,
@@ -228,7 +229,6 @@ class SpeechTranslationServiceAsyncClient:
         r"""Performs bidirectional streaming speech translation:
         receive results while sending audio. This method is only
         available via the gRPC API (not REST).
-
 
         .. code-block:: python
 
