@@ -542,7 +542,8 @@ class ApiGatewayServiceAsyncClient:
                 maximum=60.0,
                 multiplier=2,
                 predicate=retries.if_exception_type(
-                    core_exceptions.GoogleAPICallError,
+                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.Unknown,
                 ),
                 deadline=60.0,
             ),
@@ -677,7 +678,8 @@ class ApiGatewayServiceAsyncClient:
                 maximum=60.0,
                 multiplier=2,
                 predicate=retries.if_exception_type(
-                    core_exceptions.GoogleAPICallError,
+                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.Unknown,
                 ),
                 deadline=60.0,
             ),
@@ -808,7 +810,8 @@ class ApiGatewayServiceAsyncClient:
                 maximum=60.0,
                 multiplier=2,
                 predicate=retries.if_exception_type(
-                    core_exceptions.GoogleAPICallError,
+                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.Unknown,
                 ),
                 deadline=60.0,
             ),
@@ -1150,7 +1153,8 @@ class ApiGatewayServiceAsyncClient:
                 maximum=60.0,
                 multiplier=2,
                 predicate=retries.if_exception_type(
-                    core_exceptions.GoogleAPICallError,
+                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.Unknown,
                 ),
                 deadline=60.0,
             ),
@@ -1280,7 +1284,8 @@ class ApiGatewayServiceAsyncClient:
                 maximum=60.0,
                 multiplier=2,
                 predicate=retries.if_exception_type(
-                    core_exceptions.GoogleAPICallError,
+                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.Unknown,
                 ),
                 deadline=60.0,
             ),
@@ -1409,7 +1414,8 @@ class ApiGatewayServiceAsyncClient:
                 maximum=60.0,
                 multiplier=2,
                 predicate=retries.if_exception_type(
-                    core_exceptions.GoogleAPICallError,
+                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.Unknown,
                 ),
                 deadline=60.0,
             ),
@@ -1752,7 +1758,8 @@ class ApiGatewayServiceAsyncClient:
                 maximum=60.0,
                 multiplier=2,
                 predicate=retries.if_exception_type(
-                    core_exceptions.GoogleAPICallError,
+                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.Unknown,
                 ),
                 deadline=60.0,
             ),
@@ -1881,7 +1888,8 @@ class ApiGatewayServiceAsyncClient:
                 maximum=60.0,
                 multiplier=2,
                 predicate=retries.if_exception_type(
-                    core_exceptions.GoogleAPICallError,
+                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.Unknown,
                 ),
                 deadline=60.0,
             ),
@@ -2012,7 +2020,8 @@ class ApiGatewayServiceAsyncClient:
                 maximum=60.0,
                 multiplier=2,
                 predicate=retries.if_exception_type(
-                    core_exceptions.GoogleAPICallError,
+                    core_exceptions.ServiceUnavailable,
+                    core_exceptions.Unknown,
                 ),
                 deadline=60.0,
             ),
