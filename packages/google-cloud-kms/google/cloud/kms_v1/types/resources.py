@@ -159,7 +159,7 @@ class CryptoKey(proto.Message):
             instances created by either
             [CreateCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.CreateCryptoKeyVersion]
             or auto-rotation are controlled by this template.
-        labels (Sequence[google.cloud.kms_v1.types.CryptoKey.LabelsEntry]):
+        labels (Mapping[str, str]):
             Labels with user-defined metadata. For more information, see
             `Labeling
             Keys <https://cloud.google.com/kms/docs/labeling-keys>`__.

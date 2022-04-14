@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -345,7 +345,6 @@ class EkmServiceAsyncClient:
         r"""Returns metadata for a given
         [EkmConnection][google.cloud.kms.v1.EkmConnection].
 
-
         .. code-block:: python
 
             from google.cloud import kms_v1
@@ -466,7 +465,6 @@ class EkmServiceAsyncClient:
     ) -> ekm_service.EkmConnection:
         r"""Creates a new [EkmConnection][google.cloud.kms.v1.EkmConnection]
         in a given Project and Location.
-
 
         .. code-block:: python
 
@@ -607,7 +605,6 @@ class EkmServiceAsyncClient:
     ) -> ekm_service.EkmConnection:
         r"""Updates an [EkmConnection][google.cloud.kms.v1.EkmConnection]'s
         metadata.
-
 
         .. code-block:: python
 

@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -1004,7 +1004,6 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
         r"""Returns metadata for a given
         [KeyRing][google.cloud.kms.v1.KeyRing].
 
-
         .. code-block:: python
 
             from google.cloud import kms_v1
@@ -1103,7 +1102,6 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
         [CryptoKey][google.cloud.kms.v1.CryptoKey], as well as its
         [primary][google.cloud.kms.v1.CryptoKey.primary]
         [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion].
-
 
         .. code-block:: python
 
@@ -1208,7 +1206,6 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
     ) -> resources.CryptoKeyVersion:
         r"""Returns metadata for a given
         [CryptoKeyVersion][google.cloud.kms.v1.CryptoKeyVersion].
-
 
         .. code-block:: python
 
@@ -1326,7 +1323,6 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
         or
         [ASYMMETRIC_DECRYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ASYMMETRIC_DECRYPT].
 
-
         .. code-block:: python
 
             from google.cloud import kms_v1
@@ -1427,7 +1423,6 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
     ) -> resources.ImportJob:
         r"""Returns metadata for a given
         [ImportJob][google.cloud.kms.v1.ImportJob].
-
 
         .. code-block:: python
 
@@ -1573,7 +1568,6 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
         r"""Create a new [KeyRing][google.cloud.kms.v1.KeyRing] in a given
         Project and Location.
 
-
         .. code-block:: python
 
             from google.cloud import kms_v1
@@ -1696,7 +1690,6 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
         [CryptoKey.purpose][google.cloud.kms.v1.CryptoKey.purpose] and
         [CryptoKey.version_template.algorithm][google.cloud.kms.v1.CryptoKeyVersionTemplate.algorithm]
         are required.
-
 
         .. code-block:: python
 
@@ -1828,7 +1821,6 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
         to
         [ENABLED][google.cloud.kms.v1.CryptoKeyVersion.CryptoKeyVersionState.ENABLED].
 
-
         .. code-block:: python
 
             from google.cloud import kms_v1
@@ -1959,7 +1951,6 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
         created, and will be assigned the next sequential id within the
         [CryptoKey][google.cloud.kms.v1.CryptoKey].
 
-
         .. code-block:: python
 
             from google.cloud import kms_v1
@@ -2058,7 +2049,6 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
         [ImportJob.import_method][google.cloud.kms.v1.ImportJob.import_method]
         is required.
-
 
         .. code-block:: python
 
@@ -2352,7 +2342,6 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
         [RestoreCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.RestoreCryptoKeyVersion]
         to move between other states.
 
-
         .. code-block:: python
 
             from google.cloud import kms_v1
@@ -2479,7 +2468,6 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
 
         Returns an error if called on a key whose purpose is not
         [ENCRYPT_DECRYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT].
-
 
         .. code-block:: python
 
@@ -2618,7 +2606,6 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
         [RestoreCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.RestoreCryptoKeyVersion]
         may be called to reverse the process.
 
-
         .. code-block:: python
 
             from google.cloud import kms_v1
@@ -2741,7 +2728,6 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
         [destroy_time][google.cloud.kms.v1.CryptoKeyVersion.destroy_time]
         will be cleared.
 
-
         .. code-block:: python
 
             from google.cloud import kms_v1
@@ -2857,7 +2843,6 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
         [CryptoKey.purpose][google.cloud.kms.v1.CryptoKey.purpose] must
         be
         [ENCRYPT_DECRYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT].
-
 
         .. code-block:: python
 
@@ -2986,7 +2971,6 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
         be
         [ENCRYPT_DECRYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT].
 
-
         .. code-block:: python
 
             from google.cloud import kms_v1
@@ -3100,7 +3084,6 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
         ASYMMETRIC_SIGN, producing a signature that can be verified with
         the public key retrieved from
         [GetPublicKey][google.cloud.kms.v1.KeyManagementService.GetPublicKey].
-
 
         .. code-block:: python
 
@@ -3221,7 +3204,6 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
         [CryptoKey.purpose][google.cloud.kms.v1.CryptoKey.purpose]
         ASYMMETRIC_DECRYPT.
 
-
         .. code-block:: python
 
             from google.cloud import kms_v1
@@ -3334,7 +3316,6 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
         [CryptoKey.purpose][google.cloud.kms.v1.CryptoKey.purpose] MAC,
         producing a tag that can be verified by another source with the
         same key.
-
 
         .. code-block:: python
 
@@ -3449,7 +3430,6 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
         [CryptoKey.purpose][google.cloud.kms.v1.CryptoKey.purpose] MAC,
         and returns a response that indicates whether or not the
         verification was successful.
-
 
         .. code-block:: python
 
@@ -3569,7 +3549,6 @@ class KeyManagementServiceClient(metaclass=KeyManagementServiceClientMeta):
     ) -> service.GenerateRandomBytesResponse:
         r"""Generate random bytes using the Cloud KMS randomness
         source in the provided location.
-
 
         .. code-block:: python
 
