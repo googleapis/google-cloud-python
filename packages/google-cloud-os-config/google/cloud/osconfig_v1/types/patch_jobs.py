@@ -1018,7 +1018,7 @@ class PatchInstanceFilter(proto.Message):
         and ``app=web``.
 
         Attributes:
-            labels (Sequence[google.cloud.osconfig_v1.types.PatchInstanceFilter.GroupLabel.LabelsEntry]):
+            labels (Mapping[str, str]):
                 Compute Engine instance labels that must be
                 present for a VM instance to be targeted by this
                 filter.

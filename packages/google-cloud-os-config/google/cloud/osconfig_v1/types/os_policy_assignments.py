@@ -139,7 +139,7 @@ class OSPolicyAssignment(proto.Message):
            both labels present.
 
         Attributes:
-            labels (Sequence[google.cloud.osconfig_v1.types.OSPolicyAssignment.LabelSet.LabelsEntry]):
+            labels (Mapping[str, str]):
                 Labels are identified by key/value pairs in
                 this map. A VM should contain all the key/value
                 pairs specified in this map to be selected.

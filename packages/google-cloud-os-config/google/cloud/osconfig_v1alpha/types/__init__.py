@@ -31,7 +31,9 @@ from .inventory import (
     ListInventoriesResponse,
     InventoryView,
 )
-from .os_policy import OSPolicy
+from .os_policy import (
+    OSPolicy,
+)
 from .os_policy_assignment_reports import (
     GetOSPolicyAssignmentReportRequest,
     ListOSPolicyAssignmentReportsRequest,
@@ -50,7 +52,9 @@ from .os_policy_assignments import (
     OSPolicyAssignmentOperationMetadata,
     UpdateOSPolicyAssignmentRequest,
 )
-from .osconfig_common import FixedOrPercent
+from .osconfig_common import (
+    FixedOrPercent,
+)
 from .vulnerability import (
     CVSSv3,
     GetVulnerabilityReportRequest,

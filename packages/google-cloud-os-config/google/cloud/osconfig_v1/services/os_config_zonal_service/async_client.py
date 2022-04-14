@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -267,7 +267,6 @@ class OsConfigZonalServiceAsyncClient:
         For more information, see `Method:
         projects.locations.osPolicyAssignments.operations.cancel <https://cloud.google.com/compute/docs/osconfig/rest/v1/projects.locations.osPolicyAssignments.operations/cancel>`__.
 
-
         .. code-block:: python
 
             from google.cloud import osconfig_v1
@@ -437,7 +436,6 @@ class OsConfigZonalServiceAsyncClient:
         For more information, see `Method:
         projects.locations.osPolicyAssignments.operations.cancel <https://cloud.google.com/compute/docs/osconfig/rest/v1/projects.locations.osPolicyAssignments.operations/cancel>`__.
 
-
         .. code-block:: python
 
             from google.cloud import osconfig_v1
@@ -581,7 +579,6 @@ class OsConfigZonalServiceAsyncClient:
         retrieve a previous revision of the assignment, also provide the
         revision ID in the ``name`` parameter.
 
-
         .. code-block:: python
 
             from google.cloud import osconfig_v1
@@ -694,7 +691,6 @@ class OsConfigZonalServiceAsyncClient:
         For each OS policy assignment, the latest revision is
         returned.
 
-
         .. code-block:: python
 
             from google.cloud import osconfig_v1
@@ -803,7 +799,6 @@ class OsConfigZonalServiceAsyncClient:
     ) -> pagers.ListOSPolicyAssignmentRevisionsAsyncPager:
         r"""List the OS policy assignment revisions for a given
         OS policy assignment.
-
 
         .. code-block:: python
 
@@ -926,7 +921,6 @@ class OsConfigZonalServiceAsyncClient:
 
         For more information, see `Method:
         projects.locations.osPolicyAssignments.operations.cancel <https://cloud.google.com/compute/docs/osconfig/rest/v1/projects.locations.osPolicyAssignments.operations/cancel>`__.
-
 
         .. code-block:: python
 
@@ -1051,7 +1045,6 @@ class OsConfigZonalServiceAsyncClient:
         r"""Get the OS policy asssignment report for the
         specified Compute Engine VM instance.
 
-
         .. code-block:: python
 
             from google.cloud import osconfig_v1
@@ -1161,7 +1154,6 @@ class OsConfigZonalServiceAsyncClient:
     ) -> pagers.ListOSPolicyAssignmentReportsAsyncPager:
         r"""List OS policy asssignment reports for all Compute
         Engine VM instances in the specified zone.
-
 
         .. code-block:: python
 
@@ -1299,7 +1291,6 @@ class OsConfigZonalServiceAsyncClient:
         r"""Get inventory data for the specified VM instance. If the VM has
         no associated inventory, the message ``NOT_FOUND`` is returned.
 
-
         .. code-block:: python
 
             from google.cloud import osconfig_v1
@@ -1410,7 +1401,6 @@ class OsConfigZonalServiceAsyncClient:
     ) -> pagers.ListInventoriesAsyncPager:
         r"""List inventory data for all VM instances in the
         specified zone.
-
 
         .. code-block:: python
 
@@ -1528,7 +1518,6 @@ class OsConfigZonalServiceAsyncClient:
         instance. Only VMs with inventory data have
         vulnerability reports associated with them.
 
-
         .. code-block:: python
 
             from google.cloud import osconfig_v1
@@ -1635,7 +1624,6 @@ class OsConfigZonalServiceAsyncClient:
     ) -> pagers.ListVulnerabilityReportsAsyncPager:
         r"""List vulnerability reports for all VM instances in
         the specified zone.
-
 
         .. code-block:: python
 

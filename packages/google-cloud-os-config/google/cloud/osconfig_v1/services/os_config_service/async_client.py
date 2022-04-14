@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -227,7 +227,6 @@ class OsConfigServiceAsyncClient:
         r"""Patch VM instances by creating and running a patch
         job.
 
-
         .. code-block:: python
 
             from google.cloud import osconfig_v1
@@ -311,7 +310,6 @@ class OsConfigServiceAsyncClient:
         r"""Get the patch job. This can be used to track the
         progress of an ongoing patch job or review the details
         of completed jobs.
-
 
         .. code-block:: python
 
@@ -415,7 +413,6 @@ class OsConfigServiceAsyncClient:
     ) -> patch_jobs.PatchJob:
         r"""Cancel a patch job. The patch job must be active.
         Canceled patch jobs cannot be restarted.
-
 
         .. code-block:: python
 
@@ -1242,7 +1239,6 @@ class OsConfigServiceAsyncClient:
         Patch deployment in paused state doesn't generate patch
         jobs.
 
-
         .. code-block:: python
 
             from google.cloud import osconfig_v1
@@ -1343,7 +1339,6 @@ class OsConfigServiceAsyncClient:
         r"""Change state of patch deployment back to "ACTIVE".
         Patch deployment in active state continues to generate
         patch jobs.
-
 
         .. code-block:: python
 
