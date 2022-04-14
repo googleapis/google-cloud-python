@@ -571,7 +571,7 @@ class SoftwareConfig(proto.Message):
 
             See also `Version
             List </composer/docs/concepts/versioning/composer-versions>`__.
-        airflow_config_overrides (Sequence[google.cloud.orchestration.airflow.service_v1.types.SoftwareConfig.AirflowConfigOverridesEntry]):
+        airflow_config_overrides (Mapping[str, str]):
             Optional. Apache Airflow configuration properties to
             override.
 
@@ -591,7 +591,7 @@ class SoftwareConfig(proto.Message):
             Certain Apache Airflow configuration property values are
             `blocked </composer/docs/concepts/airflow-configurations>`__,
             and cannot be overridden.
-        pypi_packages (Sequence[google.cloud.orchestration.airflow.service_v1.types.SoftwareConfig.PypiPackagesEntry]):
+        pypi_packages (Mapping[str, str]):
             Optional. Custom Python Package Index (PyPI) packages to be
             installed in the environment.
 
@@ -600,7 +600,7 @@ class SoftwareConfig(proto.Message):
             as "==1.12.0", "[devel,gcp_api]", or "[devel]>=1.8.2,
             <1.9.2". To specify a package without pinning it to a
             version specifier, use the empty string as the value.
-        env_variables (Sequence[google.cloud.orchestration.airflow.service_v1.types.SoftwareConfig.EnvVariablesEntry]):
+        env_variables (Mapping[str, str]):
             Optional. Additional environment variables to provide to the
             Apache Airflow scheduler, worker, and webserver processes.
 
@@ -1004,7 +1004,7 @@ class Environment(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time at which this
             environment was last modified.
-        labels (Sequence[google.cloud.orchestration.airflow.service_v1.types.Environment.LabelsEntry]):
+        labels (Mapping[str, str]):
             Optional. User-defined labels for this environment. The
             labels map can contain no more than 64 entries. Entries of
             the labels map are UTF8 strings that comply with the
@@ -1080,7 +1080,7 @@ class CheckUpgradeResponse(proto.Message):
         image_version (str):
             Composer image for which the build was
             happening.
-        pypi_dependencies (Sequence[google.cloud.orchestration.airflow.service_v1.types.CheckUpgradeResponse.PypiDependenciesEntry]):
+        pypi_dependencies (Mapping[str, str]):
             Pypi dependencies specified in the
             environment configuration, at the time when the
             build was triggered.
