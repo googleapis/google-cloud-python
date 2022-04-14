@@ -511,7 +511,7 @@ class LabelStats(proto.Message):
     r"""Statistics about annotation specs.
 
     Attributes:
-        example_count (Sequence[google.cloud.datalabeling_v1beta1.types.LabelStats.ExampleCountEntry]):
+        example_count (Mapping[str, int]):
             Map of each annotation spec's example count.
             Key is the annotation spec name and value is the
             number of examples for that annotation spec. If

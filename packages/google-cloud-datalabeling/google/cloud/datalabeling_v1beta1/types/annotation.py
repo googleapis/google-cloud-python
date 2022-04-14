@@ -453,7 +453,7 @@ class ImageSegmentationAnnotation(proto.Message):
     r"""Image segmentation annotation.
 
     Attributes:
-        annotation_colors (Sequence[google.cloud.datalabeling_v1beta1.types.ImageSegmentationAnnotation.AnnotationColorsEntry]):
+        annotation_colors (Mapping[str, google.cloud.datalabeling_v1beta1.types.AnnotationSpec]):
             The mapping between rgb color and annotation
             spec. The key is the rgb color represented in
             format of rgb(0, 0, 0). The value is the

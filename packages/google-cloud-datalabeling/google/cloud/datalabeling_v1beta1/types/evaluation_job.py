@@ -239,7 +239,7 @@ class EvaluationJobConfig(proto.Message):
             resource before you can specify this field. Provide the name
             of the instruction resource in the ``instruction`` field
             within this configuration.
-        bigquery_import_keys (Sequence[google.cloud.datalabeling_v1beta1.types.EvaluationJobConfig.BigqueryImportKeysEntry]):
+        bigquery_import_keys (Mapping[str, str]):
             Required. Prediction keys that tell Data Labeling Service
             where to find the data for evaluation in your BigQuery
             table. When the service samples prediction input and output
