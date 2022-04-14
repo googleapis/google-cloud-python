@@ -88,13 +88,13 @@ class DeliveryPipeline(proto.Message):
         description (str):
             Description of the ``DeliveryPipeline``. Max length is 255
             characters.
-        annotations (Sequence[google.cloud.deploy_v1.types.DeliveryPipeline.AnnotationsEntry]):
+        annotations (Mapping[str, str]):
             User annotations. These attributes can only
             be set and used by the user, and not by Google
             Cloud Deploy. See
             https://google.aip.dev/128#annotations for more
             details such as format and size limitations.
-        labels (Sequence[google.cloud.deploy_v1.types.DeliveryPipeline.LabelsEntry]):
+        labels (Mapping[str, str]):
             Labels are attributes that can be set and used by both the
             user and by Google Cloud Deploy. Labels must meet the
             following constraints:
@@ -621,13 +621,13 @@ class Target(proto.Message):
         description (str):
             Optional. Description of the ``Target``. Max length is 255
             characters.
-        annotations (Sequence[google.cloud.deploy_v1.types.Target.AnnotationsEntry]):
+        annotations (Mapping[str, str]):
             Optional. User annotations. These attributes
             can only be set and used by the user, and not by
             Google Cloud Deploy. See
             https://google.aip.dev/128#annotations for more
             details such as format and size limitations.
-        labels (Sequence[google.cloud.deploy_v1.types.Target.LabelsEntry]):
+        labels (Mapping[str, str]):
             Optional. Labels are attributes that can be set and used by
             both the user and by Google Cloud Deploy. Labels must meet
             the following constraints:
@@ -1229,13 +1229,13 @@ class Release(proto.Message):
         description (str):
             Description of the ``Release``. Max length is 255
             characters.
-        annotations (Sequence[google.cloud.deploy_v1.types.Release.AnnotationsEntry]):
+        annotations (Mapping[str, str]):
             User annotations. These attributes can only
             be set and used by the user, and not by Google
             Cloud Deploy. See
             https://google.aip.dev/128#annotations for more
             details such as format and size limitations.
-        labels (Sequence[google.cloud.deploy_v1.types.Release.LabelsEntry]):
+        labels (Mapping[str, str]):
             Labels are attributes that can be set and used by both the
             user and by Google Cloud Deploy. Labels must meet the
             following constraints:
@@ -1288,10 +1288,10 @@ class Release(proto.Message):
 
             If unset, the most recent supported Skaffold
             version will be used.
-        target_artifacts (Sequence[google.cloud.deploy_v1.types.Release.TargetArtifactsEntry]):
+        target_artifacts (Mapping[str, google.cloud.deploy_v1.types.TargetArtifact]):
             Output only. Map from target ID to the target
             artifacts created during the render operation.
-        target_renders (Sequence[google.cloud.deploy_v1.types.Release.TargetRendersEntry]):
+        target_renders (Mapping[str, google.cloud.deploy_v1.types.Release.TargetRender]):
             Output only. Map from target ID to details of
             the render operation for that target.
     """
@@ -1670,13 +1670,13 @@ class Rollout(proto.Message):
         description (str):
             Description of the ``Rollout`` for user purposes. Max length
             is 255 characters.
-        annotations (Sequence[google.cloud.deploy_v1.types.Rollout.AnnotationsEntry]):
+        annotations (Mapping[str, str]):
             User annotations. These attributes can only
             be set and used by the user, and not by Google
             Cloud Deploy. See
             https://google.aip.dev/128#annotations for more
             details such as format and size limitations.
-        labels (Sequence[google.cloud.deploy_v1.types.Rollout.LabelsEntry]):
+        labels (Mapping[str, str]):
             Labels are attributes that can be set and used by both the
             user and by Google Cloud Deploy. Labels must meet the
             following constraints:

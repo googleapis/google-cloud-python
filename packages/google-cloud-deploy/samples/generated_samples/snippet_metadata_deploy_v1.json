@@ -1,16 +1,61 @@
 {
+  "clientLibrary": {
+    "apis": [
+      {
+        "id": "google.cloud.deploy.v1",
+        "version": "v1"
+      }
+    ],
+    "language": "PYTHON",
+    "name": "google-cloud-deploy"
+  },
   "snippets": [
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.deploy_v1.CloudDeployAsyncClient",
+          "shortName": "CloudDeployAsyncClient"
+        },
+        "fullName": "google.cloud.deploy_v1.CloudDeployAsyncClient.approve_rollout",
         "method": {
+          "fullName": "google.cloud.deploy.v1.CloudDeploy.ApproveRollout",
           "service": {
+            "fullName": "google.cloud.deploy.v1.CloudDeploy",
             "shortName": "CloudDeploy"
           },
           "shortName": "ApproveRollout"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.deploy_v1.types.ApproveRolloutRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.deploy_v1.types.ApproveRolloutResponse",
+        "shortName": "approve_rollout"
       },
+      "description": "Sample for ApproveRollout",
       "file": "clouddeploy_v1_generated_cloud_deploy_approve_rollout_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "clouddeploy_v1_generated_CloudDeploy_ApproveRollout_async",
       "segments": [
         {
@@ -43,18 +88,54 @@
           "start": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "clouddeploy_v1_generated_cloud_deploy_approve_rollout_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.deploy_v1.CloudDeployClient",
+          "shortName": "CloudDeployClient"
+        },
+        "fullName": "google.cloud.deploy_v1.CloudDeployClient.approve_rollout",
         "method": {
+          "fullName": "google.cloud.deploy.v1.CloudDeploy.ApproveRollout",
           "service": {
+            "fullName": "google.cloud.deploy.v1.CloudDeploy",
             "shortName": "CloudDeploy"
           },
           "shortName": "ApproveRollout"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.deploy_v1.types.ApproveRolloutRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.deploy_v1.types.ApproveRolloutResponse",
+        "shortName": "approve_rollout"
       },
+      "description": "Sample for ApproveRollout",
       "file": "clouddeploy_v1_generated_cloud_deploy_approve_rollout_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "clouddeploy_v1_generated_CloudDeploy_ApproveRollout_sync",
       "segments": [
         {
@@ -87,19 +168,63 @@
           "start": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "clouddeploy_v1_generated_cloud_deploy_approve_rollout_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.deploy_v1.CloudDeployAsyncClient",
+          "shortName": "CloudDeployAsyncClient"
+        },
+        "fullName": "google.cloud.deploy_v1.CloudDeployAsyncClient.create_delivery_pipeline",
         "method": {
+          "fullName": "google.cloud.deploy.v1.CloudDeploy.CreateDeliveryPipeline",
           "service": {
+            "fullName": "google.cloud.deploy.v1.CloudDeploy",
             "shortName": "CloudDeploy"
           },
           "shortName": "CreateDeliveryPipeline"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.deploy_v1.types.CreateDeliveryPipelineRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "delivery_pipeline",
+            "type": "google.cloud.deploy_v1.types.DeliveryPipeline"
+          },
+          {
+            "name": "delivery_pipeline_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "create_delivery_pipeline"
       },
+      "description": "Sample for CreateDeliveryPipeline",
       "file": "clouddeploy_v1_generated_cloud_deploy_create_delivery_pipeline_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "clouddeploy_v1_generated_CloudDeploy_CreateDeliveryPipeline_async",
       "segments": [
         {
@@ -132,18 +257,62 @@
           "start": 47,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "clouddeploy_v1_generated_cloud_deploy_create_delivery_pipeline_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.deploy_v1.CloudDeployClient",
+          "shortName": "CloudDeployClient"
+        },
+        "fullName": "google.cloud.deploy_v1.CloudDeployClient.create_delivery_pipeline",
         "method": {
+          "fullName": "google.cloud.deploy.v1.CloudDeploy.CreateDeliveryPipeline",
           "service": {
+            "fullName": "google.cloud.deploy.v1.CloudDeploy",
             "shortName": "CloudDeploy"
           },
           "shortName": "CreateDeliveryPipeline"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.deploy_v1.types.CreateDeliveryPipelineRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "delivery_pipeline",
+            "type": "google.cloud.deploy_v1.types.DeliveryPipeline"
+          },
+          {
+            "name": "delivery_pipeline_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "create_delivery_pipeline"
       },
+      "description": "Sample for CreateDeliveryPipeline",
       "file": "clouddeploy_v1_generated_cloud_deploy_create_delivery_pipeline_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "clouddeploy_v1_generated_CloudDeploy_CreateDeliveryPipeline_sync",
       "segments": [
         {
@@ -176,19 +345,63 @@
           "start": 47,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "clouddeploy_v1_generated_cloud_deploy_create_delivery_pipeline_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.deploy_v1.CloudDeployAsyncClient",
+          "shortName": "CloudDeployAsyncClient"
+        },
+        "fullName": "google.cloud.deploy_v1.CloudDeployAsyncClient.create_release",
         "method": {
+          "fullName": "google.cloud.deploy.v1.CloudDeploy.CreateRelease",
           "service": {
+            "fullName": "google.cloud.deploy.v1.CloudDeploy",
             "shortName": "CloudDeploy"
           },
           "shortName": "CreateRelease"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.deploy_v1.types.CreateReleaseRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "release",
+            "type": "google.cloud.deploy_v1.types.Release"
+          },
+          {
+            "name": "release_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "create_release"
       },
+      "description": "Sample for CreateRelease",
       "file": "clouddeploy_v1_generated_cloud_deploy_create_release_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "clouddeploy_v1_generated_CloudDeploy_CreateRelease_async",
       "segments": [
         {
@@ -221,18 +434,62 @@
           "start": 47,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "clouddeploy_v1_generated_cloud_deploy_create_release_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.deploy_v1.CloudDeployClient",
+          "shortName": "CloudDeployClient"
+        },
+        "fullName": "google.cloud.deploy_v1.CloudDeployClient.create_release",
         "method": {
+          "fullName": "google.cloud.deploy.v1.CloudDeploy.CreateRelease",
           "service": {
+            "fullName": "google.cloud.deploy.v1.CloudDeploy",
             "shortName": "CloudDeploy"
           },
           "shortName": "CreateRelease"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.deploy_v1.types.CreateReleaseRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "release",
+            "type": "google.cloud.deploy_v1.types.Release"
+          },
+          {
+            "name": "release_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "create_release"
       },
+      "description": "Sample for CreateRelease",
       "file": "clouddeploy_v1_generated_cloud_deploy_create_release_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "clouddeploy_v1_generated_CloudDeploy_CreateRelease_sync",
       "segments": [
         {
@@ -265,19 +522,63 @@
           "start": 47,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "clouddeploy_v1_generated_cloud_deploy_create_release_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.deploy_v1.CloudDeployAsyncClient",
+          "shortName": "CloudDeployAsyncClient"
+        },
+        "fullName": "google.cloud.deploy_v1.CloudDeployAsyncClient.create_rollout",
         "method": {
+          "fullName": "google.cloud.deploy.v1.CloudDeploy.CreateRollout",
           "service": {
+            "fullName": "google.cloud.deploy.v1.CloudDeploy",
             "shortName": "CloudDeploy"
           },
           "shortName": "CreateRollout"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.deploy_v1.types.CreateRolloutRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "rollout",
+            "type": "google.cloud.deploy_v1.types.Rollout"
+          },
+          {
+            "name": "rollout_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "create_rollout"
       },
+      "description": "Sample for CreateRollout",
       "file": "clouddeploy_v1_generated_cloud_deploy_create_rollout_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "clouddeploy_v1_generated_CloudDeploy_CreateRollout_async",
       "segments": [
         {
@@ -310,18 +611,62 @@
           "start": 51,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "clouddeploy_v1_generated_cloud_deploy_create_rollout_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.deploy_v1.CloudDeployClient",
+          "shortName": "CloudDeployClient"
+        },
+        "fullName": "google.cloud.deploy_v1.CloudDeployClient.create_rollout",
         "method": {
+          "fullName": "google.cloud.deploy.v1.CloudDeploy.CreateRollout",
           "service": {
+            "fullName": "google.cloud.deploy.v1.CloudDeploy",
             "shortName": "CloudDeploy"
           },
           "shortName": "CreateRollout"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.deploy_v1.types.CreateRolloutRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "rollout",
+            "type": "google.cloud.deploy_v1.types.Rollout"
+          },
+          {
+            "name": "rollout_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "create_rollout"
       },
+      "description": "Sample for CreateRollout",
       "file": "clouddeploy_v1_generated_cloud_deploy_create_rollout_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "clouddeploy_v1_generated_CloudDeploy_CreateRollout_sync",
       "segments": [
         {
@@ -354,19 +699,63 @@
           "start": 51,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "clouddeploy_v1_generated_cloud_deploy_create_rollout_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.deploy_v1.CloudDeployAsyncClient",
+          "shortName": "CloudDeployAsyncClient"
+        },
+        "fullName": "google.cloud.deploy_v1.CloudDeployAsyncClient.create_target",
         "method": {
+          "fullName": "google.cloud.deploy.v1.CloudDeploy.CreateTarget",
           "service": {
+            "fullName": "google.cloud.deploy.v1.CloudDeploy",
             "shortName": "CloudDeploy"
           },
           "shortName": "CreateTarget"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.deploy_v1.types.CreateTargetRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "target",
+            "type": "google.cloud.deploy_v1.types.Target"
+          },
+          {
+            "name": "target_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "create_target"
       },
+      "description": "Sample for CreateTarget",
       "file": "clouddeploy_v1_generated_cloud_deploy_create_target_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "clouddeploy_v1_generated_CloudDeploy_CreateTarget_async",
       "segments": [
         {
@@ -399,18 +788,62 @@
           "start": 47,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "clouddeploy_v1_generated_cloud_deploy_create_target_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.deploy_v1.CloudDeployClient",
+          "shortName": "CloudDeployClient"
+        },
+        "fullName": "google.cloud.deploy_v1.CloudDeployClient.create_target",
         "method": {
+          "fullName": "google.cloud.deploy.v1.CloudDeploy.CreateTarget",
           "service": {
+            "fullName": "google.cloud.deploy.v1.CloudDeploy",
             "shortName": "CloudDeploy"
           },
           "shortName": "CreateTarget"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.deploy_v1.types.CreateTargetRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "target",
+            "type": "google.cloud.deploy_v1.types.Target"
+          },
+          {
+            "name": "target_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "create_target"
       },
+      "description": "Sample for CreateTarget",
       "file": "clouddeploy_v1_generated_cloud_deploy_create_target_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "clouddeploy_v1_generated_CloudDeploy_CreateTarget_sync",
       "segments": [
         {
@@ -443,19 +876,55 @@
           "start": 47,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "clouddeploy_v1_generated_cloud_deploy_create_target_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.deploy_v1.CloudDeployAsyncClient",
+          "shortName": "CloudDeployAsyncClient"
+        },
+        "fullName": "google.cloud.deploy_v1.CloudDeployAsyncClient.delete_delivery_pipeline",
         "method": {
+          "fullName": "google.cloud.deploy.v1.CloudDeploy.DeleteDeliveryPipeline",
           "service": {
+            "fullName": "google.cloud.deploy.v1.CloudDeploy",
             "shortName": "CloudDeploy"
           },
           "shortName": "DeleteDeliveryPipeline"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.deploy_v1.types.DeleteDeliveryPipelineRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "delete_delivery_pipeline"
       },
+      "description": "Sample for DeleteDeliveryPipeline",
       "file": "clouddeploy_v1_generated_cloud_deploy_delete_delivery_pipeline_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "clouddeploy_v1_generated_CloudDeploy_DeleteDeliveryPipeline_async",
       "segments": [
         {
@@ -488,18 +957,54 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "clouddeploy_v1_generated_cloud_deploy_delete_delivery_pipeline_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.deploy_v1.CloudDeployClient",
+          "shortName": "CloudDeployClient"
+        },
+        "fullName": "google.cloud.deploy_v1.CloudDeployClient.delete_delivery_pipeline",
         "method": {
+          "fullName": "google.cloud.deploy.v1.CloudDeploy.DeleteDeliveryPipeline",
           "service": {
+            "fullName": "google.cloud.deploy.v1.CloudDeploy",
             "shortName": "CloudDeploy"
           },
           "shortName": "DeleteDeliveryPipeline"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.deploy_v1.types.DeleteDeliveryPipelineRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "delete_delivery_pipeline"
       },
+      "description": "Sample for DeleteDeliveryPipeline",
       "file": "clouddeploy_v1_generated_cloud_deploy_delete_delivery_pipeline_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "clouddeploy_v1_generated_CloudDeploy_DeleteDeliveryPipeline_sync",
       "segments": [
         {
@@ -532,19 +1037,55 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "clouddeploy_v1_generated_cloud_deploy_delete_delivery_pipeline_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.deploy_v1.CloudDeployAsyncClient",
+          "shortName": "CloudDeployAsyncClient"
+        },
+        "fullName": "google.cloud.deploy_v1.CloudDeployAsyncClient.delete_target",
         "method": {
+          "fullName": "google.cloud.deploy.v1.CloudDeploy.DeleteTarget",
           "service": {
+            "fullName": "google.cloud.deploy.v1.CloudDeploy",
             "shortName": "CloudDeploy"
           },
           "shortName": "DeleteTarget"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.deploy_v1.types.DeleteTargetRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "delete_target"
       },
+      "description": "Sample for DeleteTarget",
       "file": "clouddeploy_v1_generated_cloud_deploy_delete_target_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "clouddeploy_v1_generated_CloudDeploy_DeleteTarget_async",
       "segments": [
         {
@@ -577,18 +1118,54 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "clouddeploy_v1_generated_cloud_deploy_delete_target_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.deploy_v1.CloudDeployClient",
+          "shortName": "CloudDeployClient"
+        },
+        "fullName": "google.cloud.deploy_v1.CloudDeployClient.delete_target",
         "method": {
+          "fullName": "google.cloud.deploy.v1.CloudDeploy.DeleteTarget",
           "service": {
+            "fullName": "google.cloud.deploy.v1.CloudDeploy",
             "shortName": "CloudDeploy"
           },
           "shortName": "DeleteTarget"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.deploy_v1.types.DeleteTargetRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "delete_target"
       },
+      "description": "Sample for DeleteTarget",
       "file": "clouddeploy_v1_generated_cloud_deploy_delete_target_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "clouddeploy_v1_generated_CloudDeploy_DeleteTarget_sync",
       "segments": [
         {
@@ -621,19 +1198,55 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "clouddeploy_v1_generated_cloud_deploy_delete_target_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.deploy_v1.CloudDeployAsyncClient",
+          "shortName": "CloudDeployAsyncClient"
+        },
+        "fullName": "google.cloud.deploy_v1.CloudDeployAsyncClient.get_config",
         "method": {
+          "fullName": "google.cloud.deploy.v1.CloudDeploy.GetConfig",
           "service": {
+            "fullName": "google.cloud.deploy.v1.CloudDeploy",
             "shortName": "CloudDeploy"
           },
           "shortName": "GetConfig"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.deploy_v1.types.GetConfigRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.deploy_v1.types.Config",
+        "shortName": "get_config"
       },
+      "description": "Sample for GetConfig",
       "file": "clouddeploy_v1_generated_cloud_deploy_get_config_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "clouddeploy_v1_generated_CloudDeploy_GetConfig_async",
       "segments": [
         {
@@ -666,18 +1279,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "clouddeploy_v1_generated_cloud_deploy_get_config_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.deploy_v1.CloudDeployClient",
+          "shortName": "CloudDeployClient"
+        },
+        "fullName": "google.cloud.deploy_v1.CloudDeployClient.get_config",
         "method": {
+          "fullName": "google.cloud.deploy.v1.CloudDeploy.GetConfig",
           "service": {
+            "fullName": "google.cloud.deploy.v1.CloudDeploy",
             "shortName": "CloudDeploy"
           },
           "shortName": "GetConfig"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.deploy_v1.types.GetConfigRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.deploy_v1.types.Config",
+        "shortName": "get_config"
       },
+      "description": "Sample for GetConfig",
       "file": "clouddeploy_v1_generated_cloud_deploy_get_config_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "clouddeploy_v1_generated_CloudDeploy_GetConfig_sync",
       "segments": [
         {
@@ -710,19 +1359,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "clouddeploy_v1_generated_cloud_deploy_get_config_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.deploy_v1.CloudDeployAsyncClient",
+          "shortName": "CloudDeployAsyncClient"
+        },
+        "fullName": "google.cloud.deploy_v1.CloudDeployAsyncClient.get_delivery_pipeline",
         "method": {
+          "fullName": "google.cloud.deploy.v1.CloudDeploy.GetDeliveryPipeline",
           "service": {
+            "fullName": "google.cloud.deploy.v1.CloudDeploy",
             "shortName": "CloudDeploy"
           },
           "shortName": "GetDeliveryPipeline"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.deploy_v1.types.GetDeliveryPipelineRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.deploy_v1.types.DeliveryPipeline",
+        "shortName": "get_delivery_pipeline"
       },
+      "description": "Sample for GetDeliveryPipeline",
       "file": "clouddeploy_v1_generated_cloud_deploy_get_delivery_pipeline_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "clouddeploy_v1_generated_CloudDeploy_GetDeliveryPipeline_async",
       "segments": [
         {
@@ -755,18 +1440,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "clouddeploy_v1_generated_cloud_deploy_get_delivery_pipeline_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.deploy_v1.CloudDeployClient",
+          "shortName": "CloudDeployClient"
+        },
+        "fullName": "google.cloud.deploy_v1.CloudDeployClient.get_delivery_pipeline",
         "method": {
+          "fullName": "google.cloud.deploy.v1.CloudDeploy.GetDeliveryPipeline",
           "service": {
+            "fullName": "google.cloud.deploy.v1.CloudDeploy",
             "shortName": "CloudDeploy"
           },
           "shortName": "GetDeliveryPipeline"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.deploy_v1.types.GetDeliveryPipelineRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.deploy_v1.types.DeliveryPipeline",
+        "shortName": "get_delivery_pipeline"
       },
+      "description": "Sample for GetDeliveryPipeline",
       "file": "clouddeploy_v1_generated_cloud_deploy_get_delivery_pipeline_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "clouddeploy_v1_generated_CloudDeploy_GetDeliveryPipeline_sync",
       "segments": [
         {
@@ -799,19 +1520,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "clouddeploy_v1_generated_cloud_deploy_get_delivery_pipeline_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.deploy_v1.CloudDeployAsyncClient",
+          "shortName": "CloudDeployAsyncClient"
+        },
+        "fullName": "google.cloud.deploy_v1.CloudDeployAsyncClient.get_release",
         "method": {
+          "fullName": "google.cloud.deploy.v1.CloudDeploy.GetRelease",
           "service": {
+            "fullName": "google.cloud.deploy.v1.CloudDeploy",
             "shortName": "CloudDeploy"
           },
           "shortName": "GetRelease"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.deploy_v1.types.GetReleaseRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.deploy_v1.types.Release",
+        "shortName": "get_release"
       },
+      "description": "Sample for GetRelease",
       "file": "clouddeploy_v1_generated_cloud_deploy_get_release_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "clouddeploy_v1_generated_CloudDeploy_GetRelease_async",
       "segments": [
         {
@@ -844,18 +1601,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "clouddeploy_v1_generated_cloud_deploy_get_release_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.deploy_v1.CloudDeployClient",
+          "shortName": "CloudDeployClient"
+        },
+        "fullName": "google.cloud.deploy_v1.CloudDeployClient.get_release",
         "method": {
+          "fullName": "google.cloud.deploy.v1.CloudDeploy.GetRelease",
           "service": {
+            "fullName": "google.cloud.deploy.v1.CloudDeploy",
             "shortName": "CloudDeploy"
           },
           "shortName": "GetRelease"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.deploy_v1.types.GetReleaseRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.deploy_v1.types.Release",
+        "shortName": "get_release"
       },
+      "description": "Sample for GetRelease",
       "file": "clouddeploy_v1_generated_cloud_deploy_get_release_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "clouddeploy_v1_generated_CloudDeploy_GetRelease_sync",
       "segments": [
         {
@@ -888,19 +1681,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "clouddeploy_v1_generated_cloud_deploy_get_release_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.deploy_v1.CloudDeployAsyncClient",
+          "shortName": "CloudDeployAsyncClient"
+        },
+        "fullName": "google.cloud.deploy_v1.CloudDeployAsyncClient.get_rollout",
         "method": {
+          "fullName": "google.cloud.deploy.v1.CloudDeploy.GetRollout",
           "service": {
+            "fullName": "google.cloud.deploy.v1.CloudDeploy",
             "shortName": "CloudDeploy"
           },
           "shortName": "GetRollout"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.deploy_v1.types.GetRolloutRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.deploy_v1.types.Rollout",
+        "shortName": "get_rollout"
       },
+      "description": "Sample for GetRollout",
       "file": "clouddeploy_v1_generated_cloud_deploy_get_rollout_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "clouddeploy_v1_generated_CloudDeploy_GetRollout_async",
       "segments": [
         {
@@ -933,18 +1762,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "clouddeploy_v1_generated_cloud_deploy_get_rollout_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.deploy_v1.CloudDeployClient",
+          "shortName": "CloudDeployClient"
+        },
+        "fullName": "google.cloud.deploy_v1.CloudDeployClient.get_rollout",
         "method": {
+          "fullName": "google.cloud.deploy.v1.CloudDeploy.GetRollout",
           "service": {
+            "fullName": "google.cloud.deploy.v1.CloudDeploy",
             "shortName": "CloudDeploy"
           },
           "shortName": "GetRollout"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.deploy_v1.types.GetRolloutRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.deploy_v1.types.Rollout",
+        "shortName": "get_rollout"
       },
+      "description": "Sample for GetRollout",
       "file": "clouddeploy_v1_generated_cloud_deploy_get_rollout_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "clouddeploy_v1_generated_CloudDeploy_GetRollout_sync",
       "segments": [
         {
@@ -977,19 +1842,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "clouddeploy_v1_generated_cloud_deploy_get_rollout_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.deploy_v1.CloudDeployAsyncClient",
+          "shortName": "CloudDeployAsyncClient"
+        },
+        "fullName": "google.cloud.deploy_v1.CloudDeployAsyncClient.get_target",
         "method": {
+          "fullName": "google.cloud.deploy.v1.CloudDeploy.GetTarget",
           "service": {
+            "fullName": "google.cloud.deploy.v1.CloudDeploy",
             "shortName": "CloudDeploy"
           },
           "shortName": "GetTarget"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.deploy_v1.types.GetTargetRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.deploy_v1.types.Target",
+        "shortName": "get_target"
       },
+      "description": "Sample for GetTarget",
       "file": "clouddeploy_v1_generated_cloud_deploy_get_target_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "clouddeploy_v1_generated_CloudDeploy_GetTarget_async",
       "segments": [
         {
@@ -1022,18 +1923,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "clouddeploy_v1_generated_cloud_deploy_get_target_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.deploy_v1.CloudDeployClient",
+          "shortName": "CloudDeployClient"
+        },
+        "fullName": "google.cloud.deploy_v1.CloudDeployClient.get_target",
         "method": {
+          "fullName": "google.cloud.deploy.v1.CloudDeploy.GetTarget",
           "service": {
+            "fullName": "google.cloud.deploy.v1.CloudDeploy",
             "shortName": "CloudDeploy"
           },
           "shortName": "GetTarget"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.deploy_v1.types.GetTargetRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.deploy_v1.types.Target",
+        "shortName": "get_target"
       },
+      "description": "Sample for GetTarget",
       "file": "clouddeploy_v1_generated_cloud_deploy_get_target_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "clouddeploy_v1_generated_CloudDeploy_GetTarget_sync",
       "segments": [
         {
@@ -1066,19 +2003,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "clouddeploy_v1_generated_cloud_deploy_get_target_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.deploy_v1.CloudDeployAsyncClient",
+          "shortName": "CloudDeployAsyncClient"
+        },
+        "fullName": "google.cloud.deploy_v1.CloudDeployAsyncClient.list_delivery_pipelines",
         "method": {
+          "fullName": "google.cloud.deploy.v1.CloudDeploy.ListDeliveryPipelines",
           "service": {
+            "fullName": "google.cloud.deploy.v1.CloudDeploy",
             "shortName": "CloudDeploy"
           },
           "shortName": "ListDeliveryPipelines"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.deploy_v1.types.ListDeliveryPipelinesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.deploy_v1.services.cloud_deploy.pagers.ListDeliveryPipelinesAsyncPager",
+        "shortName": "list_delivery_pipelines"
       },
+      "description": "Sample for ListDeliveryPipelines",
       "file": "clouddeploy_v1_generated_cloud_deploy_list_delivery_pipelines_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "clouddeploy_v1_generated_CloudDeploy_ListDeliveryPipelines_async",
       "segments": [
         {
@@ -1111,18 +2084,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "clouddeploy_v1_generated_cloud_deploy_list_delivery_pipelines_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.deploy_v1.CloudDeployClient",
+          "shortName": "CloudDeployClient"
+        },
+        "fullName": "google.cloud.deploy_v1.CloudDeployClient.list_delivery_pipelines",
         "method": {
+          "fullName": "google.cloud.deploy.v1.CloudDeploy.ListDeliveryPipelines",
           "service": {
+            "fullName": "google.cloud.deploy.v1.CloudDeploy",
             "shortName": "CloudDeploy"
           },
           "shortName": "ListDeliveryPipelines"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.deploy_v1.types.ListDeliveryPipelinesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.deploy_v1.services.cloud_deploy.pagers.ListDeliveryPipelinesPager",
+        "shortName": "list_delivery_pipelines"
       },
+      "description": "Sample for ListDeliveryPipelines",
       "file": "clouddeploy_v1_generated_cloud_deploy_list_delivery_pipelines_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "clouddeploy_v1_generated_CloudDeploy_ListDeliveryPipelines_sync",
       "segments": [
         {
@@ -1155,19 +2164,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "clouddeploy_v1_generated_cloud_deploy_list_delivery_pipelines_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.deploy_v1.CloudDeployAsyncClient",
+          "shortName": "CloudDeployAsyncClient"
+        },
+        "fullName": "google.cloud.deploy_v1.CloudDeployAsyncClient.list_releases",
         "method": {
+          "fullName": "google.cloud.deploy.v1.CloudDeploy.ListReleases",
           "service": {
+            "fullName": "google.cloud.deploy.v1.CloudDeploy",
             "shortName": "CloudDeploy"
           },
           "shortName": "ListReleases"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.deploy_v1.types.ListReleasesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.deploy_v1.services.cloud_deploy.pagers.ListReleasesAsyncPager",
+        "shortName": "list_releases"
       },
+      "description": "Sample for ListReleases",
       "file": "clouddeploy_v1_generated_cloud_deploy_list_releases_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "clouddeploy_v1_generated_CloudDeploy_ListReleases_async",
       "segments": [
         {
@@ -1200,18 +2245,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "clouddeploy_v1_generated_cloud_deploy_list_releases_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.deploy_v1.CloudDeployClient",
+          "shortName": "CloudDeployClient"
+        },
+        "fullName": "google.cloud.deploy_v1.CloudDeployClient.list_releases",
         "method": {
+          "fullName": "google.cloud.deploy.v1.CloudDeploy.ListReleases",
           "service": {
+            "fullName": "google.cloud.deploy.v1.CloudDeploy",
             "shortName": "CloudDeploy"
           },
           "shortName": "ListReleases"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.deploy_v1.types.ListReleasesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.deploy_v1.services.cloud_deploy.pagers.ListReleasesPager",
+        "shortName": "list_releases"
       },
+      "description": "Sample for ListReleases",
       "file": "clouddeploy_v1_generated_cloud_deploy_list_releases_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "clouddeploy_v1_generated_CloudDeploy_ListReleases_sync",
       "segments": [
         {
@@ -1244,19 +2325,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "clouddeploy_v1_generated_cloud_deploy_list_releases_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.deploy_v1.CloudDeployAsyncClient",
+          "shortName": "CloudDeployAsyncClient"
+        },
+        "fullName": "google.cloud.deploy_v1.CloudDeployAsyncClient.list_rollouts",
         "method": {
+          "fullName": "google.cloud.deploy.v1.CloudDeploy.ListRollouts",
           "service": {
+            "fullName": "google.cloud.deploy.v1.CloudDeploy",
             "shortName": "CloudDeploy"
           },
           "shortName": "ListRollouts"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.deploy_v1.types.ListRolloutsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.deploy_v1.services.cloud_deploy.pagers.ListRolloutsAsyncPager",
+        "shortName": "list_rollouts"
       },
+      "description": "Sample for ListRollouts",
       "file": "clouddeploy_v1_generated_cloud_deploy_list_rollouts_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "clouddeploy_v1_generated_CloudDeploy_ListRollouts_async",
       "segments": [
         {
@@ -1289,18 +2406,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "clouddeploy_v1_generated_cloud_deploy_list_rollouts_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.deploy_v1.CloudDeployClient",
+          "shortName": "CloudDeployClient"
+        },
+        "fullName": "google.cloud.deploy_v1.CloudDeployClient.list_rollouts",
         "method": {
+          "fullName": "google.cloud.deploy.v1.CloudDeploy.ListRollouts",
           "service": {
+            "fullName": "google.cloud.deploy.v1.CloudDeploy",
             "shortName": "CloudDeploy"
           },
           "shortName": "ListRollouts"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.deploy_v1.types.ListRolloutsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.deploy_v1.services.cloud_deploy.pagers.ListRolloutsPager",
+        "shortName": "list_rollouts"
       },
+      "description": "Sample for ListRollouts",
       "file": "clouddeploy_v1_generated_cloud_deploy_list_rollouts_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "clouddeploy_v1_generated_CloudDeploy_ListRollouts_sync",
       "segments": [
         {
@@ -1333,19 +2486,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "clouddeploy_v1_generated_cloud_deploy_list_rollouts_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.deploy_v1.CloudDeployAsyncClient",
+          "shortName": "CloudDeployAsyncClient"
+        },
+        "fullName": "google.cloud.deploy_v1.CloudDeployAsyncClient.list_targets",
         "method": {
+          "fullName": "google.cloud.deploy.v1.CloudDeploy.ListTargets",
           "service": {
+            "fullName": "google.cloud.deploy.v1.CloudDeploy",
             "shortName": "CloudDeploy"
           },
           "shortName": "ListTargets"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.deploy_v1.types.ListTargetsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.deploy_v1.services.cloud_deploy.pagers.ListTargetsAsyncPager",
+        "shortName": "list_targets"
       },
+      "description": "Sample for ListTargets",
       "file": "clouddeploy_v1_generated_cloud_deploy_list_targets_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "clouddeploy_v1_generated_CloudDeploy_ListTargets_async",
       "segments": [
         {
@@ -1378,18 +2567,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "clouddeploy_v1_generated_cloud_deploy_list_targets_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.deploy_v1.CloudDeployClient",
+          "shortName": "CloudDeployClient"
+        },
+        "fullName": "google.cloud.deploy_v1.CloudDeployClient.list_targets",
         "method": {
+          "fullName": "google.cloud.deploy.v1.CloudDeploy.ListTargets",
           "service": {
+            "fullName": "google.cloud.deploy.v1.CloudDeploy",
             "shortName": "CloudDeploy"
           },
           "shortName": "ListTargets"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.deploy_v1.types.ListTargetsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.deploy_v1.services.cloud_deploy.pagers.ListTargetsPager",
+        "shortName": "list_targets"
       },
+      "description": "Sample for ListTargets",
       "file": "clouddeploy_v1_generated_cloud_deploy_list_targets_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "clouddeploy_v1_generated_CloudDeploy_ListTargets_sync",
       "segments": [
         {
@@ -1422,19 +2647,59 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "clouddeploy_v1_generated_cloud_deploy_list_targets_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.deploy_v1.CloudDeployAsyncClient",
+          "shortName": "CloudDeployAsyncClient"
+        },
+        "fullName": "google.cloud.deploy_v1.CloudDeployAsyncClient.update_delivery_pipeline",
         "method": {
+          "fullName": "google.cloud.deploy.v1.CloudDeploy.UpdateDeliveryPipeline",
           "service": {
+            "fullName": "google.cloud.deploy.v1.CloudDeploy",
             "shortName": "CloudDeploy"
           },
           "shortName": "UpdateDeliveryPipeline"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.deploy_v1.types.UpdateDeliveryPipelineRequest"
+          },
+          {
+            "name": "delivery_pipeline",
+            "type": "google.cloud.deploy_v1.types.DeliveryPipeline"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "update_delivery_pipeline"
       },
+      "description": "Sample for UpdateDeliveryPipeline",
       "file": "clouddeploy_v1_generated_cloud_deploy_update_delivery_pipeline_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "clouddeploy_v1_generated_CloudDeploy_UpdateDeliveryPipeline_async",
       "segments": [
         {
@@ -1467,18 +2732,58 @@
           "start": 45,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "clouddeploy_v1_generated_cloud_deploy_update_delivery_pipeline_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.deploy_v1.CloudDeployClient",
+          "shortName": "CloudDeployClient"
+        },
+        "fullName": "google.cloud.deploy_v1.CloudDeployClient.update_delivery_pipeline",
         "method": {
+          "fullName": "google.cloud.deploy.v1.CloudDeploy.UpdateDeliveryPipeline",
           "service": {
+            "fullName": "google.cloud.deploy.v1.CloudDeploy",
             "shortName": "CloudDeploy"
           },
           "shortName": "UpdateDeliveryPipeline"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.deploy_v1.types.UpdateDeliveryPipelineRequest"
+          },
+          {
+            "name": "delivery_pipeline",
+            "type": "google.cloud.deploy_v1.types.DeliveryPipeline"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "update_delivery_pipeline"
       },
+      "description": "Sample for UpdateDeliveryPipeline",
       "file": "clouddeploy_v1_generated_cloud_deploy_update_delivery_pipeline_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "clouddeploy_v1_generated_CloudDeploy_UpdateDeliveryPipeline_sync",
       "segments": [
         {
@@ -1511,19 +2816,59 @@
           "start": 45,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "clouddeploy_v1_generated_cloud_deploy_update_delivery_pipeline_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.deploy_v1.CloudDeployAsyncClient",
+          "shortName": "CloudDeployAsyncClient"
+        },
+        "fullName": "google.cloud.deploy_v1.CloudDeployAsyncClient.update_target",
         "method": {
+          "fullName": "google.cloud.deploy.v1.CloudDeploy.UpdateTarget",
           "service": {
+            "fullName": "google.cloud.deploy.v1.CloudDeploy",
             "shortName": "CloudDeploy"
           },
           "shortName": "UpdateTarget"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.deploy_v1.types.UpdateTargetRequest"
+          },
+          {
+            "name": "target",
+            "type": "google.cloud.deploy_v1.types.Target"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "update_target"
       },
+      "description": "Sample for UpdateTarget",
       "file": "clouddeploy_v1_generated_cloud_deploy_update_target_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "clouddeploy_v1_generated_CloudDeploy_UpdateTarget_async",
       "segments": [
         {
@@ -1556,18 +2901,58 @@
           "start": 45,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "clouddeploy_v1_generated_cloud_deploy_update_target_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.deploy_v1.CloudDeployClient",
+          "shortName": "CloudDeployClient"
+        },
+        "fullName": "google.cloud.deploy_v1.CloudDeployClient.update_target",
         "method": {
+          "fullName": "google.cloud.deploy.v1.CloudDeploy.UpdateTarget",
           "service": {
+            "fullName": "google.cloud.deploy.v1.CloudDeploy",
             "shortName": "CloudDeploy"
           },
           "shortName": "UpdateTarget"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.deploy_v1.types.UpdateTargetRequest"
+          },
+          {
+            "name": "target",
+            "type": "google.cloud.deploy_v1.types.Target"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "update_target"
       },
+      "description": "Sample for UpdateTarget",
       "file": "clouddeploy_v1_generated_cloud_deploy_update_target_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "clouddeploy_v1_generated_CloudDeploy_UpdateTarget_sync",
       "segments": [
         {
@@ -1600,7 +2985,8 @@
           "start": 45,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "clouddeploy_v1_generated_cloud_deploy_update_target_sync.py"
     }
   ]
 }

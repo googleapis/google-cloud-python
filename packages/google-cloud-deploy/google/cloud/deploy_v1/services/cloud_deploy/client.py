@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -627,7 +627,6 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
         r"""Lists DeliveryPipelines in a given project and
         location.
 
-
         .. code-block:: python
 
             from google.cloud import deploy_v1
@@ -837,7 +836,6 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
     ) -> operation.Operation:
         r"""Creates a new DeliveryPipeline in a given project and
         location.
-
 
         .. code-block:: python
 
@@ -2006,7 +2004,6 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
         r"""Creates a new Release in a given project and
         location.
 
-
         .. code-block:: python
 
             from google.cloud import deploy_v1
@@ -2439,7 +2436,6 @@ class CloudDeployClient(metaclass=CloudDeployClientMeta):
     ) -> operation.Operation:
         r"""Creates a new Rollout in a given project and
         location.
-
 
         .. code-block:: python
 
