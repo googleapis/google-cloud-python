@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.4.2](https://github.com/googleapis/python-eventarc/compare/v1.4.1...v1.4.2) (2022-04-14)
+
+
+### Bug Fixes
+
+* fix type in docstring for map fields ([#97](https://github.com/googleapis/python-eventarc/issues/97)) ([2865664](https://github.com/googleapis/python-eventarc/commit/2865664e1cd4c75ee7ec9f3dbee78a7c1eb83d91))
+
 ### [1.4.1](https://github.com/googleapis/python-eventarc/compare/v1.4.0...v1.4.1) (2022-03-05)
 
 
