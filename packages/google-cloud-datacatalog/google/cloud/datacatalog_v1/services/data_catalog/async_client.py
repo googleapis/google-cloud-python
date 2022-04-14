@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -255,7 +255,6 @@ class DataCatalogAsyncClient:
         For more information, see [Data Catalog search syntax]
         (https://cloud.google.com/data-catalog/docs/how-to/search-reference).
 
-
         .. code-block:: python
 
             from google.cloud import datacatalog_v1
@@ -421,7 +420,6 @@ class DataCatalogAsyncClient:
         by the ``parent`` parameter. For more information, see `Data
         Catalog resource
         project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__.
-
 
         .. code-block:: python
 
@@ -671,7 +669,6 @@ class DataCatalogAsyncClient:
         `Data Catalog resource
         project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__.
 
-
         .. code-block:: python
 
             from google.cloud import datacatalog_v1
@@ -789,7 +786,6 @@ class DataCatalogAsyncClient:
         by the ``name`` parameter. For more information, see `Data
         Catalog resource
         project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__.
-
 
         .. code-block:: python
 
@@ -1006,7 +1002,6 @@ class DataCatalogAsyncClient:
 
         An entry group can have a maximum of 100,000 entries.
 
-
         .. code-block:: python
 
             from google.cloud import datacatalog_v1
@@ -1145,7 +1140,6 @@ class DataCatalogAsyncClient:
         by the ``entry.name`` parameter. For more information, see `Data
         Catalog resource
         project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__.
-
 
         .. code-block:: python
 
@@ -1303,7 +1297,6 @@ class DataCatalogAsyncClient:
         by the ``name`` parameter. For more information, see `Data
         Catalog resource
         project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__.
-
 
         .. code-block:: python
 
@@ -1502,7 +1495,6 @@ class DataCatalogAsyncClient:
         The resource name comes from the source Google Cloud
         Platform service.
 
-
         .. code-block:: python
 
             from google.cloud import datacatalog_v1
@@ -1592,7 +1584,6 @@ class DataCatalogAsyncClient:
         Note: Currently, this method can list only custom entries. To
         get a list of both custom and automatically created entries, use
         [SearchCatalog][google.cloud.datacatalog.v1.DataCatalog.SearchCatalog].
-
 
         .. code-block:: python
 
@@ -1716,7 +1707,6 @@ class DataCatalogAsyncClient:
         ``datacatalog.entries.updateOverview`` IAM permission on the
         corresponding project.
 
-
         .. code-block:: python
 
             from google.cloud import datacatalog_v1
@@ -1794,7 +1784,6 @@ class DataCatalogAsyncClient:
         To call this method, you must have the
         ``datacatalog.entries.updateContacts`` IAM permission on the
         corresponding project.
-
 
         .. code-block:: python
 
@@ -1874,7 +1863,6 @@ class DataCatalogAsyncClient:
         by the ``parent`` parameter. For more information, see [Data
         Catalog resource project]
         (https://cloud.google.com/data-catalog/docs/concepts/resource-project).
-
 
         .. code-block:: python
 
@@ -2116,7 +2104,6 @@ class DataCatalogAsyncClient:
         see `Data Catalog resource
         project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__.
 
-
         .. code-block:: python
 
             from google.cloud import datacatalog_v1
@@ -2246,7 +2233,6 @@ class DataCatalogAsyncClient:
         Catalog resource
         project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__.
 
-
         .. code-block:: python
 
             from google.cloud import datacatalog_v1
@@ -2348,7 +2334,6 @@ class DataCatalogAsyncClient:
         by the ``parent`` parameter. For more information, see `Data
         Catalog resource
         project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__.
-
 
         .. code-block:: python
 
@@ -2485,7 +2470,6 @@ class DataCatalogAsyncClient:
         by the ``name`` parameter. For more information, see `Data
         Catalog resource
         project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__.
-
 
         .. code-block:: python
 
@@ -2624,7 +2608,6 @@ class DataCatalogAsyncClient:
         Catalog resource project]
         (https://cloud.google.com/data-catalog/docs/concepts/resource-project).
 
-
         .. code-block:: python
 
             from google.cloud import datacatalog_v1
@@ -2731,7 +2714,6 @@ class DataCatalogAsyncClient:
     ) -> tags.TagTemplateField:
         r"""Renames an enum value in a tag template.
         Within a single enum field, enum values must be unique.
-
 
         .. code-block:: python
 
@@ -2845,7 +2827,6 @@ class DataCatalogAsyncClient:
         Catalog resource
         project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__.
 
-
         .. code-block:: python
 
             from google.cloud import datacatalog_v1
@@ -2955,7 +2936,6 @@ class DataCatalogAsyncClient:
         and the [tag template]
         (https://cloud.google.com/data-catalog/docs/reference/rest/v1/projects.locations.tagTemplates/create#path-parameters)
         used to create the tag must be in the same organization.
-
 
         .. code-block:: python
 
@@ -3282,7 +3262,6 @@ class DataCatalogAsyncClient:
         [columns][google.cloud.datacatalog.v1.Tag.column] in the
         response are lowercased.
 
-
         .. code-block:: python
 
             from google.cloud import datacatalog_v1
@@ -3407,7 +3386,6 @@ class DataCatalogAsyncClient:
         by the current user. Starring information is private to each
         user.
 
-
         .. code-block:: python
 
             from google.cloud import datacatalog_v1
@@ -3505,7 +3483,6 @@ class DataCatalogAsyncClient:
         r"""Marks an [Entry][google.cloud.datacatalog.v1.Entry] as NOT
         starred by the current user. Starring information is private to
         each user.
-
 
         .. code-block:: python
 
@@ -3622,17 +3599,17 @@ class DataCatalogAsyncClient:
         -  ``datacatalog.entryGroups.setIamPolicy`` to set policies on
            entry groups.
 
-
         .. code-block:: python
 
             from google.cloud import datacatalog_v1
+            from google.iam.v1 import iam_policy_pb2  # type: ignore
 
             def sample_set_iam_policy():
                 # Create a client
                 client = datacatalog_v1.DataCatalogClient()
 
                 # Initialize request argument(s)
-                request = datacatalog_v1.SetIamPolicyRequest(
+                request = iam_policy_pb2.SetIamPolicyRequest(
                     resource="resource_value",
                 )
 
@@ -3804,17 +3781,17 @@ class DataCatalogAsyncClient:
         -  ``datacatalog.entryGroups.getIamPolicy`` to get policies on
            entry groups.
 
-
         .. code-block:: python
 
             from google.cloud import datacatalog_v1
+            from google.iam.v1 import iam_policy_pb2  # type: ignore
 
             def sample_get_iam_policy():
                 # Create a client
                 client = datacatalog_v1.DataCatalogClient()
 
                 # Initialize request argument(s)
-                request = datacatalog_v1.GetIamPolicyRequest(
+                request = iam_policy_pb2.GetIamPolicyRequest(
                     resource="resource_value",
                 )
 
@@ -3984,17 +3961,17 @@ class DataCatalogAsyncClient:
         No Google IAM permissions are required to call this
         method.
 
-
         .. code-block:: python
 
             from google.cloud import datacatalog_v1
+            from google.iam.v1 import iam_policy_pb2  # type: ignore
 
             def sample_test_iam_permissions():
                 # Create a client
                 client = datacatalog_v1.DataCatalogClient()
 
                 # Initialize request argument(s)
-                request = datacatalog_v1.TestIamPermissionsRequest(
+                request = iam_policy_pb2.TestIamPermissionsRequest(
                     resource="resource_value",
                     permissions=['permissions_value_1', 'permissions_value_2'],
                 )

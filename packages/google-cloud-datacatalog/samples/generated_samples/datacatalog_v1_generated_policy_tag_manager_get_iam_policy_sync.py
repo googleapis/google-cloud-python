@@ -25,6 +25,7 @@
 
 # [START datacatalog_v1_generated_PolicyTagManager_GetIamPolicy_sync]
 from google.cloud import datacatalog_v1
+from google.iam.v1 import iam_policy_pb2  # type: ignore
 
 
 def sample_get_iam_policy():
@@ -32,7 +33,7 @@ def sample_get_iam_policy():
     client = datacatalog_v1.PolicyTagManagerClient()
 
     # Initialize request argument(s)
-    request = datacatalog_v1.GetIamPolicyRequest(
+    request = iam_policy_pb2.GetIamPolicyRequest(
         resource="resource_value",
     )
 

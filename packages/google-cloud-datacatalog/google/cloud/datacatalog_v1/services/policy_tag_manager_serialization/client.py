@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -459,7 +459,6 @@ class PolicyTagManagerSerializationClient(
            considered new.
         -  Updates policy tags with valid resources names accordingly.
 
-
         .. code-block:: python
 
             from google.cloud import datacatalog_v1
@@ -559,7 +558,6 @@ class PolicyTagManagerSerializationClient(
         For an inlined source, taxonomies and policy tags are
         created in bulk using nested protocol buffer structures.
 
-
         .. code-block:: python
 
             from google.cloud import datacatalog_v1
@@ -647,7 +645,6 @@ class PolicyTagManagerSerializationClient(
         This method generates ``SerializedTaxonomy`` protocol buffers
         with nested policy tags that can be used as input for
         ``ImportTaxonomies`` calls.
-
 
         .. code-block:: python
 

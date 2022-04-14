@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -230,7 +230,6 @@ class PolicyTagManagerSerializationAsyncClient:
         This method provides a bulk taxonomy / policy tag
         creation using nested proto structure.
 
-
         .. code-block:: python
 
             from google.cloud import datacatalog_v1beta1
@@ -313,7 +312,6 @@ class PolicyTagManagerSerializationAsyncClient:
         This method generates SerializedTaxonomy protos with
         nested policy tags that can be used as an input for
         future ImportTaxonomies calls.
-
 
         .. code-block:: python
 

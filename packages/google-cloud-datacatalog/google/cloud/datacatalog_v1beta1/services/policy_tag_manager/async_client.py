@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -329,7 +329,6 @@ class PolicyTagManagerAsyncClient:
         all policy tags in this taxonomy along with their
         associated policies.
 
-
         .. code-block:: python
 
             from google.cloud import datacatalog_v1beta1
@@ -514,7 +513,6 @@ class PolicyTagManagerAsyncClient:
     ) -> pagers.ListTaxonomiesAsyncPager:
         r"""Lists all taxonomies in a project in a particular
         location that the caller has permission to view.
-
 
         .. code-block:: python
 
@@ -833,7 +831,6 @@ class PolicyTagManagerAsyncClient:
     ) -> None:
         r"""Deletes a policy tag. Also deletes all of its
         descendant policy tags.
-
 
         .. code-block:: python
 
@@ -1233,13 +1230,14 @@ class PolicyTagManagerAsyncClient:
         .. code-block:: python
 
             from google.cloud import datacatalog_v1beta1
+            from google.iam.v1 import iam_policy_pb2  # type: ignore
 
             def sample_get_iam_policy():
                 # Create a client
                 client = datacatalog_v1beta1.PolicyTagManagerClient()
 
                 # Initialize request argument(s)
-                request = datacatalog_v1beta1.GetIamPolicyRequest(
+                request = iam_policy_pb2.GetIamPolicyRequest(
                     resource="resource_value",
                 )
 
@@ -1368,13 +1366,14 @@ class PolicyTagManagerAsyncClient:
         .. code-block:: python
 
             from google.cloud import datacatalog_v1beta1
+            from google.iam.v1 import iam_policy_pb2  # type: ignore
 
             def sample_set_iam_policy():
                 # Create a client
                 client = datacatalog_v1beta1.PolicyTagManagerClient()
 
                 # Initialize request argument(s)
-                request = datacatalog_v1beta1.SetIamPolicyRequest(
+                request = iam_policy_pb2.SetIamPolicyRequest(
                     resource="resource_value",
                 )
 
@@ -1501,17 +1500,17 @@ class PolicyTagManagerAsyncClient:
         r"""Returns the permissions that a caller has on the
         specified taxonomy or policy tag.
 
-
         .. code-block:: python
 
             from google.cloud import datacatalog_v1beta1
+            from google.iam.v1 import iam_policy_pb2  # type: ignore
 
             def sample_test_iam_permissions():
                 # Create a client
                 client = datacatalog_v1beta1.PolicyTagManagerClient()
 
                 # Initialize request argument(s)
-                request = datacatalog_v1beta1.TestIamPermissionsRequest(
+                request = iam_policy_pb2.TestIamPermissionsRequest(
                     resource="resource_value",
                     permissions=['permissions_value_1', 'permissions_value_2'],
                 )

@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -562,7 +562,6 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         Syntax <https://cloud.google.com/data-catalog/docs/how-to/search-reference>`__
         for more information.
 
-
         .. code-block:: python
 
             from google.cloud import datacatalog_v1beta1
@@ -698,7 +697,6 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         (https://cloud.google.com/data-catalog/docs/concepts/resource-project)
         for more information).
 
-
         .. code-block:: python
 
             from google.cloud import datacatalog_v1beta1
@@ -829,7 +827,6 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         parameter (see [Data Catalog Resource Project]
         (https://cloud.google.com/data-catalog/docs/concepts/resource-project)
         for more information).
-
 
         .. code-block:: python
 
@@ -1053,7 +1050,6 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         (https://cloud.google.com/data-catalog/docs/concepts/resource-project)
         for more information).
 
-
         .. code-block:: python
 
             from google.cloud import datacatalog_v1beta1
@@ -1259,7 +1255,6 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
 
         A maximum of 100,000 entries may be created per entry group.
 
-
         .. code-block:: python
 
             from google.cloud import datacatalog_v1beta1
@@ -1397,7 +1392,6 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         (see [Data Catalog Resource Project]
         (https://cloud.google.com/data-catalog/docs/concepts/resource-project)
         for more information).
-
 
         .. code-block:: python
 
@@ -1549,7 +1543,6 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         Catalog Resource Project]
         (https://cloud.google.com/data-catalog/docs/concepts/resource-project)
         for more information).
-
 
         .. code-block:: python
 
@@ -1742,7 +1735,6 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         allows clients to use the resource name from the source
         Google Cloud Platform service to get the Data Catalog
         Entry.
-
 
         .. code-block:: python
 
@@ -1938,7 +1930,6 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         `Data Catalog Resource
         Project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__
         for more information).
-
 
         .. code-block:: python
 
@@ -2176,7 +2167,6 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         (https://cloud.google.com/data-catalog/docs/concepts/resource-project)
         for more information).
 
-
         .. code-block:: python
 
             from google.cloud import datacatalog_v1beta1
@@ -2301,7 +2291,6 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         (https://cloud.google.com/data-catalog/docs/concepts/resource-project)
         for more information).
 
-
         .. code-block:: python
 
             from google.cloud import datacatalog_v1beta1
@@ -2404,7 +2393,6 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         parameter (see `Data Catalog Resource
         Project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__
         for more information).
-
 
         .. code-block:: python
 
@@ -2542,7 +2530,6 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         (https://cloud.google.com/data-catalog/docs/concepts/resource-project)
         for more information).
 
-
         .. code-block:: python
 
             from google.cloud import datacatalog_v1beta1
@@ -2679,7 +2666,6 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         Project <https://cloud.google.com/data-catalog/docs/concepts/resource-project>`__
         for more information).
 
-
         .. code-block:: python
 
             from google.cloud import datacatalog_v1beta1
@@ -2794,7 +2780,6 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         (https://cloud.google.com/data-catalog/docs/concepts/resource-project)
         for more information).
 
-
         .. code-block:: python
 
             from google.cloud import datacatalog_v1beta1
@@ -2900,7 +2885,6 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         and the `tag
         template <https://cloud.google.com/data-catalog/docs/reference/rest/v1beta1/projects.locations.tagTemplates/create#path-parameters>`__
         used to create the tag must be from the same organization.
-
 
         .. code-block:: python
 
@@ -3221,7 +3205,6 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         r"""Lists the tags on an
         [Entry][google.cloud.datacatalog.v1beta1.Entry].
 
-
         .. code-block:: python
 
             from google.cloud import datacatalog_v1beta1
@@ -3353,17 +3336,17 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         -  ``datacatalog.entryGroups.setIamPolicy`` to set policies on
            entry groups.
 
-
         .. code-block:: python
 
             from google.cloud import datacatalog_v1beta1
+            from google.iam.v1 import iam_policy_pb2  # type: ignore
 
             def sample_set_iam_policy():
                 # Create a client
                 client = datacatalog_v1beta1.DataCatalogClient()
 
                 # Initialize request argument(s)
-                request = datacatalog_v1beta1.SetIamPolicyRequest(
+                request = iam_policy_pb2.SetIamPolicyRequest(
                     resource="resource_value",
                 )
 
@@ -3529,17 +3512,17 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         -  ``datacatalog.entryGroups.getIamPolicy`` to get policies on
            entry groups.
 
-
         .. code-block:: python
 
             from google.cloud import datacatalog_v1beta1
+            from google.iam.v1 import iam_policy_pb2  # type: ignore
 
             def sample_get_iam_policy():
                 # Create a client
                 client = datacatalog_v1beta1.DataCatalogClient()
 
                 # Initialize request argument(s)
-                request = datacatalog_v1beta1.GetIamPolicyRequest(
+                request = iam_policy_pb2.GetIamPolicyRequest(
                     resource="resource_value",
                 )
 
@@ -3697,17 +3680,17 @@ class DataCatalogClient(metaclass=DataCatalogClientMeta):
         A caller is not required to have Google IAM permission to make
         this request.
 
-
         .. code-block:: python
 
             from google.cloud import datacatalog_v1beta1
+            from google.iam.v1 import iam_policy_pb2  # type: ignore
 
             def sample_test_iam_permissions():
                 # Create a client
                 client = datacatalog_v1beta1.DataCatalogClient()
 
                 # Initialize request argument(s)
-                request = datacatalog_v1beta1.TestIamPermissionsRequest(
+                request = iam_policy_pb2.TestIamPermissionsRequest(
                     resource="resource_value",
                     permissions=['permissions_value_1', 'permissions_value_2'],
                 )
