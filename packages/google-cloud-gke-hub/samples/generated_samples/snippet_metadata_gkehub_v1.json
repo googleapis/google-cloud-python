@@ -1,16 +1,69 @@
 {
+  "clientLibrary": {
+    "apis": [
+      {
+        "id": "google.cloud.gkehub.v1",
+        "version": "v1"
+      }
+    ],
+    "language": "PYTHON",
+    "name": "google-cloud-gke-hub"
+  },
   "snippets": [
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.gkehub_v1.GkeHubAsyncClient",
+          "shortName": "GkeHubAsyncClient"
+        },
+        "fullName": "google.cloud.gkehub_v1.GkeHubAsyncClient.create_feature",
         "method": {
+          "fullName": "google.cloud.gkehub.v1.GkeHub.CreateFeature",
           "service": {
+            "fullName": "google.cloud.gkehub.v1.GkeHub",
             "shortName": "GkeHub"
           },
           "shortName": "CreateFeature"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.gkehub_v1.types.CreateFeatureRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "resource",
+            "type": "google.cloud.gkehub_v1.types.Feature"
+          },
+          {
+            "name": "feature_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "create_feature"
       },
+      "description": "Sample for CreateFeature",
       "file": "gkehub_v1_generated_gke_hub_create_feature_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "gkehub_v1_generated_GkeHub_CreateFeature_async",
       "segments": [
         {
@@ -43,18 +96,62 @@
           "start": 45,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "gkehub_v1_generated_gke_hub_create_feature_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.gkehub_v1.GkeHubClient",
+          "shortName": "GkeHubClient"
+        },
+        "fullName": "google.cloud.gkehub_v1.GkeHubClient.create_feature",
         "method": {
+          "fullName": "google.cloud.gkehub.v1.GkeHub.CreateFeature",
           "service": {
+            "fullName": "google.cloud.gkehub.v1.GkeHub",
             "shortName": "GkeHub"
           },
           "shortName": "CreateFeature"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.gkehub_v1.types.CreateFeatureRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "resource",
+            "type": "google.cloud.gkehub_v1.types.Feature"
+          },
+          {
+            "name": "feature_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "create_feature"
       },
+      "description": "Sample for CreateFeature",
       "file": "gkehub_v1_generated_gke_hub_create_feature_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "gkehub_v1_generated_GkeHub_CreateFeature_sync",
       "segments": [
         {
@@ -87,19 +184,63 @@
           "start": 45,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "gkehub_v1_generated_gke_hub_create_feature_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.gkehub_v1.GkeHubAsyncClient",
+          "shortName": "GkeHubAsyncClient"
+        },
+        "fullName": "google.cloud.gkehub_v1.GkeHubAsyncClient.create_membership",
         "method": {
+          "fullName": "google.cloud.gkehub.v1.GkeHub.CreateMembership",
           "service": {
+            "fullName": "google.cloud.gkehub.v1.GkeHub",
             "shortName": "GkeHub"
           },
           "shortName": "CreateMembership"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.gkehub_v1.types.CreateMembershipRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "resource",
+            "type": "google.cloud.gkehub_v1.types.Membership"
+          },
+          {
+            "name": "membership_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "create_membership"
       },
+      "description": "Sample for CreateMembership",
       "file": "gkehub_v1_generated_gke_hub_create_membership_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "gkehub_v1_generated_GkeHub_CreateMembership_async",
       "segments": [
         {
@@ -132,18 +273,62 @@
           "start": 47,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "gkehub_v1_generated_gke_hub_create_membership_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.gkehub_v1.GkeHubClient",
+          "shortName": "GkeHubClient"
+        },
+        "fullName": "google.cloud.gkehub_v1.GkeHubClient.create_membership",
         "method": {
+          "fullName": "google.cloud.gkehub.v1.GkeHub.CreateMembership",
           "service": {
+            "fullName": "google.cloud.gkehub.v1.GkeHub",
             "shortName": "GkeHub"
           },
           "shortName": "CreateMembership"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.gkehub_v1.types.CreateMembershipRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "resource",
+            "type": "google.cloud.gkehub_v1.types.Membership"
+          },
+          {
+            "name": "membership_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "create_membership"
       },
+      "description": "Sample for CreateMembership",
       "file": "gkehub_v1_generated_gke_hub_create_membership_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "gkehub_v1_generated_GkeHub_CreateMembership_sync",
       "segments": [
         {
@@ -176,19 +361,55 @@
           "start": 47,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "gkehub_v1_generated_gke_hub_create_membership_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.gkehub_v1.GkeHubAsyncClient",
+          "shortName": "GkeHubAsyncClient"
+        },
+        "fullName": "google.cloud.gkehub_v1.GkeHubAsyncClient.delete_feature",
         "method": {
+          "fullName": "google.cloud.gkehub.v1.GkeHub.DeleteFeature",
           "service": {
+            "fullName": "google.cloud.gkehub.v1.GkeHub",
             "shortName": "GkeHub"
           },
           "shortName": "DeleteFeature"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.gkehub_v1.types.DeleteFeatureRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "delete_feature"
       },
+      "description": "Sample for DeleteFeature",
       "file": "gkehub_v1_generated_gke_hub_delete_feature_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "gkehub_v1_generated_GkeHub_DeleteFeature_async",
       "segments": [
         {
@@ -221,18 +442,54 @@
           "start": 45,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "gkehub_v1_generated_gke_hub_delete_feature_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.gkehub_v1.GkeHubClient",
+          "shortName": "GkeHubClient"
+        },
+        "fullName": "google.cloud.gkehub_v1.GkeHubClient.delete_feature",
         "method": {
+          "fullName": "google.cloud.gkehub.v1.GkeHub.DeleteFeature",
           "service": {
+            "fullName": "google.cloud.gkehub.v1.GkeHub",
             "shortName": "GkeHub"
           },
           "shortName": "DeleteFeature"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.gkehub_v1.types.DeleteFeatureRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "delete_feature"
       },
+      "description": "Sample for DeleteFeature",
       "file": "gkehub_v1_generated_gke_hub_delete_feature_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "gkehub_v1_generated_GkeHub_DeleteFeature_sync",
       "segments": [
         {
@@ -265,19 +522,55 @@
           "start": 45,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "gkehub_v1_generated_gke_hub_delete_feature_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.gkehub_v1.GkeHubAsyncClient",
+          "shortName": "GkeHubAsyncClient"
+        },
+        "fullName": "google.cloud.gkehub_v1.GkeHubAsyncClient.delete_membership",
         "method": {
+          "fullName": "google.cloud.gkehub.v1.GkeHub.DeleteMembership",
           "service": {
+            "fullName": "google.cloud.gkehub.v1.GkeHub",
             "shortName": "GkeHub"
           },
           "shortName": "DeleteMembership"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.gkehub_v1.types.DeleteMembershipRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "delete_membership"
       },
+      "description": "Sample for DeleteMembership",
       "file": "gkehub_v1_generated_gke_hub_delete_membership_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "gkehub_v1_generated_GkeHub_DeleteMembership_async",
       "segments": [
         {
@@ -310,18 +603,54 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "gkehub_v1_generated_gke_hub_delete_membership_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.gkehub_v1.GkeHubClient",
+          "shortName": "GkeHubClient"
+        },
+        "fullName": "google.cloud.gkehub_v1.GkeHubClient.delete_membership",
         "method": {
+          "fullName": "google.cloud.gkehub.v1.GkeHub.DeleteMembership",
           "service": {
+            "fullName": "google.cloud.gkehub.v1.GkeHub",
             "shortName": "GkeHub"
           },
           "shortName": "DeleteMembership"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.gkehub_v1.types.DeleteMembershipRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "delete_membership"
       },
+      "description": "Sample for DeleteMembership",
       "file": "gkehub_v1_generated_gke_hub_delete_membership_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "gkehub_v1_generated_GkeHub_DeleteMembership_sync",
       "segments": [
         {
@@ -354,19 +683,51 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "gkehub_v1_generated_gke_hub_delete_membership_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.gkehub_v1.GkeHubAsyncClient",
+          "shortName": "GkeHubAsyncClient"
+        },
+        "fullName": "google.cloud.gkehub_v1.GkeHubAsyncClient.generate_connect_manifest",
         "method": {
+          "fullName": "google.cloud.gkehub.v1.GkeHub.GenerateConnectManifest",
           "service": {
+            "fullName": "google.cloud.gkehub.v1.GkeHub",
             "shortName": "GkeHub"
           },
           "shortName": "GenerateConnectManifest"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.gkehub_v1.types.GenerateConnectManifestRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.gkehub_v1.types.GenerateConnectManifestResponse",
+        "shortName": "generate_connect_manifest"
       },
+      "description": "Sample for GenerateConnectManifest",
       "file": "gkehub_v1_generated_gke_hub_generate_connect_manifest_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "gkehub_v1_generated_GkeHub_GenerateConnectManifest_async",
       "segments": [
         {
@@ -399,18 +760,50 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "gkehub_v1_generated_gke_hub_generate_connect_manifest_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.gkehub_v1.GkeHubClient",
+          "shortName": "GkeHubClient"
+        },
+        "fullName": "google.cloud.gkehub_v1.GkeHubClient.generate_connect_manifest",
         "method": {
+          "fullName": "google.cloud.gkehub.v1.GkeHub.GenerateConnectManifest",
           "service": {
+            "fullName": "google.cloud.gkehub.v1.GkeHub",
             "shortName": "GkeHub"
           },
           "shortName": "GenerateConnectManifest"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.gkehub_v1.types.GenerateConnectManifestRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.gkehub_v1.types.GenerateConnectManifestResponse",
+        "shortName": "generate_connect_manifest"
       },
+      "description": "Sample for GenerateConnectManifest",
       "file": "gkehub_v1_generated_gke_hub_generate_connect_manifest_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "gkehub_v1_generated_GkeHub_GenerateConnectManifest_sync",
       "segments": [
         {
@@ -443,19 +836,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "gkehub_v1_generated_gke_hub_generate_connect_manifest_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.gkehub_v1.GkeHubAsyncClient",
+          "shortName": "GkeHubAsyncClient"
+        },
+        "fullName": "google.cloud.gkehub_v1.GkeHubAsyncClient.get_feature",
         "method": {
+          "fullName": "google.cloud.gkehub.v1.GkeHub.GetFeature",
           "service": {
+            "fullName": "google.cloud.gkehub.v1.GkeHub",
             "shortName": "GkeHub"
           },
           "shortName": "GetFeature"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.gkehub_v1.types.GetFeatureRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.gkehub_v1.types.Feature",
+        "shortName": "get_feature"
       },
+      "description": "Sample for GetFeature",
       "file": "gkehub_v1_generated_gke_hub_get_feature_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "gkehub_v1_generated_GkeHub_GetFeature_async",
       "segments": [
         {
@@ -488,18 +917,54 @@
           "start": 41,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "gkehub_v1_generated_gke_hub_get_feature_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.gkehub_v1.GkeHubClient",
+          "shortName": "GkeHubClient"
+        },
+        "fullName": "google.cloud.gkehub_v1.GkeHubClient.get_feature",
         "method": {
+          "fullName": "google.cloud.gkehub.v1.GkeHub.GetFeature",
           "service": {
+            "fullName": "google.cloud.gkehub.v1.GkeHub",
             "shortName": "GkeHub"
           },
           "shortName": "GetFeature"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.gkehub_v1.types.GetFeatureRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.gkehub_v1.types.Feature",
+        "shortName": "get_feature"
       },
+      "description": "Sample for GetFeature",
       "file": "gkehub_v1_generated_gke_hub_get_feature_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "gkehub_v1_generated_GkeHub_GetFeature_sync",
       "segments": [
         {
@@ -532,19 +997,55 @@
           "start": 41,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "gkehub_v1_generated_gke_hub_get_feature_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.gkehub_v1.GkeHubAsyncClient",
+          "shortName": "GkeHubAsyncClient"
+        },
+        "fullName": "google.cloud.gkehub_v1.GkeHubAsyncClient.get_membership",
         "method": {
+          "fullName": "google.cloud.gkehub.v1.GkeHub.GetMembership",
           "service": {
+            "fullName": "google.cloud.gkehub.v1.GkeHub",
             "shortName": "GkeHub"
           },
           "shortName": "GetMembership"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.gkehub_v1.types.GetMembershipRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.gkehub_v1.types.Membership",
+        "shortName": "get_membership"
       },
+      "description": "Sample for GetMembership",
       "file": "gkehub_v1_generated_gke_hub_get_membership_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "gkehub_v1_generated_GkeHub_GetMembership_async",
       "segments": [
         {
@@ -577,18 +1078,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "gkehub_v1_generated_gke_hub_get_membership_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.gkehub_v1.GkeHubClient",
+          "shortName": "GkeHubClient"
+        },
+        "fullName": "google.cloud.gkehub_v1.GkeHubClient.get_membership",
         "method": {
+          "fullName": "google.cloud.gkehub.v1.GkeHub.GetMembership",
           "service": {
+            "fullName": "google.cloud.gkehub.v1.GkeHub",
             "shortName": "GkeHub"
           },
           "shortName": "GetMembership"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.gkehub_v1.types.GetMembershipRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.gkehub_v1.types.Membership",
+        "shortName": "get_membership"
       },
+      "description": "Sample for GetMembership",
       "file": "gkehub_v1_generated_gke_hub_get_membership_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "gkehub_v1_generated_GkeHub_GetMembership_sync",
       "segments": [
         {
@@ -621,19 +1158,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "gkehub_v1_generated_gke_hub_get_membership_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.gkehub_v1.GkeHubAsyncClient",
+          "shortName": "GkeHubAsyncClient"
+        },
+        "fullName": "google.cloud.gkehub_v1.GkeHubAsyncClient.list_features",
         "method": {
+          "fullName": "google.cloud.gkehub.v1.GkeHub.ListFeatures",
           "service": {
+            "fullName": "google.cloud.gkehub.v1.GkeHub",
             "shortName": "GkeHub"
           },
           "shortName": "ListFeatures"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.gkehub_v1.types.ListFeaturesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.gkehub_v1.services.gke_hub.pagers.ListFeaturesAsyncPager",
+        "shortName": "list_features"
       },
+      "description": "Sample for ListFeatures",
       "file": "gkehub_v1_generated_gke_hub_list_features_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "gkehub_v1_generated_GkeHub_ListFeatures_async",
       "segments": [
         {
@@ -666,18 +1239,54 @@
           "start": 41,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "gkehub_v1_generated_gke_hub_list_features_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.gkehub_v1.GkeHubClient",
+          "shortName": "GkeHubClient"
+        },
+        "fullName": "google.cloud.gkehub_v1.GkeHubClient.list_features",
         "method": {
+          "fullName": "google.cloud.gkehub.v1.GkeHub.ListFeatures",
           "service": {
+            "fullName": "google.cloud.gkehub.v1.GkeHub",
             "shortName": "GkeHub"
           },
           "shortName": "ListFeatures"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.gkehub_v1.types.ListFeaturesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.gkehub_v1.services.gke_hub.pagers.ListFeaturesPager",
+        "shortName": "list_features"
       },
+      "description": "Sample for ListFeatures",
       "file": "gkehub_v1_generated_gke_hub_list_features_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "gkehub_v1_generated_GkeHub_ListFeatures_sync",
       "segments": [
         {
@@ -710,19 +1319,55 @@
           "start": 41,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "gkehub_v1_generated_gke_hub_list_features_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.gkehub_v1.GkeHubAsyncClient",
+          "shortName": "GkeHubAsyncClient"
+        },
+        "fullName": "google.cloud.gkehub_v1.GkeHubAsyncClient.list_memberships",
         "method": {
+          "fullName": "google.cloud.gkehub.v1.GkeHub.ListMemberships",
           "service": {
+            "fullName": "google.cloud.gkehub.v1.GkeHub",
             "shortName": "GkeHub"
           },
           "shortName": "ListMemberships"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.gkehub_v1.types.ListMembershipsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.gkehub_v1.services.gke_hub.pagers.ListMembershipsAsyncPager",
+        "shortName": "list_memberships"
       },
+      "description": "Sample for ListMemberships",
       "file": "gkehub_v1_generated_gke_hub_list_memberships_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "gkehub_v1_generated_GkeHub_ListMemberships_async",
       "segments": [
         {
@@ -755,18 +1400,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "gkehub_v1_generated_gke_hub_list_memberships_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.gkehub_v1.GkeHubClient",
+          "shortName": "GkeHubClient"
+        },
+        "fullName": "google.cloud.gkehub_v1.GkeHubClient.list_memberships",
         "method": {
+          "fullName": "google.cloud.gkehub.v1.GkeHub.ListMemberships",
           "service": {
+            "fullName": "google.cloud.gkehub.v1.GkeHub",
             "shortName": "GkeHub"
           },
           "shortName": "ListMemberships"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.gkehub_v1.types.ListMembershipsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.gkehub_v1.services.gke_hub.pagers.ListMembershipsPager",
+        "shortName": "list_memberships"
       },
+      "description": "Sample for ListMemberships",
       "file": "gkehub_v1_generated_gke_hub_list_memberships_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "gkehub_v1_generated_GkeHub_ListMemberships_sync",
       "segments": [
         {
@@ -799,19 +1480,63 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "gkehub_v1_generated_gke_hub_list_memberships_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.gkehub_v1.GkeHubAsyncClient",
+          "shortName": "GkeHubAsyncClient"
+        },
+        "fullName": "google.cloud.gkehub_v1.GkeHubAsyncClient.update_feature",
         "method": {
+          "fullName": "google.cloud.gkehub.v1.GkeHub.UpdateFeature",
           "service": {
+            "fullName": "google.cloud.gkehub.v1.GkeHub",
             "shortName": "GkeHub"
           },
           "shortName": "UpdateFeature"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.gkehub_v1.types.UpdateFeatureRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "resource",
+            "type": "google.cloud.gkehub_v1.types.Feature"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "update_feature"
       },
+      "description": "Sample for UpdateFeature",
       "file": "gkehub_v1_generated_gke_hub_update_feature_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "gkehub_v1_generated_GkeHub_UpdateFeature_async",
       "segments": [
         {
@@ -844,18 +1569,62 @@
           "start": 45,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "gkehub_v1_generated_gke_hub_update_feature_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.gkehub_v1.GkeHubClient",
+          "shortName": "GkeHubClient"
+        },
+        "fullName": "google.cloud.gkehub_v1.GkeHubClient.update_feature",
         "method": {
+          "fullName": "google.cloud.gkehub.v1.GkeHub.UpdateFeature",
           "service": {
+            "fullName": "google.cloud.gkehub.v1.GkeHub",
             "shortName": "GkeHub"
           },
           "shortName": "UpdateFeature"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.gkehub_v1.types.UpdateFeatureRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "resource",
+            "type": "google.cloud.gkehub_v1.types.Feature"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "update_feature"
       },
+      "description": "Sample for UpdateFeature",
       "file": "gkehub_v1_generated_gke_hub_update_feature_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "gkehub_v1_generated_GkeHub_UpdateFeature_sync",
       "segments": [
         {
@@ -888,19 +1657,63 @@
           "start": 45,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "gkehub_v1_generated_gke_hub_update_feature_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.gkehub_v1.GkeHubAsyncClient",
+          "shortName": "GkeHubAsyncClient"
+        },
+        "fullName": "google.cloud.gkehub_v1.GkeHubAsyncClient.update_membership",
         "method": {
+          "fullName": "google.cloud.gkehub.v1.GkeHub.UpdateMembership",
           "service": {
+            "fullName": "google.cloud.gkehub.v1.GkeHub",
             "shortName": "GkeHub"
           },
           "shortName": "UpdateMembership"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.gkehub_v1.types.UpdateMembershipRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "resource",
+            "type": "google.cloud.gkehub_v1.types.Membership"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "update_membership"
       },
+      "description": "Sample for UpdateMembership",
       "file": "gkehub_v1_generated_gke_hub_update_membership_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "gkehub_v1_generated_GkeHub_UpdateMembership_async",
       "segments": [
         {
@@ -933,18 +1746,62 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "gkehub_v1_generated_gke_hub_update_membership_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.gkehub_v1.GkeHubClient",
+          "shortName": "GkeHubClient"
+        },
+        "fullName": "google.cloud.gkehub_v1.GkeHubClient.update_membership",
         "method": {
+          "fullName": "google.cloud.gkehub.v1.GkeHub.UpdateMembership",
           "service": {
+            "fullName": "google.cloud.gkehub.v1.GkeHub",
             "shortName": "GkeHub"
           },
           "shortName": "UpdateMembership"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.gkehub_v1.types.UpdateMembershipRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "resource",
+            "type": "google.cloud.gkehub_v1.types.Membership"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "update_membership"
       },
+      "description": "Sample for UpdateMembership",
       "file": "gkehub_v1_generated_gke_hub_update_membership_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "gkehub_v1_generated_GkeHub_UpdateMembership_sync",
       "segments": [
         {
@@ -977,7 +1834,8 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "gkehub_v1_generated_gke_hub_update_membership_sync.py"
     }
   ]
 }
