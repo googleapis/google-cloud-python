@@ -379,7 +379,7 @@ class CloudSqlSettings(proto.Message):
     Attributes:
         database_version (google.cloud.clouddms_v1.types.CloudSqlSettings.SqlDatabaseVersion):
             The database engine type and version.
-        user_labels (Sequence[google.cloud.clouddms_v1.types.CloudSqlSettings.UserLabelsEntry]):
+        user_labels (Mapping[str, str]):
             The resource labels for a Cloud SQL instance to use to
             annotate any related underlying resources such as Compute
             Engine VMs. An object containing a list of "key": "value"
@@ -421,7 +421,7 @@ class CloudSqlSettings(proto.Message):
             available storage repeatedly falls below the threshold size,
             Cloud SQL continues to add storage until it reaches the
             maximum of 30 TB.
-        database_flags (Sequence[google.cloud.clouddms_v1.types.CloudSqlSettings.DatabaseFlagsEntry]):
+        database_flags (Mapping[str, str]):
             The database flags passed to the Cloud SQL
             instance at startup. An object containing a list
             of "key": value pairs. Example: { "name":
@@ -663,7 +663,7 @@ class MigrationJob(proto.Message):
             RFC3339 UTC "Zulu" format, accurate to
             nanoseconds. Example:
             "2014-10-02T15:01:23.045123456Z".
-        labels (Sequence[google.cloud.clouddms_v1.types.MigrationJob.LabelsEntry]):
+        labels (Mapping[str, str]):
             The resource labels for migration job to use to annotate any
             related underlying resources such as Compute Engine VMs. An
             object containing a list of "key": "value" pairs.
@@ -875,7 +875,7 @@ class ConnectionProfile(proto.Message):
             was last updated. A timestamp in RFC3339 UTC
             "Zulu" format, accurate to nanoseconds. Example:
             "2014-10-02T15:01:23.045123456Z".
-        labels (Sequence[google.cloud.clouddms_v1.types.ConnectionProfile.LabelsEntry]):
+        labels (Mapping[str, str]):
             The resource labels for connection profile to use to
             annotate any related underlying resources such as Compute
             Engine VMs. An object containing a list of "key": "value"

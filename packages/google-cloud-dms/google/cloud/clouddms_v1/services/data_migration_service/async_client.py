@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -435,7 +435,6 @@ class DataMigrationServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Creates a new migration job in a given project and
         location.
-
 
         .. code-block:: python
 
@@ -1005,7 +1004,6 @@ class DataMigrationServiceAsyncClient:
         r"""Resume a migration job that is currently stopped and
         is resumable (was stopped during CDC phase).
 
-
         .. code-block:: python
 
             from google.cloud import clouddms_v1
@@ -1095,7 +1093,6 @@ class DataMigrationServiceAsyncClient:
         r"""Promote a migration job, stopping replication to the
         destination and promoting the destination to be a
         standalone database.
-
 
         .. code-block:: python
 
@@ -1187,7 +1184,6 @@ class DataMigrationServiceAsyncClient:
         can reach the source and that all configuration and
         prerequisites are met.
 
-
         .. code-block:: python
 
             from google.cloud import clouddms_v1
@@ -1278,7 +1274,6 @@ class DataMigrationServiceAsyncClient:
         the destination instance to its original state and
         starting the migration process from scratch.
 
-
         .. code-block:: python
 
             from google.cloud import clouddms_v1
@@ -1368,7 +1363,6 @@ class DataMigrationServiceAsyncClient:
         r"""Generate a SSH configuration script to configure the
         reverse SSH connectivity.
 
-
         .. code-block:: python
 
             from google.cloud import clouddms_v1
@@ -1449,7 +1443,6 @@ class DataMigrationServiceAsyncClient:
     ) -> pagers.ListConnectionProfilesAsyncPager:
         r"""Retrieve a list of all connection profiles in a given
         project and location.
-
 
         .. code-block:: python
 
@@ -1655,7 +1648,6 @@ class DataMigrationServiceAsyncClient:
         r"""Creates a new connection profile in a given project
         and location.
 
-
         .. code-block:: python
 
             from google.cloud import clouddms_v1
@@ -1794,7 +1786,6 @@ class DataMigrationServiceAsyncClient:
         r"""Update the configuration of a single connection
         profile.
 
-
         .. code-block:: python
 
             from google.cloud import clouddms_v1
@@ -1926,7 +1917,6 @@ class DataMigrationServiceAsyncClient:
         connection profile. A connection profile can only be
         deleted if it is not in use by any active migration
         jobs.
-
 
         .. code-block:: python
 

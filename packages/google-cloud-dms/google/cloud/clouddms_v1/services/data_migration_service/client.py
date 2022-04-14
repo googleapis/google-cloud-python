@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -673,7 +673,6 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
         r"""Creates a new migration job in a given project and
         location.
 
-
         .. code-block:: python
 
             from google.cloud import clouddms_v1
@@ -1244,7 +1243,6 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
         r"""Resume a migration job that is currently stopped and
         is resumable (was stopped during CDC phase).
 
-
         .. code-block:: python
 
             from google.cloud import clouddms_v1
@@ -1335,7 +1333,6 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
         r"""Promote a migration job, stopping replication to the
         destination and promoting the destination to be a
         standalone database.
-
 
         .. code-block:: python
 
@@ -1428,7 +1425,6 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
         can reach the source and that all configuration and
         prerequisites are met.
 
-
         .. code-block:: python
 
             from google.cloud import clouddms_v1
@@ -1520,7 +1516,6 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
         the destination instance to its original state and
         starting the migration process from scratch.
 
-
         .. code-block:: python
 
             from google.cloud import clouddms_v1
@@ -1611,7 +1606,6 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
         r"""Generate a SSH configuration script to configure the
         reverse SSH connectivity.
 
-
         .. code-block:: python
 
             from google.cloud import clouddms_v1
@@ -1693,7 +1687,6 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
     ) -> pagers.ListConnectionProfilesPager:
         r"""Retrieve a list of all connection profiles in a given
         project and location.
-
 
         .. code-block:: python
 
@@ -1899,7 +1892,6 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
         r"""Creates a new connection profile in a given project
         and location.
 
-
         .. code-block:: python
 
             from google.cloud import clouddms_v1
@@ -2040,7 +2032,6 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
         r"""Update the configuration of a single connection
         profile.
 
-
         .. code-block:: python
 
             from google.cloud import clouddms_v1
@@ -2174,7 +2165,6 @@ class DataMigrationServiceClient(metaclass=DataMigrationServiceClientMeta):
         connection profile. A connection profile can only be
         deleted if it is not in use by any active migration
         jobs.
-
 
         .. code-block:: python
 
