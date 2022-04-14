@@ -1,16 +1,69 @@
 {
+  "clientLibrary": {
+    "apis": [
+      {
+        "id": "google.cloud.networkmanagement.v1",
+        "version": "v1"
+      }
+    ],
+    "language": "PYTHON",
+    "name": "google-cloud-network-management"
+  },
   "snippets": [
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.network_management_v1.ReachabilityServiceAsyncClient",
+          "shortName": "ReachabilityServiceAsyncClient"
+        },
+        "fullName": "google.cloud.network_management_v1.ReachabilityServiceAsyncClient.create_connectivity_test",
         "method": {
+          "fullName": "google.cloud.networkmanagement.v1.ReachabilityService.CreateConnectivityTest",
           "service": {
+            "fullName": "google.cloud.networkmanagement.v1.ReachabilityService",
             "shortName": "ReachabilityService"
           },
           "shortName": "CreateConnectivityTest"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_management_v1.types.CreateConnectivityTestRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "test_id",
+            "type": "str"
+          },
+          {
+            "name": "resource",
+            "type": "google.cloud.network_management_v1.types.ConnectivityTest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "create_connectivity_test"
       },
+      "description": "Sample for CreateConnectivityTest",
       "file": "networkmanagement_v1_generated_reachability_service_create_connectivity_test_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "networkmanagement_v1_generated_ReachabilityService_CreateConnectivityTest_async",
       "segments": [
         {
@@ -43,18 +96,62 @@
           "start": 51,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "networkmanagement_v1_generated_reachability_service_create_connectivity_test_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.network_management_v1.ReachabilityServiceClient",
+          "shortName": "ReachabilityServiceClient"
+        },
+        "fullName": "google.cloud.network_management_v1.ReachabilityServiceClient.create_connectivity_test",
         "method": {
+          "fullName": "google.cloud.networkmanagement.v1.ReachabilityService.CreateConnectivityTest",
           "service": {
+            "fullName": "google.cloud.networkmanagement.v1.ReachabilityService",
             "shortName": "ReachabilityService"
           },
           "shortName": "CreateConnectivityTest"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_management_v1.types.CreateConnectivityTestRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "test_id",
+            "type": "str"
+          },
+          {
+            "name": "resource",
+            "type": "google.cloud.network_management_v1.types.ConnectivityTest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "create_connectivity_test"
       },
+      "description": "Sample for CreateConnectivityTest",
       "file": "networkmanagement_v1_generated_reachability_service_create_connectivity_test_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "networkmanagement_v1_generated_ReachabilityService_CreateConnectivityTest_sync",
       "segments": [
         {
@@ -87,19 +184,55 @@
           "start": 51,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "networkmanagement_v1_generated_reachability_service_create_connectivity_test_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.network_management_v1.ReachabilityServiceAsyncClient",
+          "shortName": "ReachabilityServiceAsyncClient"
+        },
+        "fullName": "google.cloud.network_management_v1.ReachabilityServiceAsyncClient.delete_connectivity_test",
         "method": {
+          "fullName": "google.cloud.networkmanagement.v1.ReachabilityService.DeleteConnectivityTest",
           "service": {
+            "fullName": "google.cloud.networkmanagement.v1.ReachabilityService",
             "shortName": "ReachabilityService"
           },
           "shortName": "DeleteConnectivityTest"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_management_v1.types.DeleteConnectivityTestRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "delete_connectivity_test"
       },
+      "description": "Sample for DeleteConnectivityTest",
       "file": "networkmanagement_v1_generated_reachability_service_delete_connectivity_test_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "networkmanagement_v1_generated_ReachabilityService_DeleteConnectivityTest_async",
       "segments": [
         {
@@ -132,18 +265,54 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "networkmanagement_v1_generated_reachability_service_delete_connectivity_test_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.network_management_v1.ReachabilityServiceClient",
+          "shortName": "ReachabilityServiceClient"
+        },
+        "fullName": "google.cloud.network_management_v1.ReachabilityServiceClient.delete_connectivity_test",
         "method": {
+          "fullName": "google.cloud.networkmanagement.v1.ReachabilityService.DeleteConnectivityTest",
           "service": {
+            "fullName": "google.cloud.networkmanagement.v1.ReachabilityService",
             "shortName": "ReachabilityService"
           },
           "shortName": "DeleteConnectivityTest"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_management_v1.types.DeleteConnectivityTestRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "delete_connectivity_test"
       },
+      "description": "Sample for DeleteConnectivityTest",
       "file": "networkmanagement_v1_generated_reachability_service_delete_connectivity_test_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "networkmanagement_v1_generated_ReachabilityService_DeleteConnectivityTest_sync",
       "segments": [
         {
@@ -176,19 +345,55 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "networkmanagement_v1_generated_reachability_service_delete_connectivity_test_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.network_management_v1.ReachabilityServiceAsyncClient",
+          "shortName": "ReachabilityServiceAsyncClient"
+        },
+        "fullName": "google.cloud.network_management_v1.ReachabilityServiceAsyncClient.get_connectivity_test",
         "method": {
+          "fullName": "google.cloud.networkmanagement.v1.ReachabilityService.GetConnectivityTest",
           "service": {
+            "fullName": "google.cloud.networkmanagement.v1.ReachabilityService",
             "shortName": "ReachabilityService"
           },
           "shortName": "GetConnectivityTest"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_management_v1.types.GetConnectivityTestRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.network_management_v1.types.ConnectivityTest",
+        "shortName": "get_connectivity_test"
       },
+      "description": "Sample for GetConnectivityTest",
       "file": "networkmanagement_v1_generated_reachability_service_get_connectivity_test_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "networkmanagement_v1_generated_ReachabilityService_GetConnectivityTest_async",
       "segments": [
         {
@@ -221,18 +426,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "networkmanagement_v1_generated_reachability_service_get_connectivity_test_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.network_management_v1.ReachabilityServiceClient",
+          "shortName": "ReachabilityServiceClient"
+        },
+        "fullName": "google.cloud.network_management_v1.ReachabilityServiceClient.get_connectivity_test",
         "method": {
+          "fullName": "google.cloud.networkmanagement.v1.ReachabilityService.GetConnectivityTest",
           "service": {
+            "fullName": "google.cloud.networkmanagement.v1.ReachabilityService",
             "shortName": "ReachabilityService"
           },
           "shortName": "GetConnectivityTest"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_management_v1.types.GetConnectivityTestRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.network_management_v1.types.ConnectivityTest",
+        "shortName": "get_connectivity_test"
       },
+      "description": "Sample for GetConnectivityTest",
       "file": "networkmanagement_v1_generated_reachability_service_get_connectivity_test_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "networkmanagement_v1_generated_ReachabilityService_GetConnectivityTest_sync",
       "segments": [
         {
@@ -265,19 +506,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "networkmanagement_v1_generated_reachability_service_get_connectivity_test_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.network_management_v1.ReachabilityServiceAsyncClient",
+          "shortName": "ReachabilityServiceAsyncClient"
+        },
+        "fullName": "google.cloud.network_management_v1.ReachabilityServiceAsyncClient.list_connectivity_tests",
         "method": {
+          "fullName": "google.cloud.networkmanagement.v1.ReachabilityService.ListConnectivityTests",
           "service": {
+            "fullName": "google.cloud.networkmanagement.v1.ReachabilityService",
             "shortName": "ReachabilityService"
           },
           "shortName": "ListConnectivityTests"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_management_v1.types.ListConnectivityTestsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.network_management_v1.services.reachability_service.pagers.ListConnectivityTestsAsyncPager",
+        "shortName": "list_connectivity_tests"
       },
+      "description": "Sample for ListConnectivityTests",
       "file": "networkmanagement_v1_generated_reachability_service_list_connectivity_tests_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "networkmanagement_v1_generated_ReachabilityService_ListConnectivityTests_async",
       "segments": [
         {
@@ -310,18 +587,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "networkmanagement_v1_generated_reachability_service_list_connectivity_tests_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.network_management_v1.ReachabilityServiceClient",
+          "shortName": "ReachabilityServiceClient"
+        },
+        "fullName": "google.cloud.network_management_v1.ReachabilityServiceClient.list_connectivity_tests",
         "method": {
+          "fullName": "google.cloud.networkmanagement.v1.ReachabilityService.ListConnectivityTests",
           "service": {
+            "fullName": "google.cloud.networkmanagement.v1.ReachabilityService",
             "shortName": "ReachabilityService"
           },
           "shortName": "ListConnectivityTests"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_management_v1.types.ListConnectivityTestsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.network_management_v1.services.reachability_service.pagers.ListConnectivityTestsPager",
+        "shortName": "list_connectivity_tests"
       },
+      "description": "Sample for ListConnectivityTests",
       "file": "networkmanagement_v1_generated_reachability_service_list_connectivity_tests_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "networkmanagement_v1_generated_ReachabilityService_ListConnectivityTests_sync",
       "segments": [
         {
@@ -354,19 +667,51 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "networkmanagement_v1_generated_reachability_service_list_connectivity_tests_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.network_management_v1.ReachabilityServiceAsyncClient",
+          "shortName": "ReachabilityServiceAsyncClient"
+        },
+        "fullName": "google.cloud.network_management_v1.ReachabilityServiceAsyncClient.rerun_connectivity_test",
         "method": {
+          "fullName": "google.cloud.networkmanagement.v1.ReachabilityService.RerunConnectivityTest",
           "service": {
+            "fullName": "google.cloud.networkmanagement.v1.ReachabilityService",
             "shortName": "ReachabilityService"
           },
           "shortName": "RerunConnectivityTest"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_management_v1.types.RerunConnectivityTestRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "rerun_connectivity_test"
       },
+      "description": "Sample for RerunConnectivityTest",
       "file": "networkmanagement_v1_generated_reachability_service_rerun_connectivity_test_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "networkmanagement_v1_generated_ReachabilityService_RerunConnectivityTest_async",
       "segments": [
         {
@@ -399,18 +744,50 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "networkmanagement_v1_generated_reachability_service_rerun_connectivity_test_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.network_management_v1.ReachabilityServiceClient",
+          "shortName": "ReachabilityServiceClient"
+        },
+        "fullName": "google.cloud.network_management_v1.ReachabilityServiceClient.rerun_connectivity_test",
         "method": {
+          "fullName": "google.cloud.networkmanagement.v1.ReachabilityService.RerunConnectivityTest",
           "service": {
+            "fullName": "google.cloud.networkmanagement.v1.ReachabilityService",
             "shortName": "ReachabilityService"
           },
           "shortName": "RerunConnectivityTest"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_management_v1.types.RerunConnectivityTestRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "rerun_connectivity_test"
       },
+      "description": "Sample for RerunConnectivityTest",
       "file": "networkmanagement_v1_generated_reachability_service_rerun_connectivity_test_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "networkmanagement_v1_generated_ReachabilityService_RerunConnectivityTest_sync",
       "segments": [
         {
@@ -443,19 +820,59 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "networkmanagement_v1_generated_reachability_service_rerun_connectivity_test_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.network_management_v1.ReachabilityServiceAsyncClient",
+          "shortName": "ReachabilityServiceAsyncClient"
+        },
+        "fullName": "google.cloud.network_management_v1.ReachabilityServiceAsyncClient.update_connectivity_test",
         "method": {
+          "fullName": "google.cloud.networkmanagement.v1.ReachabilityService.UpdateConnectivityTest",
           "service": {
+            "fullName": "google.cloud.networkmanagement.v1.ReachabilityService",
             "shortName": "ReachabilityService"
           },
           "shortName": "UpdateConnectivityTest"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_management_v1.types.UpdateConnectivityTestRequest"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "resource",
+            "type": "google.cloud.network_management_v1.types.ConnectivityTest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "update_connectivity_test"
       },
+      "description": "Sample for UpdateConnectivityTest",
       "file": "networkmanagement_v1_generated_reachability_service_update_connectivity_test_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "networkmanagement_v1_generated_ReachabilityService_UpdateConnectivityTest_async",
       "segments": [
         {
@@ -488,18 +905,58 @@
           "start": 49,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "networkmanagement_v1_generated_reachability_service_update_connectivity_test_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.network_management_v1.ReachabilityServiceClient",
+          "shortName": "ReachabilityServiceClient"
+        },
+        "fullName": "google.cloud.network_management_v1.ReachabilityServiceClient.update_connectivity_test",
         "method": {
+          "fullName": "google.cloud.networkmanagement.v1.ReachabilityService.UpdateConnectivityTest",
           "service": {
+            "fullName": "google.cloud.networkmanagement.v1.ReachabilityService",
             "shortName": "ReachabilityService"
           },
           "shortName": "UpdateConnectivityTest"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.network_management_v1.types.UpdateConnectivityTestRequest"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "resource",
+            "type": "google.cloud.network_management_v1.types.ConnectivityTest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "update_connectivity_test"
       },
+      "description": "Sample for UpdateConnectivityTest",
       "file": "networkmanagement_v1_generated_reachability_service_update_connectivity_test_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "networkmanagement_v1_generated_ReachabilityService_UpdateConnectivityTest_sync",
       "segments": [
         {
@@ -532,7 +989,8 @@
           "start": 49,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "networkmanagement_v1_generated_reachability_service_update_connectivity_test_sync.py"
     }
   ]
 }
