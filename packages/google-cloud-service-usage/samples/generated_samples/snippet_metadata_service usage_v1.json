@@ -1,16 +1,57 @@
 {
+  "clientLibrary": {
+    "apis": [
+      {
+        "id": "google.api.serviceusage.v1",
+        "version": "v1"
+      }
+    ],
+    "language": "PYTHON",
+    "name": "google-cloud-service-usage"
+  },
   "snippets": [
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.service_usage_v1.ServiceUsageAsyncClient",
+          "shortName": "ServiceUsageAsyncClient"
+        },
+        "fullName": "google.cloud.service_usage_v1.ServiceUsageAsyncClient.batch_enable_services",
         "method": {
+          "fullName": "google.api.serviceusage.v1.ServiceUsage.BatchEnableServices",
           "service": {
+            "fullName": "google.api.serviceusage.v1.ServiceUsage",
             "shortName": "ServiceUsage"
           },
           "shortName": "BatchEnableServices"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.service_usage_v1.types.BatchEnableServicesRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "batch_enable_services"
       },
+      "description": "Sample for BatchEnableServices",
       "file": "serviceusage_v1_generated_service_usage_batch_enable_services_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "serviceusage_v1_generated_ServiceUsage_BatchEnableServices_async",
       "segments": [
         {
@@ -43,18 +84,50 @@
           "start": 45,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "serviceusage_v1_generated_service_usage_batch_enable_services_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.service_usage_v1.ServiceUsageClient",
+          "shortName": "ServiceUsageClient"
+        },
+        "fullName": "google.cloud.service_usage_v1.ServiceUsageClient.batch_enable_services",
         "method": {
+          "fullName": "google.api.serviceusage.v1.ServiceUsage.BatchEnableServices",
           "service": {
+            "fullName": "google.api.serviceusage.v1.ServiceUsage",
             "shortName": "ServiceUsage"
           },
           "shortName": "BatchEnableServices"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.service_usage_v1.types.BatchEnableServicesRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "batch_enable_services"
       },
+      "description": "Sample for BatchEnableServices",
       "file": "serviceusage_v1_generated_service_usage_batch_enable_services_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "serviceusage_v1_generated_ServiceUsage_BatchEnableServices_sync",
       "segments": [
         {
@@ -87,19 +160,51 @@
           "start": 45,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "serviceusage_v1_generated_service_usage_batch_enable_services_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.service_usage_v1.ServiceUsageAsyncClient",
+          "shortName": "ServiceUsageAsyncClient"
+        },
+        "fullName": "google.cloud.service_usage_v1.ServiceUsageAsyncClient.batch_get_services",
         "method": {
+          "fullName": "google.api.serviceusage.v1.ServiceUsage.BatchGetServices",
           "service": {
+            "fullName": "google.api.serviceusage.v1.ServiceUsage",
             "shortName": "ServiceUsage"
           },
           "shortName": "BatchGetServices"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.service_usage_v1.types.BatchGetServicesRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.service_usage_v1.types.BatchGetServicesResponse",
+        "shortName": "batch_get_services"
       },
+      "description": "Sample for BatchGetServices",
       "file": "serviceusage_v1_generated_service_usage_batch_get_services_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "serviceusage_v1_generated_ServiceUsage_BatchGetServices_async",
       "segments": [
         {
@@ -132,18 +237,50 @@
           "start": 41,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "serviceusage_v1_generated_service_usage_batch_get_services_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.service_usage_v1.ServiceUsageClient",
+          "shortName": "ServiceUsageClient"
+        },
+        "fullName": "google.cloud.service_usage_v1.ServiceUsageClient.batch_get_services",
         "method": {
+          "fullName": "google.api.serviceusage.v1.ServiceUsage.BatchGetServices",
           "service": {
+            "fullName": "google.api.serviceusage.v1.ServiceUsage",
             "shortName": "ServiceUsage"
           },
           "shortName": "BatchGetServices"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.service_usage_v1.types.BatchGetServicesRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.service_usage_v1.types.BatchGetServicesResponse",
+        "shortName": "batch_get_services"
       },
+      "description": "Sample for BatchGetServices",
       "file": "serviceusage_v1_generated_service_usage_batch_get_services_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "serviceusage_v1_generated_ServiceUsage_BatchGetServices_sync",
       "segments": [
         {
@@ -176,19 +313,51 @@
           "start": 41,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "serviceusage_v1_generated_service_usage_batch_get_services_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.service_usage_v1.ServiceUsageAsyncClient",
+          "shortName": "ServiceUsageAsyncClient"
+        },
+        "fullName": "google.cloud.service_usage_v1.ServiceUsageAsyncClient.disable_service",
         "method": {
+          "fullName": "google.api.serviceusage.v1.ServiceUsage.DisableService",
           "service": {
+            "fullName": "google.api.serviceusage.v1.ServiceUsage",
             "shortName": "ServiceUsage"
           },
           "shortName": "DisableService"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.service_usage_v1.types.DisableServiceRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "disable_service"
       },
+      "description": "Sample for DisableService",
       "file": "serviceusage_v1_generated_service_usage_disable_service_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "serviceusage_v1_generated_ServiceUsage_DisableService_async",
       "segments": [
         {
@@ -221,18 +390,50 @@
           "start": 45,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "serviceusage_v1_generated_service_usage_disable_service_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.service_usage_v1.ServiceUsageClient",
+          "shortName": "ServiceUsageClient"
+        },
+        "fullName": "google.cloud.service_usage_v1.ServiceUsageClient.disable_service",
         "method": {
+          "fullName": "google.api.serviceusage.v1.ServiceUsage.DisableService",
           "service": {
+            "fullName": "google.api.serviceusage.v1.ServiceUsage",
             "shortName": "ServiceUsage"
           },
           "shortName": "DisableService"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.service_usage_v1.types.DisableServiceRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "disable_service"
       },
+      "description": "Sample for DisableService",
       "file": "serviceusage_v1_generated_service_usage_disable_service_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "serviceusage_v1_generated_ServiceUsage_DisableService_sync",
       "segments": [
         {
@@ -265,19 +466,51 @@
           "start": 45,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "serviceusage_v1_generated_service_usage_disable_service_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.service_usage_v1.ServiceUsageAsyncClient",
+          "shortName": "ServiceUsageAsyncClient"
+        },
+        "fullName": "google.cloud.service_usage_v1.ServiceUsageAsyncClient.enable_service",
         "method": {
+          "fullName": "google.api.serviceusage.v1.ServiceUsage.EnableService",
           "service": {
+            "fullName": "google.api.serviceusage.v1.ServiceUsage",
             "shortName": "ServiceUsage"
           },
           "shortName": "EnableService"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.service_usage_v1.types.EnableServiceRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "enable_service"
       },
+      "description": "Sample for EnableService",
       "file": "serviceusage_v1_generated_service_usage_enable_service_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "serviceusage_v1_generated_ServiceUsage_EnableService_async",
       "segments": [
         {
@@ -310,18 +543,50 @@
           "start": 45,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "serviceusage_v1_generated_service_usage_enable_service_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.service_usage_v1.ServiceUsageClient",
+          "shortName": "ServiceUsageClient"
+        },
+        "fullName": "google.cloud.service_usage_v1.ServiceUsageClient.enable_service",
         "method": {
+          "fullName": "google.api.serviceusage.v1.ServiceUsage.EnableService",
           "service": {
+            "fullName": "google.api.serviceusage.v1.ServiceUsage",
             "shortName": "ServiceUsage"
           },
           "shortName": "EnableService"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.service_usage_v1.types.EnableServiceRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "enable_service"
       },
+      "description": "Sample for EnableService",
       "file": "serviceusage_v1_generated_service_usage_enable_service_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "serviceusage_v1_generated_ServiceUsage_EnableService_sync",
       "segments": [
         {
@@ -354,19 +619,51 @@
           "start": 45,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "serviceusage_v1_generated_service_usage_enable_service_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.service_usage_v1.ServiceUsageAsyncClient",
+          "shortName": "ServiceUsageAsyncClient"
+        },
+        "fullName": "google.cloud.service_usage_v1.ServiceUsageAsyncClient.get_service",
         "method": {
+          "fullName": "google.api.serviceusage.v1.ServiceUsage.GetService",
           "service": {
+            "fullName": "google.api.serviceusage.v1.ServiceUsage",
             "shortName": "ServiceUsage"
           },
           "shortName": "GetService"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.service_usage_v1.types.GetServiceRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.service_usage_v1.types.Service",
+        "shortName": "get_service"
       },
+      "description": "Sample for GetService",
       "file": "serviceusage_v1_generated_service_usage_get_service_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "serviceusage_v1_generated_ServiceUsage_GetService_async",
       "segments": [
         {
@@ -399,18 +696,50 @@
           "start": 41,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "serviceusage_v1_generated_service_usage_get_service_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.service_usage_v1.ServiceUsageClient",
+          "shortName": "ServiceUsageClient"
+        },
+        "fullName": "google.cloud.service_usage_v1.ServiceUsageClient.get_service",
         "method": {
+          "fullName": "google.api.serviceusage.v1.ServiceUsage.GetService",
           "service": {
+            "fullName": "google.api.serviceusage.v1.ServiceUsage",
             "shortName": "ServiceUsage"
           },
           "shortName": "GetService"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.service_usage_v1.types.GetServiceRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.service_usage_v1.types.Service",
+        "shortName": "get_service"
       },
+      "description": "Sample for GetService",
       "file": "serviceusage_v1_generated_service_usage_get_service_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "serviceusage_v1_generated_ServiceUsage_GetService_sync",
       "segments": [
         {
@@ -443,19 +772,51 @@
           "start": 41,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "serviceusage_v1_generated_service_usage_get_service_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.service_usage_v1.ServiceUsageAsyncClient",
+          "shortName": "ServiceUsageAsyncClient"
+        },
+        "fullName": "google.cloud.service_usage_v1.ServiceUsageAsyncClient.list_services",
         "method": {
+          "fullName": "google.api.serviceusage.v1.ServiceUsage.ListServices",
           "service": {
+            "fullName": "google.api.serviceusage.v1.ServiceUsage",
             "shortName": "ServiceUsage"
           },
           "shortName": "ListServices"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.service_usage_v1.types.ListServicesRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.service_usage_v1.services.service_usage.pagers.ListServicesAsyncPager",
+        "shortName": "list_services"
       },
+      "description": "Sample for ListServices",
       "file": "serviceusage_v1_generated_service_usage_list_services_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "serviceusage_v1_generated_ServiceUsage_ListServices_async",
       "segments": [
         {
@@ -488,18 +849,50 @@
           "start": 41,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "serviceusage_v1_generated_service_usage_list_services_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.service_usage_v1.ServiceUsageClient",
+          "shortName": "ServiceUsageClient"
+        },
+        "fullName": "google.cloud.service_usage_v1.ServiceUsageClient.list_services",
         "method": {
+          "fullName": "google.api.serviceusage.v1.ServiceUsage.ListServices",
           "service": {
+            "fullName": "google.api.serviceusage.v1.ServiceUsage",
             "shortName": "ServiceUsage"
           },
           "shortName": "ListServices"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.service_usage_v1.types.ListServicesRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.service_usage_v1.services.service_usage.pagers.ListServicesPager",
+        "shortName": "list_services"
       },
+      "description": "Sample for ListServices",
       "file": "serviceusage_v1_generated_service_usage_list_services_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "serviceusage_v1_generated_ServiceUsage_ListServices_sync",
       "segments": [
         {
@@ -532,7 +925,8 @@
           "start": 41,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "serviceusage_v1_generated_service_usage_list_services_sync.py"
     }
   ]
 }

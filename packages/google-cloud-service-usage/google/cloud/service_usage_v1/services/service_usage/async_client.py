@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -216,7 +216,6 @@ class ServiceUsageAsyncClient:
         r"""Enable a service so that it can be used with a
         project.
 
-
         .. code-block:: python
 
             from google.cloud import service_usage_v1
@@ -312,7 +311,6 @@ class ServiceUsageAsyncClient:
         ``FAILED_PRECONDITION`` status if the target service is not
         currently enabled.
 
-
         .. code-block:: python
 
             from google.cloud import service_usage_v1
@@ -402,7 +400,6 @@ class ServiceUsageAsyncClient:
         r"""Returns the service configuration and enabled state
         for a given service.
 
-
         .. code-block:: python
 
             from google.cloud import service_usage_v1
@@ -487,7 +484,6 @@ class ServiceUsageAsyncClient:
         API <https://cloud.google.com/asset-inventory/docs/apis>`__,
         which provides higher throughput and richer filtering
         capability.
-
 
         .. code-block:: python
 
@@ -575,7 +571,6 @@ class ServiceUsageAsyncClient:
         if enabling any service fails, then the entire batch fails, and
         no state changes occur. To enable a single service, use the
         ``EnableService`` method instead.
-
 
         .. code-block:: python
 
@@ -665,7 +660,6 @@ class ServiceUsageAsyncClient:
     ) -> serviceusage.BatchGetServicesResponse:
         r"""Returns the service configurations and enabled states
         for a given list of services.
-
 
         .. code-block:: python
 
