@@ -67,7 +67,7 @@ class RunPipelineRequest(proto.Message):
         pipeline (google.cloud.lifesciences_v2beta.types.Pipeline):
             Required. The description of the pipeline to
             run.
-        labels (Sequence[google.cloud.lifesciences_v2beta.types.RunPipelineRequest.LabelsEntry]):
+        labels (Mapping[str, str]):
             User-defined labels to associate with the returned
             operation. These labels are not propagated to any Google
             Cloud Platform resources used by the operation, and can be
@@ -122,7 +122,7 @@ class Pipeline(proto.Message):
             they are specified.
         resources (google.cloud.lifesciences_v2beta.types.Resources):
             The resources required for execution.
-        environment (Sequence[google.cloud.lifesciences_v2beta.types.Pipeline.EnvironmentEntry]):
+        environment (Mapping[str, str]):
             The environment to pass into every action.
             Each action can also specify additional
             environment variables but cannot delete an entry
@@ -199,7 +199,7 @@ class Action(proto.Message):
         entrypoint (str):
             If specified, overrides the ``ENTRYPOINT`` specified in the
             container.
-        environment (Sequence[google.cloud.lifesciences_v2beta.types.Action.EnvironmentEntry]):
+        environment (Mapping[str, str]):
             The environment to pass into the container. This environment
             is merged with values specified in the
             [google.cloud.lifesciences.v2beta.Pipeline][google.cloud.lifesciences.v2beta.Pipeline]
@@ -225,7 +225,7 @@ class Action(proto.Message):
             use the same string to share a namespace.  If
             unspecified, a separate isolated namespace is
             used.
-        port_mappings (Sequence[google.cloud.lifesciences_v2beta.types.Action.PortMappingsEntry]):
+        port_mappings (Mapping[int, int]):
             A map of containers to host port mappings for this
             container. If the container already specifies exposed ports,
             use the ``PUBLISH_EXPOSED_PORTS`` flag instead.
@@ -254,7 +254,7 @@ class Action(proto.Message):
                   <li><code>/google/logs/action/*/stderr</code> The complete contents of
                   each individual action's standard error output.</li>
                 </ul>
-        labels (Sequence[google.cloud.lifesciences_v2beta.types.Action.LabelsEntry]):
+        labels (Mapping[str, str]):
             Labels to associate with the action. This
             field is provided to assist workflow engine
             authors in identifying actions (for example, to
@@ -512,7 +512,7 @@ class VirtualMachine(proto.Message):
             for more specifications on creating a custom machine type.
         preemptible (bool):
             If true, allocate a preemptible VM.
-        labels (Sequence[google.cloud.lifesciences_v2beta.types.VirtualMachine.LabelsEntry]):
+        labels (Mapping[str, str]):
             Optional set of labels to apply to the VM and any attached
             disk resources. These labels must adhere to the `name and
             value
@@ -967,7 +967,7 @@ class Metadata(proto.Message):
     Attributes:
         pipeline (google.cloud.lifesciences_v2beta.types.Pipeline):
             The pipeline this operation represents.
-        labels (Sequence[google.cloud.lifesciences_v2beta.types.Metadata.LabelsEntry]):
+        labels (Mapping[str, str]):
             The user-defined labels associated with this
             operation.
         events (Sequence[google.cloud.lifesciences_v2beta.types.Event]):
@@ -1279,7 +1279,7 @@ class ContainerStartedEvent(proto.Message):
         action_id (int):
             The numeric ID of the action that started
             this container.
-        port_mappings (Sequence[google.cloud.lifesciences_v2beta.types.ContainerStartedEvent.PortMappingsEntry]):
+        port_mappings (Mapping[int, int]):
             The container-to-host port mappings installed for this
             container. This set will contain any ports exposed using the
             ``PUBLISH_EXPOSED_PORTS`` flag as well as any specified in

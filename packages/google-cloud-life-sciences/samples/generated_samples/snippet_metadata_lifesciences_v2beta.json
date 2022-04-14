@@ -1,16 +1,57 @@
 {
+  "clientLibrary": {
+    "apis": [
+      {
+        "id": "google.cloud.lifesciences.v2beta",
+        "version": "v2beta"
+      }
+    ],
+    "language": "PYTHON",
+    "name": "google-cloud-life-sciences"
+  },
   "snippets": [
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.lifesciences_v2beta.WorkflowsServiceV2BetaAsyncClient",
+          "shortName": "WorkflowsServiceV2BetaAsyncClient"
+        },
+        "fullName": "google.cloud.lifesciences_v2beta.WorkflowsServiceV2BetaAsyncClient.run_pipeline",
         "method": {
+          "fullName": "google.cloud.lifesciences.v2beta.WorkflowsServiceV2Beta.RunPipeline",
           "service": {
+            "fullName": "google.cloud.lifesciences.v2beta.WorkflowsServiceV2Beta",
             "shortName": "WorkflowsServiceV2Beta"
           },
           "shortName": "RunPipeline"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.lifesciences_v2beta.types.RunPipelineRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "run_pipeline"
       },
+      "description": "Sample for RunPipeline",
       "file": "lifesciences_v2beta_generated_workflows_service_v2_beta_run_pipeline_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "lifesciences_v2beta_generated_WorkflowsServiceV2Beta_RunPipeline_async",
       "segments": [
         {
@@ -43,18 +84,50 @@
           "start": 45,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "lifesciences_v2beta_generated_workflows_service_v2_beta_run_pipeline_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.lifesciences_v2beta.WorkflowsServiceV2BetaClient",
+          "shortName": "WorkflowsServiceV2BetaClient"
+        },
+        "fullName": "google.cloud.lifesciences_v2beta.WorkflowsServiceV2BetaClient.run_pipeline",
         "method": {
+          "fullName": "google.cloud.lifesciences.v2beta.WorkflowsServiceV2Beta.RunPipeline",
           "service": {
+            "fullName": "google.cloud.lifesciences.v2beta.WorkflowsServiceV2Beta",
             "shortName": "WorkflowsServiceV2Beta"
           },
           "shortName": "RunPipeline"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.lifesciences_v2beta.types.RunPipelineRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "run_pipeline"
       },
+      "description": "Sample for RunPipeline",
       "file": "lifesciences_v2beta_generated_workflows_service_v2_beta_run_pipeline_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "lifesciences_v2beta_generated_WorkflowsServiceV2Beta_RunPipeline_sync",
       "segments": [
         {
@@ -87,7 +160,8 @@
           "start": 45,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "lifesciences_v2beta_generated_workflows_service_v2_beta_run_pipeline_sync.py"
     }
   ]
 }
