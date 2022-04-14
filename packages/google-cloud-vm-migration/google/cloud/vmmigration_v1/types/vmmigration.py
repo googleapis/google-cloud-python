@@ -238,7 +238,7 @@ class MigratingVm(proto.Message):
             any. The group is represented by the full path of the
             appropriate [Group][google.cloud.vmmigration.v1.Group]
             resource.
-        labels (Sequence[google.cloud.vmmigration_v1.types.MigratingVm.LabelsEntry]):
+        labels (Mapping[str, str]):
             The labels of the migrating VM.
         error (google.rpc.status_pb2.Status):
             Output only. Provides details on the state of
@@ -684,7 +684,7 @@ class Source(proto.Message):
             Output only. The create time timestamp.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The update time timestamp.
-        labels (Sequence[google.cloud.vmmigration_v1.types.Source.LabelsEntry]):
+        labels (Mapping[str, str]):
             The labels of the source.
         description (str):
             User-provided description of the source.
@@ -1873,7 +1873,7 @@ class ComputeEngineTargetDefaults(proto.Message):
             The service account to associate the VM with.
         disk_type (google.cloud.vmmigration_v1.types.ComputeEngineDiskType):
             The disk type to use in the VM.
-        labels (Sequence[google.cloud.vmmigration_v1.types.ComputeEngineTargetDefaults.LabelsEntry]):
+        labels (Mapping[str, str]):
             A map of labels to associate with the VM.
         license_type (google.cloud.vmmigration_v1.types.ComputeEngineLicenseType):
             The license type to use in OS adaptation.
@@ -1890,7 +1890,7 @@ class ComputeEngineTargetDefaults(proto.Message):
         boot_option (google.cloud.vmmigration_v1.types.ComputeEngineBootOption):
             Output only. The VM Boot Option, as set in
             the source vm.
-        metadata (Sequence[google.cloud.vmmigration_v1.types.ComputeEngineTargetDefaults.MetadataEntry]):
+        metadata (Mapping[str, str]):
             The metadata key/value pairs to assign to the
             VM.
     """
@@ -1994,7 +1994,7 @@ class ComputeEngineTargetDetails(proto.Message):
             The service account to associate the VM with.
         disk_type (google.cloud.vmmigration_v1.types.ComputeEngineDiskType):
             The disk type to use in the VM.
-        labels (Sequence[google.cloud.vmmigration_v1.types.ComputeEngineTargetDetails.LabelsEntry]):
+        labels (Mapping[str, str]):
             A map of labels to associate with the VM.
         license_type (google.cloud.vmmigration_v1.types.ComputeEngineLicenseType):
             The license type to use in OS adaptation.
@@ -2010,7 +2010,7 @@ class ComputeEngineTargetDetails(proto.Message):
             boot option is EFI.
         boot_option (google.cloud.vmmigration_v1.types.ComputeEngineBootOption):
             The VM Boot Option, as set in the source vm.
-        metadata (Sequence[google.cloud.vmmigration_v1.types.ComputeEngineTargetDetails.MetadataEntry]):
+        metadata (Mapping[str, str]):
             The metadata key/value pairs to assign to the
             VM.
     """

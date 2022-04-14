@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -810,7 +810,6 @@ class VmMigrationAsyncClient:
         that this operation lists the VMs on the remote source,
         as opposed to listing the MigratingVms resources in the
         vmmigration service.
-
 
         .. code-block:: python
 
@@ -2398,7 +2397,6 @@ class VmMigrationAsyncClient:
         uploading data and creating snapshots, in replication
         cycles scheduled by the policy.
 
-
         .. code-block:: python
 
             from google.cloud import vmmigration_v1
@@ -2515,7 +2513,6 @@ class VmMigrationAsyncClient:
         start the process of uploading data and creating
         snapshots.
 
-
         .. code-block:: python
 
             from google.cloud import vmmigration_v1
@@ -2609,7 +2606,6 @@ class VmMigrationAsyncClient:
         data. Further replication cycles will not be triggered
         while the VM is paused.
 
-
         .. code-block:: python
 
             from google.cloud import vmmigration_v1
@@ -2702,7 +2698,6 @@ class VmMigrationAsyncClient:
         r"""Marks a migration as completed, deleting migration
         resources that are no longer being used. Only applicable
         after cutover is done.
-
 
         .. code-block:: python
 
@@ -3277,7 +3272,6 @@ class VmMigrationAsyncClient:
         r"""Initiates a Cutover of a specific migrating VM.
         The returned LRO is completed when the cutover job
         resource is created and the job is initiated.
-
 
         .. code-block:: python
 
@@ -4505,7 +4499,6 @@ class VmMigrationAsyncClient:
         NOTE: TargetProject is a global resource; hence the only
         supported value for location is ``global``.
 
-
         .. code-block:: python
 
             from google.cloud import vmmigration_v1
@@ -4618,7 +4611,6 @@ class VmMigrationAsyncClient:
         NOTE: TargetProject is a global resource; hence the only
         supported value for location is ``global``.
 
-
         .. code-block:: python
 
             from google.cloud import vmmigration_v1
@@ -4717,7 +4709,6 @@ class VmMigrationAsyncClient:
 
         NOTE: TargetProject is a global resource; hence the only
         supported value for location is ``global``.
-
 
         .. code-block:: python
 
@@ -4845,7 +4836,6 @@ class VmMigrationAsyncClient:
         NOTE: TargetProject is a global resource; hence the only
         supported value for location is ``global``.
 
-
         .. code-block:: python
 
             from google.cloud import vmmigration_v1
@@ -4969,7 +4959,6 @@ class VmMigrationAsyncClient:
 
         NOTE: TargetProject is a global resource; hence the only
         supported value for location is ``global``.
-
 
         .. code-block:: python
 

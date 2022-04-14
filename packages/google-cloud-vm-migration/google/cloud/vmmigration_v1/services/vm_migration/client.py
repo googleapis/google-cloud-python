@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -1182,7 +1182,6 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         that this operation lists the VMs on the remote source,
         as opposed to listing the MigratingVms resources in the
         vmmigration service.
-
 
         .. code-block:: python
 
@@ -2780,7 +2779,6 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         uploading data and creating snapshots, in replication
         cycles scheduled by the policy.
 
-
         .. code-block:: python
 
             from google.cloud import vmmigration_v1
@@ -2897,7 +2895,6 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         start the process of uploading data and creating
         snapshots.
 
-
         .. code-block:: python
 
             from google.cloud import vmmigration_v1
@@ -2992,7 +2989,6 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         data. Further replication cycles will not be triggered
         while the VM is paused.
 
-
         .. code-block:: python
 
             from google.cloud import vmmigration_v1
@@ -3086,7 +3082,6 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         r"""Marks a migration as completed, deleting migration
         resources that are no longer being used. Only applicable
         after cutover is done.
-
 
         .. code-block:: python
 
@@ -3661,7 +3656,6 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         r"""Initiates a Cutover of a specific migrating VM.
         The returned LRO is completed when the cutover job
         resource is created and the job is initiated.
-
 
         .. code-block:: python
 
@@ -4889,7 +4883,6 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         NOTE: TargetProject is a global resource; hence the only
         supported value for location is ``global``.
 
-
         .. code-block:: python
 
             from google.cloud import vmmigration_v1
@@ -5002,7 +4995,6 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         NOTE: TargetProject is a global resource; hence the only
         supported value for location is ``global``.
 
-
         .. code-block:: python
 
             from google.cloud import vmmigration_v1
@@ -5101,7 +5093,6 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
         NOTE: TargetProject is a global resource; hence the only
         supported value for location is ``global``.
-
 
         .. code-block:: python
 
@@ -5229,7 +5220,6 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
         NOTE: TargetProject is a global resource; hence the only
         supported value for location is ``global``.
 
-
         .. code-block:: python
 
             from google.cloud import vmmigration_v1
@@ -5353,7 +5343,6 @@ class VmMigrationClient(metaclass=VmMigrationClientMeta):
 
         NOTE: TargetProject is a global resource; hence the only
         supported value for location is ``global``.
-
 
         .. code-block:: python
 
