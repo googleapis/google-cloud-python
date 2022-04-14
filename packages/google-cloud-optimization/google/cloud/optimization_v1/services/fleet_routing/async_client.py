@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -246,7 +246,6 @@ class FleetRoutingAsyncClient:
         ``Vehicle``\ s that minimizes the total cost where cost has many
         components defined in the ``ShipmentModel``.
 
-
         .. code-block:: python
 
             from google.cloud import optimization_v1
@@ -342,7 +341,6 @@ class FleetRoutingAsyncClient:
         a ``ShipmentModel`` and returns an ``OptimizeToursResponse``
         containing ``ShipmentRoute``\ s, which are a set of routes to be
         performed by vehicles minimizing the overall cost.
-
 
         .. code-block:: python
 

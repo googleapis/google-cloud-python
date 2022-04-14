@@ -437,7 +437,7 @@ class OptimizeToursResponse(proto.Message):
                 The latest end time for a used vehicle, computed as the
                 maximum over all used vehicles of
                 [ShipmentRoute.vehicle_end_time][google.cloud.optimization.v1.ShipmentRoute.vehicle_end_time].
-            costs (Sequence[google.cloud.optimization_v1.types.OptimizeToursResponse.Metrics.CostsEntry]):
+            costs (Mapping[str, float]):
                 Cost of the solution, broken down by cost-related request
                 fields. The keys are proto paths, relative to the input
                 OptimizeToursRequest, e.g. "model.shipments.pickups.cost",
@@ -1130,7 +1130,7 @@ class Shipment(proto.Message):
             the shipment. If not specified, the vehicle only
             needs to visit a location corresponding to the
             pickups.
-        load_demands (Sequence[google.cloud.optimization_v1.types.Shipment.LoadDemandsEntry]):
+        load_demands (Mapping[str, google.cloud.optimization_v1.types.Shipment.Load]):
             Load demands of the shipment (for example weight, volume,
             number of pallets etc). The keys in the map should be
             identifiers describing the type of the corresponding load,
@@ -1322,7 +1322,7 @@ class Shipment(proto.Message):
                 pickup or delivery of a shipment. This cost must be in the
                 same unit as ``Shipment.penalty_cost`` and must not be
                 negative.
-            load_demands (Sequence[google.cloud.optimization_v1.types.Shipment.VisitRequest.LoadDemandsEntry]):
+            load_demands (Mapping[str, google.cloud.optimization_v1.types.Shipment.Load]):
                 Load demands of this visit request. This is just like
                 [Shipment.load_demands][google.cloud.optimization.v1.Shipment.load_demands]
                 field, except that it only applies to this
@@ -1665,7 +1665,7 @@ class Vehicle(proto.Message):
             This field is a member of `oneof`_ ``_travel_duration_multiple``.
         unloading_policy (google.cloud.optimization_v1.types.Vehicle.UnloadingPolicy):
             Unloading policy enforced on the vehicle.
-        load_limits (Sequence[google.cloud.optimization_v1.types.Vehicle.LoadLimitsEntry]):
+        load_limits (Mapping[str, google.cloud.optimization_v1.types.Vehicle.LoadLimit]):
             Capacities of the vehicle (weight, volume, # of pallets for
             example). The keys in the map are the identifiers of the
             type of load, consistent with the keys of the
@@ -1728,7 +1728,7 @@ class Vehicle(proto.Message):
             In a given ``OptimizeToursResponse``, the route distance is
             the sum of all its
             [transitions.travel_distance_meters][google.cloud.optimization.v1.ShipmentRoute.Transition.travel_distance_meters].
-        extra_visit_duration_for_visit_type (Sequence[google.cloud.optimization_v1.types.Vehicle.ExtraVisitDurationForVisitTypeEntry]):
+        extra_visit_duration_for_visit_type (Mapping[str, google.protobuf.duration_pb2.Duration]):
             Specifies a map from visit_types strings to durations. The
             duration is time in addition to
             [VisitRequest.duration][google.cloud.optimization.v1.Shipment.VisitRequest.duration]
@@ -2774,7 +2774,7 @@ class ShipmentRoute(proto.Message):
             or
             [ShipmentRoute.visits][google.cloud.optimization.v1.ShipmentRoute.visits],
             depending on the context.
-        route_costs (Sequence[google.cloud.optimization_v1.types.ShipmentRoute.RouteCostsEntry]):
+        route_costs (Mapping[str, float]):
             Cost of the route, broken down by cost-related request
             fields. The keys are proto paths, relative to the input
             OptimizeToursRequest, e.g. "model.shipments.pickups.cost",
@@ -2857,7 +2857,7 @@ class ShipmentRoute(proto.Message):
                 Time at which the visit starts. Note that the vehicle may
                 arrive earlier than this at the visit location. Times are
                 consistent with the ``ShipmentModel``.
-            load_demands (Sequence[google.cloud.optimization_v1.types.ShipmentRoute.Visit.LoadDemandsEntry]):
+            load_demands (Mapping[str, google.cloud.optimization_v1.types.Shipment.Load]):
                 Total visit load demand as the sum of the shipment and the
                 visit request ``load_demands``. The values are negative if
                 the visit is a delivery. Demands are reported for the same
@@ -3017,7 +3017,7 @@ class ShipmentRoute(proto.Message):
                 [populate_transition_polylines]
                 [google.cloud.optimization.v1.OptimizeToursRequest.populate_transition_polylines]
                 is set to true.
-            vehicle_loads (Sequence[google.cloud.optimization_v1.types.ShipmentRoute.Transition.VehicleLoadsEntry]):
+            vehicle_loads (Mapping[str, google.cloud.optimization_v1.types.ShipmentRoute.VehicleLoad]):
                 Vehicle loads during this transition, for each type that
                 either appears in this vehicle's
                 [Vehicle.load_limits][google.cloud.optimization.v1.Vehicle.load_limits],
@@ -3425,14 +3425,14 @@ class AggregatedMetrics(proto.Message):
         travel_distance_meters (float):
             Total travel distance for a route or a
             solution.
-        max_loads (Sequence[google.cloud.optimization_v1.types.AggregatedMetrics.MaxLoadsEntry]):
+        max_loads (Mapping[str, google.cloud.optimization_v1.types.ShipmentRoute.VehicleLoad]):
             Maximum load achieved over the entire route (resp.
             solution), for each of the quantities on this route (resp.
             solution), computed as the maximum over all
             [Transition.vehicle_loads][google.cloud.optimization.v1.ShipmentRoute.Transition.vehicle_loads]
             (resp.
             [ShipmentRoute.metrics.max_loads][google.cloud.optimization.v1.AggregatedMetrics.max_loads].
-        costs (Sequence[google.cloud.optimization_v1.types.AggregatedMetrics.CostsEntry]):
+        costs (Mapping[str, float]):
             Deprecated: Use [ShipmentRoute.route_costs][] and
             [OptimizeToursResponse.Metrics.costs][] instead.
         total_cost (float):
