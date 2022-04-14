@@ -155,7 +155,7 @@ class ArtifactRegistryTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        core_exceptions.GoogleAPICallError,
+                        core_exceptions.ServiceUnavailable,
                     ),
                     deadline=30.0,
                 ),
@@ -169,7 +169,7 @@ class ArtifactRegistryTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        core_exceptions.GoogleAPICallError,
+                        core_exceptions.ServiceUnavailable,
                     ),
                     deadline=30.0,
                 ),
@@ -193,7 +193,7 @@ class ArtifactRegistryTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        core_exceptions.GoogleAPICallError,
+                        core_exceptions.ServiceUnavailable,
                     ),
                     deadline=30.0,
                 ),
@@ -207,7 +207,7 @@ class ArtifactRegistryTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        core_exceptions.GoogleAPICallError,
+                        core_exceptions.ServiceUnavailable,
                     ),
                     deadline=30.0,
                 ),
@@ -221,7 +221,7 @@ class ArtifactRegistryTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        core_exceptions.GoogleAPICallError,
+                        core_exceptions.ServiceUnavailable,
                     ),
                     deadline=30.0,
                 ),
@@ -235,7 +235,7 @@ class ArtifactRegistryTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        core_exceptions.GoogleAPICallError,
+                        core_exceptions.ServiceUnavailable,
                     ),
                     deadline=30.0,
                 ),
@@ -249,7 +249,7 @@ class ArtifactRegistryTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        core_exceptions.GoogleAPICallError,
+                        core_exceptions.ServiceUnavailable,
                     ),
                     deadline=30.0,
                 ),
@@ -263,7 +263,7 @@ class ArtifactRegistryTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        core_exceptions.GoogleAPICallError,
+                        core_exceptions.ServiceUnavailable,
                     ),
                     deadline=30.0,
                 ),
@@ -277,7 +277,7 @@ class ArtifactRegistryTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        core_exceptions.GoogleAPICallError,
+                        core_exceptions.ServiceUnavailable,
                     ),
                     deadline=30.0,
                 ),
@@ -291,7 +291,7 @@ class ArtifactRegistryTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        core_exceptions.GoogleAPICallError,
+                        core_exceptions.ServiceUnavailable,
                     ),
                     deadline=30.0,
                 ),
@@ -305,7 +305,7 @@ class ArtifactRegistryTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        core_exceptions.GoogleAPICallError,
+                        core_exceptions.ServiceUnavailable,
                     ),
                     deadline=30.0,
                 ),
@@ -319,7 +319,7 @@ class ArtifactRegistryTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        core_exceptions.GoogleAPICallError,
+                        core_exceptions.ServiceUnavailable,
                     ),
                     deadline=30.0,
                 ),
@@ -333,7 +333,7 @@ class ArtifactRegistryTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        core_exceptions.GoogleAPICallError,
+                        core_exceptions.ServiceUnavailable,
                     ),
                     deadline=30.0,
                 ),
@@ -357,7 +357,7 @@ class ArtifactRegistryTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        core_exceptions.GoogleAPICallError,
+                        core_exceptions.ServiceUnavailable,
                     ),
                     deadline=30.0,
                 ),
@@ -376,7 +376,7 @@ class ArtifactRegistryTransport(abc.ABC):
                     maximum=60.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        core_exceptions.GoogleAPICallError,
+                        core_exceptions.ServiceUnavailable,
                     ),
                     deadline=30.0,
                 ),

@@ -25,6 +25,7 @@
 
 # [START artifactregistry_v1beta2_generated_ArtifactRegistry_GetIamPolicy_async]
 from google.cloud import artifactregistry_v1beta2
+from google.iam.v1 import iam_policy_pb2  # type: ignore
 
 
 async def sample_get_iam_policy():
@@ -32,7 +33,7 @@ async def sample_get_iam_policy():
     client = artifactregistry_v1beta2.ArtifactRegistryAsyncClient()
 
     # Initialize request argument(s)
-    request = artifactregistry_v1beta2.GetIamPolicyRequest(
+    request = iam_policy_pb2.GetIamPolicyRequest(
         resource="resource_value",
     )
 

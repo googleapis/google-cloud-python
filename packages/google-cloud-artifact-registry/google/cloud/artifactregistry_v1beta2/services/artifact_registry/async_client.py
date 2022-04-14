@@ -516,7 +516,7 @@ class ArtifactRegistryAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.GoogleAPICallError,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=30.0,
             ),
@@ -629,7 +629,7 @@ class ArtifactRegistryAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.GoogleAPICallError,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=30.0,
             ),
@@ -990,7 +990,7 @@ class ArtifactRegistryAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.GoogleAPICallError,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=30.0,
             ),
@@ -1103,7 +1103,7 @@ class ArtifactRegistryAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.GoogleAPICallError,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=30.0,
             ),
@@ -1212,7 +1212,7 @@ class ArtifactRegistryAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.GoogleAPICallError,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=30.0,
             ),
@@ -1331,7 +1331,7 @@ class ArtifactRegistryAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.GoogleAPICallError,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=30.0,
             ),
@@ -1444,7 +1444,7 @@ class ArtifactRegistryAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.GoogleAPICallError,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=30.0,
             ),
@@ -1556,7 +1556,7 @@ class ArtifactRegistryAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.GoogleAPICallError,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=30.0,
             ),
@@ -1675,7 +1675,7 @@ class ArtifactRegistryAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.GoogleAPICallError,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=30.0,
             ),
@@ -1789,7 +1789,7 @@ class ArtifactRegistryAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.GoogleAPICallError,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=30.0,
             ),
@@ -1899,7 +1899,7 @@ class ArtifactRegistryAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.GoogleAPICallError,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=30.0,
             ),
@@ -2004,7 +2004,7 @@ class ArtifactRegistryAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.GoogleAPICallError,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=30.0,
             ),
@@ -2114,7 +2114,7 @@ class ArtifactRegistryAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.GoogleAPICallError,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=30.0,
             ),
@@ -2423,7 +2423,7 @@ class ArtifactRegistryAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.GoogleAPICallError,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=30.0,
             ),
@@ -2458,13 +2458,14 @@ class ArtifactRegistryAsyncClient:
         .. code-block:: python
 
             from google.cloud import artifactregistry_v1beta2
+            from google.iam.v1 import iam_policy_pb2  # type: ignore
 
             def sample_set_iam_policy():
                 # Create a client
                 client = artifactregistry_v1beta2.ArtifactRegistryClient()
 
                 # Initialize request argument(s)
-                request = artifactregistry_v1beta2.SetIamPolicyRequest(
+                request = iam_policy_pb2.SetIamPolicyRequest(
                     resource="resource_value",
                 )
 
@@ -2593,13 +2594,14 @@ class ArtifactRegistryAsyncClient:
         .. code-block:: python
 
             from google.cloud import artifactregistry_v1beta2
+            from google.iam.v1 import iam_policy_pb2  # type: ignore
 
             def sample_get_iam_policy():
                 # Create a client
                 client = artifactregistry_v1beta2.ArtifactRegistryClient()
 
                 # Initialize request argument(s)
-                request = artifactregistry_v1beta2.GetIamPolicyRequest(
+                request = iam_policy_pb2.GetIamPolicyRequest(
                     resource="resource_value",
                 )
 
@@ -2699,7 +2701,7 @@ class ArtifactRegistryAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.GoogleAPICallError,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=30.0,
             ),
@@ -2738,13 +2740,14 @@ class ArtifactRegistryAsyncClient:
         .. code-block:: python
 
             from google.cloud import artifactregistry_v1beta2
+            from google.iam.v1 import iam_policy_pb2  # type: ignore
 
             def sample_test_iam_permissions():
                 # Create a client
                 client = artifactregistry_v1beta2.ArtifactRegistryClient()
 
                 # Initialize request argument(s)
-                request = artifactregistry_v1beta2.TestIamPermissionsRequest(
+                request = iam_policy_pb2.TestIamPermissionsRequest(
                     resource="resource_value",
                     permissions=['permissions_value_1', 'permissions_value_2'],
                 )
