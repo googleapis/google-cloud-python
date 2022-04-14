@@ -25,6 +25,7 @@
 
 # [START containeranalysis_v1_generated_ContainerAnalysis_GetIamPolicy_async]
 from google.cloud.devtools import containeranalysis_v1
+from google.iam.v1 import iam_policy_pb2  # type: ignore
 
 
 async def sample_get_iam_policy():
@@ -32,7 +33,7 @@ async def sample_get_iam_policy():
     client = containeranalysis_v1.ContainerAnalysisAsyncClient()
 
     # Initialize request argument(s)
-    request = containeranalysis_v1.GetIamPolicyRequest(
+    request = iam_policy_pb2.GetIamPolicyRequest(
         resource="resource_value",
     )
 

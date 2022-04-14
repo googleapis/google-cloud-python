@@ -25,6 +25,7 @@
 
 # [START containeranalysis_v1_generated_ContainerAnalysis_TestIamPermissions_async]
 from google.cloud.devtools import containeranalysis_v1
+from google.iam.v1 import iam_policy_pb2  # type: ignore
 
 
 async def sample_test_iam_permissions():
@@ -32,7 +33,7 @@ async def sample_test_iam_permissions():
     client = containeranalysis_v1.ContainerAnalysisAsyncClient()
 
     # Initialize request argument(s)
-    request = containeranalysis_v1.TestIamPermissionsRequest(
+    request = iam_policy_pb2.TestIamPermissionsRequest(
         resource="resource_value",
         permissions=['permissions_value_1', 'permissions_value_2'],
     )

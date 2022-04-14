@@ -41,7 +41,7 @@ class containeranalysisCallTransformer(cst.CSTTransformer):
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
         'get_iam_policy': ('resource', 'options', ),
         'get_vulnerability_occurrences_summary': ('parent', 'filter', ),
-        'set_iam_policy': ('resource', 'policy', ),
+        'set_iam_policy': ('resource', 'policy', 'update_mask', ),
         'test_iam_permissions': ('resource', 'permissions', ),
     }
 
