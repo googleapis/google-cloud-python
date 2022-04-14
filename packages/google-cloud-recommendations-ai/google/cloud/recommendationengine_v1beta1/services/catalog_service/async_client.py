@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -577,7 +577,6 @@ class CatalogServiceAsyncClient:
         r"""Updates a catalog item. Partial updating is
         supported. Non-existing items will be created.
 
-
         .. code-block:: python
 
             from google.cloud import recommendationengine_v1beta1
@@ -809,7 +808,6 @@ class CatalogServiceAsyncClient:
         Operation.response is of type ImportResponse. Note that
         it is possible for a subset of the items to be
         successfully updated.
-
 
         .. code-block:: python
 

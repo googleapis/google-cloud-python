@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -567,7 +567,6 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
         JavaScript pixel. Users should not call this method
         directly.
 
-
         .. code-block:: python
 
             from google.cloud import recommendationengine_v1beta1
@@ -746,7 +745,6 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
         r"""Gets a list of user events within a time range, with
         potential filtering.
 
-
         .. code-block:: python
 
             from google.cloud import recommendationengine_v1beta1
@@ -903,7 +901,6 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
         specified by the filter, this operation could take hours
         or days to complete. To test a filter, use the list
         command first.
-
 
         .. code-block:: python
 
@@ -1063,7 +1060,6 @@ class UserEventServiceClient(metaclass=UserEventServiceClientMeta):
         it is possible for a subset of the items to be
         successfully inserted. Operation.metadata is of type
         ImportMetadata.
-
 
         .. code-block:: python
 

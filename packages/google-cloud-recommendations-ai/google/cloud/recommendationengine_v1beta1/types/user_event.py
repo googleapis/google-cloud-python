@@ -389,10 +389,10 @@ class PurchaseTransaction(proto.Message):
             adjustments to total revenue that you want to include as
             part of your revenue calculations. This field is not
             required if the event type is ``refund``.
-        taxes (Sequence[google.cloud.recommendationengine_v1beta1.types.PurchaseTransaction.TaxesEntry]):
+        taxes (Mapping[str, float]):
             Optional. All the taxes associated with the
             transaction.
-        costs (Sequence[google.cloud.recommendationengine_v1beta1.types.PurchaseTransaction.CostsEntry]):
+        costs (Mapping[str, float]):
             Optional. All the costs associated with the product. These
             can be manufacturing costs, shipping expenses not borne by
             the end user, or any other costs.

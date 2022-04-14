@@ -109,7 +109,7 @@ class PredictRequest(proto.Message):
             used that returns arbitrary catalog items. Note
             that the dryRun mode should only be used for
             testing the API, or if the model is not ready.
-        params (Sequence[google.cloud.recommendationengine_v1beta1.types.PredictRequest.ParamsEntry]):
+        params (Mapping[str, google.protobuf.struct_pb2.Value]):
             Optional. Additional domain specific parameters for the
             predictions.
 
@@ -125,7 +125,7 @@ class PredictRequest(proto.Message):
                response. The given 'score' indicates the probability of
                an item being clicked/purchased given the user's context
                and history.
-        labels (Sequence[google.cloud.recommendationengine_v1beta1.types.PredictRequest.LabelsEntry]):
+        labels (Mapping[str, str]):
             Optional. The labels for the predict request.
 
             -  Label keys can contain lowercase letters, digits and
@@ -198,7 +198,7 @@ class PredictResponse(proto.Message):
         dry_run (bool):
             True if the dryRun property was set in the
             request.
-        metadata (Sequence[google.cloud.recommendationengine_v1beta1.types.PredictResponse.MetadataEntry]):
+        metadata (Mapping[str, google.protobuf.struct_pb2.Value]):
             Additional domain specific prediction
             response metadata.
         next_page_token (str):
@@ -213,7 +213,7 @@ class PredictResponse(proto.Message):
         Attributes:
             id (str):
                 ID of the recommended catalog item
-            item_metadata (Sequence[google.cloud.recommendationengine_v1beta1.types.PredictResponse.PredictionResult.ItemMetadataEntry]):
+            item_metadata (Mapping[str, google.protobuf.struct_pb2.Value]):
                 Additional item metadata / annotations.
 
                 Possible values:

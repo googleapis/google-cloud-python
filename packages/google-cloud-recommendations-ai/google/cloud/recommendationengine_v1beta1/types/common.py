@@ -30,7 +30,7 @@ class FeatureMap(proto.Message):
     categorical/numerical features.
 
     Attributes:
-        categorical_features (Sequence[google.cloud.recommendationengine_v1beta1.types.FeatureMap.CategoricalFeaturesEntry]):
+        categorical_features (Mapping[str, google.cloud.recommendationengine_v1beta1.types.FeatureMap.StringList]):
             Categorical features that can take on one of a limited
             number of possible values. Some examples would be the
             brand/maker of a product, or country of a customer.
@@ -39,7 +39,7 @@ class FeatureMap(proto.Message):
 
             For example:
             ``{ "colors": {"value": ["yellow", "green"]}, "sizes": {"value":["S", "M"]}``
-        numerical_features (Sequence[google.cloud.recommendationengine_v1beta1.types.FeatureMap.NumericalFeaturesEntry]):
+        numerical_features (Mapping[str, google.cloud.recommendationengine_v1beta1.types.FeatureMap.FloatList]):
             Numerical features. Some examples would be the height/weight
             of a product, or age of a customer.
 

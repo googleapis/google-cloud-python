@@ -26,7 +26,9 @@ from .catalog_service import (
     ListCatalogItemsResponse,
     UpdateCatalogItemRequest,
 )
-from .common import FeatureMap
+from .common import (
+    FeatureMap,
+)
 from .import_ import (
     CatalogInlineSource,
     GcsSource,

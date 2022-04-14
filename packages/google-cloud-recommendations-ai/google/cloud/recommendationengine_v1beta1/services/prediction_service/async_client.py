@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -218,7 +218,6 @@ class PredictionServiceAsyncClient:
         [PredictionApiKeyRegistry][google.cloud.recommendationengine.v1beta1.PredictionApiKeyRegistry]
         service. `Learn
         more </recommendations-ai/docs/setting-up#register-key>`__.
-
 
         .. code-block:: python
 

@@ -178,7 +178,7 @@ class ProductCatalogItem(proto.Message):
             Optional. The product price range.
 
             This field is a member of `oneof`_ ``price``.
-        costs (Sequence[google.cloud.recommendationengine_v1beta1.types.ProductCatalogItem.CostsEntry]):
+        costs (Mapping[str, float]):
             Optional. A map to pass the costs associated with the
             product.
 
