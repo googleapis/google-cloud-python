@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -245,7 +245,6 @@ class RecaptchaEnterpriseServiceAsyncClient:
         r"""Creates an Assessment of the likelihood an event is
         legitimate.
 
-
         .. code-block:: python
 
             from google.cloud import recaptchaenterprise_v1
@@ -349,7 +348,6 @@ class RecaptchaEnterpriseServiceAsyncClient:
         r"""Annotates a previously created Assessment to provide
         additional information on whether the event turned out
         to be authentic or fraudulent.
-
 
         .. code-block:: python
 
@@ -535,7 +533,6 @@ class RecaptchaEnterpriseServiceAsyncClient:
     ) -> pagers.ListKeysAsyncPager:
         r"""Returns the list of all keys that belong to a
         project.
-
 
         .. code-block:: python
 
@@ -837,7 +834,6 @@ class RecaptchaEnterpriseServiceAsyncClient:
         your user must have the reCAPTCHA Enterprise Admin IAM
         role in the destination project.
 
-
         .. code-block:: python
 
             from google.cloud import recaptchaenterprise_v1
@@ -912,7 +908,6 @@ class RecaptchaEnterpriseServiceAsyncClient:
     ) -> recaptchaenterprise.Metrics:
         r"""Get some aggregated metrics for a Key. This data can
         be used to build dashboards.
-
 
         .. code-block:: python
 

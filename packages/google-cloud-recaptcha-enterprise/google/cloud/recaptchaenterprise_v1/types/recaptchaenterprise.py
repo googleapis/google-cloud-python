@@ -613,7 +613,7 @@ class Key(proto.Message):
             apps.
 
             This field is a member of `oneof`_ ``platform_settings``.
-        labels (Sequence[google.cloud.recaptchaenterprise_v1.types.Key.LabelsEntry]):
+        labels (Mapping[str, str]):
             See <a
             href="https://cloud.google.com/recaptcha-enterprise/docs/labels">
             Creating and managing labels</a>.
@@ -816,7 +816,7 @@ class ScoreDistribution(proto.Message):
     r"""Score distribution.
 
     Attributes:
-        score_buckets (Sequence[google.cloud.recaptchaenterprise_v1.types.ScoreDistribution.ScoreBucketsEntry]):
+        score_buckets (Mapping[int, int]):
             Map key is score value multiplied by 100. The scores are
             discrete values between [0, 1]. The maximum number of
             buckets is on order of a few dozen, but typically much lower
@@ -836,7 +836,7 @@ class ScoreMetrics(proto.Message):
     Attributes:
         overall_metrics (google.cloud.recaptchaenterprise_v1.types.ScoreDistribution):
             Aggregated score metrics for all traffic.
-        action_metrics (Sequence[google.cloud.recaptchaenterprise_v1.types.ScoreMetrics.ActionMetricsEntry]):
+        action_metrics (Mapping[str, google.cloud.recaptchaenterprise_v1.types.ScoreDistribution]):
             Action-based metrics. The map key is the
             action name which specified by the site owners
             at time of the "execute" client-side call.

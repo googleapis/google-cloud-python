@@ -1,16 +1,65 @@
 {
+  "clientLibrary": {
+    "apis": [
+      {
+        "id": "google.cloud.recaptchaenterprise.v1",
+        "version": "v1"
+      }
+    ],
+    "language": "PYTHON",
+    "name": "google-cloud-recaptcha-enterprise"
+  },
   "snippets": [
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.recaptchaenterprise_v1.RecaptchaEnterpriseServiceAsyncClient",
+          "shortName": "RecaptchaEnterpriseServiceAsyncClient"
+        },
+        "fullName": "google.cloud.recaptchaenterprise_v1.RecaptchaEnterpriseServiceAsyncClient.annotate_assessment",
         "method": {
+          "fullName": "google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService.AnnotateAssessment",
           "service": {
+            "fullName": "google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService",
             "shortName": "RecaptchaEnterpriseService"
           },
           "shortName": "AnnotateAssessment"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.recaptchaenterprise_v1.types.AnnotateAssessmentRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "annotation",
+            "type": "google.cloud.recaptchaenterprise_v1.types.AnnotateAssessmentRequest.Annotation"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.recaptchaenterprise_v1.types.AnnotateAssessmentResponse",
+        "shortName": "annotate_assessment"
       },
+      "description": "Sample for AnnotateAssessment",
       "file": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_annotate_assessment_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_AnnotateAssessment_async",
       "segments": [
         {
@@ -43,18 +92,58 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_annotate_assessment_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient",
+          "shortName": "RecaptchaEnterpriseServiceClient"
+        },
+        "fullName": "google.cloud.recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient.annotate_assessment",
         "method": {
+          "fullName": "google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService.AnnotateAssessment",
           "service": {
+            "fullName": "google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService",
             "shortName": "RecaptchaEnterpriseService"
           },
           "shortName": "AnnotateAssessment"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.recaptchaenterprise_v1.types.AnnotateAssessmentRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "annotation",
+            "type": "google.cloud.recaptchaenterprise_v1.types.AnnotateAssessmentRequest.Annotation"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.recaptchaenterprise_v1.types.AnnotateAssessmentResponse",
+        "shortName": "annotate_assessment"
       },
+      "description": "Sample for AnnotateAssessment",
       "file": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_annotate_assessment_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_AnnotateAssessment_sync",
       "segments": [
         {
@@ -87,19 +176,59 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_annotate_assessment_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.recaptchaenterprise_v1.RecaptchaEnterpriseServiceAsyncClient",
+          "shortName": "RecaptchaEnterpriseServiceAsyncClient"
+        },
+        "fullName": "google.cloud.recaptchaenterprise_v1.RecaptchaEnterpriseServiceAsyncClient.create_assessment",
         "method": {
+          "fullName": "google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService.CreateAssessment",
           "service": {
+            "fullName": "google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService",
             "shortName": "RecaptchaEnterpriseService"
           },
           "shortName": "CreateAssessment"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.recaptchaenterprise_v1.types.CreateAssessmentRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "assessment",
+            "type": "google.cloud.recaptchaenterprise_v1.types.Assessment"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.recaptchaenterprise_v1.types.Assessment",
+        "shortName": "create_assessment"
       },
+      "description": "Sample for CreateAssessment",
       "file": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_create_assessment_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_CreateAssessment_async",
       "segments": [
         {
@@ -132,18 +261,58 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_create_assessment_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient",
+          "shortName": "RecaptchaEnterpriseServiceClient"
+        },
+        "fullName": "google.cloud.recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient.create_assessment",
         "method": {
+          "fullName": "google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService.CreateAssessment",
           "service": {
+            "fullName": "google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService",
             "shortName": "RecaptchaEnterpriseService"
           },
           "shortName": "CreateAssessment"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.recaptchaenterprise_v1.types.CreateAssessmentRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "assessment",
+            "type": "google.cloud.recaptchaenterprise_v1.types.Assessment"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.recaptchaenterprise_v1.types.Assessment",
+        "shortName": "create_assessment"
       },
+      "description": "Sample for CreateAssessment",
       "file": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_create_assessment_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_CreateAssessment_sync",
       "segments": [
         {
@@ -176,19 +345,51 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_create_assessment_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.recaptchaenterprise_v1.RecaptchaEnterpriseServiceAsyncClient",
+          "shortName": "RecaptchaEnterpriseServiceAsyncClient"
+        },
+        "fullName": "google.cloud.recaptchaenterprise_v1.RecaptchaEnterpriseServiceAsyncClient.create_key",
         "method": {
+          "fullName": "google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService.CreateKey",
           "service": {
+            "fullName": "google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService",
             "shortName": "RecaptchaEnterpriseService"
           },
           "shortName": "CreateKey"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.recaptchaenterprise_v1.types.CreateKeyRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.recaptchaenterprise_v1.types.Key",
+        "shortName": "create_key"
       },
+      "description": "Sample for CreateKey",
       "file": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_create_key_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_CreateKey_async",
       "segments": [
         {
@@ -221,18 +422,50 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_create_key_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient",
+          "shortName": "RecaptchaEnterpriseServiceClient"
+        },
+        "fullName": "google.cloud.recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient.create_key",
         "method": {
+          "fullName": "google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService.CreateKey",
           "service": {
+            "fullName": "google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService",
             "shortName": "RecaptchaEnterpriseService"
           },
           "shortName": "CreateKey"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.recaptchaenterprise_v1.types.CreateKeyRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.recaptchaenterprise_v1.types.Key",
+        "shortName": "create_key"
       },
+      "description": "Sample for CreateKey",
       "file": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_create_key_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_CreateKey_sync",
       "segments": [
         {
@@ -265,19 +498,50 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_create_key_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.recaptchaenterprise_v1.RecaptchaEnterpriseServiceAsyncClient",
+          "shortName": "RecaptchaEnterpriseServiceAsyncClient"
+        },
+        "fullName": "google.cloud.recaptchaenterprise_v1.RecaptchaEnterpriseServiceAsyncClient.delete_key",
         "method": {
+          "fullName": "google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService.DeleteKey",
           "service": {
+            "fullName": "google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService",
             "shortName": "RecaptchaEnterpriseService"
           },
           "shortName": "DeleteKey"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.recaptchaenterprise_v1.types.DeleteKeyRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_key"
       },
+      "description": "Sample for DeleteKey",
       "file": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_delete_key_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_DeleteKey_async",
       "segments": [
         {
@@ -308,18 +572,49 @@
           "end": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_delete_key_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient",
+          "shortName": "RecaptchaEnterpriseServiceClient"
+        },
+        "fullName": "google.cloud.recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient.delete_key",
         "method": {
+          "fullName": "google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService.DeleteKey",
           "service": {
+            "fullName": "google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService",
             "shortName": "RecaptchaEnterpriseService"
           },
           "shortName": "DeleteKey"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.recaptchaenterprise_v1.types.DeleteKeyRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_key"
       },
+      "description": "Sample for DeleteKey",
       "file": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_delete_key_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_DeleteKey_sync",
       "segments": [
         {
@@ -350,19 +645,51 @@
           "end": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_delete_key_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.recaptchaenterprise_v1.RecaptchaEnterpriseServiceAsyncClient",
+          "shortName": "RecaptchaEnterpriseServiceAsyncClient"
+        },
+        "fullName": "google.cloud.recaptchaenterprise_v1.RecaptchaEnterpriseServiceAsyncClient.get_key",
         "method": {
+          "fullName": "google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService.GetKey",
           "service": {
+            "fullName": "google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService",
             "shortName": "RecaptchaEnterpriseService"
           },
           "shortName": "GetKey"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.recaptchaenterprise_v1.types.GetKeyRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.recaptchaenterprise_v1.types.Key",
+        "shortName": "get_key"
       },
+      "description": "Sample for GetKey",
       "file": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_get_key_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_GetKey_async",
       "segments": [
         {
@@ -395,18 +722,50 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_get_key_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient",
+          "shortName": "RecaptchaEnterpriseServiceClient"
+        },
+        "fullName": "google.cloud.recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient.get_key",
         "method": {
+          "fullName": "google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService.GetKey",
           "service": {
+            "fullName": "google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService",
             "shortName": "RecaptchaEnterpriseService"
           },
           "shortName": "GetKey"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.recaptchaenterprise_v1.types.GetKeyRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.recaptchaenterprise_v1.types.Key",
+        "shortName": "get_key"
       },
+      "description": "Sample for GetKey",
       "file": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_get_key_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_GetKey_sync",
       "segments": [
         {
@@ -439,19 +798,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_get_key_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.recaptchaenterprise_v1.RecaptchaEnterpriseServiceAsyncClient",
+          "shortName": "RecaptchaEnterpriseServiceAsyncClient"
+        },
+        "fullName": "google.cloud.recaptchaenterprise_v1.RecaptchaEnterpriseServiceAsyncClient.get_metrics",
         "method": {
+          "fullName": "google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService.GetMetrics",
           "service": {
+            "fullName": "google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService",
             "shortName": "RecaptchaEnterpriseService"
           },
           "shortName": "GetMetrics"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.recaptchaenterprise_v1.types.GetMetricsRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.recaptchaenterprise_v1.types.Metrics",
+        "shortName": "get_metrics"
       },
+      "description": "Sample for GetMetrics",
       "file": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_get_metrics_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_GetMetrics_async",
       "segments": [
         {
@@ -484,18 +879,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_get_metrics_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient",
+          "shortName": "RecaptchaEnterpriseServiceClient"
+        },
+        "fullName": "google.cloud.recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient.get_metrics",
         "method": {
+          "fullName": "google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService.GetMetrics",
           "service": {
+            "fullName": "google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService",
             "shortName": "RecaptchaEnterpriseService"
           },
           "shortName": "GetMetrics"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.recaptchaenterprise_v1.types.GetMetricsRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.recaptchaenterprise_v1.types.Metrics",
+        "shortName": "get_metrics"
       },
+      "description": "Sample for GetMetrics",
       "file": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_get_metrics_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_GetMetrics_sync",
       "segments": [
         {
@@ -528,19 +959,51 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_get_metrics_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.recaptchaenterprise_v1.RecaptchaEnterpriseServiceAsyncClient",
+          "shortName": "RecaptchaEnterpriseServiceAsyncClient"
+        },
+        "fullName": "google.cloud.recaptchaenterprise_v1.RecaptchaEnterpriseServiceAsyncClient.list_keys",
         "method": {
+          "fullName": "google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService.ListKeys",
           "service": {
+            "fullName": "google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService",
             "shortName": "RecaptchaEnterpriseService"
           },
           "shortName": "ListKeys"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.recaptchaenterprise_v1.types.ListKeysRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.recaptchaenterprise_v1.services.recaptcha_enterprise_service.pagers.ListKeysAsyncPager",
+        "shortName": "list_keys"
       },
+      "description": "Sample for ListKeys",
       "file": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_list_keys_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_ListKeys_async",
       "segments": [
         {
@@ -573,18 +1036,50 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_list_keys_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient",
+          "shortName": "RecaptchaEnterpriseServiceClient"
+        },
+        "fullName": "google.cloud.recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient.list_keys",
         "method": {
+          "fullName": "google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService.ListKeys",
           "service": {
+            "fullName": "google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService",
             "shortName": "RecaptchaEnterpriseService"
           },
           "shortName": "ListKeys"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.recaptchaenterprise_v1.types.ListKeysRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.recaptchaenterprise_v1.services.recaptcha_enterprise_service.pagers.ListKeysPager",
+        "shortName": "list_keys"
       },
+      "description": "Sample for ListKeys",
       "file": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_list_keys_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_ListKeys_sync",
       "segments": [
         {
@@ -617,19 +1112,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_list_keys_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.recaptchaenterprise_v1.RecaptchaEnterpriseServiceAsyncClient",
+          "shortName": "RecaptchaEnterpriseServiceAsyncClient"
+        },
+        "fullName": "google.cloud.recaptchaenterprise_v1.RecaptchaEnterpriseServiceAsyncClient.list_related_account_group_memberships",
         "method": {
+          "fullName": "google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService.ListRelatedAccountGroupMemberships",
           "service": {
+            "fullName": "google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService",
             "shortName": "RecaptchaEnterpriseService"
           },
           "shortName": "ListRelatedAccountGroupMemberships"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.recaptchaenterprise_v1.types.ListRelatedAccountGroupMembershipsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.recaptchaenterprise_v1.services.recaptcha_enterprise_service.pagers.ListRelatedAccountGroupMembershipsAsyncPager",
+        "shortName": "list_related_account_group_memberships"
       },
+      "description": "Sample for ListRelatedAccountGroupMemberships",
       "file": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_list_related_account_group_memberships_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_ListRelatedAccountGroupMemberships_async",
       "segments": [
         {
@@ -662,18 +1193,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_list_related_account_group_memberships_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient",
+          "shortName": "RecaptchaEnterpriseServiceClient"
+        },
+        "fullName": "google.cloud.recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient.list_related_account_group_memberships",
         "method": {
+          "fullName": "google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService.ListRelatedAccountGroupMemberships",
           "service": {
+            "fullName": "google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService",
             "shortName": "RecaptchaEnterpriseService"
           },
           "shortName": "ListRelatedAccountGroupMemberships"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.recaptchaenterprise_v1.types.ListRelatedAccountGroupMembershipsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.recaptchaenterprise_v1.services.recaptcha_enterprise_service.pagers.ListRelatedAccountGroupMembershipsPager",
+        "shortName": "list_related_account_group_memberships"
       },
+      "description": "Sample for ListRelatedAccountGroupMemberships",
       "file": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_list_related_account_group_memberships_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_ListRelatedAccountGroupMemberships_sync",
       "segments": [
         {
@@ -706,19 +1273,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_list_related_account_group_memberships_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.recaptchaenterprise_v1.RecaptchaEnterpriseServiceAsyncClient",
+          "shortName": "RecaptchaEnterpriseServiceAsyncClient"
+        },
+        "fullName": "google.cloud.recaptchaenterprise_v1.RecaptchaEnterpriseServiceAsyncClient.list_related_account_groups",
         "method": {
+          "fullName": "google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService.ListRelatedAccountGroups",
           "service": {
+            "fullName": "google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService",
             "shortName": "RecaptchaEnterpriseService"
           },
           "shortName": "ListRelatedAccountGroups"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.recaptchaenterprise_v1.types.ListRelatedAccountGroupsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.recaptchaenterprise_v1.services.recaptcha_enterprise_service.pagers.ListRelatedAccountGroupsAsyncPager",
+        "shortName": "list_related_account_groups"
       },
+      "description": "Sample for ListRelatedAccountGroups",
       "file": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_list_related_account_groups_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_ListRelatedAccountGroups_async",
       "segments": [
         {
@@ -751,18 +1354,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_list_related_account_groups_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient",
+          "shortName": "RecaptchaEnterpriseServiceClient"
+        },
+        "fullName": "google.cloud.recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient.list_related_account_groups",
         "method": {
+          "fullName": "google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService.ListRelatedAccountGroups",
           "service": {
+            "fullName": "google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService",
             "shortName": "RecaptchaEnterpriseService"
           },
           "shortName": "ListRelatedAccountGroups"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.recaptchaenterprise_v1.types.ListRelatedAccountGroupsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.recaptchaenterprise_v1.services.recaptcha_enterprise_service.pagers.ListRelatedAccountGroupsPager",
+        "shortName": "list_related_account_groups"
       },
+      "description": "Sample for ListRelatedAccountGroups",
       "file": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_list_related_account_groups_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_ListRelatedAccountGroups_sync",
       "segments": [
         {
@@ -795,19 +1434,51 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_list_related_account_groups_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.recaptchaenterprise_v1.RecaptchaEnterpriseServiceAsyncClient",
+          "shortName": "RecaptchaEnterpriseServiceAsyncClient"
+        },
+        "fullName": "google.cloud.recaptchaenterprise_v1.RecaptchaEnterpriseServiceAsyncClient.migrate_key",
         "method": {
+          "fullName": "google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService.MigrateKey",
           "service": {
+            "fullName": "google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService",
             "shortName": "RecaptchaEnterpriseService"
           },
           "shortName": "MigrateKey"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.recaptchaenterprise_v1.types.MigrateKeyRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.recaptchaenterprise_v1.types.Key",
+        "shortName": "migrate_key"
       },
+      "description": "Sample for MigrateKey",
       "file": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_migrate_key_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_MigrateKey_async",
       "segments": [
         {
@@ -840,18 +1511,50 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_migrate_key_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient",
+          "shortName": "RecaptchaEnterpriseServiceClient"
+        },
+        "fullName": "google.cloud.recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient.migrate_key",
         "method": {
+          "fullName": "google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService.MigrateKey",
           "service": {
+            "fullName": "google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService",
             "shortName": "RecaptchaEnterpriseService"
           },
           "shortName": "MigrateKey"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.recaptchaenterprise_v1.types.MigrateKeyRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.recaptchaenterprise_v1.types.Key",
+        "shortName": "migrate_key"
       },
+      "description": "Sample for MigrateKey",
       "file": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_migrate_key_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_MigrateKey_sync",
       "segments": [
         {
@@ -884,19 +1587,59 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_migrate_key_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.recaptchaenterprise_v1.RecaptchaEnterpriseServiceAsyncClient",
+          "shortName": "RecaptchaEnterpriseServiceAsyncClient"
+        },
+        "fullName": "google.cloud.recaptchaenterprise_v1.RecaptchaEnterpriseServiceAsyncClient.search_related_account_group_memberships",
         "method": {
+          "fullName": "google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService.SearchRelatedAccountGroupMemberships",
           "service": {
+            "fullName": "google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService",
             "shortName": "RecaptchaEnterpriseService"
           },
           "shortName": "SearchRelatedAccountGroupMemberships"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.recaptchaenterprise_v1.types.SearchRelatedAccountGroupMembershipsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "hashed_account_id",
+            "type": "bytes"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.recaptchaenterprise_v1.services.recaptcha_enterprise_service.pagers.SearchRelatedAccountGroupMembershipsAsyncPager",
+        "shortName": "search_related_account_group_memberships"
       },
+      "description": "Sample for SearchRelatedAccountGroupMemberships",
       "file": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_search_related_account_group_memberships_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_SearchRelatedAccountGroupMemberships_async",
       "segments": [
         {
@@ -929,18 +1672,58 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_search_related_account_group_memberships_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient",
+          "shortName": "RecaptchaEnterpriseServiceClient"
+        },
+        "fullName": "google.cloud.recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient.search_related_account_group_memberships",
         "method": {
+          "fullName": "google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService.SearchRelatedAccountGroupMemberships",
           "service": {
+            "fullName": "google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService",
             "shortName": "RecaptchaEnterpriseService"
           },
           "shortName": "SearchRelatedAccountGroupMemberships"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.recaptchaenterprise_v1.types.SearchRelatedAccountGroupMembershipsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "hashed_account_id",
+            "type": "bytes"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.recaptchaenterprise_v1.services.recaptcha_enterprise_service.pagers.SearchRelatedAccountGroupMembershipsPager",
+        "shortName": "search_related_account_group_memberships"
       },
+      "description": "Sample for SearchRelatedAccountGroupMemberships",
       "file": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_search_related_account_group_memberships_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_SearchRelatedAccountGroupMemberships_sync",
       "segments": [
         {
@@ -973,19 +1756,51 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_search_related_account_group_memberships_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.recaptchaenterprise_v1.RecaptchaEnterpriseServiceAsyncClient",
+          "shortName": "RecaptchaEnterpriseServiceAsyncClient"
+        },
+        "fullName": "google.cloud.recaptchaenterprise_v1.RecaptchaEnterpriseServiceAsyncClient.update_key",
         "method": {
+          "fullName": "google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService.UpdateKey",
           "service": {
+            "fullName": "google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService",
             "shortName": "RecaptchaEnterpriseService"
           },
           "shortName": "UpdateKey"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.recaptchaenterprise_v1.types.UpdateKeyRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.recaptchaenterprise_v1.types.Key",
+        "shortName": "update_key"
       },
+      "description": "Sample for UpdateKey",
       "file": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_update_key_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_UpdateKey_async",
       "segments": [
         {
@@ -1018,18 +1833,50 @@
           "start": 45,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_update_key_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient",
+          "shortName": "RecaptchaEnterpriseServiceClient"
+        },
+        "fullName": "google.cloud.recaptchaenterprise_v1.RecaptchaEnterpriseServiceClient.update_key",
         "method": {
+          "fullName": "google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService.UpdateKey",
           "service": {
+            "fullName": "google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService",
             "shortName": "RecaptchaEnterpriseService"
           },
           "shortName": "UpdateKey"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.recaptchaenterprise_v1.types.UpdateKeyRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.recaptchaenterprise_v1.types.Key",
+        "shortName": "update_key"
       },
+      "description": "Sample for UpdateKey",
       "file": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_update_key_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "recaptchaenterprise_v1_generated_RecaptchaEnterpriseService_UpdateKey_sync",
       "segments": [
         {
@@ -1062,7 +1909,8 @@
           "start": 45,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "recaptchaenterprise_v1_generated_recaptcha_enterprise_service_update_key_sync.py"
     }
   ]
 }

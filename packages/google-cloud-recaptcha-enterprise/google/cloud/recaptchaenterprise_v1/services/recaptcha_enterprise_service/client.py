@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -515,7 +515,6 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
         r"""Creates an Assessment of the likelihood an event is
         legitimate.
 
-
         .. code-block:: python
 
             from google.cloud import recaptchaenterprise_v1
@@ -619,7 +618,6 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
         r"""Annotates a previously created Assessment to provide
         additional information on whether the event turned out
         to be authentic or fraudulent.
-
 
         .. code-block:: python
 
@@ -806,7 +804,6 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
     ) -> pagers.ListKeysPager:
         r"""Returns the list of all keys that belong to a
         project.
-
 
         .. code-block:: python
 
@@ -1112,7 +1109,6 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
         your user must have the reCAPTCHA Enterprise Admin IAM
         role in the destination project.
 
-
         .. code-block:: python
 
             from google.cloud import recaptchaenterprise_v1
@@ -1188,7 +1184,6 @@ class RecaptchaEnterpriseServiceClient(metaclass=RecaptchaEnterpriseServiceClien
     ) -> recaptchaenterprise.Metrics:
         r"""Get some aggregated metrics for a Key. This data can
         be used to build dashboards.
-
 
         .. code-block:: python
 
