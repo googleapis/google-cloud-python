@@ -614,7 +614,10 @@ def receive_messages_with_blocking_shutdown(
 def receive_messages_with_exactly_once_delivery_enabled(
     project_id: str, subscription_id: str, timeout: Optional[float] = None
 ) -> None:
-    """Receives messages from a pull subscription with exactly-once delivery enabled."""
+    """Receives messages from a pull subscription with exactly-once delivery enabled.
+    This is a preview feature. For more details, see:
+    https://cloud.google.com/pubsub/docs/exactly-once-delivery."
+    """
     # [START pubsub_subscriber_exactly_once]
     from concurrent.futures import TimeoutError
     from google.cloud import pubsub_v1

@@ -246,7 +246,10 @@ class Message(object):
             receive any given message more than once. If you need strong
             guarantees about acks and re-deliveres, enable exactly-once
             delivery on your subscription and use the `ack_with_response`
-            method instead.
+            method instead. Exactly once delivery is a preview feature.
+            For more details, see:
+            https://cloud.google.com/pubsub/docs/exactly-once-delivery."
+
         """
         time_to_ack = math.ceil(time.time() - self._received_timestamp)
         self._request_queue.put(
@@ -268,13 +271,6 @@ class Message(object):
         *finished* processing them, so that in the event of a failure,
         you receive the message again.
 
-        If exactly-once delivery is enabled on the subscription, the
-        future returned by this method tracks the state of acknowledgement
-        operation. If the future completes successfully, the message is
-        guaranteed NOT to be re-delivered. Otherwise, the future will
-        contain an exception with more details about the failure and the
-        message may be re-delivered.
-
         If exactly-once delivery is NOT enabled on the subscription, the
         future returns immediately with an AcknowledgeStatus.SUCCESS.
         Since acks in Cloud Pub/Sub are best effort when exactly-once
@@ -282,6 +278,16 @@ class Message(object):
         re-deliveries are possible, you should ensure that your processing
         code is idempotent, as you may receive any given message more than
         once.
+
+        If exactly-once delivery is enabled on the subscription, the
+        future returned by this method tracks the state of acknowledgement
+        operation. If the future completes successfully, the message is
+        guaranteed NOT to be re-delivered. Otherwise, the future will
+        contain an exception with more details about the failure and the
+        message may be re-delivered.
+
+        Exactly once delivery is a preview feature. For more details,
+        see https://cloud.google.com/pubsub/docs/exactly-once-delivery."
 
         Returns:
             A :class:`~google.cloud.pubsub_v1.subscriber.futures.Future`
@@ -363,6 +369,12 @@ class Message(object):
         if you are implementing your own custom subclass of
         :class:`~.pubsub_v1.subcriber._consumer.Consumer`.
 
+        If exactly-once delivery is NOT enabled on the subscription, the
+        future returns immediately with an AcknowledgeStatus.SUCCESS.
+        Since modify-ack-deadline operations in Cloud Pub/Sub are best effort
+        when exactly-once delivery is disabled, the message may be re-delivered
+        within the set deadline.
+
         If exactly-once delivery is enabled on the subscription, the
         future returned by this method tracks the state of the
         modify-ack-deadline operation. If the future completes successfully,
@@ -371,11 +383,8 @@ class Message(object):
         the failure and the message will be redelivered according to its
         currently-set ack deadline.
 
-        If exactly-once delivery is NOT enabled on the subscription, the
-        future returns immediately with an AcknowledgeStatus.SUCCESS.
-        Since modify-ack-deadline operations in Cloud Pub/Sub are best effort
-        when exactly-once delivery is disabled, the message may be re-delivered
-        within the set deadline.
+        Exactly once delivery is a preview feature. For more details,
+        see https://cloud.google.com/pubsub/docs/exactly-once-delivery."
 
         Args:
             seconds:
@@ -434,6 +443,9 @@ class Message(object):
         may take place immediately or after a delay, and may arrive at this subscriber
         or another.
 
+        If exactly-once delivery is NOT enabled on the subscription, the
+        future returns immediately with an AcknowledgeStatus.SUCCESS.
+
         If exactly-once delivery is enabled on the subscription, the
         future returned by this method tracks the state of the
         nack operation. If the future completes successfully,
@@ -441,8 +453,8 @@ class Message(object):
         Otherwise, the future will contain an exception with more details about
         the failure.
 
-        If exactly-once delivery is NOT enabled on the subscription, the
-        future returns immediately with an AcknowledgeStatus.SUCCESS.
+        Exactly once delivery is a preview feature. For more details,
+        see https://cloud.google.com/pubsub/docs/exactly-once-delivery."
 
         Returns:
             A :class:`~google.cloud.pubsub_v1.subscriber.futures.Future`
