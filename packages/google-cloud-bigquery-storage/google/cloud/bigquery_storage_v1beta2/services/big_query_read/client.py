@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Iterable, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Iterable, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -512,7 +512,6 @@ class BigQueryReadClient(metaclass=BigQueryReadClientMeta):
         are created and do not require manual clean-up by the
         caller.
 
-
         .. code-block:: python
 
             from google.cloud import bigquery_storage_v1beta2
@@ -644,7 +643,6 @@ class BigQueryReadClient(metaclass=BigQueryReadClientMeta):
         Each request also returns a set of stream statistics
         reflecting the current state of the stream.
 
-
         .. code-block:: python
 
             from google.cloud import bigquery_storage_v1beta2
@@ -762,7 +760,6 @@ class BigQueryReadClient(metaclass=BigQueryReadClientMeta):
         that for streams original, primary, and residual, that
         original[0-j] = primary[0-j] and original[j-n] = residual[0-m]
         once the streams have been read to completion.
-
 
         .. code-block:: python
 

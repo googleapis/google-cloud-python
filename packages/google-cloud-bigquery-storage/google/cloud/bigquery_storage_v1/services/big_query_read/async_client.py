@@ -18,6 +18,7 @@ import functools
 import re
 from typing import (
     Dict,
+    Mapping,
     Optional,
     AsyncIterable,
     Awaitable,
@@ -251,7 +252,6 @@ class BigQueryReadAsyncClient:
         are created and do not require manual clean-up by the
         caller.
 
-
         .. code-block:: python
 
             from google.cloud import bigquery_storage_v1
@@ -393,7 +393,6 @@ class BigQueryReadAsyncClient:
         Each request also returns a set of stream statistics
         reflecting the current state of the stream.
 
-
         .. code-block:: python
 
             from google.cloud import bigquery_storage_v1
@@ -520,7 +519,6 @@ class BigQueryReadAsyncClient:
         that for streams original, primary, and residual, that
         original[0-j] = primary[0-j] and original[j-n] = residual[0-m]
         once the streams have been read to completion.
-
 
         .. code-block:: python
 

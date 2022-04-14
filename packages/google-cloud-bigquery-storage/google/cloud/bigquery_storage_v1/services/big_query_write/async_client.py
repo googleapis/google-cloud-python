@@ -18,6 +18,7 @@ import functools
 import re
 from typing import (
     Dict,
+    Mapping,
     Optional,
     AsyncIterable,
     Awaitable,
@@ -239,7 +240,6 @@ class BigQueryWriteAsyncClient:
         stream is considered committed as soon as an acknowledgement is
         received.
 
-
         .. code-block:: python
 
             from google.cloud import bigquery_storage_v1
@@ -392,7 +392,6 @@ class BigQueryWriteAsyncClient:
 
         More information about system parameters:
         https://cloud.google.com/apis/docs/system-parameters
-
 
         .. code-block:: python
 
@@ -592,7 +591,6 @@ class BigQueryWriteAsyncClient:
         r"""Finalize a write stream so that no new data can be appended to
         the stream. Finalize is not supported on the '_default' stream.
 
-
         .. code-block:: python
 
             from google.cloud import bigquery_storage_v1
@@ -700,7 +698,6 @@ class BigQueryWriteAsyncClient:
         Streams must be finalized before commit and cannot be committed
         multiple times. Once a stream is committed, data in the stream
         becomes available for read operations.
-
 
         .. code-block:: python
 
@@ -815,7 +812,6 @@ class BigQueryWriteAsyncClient:
 
         Flush is not supported on the \_default stream, since it is not
         BUFFERED.
-
 
         .. code-block:: python
 

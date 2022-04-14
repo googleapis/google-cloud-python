@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Iterable, Iterator, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    Optional,
+    Iterable,
+    Iterator,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -473,7 +483,6 @@ class BigQueryWriteClient(metaclass=BigQueryWriteClientMeta):
         stream is considered committed as soon as an acknowledgement is
         received.
 
-
         .. code-block:: python
 
             from google.cloud import bigquery_storage_v1
@@ -616,7 +625,6 @@ class BigQueryWriteClient(metaclass=BigQueryWriteClientMeta):
 
         More information about system parameters:
         https://cloud.google.com/apis/docs/system-parameters
-
 
         .. code-block:: python
 
@@ -793,7 +801,6 @@ class BigQueryWriteClient(metaclass=BigQueryWriteClientMeta):
         r"""Finalize a write stream so that no new data can be appended to
         the stream. Finalize is not supported on the '_default' stream.
 
-
         .. code-block:: python
 
             from google.cloud import bigquery_storage_v1
@@ -891,7 +898,6 @@ class BigQueryWriteClient(metaclass=BigQueryWriteClientMeta):
         Streams must be finalized before commit and cannot be committed
         multiple times. Once a stream is committed, data in the stream
         becomes available for read operations.
-
 
         .. code-block:: python
 
@@ -998,7 +1004,6 @@ class BigQueryWriteClient(metaclass=BigQueryWriteClientMeta):
 
         Flush is not supported on the \_default stream, since it is not
         BUFFERED.
-
 
         .. code-block:: python
 
