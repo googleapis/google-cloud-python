@@ -74,7 +74,7 @@ class BuildProvenance(proto.Message):
         trigger_id (str):
             Trigger identifier if the build was triggered
             automatically; empty if not.
-        build_options (Sequence[grafeas.grafeas_v1.types.BuildProvenance.BuildOptionsEntry]):
+        build_options (Mapping[str, str]):
             Special options applied to this build. This
             is a catch-all field where build providers can
             enter any desired additional details.
@@ -152,7 +152,7 @@ class Source(proto.Message):
         artifact_storage_source_uri (str):
             If provided, the input binary artifacts for
             the build came from this location.
-        file_hashes (Sequence[grafeas.grafeas_v1.types.Source.FileHashesEntry]):
+        file_hashes (Mapping[str, grafeas.grafeas_v1.types.FileHashes]):
             Hash(es) of the build source, which can be
             used to verify that the original source
             integrity was maintained in the build.
@@ -350,7 +350,7 @@ class SourceContext(proto.Message):
             Git repo (e.g., GitHub).
 
             This field is a member of `oneof`_ ``context``.
-        labels (Sequence[grafeas.grafeas_v1.types.SourceContext.LabelsEntry]):
+        labels (Mapping[str, str]):
             Labels with user defined metadata.
     """
 

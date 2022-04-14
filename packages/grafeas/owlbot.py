@@ -180,7 +180,11 @@ def test_get_occurrence""",
     # default endpoint test
     s.replace(
     library / "tests/**/test_grafeas.py",
-    """def test_grafeas_host_no_port.*?def test_grafeas_grpc_transport_channel""",
+    """@pytest.mark.parametrize\("transport_name", \[
+    "grpc",
+    "grpc_asyncio",
+\]\)
+def test_grafeas_host_no_port.*?def test_grafeas_grpc_transport_channel""",
     """def test_grafeas_grpc_transport_channel""",
     flags=re.MULTILINE | re.DOTALL,
     )

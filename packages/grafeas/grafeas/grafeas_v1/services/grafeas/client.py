@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -536,7 +536,6 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
         this method to delete an occurrence when the occurrence
         is no longer applicable for the given resource.
 
-
         .. code-block:: python
 
             from grafeas import grafeas_v1
@@ -939,7 +938,6 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
         r"""Gets the note attached to the specified occurrence.
         Consumer projects can use this method to get a note that
         belongs to a provider project.
-
 
         .. code-block:: python
 
@@ -1432,7 +1430,7 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
         request: Union[grafeas.BatchCreateNotesRequest, dict] = None,
         *,
         parent: str = None,
-        notes: Sequence[grafeas.BatchCreateNotesRequest.NotesEntry] = None,
+        notes: Mapping[str, grafeas.Note] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -1469,7 +1467,7 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
                 This corresponds to the ``parent`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            notes (Sequence[grafeas.grafeas_v1.types.BatchCreateNotesRequest.NotesEntry]):
+            notes (Mapping[str, grafeas.grafeas_v1.types.Note]):
                 The notes to create. Max allowed
                 length is 1000.
 
@@ -1654,7 +1652,6 @@ class GrafeasClient(metaclass=GrafeasClientMeta):
         Provider projects can use this method to get all
         occurrences across consumer projects referencing the
         specified note.
-
 
         .. code-block:: python
 

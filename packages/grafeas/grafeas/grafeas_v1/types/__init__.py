@@ -114,7 +114,9 @@ from .provenance import (
     Source,
     SourceContext,
 )
-from .slsa_provenance import SlsaProvenance
+from .slsa_provenance import (
+    SlsaProvenance,
+)
 from .upgrade import (
     UpgradeDistribution,
     UpgradeNote,

@@ -810,7 +810,7 @@ class BatchCreateNotesRequest(proto.Message):
             The name of the project in the form of
             ``projects/[PROJECT_ID]``, under which the notes are to be
             created.
-        notes (Sequence[grafeas.grafeas_v1.types.BatchCreateNotesRequest.NotesEntry]):
+        notes (Mapping[str, grafeas.grafeas_v1.types.Note]):
             The notes to create. Max allowed length is
             1000.
     """

@@ -90,7 +90,7 @@ class Subject(proto.Message):
     Attributes:
         name (str):
 
-        digest (Sequence[grafeas.grafeas_v1.types.Subject.DigestEntry]):
+        digest (Mapping[str, str]):
             ``"<ALGORITHM>": "<HEX_VALUE>"`` Algorithms can be e.g.
             sha256, sha512 See
             https://github.com/in-toto/attestation/blob/main/spec/field_types.md#DigestSet

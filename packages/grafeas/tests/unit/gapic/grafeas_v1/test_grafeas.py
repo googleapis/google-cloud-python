@@ -652,7 +652,7 @@ async def test_list_occurrences_async_pager():
         )
         assert async_pager.next_page_token == "abc"
         responses = []
-        async for response in async_pager:
+        async for response in async_pager:  # pragma: no branch
             responses.append(response)
 
         assert len(responses) == 6
@@ -696,7 +696,9 @@ async def test_list_occurrences_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (await client.list_occurrences(request={})).pages:
+        async for page_ in (
+            await client.list_occurrences(request={})
+        ).pages:  # pragma: no branch
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2505,7 +2507,7 @@ async def test_list_notes_async_pager():
         )
         assert async_pager.next_page_token == "abc"
         responses = []
-        async for response in async_pager:
+        async for response in async_pager:  # pragma: no branch
             responses.append(response)
 
         assert len(responses) == 6
@@ -2549,7 +2551,9 @@ async def test_list_notes_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (await client.list_notes(request={})).pages:
+        async for page_ in (
+            await client.list_notes(request={})
+        ).pages:  # pragma: no branch
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -3872,7 +3876,7 @@ async def test_list_note_occurrences_async_pager():
         )
         assert async_pager.next_page_token == "abc"
         responses = []
-        async for response in async_pager:
+        async for response in async_pager:  # pragma: no branch
             responses.append(response)
 
         assert len(responses) == 6
@@ -3918,7 +3922,9 @@ async def test_list_note_occurrences_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (await client.list_note_occurrences(request={})).pages:
+        async for page_ in (
+            await client.list_note_occurrences(request={})
+        ).pages:  # pragma: no branch
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -3955,6 +3961,17 @@ def test_transport_adc(transport_class):
         adc.return_value = (ga_credentials.AnonymousCredentials(), None)
         transport_class()
         adc.assert_called_once()
+
+
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "grpc",
+    ],
+)
+def test_transport_kind(transport_name):
+    transport = GrafeasClient.get_transport_class(transport_name)()
+    assert transport.kind == transport_name
 
 
 def test_transport_grpc_default():
@@ -3998,6 +4015,14 @@ def test_grafeas_base_transport():
 
     with pytest.raises(NotImplementedError):
         transport.close()
+
+    # Catch all for all remaining methods and properties
+    remainder = [
+        "kind",
+    ]
+    for r in remainder:
+        with pytest.raises(NotImplementedError):
+            getattr(transport, r)()
 
 
 def test_grafeas_base_transport_with_credentials_file():
