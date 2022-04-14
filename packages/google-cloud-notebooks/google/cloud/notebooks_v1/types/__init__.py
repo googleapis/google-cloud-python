@@ -18,7 +18,9 @@ from .environment import (
     Environment,
     VmImage,
 )
-from .event import Event
+from .event import (
+    Event,
+)
 from .execution import (
     Execution,
     ExecutionTemplate,
@@ -27,7 +29,9 @@ from .instance import (
     Instance,
     ReservationAffinity,
 )
-from .instance_config import InstanceConfig
+from .instance_config import (
+    InstanceConfig,
+)
 from .managed_service import (
     CreateRuntimeRequest,
     DeleteRuntimeRequest,
@@ -53,7 +57,9 @@ from .runtime import (
     VirtualMachine,
     VirtualMachineConfig,
 )
-from .schedule import Schedule
+from .schedule import (
+    Schedule,
+)
 from .service import (
     CreateEnvironmentRequest,
     CreateExecutionRequest,

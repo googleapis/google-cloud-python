@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -332,7 +332,6 @@ class ManagedNotebookServiceAsyncClient:
         r"""Gets details of a single Runtime. The location must
         be a regional endpoint rather than zonal.
 
-
         .. code-block:: python
 
             from google.cloud import notebooks_v1
@@ -430,7 +429,6 @@ class ManagedNotebookServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Creates a new Runtime in a given project and
         location.
-
 
         .. code-block:: python
 
@@ -683,7 +681,6 @@ class ManagedNotebookServiceAsyncClient:
         https://cloud.google.com/compute/docs/instances/stop-start-instance
         https://cloud.google.com/compute/docs/instances/suspend-resume-instance
 
-
         .. code-block:: python
 
             from google.cloud import notebooks_v1
@@ -797,7 +794,6 @@ class ManagedNotebookServiceAsyncClient:
         instances See:
         https://cloud.google.com/compute/docs/instances/stop-start-instance
         https://cloud.google.com/compute/docs/instances/suspend-resume-instance
-
 
         .. code-block:: python
 

@@ -307,7 +307,7 @@ class SetInstanceLabelsRequest(proto.Message):
         name (str):
             Required. Format:
             ``projects/{project_id}/locations/{location}/instances/{instance_id}``
-        labels (Sequence[google.cloud.notebooks_v1beta1.types.SetInstanceLabelsRequest.LabelsEntry]):
+        labels (Mapping[str, str]):
             Labels to apply to this instance.
             These can be later modified by the setLabels
             method
@@ -396,7 +396,7 @@ class ReportInstanceInfoRequest(proto.Message):
             Required. The VM hardware token for
             authenticating the VM.
             https://cloud.google.com/compute/docs/instances/verifying-instance-identity
-        metadata (Sequence[google.cloud.notebooks_v1beta1.types.ReportInstanceInfoRequest.MetadataEntry]):
+        metadata (Mapping[str, str]):
             The metadata reported to Notebooks API. This
             will be merged to the instance metadata store
     """

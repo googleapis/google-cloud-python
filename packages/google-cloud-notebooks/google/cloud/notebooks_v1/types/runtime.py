@@ -390,7 +390,7 @@ class LocalDiskInitializeParams(proto.Message):
             Input only. The type of the boot disk attached to this
             instance, defaults to standard persistent disk
             (``PD_STANDARD``).
-        labels (Sequence[google.cloud.notebooks_v1.types.LocalDiskInitializeParams.LabelsEntry]):
+        labels (Mapping[str, str]):
             Optional. Labels to apply to this disk. These
             can be later modified by the disks.setLabels
             method. This field is only applicable for
@@ -540,7 +540,7 @@ class RuntimeMetrics(proto.Message):
     sessions stats.
 
     Attributes:
-        system_metrics (Sequence[google.cloud.notebooks_v1.types.RuntimeMetrics.SystemMetricsEntry]):
+        system_metrics (Mapping[str, str]):
             Output only. The system metrics.
     """
 
@@ -694,15 +694,15 @@ class VirtualMachineConfig(proto.Message):
             Optional. The Compute Engine tags to add to runtime (see
             `Tagging
             instances <https://cloud.google.com/compute/docs/label-or-tag-resources#tags>`__).
-        guest_attributes (Sequence[google.cloud.notebooks_v1.types.VirtualMachineConfig.GuestAttributesEntry]):
+        guest_attributes (Mapping[str, str]):
             Output only. The Compute Engine guest attributes. (see
             `Project and instance guest
             attributes <https://cloud.google.com/compute/docs/storing-retrieving-metadata#guest_attributes>`__).
-        metadata (Sequence[google.cloud.notebooks_v1.types.VirtualMachineConfig.MetadataEntry]):
+        metadata (Mapping[str, str]):
             Optional. The Compute Engine metadata entries to add to
             virtual machine. (see `Project and instance
             metadata <https://cloud.google.com/compute/docs/storing-retrieving-metadata#project_and_instance_metadata>`__).
-        labels (Sequence[google.cloud.notebooks_v1.types.VirtualMachineConfig.LabelsEntry]):
+        labels (Mapping[str, str]):
             Optional. The labels to associate with this runtime. Label
             **keys** must contain 1 to 63 characters, and must conform
             to `RFC 1035 <https://www.ietf.org/rfc/rfc1035.txt>`__.

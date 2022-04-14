@@ -198,11 +198,11 @@ class Instance(proto.Message):
         subnet (str):
             The name of the subnet that this instance is in. Format:
             ``projects/{project_id}/regions/{region}/subnetworks/{subnetwork_id}``
-        labels (Sequence[google.cloud.notebooks_v1.types.Instance.LabelsEntry]):
+        labels (Mapping[str, str]):
             Labels to apply to this instance.
             These can be later modified by the setLabels
             method.
-        metadata (Sequence[google.cloud.notebooks_v1.types.Instance.MetadataEntry]):
+        metadata (Mapping[str, str]):
             Custom metadata to apply to this instance.
         tags (Sequence[str]):
             Optional. The Compute Engine tags to add to runtime (see

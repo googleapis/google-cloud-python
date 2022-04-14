@@ -348,7 +348,7 @@ class SetInstanceLabelsRequest(proto.Message):
         name (str):
             Required. Format:
             ``projects/{project_id}/locations/{location}/instances/{instance_id}``
-        labels (Sequence[google.cloud.notebooks_v1.types.SetInstanceLabelsRequest.LabelsEntry]):
+        labels (Mapping[str, str]):
             Labels to apply to this instance.
             These can be later modified by the setLabels
             method
@@ -461,7 +461,7 @@ class ReportInstanceInfoRequest(proto.Message):
             Required. The VM hardware token for
             authenticating the VM.
             https://cloud.google.com/compute/docs/instances/verifying-instance-identity
-        metadata (Sequence[google.cloud.notebooks_v1.types.ReportInstanceInfoRequest.MetadataEntry]):
+        metadata (Mapping[str, str]):
             The metadata reported to Notebooks API. This
             will be merged to the instance metadata store
     """
@@ -554,7 +554,7 @@ class GetInstanceHealthResponse(proto.Message):
     Attributes:
         health_state (google.cloud.notebooks_v1.types.GetInstanceHealthResponse.HealthState):
             Output only. Runtime health_state.
-        health_info (Sequence[google.cloud.notebooks_v1.types.GetInstanceHealthResponse.HealthInfoEntry]):
+        health_info (Mapping[str, str]):
             Output only. Additional information about instance health.
             Example: healthInfo": { "docker_proxy_agent_status": "1",
             "docker_status": "1", "jupyterlab_api_status": "-1",

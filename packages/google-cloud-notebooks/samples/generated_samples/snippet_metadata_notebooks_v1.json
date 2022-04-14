@@ -1,16 +1,69 @@
 {
+  "clientLibrary": {
+    "apis": [
+      {
+        "id": "google.cloud.notebooks.v1",
+        "version": "v1"
+      }
+    ],
+    "language": "PYTHON",
+    "name": "google-cloud-notebooks"
+  },
   "snippets": [
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.ManagedNotebookServiceAsyncClient",
+          "shortName": "ManagedNotebookServiceAsyncClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.ManagedNotebookServiceAsyncClient.create_runtime",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.ManagedNotebookService.CreateRuntime",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.ManagedNotebookService",
             "shortName": "ManagedNotebookService"
           },
           "shortName": "CreateRuntime"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.CreateRuntimeRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "runtime_id",
+            "type": "str"
+          },
+          {
+            "name": "runtime",
+            "type": "google.cloud.notebooks_v1.types.Runtime"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "create_runtime"
       },
+      "description": "Sample for CreateRuntime",
       "file": "notebooks_v1_generated_managed_notebook_service_create_runtime_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_ManagedNotebookService_CreateRuntime_async",
       "segments": [
         {
@@ -43,18 +96,62 @@
           "start": 47,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_managed_notebook_service_create_runtime_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.ManagedNotebookServiceClient",
+          "shortName": "ManagedNotebookServiceClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.ManagedNotebookServiceClient.create_runtime",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.ManagedNotebookService.CreateRuntime",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.ManagedNotebookService",
             "shortName": "ManagedNotebookService"
           },
           "shortName": "CreateRuntime"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.CreateRuntimeRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "runtime_id",
+            "type": "str"
+          },
+          {
+            "name": "runtime",
+            "type": "google.cloud.notebooks_v1.types.Runtime"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "create_runtime"
       },
+      "description": "Sample for CreateRuntime",
       "file": "notebooks_v1_generated_managed_notebook_service_create_runtime_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_ManagedNotebookService_CreateRuntime_sync",
       "segments": [
         {
@@ -87,19 +184,55 @@
           "start": 47,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_managed_notebook_service_create_runtime_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.ManagedNotebookServiceAsyncClient",
+          "shortName": "ManagedNotebookServiceAsyncClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.ManagedNotebookServiceAsyncClient.delete_runtime",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.ManagedNotebookService.DeleteRuntime",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.ManagedNotebookService",
             "shortName": "ManagedNotebookService"
           },
           "shortName": "DeleteRuntime"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.DeleteRuntimeRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "delete_runtime"
       },
+      "description": "Sample for DeleteRuntime",
       "file": "notebooks_v1_generated_managed_notebook_service_delete_runtime_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_ManagedNotebookService_DeleteRuntime_async",
       "segments": [
         {
@@ -132,18 +265,54 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_managed_notebook_service_delete_runtime_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.ManagedNotebookServiceClient",
+          "shortName": "ManagedNotebookServiceClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.ManagedNotebookServiceClient.delete_runtime",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.ManagedNotebookService.DeleteRuntime",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.ManagedNotebookService",
             "shortName": "ManagedNotebookService"
           },
           "shortName": "DeleteRuntime"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.DeleteRuntimeRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "delete_runtime"
       },
+      "description": "Sample for DeleteRuntime",
       "file": "notebooks_v1_generated_managed_notebook_service_delete_runtime_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_ManagedNotebookService_DeleteRuntime_sync",
       "segments": [
         {
@@ -176,19 +345,55 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_managed_notebook_service_delete_runtime_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.ManagedNotebookServiceAsyncClient",
+          "shortName": "ManagedNotebookServiceAsyncClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.ManagedNotebookServiceAsyncClient.get_runtime",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.ManagedNotebookService.GetRuntime",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.ManagedNotebookService",
             "shortName": "ManagedNotebookService"
           },
           "shortName": "GetRuntime"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.GetRuntimeRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.notebooks_v1.types.Runtime",
+        "shortName": "get_runtime"
       },
+      "description": "Sample for GetRuntime",
       "file": "notebooks_v1_generated_managed_notebook_service_get_runtime_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_ManagedNotebookService_GetRuntime_async",
       "segments": [
         {
@@ -221,18 +426,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_managed_notebook_service_get_runtime_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.ManagedNotebookServiceClient",
+          "shortName": "ManagedNotebookServiceClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.ManagedNotebookServiceClient.get_runtime",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.ManagedNotebookService.GetRuntime",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.ManagedNotebookService",
             "shortName": "ManagedNotebookService"
           },
           "shortName": "GetRuntime"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.GetRuntimeRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.notebooks_v1.types.Runtime",
+        "shortName": "get_runtime"
       },
+      "description": "Sample for GetRuntime",
       "file": "notebooks_v1_generated_managed_notebook_service_get_runtime_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_ManagedNotebookService_GetRuntime_sync",
       "segments": [
         {
@@ -265,19 +506,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_managed_notebook_service_get_runtime_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.ManagedNotebookServiceAsyncClient",
+          "shortName": "ManagedNotebookServiceAsyncClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.ManagedNotebookServiceAsyncClient.list_runtimes",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.ManagedNotebookService.ListRuntimes",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.ManagedNotebookService",
             "shortName": "ManagedNotebookService"
           },
           "shortName": "ListRuntimes"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.ListRuntimesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.notebooks_v1.services.managed_notebook_service.pagers.ListRuntimesAsyncPager",
+        "shortName": "list_runtimes"
       },
+      "description": "Sample for ListRuntimes",
       "file": "notebooks_v1_generated_managed_notebook_service_list_runtimes_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_ManagedNotebookService_ListRuntimes_async",
       "segments": [
         {
@@ -310,18 +587,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_managed_notebook_service_list_runtimes_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.ManagedNotebookServiceClient",
+          "shortName": "ManagedNotebookServiceClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.ManagedNotebookServiceClient.list_runtimes",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.ManagedNotebookService.ListRuntimes",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.ManagedNotebookService",
             "shortName": "ManagedNotebookService"
           },
           "shortName": "ListRuntimes"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.ListRuntimesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.notebooks_v1.services.managed_notebook_service.pagers.ListRuntimesPager",
+        "shortName": "list_runtimes"
       },
+      "description": "Sample for ListRuntimes",
       "file": "notebooks_v1_generated_managed_notebook_service_list_runtimes_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_ManagedNotebookService_ListRuntimes_sync",
       "segments": [
         {
@@ -354,19 +667,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_managed_notebook_service_list_runtimes_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.ManagedNotebookServiceAsyncClient",
+          "shortName": "ManagedNotebookServiceAsyncClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.ManagedNotebookServiceAsyncClient.report_runtime_event",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.ManagedNotebookService.ReportRuntimeEvent",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.ManagedNotebookService",
             "shortName": "ManagedNotebookService"
           },
           "shortName": "ReportRuntimeEvent"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.ReportRuntimeEventRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "report_runtime_event"
       },
+      "description": "Sample for ReportRuntimeEvent",
       "file": "notebooks_v1_generated_managed_notebook_service_report_runtime_event_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_ManagedNotebookService_ReportRuntimeEvent_async",
       "segments": [
         {
@@ -399,18 +748,54 @@
           "start": 47,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_managed_notebook_service_report_runtime_event_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.ManagedNotebookServiceClient",
+          "shortName": "ManagedNotebookServiceClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.ManagedNotebookServiceClient.report_runtime_event",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.ManagedNotebookService.ReportRuntimeEvent",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.ManagedNotebookService",
             "shortName": "ManagedNotebookService"
           },
           "shortName": "ReportRuntimeEvent"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.ReportRuntimeEventRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "report_runtime_event"
       },
+      "description": "Sample for ReportRuntimeEvent",
       "file": "notebooks_v1_generated_managed_notebook_service_report_runtime_event_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_ManagedNotebookService_ReportRuntimeEvent_sync",
       "segments": [
         {
@@ -443,19 +828,55 @@
           "start": 47,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_managed_notebook_service_report_runtime_event_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.ManagedNotebookServiceAsyncClient",
+          "shortName": "ManagedNotebookServiceAsyncClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.ManagedNotebookServiceAsyncClient.reset_runtime",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.ManagedNotebookService.ResetRuntime",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.ManagedNotebookService",
             "shortName": "ManagedNotebookService"
           },
           "shortName": "ResetRuntime"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.ResetRuntimeRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "reset_runtime"
       },
+      "description": "Sample for ResetRuntime",
       "file": "notebooks_v1_generated_managed_notebook_service_reset_runtime_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_ManagedNotebookService_ResetRuntime_async",
       "segments": [
         {
@@ -488,18 +909,54 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_managed_notebook_service_reset_runtime_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.ManagedNotebookServiceClient",
+          "shortName": "ManagedNotebookServiceClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.ManagedNotebookServiceClient.reset_runtime",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.ManagedNotebookService.ResetRuntime",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.ManagedNotebookService",
             "shortName": "ManagedNotebookService"
           },
           "shortName": "ResetRuntime"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.ResetRuntimeRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "reset_runtime"
       },
+      "description": "Sample for ResetRuntime",
       "file": "notebooks_v1_generated_managed_notebook_service_reset_runtime_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_ManagedNotebookService_ResetRuntime_sync",
       "segments": [
         {
@@ -532,19 +989,55 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_managed_notebook_service_reset_runtime_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.ManagedNotebookServiceAsyncClient",
+          "shortName": "ManagedNotebookServiceAsyncClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.ManagedNotebookServiceAsyncClient.start_runtime",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.ManagedNotebookService.StartRuntime",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.ManagedNotebookService",
             "shortName": "ManagedNotebookService"
           },
           "shortName": "StartRuntime"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.StartRuntimeRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "start_runtime"
       },
+      "description": "Sample for StartRuntime",
       "file": "notebooks_v1_generated_managed_notebook_service_start_runtime_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_ManagedNotebookService_StartRuntime_async",
       "segments": [
         {
@@ -577,18 +1070,54 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_managed_notebook_service_start_runtime_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.ManagedNotebookServiceClient",
+          "shortName": "ManagedNotebookServiceClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.ManagedNotebookServiceClient.start_runtime",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.ManagedNotebookService.StartRuntime",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.ManagedNotebookService",
             "shortName": "ManagedNotebookService"
           },
           "shortName": "StartRuntime"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.StartRuntimeRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "start_runtime"
       },
+      "description": "Sample for StartRuntime",
       "file": "notebooks_v1_generated_managed_notebook_service_start_runtime_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_ManagedNotebookService_StartRuntime_sync",
       "segments": [
         {
@@ -621,19 +1150,55 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_managed_notebook_service_start_runtime_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.ManagedNotebookServiceAsyncClient",
+          "shortName": "ManagedNotebookServiceAsyncClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.ManagedNotebookServiceAsyncClient.stop_runtime",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.ManagedNotebookService.StopRuntime",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.ManagedNotebookService",
             "shortName": "ManagedNotebookService"
           },
           "shortName": "StopRuntime"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.StopRuntimeRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "stop_runtime"
       },
+      "description": "Sample for StopRuntime",
       "file": "notebooks_v1_generated_managed_notebook_service_stop_runtime_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_ManagedNotebookService_StopRuntime_async",
       "segments": [
         {
@@ -666,18 +1231,54 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_managed_notebook_service_stop_runtime_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.ManagedNotebookServiceClient",
+          "shortName": "ManagedNotebookServiceClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.ManagedNotebookServiceClient.stop_runtime",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.ManagedNotebookService.StopRuntime",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.ManagedNotebookService",
             "shortName": "ManagedNotebookService"
           },
           "shortName": "StopRuntime"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.StopRuntimeRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "stop_runtime"
       },
+      "description": "Sample for StopRuntime",
       "file": "notebooks_v1_generated_managed_notebook_service_stop_runtime_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_ManagedNotebookService_StopRuntime_sync",
       "segments": [
         {
@@ -710,19 +1311,55 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_managed_notebook_service_stop_runtime_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.ManagedNotebookServiceAsyncClient",
+          "shortName": "ManagedNotebookServiceAsyncClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.ManagedNotebookServiceAsyncClient.switch_runtime",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.ManagedNotebookService.SwitchRuntime",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.ManagedNotebookService",
             "shortName": "ManagedNotebookService"
           },
           "shortName": "SwitchRuntime"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.SwitchRuntimeRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "switch_runtime"
       },
+      "description": "Sample for SwitchRuntime",
       "file": "notebooks_v1_generated_managed_notebook_service_switch_runtime_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_ManagedNotebookService_SwitchRuntime_async",
       "segments": [
         {
@@ -755,18 +1392,54 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_managed_notebook_service_switch_runtime_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.ManagedNotebookServiceClient",
+          "shortName": "ManagedNotebookServiceClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.ManagedNotebookServiceClient.switch_runtime",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.ManagedNotebookService.SwitchRuntime",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.ManagedNotebookService",
             "shortName": "ManagedNotebookService"
           },
           "shortName": "SwitchRuntime"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.SwitchRuntimeRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "switch_runtime"
       },
+      "description": "Sample for SwitchRuntime",
       "file": "notebooks_v1_generated_managed_notebook_service_switch_runtime_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_ManagedNotebookService_SwitchRuntime_sync",
       "segments": [
         {
@@ -799,19 +1472,63 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_managed_notebook_service_switch_runtime_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.NotebookServiceAsyncClient",
+          "shortName": "NotebookServiceAsyncClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.NotebookServiceAsyncClient.create_environment",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.NotebookService.CreateEnvironment",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.NotebookService",
             "shortName": "NotebookService"
           },
           "shortName": "CreateEnvironment"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.CreateEnvironmentRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "environment",
+            "type": "google.cloud.notebooks_v1.types.Environment"
+          },
+          {
+            "name": "environment_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "create_environment"
       },
+      "description": "Sample for CreateEnvironment",
       "file": "notebooks_v1_generated_notebook_service_create_environment_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_NotebookService_CreateEnvironment_async",
       "segments": [
         {
@@ -844,18 +1561,62 @@
           "start": 52,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_notebook_service_create_environment_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.NotebookServiceClient",
+          "shortName": "NotebookServiceClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.NotebookServiceClient.create_environment",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.NotebookService.CreateEnvironment",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.NotebookService",
             "shortName": "NotebookService"
           },
           "shortName": "CreateEnvironment"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.CreateEnvironmentRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "environment",
+            "type": "google.cloud.notebooks_v1.types.Environment"
+          },
+          {
+            "name": "environment_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "create_environment"
       },
+      "description": "Sample for CreateEnvironment",
       "file": "notebooks_v1_generated_notebook_service_create_environment_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_NotebookService_CreateEnvironment_sync",
       "segments": [
         {
@@ -888,19 +1649,63 @@
           "start": 52,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_notebook_service_create_environment_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.NotebookServiceAsyncClient",
+          "shortName": "NotebookServiceAsyncClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.NotebookServiceAsyncClient.create_execution",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.NotebookService.CreateExecution",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.NotebookService",
             "shortName": "NotebookService"
           },
           "shortName": "CreateExecution"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.CreateExecutionRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "execution",
+            "type": "google.cloud.notebooks_v1.types.Execution"
+          },
+          {
+            "name": "execution_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "create_execution"
       },
+      "description": "Sample for CreateExecution",
       "file": "notebooks_v1_generated_notebook_service_create_execution_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_NotebookService_CreateExecution_async",
       "segments": [
         {
@@ -933,18 +1738,62 @@
           "start": 47,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_notebook_service_create_execution_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.NotebookServiceClient",
+          "shortName": "NotebookServiceClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.NotebookServiceClient.create_execution",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.NotebookService.CreateExecution",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.NotebookService",
             "shortName": "NotebookService"
           },
           "shortName": "CreateExecution"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.CreateExecutionRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "execution",
+            "type": "google.cloud.notebooks_v1.types.Execution"
+          },
+          {
+            "name": "execution_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "create_execution"
       },
+      "description": "Sample for CreateExecution",
       "file": "notebooks_v1_generated_notebook_service_create_execution_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_NotebookService_CreateExecution_sync",
       "segments": [
         {
@@ -977,19 +1826,63 @@
           "start": 47,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_notebook_service_create_execution_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.NotebookServiceAsyncClient",
+          "shortName": "NotebookServiceAsyncClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.NotebookServiceAsyncClient.create_instance",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.NotebookService.CreateInstance",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.NotebookService",
             "shortName": "NotebookService"
           },
           "shortName": "CreateInstance"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.CreateInstanceRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "instance",
+            "type": "google.cloud.notebooks_v1.types.Instance"
+          },
+          {
+            "name": "instance_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "create_instance"
       },
+      "description": "Sample for CreateInstance",
       "file": "notebooks_v1_generated_notebook_service_create_instance_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_NotebookService_CreateInstance_async",
       "segments": [
         {
@@ -1022,18 +1915,62 @@
           "start": 53,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_notebook_service_create_instance_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.NotebookServiceClient",
+          "shortName": "NotebookServiceClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.NotebookServiceClient.create_instance",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.NotebookService.CreateInstance",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.NotebookService",
             "shortName": "NotebookService"
           },
           "shortName": "CreateInstance"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.CreateInstanceRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "instance",
+            "type": "google.cloud.notebooks_v1.types.Instance"
+          },
+          {
+            "name": "instance_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "create_instance"
       },
+      "description": "Sample for CreateInstance",
       "file": "notebooks_v1_generated_notebook_service_create_instance_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_NotebookService_CreateInstance_sync",
       "segments": [
         {
@@ -1066,19 +2003,63 @@
           "start": 53,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_notebook_service_create_instance_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.NotebookServiceAsyncClient",
+          "shortName": "NotebookServiceAsyncClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.NotebookServiceAsyncClient.create_schedule",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.NotebookService.CreateSchedule",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.NotebookService",
             "shortName": "NotebookService"
           },
           "shortName": "CreateSchedule"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.CreateScheduleRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "schedule",
+            "type": "google.cloud.notebooks_v1.types.Schedule"
+          },
+          {
+            "name": "schedule_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "create_schedule"
       },
+      "description": "Sample for CreateSchedule",
       "file": "notebooks_v1_generated_notebook_service_create_schedule_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_NotebookService_CreateSchedule_async",
       "segments": [
         {
@@ -1111,18 +2092,62 @@
           "start": 47,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_notebook_service_create_schedule_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.NotebookServiceClient",
+          "shortName": "NotebookServiceClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.NotebookServiceClient.create_schedule",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.NotebookService.CreateSchedule",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.NotebookService",
             "shortName": "NotebookService"
           },
           "shortName": "CreateSchedule"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.CreateScheduleRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "schedule",
+            "type": "google.cloud.notebooks_v1.types.Schedule"
+          },
+          {
+            "name": "schedule_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "create_schedule"
       },
+      "description": "Sample for CreateSchedule",
       "file": "notebooks_v1_generated_notebook_service_create_schedule_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_NotebookService_CreateSchedule_sync",
       "segments": [
         {
@@ -1155,19 +2180,55 @@
           "start": 47,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_notebook_service_create_schedule_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.NotebookServiceAsyncClient",
+          "shortName": "NotebookServiceAsyncClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.NotebookServiceAsyncClient.delete_environment",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.NotebookService.DeleteEnvironment",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.NotebookService",
             "shortName": "NotebookService"
           },
           "shortName": "DeleteEnvironment"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.DeleteEnvironmentRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "delete_environment"
       },
+      "description": "Sample for DeleteEnvironment",
       "file": "notebooks_v1_generated_notebook_service_delete_environment_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_NotebookService_DeleteEnvironment_async",
       "segments": [
         {
@@ -1200,18 +2261,54 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_notebook_service_delete_environment_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.NotebookServiceClient",
+          "shortName": "NotebookServiceClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.NotebookServiceClient.delete_environment",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.NotebookService.DeleteEnvironment",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.NotebookService",
             "shortName": "NotebookService"
           },
           "shortName": "DeleteEnvironment"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.DeleteEnvironmentRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "delete_environment"
       },
+      "description": "Sample for DeleteEnvironment",
       "file": "notebooks_v1_generated_notebook_service_delete_environment_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_NotebookService_DeleteEnvironment_sync",
       "segments": [
         {
@@ -1244,19 +2341,55 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_notebook_service_delete_environment_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.NotebookServiceAsyncClient",
+          "shortName": "NotebookServiceAsyncClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.NotebookServiceAsyncClient.delete_execution",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.NotebookService.DeleteExecution",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.NotebookService",
             "shortName": "NotebookService"
           },
           "shortName": "DeleteExecution"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.DeleteExecutionRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "delete_execution"
       },
+      "description": "Sample for DeleteExecution",
       "file": "notebooks_v1_generated_notebook_service_delete_execution_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_NotebookService_DeleteExecution_async",
       "segments": [
         {
@@ -1289,18 +2422,54 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_notebook_service_delete_execution_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.NotebookServiceClient",
+          "shortName": "NotebookServiceClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.NotebookServiceClient.delete_execution",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.NotebookService.DeleteExecution",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.NotebookService",
             "shortName": "NotebookService"
           },
           "shortName": "DeleteExecution"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.DeleteExecutionRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "delete_execution"
       },
+      "description": "Sample for DeleteExecution",
       "file": "notebooks_v1_generated_notebook_service_delete_execution_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_NotebookService_DeleteExecution_sync",
       "segments": [
         {
@@ -1333,19 +2502,55 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_notebook_service_delete_execution_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.NotebookServiceAsyncClient",
+          "shortName": "NotebookServiceAsyncClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.NotebookServiceAsyncClient.delete_instance",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.NotebookService.DeleteInstance",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.NotebookService",
             "shortName": "NotebookService"
           },
           "shortName": "DeleteInstance"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.DeleteInstanceRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "delete_instance"
       },
+      "description": "Sample for DeleteInstance",
       "file": "notebooks_v1_generated_notebook_service_delete_instance_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_NotebookService_DeleteInstance_async",
       "segments": [
         {
@@ -1378,18 +2583,54 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_notebook_service_delete_instance_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.NotebookServiceClient",
+          "shortName": "NotebookServiceClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.NotebookServiceClient.delete_instance",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.NotebookService.DeleteInstance",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.NotebookService",
             "shortName": "NotebookService"
           },
           "shortName": "DeleteInstance"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.DeleteInstanceRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "delete_instance"
       },
+      "description": "Sample for DeleteInstance",
       "file": "notebooks_v1_generated_notebook_service_delete_instance_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_NotebookService_DeleteInstance_sync",
       "segments": [
         {
@@ -1422,19 +2663,55 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_notebook_service_delete_instance_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.NotebookServiceAsyncClient",
+          "shortName": "NotebookServiceAsyncClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.NotebookServiceAsyncClient.delete_schedule",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.NotebookService.DeleteSchedule",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.NotebookService",
             "shortName": "NotebookService"
           },
           "shortName": "DeleteSchedule"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.DeleteScheduleRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "delete_schedule"
       },
+      "description": "Sample for DeleteSchedule",
       "file": "notebooks_v1_generated_notebook_service_delete_schedule_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_NotebookService_DeleteSchedule_async",
       "segments": [
         {
@@ -1467,18 +2744,54 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_notebook_service_delete_schedule_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.NotebookServiceClient",
+          "shortName": "NotebookServiceClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.NotebookServiceClient.delete_schedule",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.NotebookService.DeleteSchedule",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.NotebookService",
             "shortName": "NotebookService"
           },
           "shortName": "DeleteSchedule"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.DeleteScheduleRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "delete_schedule"
       },
+      "description": "Sample for DeleteSchedule",
       "file": "notebooks_v1_generated_notebook_service_delete_schedule_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_NotebookService_DeleteSchedule_sync",
       "segments": [
         {
@@ -1511,19 +2824,55 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_notebook_service_delete_schedule_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.NotebookServiceAsyncClient",
+          "shortName": "NotebookServiceAsyncClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.NotebookServiceAsyncClient.get_environment",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.NotebookService.GetEnvironment",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.NotebookService",
             "shortName": "NotebookService"
           },
           "shortName": "GetEnvironment"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.GetEnvironmentRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.notebooks_v1.types.Environment",
+        "shortName": "get_environment"
       },
+      "description": "Sample for GetEnvironment",
       "file": "notebooks_v1_generated_notebook_service_get_environment_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_NotebookService_GetEnvironment_async",
       "segments": [
         {
@@ -1556,18 +2905,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_notebook_service_get_environment_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.NotebookServiceClient",
+          "shortName": "NotebookServiceClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.NotebookServiceClient.get_environment",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.NotebookService.GetEnvironment",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.NotebookService",
             "shortName": "NotebookService"
           },
           "shortName": "GetEnvironment"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.GetEnvironmentRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.notebooks_v1.types.Environment",
+        "shortName": "get_environment"
       },
+      "description": "Sample for GetEnvironment",
       "file": "notebooks_v1_generated_notebook_service_get_environment_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_NotebookService_GetEnvironment_sync",
       "segments": [
         {
@@ -1600,19 +2985,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_notebook_service_get_environment_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.NotebookServiceAsyncClient",
+          "shortName": "NotebookServiceAsyncClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.NotebookServiceAsyncClient.get_execution",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.NotebookService.GetExecution",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.NotebookService",
             "shortName": "NotebookService"
           },
           "shortName": "GetExecution"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.GetExecutionRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.notebooks_v1.types.Execution",
+        "shortName": "get_execution"
       },
+      "description": "Sample for GetExecution",
       "file": "notebooks_v1_generated_notebook_service_get_execution_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_NotebookService_GetExecution_async",
       "segments": [
         {
@@ -1645,18 +3066,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_notebook_service_get_execution_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.NotebookServiceClient",
+          "shortName": "NotebookServiceClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.NotebookServiceClient.get_execution",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.NotebookService.GetExecution",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.NotebookService",
             "shortName": "NotebookService"
           },
           "shortName": "GetExecution"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.GetExecutionRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.notebooks_v1.types.Execution",
+        "shortName": "get_execution"
       },
+      "description": "Sample for GetExecution",
       "file": "notebooks_v1_generated_notebook_service_get_execution_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_NotebookService_GetExecution_sync",
       "segments": [
         {
@@ -1689,19 +3146,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_notebook_service_get_execution_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.NotebookServiceAsyncClient",
+          "shortName": "NotebookServiceAsyncClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.NotebookServiceAsyncClient.get_instance_health",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.NotebookService.GetInstanceHealth",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.NotebookService",
             "shortName": "NotebookService"
           },
           "shortName": "GetInstanceHealth"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.GetInstanceHealthRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.notebooks_v1.types.GetInstanceHealthResponse",
+        "shortName": "get_instance_health"
       },
+      "description": "Sample for GetInstanceHealth",
       "file": "notebooks_v1_generated_notebook_service_get_instance_health_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_NotebookService_GetInstanceHealth_async",
       "segments": [
         {
@@ -1734,18 +3227,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_notebook_service_get_instance_health_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.NotebookServiceClient",
+          "shortName": "NotebookServiceClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.NotebookServiceClient.get_instance_health",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.NotebookService.GetInstanceHealth",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.NotebookService",
             "shortName": "NotebookService"
           },
           "shortName": "GetInstanceHealth"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.GetInstanceHealthRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.notebooks_v1.types.GetInstanceHealthResponse",
+        "shortName": "get_instance_health"
       },
+      "description": "Sample for GetInstanceHealth",
       "file": "notebooks_v1_generated_notebook_service_get_instance_health_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_NotebookService_GetInstanceHealth_sync",
       "segments": [
         {
@@ -1778,19 +3307,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_notebook_service_get_instance_health_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.NotebookServiceAsyncClient",
+          "shortName": "NotebookServiceAsyncClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.NotebookServiceAsyncClient.get_instance",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.NotebookService.GetInstance",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.NotebookService",
             "shortName": "NotebookService"
           },
           "shortName": "GetInstance"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.GetInstanceRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.notebooks_v1.types.Instance",
+        "shortName": "get_instance"
       },
+      "description": "Sample for GetInstance",
       "file": "notebooks_v1_generated_notebook_service_get_instance_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_NotebookService_GetInstance_async",
       "segments": [
         {
@@ -1823,18 +3388,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_notebook_service_get_instance_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.NotebookServiceClient",
+          "shortName": "NotebookServiceClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.NotebookServiceClient.get_instance",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.NotebookService.GetInstance",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.NotebookService",
             "shortName": "NotebookService"
           },
           "shortName": "GetInstance"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.GetInstanceRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.notebooks_v1.types.Instance",
+        "shortName": "get_instance"
       },
+      "description": "Sample for GetInstance",
       "file": "notebooks_v1_generated_notebook_service_get_instance_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_NotebookService_GetInstance_sync",
       "segments": [
         {
@@ -1867,19 +3468,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_notebook_service_get_instance_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.NotebookServiceAsyncClient",
+          "shortName": "NotebookServiceAsyncClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.NotebookServiceAsyncClient.get_schedule",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.NotebookService.GetSchedule",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.NotebookService",
             "shortName": "NotebookService"
           },
           "shortName": "GetSchedule"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.GetScheduleRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.notebooks_v1.types.Schedule",
+        "shortName": "get_schedule"
       },
+      "description": "Sample for GetSchedule",
       "file": "notebooks_v1_generated_notebook_service_get_schedule_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_NotebookService_GetSchedule_async",
       "segments": [
         {
@@ -1912,18 +3549,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_notebook_service_get_schedule_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.NotebookServiceClient",
+          "shortName": "NotebookServiceClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.NotebookServiceClient.get_schedule",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.NotebookService.GetSchedule",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.NotebookService",
             "shortName": "NotebookService"
           },
           "shortName": "GetSchedule"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.GetScheduleRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.notebooks_v1.types.Schedule",
+        "shortName": "get_schedule"
       },
+      "description": "Sample for GetSchedule",
       "file": "notebooks_v1_generated_notebook_service_get_schedule_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_NotebookService_GetSchedule_sync",
       "segments": [
         {
@@ -1956,19 +3629,51 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_notebook_service_get_schedule_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.NotebookServiceAsyncClient",
+          "shortName": "NotebookServiceAsyncClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.NotebookServiceAsyncClient.is_instance_upgradeable",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.NotebookService.IsInstanceUpgradeable",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.NotebookService",
             "shortName": "NotebookService"
           },
           "shortName": "IsInstanceUpgradeable"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.IsInstanceUpgradeableRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.notebooks_v1.types.IsInstanceUpgradeableResponse",
+        "shortName": "is_instance_upgradeable"
       },
+      "description": "Sample for IsInstanceUpgradeable",
       "file": "notebooks_v1_generated_notebook_service_is_instance_upgradeable_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_NotebookService_IsInstanceUpgradeable_async",
       "segments": [
         {
@@ -2001,18 +3706,50 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_notebook_service_is_instance_upgradeable_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.NotebookServiceClient",
+          "shortName": "NotebookServiceClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.NotebookServiceClient.is_instance_upgradeable",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.NotebookService.IsInstanceUpgradeable",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.NotebookService",
             "shortName": "NotebookService"
           },
           "shortName": "IsInstanceUpgradeable"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.IsInstanceUpgradeableRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.notebooks_v1.types.IsInstanceUpgradeableResponse",
+        "shortName": "is_instance_upgradeable"
       },
+      "description": "Sample for IsInstanceUpgradeable",
       "file": "notebooks_v1_generated_notebook_service_is_instance_upgradeable_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_NotebookService_IsInstanceUpgradeable_sync",
       "segments": [
         {
@@ -2045,19 +3782,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_notebook_service_is_instance_upgradeable_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.NotebookServiceAsyncClient",
+          "shortName": "NotebookServiceAsyncClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.NotebookServiceAsyncClient.list_environments",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.NotebookService.ListEnvironments",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.NotebookService",
             "shortName": "NotebookService"
           },
           "shortName": "ListEnvironments"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.ListEnvironmentsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.notebooks_v1.services.notebook_service.pagers.ListEnvironmentsAsyncPager",
+        "shortName": "list_environments"
       },
+      "description": "Sample for ListEnvironments",
       "file": "notebooks_v1_generated_notebook_service_list_environments_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_NotebookService_ListEnvironments_async",
       "segments": [
         {
@@ -2090,18 +3863,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_notebook_service_list_environments_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.NotebookServiceClient",
+          "shortName": "NotebookServiceClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.NotebookServiceClient.list_environments",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.NotebookService.ListEnvironments",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.NotebookService",
             "shortName": "NotebookService"
           },
           "shortName": "ListEnvironments"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.ListEnvironmentsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.notebooks_v1.services.notebook_service.pagers.ListEnvironmentsPager",
+        "shortName": "list_environments"
       },
+      "description": "Sample for ListEnvironments",
       "file": "notebooks_v1_generated_notebook_service_list_environments_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_NotebookService_ListEnvironments_sync",
       "segments": [
         {
@@ -2134,19 +3943,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_notebook_service_list_environments_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.NotebookServiceAsyncClient",
+          "shortName": "NotebookServiceAsyncClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.NotebookServiceAsyncClient.list_executions",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.NotebookService.ListExecutions",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.NotebookService",
             "shortName": "NotebookService"
           },
           "shortName": "ListExecutions"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.ListExecutionsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.notebooks_v1.services.notebook_service.pagers.ListExecutionsAsyncPager",
+        "shortName": "list_executions"
       },
+      "description": "Sample for ListExecutions",
       "file": "notebooks_v1_generated_notebook_service_list_executions_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_NotebookService_ListExecutions_async",
       "segments": [
         {
@@ -2179,18 +4024,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_notebook_service_list_executions_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.NotebookServiceClient",
+          "shortName": "NotebookServiceClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.NotebookServiceClient.list_executions",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.NotebookService.ListExecutions",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.NotebookService",
             "shortName": "NotebookService"
           },
           "shortName": "ListExecutions"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.ListExecutionsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.notebooks_v1.services.notebook_service.pagers.ListExecutionsPager",
+        "shortName": "list_executions"
       },
+      "description": "Sample for ListExecutions",
       "file": "notebooks_v1_generated_notebook_service_list_executions_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_NotebookService_ListExecutions_sync",
       "segments": [
         {
@@ -2223,19 +4104,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_notebook_service_list_executions_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.NotebookServiceAsyncClient",
+          "shortName": "NotebookServiceAsyncClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.NotebookServiceAsyncClient.list_instances",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.NotebookService.ListInstances",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.NotebookService",
             "shortName": "NotebookService"
           },
           "shortName": "ListInstances"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.ListInstancesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.notebooks_v1.services.notebook_service.pagers.ListInstancesAsyncPager",
+        "shortName": "list_instances"
       },
+      "description": "Sample for ListInstances",
       "file": "notebooks_v1_generated_notebook_service_list_instances_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_NotebookService_ListInstances_async",
       "segments": [
         {
@@ -2268,18 +4185,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_notebook_service_list_instances_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.NotebookServiceClient",
+          "shortName": "NotebookServiceClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.NotebookServiceClient.list_instances",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.NotebookService.ListInstances",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.NotebookService",
             "shortName": "NotebookService"
           },
           "shortName": "ListInstances"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.ListInstancesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.notebooks_v1.services.notebook_service.pagers.ListInstancesPager",
+        "shortName": "list_instances"
       },
+      "description": "Sample for ListInstances",
       "file": "notebooks_v1_generated_notebook_service_list_instances_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_NotebookService_ListInstances_sync",
       "segments": [
         {
@@ -2312,19 +4265,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_notebook_service_list_instances_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.NotebookServiceAsyncClient",
+          "shortName": "NotebookServiceAsyncClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.NotebookServiceAsyncClient.list_schedules",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.NotebookService.ListSchedules",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.NotebookService",
             "shortName": "NotebookService"
           },
           "shortName": "ListSchedules"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.ListSchedulesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.notebooks_v1.services.notebook_service.pagers.ListSchedulesAsyncPager",
+        "shortName": "list_schedules"
       },
+      "description": "Sample for ListSchedules",
       "file": "notebooks_v1_generated_notebook_service_list_schedules_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_NotebookService_ListSchedules_async",
       "segments": [
         {
@@ -2357,18 +4346,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_notebook_service_list_schedules_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.NotebookServiceClient",
+          "shortName": "NotebookServiceClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.NotebookServiceClient.list_schedules",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.NotebookService.ListSchedules",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.NotebookService",
             "shortName": "NotebookService"
           },
           "shortName": "ListSchedules"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.ListSchedulesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.notebooks_v1.services.notebook_service.pagers.ListSchedulesPager",
+        "shortName": "list_schedules"
       },
+      "description": "Sample for ListSchedules",
       "file": "notebooks_v1_generated_notebook_service_list_schedules_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_NotebookService_ListSchedules_sync",
       "segments": [
         {
@@ -2401,19 +4426,51 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_notebook_service_list_schedules_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.NotebookServiceAsyncClient",
+          "shortName": "NotebookServiceAsyncClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.NotebookServiceAsyncClient.register_instance",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.NotebookService.RegisterInstance",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.NotebookService",
             "shortName": "NotebookService"
           },
           "shortName": "RegisterInstance"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.RegisterInstanceRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "register_instance"
       },
+      "description": "Sample for RegisterInstance",
       "file": "notebooks_v1_generated_notebook_service_register_instance_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_NotebookService_RegisterInstance_async",
       "segments": [
         {
@@ -2446,18 +4503,50 @@
           "start": 47,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_notebook_service_register_instance_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.NotebookServiceClient",
+          "shortName": "NotebookServiceClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.NotebookServiceClient.register_instance",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.NotebookService.RegisterInstance",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.NotebookService",
             "shortName": "NotebookService"
           },
           "shortName": "RegisterInstance"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.RegisterInstanceRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "register_instance"
       },
+      "description": "Sample for RegisterInstance",
       "file": "notebooks_v1_generated_notebook_service_register_instance_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_NotebookService_RegisterInstance_sync",
       "segments": [
         {
@@ -2490,19 +4579,51 @@
           "start": 47,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_notebook_service_register_instance_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.NotebookServiceAsyncClient",
+          "shortName": "NotebookServiceAsyncClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.NotebookServiceAsyncClient.report_instance_info",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.NotebookService.ReportInstanceInfo",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.NotebookService",
             "shortName": "NotebookService"
           },
           "shortName": "ReportInstanceInfo"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.ReportInstanceInfoRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "report_instance_info"
       },
+      "description": "Sample for ReportInstanceInfo",
       "file": "notebooks_v1_generated_notebook_service_report_instance_info_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_NotebookService_ReportInstanceInfo_async",
       "segments": [
         {
@@ -2535,18 +4656,50 @@
           "start": 47,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_notebook_service_report_instance_info_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.NotebookServiceClient",
+          "shortName": "NotebookServiceClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.NotebookServiceClient.report_instance_info",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.NotebookService.ReportInstanceInfo",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.NotebookService",
             "shortName": "NotebookService"
           },
           "shortName": "ReportInstanceInfo"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.ReportInstanceInfoRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "report_instance_info"
       },
+      "description": "Sample for ReportInstanceInfo",
       "file": "notebooks_v1_generated_notebook_service_report_instance_info_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_NotebookService_ReportInstanceInfo_sync",
       "segments": [
         {
@@ -2579,19 +4732,51 @@
           "start": 47,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_notebook_service_report_instance_info_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.NotebookServiceAsyncClient",
+          "shortName": "NotebookServiceAsyncClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.NotebookServiceAsyncClient.reset_instance",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.NotebookService.ResetInstance",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.NotebookService",
             "shortName": "NotebookService"
           },
           "shortName": "ResetInstance"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.ResetInstanceRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "reset_instance"
       },
+      "description": "Sample for ResetInstance",
       "file": "notebooks_v1_generated_notebook_service_reset_instance_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_NotebookService_ResetInstance_async",
       "segments": [
         {
@@ -2624,18 +4809,50 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_notebook_service_reset_instance_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.NotebookServiceClient",
+          "shortName": "NotebookServiceClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.NotebookServiceClient.reset_instance",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.NotebookService.ResetInstance",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.NotebookService",
             "shortName": "NotebookService"
           },
           "shortName": "ResetInstance"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.ResetInstanceRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "reset_instance"
       },
+      "description": "Sample for ResetInstance",
       "file": "notebooks_v1_generated_notebook_service_reset_instance_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_NotebookService_ResetInstance_sync",
       "segments": [
         {
@@ -2668,19 +4885,51 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_notebook_service_reset_instance_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.NotebookServiceAsyncClient",
+          "shortName": "NotebookServiceAsyncClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.NotebookServiceAsyncClient.rollback_instance",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.NotebookService.RollbackInstance",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.NotebookService",
             "shortName": "NotebookService"
           },
           "shortName": "RollbackInstance"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.RollbackInstanceRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "rollback_instance"
       },
+      "description": "Sample for RollbackInstance",
       "file": "notebooks_v1_generated_notebook_service_rollback_instance_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_NotebookService_RollbackInstance_async",
       "segments": [
         {
@@ -2713,18 +4962,50 @@
           "start": 47,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_notebook_service_rollback_instance_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.NotebookServiceClient",
+          "shortName": "NotebookServiceClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.NotebookServiceClient.rollback_instance",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.NotebookService.RollbackInstance",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.NotebookService",
             "shortName": "NotebookService"
           },
           "shortName": "RollbackInstance"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.RollbackInstanceRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "rollback_instance"
       },
+      "description": "Sample for RollbackInstance",
       "file": "notebooks_v1_generated_notebook_service_rollback_instance_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_NotebookService_RollbackInstance_sync",
       "segments": [
         {
@@ -2757,19 +5038,51 @@
           "start": 47,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_notebook_service_rollback_instance_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.NotebookServiceAsyncClient",
+          "shortName": "NotebookServiceAsyncClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.NotebookServiceAsyncClient.set_instance_accelerator",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.NotebookService.SetInstanceAccelerator",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.NotebookService",
             "shortName": "NotebookService"
           },
           "shortName": "SetInstanceAccelerator"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.SetInstanceAcceleratorRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "set_instance_accelerator"
       },
+      "description": "Sample for SetInstanceAccelerator",
       "file": "notebooks_v1_generated_notebook_service_set_instance_accelerator_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_NotebookService_SetInstanceAccelerator_async",
       "segments": [
         {
@@ -2802,18 +5115,50 @@
           "start": 48,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_notebook_service_set_instance_accelerator_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.NotebookServiceClient",
+          "shortName": "NotebookServiceClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.NotebookServiceClient.set_instance_accelerator",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.NotebookService.SetInstanceAccelerator",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.NotebookService",
             "shortName": "NotebookService"
           },
           "shortName": "SetInstanceAccelerator"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.SetInstanceAcceleratorRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "set_instance_accelerator"
       },
+      "description": "Sample for SetInstanceAccelerator",
       "file": "notebooks_v1_generated_notebook_service_set_instance_accelerator_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_NotebookService_SetInstanceAccelerator_sync",
       "segments": [
         {
@@ -2846,19 +5191,51 @@
           "start": 48,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_notebook_service_set_instance_accelerator_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.NotebookServiceAsyncClient",
+          "shortName": "NotebookServiceAsyncClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.NotebookServiceAsyncClient.set_instance_labels",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.NotebookService.SetInstanceLabels",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.NotebookService",
             "shortName": "NotebookService"
           },
           "shortName": "SetInstanceLabels"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.SetInstanceLabelsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "set_instance_labels"
       },
+      "description": "Sample for SetInstanceLabels",
       "file": "notebooks_v1_generated_notebook_service_set_instance_labels_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_NotebookService_SetInstanceLabels_async",
       "segments": [
         {
@@ -2891,18 +5268,50 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_notebook_service_set_instance_labels_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.NotebookServiceClient",
+          "shortName": "NotebookServiceClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.NotebookServiceClient.set_instance_labels",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.NotebookService.SetInstanceLabels",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.NotebookService",
             "shortName": "NotebookService"
           },
           "shortName": "SetInstanceLabels"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.SetInstanceLabelsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "set_instance_labels"
       },
+      "description": "Sample for SetInstanceLabels",
       "file": "notebooks_v1_generated_notebook_service_set_instance_labels_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_NotebookService_SetInstanceLabels_sync",
       "segments": [
         {
@@ -2935,19 +5344,51 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_notebook_service_set_instance_labels_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.NotebookServiceAsyncClient",
+          "shortName": "NotebookServiceAsyncClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.NotebookServiceAsyncClient.set_instance_machine_type",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.NotebookService.SetInstanceMachineType",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.NotebookService",
             "shortName": "NotebookService"
           },
           "shortName": "SetInstanceMachineType"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.SetInstanceMachineTypeRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "set_instance_machine_type"
       },
+      "description": "Sample for SetInstanceMachineType",
       "file": "notebooks_v1_generated_notebook_service_set_instance_machine_type_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_NotebookService_SetInstanceMachineType_async",
       "segments": [
         {
@@ -2980,18 +5421,50 @@
           "start": 47,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_notebook_service_set_instance_machine_type_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.NotebookServiceClient",
+          "shortName": "NotebookServiceClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.NotebookServiceClient.set_instance_machine_type",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.NotebookService.SetInstanceMachineType",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.NotebookService",
             "shortName": "NotebookService"
           },
           "shortName": "SetInstanceMachineType"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.SetInstanceMachineTypeRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "set_instance_machine_type"
       },
+      "description": "Sample for SetInstanceMachineType",
       "file": "notebooks_v1_generated_notebook_service_set_instance_machine_type_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_NotebookService_SetInstanceMachineType_sync",
       "segments": [
         {
@@ -3024,19 +5497,51 @@
           "start": 47,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_notebook_service_set_instance_machine_type_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.NotebookServiceAsyncClient",
+          "shortName": "NotebookServiceAsyncClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.NotebookServiceAsyncClient.start_instance",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.NotebookService.StartInstance",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.NotebookService",
             "shortName": "NotebookService"
           },
           "shortName": "StartInstance"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.StartInstanceRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "start_instance"
       },
+      "description": "Sample for StartInstance",
       "file": "notebooks_v1_generated_notebook_service_start_instance_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_NotebookService_StartInstance_async",
       "segments": [
         {
@@ -3069,18 +5574,50 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_notebook_service_start_instance_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.NotebookServiceClient",
+          "shortName": "NotebookServiceClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.NotebookServiceClient.start_instance",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.NotebookService.StartInstance",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.NotebookService",
             "shortName": "NotebookService"
           },
           "shortName": "StartInstance"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.StartInstanceRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "start_instance"
       },
+      "description": "Sample for StartInstance",
       "file": "notebooks_v1_generated_notebook_service_start_instance_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_NotebookService_StartInstance_sync",
       "segments": [
         {
@@ -3113,19 +5650,51 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_notebook_service_start_instance_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.NotebookServiceAsyncClient",
+          "shortName": "NotebookServiceAsyncClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.NotebookServiceAsyncClient.stop_instance",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.NotebookService.StopInstance",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.NotebookService",
             "shortName": "NotebookService"
           },
           "shortName": "StopInstance"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.StopInstanceRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "stop_instance"
       },
+      "description": "Sample for StopInstance",
       "file": "notebooks_v1_generated_notebook_service_stop_instance_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_NotebookService_StopInstance_async",
       "segments": [
         {
@@ -3158,18 +5727,50 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_notebook_service_stop_instance_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.NotebookServiceClient",
+          "shortName": "NotebookServiceClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.NotebookServiceClient.stop_instance",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.NotebookService.StopInstance",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.NotebookService",
             "shortName": "NotebookService"
           },
           "shortName": "StopInstance"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.StopInstanceRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "stop_instance"
       },
+      "description": "Sample for StopInstance",
       "file": "notebooks_v1_generated_notebook_service_stop_instance_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_NotebookService_StopInstance_sync",
       "segments": [
         {
@@ -3202,19 +5803,51 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_notebook_service_stop_instance_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.NotebookServiceAsyncClient",
+          "shortName": "NotebookServiceAsyncClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.NotebookServiceAsyncClient.trigger_schedule",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.NotebookService.TriggerSchedule",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.NotebookService",
             "shortName": "NotebookService"
           },
           "shortName": "TriggerSchedule"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.TriggerScheduleRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "trigger_schedule"
       },
+      "description": "Sample for TriggerSchedule",
       "file": "notebooks_v1_generated_notebook_service_trigger_schedule_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_NotebookService_TriggerSchedule_async",
       "segments": [
         {
@@ -3247,18 +5880,50 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_notebook_service_trigger_schedule_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.NotebookServiceClient",
+          "shortName": "NotebookServiceClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.NotebookServiceClient.trigger_schedule",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.NotebookService.TriggerSchedule",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.NotebookService",
             "shortName": "NotebookService"
           },
           "shortName": "TriggerSchedule"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.TriggerScheduleRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "trigger_schedule"
       },
+      "description": "Sample for TriggerSchedule",
       "file": "notebooks_v1_generated_notebook_service_trigger_schedule_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_NotebookService_TriggerSchedule_sync",
       "segments": [
         {
@@ -3291,19 +5956,51 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_notebook_service_trigger_schedule_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.NotebookServiceAsyncClient",
+          "shortName": "NotebookServiceAsyncClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.NotebookServiceAsyncClient.update_instance_config",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.NotebookService.UpdateInstanceConfig",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.NotebookService",
             "shortName": "NotebookService"
           },
           "shortName": "UpdateInstanceConfig"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.UpdateInstanceConfigRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "update_instance_config"
       },
+      "description": "Sample for UpdateInstanceConfig",
       "file": "notebooks_v1_generated_notebook_service_update_instance_config_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_NotebookService_UpdateInstanceConfig_async",
       "segments": [
         {
@@ -3336,18 +6033,50 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_notebook_service_update_instance_config_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.NotebookServiceClient",
+          "shortName": "NotebookServiceClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.NotebookServiceClient.update_instance_config",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.NotebookService.UpdateInstanceConfig",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.NotebookService",
             "shortName": "NotebookService"
           },
           "shortName": "UpdateInstanceConfig"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.UpdateInstanceConfigRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "update_instance_config"
       },
+      "description": "Sample for UpdateInstanceConfig",
       "file": "notebooks_v1_generated_notebook_service_update_instance_config_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_NotebookService_UpdateInstanceConfig_sync",
       "segments": [
         {
@@ -3380,19 +6109,51 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_notebook_service_update_instance_config_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.NotebookServiceAsyncClient",
+          "shortName": "NotebookServiceAsyncClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.NotebookServiceAsyncClient.update_shielded_instance_config",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.NotebookService.UpdateShieldedInstanceConfig",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.NotebookService",
             "shortName": "NotebookService"
           },
           "shortName": "UpdateShieldedInstanceConfig"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.UpdateShieldedInstanceConfigRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "update_shielded_instance_config"
       },
+      "description": "Sample for UpdateShieldedInstanceConfig",
       "file": "notebooks_v1_generated_notebook_service_update_shielded_instance_config_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_NotebookService_UpdateShieldedInstanceConfig_async",
       "segments": [
         {
@@ -3425,18 +6186,50 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_notebook_service_update_shielded_instance_config_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.NotebookServiceClient",
+          "shortName": "NotebookServiceClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.NotebookServiceClient.update_shielded_instance_config",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.NotebookService.UpdateShieldedInstanceConfig",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.NotebookService",
             "shortName": "NotebookService"
           },
           "shortName": "UpdateShieldedInstanceConfig"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.UpdateShieldedInstanceConfigRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "update_shielded_instance_config"
       },
+      "description": "Sample for UpdateShieldedInstanceConfig",
       "file": "notebooks_v1_generated_notebook_service_update_shielded_instance_config_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_NotebookService_UpdateShieldedInstanceConfig_sync",
       "segments": [
         {
@@ -3469,19 +6262,51 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_notebook_service_update_shielded_instance_config_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.NotebookServiceAsyncClient",
+          "shortName": "NotebookServiceAsyncClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.NotebookServiceAsyncClient.upgrade_instance_internal",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.NotebookService.UpgradeInstanceInternal",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.NotebookService",
             "shortName": "NotebookService"
           },
           "shortName": "UpgradeInstanceInternal"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.UpgradeInstanceInternalRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "upgrade_instance_internal"
       },
+      "description": "Sample for UpgradeInstanceInternal",
       "file": "notebooks_v1_generated_notebook_service_upgrade_instance_internal_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_NotebookService_UpgradeInstanceInternal_async",
       "segments": [
         {
@@ -3514,18 +6339,50 @@
           "start": 47,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_notebook_service_upgrade_instance_internal_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.NotebookServiceClient",
+          "shortName": "NotebookServiceClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.NotebookServiceClient.upgrade_instance_internal",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.NotebookService.UpgradeInstanceInternal",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.NotebookService",
             "shortName": "NotebookService"
           },
           "shortName": "UpgradeInstanceInternal"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.UpgradeInstanceInternalRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "upgrade_instance_internal"
       },
+      "description": "Sample for UpgradeInstanceInternal",
       "file": "notebooks_v1_generated_notebook_service_upgrade_instance_internal_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_NotebookService_UpgradeInstanceInternal_sync",
       "segments": [
         {
@@ -3558,19 +6415,51 @@
           "start": 47,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_notebook_service_upgrade_instance_internal_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.NotebookServiceAsyncClient",
+          "shortName": "NotebookServiceAsyncClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.NotebookServiceAsyncClient.upgrade_instance",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.NotebookService.UpgradeInstance",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.NotebookService",
             "shortName": "NotebookService"
           },
           "shortName": "UpgradeInstance"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.UpgradeInstanceRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "upgrade_instance"
       },
+      "description": "Sample for UpgradeInstance",
       "file": "notebooks_v1_generated_notebook_service_upgrade_instance_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_NotebookService_UpgradeInstance_async",
       "segments": [
         {
@@ -3603,18 +6492,50 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_notebook_service_upgrade_instance_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.notebooks_v1.NotebookServiceClient",
+          "shortName": "NotebookServiceClient"
+        },
+        "fullName": "google.cloud.notebooks_v1.NotebookServiceClient.upgrade_instance",
         "method": {
+          "fullName": "google.cloud.notebooks.v1.NotebookService.UpgradeInstance",
           "service": {
+            "fullName": "google.cloud.notebooks.v1.NotebookService",
             "shortName": "NotebookService"
           },
           "shortName": "UpgradeInstance"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.notebooks_v1.types.UpgradeInstanceRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "upgrade_instance"
       },
+      "description": "Sample for UpgradeInstance",
       "file": "notebooks_v1_generated_notebook_service_upgrade_instance_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "notebooks_v1_generated_NotebookService_UpgradeInstance_sync",
       "segments": [
         {
@@ -3647,7 +6568,8 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "notebooks_v1_generated_notebook_service_upgrade_instance_sync.py"
     }
   ]
 }

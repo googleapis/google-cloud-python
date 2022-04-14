@@ -18,7 +18,9 @@ from .environment import (
     Environment,
     VmImage,
 )
-from .instance import Instance
+from .instance import (
+    Instance,
+)
 from .service import (
     CreateEnvironmentRequest,
     CreateInstanceRequest,

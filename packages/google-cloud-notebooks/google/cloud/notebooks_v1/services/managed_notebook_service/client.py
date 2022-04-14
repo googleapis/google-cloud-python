@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -553,7 +553,6 @@ class ManagedNotebookServiceClient(metaclass=ManagedNotebookServiceClientMeta):
         r"""Gets details of a single Runtime. The location must
         be a regional endpoint rather than zonal.
 
-
         .. code-block:: python
 
             from google.cloud import notebooks_v1
@@ -651,7 +650,6 @@ class ManagedNotebookServiceClient(metaclass=ManagedNotebookServiceClientMeta):
     ) -> operation.Operation:
         r"""Creates a new Runtime in a given project and
         location.
-
 
         .. code-block:: python
 
@@ -904,7 +902,6 @@ class ManagedNotebookServiceClient(metaclass=ManagedNotebookServiceClientMeta):
         https://cloud.google.com/compute/docs/instances/stop-start-instance
         https://cloud.google.com/compute/docs/instances/suspend-resume-instance
 
-
         .. code-block:: python
 
             from google.cloud import notebooks_v1
@@ -1018,7 +1015,6 @@ class ManagedNotebookServiceClient(metaclass=ManagedNotebookServiceClientMeta):
         instances See:
         https://cloud.google.com/compute/docs/instances/stop-start-instance
         https://cloud.google.com/compute/docs/instances/suspend-resume-instance
-
 
         .. code-block:: python
 

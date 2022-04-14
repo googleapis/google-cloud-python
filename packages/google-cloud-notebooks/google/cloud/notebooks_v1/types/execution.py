@@ -88,7 +88,7 @@ class ExecutionTemplate(proto.Message):
         accelerator_config (google.cloud.notebooks_v1.types.ExecutionTemplate.SchedulerAcceleratorConfig):
             Configuration (count and accelerator type)
             for hardware running notebook execution.
-        labels (Sequence[google.cloud.notebooks_v1.types.ExecutionTemplate.LabelsEntry]):
+        labels (Mapping[str, str]):
             Labels for execution.
             If execution is scheduled, a field included will
             be 'nbs-scheduled'. Otherwise, it is an

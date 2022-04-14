@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -618,7 +618,6 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         r"""Creates a new Instance in a given project and
         location.
 
-
         .. code-block:: python
 
             from google.cloud import notebooks_v1beta1
@@ -719,7 +718,6 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         not manageable by the Notebooks API out of the box. This
         call makes these instances manageable by the Notebooks
         API.
-
 
         .. code-block:: python
 
@@ -1452,7 +1450,6 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         information to the instance metadata store. Do not use
         this method directly.
 
-
         .. code-block:: python
 
             from google.cloud import notebooks_v1beta1
@@ -1709,7 +1706,6 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         r"""Allows notebook instances to
         call this endpoint to upgrade themselves. Do not use
         this method directly.
-
 
         .. code-block:: python
 
