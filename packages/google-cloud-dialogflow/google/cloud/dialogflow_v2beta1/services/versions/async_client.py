@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -210,7 +210,6 @@ class VersionsAsyncClient:
     ) -> pagers.ListVersionsAsyncPager:
         r"""Returns the list of all versions of the specified
         agent.
-
 
         .. code-block:: python
 
@@ -442,7 +441,6 @@ class VersionsAsyncClient:
         The new version points to the agent instance in the
         "default" environment.
 
-
         .. code-block:: python
 
             from google.cloud import dialogflow_v2beta1
@@ -571,7 +569,6 @@ class VersionsAsyncClient:
         state of the agent the given version points to. It
         allows you to update only mutable properties of the
         version resource.
-
 
         .. code-block:: python
 

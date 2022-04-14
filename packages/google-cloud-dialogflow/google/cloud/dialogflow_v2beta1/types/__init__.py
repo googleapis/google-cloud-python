@@ -77,7 +77,9 @@ from .conversation import (
     ListMessagesRequest,
     ListMessagesResponse,
 )
-from .conversation_event import ConversationEvent
+from .conversation_event import (
+    ConversationEvent,
+)
 from .conversation_profile import (
     AutomatedAgentConfig,
     ClearSuggestionFeatureConfigOperationMetadata,
@@ -149,7 +151,9 @@ from .gcs import (
     GcsSource,
     GcsSources,
 )
-from .human_agent_assistant_event import HumanAgentAssistantEvent
+from .human_agent_assistant_event import (
+    HumanAgentAssistantEvent,
+)
 from .intent import (
     BatchDeleteIntentsRequest,
     BatchUpdateIntentsRequest,

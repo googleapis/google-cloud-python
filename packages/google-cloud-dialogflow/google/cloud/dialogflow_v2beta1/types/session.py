@@ -259,7 +259,7 @@ class QueryParameters(proto.Message):
             be returned. If empty, Dialogflow will decide
             which sub agents to query. If specified for a
             non-mega-agent query, will be silently ignored.
-        webhook_headers (Sequence[google.cloud.dialogflow_v2beta1.types.QueryParameters.WebhookHeadersEntry]):
+        webhook_headers (Mapping[str, str]):
             This field can be used to pass HTTP headers
             for a webhook call. These headers will be sent
             to webhook along with the headers that have been

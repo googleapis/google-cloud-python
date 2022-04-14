@@ -110,7 +110,7 @@ class Participant(proto.Message):
             -  Dialogflow only accepts a UTF-8 encoded string, e.g., a
                hex digest of a hash function like SHA-512.
             -  The length of the user id must be <= 256 characters.
-        documents_metadata_filters (Sequence[google.cloud.dialogflow_v2beta1.types.Participant.DocumentsMetadataFiltersEntry]):
+        documents_metadata_filters (Mapping[str, str]):
             Optional. Key-value filters on the metadata of documents
             returned by article suggestion. If specified, article
             suggestion only returns suggested documents that match all
@@ -522,7 +522,7 @@ class AssistQueryParameters(proto.Message):
     r"""Represents the parameters of human assist query.
 
     Attributes:
-        documents_metadata_filters (Sequence[google.cloud.dialogflow_v2beta1.types.AssistQueryParameters.DocumentsMetadataFiltersEntry]):
+        documents_metadata_filters (Mapping[str, str]):
             Key-value filters on the metadata of documents returned by
             article suggestion. If specified, article suggestion only
             returns suggested documents that match all filters in their
@@ -843,7 +843,7 @@ class ArticleAnswer(proto.Message):
             The article URI.
         snippets (Sequence[str]):
             Output only. Article snippets.
-        metadata (Sequence[google.cloud.dialogflow_v2beta1.types.ArticleAnswer.MetadataEntry]):
+        metadata (Mapping[str, str]):
             A map that contains metadata about the answer
             and the document from which it originates.
         answer_record (str):
@@ -893,7 +893,7 @@ class FaqAnswer(proto.Message):
             Indicates which Knowledge Document this answer was extracted
             from. Format:
             ``projects/<Project ID>/locations/<Location ID>/agent/knowledgeBases/<Knowledge Base ID>/documents/<Document ID>``.
-        metadata (Sequence[google.cloud.dialogflow_v2beta1.types.FaqAnswer.MetadataEntry]):
+        metadata (Mapping[str, str]):
             A map that contains metadata about the answer
             and the document from which it originates.
         answer_record (str):
@@ -1310,7 +1310,7 @@ class Suggestion(proto.Message):
                 Output only. The article URI.
             snippets (Sequence[str]):
                 Output only. Article snippets.
-            metadata (Sequence[google.cloud.dialogflow_v2beta1.types.Suggestion.Article.MetadataEntry]):
+            metadata (Mapping[str, str]):
                 Output only. A map that contains metadata
                 about the answer and the document from which it
                 originates.
@@ -1362,7 +1362,7 @@ class Suggestion(proto.Message):
                 Output only. Indicates which Knowledge Document this answer
                 was extracted from. Format:
                 ``projects/<Project ID>/locations/<Location ID>/agent/knowledgeBases/<Knowledge Base ID>/documents/<Document ID>``.
-            metadata (Sequence[google.cloud.dialogflow_v2beta1.types.Suggestion.FaqAnswer.MetadataEntry]):
+            metadata (Mapping[str, str]):
                 Output only. A map that contains metadata
                 about the answer and the document from which it
                 originates.

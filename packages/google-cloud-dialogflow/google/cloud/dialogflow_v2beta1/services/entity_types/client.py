@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -442,7 +442,6 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
         r"""Returns the list of all entity types in the specified
         agent.
 
-
         .. code-block:: python
 
             from google.cloud import dialogflow_v2beta1
@@ -696,7 +695,6 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
         queries. See the `training
         documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
 
-
         .. code-block:: python
 
             from google.cloud import dialogflow_v2beta1
@@ -838,7 +836,6 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
         queries. See the `training
         documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
 
-
         .. code-block:: python
 
             from google.cloud import dialogflow_v2beta1
@@ -976,7 +973,6 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
         queries. See the `training
         documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
 
-
         .. code-block:: python
 
             from google.cloud import dialogflow_v2beta1
@@ -1075,7 +1071,6 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
         Note: You should always train an agent prior to sending it
         queries. See the `training
         documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
-
 
         .. code-block:: python
 
@@ -1185,7 +1180,6 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
         Note: You should always train an agent prior to sending it
         queries. See the `training
         documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
-
 
         .. code-block:: python
 
@@ -1337,7 +1331,6 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
         Note: You should always train an agent prior to sending it
         queries. See the `training
         documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
-
 
         .. code-block:: python
 
@@ -1503,7 +1496,6 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
         -  ``response``: An `Empty
            message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
 
-
         .. code-block:: python
 
             from google.cloud import dialogflow_v2beta1
@@ -1667,7 +1659,6 @@ class EntityTypesClient(metaclass=EntityTypesClientMeta):
         Note: You should always train an agent prior to sending it
         queries. See the `training
         documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
-
 
         .. code-block:: python
 

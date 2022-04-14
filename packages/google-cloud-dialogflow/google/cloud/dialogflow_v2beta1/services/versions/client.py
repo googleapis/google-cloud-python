@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -438,7 +438,6 @@ class VersionsClient(metaclass=VersionsClientMeta):
         r"""Returns the list of all versions of the specified
         agent.
 
-
         .. code-block:: python
 
             from google.cloud import dialogflow_v2beta1
@@ -669,7 +668,6 @@ class VersionsClient(metaclass=VersionsClientMeta):
         The new version points to the agent instance in the
         "default" environment.
 
-
         .. code-block:: python
 
             from google.cloud import dialogflow_v2beta1
@@ -798,7 +796,6 @@ class VersionsClient(metaclass=VersionsClientMeta):
         state of the agent the given version points to. It
         allows you to update only mutable properties of the
         version resource.
-
 
         .. code-block:: python
 

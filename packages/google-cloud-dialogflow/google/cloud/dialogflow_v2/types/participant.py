@@ -73,7 +73,7 @@ class Participant(proto.Message):
             metadata and SDP. This is used to assign
             transcriptions from that media stream to this
             participant. This field can be updated.
-        documents_metadata_filters (Sequence[google.cloud.dialogflow_v2.types.Participant.DocumentsMetadataFiltersEntry]):
+        documents_metadata_filters (Mapping[str, str]):
             Optional. Key-value filters on the metadata of documents
             returned by article suggestion. If specified, article
             suggestion only returns suggested documents that match all
@@ -840,7 +840,7 @@ class ArticleAnswer(proto.Message):
             is a good match for this conversation, as a
             value from 0.0 (completely uncertain) to 1.0
             (completely certain).
-        metadata (Sequence[google.cloud.dialogflow_v2.types.ArticleAnswer.MetadataEntry]):
+        metadata (Mapping[str, str]):
             A map that contains metadata about the answer
             and the document from which it originates.
         answer_record (str):
@@ -894,7 +894,7 @@ class FaqAnswer(proto.Message):
             Indicates which Knowledge Document this answer was extracted
             from. Format:
             ``projects/<Project ID>/locations/<Location ID>/agent/knowledgeBases/<Knowledge Base ID>/documents/<Document ID>``.
-        metadata (Sequence[google.cloud.dialogflow_v2.types.FaqAnswer.MetadataEntry]):
+        metadata (Mapping[str, str]):
             A map that contains metadata about the answer
             and the document from which it originates.
         answer_record (str):
@@ -1097,7 +1097,7 @@ class AssistQueryParameters(proto.Message):
     r"""Represents the parameters of human assist query.
 
     Attributes:
-        documents_metadata_filters (Sequence[google.cloud.dialogflow_v2.types.AssistQueryParameters.DocumentsMetadataFiltersEntry]):
+        documents_metadata_filters (Mapping[str, str]):
             Key-value filters on the metadata of documents returned by
             article suggestion. If specified, article suggestion only
             returns suggested documents that match all filters in their

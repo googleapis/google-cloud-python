@@ -18,6 +18,7 @@ import functools
 import re
 from typing import (
     Dict,
+    Mapping,
     Optional,
     AsyncIterable,
     Awaitable,
@@ -246,7 +247,6 @@ class SessionsAsyncClient:
         `Versions and
         environments <https://cloud.google.com/dialogflow/es/docs/agents-versions>`__.
 
-
         .. code-block:: python
 
             from google.cloud import dialogflow_v2beta1
@@ -403,7 +403,6 @@ class SessionsAsyncClient:
         Note: Always use agent versions for production traffic. See
         `Versions and
         environments <https://cloud.google.com/dialogflow/es/docs/agents-versions>`__.
-
 
         .. code-block:: python
 

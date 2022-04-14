@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -215,7 +215,6 @@ class IntentsAsyncClient:
     ) -> pagers.ListIntentsAsyncPager:
         r"""Returns the list of all intents in the specified
         agent.
-
 
         .. code-block:: python
 
@@ -469,7 +468,6 @@ class IntentsAsyncClient:
         queries. See the `training
         documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
 
-
         .. code-block:: python
 
             from google.cloud import dialogflow_v2
@@ -602,7 +600,6 @@ class IntentsAsyncClient:
         Note: You should always train an agent prior to sending it
         queries. See the `training
         documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
-
 
         .. code-block:: python
 
@@ -737,7 +734,6 @@ class IntentsAsyncClient:
         queries. See the `training
         documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
 
-
         .. code-block:: python
 
             from google.cloud import dialogflow_v2
@@ -838,7 +834,6 @@ class IntentsAsyncClient:
         Note: You should always train an agent prior to sending it
         queries. See the `training
         documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
-
 
         .. code-block:: python
 
@@ -987,7 +982,6 @@ class IntentsAsyncClient:
         Note: You should always train an agent prior to sending it
         queries. See the `training
         documentation <https://cloud.google.com/dialogflow/es/docs/training>`__.
-
 
         .. code-block:: python
 

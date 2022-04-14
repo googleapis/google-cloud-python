@@ -115,7 +115,7 @@ class Document(proto.Message):
             latest reload. This reload may have been
             triggered automatically or manually and may not
             have succeeded.
-        metadata (Sequence[google.cloud.dialogflow_v2.types.Document.MetadataEntry]):
+        metadata (Mapping[str, str]):
             Optional. Metadata for the document. The metadata supports
             arbitrary key-value pairs. Suggested use cases include
             storing a document's title, an external URL distinct from
@@ -403,7 +403,7 @@ class ImportDocumentTemplate(proto.Message):
         knowledge_types (Sequence[google.cloud.dialogflow_v2.types.Document.KnowledgeType]):
             Required. The knowledge type of document
             content.
-        metadata (Sequence[google.cloud.dialogflow_v2.types.ImportDocumentTemplate.MetadataEntry]):
+        metadata (Mapping[str, str]):
             Metadata for the document. The metadata supports arbitrary
             key-value pairs. Suggested use cases include storing a
             document's title, an external URL distinct from the

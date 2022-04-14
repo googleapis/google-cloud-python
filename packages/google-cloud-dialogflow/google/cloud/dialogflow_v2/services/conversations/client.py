@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -502,7 +502,6 @@ class ConversationsClient(metaclass=ConversationsClientMeta):
         [Intent.live_agent_handoff][google.cloud.dialogflow.v2.Intent.live_agent_handoff]
         is triggered, conversation will transfer to Assist Stage.
 
-
         .. code-block:: python
 
             from google.cloud import dialogflow_v2
@@ -615,7 +614,6 @@ class ConversationsClient(metaclass=ConversationsClientMeta):
     ) -> pagers.ListConversationsPager:
         r"""Returns the list of all conversations in the
         specified project.
-
 
         .. code-block:: python
 
@@ -828,7 +826,6 @@ class ConversationsClient(metaclass=ConversationsClientMeta):
         conversations are purged from the database after 30
         days.
 
-
         .. code-block:: python
 
             from google.cloud import dialogflow_v2
@@ -933,7 +930,6 @@ class ConversationsClient(metaclass=ConversationsClientMeta):
         updates without duplication, send request with filter
         ``create_time_epoch_microseconds > [first item's create_time of previous request]``
         and empty page_token.
-
 
         .. code-block:: python
 

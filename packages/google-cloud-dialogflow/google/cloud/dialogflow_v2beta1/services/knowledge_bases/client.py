@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -441,7 +441,6 @@ class KnowledgeBasesClient(metaclass=KnowledgeBasesClientMeta):
         Note: The ``projects.agent.knowledgeBases`` resource is
         deprecated; only use ``projects.knowledgeBases``.
 
-
         .. code-block:: python
 
             from google.cloud import dialogflow_v2beta1
@@ -554,7 +553,6 @@ class KnowledgeBasesClient(metaclass=KnowledgeBasesClientMeta):
         Note: The ``projects.agent.knowledgeBases`` resource is
         deprecated; only use ``projects.knowledgeBases``.
 
-
         .. code-block:: python
 
             from google.cloud import dialogflow_v2beta1
@@ -664,7 +662,6 @@ class KnowledgeBasesClient(metaclass=KnowledgeBasesClientMeta):
 
         Note: The ``projects.agent.knowledgeBases`` resource is
         deprecated; only use ``projects.knowledgeBases``.
-
 
         .. code-block:: python
 
@@ -788,7 +785,6 @@ class KnowledgeBasesClient(metaclass=KnowledgeBasesClientMeta):
         Note: The ``projects.agent.knowledgeBases`` resource is
         deprecated; only use ``projects.knowledgeBases``.
 
-
         .. code-block:: python
 
             from google.cloud import dialogflow_v2beta1
@@ -876,7 +872,6 @@ class KnowledgeBasesClient(metaclass=KnowledgeBasesClientMeta):
 
         Note: The ``projects.agent.knowledgeBases`` resource is
         deprecated; only use ``projects.knowledgeBases``.
-
 
         .. code-block:: python
 

@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -217,7 +217,6 @@ class EnvironmentsAsyncClient:
     ) -> pagers.ListEnvironmentsAsyncPager:
         r"""Returns the list of all non-default environments of
         the specified agent.
-
 
         .. code-block:: python
 
@@ -526,7 +525,6 @@ class EnvironmentsAsyncClient:
         negate all recent changes to the draft agent and can't be
         undone. You may want to save the draft agent to a version before
         calling this method.
-
 
         .. code-block:: python
 

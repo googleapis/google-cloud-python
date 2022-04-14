@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -229,7 +229,6 @@ class SessionEntityTypesAsyncClient:
         integration. Contact Dialogflow support if you need to
         use session entities with Google Assistant integration.
 
-
         .. code-block:: python
 
             from google.cloud import dialogflow_v2
@@ -345,7 +344,6 @@ class SessionEntityTypesAsyncClient:
         This method doesn't work with Google Assistant
         integration. Contact Dialogflow support if you need to
         use session entities with Google Assistant integration.
-
 
         .. code-block:: python
 
@@ -463,7 +461,6 @@ class SessionEntityTypesAsyncClient:
         This method doesn't work with Google Assistant
         integration. Contact Dialogflow support if you need to
         use session entities with Google Assistant integration.
-
 
         .. code-block:: python
 
@@ -595,7 +592,6 @@ class SessionEntityTypesAsyncClient:
         integration. Contact Dialogflow support if you need to
         use session entities with Google Assistant integration.
 
-
         .. code-block:: python
 
             from google.cloud import dialogflow_v2
@@ -718,7 +714,6 @@ class SessionEntityTypesAsyncClient:
         This method doesn't work with Google Assistant
         integration. Contact Dialogflow support if you need to
         use session entities with Google Assistant integration.
-
 
         .. code-block:: python
 

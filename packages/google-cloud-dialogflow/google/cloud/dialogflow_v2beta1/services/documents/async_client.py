@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -218,7 +218,6 @@ class DocumentsAsyncClient:
         Note: The ``projects.agent.knowledgeBases.documents`` resource
         is deprecated; only use ``projects.knowledgeBases.documents``.
 
-
         .. code-block:: python
 
             from google.cloud import dialogflow_v2beta1
@@ -330,7 +329,6 @@ class DocumentsAsyncClient:
 
         Note: The ``projects.agent.knowledgeBases.documents`` resource
         is deprecated; only use ``projects.knowledgeBases.documents``.
-
 
         .. code-block:: python
 
@@ -447,7 +445,6 @@ class DocumentsAsyncClient:
 
         Note: The ``projects.agent.knowledgeBases.documents`` resource
         is deprecated; only use ``projects.knowledgeBases.documents``.
-
 
         .. code-block:: python
 
@@ -593,7 +590,6 @@ class DocumentsAsyncClient:
         -  ``response``:
            [ImportDocumentsResponse][google.cloud.dialogflow.v2beta1.ImportDocumentsResponse]
 
-
         .. code-block:: python
 
             from google.cloud import dialogflow_v2beta1
@@ -705,7 +701,6 @@ class DocumentsAsyncClient:
 
         Note: The ``projects.agent.knowledgeBases.documents`` resource
         is deprecated; only use ``projects.knowledgeBases.documents``.
-
 
         .. code-block:: python
 
@@ -840,7 +835,6 @@ class DocumentsAsyncClient:
 
         Note: The ``projects.agent.knowledgeBases.documents`` resource
         is deprecated; only use ``projects.knowledgeBases.documents``.
-
 
         .. code-block:: python
 
@@ -997,7 +991,6 @@ class DocumentsAsyncClient:
 
         Note: The ``projects.agent.knowledgeBases.documents`` resource
         is deprecated; only use ``projects.knowledgeBases.documents``.
-
 
         .. code-block:: python
 

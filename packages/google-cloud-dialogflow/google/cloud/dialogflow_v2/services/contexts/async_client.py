@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -208,7 +208,6 @@ class ContextsAsyncClient:
     ) -> pagers.ListContextsAsyncPager:
         r"""Returns the list of all contexts in the specified
         session.
-
 
         .. code-block:: python
 
@@ -441,7 +440,6 @@ class ContextsAsyncClient:
         r"""Creates a context.
         If the specified context already exists, overrides the
         context.
-
 
         .. code-block:: python
 

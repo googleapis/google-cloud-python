@@ -86,7 +86,7 @@ class Fulfillment(proto.Message):
             password (str):
                 Optional. The password for HTTP Basic
                 authentication.
-            request_headers (Sequence[google.cloud.dialogflow_v2.types.Fulfillment.GenericWebService.RequestHeadersEntry]):
+            request_headers (Mapping[str, str]):
                 Optional. The HTTP request headers to send
                 together with fulfillment requests.
             is_cloud_function (bool):

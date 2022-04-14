@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Iterable, Iterator, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    Optional,
+    Iterable,
+    Iterator,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -536,7 +546,6 @@ class SessionsClient(metaclass=SessionsClientMeta):
         `Versions and
         environments <https://cloud.google.com/dialogflow/es/docs/agents-versions>`__.
 
-
         .. code-block:: python
 
             from google.cloud import dialogflow_v2beta1
@@ -684,7 +693,6 @@ class SessionsClient(metaclass=SessionsClientMeta):
         Note: Always use agent versions for production traffic. See
         `Versions and
         environments <https://cloud.google.com/dialogflow/es/docs/agents-versions>`__.
-
 
         .. code-block:: python
 

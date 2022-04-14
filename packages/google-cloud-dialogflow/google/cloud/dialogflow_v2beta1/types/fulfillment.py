@@ -84,7 +84,7 @@ class Fulfillment(proto.Message):
                 The user name for HTTP Basic authentication.
             password (str):
                 The password for HTTP Basic authentication.
-            request_headers (Sequence[google.cloud.dialogflow_v2beta1.types.Fulfillment.GenericWebService.RequestHeadersEntry]):
+            request_headers (Mapping[str, str]):
                 The HTTP request headers to send together
                 with fulfillment requests.
             is_cloud_function (bool):

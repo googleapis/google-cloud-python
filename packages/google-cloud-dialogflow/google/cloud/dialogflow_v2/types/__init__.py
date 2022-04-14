@@ -85,7 +85,9 @@ from .conversation_dataset import (
     ListConversationDatasetsRequest,
     ListConversationDatasetsResponse,
 )
-from .conversation_event import ConversationEvent
+from .conversation_event import (
+    ConversationEvent,
+)
 from .conversation_model import (
     ArticleSuggestionModelMetadata,
     ConversationModel,
@@ -183,7 +185,9 @@ from .gcs import (
     GcsDestination,
     GcsSources,
 )
-from .human_agent_assistant_event import HumanAgentAssistantEvent
+from .human_agent_assistant_event import (
+    HumanAgentAssistantEvent,
+)
 from .intent import (
     BatchDeleteIntentsRequest,
     BatchUpdateIntentsRequest,

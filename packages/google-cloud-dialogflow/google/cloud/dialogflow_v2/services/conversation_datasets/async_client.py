@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -240,7 +240,6 @@ class ConversationDatasetsAsyncClient:
            [CreateConversationDatasetOperationMetadata][google.cloud.dialogflow.v2.CreateConversationDatasetOperationMetadata]
         -  ``response``:
            [ConversationDataset][google.cloud.dialogflow.v2.ConversationDataset]
-
 
         .. code-block:: python
 
@@ -471,7 +470,6 @@ class ConversationDatasetsAsyncClient:
         r"""Returns the list of all conversation datasets in the
         specified project and location.
 
-
         .. code-block:: python
 
             from google.cloud import dialogflow_v2
@@ -592,7 +590,6 @@ class ConversationDatasetsAsyncClient:
            [DeleteConversationDatasetOperationMetadata][google.cloud.dialogflow.v2.DeleteConversationDatasetOperationMetadata]
         -  ``response``: An `Empty
            message <https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#empty>`__
-
 
         .. code-block:: python
 
@@ -724,7 +721,6 @@ class ConversationDatasetsAsyncClient:
            [ImportConversationDataOperationMetadata][google.cloud.dialogflow.v2.ImportConversationDataOperationMetadata]
         -  ``response``:
            [ImportConversationDataOperationResponse][google.cloud.dialogflow.v2.ImportConversationDataOperationResponse]
-
 
         .. code-block:: python
 

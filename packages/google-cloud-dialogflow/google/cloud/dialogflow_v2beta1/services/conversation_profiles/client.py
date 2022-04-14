@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -548,7 +548,6 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
         r"""Returns the list of all conversation profiles in the
         specified project.
 
-
         .. code-block:: python
 
             from google.cloud import dialogflow_v2beta1
@@ -767,7 +766,6 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
         [GetConversationProfile][google.cloud.dialogflow.v2beta1.ConversationProfiles.GetConversationProfile]
         API.
 
-
         .. code-block:: python
 
             from google.cloud import dialogflow_v2beta1
@@ -889,7 +887,6 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
         response. You can retrieve them via
         [GetConversationProfile][google.cloud.dialogflow.v2beta1.ConversationProfiles.GetConversationProfile]
         API.
-
 
         .. code-block:: python
 
@@ -1117,7 +1114,6 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
         running operation before sending such request, otherwise the
         request will be rejected.
 
-
         .. code-block:: python
 
             from google.cloud import dialogflow_v2beta1
@@ -1251,7 +1247,6 @@ class ConversationProfilesClient(metaclass=ConversationProfilesClientMeta):
            [ClearSuggestionFeatureConfigOperationMetadata][google.cloud.dialogflow.v2beta1.ClearSuggestionFeatureConfigOperationMetadata]
         -  ``response``:
            [ConversationProfile][google.cloud.dialogflow.v2beta1.ConversationProfile]
-
 
         .. code-block:: python
 

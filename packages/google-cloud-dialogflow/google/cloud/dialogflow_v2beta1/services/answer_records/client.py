@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 import warnings
 
@@ -437,7 +437,6 @@ class AnswerRecordsClient(metaclass=AnswerRecordsClientMeta):
         r"""Deprecated.
         Retrieves a specific answer record.
 
-
         .. code-block:: python
 
             from google.cloud import dialogflow_v2beta1
@@ -547,7 +546,6 @@ class AnswerRecordsClient(metaclass=AnswerRecordsClientMeta):
     ) -> pagers.ListAnswerRecordsPager:
         r"""Returns the list of all answer records in the
         specified project in reverse chronological order.
-
 
         .. code-block:: python
 

@@ -225,7 +225,7 @@ class QueryParameters(proto.Message):
             Configures the type of sentiment analysis to
             perform. If not provided, sentiment analysis is
             not performed.
-        webhook_headers (Sequence[google.cloud.dialogflow_v2.types.QueryParameters.WebhookHeadersEntry]):
+        webhook_headers (Mapping[str, str]):
             This field can be used to pass HTTP headers
             for a webhook call. These headers will be sent
             to webhook along with the headers that have been

@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 import warnings
 
@@ -429,7 +429,6 @@ class ParticipantsAsyncClient:
         r"""Returns the list of all participants in the specified
         conversation.
 
-
         .. code-block:: python
 
             from google.cloud import dialogflow_v2beta1
@@ -650,7 +649,6 @@ class ParticipantsAsyncClient:
         virtual agents. See `Versions and
         environments <https://cloud.google.com/dialogflow/es/docs/agents-versions>`__.
 
-
         .. code-block:: python
 
             from google.cloud import dialogflow_v2beta1
@@ -782,7 +780,6 @@ class ParticipantsAsyncClient:
         will try to compile suggestion based on the provided
         conversation context in the real time.
 
-
         .. code-block:: python
 
             from google.cloud import dialogflow_v2beta1
@@ -880,7 +877,6 @@ class ParticipantsAsyncClient:
         r"""Gets suggested faq answers for a participant based on
         specific historical messages.
 
-
         .. code-block:: python
 
             from google.cloud import dialogflow_v2beta1
@@ -977,7 +973,6 @@ class ParticipantsAsyncClient:
     ) -> participant.SuggestSmartRepliesResponse:
         r"""Gets smart replies for a participant based on
         specific historical messages.
-
 
         .. code-block:: python
 
@@ -1093,7 +1088,6 @@ class ParticipantsAsyncClient:
         ``create_time_epoch_microseconds > [first item's create_time of previous request]``
         and empty page_token.
 
-
         .. code-block:: python
 
             from google.cloud import dialogflow_v2beta1
@@ -1196,7 +1190,6 @@ class ParticipantsAsyncClient:
         [CompileSuggestion][google.cloud.dialogflow.v2beta1.Participants.CompileSuggestion]
         will try to compile suggestion based on the provided
         conversation context in the real time.
-
 
         .. code-block:: python
 

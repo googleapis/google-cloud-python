@@ -161,7 +161,7 @@ class TextToSpeechSettings(proto.Message):
             then the synthesizer will honor this request by
             converting to the desired sample rate (which
             might result in worse audio quality).
-        synthesize_speech_configs (Sequence[google.cloud.dialogflow_v2beta1.types.TextToSpeechSettings.SynthesizeSpeechConfigsEntry]):
+        synthesize_speech_configs (Mapping[str, google.cloud.dialogflow_v2beta1.types.SynthesizeSpeechConfig]):
             Optional. Configuration of how speech should
             be synthesized, mapping from language
             (https://cloud.google.com/dialogflow/docs/reference/language)

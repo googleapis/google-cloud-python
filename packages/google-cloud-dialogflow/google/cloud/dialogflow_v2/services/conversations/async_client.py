@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -247,7 +247,6 @@ class ConversationsAsyncClient:
         [Intent.live_agent_handoff][google.cloud.dialogflow.v2.Intent.live_agent_handoff]
         is triggered, conversation will transfer to Assist Stage.
 
-
         .. code-block:: python
 
             from google.cloud import dialogflow_v2
@@ -360,7 +359,6 @@ class ConversationsAsyncClient:
     ) -> pagers.ListConversationsAsyncPager:
         r"""Returns the list of all conversations in the
         specified project.
-
 
         .. code-block:: python
 
@@ -573,7 +571,6 @@ class ConversationsAsyncClient:
         conversations are purged from the database after 30
         days.
 
-
         .. code-block:: python
 
             from google.cloud import dialogflow_v2
@@ -678,7 +675,6 @@ class ConversationsAsyncClient:
         updates without duplication, send request with filter
         ``create_time_epoch_microseconds > [first item's create_time of previous request]``
         and empty page_token.
-
 
         .. code-block:: python
 
