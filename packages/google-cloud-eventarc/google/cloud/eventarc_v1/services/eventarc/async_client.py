@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -434,7 +434,6 @@ class EventarcAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Create a new trigger in a particular project and
         location.
-
 
         .. code-block:: python
 
@@ -1038,7 +1037,6 @@ class EventarcAsyncClient:
         r"""Create a new channel in a particular project and
         location.
 
-
         .. code-block:: python
 
             from google.cloud import eventarc_v1
@@ -1625,7 +1623,6 @@ class EventarcAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Create a new ChannelConnection in a particular
         project and location.
-
 
         .. code-block:: python
 
