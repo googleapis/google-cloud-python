@@ -43,7 +43,7 @@ class Endpoint(proto.Message):
             Output only. The create time timestamp.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The update time timestamp.
-        labels (Sequence[google.cloud.ids_v1.types.Endpoint.LabelsEntry]):
+        labels (Mapping[str, str]):
             The labels of the endpoint.
         network (str):
             Required. The fully qualified URL of the
