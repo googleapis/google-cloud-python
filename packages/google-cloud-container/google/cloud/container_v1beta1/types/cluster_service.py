@@ -203,7 +203,7 @@ class LinuxNodeConfig(proto.Message):
     r"""Parameters that can be configured on Linux nodes.
 
     Attributes:
-        sysctls (Sequence[google.cloud.container_v1beta1.types.LinuxNodeConfig.SysctlsEntry]):
+        sysctls (Mapping[str, str]):
             The Linux kernel parameters to be applied to the nodes and
             all pods running on the nodes.
 
@@ -313,7 +313,7 @@ class NodeConfig(proto.Message):
             address of the Service Account; otherwise, if no
             Service Account is specified, the "default"
             service account is used.
-        metadata (Sequence[google.cloud.container_v1beta1.types.NodeConfig.MetadataEntry]):
+        metadata (Mapping[str, str]):
             The metadata key/value pairs assigned to instances in the
             cluster.
 
@@ -354,7 +354,7 @@ class NodeConfig(proto.Message):
             The image type to use for this node. Note
             that for a given image type, the latest version
             of it will be used.
-        labels (Sequence[google.cloud.container_v1beta1.types.NodeConfig.LabelsEntry]):
+        labels (Mapping[str, str]):
             The map of Kubernetes labels (key/value
             pairs) to be applied to each node. These will
             added in addition to any default label(s) that
@@ -865,7 +865,7 @@ class NodeLabels(proto.Message):
     labels <https://kubernetes.io/docs/concepts/overview/working-with-objects/labels>`__.
 
     Attributes:
-        labels (Sequence[google.cloud.container_v1beta1.types.NodeLabels.LabelsEntry]):
+        labels (Mapping[str, str]):
             Map of node label keys and node label values.
     """
 
@@ -1885,7 +1885,7 @@ class Cluster(proto.Message):
             master/node upgrades are disabled. Alpha enabled
             clusters are automatically deleted thirty days
             after creation.
-        resource_labels (Sequence[google.cloud.container_v1beta1.types.Cluster.ResourceLabelsEntry]):
+        resource_labels (Mapping[str, str]):
             The resource labels for the cluster to use to
             annotate any related Google Compute Engine
             resources.
@@ -4036,7 +4036,7 @@ class ServerConfig(proto.Message):
             order.
         channels (Sequence[google.cloud.container_v1beta1.types.ServerConfig.ReleaseChannelConfig]):
             List of release channel configurations.
-        windows_version_maps (Sequence[google.cloud.container_v1beta1.types.ServerConfig.WindowsVersionMapsEntry]):
+        windows_version_maps (Mapping[str, google.cloud.container_v1beta1.types.WindowsVersions]):
             Maps of Kubernetes version and supported
             Windows server versions.
     """
@@ -4706,7 +4706,7 @@ class MaintenanceWindow(proto.Message):
             occur at any time.
 
             This field is a member of `oneof`_ ``policy``.
-        maintenance_exclusions (Sequence[google.cloud.container_v1beta1.types.MaintenanceWindow.MaintenanceExclusionsEntry]):
+        maintenance_exclusions (Mapping[str, google.cloud.container_v1beta1.types.TimeWindow]):
             Exceptions to maintenance window.
             Non-emergency maintenance should not occur in
             these windows.
@@ -5314,7 +5314,7 @@ class SetLabelsRequest(proto.Message):
             Required. Deprecated. The name of the
             cluster. This field has been deprecated and
             replaced by the name field.
-        resource_labels (Sequence[google.cloud.container_v1beta1.types.SetLabelsRequest.ResourceLabelsEntry]):
+        resource_labels (Mapping[str, str]):
             Required. The labels to set for that cluster.
         label_fingerprint (str):
             Required. The fingerprint of the previous set of labels for

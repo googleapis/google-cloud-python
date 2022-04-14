@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 import warnings
 
@@ -437,7 +437,6 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         r"""Lists all clusters owned by a project in either the
         specified zone or all zones.
 
-
         .. code-block:: python
 
             from google.cloud import container_v1
@@ -701,7 +700,6 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
 
         Finally, an entry is added to the project's global metadata
         indicating which CIDR range the cluster is using.
-
 
         .. code-block:: python
 
@@ -976,7 +974,6 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         r"""Updates the version and/or image type for the
         specified node pool.
 
-
         .. code-block:: python
 
             from google.cloud import container_v1
@@ -1054,7 +1051,6 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
     ) -> cluster_service.Operation:
         r"""Sets the autoscaling settings for the specified node
         pool.
-
 
         .. code-block:: python
 
@@ -1605,7 +1601,6 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         `projects.locations.clusters.update <https://cloud.google.com/kubernetes-engine/docs/reference/rest/v1/projects.locations.clusters/update>`__
         instead.
 
-
         .. code-block:: python
 
             from google.cloud import container_v1
@@ -1917,7 +1912,6 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         either via password generation or explicitly setting the
         password.
 
-
         .. code-block:: python
 
             from google.cloud import container_v1
@@ -2006,7 +2000,6 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         use by the cluster, such as load balancer resources, are
         not deleted if they weren't present when the cluster was
         initially created.
-
 
         .. code-block:: python
 
@@ -2140,7 +2133,6 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
     ) -> cluster_service.ListOperationsResponse:
         r"""Lists all operations in a project in a specific zone
         or all zones.
-
 
         .. code-block:: python
 
@@ -2506,7 +2498,6 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         r"""Returns configuration info about the Google
         Kubernetes Engine service.
 
-
         .. code-block:: python
 
             from google.cloud import container_v1
@@ -2625,7 +2616,6 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         in JSON Web Key format.
         This API is not yet intended for general use, and is not
         available for all clusters.
-
 
         .. code-block:: python
 
@@ -3278,7 +3268,6 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         upgrade. This makes no changes if the last upgrade
         successfully completed.
 
-
         .. code-block:: python
 
             from google.cloud import container_v1
@@ -3583,7 +3572,6 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
     ) -> cluster_service.Operation:
         r"""Enables or disables the ABAC authorization mechanism
         on a cluster.
-
 
         .. code-block:: python
 
@@ -3995,7 +3983,6 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
         modifying
         [NodePool.locations][google.container.v1.NodePool.locations].
 
-
         .. code-block:: python
 
             from google.cloud import container_v1
@@ -4360,7 +4347,6 @@ class ClusterManagerClient(metaclass=ClusterManagerClientMeta):
     ) -> pagers.ListUsableSubnetworksPager:
         r"""Lists subnetworks that are usable for creating
         clusters in a project.
-
 
         .. code-block:: python
 
