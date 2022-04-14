@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -209,7 +209,6 @@ class AssetServiceAsyncClient:
         r"""Creates a feed in a parent
         project/folder/organization to listen to its asset
         updates.
-
 
         .. code-block:: python
 
@@ -433,7 +432,6 @@ class AssetServiceAsyncClient:
     ) -> asset_service.ListFeedsResponse:
         r"""Lists all asset feeds in a parent
         project/folder/organization.
-
 
         .. code-block:: python
 

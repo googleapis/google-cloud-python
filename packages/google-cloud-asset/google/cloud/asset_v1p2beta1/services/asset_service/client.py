@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -431,7 +431,6 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         project/folder/organization to listen to its asset
         updates.
 
-
         .. code-block:: python
 
             from google.cloud import asset_v1p2beta1
@@ -644,7 +643,6 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
     ) -> asset_service.ListFeedsResponse:
         r"""Lists all asset feeds in a parent
         project/folder/organization.
-
 
         .. code-block:: python
 

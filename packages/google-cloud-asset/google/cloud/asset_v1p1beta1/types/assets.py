@@ -58,7 +58,7 @@ class StandardResourceMetadata(proto.Message):
         location (str):
             Location can be "global", regional like
             "us-east1", or zonal like "us-west1-b".
-        labels (Sequence[google.cloud.asset_v1p1beta1.types.StandardResourceMetadata.LabelsEntry]):
+        labels (Mapping[str, str]):
             Labels associated with this resource. See `Labelling and
             grouping GCP
             resources <https://cloud.google.com/blog/products/gcp/labelling-and-grouping-your-google-cloud-platform-resources>`__
@@ -143,7 +143,7 @@ class IamPolicySearchResult(proto.Message):
         r"""Explanation about the IAM policy search result.
 
         Attributes:
-            matched_permissions (Sequence[google.cloud.asset_v1p1beta1.types.IamPolicySearchResult.Explanation.MatchedPermissionsEntry]):
+            matched_permissions (Mapping[str, google.cloud.asset_v1p1beta1.types.Permissions]):
                 The map from roles to their included permission matching the
                 permission query (e.g. containing
                 ``policy.role.permissions:``). A sample role string:

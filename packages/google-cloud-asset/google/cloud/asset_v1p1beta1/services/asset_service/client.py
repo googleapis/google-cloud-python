@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -422,7 +422,6 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         cloud.assets.SearchAllResources permission on the
         requested scope, otherwise it will be rejected.
 
-
         .. code-block:: python
 
             from google.cloud import asset_v1p1beta1
@@ -560,7 +559,6 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         policies. Callers should have
         cloud.assets.SearchAllIamPolicies permission on the
         requested scope, otherwise it will be rejected.
-
 
         .. code-block:: python
 

@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -417,7 +417,6 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         [IamPolicyAnalysisResult][google.cloud.asset.v1p4beta1.IamPolicyAnalysisResult]
         matching the request.
 
-
         .. code-block:: python
 
             from google.cloud import asset_v1p4beta1
@@ -500,7 +499,6 @@ class AssetServiceClient(metaclass=AssetServiceClientMeta):
         [google.longrunning.Operation][google.longrunning.Operation] API
         allowing you to keep track of the export. The metadata contains
         the request to help callers to map responses to requests.
-
 
         .. code-block:: python
 

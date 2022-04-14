@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -236,7 +236,6 @@ class AssetServiceAsyncClient:
         the export operation result. For regular-size resource parent,
         the export operation usually finishes within 5 minutes.
 
-
         .. code-block:: python
 
             from google.cloud import asset_v1
@@ -331,7 +330,6 @@ class AssetServiceAsyncClient:
     ) -> pagers.ListAssetsAsyncPager:
         r"""Lists assets with time and resource types and returns
         paged results in response.
-
 
         .. code-block:: python
 
@@ -457,7 +455,6 @@ class AssetServiceAsyncClient:
         specified asset does not exist, this API returns an
         INVALID_ARGUMENT error.
 
-
         .. code-block:: python
 
             from google.cloud import asset_v1
@@ -540,7 +537,6 @@ class AssetServiceAsyncClient:
         r"""Creates a feed in a parent
         project/folder/organization to listen to its asset
         updates.
-
 
         .. code-block:: python
 
@@ -764,7 +760,6 @@ class AssetServiceAsyncClient:
     ) -> asset_service.ListFeedsResponse:
         r"""Lists all asset feeds in a parent
         project/folder/organization.
-
 
         .. code-block:: python
 
@@ -1078,7 +1073,6 @@ class AssetServiceAsyncClient:
         the ``cloudasset.assets.searchAllResources`` permission on the
         desired scope, otherwise the request will be rejected.
 
-
         .. code-block:: python
 
             from google.cloud import asset_v1
@@ -1288,7 +1282,6 @@ class AssetServiceAsyncClient:
         ``cloudasset.assets.searchAllIamPolicies`` permission on the
         desired scope, otherwise the request will be rejected.
 
-
         .. code-block:: python
 
             from google.cloud import asset_v1
@@ -1474,7 +1467,6 @@ class AssetServiceAsyncClient:
         r"""Analyzes IAM policies to answer which identities have
         what accesses on which resources.
 
-
         .. code-block:: python
 
             from google.cloud import asset_v1
@@ -1572,7 +1564,6 @@ class AssetServiceAsyncClient:
         intervals of at least 2 seconds with exponential backoff retry
         to poll the operation result. The metadata contains the metadata
         for the long-running operation.
-
 
         .. code-block:: python
 
@@ -1677,7 +1668,6 @@ class AssetServiceAsyncClient:
         configurations. The policies and configuration are
         subject to change before the actual resource migration
         takes place.
-
 
         .. code-block:: python
 

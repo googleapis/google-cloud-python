@@ -21,7 +21,9 @@ from .asset_service import (
     IamPolicyAnalysisOutputConfig,
     IamPolicyAnalysisQuery,
 )
-from .assets import IamPolicyAnalysisResult
+from .assets import (
+    IamPolicyAnalysisResult,
+)
 
 __all__ = (
     "AnalyzeIamPolicyRequest",
