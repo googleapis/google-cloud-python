@@ -44,7 +44,7 @@ class LoginProfile(proto.Message):
         posix_accounts (Sequence[google.cloud.oslogin.v1.common.PosixAccount]):
             The list of POSIX accounts associated with
             the user.
-        ssh_public_keys (Sequence[google.cloud.oslogin_v1.types.LoginProfile.SshPublicKeysEntry]):
+        ssh_public_keys (Mapping[str, google.cloud.oslogin.v1.common.SshPublicKey]):
             A map from SSH public key fingerprint to the
             associated key object.
     """

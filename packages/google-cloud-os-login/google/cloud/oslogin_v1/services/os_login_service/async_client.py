@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -415,7 +415,6 @@ class OsLoginServiceAsyncClient:
         r"""Retrieves the profile information used for logging in
         to a virtual machine on Google Compute Engine.
 
-
         .. code-block:: python
 
             from google.cloud import oslogin_v1
@@ -634,7 +633,6 @@ class OsLoginServiceAsyncClient:
         when no username and UID exist as part of the login
         profile.
 
-
         .. code-block:: python
 
             from google.cloud import oslogin_v1
@@ -760,7 +758,6 @@ class OsLoginServiceAsyncClient:
     ) -> common.SshPublicKey:
         r"""Updates an SSH public key and returns the profile
         information. This method supports patch semantics.
-
 
         .. code-block:: python
 
