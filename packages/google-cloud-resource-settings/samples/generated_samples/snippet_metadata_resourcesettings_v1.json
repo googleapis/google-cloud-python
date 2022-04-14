@@ -1,16 +1,61 @@
 {
+  "clientLibrary": {
+    "apis": [
+      {
+        "id": "google.cloud.resourcesettings.v1",
+        "version": "v1"
+      }
+    ],
+    "language": "PYTHON",
+    "name": "google-cloud-resource-settings"
+  },
   "snippets": [
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.resourcesettings_v1.ResourceSettingsServiceAsyncClient",
+          "shortName": "ResourceSettingsServiceAsyncClient"
+        },
+        "fullName": "google.cloud.resourcesettings_v1.ResourceSettingsServiceAsyncClient.get_setting",
         "method": {
+          "fullName": "google.cloud.resourcesettings.v1.ResourceSettingsService.GetSetting",
           "service": {
+            "fullName": "google.cloud.resourcesettings.v1.ResourceSettingsService",
             "shortName": "ResourceSettingsService"
           },
           "shortName": "GetSetting"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.resourcesettings_v1.types.GetSettingRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.resourcesettings_v1.types.Setting",
+        "shortName": "get_setting"
       },
+      "description": "Sample for GetSetting",
       "file": "resourcesettings_v1_generated_resource_settings_service_get_setting_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "resourcesettings_v1_generated_ResourceSettingsService_GetSetting_async",
       "segments": [
         {
@@ -43,18 +88,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "resourcesettings_v1_generated_resource_settings_service_get_setting_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.resourcesettings_v1.ResourceSettingsServiceClient",
+          "shortName": "ResourceSettingsServiceClient"
+        },
+        "fullName": "google.cloud.resourcesettings_v1.ResourceSettingsServiceClient.get_setting",
         "method": {
+          "fullName": "google.cloud.resourcesettings.v1.ResourceSettingsService.GetSetting",
           "service": {
+            "fullName": "google.cloud.resourcesettings.v1.ResourceSettingsService",
             "shortName": "ResourceSettingsService"
           },
           "shortName": "GetSetting"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.resourcesettings_v1.types.GetSettingRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.resourcesettings_v1.types.Setting",
+        "shortName": "get_setting"
       },
+      "description": "Sample for GetSetting",
       "file": "resourcesettings_v1_generated_resource_settings_service_get_setting_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "resourcesettings_v1_generated_ResourceSettingsService_GetSetting_sync",
       "segments": [
         {
@@ -87,19 +168,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "resourcesettings_v1_generated_resource_settings_service_get_setting_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.resourcesettings_v1.ResourceSettingsServiceAsyncClient",
+          "shortName": "ResourceSettingsServiceAsyncClient"
+        },
+        "fullName": "google.cloud.resourcesettings_v1.ResourceSettingsServiceAsyncClient.list_settings",
         "method": {
+          "fullName": "google.cloud.resourcesettings.v1.ResourceSettingsService.ListSettings",
           "service": {
+            "fullName": "google.cloud.resourcesettings.v1.ResourceSettingsService",
             "shortName": "ResourceSettingsService"
           },
           "shortName": "ListSettings"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.resourcesettings_v1.types.ListSettingsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.resourcesettings_v1.services.resource_settings_service.pagers.ListSettingsAsyncPager",
+        "shortName": "list_settings"
       },
+      "description": "Sample for ListSettings",
       "file": "resourcesettings_v1_generated_resource_settings_service_list_settings_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "resourcesettings_v1_generated_ResourceSettingsService_ListSettings_async",
       "segments": [
         {
@@ -132,18 +249,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "resourcesettings_v1_generated_resource_settings_service_list_settings_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.resourcesettings_v1.ResourceSettingsServiceClient",
+          "shortName": "ResourceSettingsServiceClient"
+        },
+        "fullName": "google.cloud.resourcesettings_v1.ResourceSettingsServiceClient.list_settings",
         "method": {
+          "fullName": "google.cloud.resourcesettings.v1.ResourceSettingsService.ListSettings",
           "service": {
+            "fullName": "google.cloud.resourcesettings.v1.ResourceSettingsService",
             "shortName": "ResourceSettingsService"
           },
           "shortName": "ListSettings"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.resourcesettings_v1.types.ListSettingsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.resourcesettings_v1.services.resource_settings_service.pagers.ListSettingsPager",
+        "shortName": "list_settings"
       },
+      "description": "Sample for ListSettings",
       "file": "resourcesettings_v1_generated_resource_settings_service_list_settings_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "resourcesettings_v1_generated_ResourceSettingsService_ListSettings_sync",
       "segments": [
         {
@@ -176,19 +329,51 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "resourcesettings_v1_generated_resource_settings_service_list_settings_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.resourcesettings_v1.ResourceSettingsServiceAsyncClient",
+          "shortName": "ResourceSettingsServiceAsyncClient"
+        },
+        "fullName": "google.cloud.resourcesettings_v1.ResourceSettingsServiceAsyncClient.update_setting",
         "method": {
+          "fullName": "google.cloud.resourcesettings.v1.ResourceSettingsService.UpdateSetting",
           "service": {
+            "fullName": "google.cloud.resourcesettings.v1.ResourceSettingsService",
             "shortName": "ResourceSettingsService"
           },
           "shortName": "UpdateSetting"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.resourcesettings_v1.types.UpdateSettingRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.resourcesettings_v1.types.Setting",
+        "shortName": "update_setting"
       },
+      "description": "Sample for UpdateSetting",
       "file": "resourcesettings_v1_generated_resource_settings_service_update_setting_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "resourcesettings_v1_generated_ResourceSettingsService_UpdateSetting_async",
       "segments": [
         {
@@ -221,18 +406,50 @@
           "start": 41,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "resourcesettings_v1_generated_resource_settings_service_update_setting_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.resourcesettings_v1.ResourceSettingsServiceClient",
+          "shortName": "ResourceSettingsServiceClient"
+        },
+        "fullName": "google.cloud.resourcesettings_v1.ResourceSettingsServiceClient.update_setting",
         "method": {
+          "fullName": "google.cloud.resourcesettings.v1.ResourceSettingsService.UpdateSetting",
           "service": {
+            "fullName": "google.cloud.resourcesettings.v1.ResourceSettingsService",
             "shortName": "ResourceSettingsService"
           },
           "shortName": "UpdateSetting"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.resourcesettings_v1.types.UpdateSettingRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.resourcesettings_v1.types.Setting",
+        "shortName": "update_setting"
       },
+      "description": "Sample for UpdateSetting",
       "file": "resourcesettings_v1_generated_resource_settings_service_update_setting_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "resourcesettings_v1_generated_ResourceSettingsService_UpdateSetting_sync",
       "segments": [
         {
@@ -265,7 +482,8 @@
           "start": 41,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "resourcesettings_v1_generated_resource_settings_service_update_setting_sync.py"
     }
   ]
 }
