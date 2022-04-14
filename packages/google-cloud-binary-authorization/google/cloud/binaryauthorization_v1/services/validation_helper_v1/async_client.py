@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -210,7 +210,6 @@ class ValidationHelperV1AsyncClient:
     ) -> service.ValidateAttestationOccurrenceResponse:
         r"""Returns whether the given Attestation for the given
         image URI was signed by the given Attestor
-
 
         .. code-block:: python
 

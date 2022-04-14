@@ -13,7 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .continuous_validation_logging import ContinuousValidationEvent
+from .continuous_validation_logging import (
+    ContinuousValidationEvent,
+)
 from .resources import (
     AdmissionRule,
     AdmissionWhitelistPattern,

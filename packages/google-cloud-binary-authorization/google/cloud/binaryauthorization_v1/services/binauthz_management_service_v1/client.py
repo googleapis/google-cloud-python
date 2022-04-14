@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -472,7 +472,6 @@ class BinauthzManagementServiceV1Client(
         [policy][google.cloud.binaryauthorization.v1.Policy] if the
         project does not have one.
 
-
         .. code-block:: python
 
             from google.cloud import binaryauthorization_v1
@@ -575,7 +574,6 @@ class BinauthzManagementServiceV1Client(
         concurrent policy enforcement (or management!) requests. Returns
         NOT_FOUND if the project does not exist, INVALID_ARGUMENT if the
         request is malformed.
-
 
         .. code-block:: python
 
@@ -690,7 +688,6 @@ class BinauthzManagementServiceV1Client(
         INVALID_ARGUMENT if the request is malformed, ALREADY_EXISTS if
         the [attestor][google.cloud.binaryauthorization.v1.Attestor]
         already exists.
-
 
         .. code-block:: python
 
@@ -821,7 +818,6 @@ class BinauthzManagementServiceV1Client(
         [attestor][google.cloud.binaryauthorization.v1.Attestor] does
         not exist.
 
-
         .. code-block:: python
 
             from google.cloud import binaryauthorization_v1
@@ -922,7 +918,6 @@ class BinauthzManagementServiceV1Client(
         Returns NOT_FOUND if the
         [attestor][google.cloud.binaryauthorization.v1.Attestor] does
         not exist.
-
 
         .. code-block:: python
 
@@ -1030,7 +1025,6 @@ class BinauthzManagementServiceV1Client(
     ) -> pagers.ListAttestorsPager:
         r"""Lists [attestors][google.cloud.binaryauthorization.v1.Attestor].
         Returns INVALID_ARGUMENT if the project does not exist.
-
 
         .. code-block:: python
 
@@ -1145,7 +1139,6 @@ class BinauthzManagementServiceV1Client(
         Returns NOT_FOUND if the
         [attestor][google.cloud.binaryauthorization.v1.Attestor] does
         not exist.
-
 
         .. code-block:: python
 

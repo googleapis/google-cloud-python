@@ -455,5 +455,9 @@ class BinauthzManagementServiceV1GrpcTransport(BinauthzManagementServiceV1Transp
     def close(self):
         self.grpc_channel.close()
 
+    @property
+    def kind(self) -> str:
+        return "grpc"
+
 
 __all__ = ("BinauthzManagementServiceV1GrpcTransport",)

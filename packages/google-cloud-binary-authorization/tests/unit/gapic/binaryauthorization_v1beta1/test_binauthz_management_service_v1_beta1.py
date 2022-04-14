@@ -104,14 +104,14 @@ def test__get_default_mtls_endpoint():
 
 
 @pytest.mark.parametrize(
-    "client_class",
+    "client_class,transport_name",
     [
-        BinauthzManagementServiceV1Beta1Client,
-        BinauthzManagementServiceV1Beta1AsyncClient,
+        (BinauthzManagementServiceV1Beta1Client, "grpc"),
+        (BinauthzManagementServiceV1Beta1AsyncClient, "grpc_asyncio"),
     ],
 )
 def test_binauthz_management_service_v1_beta1_client_from_service_account_info(
-    client_class,
+    client_class, transport_name
 ):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
@@ -119,11 +119,11 @@ def test_binauthz_management_service_v1_beta1_client_from_service_account_info(
     ) as factory:
         factory.return_value = creds
         info = {"valid": True}
-        client = client_class.from_service_account_info(info)
+        client = client_class.from_service_account_info(info, transport=transport_name)
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == "binaryauthorization.googleapis.com:443"
+        assert client.transport._host == ("binaryauthorization.googleapis.com:443")
 
 
 @pytest.mark.parametrize(
@@ -155,29 +155,33 @@ def test_binauthz_management_service_v1_beta1_client_service_account_always_use_
 
 
 @pytest.mark.parametrize(
-    "client_class",
+    "client_class,transport_name",
     [
-        BinauthzManagementServiceV1Beta1Client,
-        BinauthzManagementServiceV1Beta1AsyncClient,
+        (BinauthzManagementServiceV1Beta1Client, "grpc"),
+        (BinauthzManagementServiceV1Beta1AsyncClient, "grpc_asyncio"),
     ],
 )
 def test_binauthz_management_service_v1_beta1_client_from_service_account_file(
-    client_class,
+    client_class, transport_name
 ):
     creds = ga_credentials.AnonymousCredentials()
     with mock.patch.object(
         service_account.Credentials, "from_service_account_file"
     ) as factory:
         factory.return_value = creds
-        client = client_class.from_service_account_file("dummy/file/path.json")
+        client = client_class.from_service_account_file(
+            "dummy/file/path.json", transport=transport_name
+        )
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        client = client_class.from_service_account_json("dummy/file/path.json")
+        client = client_class.from_service_account_json(
+            "dummy/file/path.json", transport=transport_name
+        )
         assert client.transport._credentials == creds
         assert isinstance(client, client_class)
 
-        assert client.transport._host == "binaryauthorization.googleapis.com:443"
+        assert client.transport._host == ("binaryauthorization.googleapis.com:443")
 
 
 def test_binauthz_management_service_v1_beta1_client_get_transport_class():
@@ -2270,7 +2274,7 @@ async def test_list_attestors_async_pager():
         )
         assert async_pager.next_page_token == "abc"
         responses = []
-        async for response in async_pager:
+        async for response in async_pager:  # pragma: no branch
             responses.append(response)
 
         assert len(responses) == 6
@@ -2316,7 +2320,9 @@ async def test_list_attestors_async_pages():
             RuntimeError,
         )
         pages = []
-        async for page_ in (await client.list_attestors(request={})).pages:
+        async for page_ in (
+            await client.list_attestors(request={})
+        ).pages:  # pragma: no branch
             pages.append(page_)
         for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
             assert page_.raw_page.next_page_token == token
@@ -2633,6 +2639,21 @@ def test_transport_adc(transport_class):
         adc.assert_called_once()
 
 
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "grpc",
+    ],
+)
+def test_transport_kind(transport_name):
+    transport = BinauthzManagementServiceV1Beta1Client.get_transport_class(
+        transport_name
+    )(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+    assert transport.kind == transport_name
+
+
 def test_transport_grpc_default():
     # A client should use the gRPC transport by default.
     client = BinauthzManagementServiceV1Beta1Client(
@@ -2680,6 +2701,14 @@ def test_binauthz_management_service_v1_beta1_base_transport():
 
     with pytest.raises(NotImplementedError):
         transport.close()
+
+    # Catch all for all remaining methods and properties
+    remainder = [
+        "kind",
+    ]
+    for r in remainder:
+        with pytest.raises(NotImplementedError):
+            getattr(transport, r)()
 
 
 def test_binauthz_management_service_v1_beta1_base_transport_with_credentials_file():
@@ -2833,24 +2862,40 @@ def test_binauthz_management_service_v1_beta1_grpc_transport_client_cert_source_
             )
 
 
-def test_binauthz_management_service_v1_beta1_host_no_port():
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "grpc",
+        "grpc_asyncio",
+    ],
+)
+def test_binauthz_management_service_v1_beta1_host_no_port(transport_name):
     client = BinauthzManagementServiceV1Beta1Client(
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="binaryauthorization.googleapis.com"
         ),
+        transport=transport_name,
     )
-    assert client.transport._host == "binaryauthorization.googleapis.com:443"
+    assert client.transport._host == ("binaryauthorization.googleapis.com:443")
 
 
-def test_binauthz_management_service_v1_beta1_host_with_port():
+@pytest.mark.parametrize(
+    "transport_name",
+    [
+        "grpc",
+        "grpc_asyncio",
+    ],
+)
+def test_binauthz_management_service_v1_beta1_host_with_port(transport_name):
     client = BinauthzManagementServiceV1Beta1Client(
         credentials=ga_credentials.AnonymousCredentials(),
         client_options=client_options.ClientOptions(
             api_endpoint="binaryauthorization.googleapis.com:8000"
         ),
+        transport=transport_name,
     )
-    assert client.transport._host == "binaryauthorization.googleapis.com:8000"
+    assert client.transport._host == ("binaryauthorization.googleapis.com:8000")
 
 
 def test_binauthz_management_service_v1_beta1_grpc_transport_channel():

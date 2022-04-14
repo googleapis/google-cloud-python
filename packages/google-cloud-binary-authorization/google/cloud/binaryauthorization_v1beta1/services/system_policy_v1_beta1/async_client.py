@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -215,7 +215,6 @@ class SystemPolicyV1Beta1AsyncClient:
     ) -> resources.Policy:
         r"""Gets the current system policy in the specified
         location.
-
 
         .. code-block:: python
 

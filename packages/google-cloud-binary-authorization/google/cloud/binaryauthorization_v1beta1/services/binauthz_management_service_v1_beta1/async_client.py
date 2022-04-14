@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -256,7 +256,6 @@ class BinauthzManagementServiceV1Beta1AsyncClient:
         [policy][google.cloud.binaryauthorization.v1beta1.Policy] if the
         project does not have one.
 
-
         .. code-block:: python
 
             from google.cloud import binaryauthorization_v1beta1
@@ -370,7 +369,6 @@ class BinauthzManagementServiceV1Beta1AsyncClient:
         with concurrent policy enforcement (or management!) requests.
         Returns NOT_FOUND if the project does not exist,
         INVALID_ARGUMENT if the request is malformed.
-
 
         .. code-block:: python
 
@@ -497,7 +495,6 @@ class BinauthzManagementServiceV1Beta1AsyncClient:
         the
         [attestor][google.cloud.binaryauthorization.v1beta1.Attestor]
         already exists.
-
 
         .. code-block:: python
 
@@ -628,7 +625,6 @@ class BinauthzManagementServiceV1Beta1AsyncClient:
         [attestor][google.cloud.binaryauthorization.v1beta1.Attestor]
         does not exist.
 
-
         .. code-block:: python
 
             from google.cloud import binaryauthorization_v1beta1
@@ -739,7 +735,6 @@ class BinauthzManagementServiceV1Beta1AsyncClient:
         Returns NOT_FOUND if the
         [attestor][google.cloud.binaryauthorization.v1beta1.Attestor]
         does not exist.
-
 
         .. code-block:: python
 
@@ -858,7 +853,6 @@ class BinauthzManagementServiceV1Beta1AsyncClient:
         r"""Lists
         [attestors][google.cloud.binaryauthorization.v1beta1.Attestor].
         Returns INVALID_ARGUMENT if the project does not exist.
-
 
         .. code-block:: python
 
@@ -983,7 +977,6 @@ class BinauthzManagementServiceV1Beta1AsyncClient:
         Returns NOT_FOUND if the
         [attestor][google.cloud.binaryauthorization.v1beta1.Attestor]
         does not exist.
-
 
         .. code-block:: python
 

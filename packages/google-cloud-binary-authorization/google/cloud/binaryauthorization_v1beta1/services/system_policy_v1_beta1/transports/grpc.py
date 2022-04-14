@@ -258,5 +258,9 @@ class SystemPolicyV1Beta1GrpcTransport(SystemPolicyV1Beta1Transport):
     def close(self):
         self.grpc_channel.close()
 
+    @property
+    def kind(self) -> str:
+        return "grpc"
+
 
 __all__ = ("SystemPolicyV1Beta1GrpcTransport",)

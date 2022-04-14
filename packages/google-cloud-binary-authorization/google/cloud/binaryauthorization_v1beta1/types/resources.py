@@ -57,21 +57,21 @@ class Policy(proto.Message):
             permitted. This feature is typically used to
             exclude Google or third-party infrastructure
             images from Binary Authorization policies.
-        cluster_admission_rules (Sequence[google.cloud.binaryauthorization_v1beta1.types.Policy.ClusterAdmissionRulesEntry]):
+        cluster_admission_rules (Mapping[str, google.cloud.binaryauthorization_v1beta1.types.AdmissionRule]):
             Optional. Per-cluster admission rules. Cluster spec format:
             ``location.clusterId``. There can be at most one admission
             rule per cluster spec. A ``location`` is either a compute
             zone (e.g. us-central1-a) or a region (e.g. us-central1).
             For ``clusterId`` syntax restrictions see
             https://cloud.google.com/container-engine/reference/rest/v1/projects.zones.clusters.
-        kubernetes_namespace_admission_rules (Sequence[google.cloud.binaryauthorization_v1beta1.types.Policy.KubernetesNamespaceAdmissionRulesEntry]):
+        kubernetes_namespace_admission_rules (Mapping[str, google.cloud.binaryauthorization_v1beta1.types.AdmissionRule]):
             Optional. Per-kubernetes-namespace admission rules. K8s
             namespace spec format: ``[a-z.-]+``, e.g. ``some-namespace``
-        kubernetes_service_account_admission_rules (Sequence[google.cloud.binaryauthorization_v1beta1.types.Policy.KubernetesServiceAccountAdmissionRulesEntry]):
+        kubernetes_service_account_admission_rules (Mapping[str, google.cloud.binaryauthorization_v1beta1.types.AdmissionRule]):
             Optional. Per-kubernetes-service-account admission rules.
             Service account spec format: ``namespace:serviceaccount``.
             e.g. ``test-ns:default``
-        istio_service_identity_admission_rules (Sequence[google.cloud.binaryauthorization_v1beta1.types.Policy.IstioServiceIdentityAdmissionRulesEntry]):
+        istio_service_identity_admission_rules (Mapping[str, google.cloud.binaryauthorization_v1beta1.types.AdmissionRule]):
             Optional. Per-istio-service-identity admission rules. Istio
             service identity spec format:
             ``spiffe://<domain>/ns/<namespace>/sa/<serviceaccount>`` or
