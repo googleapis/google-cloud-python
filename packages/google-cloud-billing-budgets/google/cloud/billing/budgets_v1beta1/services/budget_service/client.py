@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -438,7 +438,6 @@ class BudgetServiceClient(metaclass=BudgetServiceClientMeta):
         information on the limits of the number of budgets you can
         create.
 
-
         .. code-block:: python
 
             from google.cloud.billing import budgets_v1beta1
@@ -522,7 +521,6 @@ class BudgetServiceClient(metaclass=BudgetServiceClientMeta):
         Cloud Console that aren't available on this API. Budget
         fields that are not exposed in this API will not be
         changed by this method.
-
 
         .. code-block:: python
 
@@ -610,7 +608,6 @@ class BudgetServiceClient(metaclass=BudgetServiceClientMeta):
         the return value, though they may have been set in the
         Cloud Console.
 
-
         .. code-block:: python
 
             from google.cloud.billing import budgets_v1beta1
@@ -695,7 +692,6 @@ class BudgetServiceClient(metaclass=BudgetServiceClientMeta):
         reading from the API, you will not see these fields in
         the return value, though they may have been set in the
         Cloud Console.
-
 
         .. code-block:: python
 
@@ -782,7 +778,6 @@ class BudgetServiceClient(metaclass=BudgetServiceClientMeta):
     ) -> None:
         r"""Deletes a budget. Returns successfully if already
         deleted.
-
 
         .. code-block:: python
 

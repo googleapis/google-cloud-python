@@ -344,7 +344,7 @@ class Filter(proto.Message):
             account, usage from the parent account will be included. If
             omitted, the report will include usage from the parent
             account and all subaccounts, if they exist.
-        labels (Sequence[google.cloud.billing.budgets_v1beta1.types.Filter.LabelsEntry]):
+        labels (Mapping[str, google.protobuf.struct_pb2.ListValue]):
             Optional. A single label and value pair specifying that
             usage from only this set of labeled resources should be
             included in the budget. If omitted, the report will include
