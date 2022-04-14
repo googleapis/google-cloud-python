@@ -62,7 +62,7 @@ class Instance(proto.Message):
             User provided name for the instance only used
             for display purposes. Cannot be more than 80
             characters.
-        labels (Sequence[google.cloud.memcache_v1.types.Instance.LabelsEntry]):
+        labels (Mapping[str, str]):
             Resource labels to represent user-provided
             metadata. Refer to cloud documentation on labels
             for more details.
@@ -578,7 +578,7 @@ class MemcacheParameters(proto.Message):
             instance differ from the parameters associated
             with the nodes and any action needs to be taken
             to apply parameters on nodes.
-        params (Sequence[google.cloud.memcache_v1.types.MemcacheParameters.ParamsEntry]):
+        params (Mapping[str, str]):
             User defined set of parameters to use in the
             memcached process.
     """

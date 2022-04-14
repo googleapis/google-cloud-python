@@ -67,7 +67,7 @@ class Instance(proto.Message):
             User provided name for the instance, which is
             only used for display purposes. Cannot be more
             than 80 characters.
-        labels (Sequence[google.cloud.memcache_v1beta2.types.Instance.LabelsEntry]):
+        labels (Mapping[str, str]):
             Resource labels to represent user-provided
             metadata. Refer to cloud documentation on labels
             for more details.
@@ -631,7 +631,7 @@ class MemcacheParameters(proto.Message):
     Attributes:
         id (str):
             Output only.
-        params (Sequence[google.cloud.memcache_v1beta2.types.MemcacheParameters.ParamsEntry]):
+        params (Mapping[str, str]):
             User defined set of parameters to use in the
             memcached process.
     """
@@ -714,7 +714,7 @@ class LocationMetadata(proto.Message):
     [google.cloud.location.Location][google.cloud.location.Location].
 
     Attributes:
-        available_zones (Sequence[google.cloud.memcache_v1beta2.types.LocationMetadata.AvailableZonesEntry]):
+        available_zones (Mapping[str, google.cloud.memcache_v1beta2.types.ZoneMetadata]):
             Output only. The set of available zones in the location. The
             map is keyed by the lowercase ID of each zone, as defined by
             GCE. These keys can be specified in the ``zones`` field when

@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -592,7 +592,6 @@ class CloudMemcacheAsyncClient:
         r"""Updates an existing Instance in a given project and
         location.
 
-
         .. code-block:: python
 
             from google.cloud import memcache_v1beta2
@@ -725,7 +724,6 @@ class CloudMemcacheAsyncClient:
         instance. This method only stages the parameters, it must be
         followed by ``ApplyParameters`` to apply the parameters to nodes
         of the Memcached instance.
-
 
         .. code-block:: python
 
@@ -980,7 +978,6 @@ class CloudMemcacheAsyncClient:
         to update them to the current set of parameters for the
         Memcached Instance.
 
-
         .. code-block:: python
 
             from google.cloud import memcache_v1beta2
@@ -1114,7 +1111,6 @@ class CloudMemcacheAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Updates software on the selected nodes of the
         Instance.
-
 
         .. code-block:: python
 
