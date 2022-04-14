@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -218,7 +218,6 @@ class DataFusionAsyncClient:
         r"""Lists possible versions for Data Fusion instances in
         the specified project and location.
 
-
         .. code-block:: python
 
             from google.cloud import data_fusion_v1
@@ -328,7 +327,6 @@ class DataFusionAsyncClient:
     ) -> pagers.ListInstancesAsyncPager:
         r"""Lists Data Fusion instances in the specified project
         and location.
-
 
         .. code-block:: python
 
@@ -490,7 +488,6 @@ class DataFusionAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Creates a new Data Fusion instance in the specified
         project and location.
-
 
         .. code-block:: python
 
@@ -876,7 +873,6 @@ class DataFusionAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Restart a single Data Fusion instance.
         At the end of an operation instance is fully restarted.
-
 
         .. code-block:: python
 

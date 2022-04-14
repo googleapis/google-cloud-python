@@ -204,12 +204,12 @@ class Instance(proto.Message):
             Network configuration options. These are
             required when a private Data Fusion instance is
             to be created.
-        labels (Sequence[google.cloud.data_fusion_v1.types.Instance.LabelsEntry]):
+        labels (Mapping[str, str]):
             The resource labels for instance to use to
             annotate any related underlying resources such
             as Compute Engine VMs. The character '=' is not
             allowed to be used within the labels.
-        options (Sequence[google.cloud.data_fusion_v1.types.Instance.OptionsEntry]):
+        options (Mapping[str, str]):
             Map of additional options used to configure
             the behavior of Data Fusion instance.
         create_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -709,7 +709,7 @@ class OperationMetadata(proto.Message):
             corresponding to ``Code.CANCELLED``.
         api_version (str):
             API version used to start the operation.
-        additional_status (Sequence[google.cloud.data_fusion_v1.types.OperationMetadata.AdditionalStatusEntry]):
+        additional_status (Mapping[str, str]):
             Map to hold any additional status info for
             the operation If there is an accelerator being
             enabled/disabled/deleted, this will be populated
