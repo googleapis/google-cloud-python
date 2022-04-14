@@ -126,7 +126,7 @@ class PlanNode(proto.Message):
             description (str):
                 A string representation of the expression
                 subtree rooted at this node.
-            subqueries (Sequence[google.cloud.spanner_v1.types.PlanNode.ShortRepresentation.SubqueriesEntry]):
+            subqueries (Mapping[str, int]):
                 A mapping of (subquery variable name) -> (subquery node id)
                 for cases where the ``description`` string of this node
                 references a ``SCALAR`` subquery contained in the expression

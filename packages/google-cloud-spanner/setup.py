@@ -37,7 +37,7 @@ dependencies = [
     # Until this issue is closed
     # https://github.com/googleapis/google-cloud-python/issues/10566
     "google-cloud-core >= 1.4.1, < 3.0dev",
-    "grpc-google-iam-v1 >= 0.12.3, < 0.13dev",
+    "grpc-google-iam-v1 >= 0.12.4, <1.0.0dev",
     "proto-plus >= 1.15.0, != 1.19.6",
     "sqlparse >= 0.3.0",
     "packaging >= 14.3",

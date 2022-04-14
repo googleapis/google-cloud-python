@@ -1,16 +1,69 @@
 {
+  "clientLibrary": {
+    "apis": [
+      {
+        "id": "google.spanner.admin.instance.v1",
+        "version": "v1"
+      }
+    ],
+    "language": "PYTHON",
+    "name": "google-cloud-spanner-admin-instance"
+  },
   "snippets": [
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.spanner_admin_instance_v1.InstanceAdminAsyncClient",
+          "shortName": "InstanceAdminAsyncClient"
+        },
+        "fullName": "google.cloud.spanner_admin_instance_v1.InstanceAdminAsyncClient.create_instance",
         "method": {
+          "fullName": "google.spanner.admin.instance.v1.InstanceAdmin.CreateInstance",
           "service": {
+            "fullName": "google.spanner.admin.instance.v1.InstanceAdmin",
             "shortName": "InstanceAdmin"
           },
           "shortName": "CreateInstance"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.spanner_admin_instance_v1.types.CreateInstanceRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "instance_id",
+            "type": "str"
+          },
+          {
+            "name": "instance",
+            "type": "google.cloud.spanner_admin_instance_v1.types.Instance"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "create_instance"
       },
+      "description": "Sample for CreateInstance",
       "file": "spanner_v1_generated_instance_admin_create_instance_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "spanner_v1_generated_InstanceAdmin_CreateInstance_async",
       "segments": [
         {
@@ -43,18 +96,62 @@
           "start": 53,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "spanner_v1_generated_instance_admin_create_instance_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.spanner_admin_instance_v1.InstanceAdminClient",
+          "shortName": "InstanceAdminClient"
+        },
+        "fullName": "google.cloud.spanner_admin_instance_v1.InstanceAdminClient.create_instance",
         "method": {
+          "fullName": "google.spanner.admin.instance.v1.InstanceAdmin.CreateInstance",
           "service": {
+            "fullName": "google.spanner.admin.instance.v1.InstanceAdmin",
             "shortName": "InstanceAdmin"
           },
           "shortName": "CreateInstance"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.spanner_admin_instance_v1.types.CreateInstanceRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "instance_id",
+            "type": "str"
+          },
+          {
+            "name": "instance",
+            "type": "google.cloud.spanner_admin_instance_v1.types.Instance"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "create_instance"
       },
+      "description": "Sample for CreateInstance",
       "file": "spanner_v1_generated_instance_admin_create_instance_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "spanner_v1_generated_InstanceAdmin_CreateInstance_sync",
       "segments": [
         {
@@ -87,19 +184,54 @@
           "start": 53,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "spanner_v1_generated_instance_admin_create_instance_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.spanner_admin_instance_v1.InstanceAdminAsyncClient",
+          "shortName": "InstanceAdminAsyncClient"
+        },
+        "fullName": "google.cloud.spanner_admin_instance_v1.InstanceAdminAsyncClient.delete_instance",
         "method": {
+          "fullName": "google.spanner.admin.instance.v1.InstanceAdmin.DeleteInstance",
           "service": {
+            "fullName": "google.spanner.admin.instance.v1.InstanceAdmin",
             "shortName": "InstanceAdmin"
           },
           "shortName": "DeleteInstance"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.spanner_admin_instance_v1.types.DeleteInstanceRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_instance"
       },
+      "description": "Sample for DeleteInstance",
       "file": "spanner_v1_generated_instance_admin_delete_instance_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "spanner_v1_generated_InstanceAdmin_DeleteInstance_async",
       "segments": [
         {
@@ -130,18 +262,53 @@
           "end": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "spanner_v1_generated_instance_admin_delete_instance_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.spanner_admin_instance_v1.InstanceAdminClient",
+          "shortName": "InstanceAdminClient"
+        },
+        "fullName": "google.cloud.spanner_admin_instance_v1.InstanceAdminClient.delete_instance",
         "method": {
+          "fullName": "google.spanner.admin.instance.v1.InstanceAdmin.DeleteInstance",
           "service": {
+            "fullName": "google.spanner.admin.instance.v1.InstanceAdmin",
             "shortName": "InstanceAdmin"
           },
           "shortName": "DeleteInstance"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.spanner_admin_instance_v1.types.DeleteInstanceRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_instance"
       },
+      "description": "Sample for DeleteInstance",
       "file": "spanner_v1_generated_instance_admin_delete_instance_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "spanner_v1_generated_InstanceAdmin_DeleteInstance_sync",
       "segments": [
         {
@@ -172,108 +339,216 @@
           "end": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "spanner_v1_generated_instance_admin_delete_instance_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.spanner_admin_instance_v1.InstanceAdminAsyncClient",
+          "shortName": "InstanceAdminAsyncClient"
+        },
+        "fullName": "google.cloud.spanner_admin_instance_v1.InstanceAdminAsyncClient.get_iam_policy",
         "method": {
+          "fullName": "google.spanner.admin.instance.v1.InstanceAdmin.GetIamPolicy",
           "service": {
+            "fullName": "google.spanner.admin.instance.v1.InstanceAdmin",
             "shortName": "InstanceAdmin"
           },
           "shortName": "GetIamPolicy"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.iam.v1.iam_policy_pb2.GetIamPolicyRequest"
+          },
+          {
+            "name": "resource",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.iam.v1.policy_pb2.Policy",
+        "shortName": "get_iam_policy"
       },
+      "description": "Sample for GetIamPolicy",
       "file": "spanner_v1_generated_instance_admin_get_iam_policy_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "spanner_v1_generated_InstanceAdmin_GetIamPolicy_async",
       "segments": [
         {
-          "end": 44,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 34,
+          "start": 32,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 39,
+          "start": 35,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 42,
+          "start": 40,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
-          "start": 42,
+          "end": 46,
+          "start": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "spanner_v1_generated_instance_admin_get_iam_policy_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.spanner_admin_instance_v1.InstanceAdminClient",
+          "shortName": "InstanceAdminClient"
+        },
+        "fullName": "google.cloud.spanner_admin_instance_v1.InstanceAdminClient.get_iam_policy",
         "method": {
+          "fullName": "google.spanner.admin.instance.v1.InstanceAdmin.GetIamPolicy",
           "service": {
+            "fullName": "google.spanner.admin.instance.v1.InstanceAdmin",
             "shortName": "InstanceAdmin"
           },
           "shortName": "GetIamPolicy"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.iam.v1.iam_policy_pb2.GetIamPolicyRequest"
+          },
+          {
+            "name": "resource",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.iam.v1.policy_pb2.Policy",
+        "shortName": "get_iam_policy"
       },
+      "description": "Sample for GetIamPolicy",
       "file": "spanner_v1_generated_instance_admin_get_iam_policy_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "spanner_v1_generated_InstanceAdmin_GetIamPolicy_sync",
       "segments": [
         {
-          "end": 44,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 34,
+          "start": 32,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 39,
+          "start": 35,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 42,
+          "start": 40,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
-          "start": 42,
+          "end": 46,
+          "start": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "spanner_v1_generated_instance_admin_get_iam_policy_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.spanner_admin_instance_v1.InstanceAdminAsyncClient",
+          "shortName": "InstanceAdminAsyncClient"
+        },
+        "fullName": "google.cloud.spanner_admin_instance_v1.InstanceAdminAsyncClient.get_instance_config",
         "method": {
+          "fullName": "google.spanner.admin.instance.v1.InstanceAdmin.GetInstanceConfig",
           "service": {
+            "fullName": "google.spanner.admin.instance.v1.InstanceAdmin",
             "shortName": "InstanceAdmin"
           },
           "shortName": "GetInstanceConfig"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.spanner_admin_instance_v1.types.GetInstanceConfigRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.spanner_admin_instance_v1.types.InstanceConfig",
+        "shortName": "get_instance_config"
       },
+      "description": "Sample for GetInstanceConfig",
       "file": "spanner_v1_generated_instance_admin_get_instance_config_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "spanner_v1_generated_InstanceAdmin_GetInstanceConfig_async",
       "segments": [
         {
@@ -306,18 +581,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "spanner_v1_generated_instance_admin_get_instance_config_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.spanner_admin_instance_v1.InstanceAdminClient",
+          "shortName": "InstanceAdminClient"
+        },
+        "fullName": "google.cloud.spanner_admin_instance_v1.InstanceAdminClient.get_instance_config",
         "method": {
+          "fullName": "google.spanner.admin.instance.v1.InstanceAdmin.GetInstanceConfig",
           "service": {
+            "fullName": "google.spanner.admin.instance.v1.InstanceAdmin",
             "shortName": "InstanceAdmin"
           },
           "shortName": "GetInstanceConfig"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.spanner_admin_instance_v1.types.GetInstanceConfigRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.spanner_admin_instance_v1.types.InstanceConfig",
+        "shortName": "get_instance_config"
       },
+      "description": "Sample for GetInstanceConfig",
       "file": "spanner_v1_generated_instance_admin_get_instance_config_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "spanner_v1_generated_InstanceAdmin_GetInstanceConfig_sync",
       "segments": [
         {
@@ -350,19 +661,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "spanner_v1_generated_instance_admin_get_instance_config_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.spanner_admin_instance_v1.InstanceAdminAsyncClient",
+          "shortName": "InstanceAdminAsyncClient"
+        },
+        "fullName": "google.cloud.spanner_admin_instance_v1.InstanceAdminAsyncClient.get_instance",
         "method": {
+          "fullName": "google.spanner.admin.instance.v1.InstanceAdmin.GetInstance",
           "service": {
+            "fullName": "google.spanner.admin.instance.v1.InstanceAdmin",
             "shortName": "InstanceAdmin"
           },
           "shortName": "GetInstance"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.spanner_admin_instance_v1.types.GetInstanceRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.spanner_admin_instance_v1.types.Instance",
+        "shortName": "get_instance"
       },
+      "description": "Sample for GetInstance",
       "file": "spanner_v1_generated_instance_admin_get_instance_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "spanner_v1_generated_InstanceAdmin_GetInstance_async",
       "segments": [
         {
@@ -395,18 +742,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "spanner_v1_generated_instance_admin_get_instance_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.spanner_admin_instance_v1.InstanceAdminClient",
+          "shortName": "InstanceAdminClient"
+        },
+        "fullName": "google.cloud.spanner_admin_instance_v1.InstanceAdminClient.get_instance",
         "method": {
+          "fullName": "google.spanner.admin.instance.v1.InstanceAdmin.GetInstance",
           "service": {
+            "fullName": "google.spanner.admin.instance.v1.InstanceAdmin",
             "shortName": "InstanceAdmin"
           },
           "shortName": "GetInstance"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.spanner_admin_instance_v1.types.GetInstanceRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.spanner_admin_instance_v1.types.Instance",
+        "shortName": "get_instance"
       },
+      "description": "Sample for GetInstance",
       "file": "spanner_v1_generated_instance_admin_get_instance_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "spanner_v1_generated_InstanceAdmin_GetInstance_sync",
       "segments": [
         {
@@ -439,19 +822,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "spanner_v1_generated_instance_admin_get_instance_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.spanner_admin_instance_v1.InstanceAdminAsyncClient",
+          "shortName": "InstanceAdminAsyncClient"
+        },
+        "fullName": "google.cloud.spanner_admin_instance_v1.InstanceAdminAsyncClient.list_instance_configs",
         "method": {
+          "fullName": "google.spanner.admin.instance.v1.InstanceAdmin.ListInstanceConfigs",
           "service": {
+            "fullName": "google.spanner.admin.instance.v1.InstanceAdmin",
             "shortName": "InstanceAdmin"
           },
           "shortName": "ListInstanceConfigs"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.spanner_admin_instance_v1.types.ListInstanceConfigsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.spanner_admin_instance_v1.services.instance_admin.pagers.ListInstanceConfigsAsyncPager",
+        "shortName": "list_instance_configs"
       },
+      "description": "Sample for ListInstanceConfigs",
       "file": "spanner_v1_generated_instance_admin_list_instance_configs_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "spanner_v1_generated_InstanceAdmin_ListInstanceConfigs_async",
       "segments": [
         {
@@ -484,18 +903,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "spanner_v1_generated_instance_admin_list_instance_configs_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.spanner_admin_instance_v1.InstanceAdminClient",
+          "shortName": "InstanceAdminClient"
+        },
+        "fullName": "google.cloud.spanner_admin_instance_v1.InstanceAdminClient.list_instance_configs",
         "method": {
+          "fullName": "google.spanner.admin.instance.v1.InstanceAdmin.ListInstanceConfigs",
           "service": {
+            "fullName": "google.spanner.admin.instance.v1.InstanceAdmin",
             "shortName": "InstanceAdmin"
           },
           "shortName": "ListInstanceConfigs"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.spanner_admin_instance_v1.types.ListInstanceConfigsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.spanner_admin_instance_v1.services.instance_admin.pagers.ListInstanceConfigsPager",
+        "shortName": "list_instance_configs"
       },
+      "description": "Sample for ListInstanceConfigs",
       "file": "spanner_v1_generated_instance_admin_list_instance_configs_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "spanner_v1_generated_InstanceAdmin_ListInstanceConfigs_sync",
       "segments": [
         {
@@ -528,19 +983,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "spanner_v1_generated_instance_admin_list_instance_configs_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.spanner_admin_instance_v1.InstanceAdminAsyncClient",
+          "shortName": "InstanceAdminAsyncClient"
+        },
+        "fullName": "google.cloud.spanner_admin_instance_v1.InstanceAdminAsyncClient.list_instances",
         "method": {
+          "fullName": "google.spanner.admin.instance.v1.InstanceAdmin.ListInstances",
           "service": {
+            "fullName": "google.spanner.admin.instance.v1.InstanceAdmin",
             "shortName": "InstanceAdmin"
           },
           "shortName": "ListInstances"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.spanner_admin_instance_v1.types.ListInstancesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.spanner_admin_instance_v1.services.instance_admin.pagers.ListInstancesAsyncPager",
+        "shortName": "list_instances"
       },
+      "description": "Sample for ListInstances",
       "file": "spanner_v1_generated_instance_admin_list_instances_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "spanner_v1_generated_InstanceAdmin_ListInstances_async",
       "segments": [
         {
@@ -573,18 +1064,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "spanner_v1_generated_instance_admin_list_instances_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.spanner_admin_instance_v1.InstanceAdminClient",
+          "shortName": "InstanceAdminClient"
+        },
+        "fullName": "google.cloud.spanner_admin_instance_v1.InstanceAdminClient.list_instances",
         "method": {
+          "fullName": "google.spanner.admin.instance.v1.InstanceAdmin.ListInstances",
           "service": {
+            "fullName": "google.spanner.admin.instance.v1.InstanceAdmin",
             "shortName": "InstanceAdmin"
           },
           "shortName": "ListInstances"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.spanner_admin_instance_v1.types.ListInstancesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.spanner_admin_instance_v1.services.instance_admin.pagers.ListInstancesPager",
+        "shortName": "list_instances"
       },
+      "description": "Sample for ListInstances",
       "file": "spanner_v1_generated_instance_admin_list_instances_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "spanner_v1_generated_InstanceAdmin_ListInstances_sync",
       "segments": [
         {
@@ -617,197 +1144,389 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "spanner_v1_generated_instance_admin_list_instances_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.spanner_admin_instance_v1.InstanceAdminAsyncClient",
+          "shortName": "InstanceAdminAsyncClient"
+        },
+        "fullName": "google.cloud.spanner_admin_instance_v1.InstanceAdminAsyncClient.set_iam_policy",
         "method": {
+          "fullName": "google.spanner.admin.instance.v1.InstanceAdmin.SetIamPolicy",
           "service": {
+            "fullName": "google.spanner.admin.instance.v1.InstanceAdmin",
             "shortName": "InstanceAdmin"
           },
           "shortName": "SetIamPolicy"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.iam.v1.iam_policy_pb2.SetIamPolicyRequest"
+          },
+          {
+            "name": "resource",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.iam.v1.policy_pb2.Policy",
+        "shortName": "set_iam_policy"
       },
+      "description": "Sample for SetIamPolicy",
       "file": "spanner_v1_generated_instance_admin_set_iam_policy_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "spanner_v1_generated_InstanceAdmin_SetIamPolicy_async",
       "segments": [
         {
-          "end": 44,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 34,
+          "start": 32,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 39,
+          "start": 35,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 42,
+          "start": 40,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
-          "start": 42,
+          "end": 46,
+          "start": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "spanner_v1_generated_instance_admin_set_iam_policy_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.spanner_admin_instance_v1.InstanceAdminClient",
+          "shortName": "InstanceAdminClient"
+        },
+        "fullName": "google.cloud.spanner_admin_instance_v1.InstanceAdminClient.set_iam_policy",
         "method": {
+          "fullName": "google.spanner.admin.instance.v1.InstanceAdmin.SetIamPolicy",
           "service": {
+            "fullName": "google.spanner.admin.instance.v1.InstanceAdmin",
             "shortName": "InstanceAdmin"
           },
           "shortName": "SetIamPolicy"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.iam.v1.iam_policy_pb2.SetIamPolicyRequest"
+          },
+          {
+            "name": "resource",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.iam.v1.policy_pb2.Policy",
+        "shortName": "set_iam_policy"
       },
+      "description": "Sample for SetIamPolicy",
       "file": "spanner_v1_generated_instance_admin_set_iam_policy_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "spanner_v1_generated_InstanceAdmin_SetIamPolicy_sync",
       "segments": [
         {
-          "end": 44,
+          "end": 45,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 44,
+          "end": 45,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 34,
+          "start": 32,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 38,
-          "start": 34,
+          "end": 39,
+          "start": 35,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 41,
-          "start": 39,
+          "end": 42,
+          "start": 40,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 45,
-          "start": 42,
+          "end": 46,
+          "start": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "spanner_v1_generated_instance_admin_set_iam_policy_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.spanner_admin_instance_v1.InstanceAdminAsyncClient",
+          "shortName": "InstanceAdminAsyncClient"
+        },
+        "fullName": "google.cloud.spanner_admin_instance_v1.InstanceAdminAsyncClient.test_iam_permissions",
         "method": {
+          "fullName": "google.spanner.admin.instance.v1.InstanceAdmin.TestIamPermissions",
           "service": {
+            "fullName": "google.spanner.admin.instance.v1.InstanceAdmin",
             "shortName": "InstanceAdmin"
           },
           "shortName": "TestIamPermissions"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest"
+          },
+          {
+            "name": "resource",
+            "type": "str"
+          },
+          {
+            "name": "permissions",
+            "type": "Sequence[str]"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.iam.v1.iam_policy_pb2.TestIamPermissionsResponse",
+        "shortName": "test_iam_permissions"
       },
+      "description": "Sample for TestIamPermissions",
       "file": "spanner_v1_generated_instance_admin_test_iam_permissions_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "spanner_v1_generated_InstanceAdmin_TestIamPermissions_async",
       "segments": [
         {
-          "end": 45,
+          "end": 46,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 46,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 34,
+          "start": 32,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 39,
-          "start": 34,
+          "end": 40,
+          "start": 35,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 42,
-          "start": 40,
+          "end": 43,
+          "start": 41,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 43,
+          "end": 47,
+          "start": 44,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "spanner_v1_generated_instance_admin_test_iam_permissions_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.spanner_admin_instance_v1.InstanceAdminClient",
+          "shortName": "InstanceAdminClient"
+        },
+        "fullName": "google.cloud.spanner_admin_instance_v1.InstanceAdminClient.test_iam_permissions",
         "method": {
+          "fullName": "google.spanner.admin.instance.v1.InstanceAdmin.TestIamPermissions",
           "service": {
+            "fullName": "google.spanner.admin.instance.v1.InstanceAdmin",
             "shortName": "InstanceAdmin"
           },
           "shortName": "TestIamPermissions"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.iam.v1.iam_policy_pb2.TestIamPermissionsRequest"
+          },
+          {
+            "name": "resource",
+            "type": "str"
+          },
+          {
+            "name": "permissions",
+            "type": "Sequence[str]"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.iam.v1.iam_policy_pb2.TestIamPermissionsResponse",
+        "shortName": "test_iam_permissions"
       },
+      "description": "Sample for TestIamPermissions",
       "file": "spanner_v1_generated_instance_admin_test_iam_permissions_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "spanner_v1_generated_InstanceAdmin_TestIamPermissions_sync",
       "segments": [
         {
-          "end": 45,
+          "end": 46,
           "start": 27,
           "type": "FULL"
         },
         {
-          "end": 45,
+          "end": 46,
           "start": 27,
           "type": "SHORT"
         },
         {
-          "end": 33,
-          "start": 31,
+          "end": 34,
+          "start": 32,
           "type": "CLIENT_INITIALIZATION"
         },
         {
-          "end": 39,
-          "start": 34,
+          "end": 40,
+          "start": 35,
           "type": "REQUEST_INITIALIZATION"
         },
         {
-          "end": 42,
-          "start": 40,
+          "end": 43,
+          "start": 41,
           "type": "REQUEST_EXECUTION"
         },
         {
-          "end": 46,
-          "start": 43,
+          "end": 47,
+          "start": 44,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "spanner_v1_generated_instance_admin_test_iam_permissions_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.spanner_admin_instance_v1.InstanceAdminAsyncClient",
+          "shortName": "InstanceAdminAsyncClient"
+        },
+        "fullName": "google.cloud.spanner_admin_instance_v1.InstanceAdminAsyncClient.update_instance",
         "method": {
+          "fullName": "google.spanner.admin.instance.v1.InstanceAdmin.UpdateInstance",
           "service": {
+            "fullName": "google.spanner.admin.instance.v1.InstanceAdmin",
             "shortName": "InstanceAdmin"
           },
           "shortName": "UpdateInstance"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.spanner_admin_instance_v1.types.UpdateInstanceRequest"
+          },
+          {
+            "name": "instance",
+            "type": "google.cloud.spanner_admin_instance_v1.types.Instance"
+          },
+          {
+            "name": "field_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "update_instance"
       },
+      "description": "Sample for UpdateInstance",
       "file": "spanner_v1_generated_instance_admin_update_instance_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "spanner_v1_generated_InstanceAdmin_UpdateInstance_async",
       "segments": [
         {
@@ -840,18 +1559,58 @@
           "start": 51,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "spanner_v1_generated_instance_admin_update_instance_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.spanner_admin_instance_v1.InstanceAdminClient",
+          "shortName": "InstanceAdminClient"
+        },
+        "fullName": "google.cloud.spanner_admin_instance_v1.InstanceAdminClient.update_instance",
         "method": {
+          "fullName": "google.spanner.admin.instance.v1.InstanceAdmin.UpdateInstance",
           "service": {
+            "fullName": "google.spanner.admin.instance.v1.InstanceAdmin",
             "shortName": "InstanceAdmin"
           },
           "shortName": "UpdateInstance"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.spanner_admin_instance_v1.types.UpdateInstanceRequest"
+          },
+          {
+            "name": "instance",
+            "type": "google.cloud.spanner_admin_instance_v1.types.Instance"
+          },
+          {
+            "name": "field_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "update_instance"
       },
+      "description": "Sample for UpdateInstance",
       "file": "spanner_v1_generated_instance_admin_update_instance_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "spanner_v1_generated_InstanceAdmin_UpdateInstance_sync",
       "segments": [
         {
@@ -884,7 +1643,8 @@
           "start": 51,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "spanner_v1_generated_instance_admin_update_instance_sync.py"
     }
   ]
 }

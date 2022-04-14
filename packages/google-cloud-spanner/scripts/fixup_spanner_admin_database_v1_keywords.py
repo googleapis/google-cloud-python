@@ -53,7 +53,7 @@ class spanner_admin_databaseCallTransformer(cst.CSTTransformer):
         'list_database_operations': ('parent', 'filter', 'page_size', 'page_token', ),
         'list_databases': ('parent', 'page_size', 'page_token', ),
         'restore_database': ('parent', 'database_id', 'backup', 'encryption_config', ),
-        'set_iam_policy': ('resource', 'policy', ),
+        'set_iam_policy': ('resource', 'policy', 'update_mask', ),
         'test_iam_permissions': ('resource', 'permissions', ),
         'update_backup': ('backup', 'update_mask', ),
         'update_database_ddl': ('database', 'statements', 'operation_id', ),

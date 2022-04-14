@@ -167,7 +167,7 @@ class Instance(proto.Message):
             the state must be either omitted or set to ``CREATING``. For
             [UpdateInstance][google.spanner.admin.instance.v1.InstanceAdmin.UpdateInstance],
             the state must be either omitted or set to ``READY``.
-        labels (Sequence[google.cloud.spanner_admin_instance_v1.types.Instance.LabelsEntry]):
+        labels (Mapping[str, str]):
             Cloud Labels are a flexible and lightweight mechanism for
             organizing cloud resources into groups that reflect a
             customer's organizational needs and deployment strategies.

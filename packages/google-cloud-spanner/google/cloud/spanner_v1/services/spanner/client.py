@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Iterable, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Iterable, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -487,7 +487,6 @@ class SpannerClient(metaclass=SpannerClientMeta):
         Idle sessions can be kept alive by sending a trivial SQL query
         periodically, e.g., ``"SELECT 1"``.
 
-
         .. code-block:: python
 
             from google.cloud import spanner_v1
@@ -584,7 +583,6 @@ class SpannerClient(metaclass=SpannerClientMeta):
         This API can be used to initialize a session cache on
         the clients. See https://goo.gl/TgSFN2 for best
         practices on session cache management.
-
 
         .. code-block:: python
 
@@ -697,7 +695,6 @@ class SpannerClient(metaclass=SpannerClientMeta):
         r"""Gets a session. Returns ``NOT_FOUND`` if the session does not
         exist. This is mainly useful for determining whether a session
         is still alive.
-
 
         .. code-block:: python
 
@@ -902,7 +899,6 @@ class SpannerClient(metaclass=SpannerClientMeta):
         with it. This will asynchronously trigger cancellation
         of any operations that are running with this session.
 
-
         .. code-block:: python
 
             from google.cloud import spanner_v1
@@ -998,7 +994,6 @@ class SpannerClient(metaclass=SpannerClientMeta):
         [ExecuteStreamingSql][google.spanner.v1.Spanner.ExecuteStreamingSql]
         instead.
 
-
         .. code-block:: python
 
             from google.cloud import spanner_v1
@@ -1079,7 +1074,6 @@ class SpannerClient(metaclass=SpannerClientMeta):
         limit on the size of the returned result set. However, no
         individual row in the result set can exceed 100 MiB, and no
         column value can exceed 10 MiB.
-
 
         .. code-block:: python
 
@@ -1173,7 +1167,6 @@ class SpannerClient(metaclass=SpannerClientMeta):
 
         Execution stops after the first failed statement; the remaining
         statements are not executed.
-
 
         .. code-block:: python
 
@@ -1305,7 +1298,6 @@ class SpannerClient(metaclass=SpannerClientMeta):
         calling [StreamingRead][google.spanner.v1.Spanner.StreamingRead]
         instead.
 
-
         .. code-block:: python
 
             from google.cloud import spanner_v1
@@ -1387,7 +1379,6 @@ class SpannerClient(metaclass=SpannerClientMeta):
         size of the returned result set. However, no individual row in
         the result set can exceed 100 MiB, and no column value can
         exceed 10 MiB.
-
 
         .. code-block:: python
 
@@ -1475,7 +1466,6 @@ class SpannerClient(metaclass=SpannerClientMeta):
         [ExecuteSql][google.spanner.v1.Spanner.ExecuteSql] and
         [Commit][google.spanner.v1.Spanner.Commit] can begin a new
         transaction as a side-effect.
-
 
         .. code-block:: python
 
@@ -1596,7 +1586,6 @@ class SpannerClient(metaclass=SpannerClientMeta):
         track of the transaction outcome and we recommend that you
         perform another read from the database to see the state of
         things as they are now.
-
 
         .. code-block:: python
 
@@ -1743,7 +1732,6 @@ class SpannerClient(metaclass=SpannerClientMeta):
         transaction is not found. ``Rollback`` never returns
         ``ABORTED``.
 
-
         .. code-block:: python
 
             from google.cloud import spanner_v1
@@ -1849,7 +1837,6 @@ class SpannerClient(metaclass=SpannerClientMeta):
         to resume the query, and the whole operation must be restarted
         from the beginning.
 
-
         .. code-block:: python
 
             from google.cloud import spanner_v1
@@ -1941,7 +1928,6 @@ class SpannerClient(metaclass=SpannerClientMeta):
         or becomes too old. When any of these happen, it is not possible
         to resume the read, and the whole operation must be restarted
         from the beginning.
-
 
         .. code-block:: python
 

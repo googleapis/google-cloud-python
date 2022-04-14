@@ -46,7 +46,7 @@ class spanner_admin_instanceCallTransformer(cst.CSTTransformer):
         'get_instance_config': ('name', ),
         'list_instance_configs': ('parent', 'page_size', 'page_token', ),
         'list_instances': ('parent', 'page_size', 'page_token', 'filter', ),
-        'set_iam_policy': ('resource', 'policy', ),
+        'set_iam_policy': ('resource', 'policy', 'update_mask', ),
         'test_iam_permissions': ('resource', 'permissions', ),
         'update_instance': ('instance', 'field_mask', ),
     }

@@ -25,6 +25,7 @@
 
 # [START spanner_v1_generated_DatabaseAdmin_SetIamPolicy_sync]
 from google.cloud import spanner_admin_database_v1
+from google.iam.v1 import iam_policy_pb2  # type: ignore
 
 
 def sample_set_iam_policy():
@@ -32,7 +33,7 @@ def sample_set_iam_policy():
     client = spanner_admin_database_v1.DatabaseAdminClient()
 
     # Initialize request argument(s)
-    request = spanner_admin_database_v1.SetIamPolicyRequest(
+    request = iam_policy_pb2.SetIamPolicyRequest(
         resource="resource_value",
     )
 

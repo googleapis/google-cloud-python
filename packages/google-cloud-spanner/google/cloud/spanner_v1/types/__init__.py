@@ -13,12 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .commit_response import CommitResponse
+from .commit_response import (
+    CommitResponse,
+)
 from .keys import (
     KeyRange,
     KeySet,
 )
-from .mutation import Mutation
+from .mutation import (
+    Mutation,
+)
 from .query_plan import (
     PlanNode,
     QueryPlan,

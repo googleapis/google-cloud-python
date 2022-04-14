@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -662,7 +662,6 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         is [Database][google.spanner.admin.database.v1.Database], if
         successful.
 
-
         .. code-block:: python
 
             from google.cloud import spanner_admin_database_v1
@@ -892,7 +891,6 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         [UpdateDatabaseDdlMetadata][google.spanner.admin.database.v1.UpdateDatabaseDdlMetadata].
         The operation has no response.
 
-
         .. code-block:: python
 
             from google.cloud import spanner_admin_database_v1
@@ -1041,7 +1039,6 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         ``expire_time``. Note: Cloud Spanner might continue to accept
         requests for a few seconds after the database has been deleted.
 
-
         .. code-block:: python
 
             from google.cloud import spanner_admin_database_v1
@@ -1125,7 +1122,6 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         formatted DDL statements. This method does not show pending
         schema updates, those may be queried using the
         [Operations][google.longrunning.Operations] API.
-
 
         .. code-block:: python
 
@@ -1231,17 +1227,17 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         permission on
         [resource][google.iam.v1.SetIamPolicyRequest.resource].
 
-
         .. code-block:: python
 
             from google.cloud import spanner_admin_database_v1
+            from google.iam.v1 import iam_policy_pb2  # type: ignore
 
             def sample_set_iam_policy():
                 # Create a client
                 client = spanner_admin_database_v1.DatabaseAdminClient()
 
                 # Initialize request argument(s)
-                request = spanner_admin_database_v1.SetIamPolicyRequest(
+                request = iam_policy_pb2.SetIamPolicyRequest(
                     resource="resource_value",
                 )
 
@@ -1272,21 +1268,26 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
 
         Returns:
             google.iam.v1.policy_pb2.Policy:
-                Defines an Identity and Access Management (IAM) policy. It is used to
-                   specify access control policies for Cloud Platform
-                   resources.
+                An Identity and Access Management (IAM) policy, which specifies access
+                   controls for Google Cloud resources.
 
                    A Policy is a collection of bindings. A binding binds
-                   one or more members to a single role. Members can be
-                   user accounts, service accounts, Google groups, and
-                   domains (such as G Suite). A role is a named list of
-                   permissions (defined by IAM or configured by users).
-                   A binding can optionally specify a condition, which
-                   is a logic expression that further constrains the
-                   role binding based on attributes about the request
-                   and/or target resource.
+                   one or more members, or principals, to a single role.
+                   Principals can be user accounts, service accounts,
+                   Google groups, and domains (such as G Suite). A role
+                   is a named list of permissions; each role can be an
+                   IAM predefined role or a user-created custom role.
 
-                   **JSON Example**
+                   For some types of Google Cloud resources, a binding
+                   can also specify a condition, which is a logical
+                   expression that allows access to a resource only if
+                   the expression evaluates to true. A condition can add
+                   constraints based on attributes of the request, the
+                   resource, or both. To learn which resources support
+                   conditions in their IAM policies, see the [IAM
+                   documentation](\ https://cloud.google.com/iam/help/conditions/resource-policies).
+
+                   **JSON example:**
 
                       {
                          "bindings": [
@@ -1301,17 +1302,17 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
 
                             }, { "role":
                             "roles/resourcemanager.organizationViewer",
-                            "members": ["user:eve@example.com"],
+                            "members": [ "user:eve@example.com" ],
                             "condition": { "title": "expirable access",
                             "description": "Does not grant access after
                             Sep 2020", "expression": "request.time <
                             timestamp('2020-10-01T00:00:00.000Z')", } }
 
-                         ]
+                         ], "etag": "BwWWja0YfJA=", "version": 3
 
                       }
 
-                   **YAML Example**
+                   **YAML example:**
 
                       bindings: - members: - user:\ mike@example.com -
                       group:\ admins@example.com - domain:google.com -
@@ -1322,11 +1323,12 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
                       condition: title: expirable access description:
                       Does not grant access after Sep 2020 expression:
                       request.time <
-                      timestamp('2020-10-01T00:00:00.000Z')
+                      timestamp('2020-10-01T00:00:00.000Z') etag:
+                      BwWWja0YfJA= version: 3
 
                    For a description of IAM and its features, see the
-                   [IAM developer's
-                   guide](\ https://cloud.google.com/iam/docs).
+                   [IAM
+                   documentation](\ https://cloud.google.com/iam/docs/).
 
         """
         # Create or coerce a protobuf request object.
@@ -1390,17 +1392,17 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         permission on
         [resource][google.iam.v1.GetIamPolicyRequest.resource].
 
-
         .. code-block:: python
 
             from google.cloud import spanner_admin_database_v1
+            from google.iam.v1 import iam_policy_pb2  # type: ignore
 
             def sample_get_iam_policy():
                 # Create a client
                 client = spanner_admin_database_v1.DatabaseAdminClient()
 
                 # Initialize request argument(s)
-                request = spanner_admin_database_v1.GetIamPolicyRequest(
+                request = iam_policy_pb2.GetIamPolicyRequest(
                     resource="resource_value",
                 )
 
@@ -1431,21 +1433,26 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
 
         Returns:
             google.iam.v1.policy_pb2.Policy:
-                Defines an Identity and Access Management (IAM) policy. It is used to
-                   specify access control policies for Cloud Platform
-                   resources.
+                An Identity and Access Management (IAM) policy, which specifies access
+                   controls for Google Cloud resources.
 
                    A Policy is a collection of bindings. A binding binds
-                   one or more members to a single role. Members can be
-                   user accounts, service accounts, Google groups, and
-                   domains (such as G Suite). A role is a named list of
-                   permissions (defined by IAM or configured by users).
-                   A binding can optionally specify a condition, which
-                   is a logic expression that further constrains the
-                   role binding based on attributes about the request
-                   and/or target resource.
+                   one or more members, or principals, to a single role.
+                   Principals can be user accounts, service accounts,
+                   Google groups, and domains (such as G Suite). A role
+                   is a named list of permissions; each role can be an
+                   IAM predefined role or a user-created custom role.
 
-                   **JSON Example**
+                   For some types of Google Cloud resources, a binding
+                   can also specify a condition, which is a logical
+                   expression that allows access to a resource only if
+                   the expression evaluates to true. A condition can add
+                   constraints based on attributes of the request, the
+                   resource, or both. To learn which resources support
+                   conditions in their IAM policies, see the [IAM
+                   documentation](\ https://cloud.google.com/iam/help/conditions/resource-policies).
+
+                   **JSON example:**
 
                       {
                          "bindings": [
@@ -1460,17 +1467,17 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
 
                             }, { "role":
                             "roles/resourcemanager.organizationViewer",
-                            "members": ["user:eve@example.com"],
+                            "members": [ "user:eve@example.com" ],
                             "condition": { "title": "expirable access",
                             "description": "Does not grant access after
                             Sep 2020", "expression": "request.time <
                             timestamp('2020-10-01T00:00:00.000Z')", } }
 
-                         ]
+                         ], "etag": "BwWWja0YfJA=", "version": 3
 
                       }
 
-                   **YAML Example**
+                   **YAML example:**
 
                       bindings: - members: - user:\ mike@example.com -
                       group:\ admins@example.com - domain:google.com -
@@ -1481,11 +1488,12 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
                       condition: title: expirable access description:
                       Does not grant access after Sep 2020 expression:
                       request.time <
-                      timestamp('2020-10-01T00:00:00.000Z')
+                      timestamp('2020-10-01T00:00:00.000Z') etag:
+                      BwWWja0YfJA= version: 3
 
                    For a description of IAM and its features, see the
-                   [IAM developer's
-                   guide](\ https://cloud.google.com/iam/docs).
+                   [IAM
+                   documentation](\ https://cloud.google.com/iam/docs/).
 
         """
         # Create or coerce a protobuf request object.
@@ -1550,17 +1558,17 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         in a NOT_FOUND error if the user has ``spanner.backups.list``
         permission on the containing instance.
 
-
         .. code-block:: python
 
             from google.cloud import spanner_admin_database_v1
+            from google.iam.v1 import iam_policy_pb2  # type: ignore
 
             def sample_test_iam_permissions():
                 # Create a client
                 client = spanner_admin_database_v1.DatabaseAdminClient()
 
                 # Initialize request argument(s)
-                request = spanner_admin_database_v1.TestIamPermissionsRequest(
+                request = iam_policy_pb2.TestIamPermissionsRequest(
                     resource="resource_value",
                     permissions=['permissions_value_1', 'permissions_value_2'],
                 )
@@ -1670,7 +1678,6 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         creation and delete the backup. There can be only one pending
         backup creation per database. Backup creation of different
         databases can run concurrently.
-
 
         .. code-block:: python
 
@@ -1820,7 +1827,6 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         successful. Cancelling the returned operation will stop the
         copying and delete the backup. Concurrent CopyBackup requests
         can run on the same source backup.
-
 
         .. code-block:: python
 
@@ -1974,7 +1980,6 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         r"""Gets metadata on a pending or completed
         [Backup][google.spanner.admin.database.v1.Backup].
 
-
         .. code-block:: python
 
             from google.cloud import spanner_admin_database_v1
@@ -2069,7 +2074,6 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
     ) -> gsad_backup.Backup:
         r"""Updates a pending or completed
         [Backup][google.spanner.admin.database.v1.Backup].
-
 
         .. code-block:: python
 
@@ -2184,7 +2188,6 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         r"""Deletes a pending or completed
         [Backup][google.spanner.admin.database.v1.Backup].
 
-
         .. code-block:: python
 
             from google.cloud import spanner_admin_database_v1
@@ -2270,7 +2273,6 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         r"""Lists completed and pending backups. Backups returned are
         ordered by ``create_time`` in descending order, starting from
         the most recent ``create_time``.
-
 
         .. code-block:: python
 
@@ -2399,7 +2401,6 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         operation completes, a new restore operation can be initiated,
         without waiting for the optimize operation associated with the
         first restore to complete.
-
 
         .. code-block:: python
 
@@ -2549,7 +2550,6 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         completed/failed/canceled within the last 7 days, and pending
         operations.
 
-
         .. code-block:: python
 
             from google.cloud import spanner_admin_database_v1
@@ -2671,7 +2671,6 @@ class DatabaseAdminClient(metaclass=DatabaseAdminClientMeta):
         operations. Operations returned are ordered by
         ``operation.metadata.value.progress.start_time`` in descending
         order starting from the most recently started operation.
-
 
         .. code-block:: python
 

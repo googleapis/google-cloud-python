@@ -1,16 +1,65 @@
 {
+  "clientLibrary": {
+    "apis": [
+      {
+        "id": "google.spanner.v1",
+        "version": "v1"
+      }
+    ],
+    "language": "PYTHON",
+    "name": "google-cloud-spanner"
+  },
   "snippets": [
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.spanner_v1.SpannerAsyncClient",
+          "shortName": "SpannerAsyncClient"
+        },
+        "fullName": "google.cloud.spanner_v1.SpannerAsyncClient.batch_create_sessions",
         "method": {
+          "fullName": "google.spanner.v1.Spanner.BatchCreateSessions",
           "service": {
+            "fullName": "google.spanner.v1.Spanner",
             "shortName": "Spanner"
           },
           "shortName": "BatchCreateSessions"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.spanner_v1.types.BatchCreateSessionsRequest"
+          },
+          {
+            "name": "database",
+            "type": "str"
+          },
+          {
+            "name": "session_count",
+            "type": "int"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.spanner_v1.types.BatchCreateSessionsResponse",
+        "shortName": "batch_create_sessions"
       },
+      "description": "Sample for BatchCreateSessions",
       "file": "spanner_v1_generated_spanner_batch_create_sessions_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "spanner_v1_generated_Spanner_BatchCreateSessions_async",
       "segments": [
         {
@@ -43,18 +92,58 @@
           "start": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "spanner_v1_generated_spanner_batch_create_sessions_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.spanner_v1.SpannerClient",
+          "shortName": "SpannerClient"
+        },
+        "fullName": "google.cloud.spanner_v1.SpannerClient.batch_create_sessions",
         "method": {
+          "fullName": "google.spanner.v1.Spanner.BatchCreateSessions",
           "service": {
+            "fullName": "google.spanner.v1.Spanner",
             "shortName": "Spanner"
           },
           "shortName": "BatchCreateSessions"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.spanner_v1.types.BatchCreateSessionsRequest"
+          },
+          {
+            "name": "database",
+            "type": "str"
+          },
+          {
+            "name": "session_count",
+            "type": "int"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.spanner_v1.types.BatchCreateSessionsResponse",
+        "shortName": "batch_create_sessions"
       },
+      "description": "Sample for BatchCreateSessions",
       "file": "spanner_v1_generated_spanner_batch_create_sessions_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "spanner_v1_generated_Spanner_BatchCreateSessions_sync",
       "segments": [
         {
@@ -87,19 +176,59 @@
           "start": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "spanner_v1_generated_spanner_batch_create_sessions_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.spanner_v1.SpannerAsyncClient",
+          "shortName": "SpannerAsyncClient"
+        },
+        "fullName": "google.cloud.spanner_v1.SpannerAsyncClient.begin_transaction",
         "method": {
+          "fullName": "google.spanner.v1.Spanner.BeginTransaction",
           "service": {
+            "fullName": "google.spanner.v1.Spanner",
             "shortName": "Spanner"
           },
           "shortName": "BeginTransaction"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.spanner_v1.types.BeginTransactionRequest"
+          },
+          {
+            "name": "session",
+            "type": "str"
+          },
+          {
+            "name": "options",
+            "type": "google.cloud.spanner_v1.types.TransactionOptions"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.spanner_v1.types.Transaction",
+        "shortName": "begin_transaction"
       },
+      "description": "Sample for BeginTransaction",
       "file": "spanner_v1_generated_spanner_begin_transaction_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "spanner_v1_generated_Spanner_BeginTransaction_async",
       "segments": [
         {
@@ -132,18 +261,58 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "spanner_v1_generated_spanner_begin_transaction_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.spanner_v1.SpannerClient",
+          "shortName": "SpannerClient"
+        },
+        "fullName": "google.cloud.spanner_v1.SpannerClient.begin_transaction",
         "method": {
+          "fullName": "google.spanner.v1.Spanner.BeginTransaction",
           "service": {
+            "fullName": "google.spanner.v1.Spanner",
             "shortName": "Spanner"
           },
           "shortName": "BeginTransaction"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.spanner_v1.types.BeginTransactionRequest"
+          },
+          {
+            "name": "session",
+            "type": "str"
+          },
+          {
+            "name": "options",
+            "type": "google.cloud.spanner_v1.types.TransactionOptions"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.spanner_v1.types.Transaction",
+        "shortName": "begin_transaction"
       },
+      "description": "Sample for BeginTransaction",
       "file": "spanner_v1_generated_spanner_begin_transaction_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "spanner_v1_generated_Spanner_BeginTransaction_sync",
       "segments": [
         {
@@ -176,19 +345,67 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "spanner_v1_generated_spanner_begin_transaction_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.spanner_v1.SpannerAsyncClient",
+          "shortName": "SpannerAsyncClient"
+        },
+        "fullName": "google.cloud.spanner_v1.SpannerAsyncClient.commit",
         "method": {
+          "fullName": "google.spanner.v1.Spanner.Commit",
           "service": {
+            "fullName": "google.spanner.v1.Spanner",
             "shortName": "Spanner"
           },
           "shortName": "Commit"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.spanner_v1.types.CommitRequest"
+          },
+          {
+            "name": "session",
+            "type": "str"
+          },
+          {
+            "name": "transaction_id",
+            "type": "bytes"
+          },
+          {
+            "name": "mutations",
+            "type": "Sequence[google.cloud.spanner_v1.types.Mutation]"
+          },
+          {
+            "name": "single_use_transaction",
+            "type": "google.cloud.spanner_v1.types.TransactionOptions"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.spanner_v1.types.CommitResponse",
+        "shortName": "commit"
       },
+      "description": "Sample for Commit",
       "file": "spanner_v1_generated_spanner_commit_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "spanner_v1_generated_Spanner_Commit_async",
       "segments": [
         {
@@ -221,18 +438,66 @@
           "start": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "spanner_v1_generated_spanner_commit_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.spanner_v1.SpannerClient",
+          "shortName": "SpannerClient"
+        },
+        "fullName": "google.cloud.spanner_v1.SpannerClient.commit",
         "method": {
+          "fullName": "google.spanner.v1.Spanner.Commit",
           "service": {
+            "fullName": "google.spanner.v1.Spanner",
             "shortName": "Spanner"
           },
           "shortName": "Commit"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.spanner_v1.types.CommitRequest"
+          },
+          {
+            "name": "session",
+            "type": "str"
+          },
+          {
+            "name": "transaction_id",
+            "type": "bytes"
+          },
+          {
+            "name": "mutations",
+            "type": "Sequence[google.cloud.spanner_v1.types.Mutation]"
+          },
+          {
+            "name": "single_use_transaction",
+            "type": "google.cloud.spanner_v1.types.TransactionOptions"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.spanner_v1.types.CommitResponse",
+        "shortName": "commit"
       },
+      "description": "Sample for Commit",
       "file": "spanner_v1_generated_spanner_commit_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "spanner_v1_generated_Spanner_Commit_sync",
       "segments": [
         {
@@ -265,19 +530,55 @@
           "start": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "spanner_v1_generated_spanner_commit_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.spanner_v1.SpannerAsyncClient",
+          "shortName": "SpannerAsyncClient"
+        },
+        "fullName": "google.cloud.spanner_v1.SpannerAsyncClient.create_session",
         "method": {
+          "fullName": "google.spanner.v1.Spanner.CreateSession",
           "service": {
+            "fullName": "google.spanner.v1.Spanner",
             "shortName": "Spanner"
           },
           "shortName": "CreateSession"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.spanner_v1.types.CreateSessionRequest"
+          },
+          {
+            "name": "database",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.spanner_v1.types.Session",
+        "shortName": "create_session"
       },
+      "description": "Sample for CreateSession",
       "file": "spanner_v1_generated_spanner_create_session_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "spanner_v1_generated_Spanner_CreateSession_async",
       "segments": [
         {
@@ -310,18 +611,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "spanner_v1_generated_spanner_create_session_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.spanner_v1.SpannerClient",
+          "shortName": "SpannerClient"
+        },
+        "fullName": "google.cloud.spanner_v1.SpannerClient.create_session",
         "method": {
+          "fullName": "google.spanner.v1.Spanner.CreateSession",
           "service": {
+            "fullName": "google.spanner.v1.Spanner",
             "shortName": "Spanner"
           },
           "shortName": "CreateSession"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.spanner_v1.types.CreateSessionRequest"
+          },
+          {
+            "name": "database",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.spanner_v1.types.Session",
+        "shortName": "create_session"
       },
+      "description": "Sample for CreateSession",
       "file": "spanner_v1_generated_spanner_create_session_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "spanner_v1_generated_Spanner_CreateSession_sync",
       "segments": [
         {
@@ -354,19 +691,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "spanner_v1_generated_spanner_create_session_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.spanner_v1.SpannerAsyncClient",
+          "shortName": "SpannerAsyncClient"
+        },
+        "fullName": "google.cloud.spanner_v1.SpannerAsyncClient.delete_session",
         "method": {
+          "fullName": "google.spanner.v1.Spanner.DeleteSession",
           "service": {
+            "fullName": "google.spanner.v1.Spanner",
             "shortName": "Spanner"
           },
           "shortName": "DeleteSession"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.spanner_v1.types.DeleteSessionRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_session"
       },
+      "description": "Sample for DeleteSession",
       "file": "spanner_v1_generated_spanner_delete_session_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "spanner_v1_generated_Spanner_DeleteSession_async",
       "segments": [
         {
@@ -397,18 +769,53 @@
           "end": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "spanner_v1_generated_spanner_delete_session_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.spanner_v1.SpannerClient",
+          "shortName": "SpannerClient"
+        },
+        "fullName": "google.cloud.spanner_v1.SpannerClient.delete_session",
         "method": {
+          "fullName": "google.spanner.v1.Spanner.DeleteSession",
           "service": {
+            "fullName": "google.spanner.v1.Spanner",
             "shortName": "Spanner"
           },
           "shortName": "DeleteSession"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.spanner_v1.types.DeleteSessionRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_session"
       },
+      "description": "Sample for DeleteSession",
       "file": "spanner_v1_generated_spanner_delete_session_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "spanner_v1_generated_Spanner_DeleteSession_sync",
       "segments": [
         {
@@ -439,19 +846,51 @@
           "end": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "spanner_v1_generated_spanner_delete_session_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.spanner_v1.SpannerAsyncClient",
+          "shortName": "SpannerAsyncClient"
+        },
+        "fullName": "google.cloud.spanner_v1.SpannerAsyncClient.execute_batch_dml",
         "method": {
+          "fullName": "google.spanner.v1.Spanner.ExecuteBatchDml",
           "service": {
+            "fullName": "google.spanner.v1.Spanner",
             "shortName": "Spanner"
           },
           "shortName": "ExecuteBatchDml"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.spanner_v1.types.ExecuteBatchDmlRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.spanner_v1.types.ExecuteBatchDmlResponse",
+        "shortName": "execute_batch_dml"
       },
+      "description": "Sample for ExecuteBatchDml",
       "file": "spanner_v1_generated_spanner_execute_batch_dml_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "spanner_v1_generated_Spanner_ExecuteBatchDml_async",
       "segments": [
         {
@@ -484,18 +923,50 @@
           "start": 47,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "spanner_v1_generated_spanner_execute_batch_dml_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.spanner_v1.SpannerClient",
+          "shortName": "SpannerClient"
+        },
+        "fullName": "google.cloud.spanner_v1.SpannerClient.execute_batch_dml",
         "method": {
+          "fullName": "google.spanner.v1.Spanner.ExecuteBatchDml",
           "service": {
+            "fullName": "google.spanner.v1.Spanner",
             "shortName": "Spanner"
           },
           "shortName": "ExecuteBatchDml"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.spanner_v1.types.ExecuteBatchDmlRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.spanner_v1.types.ExecuteBatchDmlResponse",
+        "shortName": "execute_batch_dml"
       },
+      "description": "Sample for ExecuteBatchDml",
       "file": "spanner_v1_generated_spanner_execute_batch_dml_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "spanner_v1_generated_Spanner_ExecuteBatchDml_sync",
       "segments": [
         {
@@ -528,19 +999,51 @@
           "start": 47,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "spanner_v1_generated_spanner_execute_batch_dml_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.spanner_v1.SpannerAsyncClient",
+          "shortName": "SpannerAsyncClient"
+        },
+        "fullName": "google.cloud.spanner_v1.SpannerAsyncClient.execute_sql",
         "method": {
+          "fullName": "google.spanner.v1.Spanner.ExecuteSql",
           "service": {
+            "fullName": "google.spanner.v1.Spanner",
             "shortName": "Spanner"
           },
           "shortName": "ExecuteSql"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.spanner_v1.types.ExecuteSqlRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.spanner_v1.types.ResultSet",
+        "shortName": "execute_sql"
       },
+      "description": "Sample for ExecuteSql",
       "file": "spanner_v1_generated_spanner_execute_sql_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "spanner_v1_generated_Spanner_ExecuteSql_async",
       "segments": [
         {
@@ -573,18 +1076,50 @@
           "start": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "spanner_v1_generated_spanner_execute_sql_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.spanner_v1.SpannerClient",
+          "shortName": "SpannerClient"
+        },
+        "fullName": "google.cloud.spanner_v1.SpannerClient.execute_sql",
         "method": {
+          "fullName": "google.spanner.v1.Spanner.ExecuteSql",
           "service": {
+            "fullName": "google.spanner.v1.Spanner",
             "shortName": "Spanner"
           },
           "shortName": "ExecuteSql"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.spanner_v1.types.ExecuteSqlRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.spanner_v1.types.ResultSet",
+        "shortName": "execute_sql"
       },
+      "description": "Sample for ExecuteSql",
       "file": "spanner_v1_generated_spanner_execute_sql_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "spanner_v1_generated_Spanner_ExecuteSql_sync",
       "segments": [
         {
@@ -617,19 +1152,51 @@
           "start": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "spanner_v1_generated_spanner_execute_sql_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.spanner_v1.SpannerAsyncClient",
+          "shortName": "SpannerAsyncClient"
+        },
+        "fullName": "google.cloud.spanner_v1.SpannerAsyncClient.execute_streaming_sql",
         "method": {
+          "fullName": "google.spanner.v1.Spanner.ExecuteStreamingSql",
           "service": {
+            "fullName": "google.spanner.v1.Spanner",
             "shortName": "Spanner"
           },
           "shortName": "ExecuteStreamingSql"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.spanner_v1.types.ExecuteSqlRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "Iterable[google.cloud.spanner_v1.types.PartialResultSet]",
+        "shortName": "execute_streaming_sql"
       },
+      "description": "Sample for ExecuteStreamingSql",
       "file": "spanner_v1_generated_spanner_execute_streaming_sql_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "spanner_v1_generated_Spanner_ExecuteStreamingSql_async",
       "segments": [
         {
@@ -662,18 +1229,50 @@
           "start": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "spanner_v1_generated_spanner_execute_streaming_sql_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.spanner_v1.SpannerClient",
+          "shortName": "SpannerClient"
+        },
+        "fullName": "google.cloud.spanner_v1.SpannerClient.execute_streaming_sql",
         "method": {
+          "fullName": "google.spanner.v1.Spanner.ExecuteStreamingSql",
           "service": {
+            "fullName": "google.spanner.v1.Spanner",
             "shortName": "Spanner"
           },
           "shortName": "ExecuteStreamingSql"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.spanner_v1.types.ExecuteSqlRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "Iterable[google.cloud.spanner_v1.types.PartialResultSet]",
+        "shortName": "execute_streaming_sql"
       },
+      "description": "Sample for ExecuteStreamingSql",
       "file": "spanner_v1_generated_spanner_execute_streaming_sql_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "spanner_v1_generated_Spanner_ExecuteStreamingSql_sync",
       "segments": [
         {
@@ -706,19 +1305,55 @@
           "start": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "spanner_v1_generated_spanner_execute_streaming_sql_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.spanner_v1.SpannerAsyncClient",
+          "shortName": "SpannerAsyncClient"
+        },
+        "fullName": "google.cloud.spanner_v1.SpannerAsyncClient.get_session",
         "method": {
+          "fullName": "google.spanner.v1.Spanner.GetSession",
           "service": {
+            "fullName": "google.spanner.v1.Spanner",
             "shortName": "Spanner"
           },
           "shortName": "GetSession"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.spanner_v1.types.GetSessionRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.spanner_v1.types.Session",
+        "shortName": "get_session"
       },
+      "description": "Sample for GetSession",
       "file": "spanner_v1_generated_spanner_get_session_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "spanner_v1_generated_Spanner_GetSession_async",
       "segments": [
         {
@@ -751,18 +1386,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "spanner_v1_generated_spanner_get_session_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.spanner_v1.SpannerClient",
+          "shortName": "SpannerClient"
+        },
+        "fullName": "google.cloud.spanner_v1.SpannerClient.get_session",
         "method": {
+          "fullName": "google.spanner.v1.Spanner.GetSession",
           "service": {
+            "fullName": "google.spanner.v1.Spanner",
             "shortName": "Spanner"
           },
           "shortName": "GetSession"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.spanner_v1.types.GetSessionRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.spanner_v1.types.Session",
+        "shortName": "get_session"
       },
+      "description": "Sample for GetSession",
       "file": "spanner_v1_generated_spanner_get_session_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "spanner_v1_generated_Spanner_GetSession_sync",
       "segments": [
         {
@@ -795,19 +1466,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "spanner_v1_generated_spanner_get_session_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.spanner_v1.SpannerAsyncClient",
+          "shortName": "SpannerAsyncClient"
+        },
+        "fullName": "google.cloud.spanner_v1.SpannerAsyncClient.list_sessions",
         "method": {
+          "fullName": "google.spanner.v1.Spanner.ListSessions",
           "service": {
+            "fullName": "google.spanner.v1.Spanner",
             "shortName": "Spanner"
           },
           "shortName": "ListSessions"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.spanner_v1.types.ListSessionsRequest"
+          },
+          {
+            "name": "database",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.spanner_v1.services.spanner.pagers.ListSessionsAsyncPager",
+        "shortName": "list_sessions"
       },
+      "description": "Sample for ListSessions",
       "file": "spanner_v1_generated_spanner_list_sessions_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "spanner_v1_generated_Spanner_ListSessions_async",
       "segments": [
         {
@@ -840,18 +1547,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "spanner_v1_generated_spanner_list_sessions_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.spanner_v1.SpannerClient",
+          "shortName": "SpannerClient"
+        },
+        "fullName": "google.cloud.spanner_v1.SpannerClient.list_sessions",
         "method": {
+          "fullName": "google.spanner.v1.Spanner.ListSessions",
           "service": {
+            "fullName": "google.spanner.v1.Spanner",
             "shortName": "Spanner"
           },
           "shortName": "ListSessions"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.spanner_v1.types.ListSessionsRequest"
+          },
+          {
+            "name": "database",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.spanner_v1.services.spanner.pagers.ListSessionsPager",
+        "shortName": "list_sessions"
       },
+      "description": "Sample for ListSessions",
       "file": "spanner_v1_generated_spanner_list_sessions_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "spanner_v1_generated_Spanner_ListSessions_sync",
       "segments": [
         {
@@ -884,19 +1627,51 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "spanner_v1_generated_spanner_list_sessions_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.spanner_v1.SpannerAsyncClient",
+          "shortName": "SpannerAsyncClient"
+        },
+        "fullName": "google.cloud.spanner_v1.SpannerAsyncClient.partition_query",
         "method": {
+          "fullName": "google.spanner.v1.Spanner.PartitionQuery",
           "service": {
+            "fullName": "google.spanner.v1.Spanner",
             "shortName": "Spanner"
           },
           "shortName": "PartitionQuery"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.spanner_v1.types.PartitionQueryRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.spanner_v1.types.PartitionResponse",
+        "shortName": "partition_query"
       },
+      "description": "Sample for PartitionQuery",
       "file": "spanner_v1_generated_spanner_partition_query_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "spanner_v1_generated_Spanner_PartitionQuery_async",
       "segments": [
         {
@@ -929,18 +1704,50 @@
           "start": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "spanner_v1_generated_spanner_partition_query_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.spanner_v1.SpannerClient",
+          "shortName": "SpannerClient"
+        },
+        "fullName": "google.cloud.spanner_v1.SpannerClient.partition_query",
         "method": {
+          "fullName": "google.spanner.v1.Spanner.PartitionQuery",
           "service": {
+            "fullName": "google.spanner.v1.Spanner",
             "shortName": "Spanner"
           },
           "shortName": "PartitionQuery"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.spanner_v1.types.PartitionQueryRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.spanner_v1.types.PartitionResponse",
+        "shortName": "partition_query"
       },
+      "description": "Sample for PartitionQuery",
       "file": "spanner_v1_generated_spanner_partition_query_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "spanner_v1_generated_Spanner_PartitionQuery_sync",
       "segments": [
         {
@@ -973,19 +1780,51 @@
           "start": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "spanner_v1_generated_spanner_partition_query_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.spanner_v1.SpannerAsyncClient",
+          "shortName": "SpannerAsyncClient"
+        },
+        "fullName": "google.cloud.spanner_v1.SpannerAsyncClient.partition_read",
         "method": {
+          "fullName": "google.spanner.v1.Spanner.PartitionRead",
           "service": {
+            "fullName": "google.spanner.v1.Spanner",
             "shortName": "Spanner"
           },
           "shortName": "PartitionRead"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.spanner_v1.types.PartitionReadRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.spanner_v1.types.PartitionResponse",
+        "shortName": "partition_read"
       },
+      "description": "Sample for PartitionRead",
       "file": "spanner_v1_generated_spanner_partition_read_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "spanner_v1_generated_Spanner_PartitionRead_async",
       "segments": [
         {
@@ -1018,18 +1857,50 @@
           "start": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "spanner_v1_generated_spanner_partition_read_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.spanner_v1.SpannerClient",
+          "shortName": "SpannerClient"
+        },
+        "fullName": "google.cloud.spanner_v1.SpannerClient.partition_read",
         "method": {
+          "fullName": "google.spanner.v1.Spanner.PartitionRead",
           "service": {
+            "fullName": "google.spanner.v1.Spanner",
             "shortName": "Spanner"
           },
           "shortName": "PartitionRead"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.spanner_v1.types.PartitionReadRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.spanner_v1.types.PartitionResponse",
+        "shortName": "partition_read"
       },
+      "description": "Sample for PartitionRead",
       "file": "spanner_v1_generated_spanner_partition_read_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "spanner_v1_generated_Spanner_PartitionRead_sync",
       "segments": [
         {
@@ -1062,19 +1933,51 @@
           "start": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "spanner_v1_generated_spanner_partition_read_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.spanner_v1.SpannerAsyncClient",
+          "shortName": "SpannerAsyncClient"
+        },
+        "fullName": "google.cloud.spanner_v1.SpannerAsyncClient.read",
         "method": {
+          "fullName": "google.spanner.v1.Spanner.Read",
           "service": {
+            "fullName": "google.spanner.v1.Spanner",
             "shortName": "Spanner"
           },
           "shortName": "Read"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.spanner_v1.types.ReadRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.spanner_v1.types.ResultSet",
+        "shortName": "read"
       },
+      "description": "Sample for Read",
       "file": "spanner_v1_generated_spanner_read_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "spanner_v1_generated_Spanner_Read_async",
       "segments": [
         {
@@ -1107,18 +2010,50 @@
           "start": 44,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "spanner_v1_generated_spanner_read_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.spanner_v1.SpannerClient",
+          "shortName": "SpannerClient"
+        },
+        "fullName": "google.cloud.spanner_v1.SpannerClient.read",
         "method": {
+          "fullName": "google.spanner.v1.Spanner.Read",
           "service": {
+            "fullName": "google.spanner.v1.Spanner",
             "shortName": "Spanner"
           },
           "shortName": "Read"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.spanner_v1.types.ReadRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.spanner_v1.types.ResultSet",
+        "shortName": "read"
       },
+      "description": "Sample for Read",
       "file": "spanner_v1_generated_spanner_read_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "spanner_v1_generated_Spanner_Read_sync",
       "segments": [
         {
@@ -1151,19 +2086,58 @@
           "start": 44,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "spanner_v1_generated_spanner_read_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.spanner_v1.SpannerAsyncClient",
+          "shortName": "SpannerAsyncClient"
+        },
+        "fullName": "google.cloud.spanner_v1.SpannerAsyncClient.rollback",
         "method": {
+          "fullName": "google.spanner.v1.Spanner.Rollback",
           "service": {
+            "fullName": "google.spanner.v1.Spanner",
             "shortName": "Spanner"
           },
           "shortName": "Rollback"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.spanner_v1.types.RollbackRequest"
+          },
+          {
+            "name": "session",
+            "type": "str"
+          },
+          {
+            "name": "transaction_id",
+            "type": "bytes"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "rollback"
       },
+      "description": "Sample for Rollback",
       "file": "spanner_v1_generated_spanner_rollback_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "spanner_v1_generated_Spanner_Rollback_async",
       "segments": [
         {
@@ -1194,18 +2168,57 @@
           "end": 44,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "spanner_v1_generated_spanner_rollback_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.spanner_v1.SpannerClient",
+          "shortName": "SpannerClient"
+        },
+        "fullName": "google.cloud.spanner_v1.SpannerClient.rollback",
         "method": {
+          "fullName": "google.spanner.v1.Spanner.Rollback",
           "service": {
+            "fullName": "google.spanner.v1.Spanner",
             "shortName": "Spanner"
           },
           "shortName": "Rollback"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.spanner_v1.types.RollbackRequest"
+          },
+          {
+            "name": "session",
+            "type": "str"
+          },
+          {
+            "name": "transaction_id",
+            "type": "bytes"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "rollback"
       },
+      "description": "Sample for Rollback",
       "file": "spanner_v1_generated_spanner_rollback_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "spanner_v1_generated_Spanner_Rollback_sync",
       "segments": [
         {
@@ -1236,19 +2249,51 @@
           "end": 44,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "spanner_v1_generated_spanner_rollback_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.spanner_v1.SpannerAsyncClient",
+          "shortName": "SpannerAsyncClient"
+        },
+        "fullName": "google.cloud.spanner_v1.SpannerAsyncClient.streaming_read",
         "method": {
+          "fullName": "google.spanner.v1.Spanner.StreamingRead",
           "service": {
+            "fullName": "google.spanner.v1.Spanner",
             "shortName": "Spanner"
           },
           "shortName": "StreamingRead"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.spanner_v1.types.ReadRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "Iterable[google.cloud.spanner_v1.types.PartialResultSet]",
+        "shortName": "streaming_read"
       },
+      "description": "Sample for StreamingRead",
       "file": "spanner_v1_generated_spanner_streaming_read_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "spanner_v1_generated_Spanner_StreamingRead_async",
       "segments": [
         {
@@ -1281,18 +2326,50 @@
           "start": 44,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "spanner_v1_generated_spanner_streaming_read_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.spanner_v1.SpannerClient",
+          "shortName": "SpannerClient"
+        },
+        "fullName": "google.cloud.spanner_v1.SpannerClient.streaming_read",
         "method": {
+          "fullName": "google.spanner.v1.Spanner.StreamingRead",
           "service": {
+            "fullName": "google.spanner.v1.Spanner",
             "shortName": "Spanner"
           },
           "shortName": "StreamingRead"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.spanner_v1.types.ReadRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "Iterable[google.cloud.spanner_v1.types.PartialResultSet]",
+        "shortName": "streaming_read"
       },
+      "description": "Sample for StreamingRead",
       "file": "spanner_v1_generated_spanner_streaming_read_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "spanner_v1_generated_Spanner_StreamingRead_sync",
       "segments": [
         {
@@ -1325,7 +2402,8 @@
           "start": 44,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "spanner_v1_generated_spanner_streaming_read_sync.py"
     }
   ]
 }

@@ -135,7 +135,7 @@ class Session(proto.Message):
         name (str):
             Output only. The name of the session. This is
             always system-assigned.
-        labels (Sequence[google.cloud.spanner_v1.types.Session.LabelsEntry]):
+        labels (Mapping[str, str]):
             The labels for the session.
 
             -  Label keys must be between 1 and 63 characters long and
@@ -398,7 +398,7 @@ class ExecuteSqlRequest(proto.Message):
 
             It is an error to execute a SQL statement with unbound
             parameters.
-        param_types (Sequence[google.cloud.spanner_v1.types.ExecuteSqlRequest.ParamTypesEntry]):
+        param_types (Mapping[str, google.cloud.spanner_v1.types.Type]):
             It is not always possible for Cloud Spanner to infer the
             right SQL type from a JSON value. For example, values of
             type ``BYTES`` and values of type ``STRING`` both appear in
@@ -645,7 +645,7 @@ class ExecuteBatchDmlRequest(proto.Message):
 
                 It is an error to execute a SQL statement with unbound
                 parameters.
-            param_types (Sequence[google.cloud.spanner_v1.types.ExecuteBatchDmlRequest.Statement.ParamTypesEntry]):
+            param_types (Mapping[str, google.cloud.spanner_v1.types.Type]):
                 It is not always possible for Cloud Spanner to infer the
                 right SQL type from a JSON value. For example, values of
                 type ``BYTES`` and values of type ``STRING`` both appear in
@@ -845,7 +845,7 @@ class PartitionQueryRequest(proto.Message):
 
             It is an error to execute a SQL statement with unbound
             parameters.
-        param_types (Sequence[google.cloud.spanner_v1.types.PartitionQueryRequest.ParamTypesEntry]):
+        param_types (Mapping[str, google.cloud.spanner_v1.types.Type]):
             It is not always possible for Cloud Spanner to infer the
             right SQL type from a JSON value. For example, values of
             type ``BYTES`` and values of type ``STRING`` both appear in
