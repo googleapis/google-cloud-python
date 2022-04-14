@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -234,7 +234,6 @@ class LivestreamServiceAsyncClient:
         r"""Creates a channel with the provided unique ID in the
         specified region.
 
-
         .. code-block:: python
 
             from google.cloud.video import live_stream_v1
@@ -368,7 +367,6 @@ class LivestreamServiceAsyncClient:
     ) -> pagers.ListChannelsAsyncPager:
         r"""Returns a list of all channels in the specified
         region.
-
 
         .. code-block:: python
 
@@ -857,7 +855,6 @@ class LivestreamServiceAsyncClient:
         pipeline will be created only when the StartChannel
         request is received by the server.
 
-
         .. code-block:: python
 
             from google.cloud.video import live_stream_v1
@@ -971,7 +968,6 @@ class LivestreamServiceAsyncClient:
         r"""Stops the specified channel. Part of the video
         pipeline will be released when the StopChannel request
         is received by the server.
-
 
         .. code-block:: python
 
@@ -1087,7 +1083,6 @@ class LivestreamServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Creates an input with the provided unique ID in the
         specified region.
-
 
         .. code-block:: python
 
@@ -1693,7 +1688,6 @@ class LivestreamServiceAsyncClient:
         r"""Creates an event with the provided unique ID in the
         specified channel.
 
-
         .. code-block:: python
 
             from google.cloud.video import live_stream_v1
@@ -1812,7 +1806,6 @@ class LivestreamServiceAsyncClient:
     ) -> pagers.ListEventsAsyncPager:
         r"""Returns a list of all events in the specified
         channel.
-
 
         .. code-block:: python
 

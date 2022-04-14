@@ -50,7 +50,7 @@ class Input(proto.Message):
             Output only. The creation time.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The update time.
-        labels (Sequence[google.cloud.video.live_stream_v1.types.Input.LabelsEntry]):
+        labels (Mapping[str, str]):
             User-defined key/value metadata.
         type_ (google.cloud.video.live_stream_v1.types.Input.Type):
             Source type.
@@ -174,7 +174,7 @@ class Channel(proto.Message):
             Output only. The creation time.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The update time.
-        labels (Sequence[google.cloud.video.live_stream_v1.types.Channel.LabelsEntry]):
+        labels (Mapping[str, str]):
             User-defined key/value metadata.
         input_attachments (Sequence[google.cloud.video.live_stream_v1.types.InputAttachment]):
             A list of input attachments that this channel
@@ -537,7 +537,7 @@ class Event(proto.Message):
             Output only. The creation time.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The update time.
-        labels (Sequence[google.cloud.video.live_stream_v1.types.Event.LabelsEntry]):
+        labels (Mapping[str, str]):
             User-defined key/value metadata.
         ad_break (google.cloud.video.live_stream_v1.types.Event.AdBreakTask):
             Required. Inserts a new ad opportunity.

@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -500,7 +500,6 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
         r"""Creates a channel with the provided unique ID in the
         specified region.
 
-
         .. code-block:: python
 
             from google.cloud.video import live_stream_v1
@@ -634,7 +633,6 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
     ) -> pagers.ListChannelsPager:
         r"""Returns a list of all channels in the specified
         region.
-
 
         .. code-block:: python
 
@@ -1105,7 +1103,6 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
         pipeline will be created only when the StartChannel
         request is received by the server.
 
-
         .. code-block:: python
 
             from google.cloud.video import live_stream_v1
@@ -1219,7 +1216,6 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
         r"""Stops the specified channel. Part of the video
         pipeline will be released when the StopChannel request
         is received by the server.
-
 
         .. code-block:: python
 
@@ -1335,7 +1331,6 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
     ) -> operation.Operation:
         r"""Creates an input with the provided unique ID in the
         specified region.
-
 
         .. code-block:: python
 
@@ -1923,7 +1918,6 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
         r"""Creates an event with the provided unique ID in the
         specified channel.
 
-
         .. code-block:: python
 
             from google.cloud.video import live_stream_v1
@@ -2042,7 +2036,6 @@ class LivestreamServiceClient(metaclass=LivestreamServiceClientMeta):
     ) -> pagers.ListEventsPager:
         r"""Returns a list of all events in the specified
         channel.
-
 
         .. code-block:: python
 
