@@ -139,7 +139,7 @@ class EssentialContactsServiceTransport(abc.ABC):
                     maximum=10.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        core_exceptions.GoogleAPICallError,
+                        core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
                 ),
@@ -153,7 +153,7 @@ class EssentialContactsServiceTransport(abc.ABC):
                     maximum=10.0,
                     multiplier=1.3,
                     predicate=retries.if_exception_type(
-                        core_exceptions.GoogleAPICallError,
+                        core_exceptions.ServiceUnavailable,
                     ),
                     deadline=60.0,
                 ),
