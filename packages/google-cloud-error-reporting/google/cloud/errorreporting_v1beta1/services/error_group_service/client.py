@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -533,7 +533,6 @@ class ErrorGroupServiceClient(metaclass=ErrorGroupServiceClientMeta):
     ) -> common.ErrorGroup:
         r"""Replace the data for the specified group.
         Fails if the group does not exist.
-
 
         .. code-block:: python
 
