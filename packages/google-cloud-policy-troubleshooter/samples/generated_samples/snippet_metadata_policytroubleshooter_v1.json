@@ -1,16 +1,57 @@
 {
+  "clientLibrary": {
+    "apis": [
+      {
+        "id": "google.cloud.policytroubleshooter.v1",
+        "version": "v1"
+      }
+    ],
+    "language": "PYTHON",
+    "name": "google-cloud-policy-troubleshooter"
+  },
   "snippets": [
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.policytroubleshooter_v1.IamCheckerAsyncClient",
+          "shortName": "IamCheckerAsyncClient"
+        },
+        "fullName": "google.cloud.policytroubleshooter_v1.IamCheckerAsyncClient.troubleshoot_iam_policy",
         "method": {
+          "fullName": "google.cloud.policytroubleshooter.v1.IamChecker.TroubleshootIamPolicy",
           "service": {
+            "fullName": "google.cloud.policytroubleshooter.v1.IamChecker",
             "shortName": "IamChecker"
           },
           "shortName": "TroubleshootIamPolicy"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.policytroubleshooter_v1.types.TroubleshootIamPolicyRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.policytroubleshooter_v1.types.TroubleshootIamPolicyResponse",
+        "shortName": "troubleshoot_iam_policy"
       },
+      "description": "Sample for TroubleshootIamPolicy",
       "file": "policytroubleshooter_v1_generated_iam_checker_troubleshoot_iam_policy_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "policytroubleshooter_v1_generated_IamChecker_TroubleshootIamPolicy_async",
       "segments": [
         {
@@ -43,18 +84,50 @@
           "start": 41,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "policytroubleshooter_v1_generated_iam_checker_troubleshoot_iam_policy_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.policytroubleshooter_v1.IamCheckerClient",
+          "shortName": "IamCheckerClient"
+        },
+        "fullName": "google.cloud.policytroubleshooter_v1.IamCheckerClient.troubleshoot_iam_policy",
         "method": {
+          "fullName": "google.cloud.policytroubleshooter.v1.IamChecker.TroubleshootIamPolicy",
           "service": {
+            "fullName": "google.cloud.policytroubleshooter.v1.IamChecker",
             "shortName": "IamChecker"
           },
           "shortName": "TroubleshootIamPolicy"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.policytroubleshooter_v1.types.TroubleshootIamPolicyRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.policytroubleshooter_v1.types.TroubleshootIamPolicyResponse",
+        "shortName": "troubleshoot_iam_policy"
       },
+      "description": "Sample for TroubleshootIamPolicy",
       "file": "policytroubleshooter_v1_generated_iam_checker_troubleshoot_iam_policy_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "policytroubleshooter_v1_generated_IamChecker_TroubleshootIamPolicy_sync",
       "segments": [
         {
@@ -87,7 +160,8 @@
           "start": 41,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "policytroubleshooter_v1_generated_iam_checker_troubleshoot_iam_policy_sync.py"
     }
   ]
 }

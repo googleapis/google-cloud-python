@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -208,7 +208,6 @@ class IamCheckerAsyncClient:
         r"""Checks whether a member has a specific permission for
         a specific resource, and explains why the member does or
         does not have that permission.
-
 
         .. code-block:: python
 

@@ -196,7 +196,7 @@ class BindingExplanation(proto.Message):
             The relevance of the permission's existence,
             or nonexistence, in the role to the overall
             determination for the entire policy.
-        memberships (Sequence[google.cloud.policytroubleshooter_v1.types.BindingExplanation.MembershipsEntry]):
+        memberships (Mapping[str, google.cloud.policytroubleshooter_v1.types.BindingExplanation.AnnotatedMembership]):
             Indicates whether each member in the binding includes the
             member specified in the request, either directly or
             indirectly. Each key identifies a member in the binding, and
