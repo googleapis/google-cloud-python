@@ -4,6 +4,24 @@
 
 [1]: https://pypi.org/project/google-cloud-bigtable/#history
 
+## [2.9.0](https://github.com/googleapis/python-bigtable/compare/v2.8.1...v2.9.0) (2022-04-14)
+
+
+### Features
+
+* App Profile multi cluster routing support with specified cluster ids ([#549](https://github.com/googleapis/python-bigtable/issues/549)) ([a0ed5b5](https://github.com/googleapis/python-bigtable/commit/a0ed5b5dfda1f3980b1a8eb349b2b5d8ab428a4b))
+* AuditConfig for IAM v1 ([4e50278](https://github.com/googleapis/python-bigtable/commit/4e50278c73f608a7c493692d8d17e7dd2aa7ba44))
+
+
+### Bug Fixes
+
+* **deps:** require grpc-google-iam-v1 >=0.12.4 ([4e50278](https://github.com/googleapis/python-bigtable/commit/4e50278c73f608a7c493692d8d17e7dd2aa7ba44))
+
+
+### Documentation
+
+* fix type in docstring for map fields ([4e50278](https://github.com/googleapis/python-bigtable/commit/4e50278c73f608a7c493692d8d17e7dd2aa7ba44))
+
 ### [2.8.1](https://github.com/googleapis/python-bigtable/compare/v2.8.0...v2.8.1) (2022-04-07)
 
 
