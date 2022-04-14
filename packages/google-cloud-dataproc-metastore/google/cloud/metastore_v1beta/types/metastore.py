@@ -84,7 +84,7 @@ class Service(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time when the metastore
             service was last updated.
-        labels (Sequence[google.cloud.metastore_v1beta.types.Service.LabelsEntry]):
+        labels (Mapping[str, str]):
             User-defined labels for the metastore
             service.
         network (str):
@@ -306,7 +306,7 @@ class HiveMetastoreConfig(proto.Message):
     Attributes:
         version (str):
             Immutable. The Hive metastore schema version.
-        config_overrides (Sequence[google.cloud.metastore_v1beta.types.HiveMetastoreConfig.ConfigOverridesEntry]):
+        config_overrides (Mapping[str, str]):
             A mapping of Hive metastore configuration key-value pairs to
             apply to the Hive metastore (configured in
             ``hive-site.xml``). The mappings override system defaults

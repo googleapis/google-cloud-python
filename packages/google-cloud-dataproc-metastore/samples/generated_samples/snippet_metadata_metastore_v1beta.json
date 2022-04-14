@@ -1,16 +1,69 @@
 {
+  "clientLibrary": {
+    "apis": [
+      {
+        "id": "google.cloud.metastore.v1beta",
+        "version": "v1beta"
+      }
+    ],
+    "language": "PYTHON",
+    "name": "google-cloud-dataproc-metastore"
+  },
   "snippets": [
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreAsyncClient",
+          "shortName": "DataprocMetastoreAsyncClient"
+        },
+        "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreAsyncClient.create_backup",
         "method": {
+          "fullName": "google.cloud.metastore.v1beta.DataprocMetastore.CreateBackup",
           "service": {
+            "fullName": "google.cloud.metastore.v1beta.DataprocMetastore",
             "shortName": "DataprocMetastore"
           },
           "shortName": "CreateBackup"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.metastore_v1beta.types.CreateBackupRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "backup",
+            "type": "google.cloud.metastore_v1beta.types.Backup"
+          },
+          {
+            "name": "backup_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "create_backup"
       },
+      "description": "Sample for CreateBackup",
       "file": "metastore_v1beta_generated_dataproc_metastore_create_backup_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "metastore_v1beta_generated_DataprocMetastore_CreateBackup_async",
       "segments": [
         {
@@ -43,18 +96,62 @@
           "start": 47,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "metastore_v1beta_generated_dataproc_metastore_create_backup_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreClient",
+          "shortName": "DataprocMetastoreClient"
+        },
+        "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreClient.create_backup",
         "method": {
+          "fullName": "google.cloud.metastore.v1beta.DataprocMetastore.CreateBackup",
           "service": {
+            "fullName": "google.cloud.metastore.v1beta.DataprocMetastore",
             "shortName": "DataprocMetastore"
           },
           "shortName": "CreateBackup"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.metastore_v1beta.types.CreateBackupRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "backup",
+            "type": "google.cloud.metastore_v1beta.types.Backup"
+          },
+          {
+            "name": "backup_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "create_backup"
       },
+      "description": "Sample for CreateBackup",
       "file": "metastore_v1beta_generated_dataproc_metastore_create_backup_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "metastore_v1beta_generated_DataprocMetastore_CreateBackup_sync",
       "segments": [
         {
@@ -87,19 +184,63 @@
           "start": 47,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "metastore_v1beta_generated_dataproc_metastore_create_backup_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreAsyncClient",
+          "shortName": "DataprocMetastoreAsyncClient"
+        },
+        "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreAsyncClient.create_metadata_import",
         "method": {
+          "fullName": "google.cloud.metastore.v1beta.DataprocMetastore.CreateMetadataImport",
           "service": {
+            "fullName": "google.cloud.metastore.v1beta.DataprocMetastore",
             "shortName": "DataprocMetastore"
           },
           "shortName": "CreateMetadataImport"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.metastore_v1beta.types.CreateMetadataImportRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "metadata_import",
+            "type": "google.cloud.metastore_v1beta.types.MetadataImport"
+          },
+          {
+            "name": "metadata_import_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "create_metadata_import"
       },
+      "description": "Sample for CreateMetadataImport",
       "file": "metastore_v1beta_generated_dataproc_metastore_create_metadata_import_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "metastore_v1beta_generated_DataprocMetastore_CreateMetadataImport_async",
       "segments": [
         {
@@ -132,18 +273,62 @@
           "start": 47,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "metastore_v1beta_generated_dataproc_metastore_create_metadata_import_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreClient",
+          "shortName": "DataprocMetastoreClient"
+        },
+        "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreClient.create_metadata_import",
         "method": {
+          "fullName": "google.cloud.metastore.v1beta.DataprocMetastore.CreateMetadataImport",
           "service": {
+            "fullName": "google.cloud.metastore.v1beta.DataprocMetastore",
             "shortName": "DataprocMetastore"
           },
           "shortName": "CreateMetadataImport"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.metastore_v1beta.types.CreateMetadataImportRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "metadata_import",
+            "type": "google.cloud.metastore_v1beta.types.MetadataImport"
+          },
+          {
+            "name": "metadata_import_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "create_metadata_import"
       },
+      "description": "Sample for CreateMetadataImport",
       "file": "metastore_v1beta_generated_dataproc_metastore_create_metadata_import_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "metastore_v1beta_generated_DataprocMetastore_CreateMetadataImport_sync",
       "segments": [
         {
@@ -176,19 +361,63 @@
           "start": 47,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "metastore_v1beta_generated_dataproc_metastore_create_metadata_import_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreAsyncClient",
+          "shortName": "DataprocMetastoreAsyncClient"
+        },
+        "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreAsyncClient.create_service",
         "method": {
+          "fullName": "google.cloud.metastore.v1beta.DataprocMetastore.CreateService",
           "service": {
+            "fullName": "google.cloud.metastore.v1beta.DataprocMetastore",
             "shortName": "DataprocMetastore"
           },
           "shortName": "CreateService"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.metastore_v1beta.types.CreateServiceRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "service",
+            "type": "google.cloud.metastore_v1beta.types.Service"
+          },
+          {
+            "name": "service_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "create_service"
       },
+      "description": "Sample for CreateService",
       "file": "metastore_v1beta_generated_dataproc_metastore_create_service_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "metastore_v1beta_generated_DataprocMetastore_CreateService_async",
       "segments": [
         {
@@ -221,18 +450,62 @@
           "start": 47,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "metastore_v1beta_generated_dataproc_metastore_create_service_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreClient",
+          "shortName": "DataprocMetastoreClient"
+        },
+        "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreClient.create_service",
         "method": {
+          "fullName": "google.cloud.metastore.v1beta.DataprocMetastore.CreateService",
           "service": {
+            "fullName": "google.cloud.metastore.v1beta.DataprocMetastore",
             "shortName": "DataprocMetastore"
           },
           "shortName": "CreateService"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.metastore_v1beta.types.CreateServiceRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "service",
+            "type": "google.cloud.metastore_v1beta.types.Service"
+          },
+          {
+            "name": "service_id",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "create_service"
       },
+      "description": "Sample for CreateService",
       "file": "metastore_v1beta_generated_dataproc_metastore_create_service_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "metastore_v1beta_generated_DataprocMetastore_CreateService_sync",
       "segments": [
         {
@@ -265,19 +538,55 @@
           "start": 47,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "metastore_v1beta_generated_dataproc_metastore_create_service_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreAsyncClient",
+          "shortName": "DataprocMetastoreAsyncClient"
+        },
+        "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreAsyncClient.delete_backup",
         "method": {
+          "fullName": "google.cloud.metastore.v1beta.DataprocMetastore.DeleteBackup",
           "service": {
+            "fullName": "google.cloud.metastore.v1beta.DataprocMetastore",
             "shortName": "DataprocMetastore"
           },
           "shortName": "DeleteBackup"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.metastore_v1beta.types.DeleteBackupRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "delete_backup"
       },
+      "description": "Sample for DeleteBackup",
       "file": "metastore_v1beta_generated_dataproc_metastore_delete_backup_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "metastore_v1beta_generated_DataprocMetastore_DeleteBackup_async",
       "segments": [
         {
@@ -310,18 +619,54 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "metastore_v1beta_generated_dataproc_metastore_delete_backup_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreClient",
+          "shortName": "DataprocMetastoreClient"
+        },
+        "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreClient.delete_backup",
         "method": {
+          "fullName": "google.cloud.metastore.v1beta.DataprocMetastore.DeleteBackup",
           "service": {
+            "fullName": "google.cloud.metastore.v1beta.DataprocMetastore",
             "shortName": "DataprocMetastore"
           },
           "shortName": "DeleteBackup"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.metastore_v1beta.types.DeleteBackupRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "delete_backup"
       },
+      "description": "Sample for DeleteBackup",
       "file": "metastore_v1beta_generated_dataproc_metastore_delete_backup_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "metastore_v1beta_generated_DataprocMetastore_DeleteBackup_sync",
       "segments": [
         {
@@ -354,19 +699,55 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "metastore_v1beta_generated_dataproc_metastore_delete_backup_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreAsyncClient",
+          "shortName": "DataprocMetastoreAsyncClient"
+        },
+        "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreAsyncClient.delete_service",
         "method": {
+          "fullName": "google.cloud.metastore.v1beta.DataprocMetastore.DeleteService",
           "service": {
+            "fullName": "google.cloud.metastore.v1beta.DataprocMetastore",
             "shortName": "DataprocMetastore"
           },
           "shortName": "DeleteService"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.metastore_v1beta.types.DeleteServiceRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "delete_service"
       },
+      "description": "Sample for DeleteService",
       "file": "metastore_v1beta_generated_dataproc_metastore_delete_service_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "metastore_v1beta_generated_DataprocMetastore_DeleteService_async",
       "segments": [
         {
@@ -399,18 +780,54 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "metastore_v1beta_generated_dataproc_metastore_delete_service_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreClient",
+          "shortName": "DataprocMetastoreClient"
+        },
+        "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreClient.delete_service",
         "method": {
+          "fullName": "google.cloud.metastore.v1beta.DataprocMetastore.DeleteService",
           "service": {
+            "fullName": "google.cloud.metastore.v1beta.DataprocMetastore",
             "shortName": "DataprocMetastore"
           },
           "shortName": "DeleteService"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.metastore_v1beta.types.DeleteServiceRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "delete_service"
       },
+      "description": "Sample for DeleteService",
       "file": "metastore_v1beta_generated_dataproc_metastore_delete_service_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "metastore_v1beta_generated_DataprocMetastore_DeleteService_sync",
       "segments": [
         {
@@ -443,19 +860,51 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "metastore_v1beta_generated_dataproc_metastore_delete_service_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreAsyncClient",
+          "shortName": "DataprocMetastoreAsyncClient"
+        },
+        "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreAsyncClient.export_metadata",
         "method": {
+          "fullName": "google.cloud.metastore.v1beta.DataprocMetastore.ExportMetadata",
           "service": {
+            "fullName": "google.cloud.metastore.v1beta.DataprocMetastore",
             "shortName": "DataprocMetastore"
           },
           "shortName": "ExportMetadata"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.metastore_v1beta.types.ExportMetadataRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "export_metadata"
       },
+      "description": "Sample for ExportMetadata",
       "file": "metastore_v1beta_generated_dataproc_metastore_export_metadata_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "metastore_v1beta_generated_DataprocMetastore_ExportMetadata_async",
       "segments": [
         {
@@ -488,18 +937,50 @@
           "start": 47,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "metastore_v1beta_generated_dataproc_metastore_export_metadata_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreClient",
+          "shortName": "DataprocMetastoreClient"
+        },
+        "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreClient.export_metadata",
         "method": {
+          "fullName": "google.cloud.metastore.v1beta.DataprocMetastore.ExportMetadata",
           "service": {
+            "fullName": "google.cloud.metastore.v1beta.DataprocMetastore",
             "shortName": "DataprocMetastore"
           },
           "shortName": "ExportMetadata"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.metastore_v1beta.types.ExportMetadataRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "export_metadata"
       },
+      "description": "Sample for ExportMetadata",
       "file": "metastore_v1beta_generated_dataproc_metastore_export_metadata_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "metastore_v1beta_generated_DataprocMetastore_ExportMetadata_sync",
       "segments": [
         {
@@ -532,19 +1013,55 @@
           "start": 47,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "metastore_v1beta_generated_dataproc_metastore_export_metadata_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreAsyncClient",
+          "shortName": "DataprocMetastoreAsyncClient"
+        },
+        "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreAsyncClient.get_backup",
         "method": {
+          "fullName": "google.cloud.metastore.v1beta.DataprocMetastore.GetBackup",
           "service": {
+            "fullName": "google.cloud.metastore.v1beta.DataprocMetastore",
             "shortName": "DataprocMetastore"
           },
           "shortName": "GetBackup"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.metastore_v1beta.types.GetBackupRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.metastore_v1beta.types.Backup",
+        "shortName": "get_backup"
       },
+      "description": "Sample for GetBackup",
       "file": "metastore_v1beta_generated_dataproc_metastore_get_backup_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "metastore_v1beta_generated_DataprocMetastore_GetBackup_async",
       "segments": [
         {
@@ -577,18 +1094,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "metastore_v1beta_generated_dataproc_metastore_get_backup_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreClient",
+          "shortName": "DataprocMetastoreClient"
+        },
+        "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreClient.get_backup",
         "method": {
+          "fullName": "google.cloud.metastore.v1beta.DataprocMetastore.GetBackup",
           "service": {
+            "fullName": "google.cloud.metastore.v1beta.DataprocMetastore",
             "shortName": "DataprocMetastore"
           },
           "shortName": "GetBackup"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.metastore_v1beta.types.GetBackupRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.metastore_v1beta.types.Backup",
+        "shortName": "get_backup"
       },
+      "description": "Sample for GetBackup",
       "file": "metastore_v1beta_generated_dataproc_metastore_get_backup_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "metastore_v1beta_generated_DataprocMetastore_GetBackup_sync",
       "segments": [
         {
@@ -621,19 +1174,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "metastore_v1beta_generated_dataproc_metastore_get_backup_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreAsyncClient",
+          "shortName": "DataprocMetastoreAsyncClient"
+        },
+        "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreAsyncClient.get_metadata_import",
         "method": {
+          "fullName": "google.cloud.metastore.v1beta.DataprocMetastore.GetMetadataImport",
           "service": {
+            "fullName": "google.cloud.metastore.v1beta.DataprocMetastore",
             "shortName": "DataprocMetastore"
           },
           "shortName": "GetMetadataImport"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.metastore_v1beta.types.GetMetadataImportRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.metastore_v1beta.types.MetadataImport",
+        "shortName": "get_metadata_import"
       },
+      "description": "Sample for GetMetadataImport",
       "file": "metastore_v1beta_generated_dataproc_metastore_get_metadata_import_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "metastore_v1beta_generated_DataprocMetastore_GetMetadataImport_async",
       "segments": [
         {
@@ -666,18 +1255,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "metastore_v1beta_generated_dataproc_metastore_get_metadata_import_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreClient",
+          "shortName": "DataprocMetastoreClient"
+        },
+        "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreClient.get_metadata_import",
         "method": {
+          "fullName": "google.cloud.metastore.v1beta.DataprocMetastore.GetMetadataImport",
           "service": {
+            "fullName": "google.cloud.metastore.v1beta.DataprocMetastore",
             "shortName": "DataprocMetastore"
           },
           "shortName": "GetMetadataImport"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.metastore_v1beta.types.GetMetadataImportRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.metastore_v1beta.types.MetadataImport",
+        "shortName": "get_metadata_import"
       },
+      "description": "Sample for GetMetadataImport",
       "file": "metastore_v1beta_generated_dataproc_metastore_get_metadata_import_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "metastore_v1beta_generated_DataprocMetastore_GetMetadataImport_sync",
       "segments": [
         {
@@ -710,19 +1335,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "metastore_v1beta_generated_dataproc_metastore_get_metadata_import_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreAsyncClient",
+          "shortName": "DataprocMetastoreAsyncClient"
+        },
+        "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreAsyncClient.get_service",
         "method": {
+          "fullName": "google.cloud.metastore.v1beta.DataprocMetastore.GetService",
           "service": {
+            "fullName": "google.cloud.metastore.v1beta.DataprocMetastore",
             "shortName": "DataprocMetastore"
           },
           "shortName": "GetService"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.metastore_v1beta.types.GetServiceRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.metastore_v1beta.types.Service",
+        "shortName": "get_service"
       },
+      "description": "Sample for GetService",
       "file": "metastore_v1beta_generated_dataproc_metastore_get_service_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "metastore_v1beta_generated_DataprocMetastore_GetService_async",
       "segments": [
         {
@@ -755,18 +1416,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "metastore_v1beta_generated_dataproc_metastore_get_service_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreClient",
+          "shortName": "DataprocMetastoreClient"
+        },
+        "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreClient.get_service",
         "method": {
+          "fullName": "google.cloud.metastore.v1beta.DataprocMetastore.GetService",
           "service": {
+            "fullName": "google.cloud.metastore.v1beta.DataprocMetastore",
             "shortName": "DataprocMetastore"
           },
           "shortName": "GetService"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.metastore_v1beta.types.GetServiceRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.metastore_v1beta.types.Service",
+        "shortName": "get_service"
       },
+      "description": "Sample for GetService",
       "file": "metastore_v1beta_generated_dataproc_metastore_get_service_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "metastore_v1beta_generated_DataprocMetastore_GetService_sync",
       "segments": [
         {
@@ -799,19 +1496,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "metastore_v1beta_generated_dataproc_metastore_get_service_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreAsyncClient",
+          "shortName": "DataprocMetastoreAsyncClient"
+        },
+        "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreAsyncClient.list_backups",
         "method": {
+          "fullName": "google.cloud.metastore.v1beta.DataprocMetastore.ListBackups",
           "service": {
+            "fullName": "google.cloud.metastore.v1beta.DataprocMetastore",
             "shortName": "DataprocMetastore"
           },
           "shortName": "ListBackups"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.metastore_v1beta.types.ListBackupsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.metastore_v1beta.services.dataproc_metastore.pagers.ListBackupsAsyncPager",
+        "shortName": "list_backups"
       },
+      "description": "Sample for ListBackups",
       "file": "metastore_v1beta_generated_dataproc_metastore_list_backups_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "metastore_v1beta_generated_DataprocMetastore_ListBackups_async",
       "segments": [
         {
@@ -844,18 +1577,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "metastore_v1beta_generated_dataproc_metastore_list_backups_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreClient",
+          "shortName": "DataprocMetastoreClient"
+        },
+        "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreClient.list_backups",
         "method": {
+          "fullName": "google.cloud.metastore.v1beta.DataprocMetastore.ListBackups",
           "service": {
+            "fullName": "google.cloud.metastore.v1beta.DataprocMetastore",
             "shortName": "DataprocMetastore"
           },
           "shortName": "ListBackups"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.metastore_v1beta.types.ListBackupsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.metastore_v1beta.services.dataproc_metastore.pagers.ListBackupsPager",
+        "shortName": "list_backups"
       },
+      "description": "Sample for ListBackups",
       "file": "metastore_v1beta_generated_dataproc_metastore_list_backups_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "metastore_v1beta_generated_DataprocMetastore_ListBackups_sync",
       "segments": [
         {
@@ -888,19 +1657,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "metastore_v1beta_generated_dataproc_metastore_list_backups_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreAsyncClient",
+          "shortName": "DataprocMetastoreAsyncClient"
+        },
+        "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreAsyncClient.list_metadata_imports",
         "method": {
+          "fullName": "google.cloud.metastore.v1beta.DataprocMetastore.ListMetadataImports",
           "service": {
+            "fullName": "google.cloud.metastore.v1beta.DataprocMetastore",
             "shortName": "DataprocMetastore"
           },
           "shortName": "ListMetadataImports"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.metastore_v1beta.types.ListMetadataImportsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.metastore_v1beta.services.dataproc_metastore.pagers.ListMetadataImportsAsyncPager",
+        "shortName": "list_metadata_imports"
       },
+      "description": "Sample for ListMetadataImports",
       "file": "metastore_v1beta_generated_dataproc_metastore_list_metadata_imports_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "metastore_v1beta_generated_DataprocMetastore_ListMetadataImports_async",
       "segments": [
         {
@@ -933,18 +1738,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "metastore_v1beta_generated_dataproc_metastore_list_metadata_imports_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreClient",
+          "shortName": "DataprocMetastoreClient"
+        },
+        "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreClient.list_metadata_imports",
         "method": {
+          "fullName": "google.cloud.metastore.v1beta.DataprocMetastore.ListMetadataImports",
           "service": {
+            "fullName": "google.cloud.metastore.v1beta.DataprocMetastore",
             "shortName": "DataprocMetastore"
           },
           "shortName": "ListMetadataImports"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.metastore_v1beta.types.ListMetadataImportsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.metastore_v1beta.services.dataproc_metastore.pagers.ListMetadataImportsPager",
+        "shortName": "list_metadata_imports"
       },
+      "description": "Sample for ListMetadataImports",
       "file": "metastore_v1beta_generated_dataproc_metastore_list_metadata_imports_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "metastore_v1beta_generated_DataprocMetastore_ListMetadataImports_sync",
       "segments": [
         {
@@ -977,19 +1818,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "metastore_v1beta_generated_dataproc_metastore_list_metadata_imports_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreAsyncClient",
+          "shortName": "DataprocMetastoreAsyncClient"
+        },
+        "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreAsyncClient.list_services",
         "method": {
+          "fullName": "google.cloud.metastore.v1beta.DataprocMetastore.ListServices",
           "service": {
+            "fullName": "google.cloud.metastore.v1beta.DataprocMetastore",
             "shortName": "DataprocMetastore"
           },
           "shortName": "ListServices"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.metastore_v1beta.types.ListServicesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.metastore_v1beta.services.dataproc_metastore.pagers.ListServicesAsyncPager",
+        "shortName": "list_services"
       },
+      "description": "Sample for ListServices",
       "file": "metastore_v1beta_generated_dataproc_metastore_list_services_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "metastore_v1beta_generated_DataprocMetastore_ListServices_async",
       "segments": [
         {
@@ -1022,18 +1899,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "metastore_v1beta_generated_dataproc_metastore_list_services_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreClient",
+          "shortName": "DataprocMetastoreClient"
+        },
+        "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreClient.list_services",
         "method": {
+          "fullName": "google.cloud.metastore.v1beta.DataprocMetastore.ListServices",
           "service": {
+            "fullName": "google.cloud.metastore.v1beta.DataprocMetastore",
             "shortName": "DataprocMetastore"
           },
           "shortName": "ListServices"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.metastore_v1beta.types.ListServicesRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.metastore_v1beta.services.dataproc_metastore.pagers.ListServicesPager",
+        "shortName": "list_services"
       },
+      "description": "Sample for ListServices",
       "file": "metastore_v1beta_generated_dataproc_metastore_list_services_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "metastore_v1beta_generated_DataprocMetastore_ListServices_sync",
       "segments": [
         {
@@ -1066,19 +1979,59 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "metastore_v1beta_generated_dataproc_metastore_list_services_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreAsyncClient",
+          "shortName": "DataprocMetastoreAsyncClient"
+        },
+        "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreAsyncClient.restore_service",
         "method": {
+          "fullName": "google.cloud.metastore.v1beta.DataprocMetastore.RestoreService",
           "service": {
+            "fullName": "google.cloud.metastore.v1beta.DataprocMetastore",
             "shortName": "DataprocMetastore"
           },
           "shortName": "RestoreService"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.metastore_v1beta.types.RestoreServiceRequest"
+          },
+          {
+            "name": "service",
+            "type": "str"
+          },
+          {
+            "name": "backup",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "restore_service"
       },
+      "description": "Sample for RestoreService",
       "file": "metastore_v1beta_generated_dataproc_metastore_restore_service_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "metastore_v1beta_generated_DataprocMetastore_RestoreService_async",
       "segments": [
         {
@@ -1111,18 +2064,58 @@
           "start": 47,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "metastore_v1beta_generated_dataproc_metastore_restore_service_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreClient",
+          "shortName": "DataprocMetastoreClient"
+        },
+        "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreClient.restore_service",
         "method": {
+          "fullName": "google.cloud.metastore.v1beta.DataprocMetastore.RestoreService",
           "service": {
+            "fullName": "google.cloud.metastore.v1beta.DataprocMetastore",
             "shortName": "DataprocMetastore"
           },
           "shortName": "RestoreService"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.metastore_v1beta.types.RestoreServiceRequest"
+          },
+          {
+            "name": "service",
+            "type": "str"
+          },
+          {
+            "name": "backup",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "restore_service"
       },
+      "description": "Sample for RestoreService",
       "file": "metastore_v1beta_generated_dataproc_metastore_restore_service_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "metastore_v1beta_generated_DataprocMetastore_RestoreService_sync",
       "segments": [
         {
@@ -1155,19 +2148,59 @@
           "start": 47,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "metastore_v1beta_generated_dataproc_metastore_restore_service_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreAsyncClient",
+          "shortName": "DataprocMetastoreAsyncClient"
+        },
+        "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreAsyncClient.update_metadata_import",
         "method": {
+          "fullName": "google.cloud.metastore.v1beta.DataprocMetastore.UpdateMetadataImport",
           "service": {
+            "fullName": "google.cloud.metastore.v1beta.DataprocMetastore",
             "shortName": "DataprocMetastore"
           },
           "shortName": "UpdateMetadataImport"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.metastore_v1beta.types.UpdateMetadataImportRequest"
+          },
+          {
+            "name": "metadata_import",
+            "type": "google.cloud.metastore_v1beta.types.MetadataImport"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "update_metadata_import"
       },
+      "description": "Sample for UpdateMetadataImport",
       "file": "metastore_v1beta_generated_dataproc_metastore_update_metadata_import_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "metastore_v1beta_generated_DataprocMetastore_UpdateMetadataImport_async",
       "segments": [
         {
@@ -1200,18 +2233,58 @@
           "start": 45,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "metastore_v1beta_generated_dataproc_metastore_update_metadata_import_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreClient",
+          "shortName": "DataprocMetastoreClient"
+        },
+        "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreClient.update_metadata_import",
         "method": {
+          "fullName": "google.cloud.metastore.v1beta.DataprocMetastore.UpdateMetadataImport",
           "service": {
+            "fullName": "google.cloud.metastore.v1beta.DataprocMetastore",
             "shortName": "DataprocMetastore"
           },
           "shortName": "UpdateMetadataImport"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.metastore_v1beta.types.UpdateMetadataImportRequest"
+          },
+          {
+            "name": "metadata_import",
+            "type": "google.cloud.metastore_v1beta.types.MetadataImport"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "update_metadata_import"
       },
+      "description": "Sample for UpdateMetadataImport",
       "file": "metastore_v1beta_generated_dataproc_metastore_update_metadata_import_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "metastore_v1beta_generated_DataprocMetastore_UpdateMetadataImport_sync",
       "segments": [
         {
@@ -1244,19 +2317,59 @@
           "start": 45,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "metastore_v1beta_generated_dataproc_metastore_update_metadata_import_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreAsyncClient",
+          "shortName": "DataprocMetastoreAsyncClient"
+        },
+        "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreAsyncClient.update_service",
         "method": {
+          "fullName": "google.cloud.metastore.v1beta.DataprocMetastore.UpdateService",
           "service": {
+            "fullName": "google.cloud.metastore.v1beta.DataprocMetastore",
             "shortName": "DataprocMetastore"
           },
           "shortName": "UpdateService"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.metastore_v1beta.types.UpdateServiceRequest"
+          },
+          {
+            "name": "service",
+            "type": "google.cloud.metastore_v1beta.types.Service"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "update_service"
       },
+      "description": "Sample for UpdateService",
       "file": "metastore_v1beta_generated_dataproc_metastore_update_service_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "metastore_v1beta_generated_DataprocMetastore_UpdateService_async",
       "segments": [
         {
@@ -1289,18 +2402,58 @@
           "start": 45,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "metastore_v1beta_generated_dataproc_metastore_update_service_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreClient",
+          "shortName": "DataprocMetastoreClient"
+        },
+        "fullName": "google.cloud.metastore_v1beta.DataprocMetastoreClient.update_service",
         "method": {
+          "fullName": "google.cloud.metastore.v1beta.DataprocMetastore.UpdateService",
           "service": {
+            "fullName": "google.cloud.metastore.v1beta.DataprocMetastore",
             "shortName": "DataprocMetastore"
           },
           "shortName": "UpdateService"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.metastore_v1beta.types.UpdateServiceRequest"
+          },
+          {
+            "name": "service",
+            "type": "google.cloud.metastore_v1beta.types.Service"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "update_service"
       },
+      "description": "Sample for UpdateService",
       "file": "metastore_v1beta_generated_dataproc_metastore_update_service_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "metastore_v1beta_generated_DataprocMetastore_UpdateService_sync",
       "segments": [
         {
@@ -1333,7 +2486,8 @@
           "start": 45,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "metastore_v1beta_generated_dataproc_metastore_update_service_sync.py"
     }
   ]
 }

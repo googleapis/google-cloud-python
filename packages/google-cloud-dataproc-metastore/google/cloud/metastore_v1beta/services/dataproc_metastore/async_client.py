@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -458,7 +458,6 @@ class DataprocMetastoreAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Creates a metastore service in a project and
         location.
-
 
         .. code-block:: python
 
@@ -1061,7 +1060,6 @@ class DataprocMetastoreAsyncClient:
         r"""Creates a new MetadataImport in a given project and
         location.
 
-
         .. code-block:: python
 
             from google.cloud import metastore_v1beta
@@ -1204,7 +1202,6 @@ class DataprocMetastoreAsyncClient:
         r"""Updates a single import.
         Only the description field of MetadataImport is
         supported to be updated.
-
 
         .. code-block:: python
 

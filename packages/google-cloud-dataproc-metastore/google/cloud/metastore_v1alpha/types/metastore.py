@@ -89,7 +89,7 @@ class Service(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time when the metastore
             service was last updated.
-        labels (Sequence[google.cloud.metastore_v1alpha.types.Service.LabelsEntry]):
+        labels (Mapping[str, str]):
             User-defined labels for the metastore
             service.
         network (str):
@@ -327,7 +327,7 @@ class DataplexConfig(proto.Message):
     the Dataplex service.
 
     Attributes:
-        lake_resources (Sequence[google.cloud.metastore_v1alpha.types.DataplexConfig.LakeResourcesEntry]):
+        lake_resources (Mapping[str, google.cloud.metastore_v1alpha.types.Lake]):
             A reference to the Lake resources that this metastore
             service is attached to. The key is the lake resource name.
             Example:
@@ -388,7 +388,7 @@ class HiveMetastoreConfig(proto.Message):
     Attributes:
         version (str):
             Immutable. The Hive metastore schema version.
-        config_overrides (Sequence[google.cloud.metastore_v1alpha.types.HiveMetastoreConfig.ConfigOverridesEntry]):
+        config_overrides (Mapping[str, str]):
             A mapping of Hive metastore configuration key-value pairs to
             apply to the Hive metastore (configured in
             ``hive-site.xml``). The mappings override system defaults
@@ -405,7 +405,7 @@ class HiveMetastoreConfig(proto.Message):
         endpoint_protocol (google.cloud.metastore_v1alpha.types.HiveMetastoreConfig.EndpointProtocol):
             The protocol to use for the metastore service endpoint. If
             unspecified, defaults to ``THRIFT``.
-        auxiliary_versions (Sequence[google.cloud.metastore_v1alpha.types.HiveMetastoreConfig.AuxiliaryVersionsEntry]):
+        auxiliary_versions (Mapping[str, google.cloud.metastore_v1alpha.types.AuxiliaryVersionConfig]):
             A mapping of Hive metastore version to the auxiliary version
             configuration. When specified, a secondary Hive metastore
             service is created along with the primary service. All
@@ -534,7 +534,7 @@ class AuxiliaryVersionConfig(proto.Message):
             The Hive metastore version of the auxiliary
             service. It must be less than the primary Hive
             metastore service's version.
-        config_overrides (Sequence[google.cloud.metastore_v1alpha.types.AuxiliaryVersionConfig.ConfigOverridesEntry]):
+        config_overrides (Mapping[str, str]):
             A mapping of Hive metastore configuration key-value pairs to
             apply to the auxiliary Hive metastore (configured in
             ``hive-site.xml``) in addition to the primary version's

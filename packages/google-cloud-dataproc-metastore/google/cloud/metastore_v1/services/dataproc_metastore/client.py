@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -741,7 +741,6 @@ class DataprocMetastoreClient(metaclass=DataprocMetastoreClientMeta):
         r"""Creates a metastore service in a project and
         location.
 
-
         .. code-block:: python
 
             from google.cloud import metastore_v1
@@ -1343,7 +1342,6 @@ class DataprocMetastoreClient(metaclass=DataprocMetastoreClientMeta):
         r"""Creates a new MetadataImport in a given project and
         location.
 
-
         .. code-block:: python
 
             from google.cloud import metastore_v1
@@ -1486,7 +1484,6 @@ class DataprocMetastoreClient(metaclass=DataprocMetastoreClientMeta):
         r"""Updates a single import.
         Only the description field of MetadataImport is
         supported to be updated.
-
 
         .. code-block:: python
 
