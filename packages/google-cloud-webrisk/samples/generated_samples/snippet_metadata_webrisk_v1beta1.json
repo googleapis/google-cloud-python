@@ -1,16 +1,69 @@
 {
+  "clientLibrary": {
+    "apis": [
+      {
+        "id": "google.cloud.webrisk.v1beta1",
+        "version": "v1beta1"
+      }
+    ],
+    "language": "PYTHON",
+    "name": "google-cloud-webrisk"
+  },
   "snippets": [
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.webrisk_v1beta1.WebRiskServiceV1Beta1AsyncClient",
+          "shortName": "WebRiskServiceV1Beta1AsyncClient"
+        },
+        "fullName": "google.cloud.webrisk_v1beta1.WebRiskServiceV1Beta1AsyncClient.compute_threat_list_diff",
         "method": {
+          "fullName": "google.cloud.webrisk.v1beta1.WebRiskServiceV1Beta1.ComputeThreatListDiff",
           "service": {
+            "fullName": "google.cloud.webrisk.v1beta1.WebRiskServiceV1Beta1",
             "shortName": "WebRiskServiceV1Beta1"
           },
           "shortName": "ComputeThreatListDiff"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.webrisk_v1beta1.types.ComputeThreatListDiffRequest"
+          },
+          {
+            "name": "threat_type",
+            "type": "google.cloud.webrisk_v1beta1.types.ThreatType"
+          },
+          {
+            "name": "version_token",
+            "type": "bytes"
+          },
+          {
+            "name": "constraints",
+            "type": "google.cloud.webrisk_v1beta1.types.ComputeThreatListDiffRequest.Constraints"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.webrisk_v1beta1.types.ComputeThreatListDiffResponse",
+        "shortName": "compute_threat_list_diff"
       },
+      "description": "Sample for ComputeThreatListDiff",
       "file": "webrisk_v1beta1_generated_web_risk_service_v1_beta1_compute_threat_list_diff_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "webrisk_v1beta1_generated_WebRiskServiceV1Beta1_ComputeThreatListDiff_async",
       "segments": [
         {
@@ -43,18 +96,62 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "webrisk_v1beta1_generated_web_risk_service_v1_beta1_compute_threat_list_diff_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.webrisk_v1beta1.WebRiskServiceV1Beta1Client",
+          "shortName": "WebRiskServiceV1Beta1Client"
+        },
+        "fullName": "google.cloud.webrisk_v1beta1.WebRiskServiceV1Beta1Client.compute_threat_list_diff",
         "method": {
+          "fullName": "google.cloud.webrisk.v1beta1.WebRiskServiceV1Beta1.ComputeThreatListDiff",
           "service": {
+            "fullName": "google.cloud.webrisk.v1beta1.WebRiskServiceV1Beta1",
             "shortName": "WebRiskServiceV1Beta1"
           },
           "shortName": "ComputeThreatListDiff"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.webrisk_v1beta1.types.ComputeThreatListDiffRequest"
+          },
+          {
+            "name": "threat_type",
+            "type": "google.cloud.webrisk_v1beta1.types.ThreatType"
+          },
+          {
+            "name": "version_token",
+            "type": "bytes"
+          },
+          {
+            "name": "constraints",
+            "type": "google.cloud.webrisk_v1beta1.types.ComputeThreatListDiffRequest.Constraints"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.webrisk_v1beta1.types.ComputeThreatListDiffResponse",
+        "shortName": "compute_threat_list_diff"
       },
+      "description": "Sample for ComputeThreatListDiff",
       "file": "webrisk_v1beta1_generated_web_risk_service_v1_beta1_compute_threat_list_diff_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "webrisk_v1beta1_generated_WebRiskServiceV1Beta1_ComputeThreatListDiff_sync",
       "segments": [
         {
@@ -87,19 +184,59 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "webrisk_v1beta1_generated_web_risk_service_v1_beta1_compute_threat_list_diff_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.webrisk_v1beta1.WebRiskServiceV1Beta1AsyncClient",
+          "shortName": "WebRiskServiceV1Beta1AsyncClient"
+        },
+        "fullName": "google.cloud.webrisk_v1beta1.WebRiskServiceV1Beta1AsyncClient.search_hashes",
         "method": {
+          "fullName": "google.cloud.webrisk.v1beta1.WebRiskServiceV1Beta1.SearchHashes",
           "service": {
+            "fullName": "google.cloud.webrisk.v1beta1.WebRiskServiceV1Beta1",
             "shortName": "WebRiskServiceV1Beta1"
           },
           "shortName": "SearchHashes"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.webrisk_v1beta1.types.SearchHashesRequest"
+          },
+          {
+            "name": "hash_prefix",
+            "type": "bytes"
+          },
+          {
+            "name": "threat_types",
+            "type": "Sequence[google.cloud.webrisk_v1beta1.types.ThreatType]"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.webrisk_v1beta1.types.SearchHashesResponse",
+        "shortName": "search_hashes"
       },
+      "description": "Sample for SearchHashes",
       "file": "webrisk_v1beta1_generated_web_risk_service_v1_beta1_search_hashes_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "webrisk_v1beta1_generated_WebRiskServiceV1Beta1_SearchHashes_async",
       "segments": [
         {
@@ -132,18 +269,58 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "webrisk_v1beta1_generated_web_risk_service_v1_beta1_search_hashes_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.webrisk_v1beta1.WebRiskServiceV1Beta1Client",
+          "shortName": "WebRiskServiceV1Beta1Client"
+        },
+        "fullName": "google.cloud.webrisk_v1beta1.WebRiskServiceV1Beta1Client.search_hashes",
         "method": {
+          "fullName": "google.cloud.webrisk.v1beta1.WebRiskServiceV1Beta1.SearchHashes",
           "service": {
+            "fullName": "google.cloud.webrisk.v1beta1.WebRiskServiceV1Beta1",
             "shortName": "WebRiskServiceV1Beta1"
           },
           "shortName": "SearchHashes"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.webrisk_v1beta1.types.SearchHashesRequest"
+          },
+          {
+            "name": "hash_prefix",
+            "type": "bytes"
+          },
+          {
+            "name": "threat_types",
+            "type": "Sequence[google.cloud.webrisk_v1beta1.types.ThreatType]"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.webrisk_v1beta1.types.SearchHashesResponse",
+        "shortName": "search_hashes"
       },
+      "description": "Sample for SearchHashes",
       "file": "webrisk_v1beta1_generated_web_risk_service_v1_beta1_search_hashes_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "webrisk_v1beta1_generated_WebRiskServiceV1Beta1_SearchHashes_sync",
       "segments": [
         {
@@ -176,19 +353,59 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "webrisk_v1beta1_generated_web_risk_service_v1_beta1_search_hashes_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.webrisk_v1beta1.WebRiskServiceV1Beta1AsyncClient",
+          "shortName": "WebRiskServiceV1Beta1AsyncClient"
+        },
+        "fullName": "google.cloud.webrisk_v1beta1.WebRiskServiceV1Beta1AsyncClient.search_uris",
         "method": {
+          "fullName": "google.cloud.webrisk.v1beta1.WebRiskServiceV1Beta1.SearchUris",
           "service": {
+            "fullName": "google.cloud.webrisk.v1beta1.WebRiskServiceV1Beta1",
             "shortName": "WebRiskServiceV1Beta1"
           },
           "shortName": "SearchUris"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.webrisk_v1beta1.types.SearchUrisRequest"
+          },
+          {
+            "name": "uri",
+            "type": "str"
+          },
+          {
+            "name": "threat_types",
+            "type": "Sequence[google.cloud.webrisk_v1beta1.types.ThreatType]"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.webrisk_v1beta1.types.SearchUrisResponse",
+        "shortName": "search_uris"
       },
+      "description": "Sample for SearchUris",
       "file": "webrisk_v1beta1_generated_web_risk_service_v1_beta1_search_uris_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "webrisk_v1beta1_generated_WebRiskServiceV1Beta1_SearchUris_async",
       "segments": [
         {
@@ -221,18 +438,58 @@
           "start": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "webrisk_v1beta1_generated_web_risk_service_v1_beta1_search_uris_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.webrisk_v1beta1.WebRiskServiceV1Beta1Client",
+          "shortName": "WebRiskServiceV1Beta1Client"
+        },
+        "fullName": "google.cloud.webrisk_v1beta1.WebRiskServiceV1Beta1Client.search_uris",
         "method": {
+          "fullName": "google.cloud.webrisk.v1beta1.WebRiskServiceV1Beta1.SearchUris",
           "service": {
+            "fullName": "google.cloud.webrisk.v1beta1.WebRiskServiceV1Beta1",
             "shortName": "WebRiskServiceV1Beta1"
           },
           "shortName": "SearchUris"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.webrisk_v1beta1.types.SearchUrisRequest"
+          },
+          {
+            "name": "uri",
+            "type": "str"
+          },
+          {
+            "name": "threat_types",
+            "type": "Sequence[google.cloud.webrisk_v1beta1.types.ThreatType]"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.webrisk_v1beta1.types.SearchUrisResponse",
+        "shortName": "search_uris"
       },
+      "description": "Sample for SearchUris",
       "file": "webrisk_v1beta1_generated_web_risk_service_v1_beta1_search_uris_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "webrisk_v1beta1_generated_WebRiskServiceV1Beta1_SearchUris_sync",
       "segments": [
         {
@@ -265,7 +522,8 @@
           "start": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "webrisk_v1beta1_generated_web_risk_service_v1_beta1_search_uris_sync.py"
     }
   ]
 }
