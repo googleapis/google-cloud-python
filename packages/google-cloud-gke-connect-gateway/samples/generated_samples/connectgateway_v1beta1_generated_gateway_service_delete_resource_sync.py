@@ -24,6 +24,7 @@
 
 
 # [START connectgateway_v1beta1_generated_GatewayService_DeleteResource_sync]
+from google.api import httpbody_pb2  # type: ignore
 from google.cloud.gkeconnect import gateway_v1beta1
 
 
@@ -32,7 +33,7 @@ def sample_delete_resource():
     client = gateway_v1beta1.GatewayServiceClient()
 
     # Initialize request argument(s)
-    request = gateway_v1beta1.HttpBody(
+    request = httpbody_pb2.HttpBody(
     )
 
     # Make the request

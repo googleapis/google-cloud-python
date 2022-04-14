@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -217,9 +217,9 @@ class GatewayServiceAsyncClient:
         r"""GetResource performs an HTTP GET request on the
         Kubernetes API Server.
 
-
         .. code-block:: python
 
+            from google.api import httpbody_pb2  # type: ignore
             from google.cloud.gkeconnect import gateway_v1beta1
 
             def sample_get_resource():
@@ -227,7 +227,7 @@ class GatewayServiceAsyncClient:
                 client = gateway_v1beta1.GatewayServiceClient()
 
                 # Initialize request argument(s)
-                request = gateway_v1beta1.HttpBody(
+                request = httpbody_pb2.HttpBody(
                 )
 
                 # Make the request
@@ -375,9 +375,9 @@ class GatewayServiceAsyncClient:
         r"""PostResource performs an HTTP POST on the Kubernetes
         API Server.
 
-
         .. code-block:: python
 
+            from google.api import httpbody_pb2  # type: ignore
             from google.cloud.gkeconnect import gateway_v1beta1
 
             def sample_post_resource():
@@ -385,7 +385,7 @@ class GatewayServiceAsyncClient:
                 client = gateway_v1beta1.GatewayServiceClient()
 
                 # Initialize request argument(s)
-                request = gateway_v1beta1.HttpBody(
+                request = httpbody_pb2.HttpBody(
                 )
 
                 # Make the request
@@ -533,9 +533,9 @@ class GatewayServiceAsyncClient:
         r"""DeleteResource performs an HTTP DELETE on the
         Kubernetes API Server.
 
-
         .. code-block:: python
 
+            from google.api import httpbody_pb2  # type: ignore
             from google.cloud.gkeconnect import gateway_v1beta1
 
             def sample_delete_resource():
@@ -543,7 +543,7 @@ class GatewayServiceAsyncClient:
                 client = gateway_v1beta1.GatewayServiceClient()
 
                 # Initialize request argument(s)
-                request = gateway_v1beta1.HttpBody(
+                request = httpbody_pb2.HttpBody(
                 )
 
                 # Make the request
@@ -691,9 +691,9 @@ class GatewayServiceAsyncClient:
         r"""PutResource performs an HTTP PUT on the Kubernetes
         API Server.
 
-
         .. code-block:: python
 
+            from google.api import httpbody_pb2  # type: ignore
             from google.cloud.gkeconnect import gateway_v1beta1
 
             def sample_put_resource():
@@ -701,7 +701,7 @@ class GatewayServiceAsyncClient:
                 client = gateway_v1beta1.GatewayServiceClient()
 
                 # Initialize request argument(s)
-                request = gateway_v1beta1.HttpBody(
+                request = httpbody_pb2.HttpBody(
                 )
 
                 # Make the request
@@ -849,9 +849,9 @@ class GatewayServiceAsyncClient:
         r"""PatchResource performs an HTTP PATCH on the
         Kubernetes API Server.
 
-
         .. code-block:: python
 
+            from google.api import httpbody_pb2  # type: ignore
             from google.cloud.gkeconnect import gateway_v1beta1
 
             def sample_patch_resource():
@@ -859,7 +859,7 @@ class GatewayServiceAsyncClient:
                 client = gateway_v1beta1.GatewayServiceClient()
 
                 # Initialize request argument(s)
-                request = gateway_v1beta1.HttpBody(
+                request = httpbody_pb2.HttpBody(
                 )
 
                 # Make the request
