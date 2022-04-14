@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.3.3](https://github.com/googleapis/python-appengine-admin/compare/v1.3.2...v1.3.3) (2022-04-14)
+
+
+### Documentation
+
+* fix type in docstring for map fields ([b0ce988](https://github.com/googleapis/python-appengine-admin/commit/b0ce988cf7ec3620d6d586abab8b13de50e8b586))
+
 ### [1.3.2](https://github.com/googleapis/python-appengine-admin/compare/v1.3.1...v1.3.2) (2022-03-05)
 
 
