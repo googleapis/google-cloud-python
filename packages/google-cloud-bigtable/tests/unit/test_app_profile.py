@@ -24,6 +24,7 @@ APP_PROFILE_NAME = "projects/{}/instances/{}/appProfiles/{}".format(
     PROJECT, INSTANCE_ID, APP_PROFILE_ID
 )
 CLUSTER_ID = "cluster-id"
+CLUSTER_ID_2 = "cluster-id-2"
 OP_ID = 8765
 OP_NAME = "operations/projects/{}/instances/{}/appProfiles/{}/operations/{}".format(
     PROJECT, INSTANCE_ID, APP_PROFILE_ID, OP_ID
@@ -54,6 +55,7 @@ def test_app_profile_constructor_defaults():
     assert app_profile.routing_policy_type is None
     assert app_profile.description is None
     assert app_profile.cluster_id is None
+    assert app_profile.multi_cluster_ids is None
     assert app_profile.allow_transactional_writes is None
 
 
@@ -92,7 +94,30 @@ def test_app_profile_constructor_explicit():
     assert app_profile2.routing_policy_type == SINGLE
     assert app_profile2.description == DESCRIPTION_2
     assert app_profile2.cluster_id == CLUSTER_ID
+    assert app_profile2.multi_cluster_ids is None
     assert app_profile2.allow_transactional_writes == ALLOW_WRITES
+
+
+def test_app_profile_constructor_multi_cluster_ids():
+    from google.cloud.bigtable.enums import RoutingPolicyType
+
+    ANY = RoutingPolicyType.ANY
+    DESCRIPTION_1 = "routing policy any"
+    client = _Client(PROJECT)
+    instance = _Instance(INSTANCE_ID, client)
+
+    app_profile1 = _make_app_profile(
+        APP_PROFILE_ID,
+        instance,
+        routing_policy_type=ANY,
+        description=DESCRIPTION_1,
+        multi_cluster_ids=[CLUSTER_ID, CLUSTER_ID_2],
+    )
+    assert app_profile1.app_profile_id == APP_PROFILE_ID
+    assert app_profile1._instance is instance
+    assert app_profile1.routing_policy_type == ANY
+    assert app_profile1.description == DESCRIPTION_1
+    assert app_profile1.multi_cluster_ids == [CLUSTER_ID, CLUSTER_ID_2]
 
 
 def test_app_profile_name():
@@ -147,13 +172,13 @@ def test_app_profile_from_pb_success_w_routing_any():
     client = _Client(PROJECT)
     instance = _Instance(INSTANCE_ID, client)
 
-    desctiption = "routing any"
+    description = "routing any"
     routing = RoutingPolicyType.ANY
     multi_cluster_routing_use_any = data_v2_pb2.AppProfile.MultiClusterRoutingUseAny()
 
     app_profile_pb = data_v2_pb2.AppProfile(
         name=APP_PROFILE_NAME,
-        description=desctiption,
+        description=description,
         multi_cluster_routing_use_any=multi_cluster_routing_use_any,
     )
 
@@ -161,10 +186,42 @@ def test_app_profile_from_pb_success_w_routing_any():
     assert isinstance(app_profile, AppProfile)
     assert app_profile._instance is instance
     assert app_profile.app_profile_id == APP_PROFILE_ID
-    assert app_profile.description == desctiption
+    assert app_profile.description == description
+    assert app_profile.routing_policy_type == routing
+    assert app_profile.cluster_id is None
+    assert app_profile.multi_cluster_ids is None
+    assert app_profile.allow_transactional_writes is False
+
+
+def test_app_profile_from_pb_success_w_routing_any_multi_cluster_ids():
+    from google.cloud.bigtable_admin_v2.types import instance as data_v2_pb2
+    from google.cloud.bigtable.app_profile import AppProfile
+    from google.cloud.bigtable.enums import RoutingPolicyType
+
+    client = _Client(PROJECT)
+    instance = _Instance(INSTANCE_ID, client)
+
+    description = "routing any"
+    routing = RoutingPolicyType.ANY
+    multi_cluster_routing_use_any = data_v2_pb2.AppProfile.MultiClusterRoutingUseAny(
+        cluster_ids=[CLUSTER_ID, CLUSTER_ID_2]
+    )
+
+    app_profile_pb = data_v2_pb2.AppProfile(
+        name=APP_PROFILE_NAME,
+        description=description,
+        multi_cluster_routing_use_any=multi_cluster_routing_use_any,
+    )
+
+    app_profile = AppProfile.from_pb(app_profile_pb, instance)
+    assert isinstance(app_profile, AppProfile)
+    assert app_profile._instance is instance
+    assert app_profile.app_profile_id == APP_PROFILE_ID
+    assert app_profile.description == description
     assert app_profile.routing_policy_type == routing
     assert app_profile.cluster_id is None
     assert app_profile.allow_transactional_writes is False
+    assert app_profile.multi_cluster_ids == [CLUSTER_ID, CLUSTER_ID_2]
 
 
 def test_app_profile_from_pb_success_w_routing_single():
@@ -175,7 +232,7 @@ def test_app_profile_from_pb_success_w_routing_single():
     client = _Client(PROJECT)
     instance = _Instance(INSTANCE_ID, client)
 
-    desctiption = "routing single"
+    description = "routing single"
     allow_transactional_writes = True
     routing = RoutingPolicyType.SINGLE
     single_cluster_routing = data_v2_pb2.AppProfile.SingleClusterRouting(
@@ -185,7 +242,7 @@ def test_app_profile_from_pb_success_w_routing_single():
 
     app_profile_pb = data_v2_pb2.AppProfile(
         name=APP_PROFILE_NAME,
-        description=desctiption,
+        description=description,
         single_cluster_routing=single_cluster_routing,
     )
 
@@ -193,9 +250,10 @@ def test_app_profile_from_pb_success_w_routing_single():
     assert isinstance(app_profile, AppProfile)
     assert app_profile._instance is instance
     assert app_profile.app_profile_id == APP_PROFILE_ID
-    assert app_profile.description == desctiption
+    assert app_profile.description == description
     assert app_profile.routing_policy_type == routing
     assert app_profile.cluster_id == CLUSTER_ID
+    assert app_profile.multi_cluster_ids is None
     assert app_profile.allow_transactional_writes == allow_transactional_writes
 
 
@@ -290,6 +348,7 @@ def test_app_profile_reload_w_routing_any():
     assert app_profile.routing_policy_type == routing
     assert app_profile.description == description
     assert app_profile.cluster_id is None
+    assert app_profile.multi_cluster_ids is None
     assert app_profile.allow_transactional_writes is None
 
     # Perform the method and check the result.
@@ -298,6 +357,7 @@ def test_app_profile_reload_w_routing_any():
     assert app_profile.routing_policy_type == RoutingPolicyType.SINGLE
     assert app_profile.description == description_from_server
     assert app_profile.cluster_id == cluster_id_from_server
+    assert app_profile.multi_cluster_ids is None
     assert app_profile.allow_transactional_writes == allow_transactional_writes
 
 
@@ -394,6 +454,7 @@ def test_app_profile_create_w_routing_any():
     assert result.description == description
     assert result.allow_transactional_writes is False
     assert result.cluster_id is None
+    assert result.multi_cluster_ids is None
 
 
 def test_app_profile_create_w_routing_single():
@@ -454,6 +515,7 @@ def test_app_profile_create_w_routing_single():
     assert result.description == description
     assert result.allow_transactional_writes == allow_writes
     assert result.cluster_id == CLUSTER_ID
+    assert result.multi_cluster_ids is None
 
 
 def test_app_profile_create_w_wrong_routing_policy():
@@ -491,6 +553,82 @@ def test_app_profile_update_w_routing_any():
         description=description,
         cluster_id=CLUSTER_ID,
         allow_transactional_writes=allow_writes,
+    )
+
+    # Create response_pb
+    metadata = messages_v2_pb2.UpdateAppProfileMetadata()
+    type_url = "type.googleapis.com/{}".format(
+        messages_v2_pb2.UpdateAppProfileMetadata._meta._pb.DESCRIPTOR.full_name
+    )
+    response_pb = operations_pb2.Operation(
+        name=OP_NAME,
+        metadata=Any(type_url=type_url, value=metadata._pb.SerializeToString()),
+    )
+
+    # Patch the stub used by the API method.
+    instance_api = mock.create_autospec(BigtableInstanceAdminClient)
+    # Mock api calls
+    instance_api.app_profile_path.return_value = (
+        "projects/project/instances/instance-id/appProfiles/app-profile-id"
+    )
+
+    client._instance_admin_client = instance_api
+
+    # Perform the method and check the result.
+    ignore_warnings = True
+    expected_request_update_mask = field_mask_pb2.FieldMask(
+        paths=["description", "single_cluster_routing"]
+    )
+
+    expected_request = {
+        "request": {
+            "app_profile": app_profile._to_pb(),
+            "update_mask": expected_request_update_mask,
+            "ignore_warnings": ignore_warnings,
+        }
+    }
+
+    instance_api.update_app_profile.return_value = response_pb
+    app_profile._instance._client._instance_admin_client = instance_api
+    result = app_profile.update(ignore_warnings=ignore_warnings)
+    actual_request = client._instance_admin_client.update_app_profile.call_args_list[
+        0
+    ].kwargs
+
+    assert actual_request == expected_request
+    assert (
+        result.metadata.type_url
+        == "type.googleapis.com/google.bigtable.admin.v2.UpdateAppProfileMetadata"
+    )
+
+
+def test_app_profile_update_w_routing_any_multi_cluster_ids():
+    from google.longrunning import operations_pb2
+    from google.protobuf.any_pb2 import Any
+    from google.cloud.bigtable_admin_v2.types import (
+        bigtable_instance_admin as messages_v2_pb2,
+    )
+    from google.cloud.bigtable.enums import RoutingPolicyType
+    from google.cloud.bigtable_admin_v2.services.bigtable_instance_admin import (
+        BigtableInstanceAdminClient,
+    )
+    from google.protobuf import field_mask_pb2
+
+    credentials = _make_credentials()
+    client = _make_client(project=PROJECT, credentials=credentials, admin=True)
+    instance = client.instance(INSTANCE_ID)
+
+    routing = RoutingPolicyType.SINGLE
+    description = "to routing policy single"
+    allow_writes = True
+    app_profile = _make_app_profile(
+        APP_PROFILE_ID,
+        instance,
+        routing_policy_type=routing,
+        description=description,
+        cluster_id=CLUSTER_ID,
+        allow_transactional_writes=allow_writes,
+        multi_cluster_ids=[CLUSTER_ID, CLUSTER_ID_2],
     )
 
     # Create response_pb

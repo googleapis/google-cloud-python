@@ -711,6 +711,7 @@ class Instance(object):
         routing_policy_type=None,
         description=None,
         cluster_id=None,
+        multi_cluster_ids=None,
         allow_transactional_writes=None,
     ):
         """Factory to create AppProfile associated with this instance.
@@ -742,6 +743,11 @@ class Instance(object):
                             when routing_policy_type is
                             ROUTING_POLICY_TYPE_SINGLE.
 
+        :type: multi_cluster_ids: list
+        :param: multi_cluster_ids: (Optional) The set of clusters to route to.
+                            The order is ignored; clusters will be tried in order of distance.
+                            If left empty, all clusters are eligible.
+
         :type: allow_transactional_writes: bool
         :param: allow_transactional_writes: (Optional) If true, allow
                                             transactional writes for
@@ -756,6 +762,7 @@ class Instance(object):
             routing_policy_type=routing_policy_type,
             description=description,
             cluster_id=cluster_id,
+            multi_cluster_ids=multi_cluster_ids,
             allow_transactional_writes=allow_transactional_writes,
         )
 

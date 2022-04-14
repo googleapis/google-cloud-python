@@ -59,6 +59,11 @@ class AppProfile(object):
                         when routing_policy_type is
                         ROUTING_POLICY_TYPE_SINGLE.
 
+    :type: multi_cluster_ids: list
+    :param: multi_cluster_ids: (Optional) The set of clusters to route to.
+                            The order is ignored; clusters will be tried in order of distance.
+                            If left empty, all clusters are eligible.
+
     :type: allow_transactional_writes: bool
     :param: allow_transactional_writes: (Optional) If true, allow
                                         transactional writes for
@@ -72,6 +77,7 @@ class AppProfile(object):
         routing_policy_type=None,
         description=None,
         cluster_id=None,
+        multi_cluster_ids=None,
         allow_transactional_writes=None,
     ):
         self.app_profile_id = app_profile_id
@@ -79,6 +85,7 @@ class AppProfile(object):
         self.routing_policy_type = routing_policy_type
         self.description = description
         self.cluster_id = cluster_id
+        self.multi_cluster_ids = multi_cluster_ids
         self.allow_transactional_writes = allow_transactional_writes
 
     @property
@@ -184,13 +191,17 @@ class AppProfile(object):
         self.routing_policy_type = None
         self.allow_transactional_writes = None
         self.cluster_id = None
-
+        self.multi_cluster_ids = None
         self.description = app_profile_pb.description
 
         routing_policy_type = None
         if app_profile_pb._pb.HasField("multi_cluster_routing_use_any"):
             routing_policy_type = RoutingPolicyType.ANY
             self.allow_transactional_writes = False
+            if app_profile_pb.multi_cluster_routing_use_any.cluster_ids:
+                self.multi_cluster_ids = (
+                    app_profile_pb.multi_cluster_routing_use_any.cluster_ids
+                )
         else:
             routing_policy_type = RoutingPolicyType.SINGLE
             self.cluster_id = app_profile_pb.single_cluster_routing.cluster_id
@@ -215,7 +226,9 @@ class AppProfile(object):
 
         if self.routing_policy_type == RoutingPolicyType.ANY:
             multi_cluster_routing_use_any = (
-                instance.AppProfile.MultiClusterRoutingUseAny()
+                instance.AppProfile.MultiClusterRoutingUseAny(
+                    cluster_ids=self.multi_cluster_ids
+                )
             )
         else:
             single_cluster_routing = instance.AppProfile.SingleClusterRouting(
@@ -312,6 +325,7 @@ class AppProfile(object):
             ``routing_policy_type``
             ``description``
             ``cluster_id``
+            ``multi_cluster_ids``
             ``allow_transactional_writes``
 
         For example:

@@ -24,6 +24,7 @@ def _create_app_profile_helper(
     routing_policy_type,
     description=None,
     cluster_id=None,
+    multi_cluster_ids=None,
     allow_transactional_writes=None,
     ignore_warnings=None,
 ):
@@ -33,6 +34,7 @@ def _create_app_profile_helper(
         routing_policy_type=routing_policy_type,
         description=description,
         cluster_id=cluster_id,
+        multi_cluster_ids=multi_cluster_ids,
         allow_transactional_writes=allow_transactional_writes,
     )
     assert app_profile.allow_transactional_writes == allow_transactional_writes
@@ -40,7 +42,7 @@ def _create_app_profile_helper(
     app_profile.create(ignore_warnings=ignore_warnings)
 
     # Load a different app_profile objec form the server and
-    # verrify that it is the same
+    # verify that it is the same
     alt_app_profile = instance.app_profile(app_profile_id)
     alt_app_profile.reload()
 
@@ -50,6 +52,7 @@ def _create_app_profile_helper(
     app_profile.description == alt_app_profile.description
     assert not app_profile.allow_transactional_writes
     assert not alt_app_profile.allow_transactional_writes
+    assert app_profile.multi_cluster_ids == alt_app_profile.multi_cluster_ids
 
     return app_profile
 
@@ -67,6 +70,7 @@ def _modify_app_profile_helper(
     routing_policy_type,
     description=None,
     cluster_id=None,
+    multi_cluster_ids=None,
     allow_transactional_writes=None,
     ignore_warnings=None,
 ):
@@ -75,6 +79,7 @@ def _modify_app_profile_helper(
         routing_policy_type=routing_policy_type,
         description=description,
         cluster_id=cluster_id,
+        multi_cluster_ids=multi_cluster_ids,
         allow_transactional_writes=allow_transactional_writes,
     )
 
@@ -87,6 +92,7 @@ def _modify_app_profile_helper(
     assert alt_profile.description == description
     assert alt_profile.routing_policy_type == routing_policy_type
     assert alt_profile.cluster_id == cluster_id
+    assert alt_profile.multi_cluster_ids == multi_cluster_ids
     assert alt_profile.allow_transactional_writes == allow_transactional_writes
 
 
@@ -391,6 +397,99 @@ def test_instance_create_w_two_clusters(
     )
 
     # Test delete app profiles
+    for app_profile in app_profiles_to_delete:
+        _delete_app_profile_helper(app_profile)
+
+
+def test_instance_create_app_profile_create_with_multi_cluster_ids(
+    admin_client,
+    unique_suffix,
+    admin_instance_populated,
+    admin_cluster,
+    location_id,
+    instance_labels,
+    instances_to_delete,
+    skip_on_emulator,
+):
+    alt_instance_id = f"dif{unique_suffix}"
+    instance = admin_client.instance(
+        alt_instance_id,
+        instance_type=enums.Instance.Type.PRODUCTION,
+        labels=instance_labels,
+    )
+
+    serve_nodes = 1
+
+    alt_cluster_id_1 = f"{alt_instance_id}-c1"
+    cluster_1 = instance.cluster(
+        alt_cluster_id_1,
+        location_id=location_id,
+        serve_nodes=serve_nodes,
+        default_storage_type=enums.StorageType.HDD,
+    )
+
+    alt_cluster_id_2 = f"{alt_instance_id}-c2"
+    location_id_2 = "us-central1-f"
+    cluster_2 = instance.cluster(
+        alt_cluster_id_2,
+        location_id=location_id_2,
+        serve_nodes=serve_nodes,
+        default_storage_type=enums.StorageType.HDD,
+    )
+    operation = instance.create(clusters=[cluster_1, cluster_2])
+    instances_to_delete.append(instance)
+    operation.result(timeout=240)  # Ensure the operation completes.
+
+    # Create a new instance and make sure it is the same.
+    instance_alt = admin_client.instance(alt_instance_id)
+    instance_alt.reload()
+
+    assert instance == instance_alt
+    assert instance.display_name == instance_alt.display_name
+    assert instance.type_ == instance_alt.type_
+
+    clusters, failed_locations = instance_alt.list_clusters()
+    assert failed_locations == []
+    alt_cluster_1, alt_cluster_2 = sorted(clusters, key=lambda x: x.name)
+
+    assert cluster_1.location_id == alt_cluster_1.location_id
+    assert cluster_2.location_id == alt_cluster_2.location_id
+
+    # Test create app profile with multi_cluster_routing policy
+    app_profiles_to_delete = []
+    description = "routing policy-multi"
+    app_profile_id_1 = "app_profile_id_1"
+    routing = enums.RoutingPolicyType.ANY
+
+    multi_cluster_ids = [alt_cluster_id_1, alt_cluster_id_2]
+    app_profile_1 = _create_app_profile_helper(
+        app_profile_id_1,
+        instance,
+        routing_policy_type=routing,
+        description=description,
+        ignore_warnings=True,
+        multi_cluster_ids=multi_cluster_ids,
+    )
+    assert len(app_profile_1.multi_cluster_ids) == len(multi_cluster_ids)
+    assert app_profile_1.multi_cluster_ids == multi_cluster_ids
+
+    # remove a cluster from the multi_cluster_ids
+    app_profile_1.multi_cluster_ids.pop()
+    app_profile_1.update()
+
+    assert len(app_profile_1.multi_cluster_ids) == 1
+    assert app_profile_1.multi_cluster_ids == [alt_cluster_id_1]
+
+    # add a cluster from the multi_cluster_ids
+    app_profile_1.multi_cluster_ids.append(alt_cluster_id_2)
+    app_profile_1.update()
+
+    assert len(app_profile_1.multi_cluster_ids) == 2
+    assert app_profile_1.multi_cluster_ids == [alt_cluster_id_1, alt_cluster_id_2]
+
+    app_profiles_to_delete.append(app_profile_1)
+
+    # # Test delete app profiles
     for app_profile in app_profiles_to_delete:
         _delete_app_profile_helper(app_profile)
 
