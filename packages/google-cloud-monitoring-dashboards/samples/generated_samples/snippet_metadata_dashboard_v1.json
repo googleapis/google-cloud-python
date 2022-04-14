@@ -1,16 +1,57 @@
 {
+  "clientLibrary": {
+    "apis": [
+      {
+        "id": "google.monitoring.dashboard.v1",
+        "version": "v1"
+      }
+    ],
+    "language": "PYTHON",
+    "name": "google-monitoring-dashboard"
+  },
   "snippets": [
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.monitoring.dashboard_v1.DashboardsServiceAsyncClient",
+          "shortName": "DashboardsServiceAsyncClient"
+        },
+        "fullName": "google.monitoring.dashboard_v1.DashboardsServiceAsyncClient.create_dashboard",
         "method": {
+          "fullName": "google.monitoring.dashboard.v1.DashboardsService.CreateDashboard",
           "service": {
+            "fullName": "google.monitoring.dashboard.v1.DashboardsService",
             "shortName": "DashboardsService"
           },
           "shortName": "CreateDashboard"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.monitoring.dashboard_v1.types.CreateDashboardRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.monitoring.dashboard_v1.types.Dashboard",
+        "shortName": "create_dashboard"
       },
+      "description": "Sample for CreateDashboard",
       "file": "monitoring_v1_generated_dashboards_service_create_dashboard_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "monitoring_v1_generated_DashboardsService_CreateDashboard_async",
       "segments": [
         {
@@ -43,18 +84,50 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "monitoring_v1_generated_dashboards_service_create_dashboard_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.monitoring.dashboard_v1.DashboardsServiceClient",
+          "shortName": "DashboardsServiceClient"
+        },
+        "fullName": "google.monitoring.dashboard_v1.DashboardsServiceClient.create_dashboard",
         "method": {
+          "fullName": "google.monitoring.dashboard.v1.DashboardsService.CreateDashboard",
           "service": {
+            "fullName": "google.monitoring.dashboard.v1.DashboardsService",
             "shortName": "DashboardsService"
           },
           "shortName": "CreateDashboard"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.monitoring.dashboard_v1.types.CreateDashboardRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.monitoring.dashboard_v1.types.Dashboard",
+        "shortName": "create_dashboard"
       },
+      "description": "Sample for CreateDashboard",
       "file": "monitoring_v1_generated_dashboards_service_create_dashboard_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "monitoring_v1_generated_DashboardsService_CreateDashboard_sync",
       "segments": [
         {
@@ -87,19 +160,50 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "monitoring_v1_generated_dashboards_service_create_dashboard_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.monitoring.dashboard_v1.DashboardsServiceAsyncClient",
+          "shortName": "DashboardsServiceAsyncClient"
+        },
+        "fullName": "google.monitoring.dashboard_v1.DashboardsServiceAsyncClient.delete_dashboard",
         "method": {
+          "fullName": "google.monitoring.dashboard.v1.DashboardsService.DeleteDashboard",
           "service": {
+            "fullName": "google.monitoring.dashboard.v1.DashboardsService",
             "shortName": "DashboardsService"
           },
           "shortName": "DeleteDashboard"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.monitoring.dashboard_v1.types.DeleteDashboardRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_dashboard"
       },
+      "description": "Sample for DeleteDashboard",
       "file": "monitoring_v1_generated_dashboards_service_delete_dashboard_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "monitoring_v1_generated_DashboardsService_DeleteDashboard_async",
       "segments": [
         {
@@ -130,18 +234,49 @@
           "end": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "monitoring_v1_generated_dashboards_service_delete_dashboard_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.monitoring.dashboard_v1.DashboardsServiceClient",
+          "shortName": "DashboardsServiceClient"
+        },
+        "fullName": "google.monitoring.dashboard_v1.DashboardsServiceClient.delete_dashboard",
         "method": {
+          "fullName": "google.monitoring.dashboard.v1.DashboardsService.DeleteDashboard",
           "service": {
+            "fullName": "google.monitoring.dashboard.v1.DashboardsService",
             "shortName": "DashboardsService"
           },
           "shortName": "DeleteDashboard"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.monitoring.dashboard_v1.types.DeleteDashboardRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_dashboard"
       },
+      "description": "Sample for DeleteDashboard",
       "file": "monitoring_v1_generated_dashboards_service_delete_dashboard_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "monitoring_v1_generated_DashboardsService_DeleteDashboard_sync",
       "segments": [
         {
@@ -172,19 +307,51 @@
           "end": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "monitoring_v1_generated_dashboards_service_delete_dashboard_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.monitoring.dashboard_v1.DashboardsServiceAsyncClient",
+          "shortName": "DashboardsServiceAsyncClient"
+        },
+        "fullName": "google.monitoring.dashboard_v1.DashboardsServiceAsyncClient.get_dashboard",
         "method": {
+          "fullName": "google.monitoring.dashboard.v1.DashboardsService.GetDashboard",
           "service": {
+            "fullName": "google.monitoring.dashboard.v1.DashboardsService",
             "shortName": "DashboardsService"
           },
           "shortName": "GetDashboard"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.monitoring.dashboard_v1.types.GetDashboardRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.monitoring.dashboard_v1.types.Dashboard",
+        "shortName": "get_dashboard"
       },
+      "description": "Sample for GetDashboard",
       "file": "monitoring_v1_generated_dashboards_service_get_dashboard_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "monitoring_v1_generated_DashboardsService_GetDashboard_async",
       "segments": [
         {
@@ -217,18 +384,50 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "monitoring_v1_generated_dashboards_service_get_dashboard_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.monitoring.dashboard_v1.DashboardsServiceClient",
+          "shortName": "DashboardsServiceClient"
+        },
+        "fullName": "google.monitoring.dashboard_v1.DashboardsServiceClient.get_dashboard",
         "method": {
+          "fullName": "google.monitoring.dashboard.v1.DashboardsService.GetDashboard",
           "service": {
+            "fullName": "google.monitoring.dashboard.v1.DashboardsService",
             "shortName": "DashboardsService"
           },
           "shortName": "GetDashboard"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.monitoring.dashboard_v1.types.GetDashboardRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.monitoring.dashboard_v1.types.Dashboard",
+        "shortName": "get_dashboard"
       },
+      "description": "Sample for GetDashboard",
       "file": "monitoring_v1_generated_dashboards_service_get_dashboard_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "monitoring_v1_generated_DashboardsService_GetDashboard_sync",
       "segments": [
         {
@@ -261,19 +460,51 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "monitoring_v1_generated_dashboards_service_get_dashboard_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.monitoring.dashboard_v1.DashboardsServiceAsyncClient",
+          "shortName": "DashboardsServiceAsyncClient"
+        },
+        "fullName": "google.monitoring.dashboard_v1.DashboardsServiceAsyncClient.list_dashboards",
         "method": {
+          "fullName": "google.monitoring.dashboard.v1.DashboardsService.ListDashboards",
           "service": {
+            "fullName": "google.monitoring.dashboard.v1.DashboardsService",
             "shortName": "DashboardsService"
           },
           "shortName": "ListDashboards"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.monitoring.dashboard_v1.types.ListDashboardsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.monitoring.dashboard_v1.services.dashboards_service.pagers.ListDashboardsAsyncPager",
+        "shortName": "list_dashboards"
       },
+      "description": "Sample for ListDashboards",
       "file": "monitoring_v1_generated_dashboards_service_list_dashboards_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "monitoring_v1_generated_DashboardsService_ListDashboards_async",
       "segments": [
         {
@@ -306,18 +537,50 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "monitoring_v1_generated_dashboards_service_list_dashboards_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.monitoring.dashboard_v1.DashboardsServiceClient",
+          "shortName": "DashboardsServiceClient"
+        },
+        "fullName": "google.monitoring.dashboard_v1.DashboardsServiceClient.list_dashboards",
         "method": {
+          "fullName": "google.monitoring.dashboard.v1.DashboardsService.ListDashboards",
           "service": {
+            "fullName": "google.monitoring.dashboard.v1.DashboardsService",
             "shortName": "DashboardsService"
           },
           "shortName": "ListDashboards"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.monitoring.dashboard_v1.types.ListDashboardsRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.monitoring.dashboard_v1.services.dashboards_service.pagers.ListDashboardsPager",
+        "shortName": "list_dashboards"
       },
+      "description": "Sample for ListDashboards",
       "file": "monitoring_v1_generated_dashboards_service_list_dashboards_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "monitoring_v1_generated_DashboardsService_ListDashboards_sync",
       "segments": [
         {
@@ -350,19 +613,51 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "monitoring_v1_generated_dashboards_service_list_dashboards_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.monitoring.dashboard_v1.DashboardsServiceAsyncClient",
+          "shortName": "DashboardsServiceAsyncClient"
+        },
+        "fullName": "google.monitoring.dashboard_v1.DashboardsServiceAsyncClient.update_dashboard",
         "method": {
+          "fullName": "google.monitoring.dashboard.v1.DashboardsService.UpdateDashboard",
           "service": {
+            "fullName": "google.monitoring.dashboard.v1.DashboardsService",
             "shortName": "DashboardsService"
           },
           "shortName": "UpdateDashboard"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.monitoring.dashboard_v1.types.UpdateDashboardRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.monitoring.dashboard_v1.types.Dashboard",
+        "shortName": "update_dashboard"
       },
+      "description": "Sample for UpdateDashboard",
       "file": "monitoring_v1_generated_dashboards_service_update_dashboard_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "monitoring_v1_generated_DashboardsService_UpdateDashboard_async",
       "segments": [
         {
@@ -395,18 +690,50 @@
           "start": 45,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "monitoring_v1_generated_dashboards_service_update_dashboard_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.monitoring.dashboard_v1.DashboardsServiceClient",
+          "shortName": "DashboardsServiceClient"
+        },
+        "fullName": "google.monitoring.dashboard_v1.DashboardsServiceClient.update_dashboard",
         "method": {
+          "fullName": "google.monitoring.dashboard.v1.DashboardsService.UpdateDashboard",
           "service": {
+            "fullName": "google.monitoring.dashboard.v1.DashboardsService",
             "shortName": "DashboardsService"
           },
           "shortName": "UpdateDashboard"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.monitoring.dashboard_v1.types.UpdateDashboardRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.monitoring.dashboard_v1.types.Dashboard",
+        "shortName": "update_dashboard"
       },
+      "description": "Sample for UpdateDashboard",
       "file": "monitoring_v1_generated_dashboards_service_update_dashboard_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "monitoring_v1_generated_DashboardsService_UpdateDashboard_sync",
       "segments": [
         {
@@ -439,7 +766,8 @@
           "start": 45,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "monitoring_v1_generated_dashboards_service_update_dashboard_sync.py"
     }
   ]
 }

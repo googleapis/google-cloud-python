@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -227,7 +227,6 @@ class DashboardsServiceAsyncClient:
         permissions, see `Cloud Identity and Access
         Management <https://cloud.google.com/iam>`__.
 
-
         .. code-block:: python
 
             from google.monitoring import dashboard_v1
@@ -310,7 +309,6 @@ class DashboardsServiceAsyncClient:
         permission on the specified project. For more information, see
         `Cloud Identity and Access
         Management <https://cloud.google.com/iam>`__.
-
 
         .. code-block:: python
 
@@ -401,7 +399,6 @@ class DashboardsServiceAsyncClient:
         `Cloud Identity and Access
         Management <https://cloud.google.com/iam>`__.
 
-
         .. code-block:: python
 
             from google.monitoring import dashboard_v1
@@ -481,7 +478,6 @@ class DashboardsServiceAsyncClient:
         `Cloud Identity and Access
         Management <https://cloud.google.com/iam>`__.
 
-
         .. code-block:: python
 
             from google.monitoring import dashboard_v1
@@ -546,7 +542,6 @@ class DashboardsServiceAsyncClient:
         permission on the specified dashboard. For more information, see
         `Cloud Identity and Access
         Management <https://cloud.google.com/iam>`__.
-
 
         .. code-block:: python
 
