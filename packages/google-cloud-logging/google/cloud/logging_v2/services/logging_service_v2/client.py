@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Iterable, Iterator, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    Optional,
+    Iterable,
+    Iterator,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -438,7 +448,6 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         deleted. Entries received after the delete operation with a
         timestamp before the operation will be deleted.
 
-
         .. code-block:: python
 
             from google.cloud import logging_v2
@@ -527,7 +536,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         *,
         log_name: str = None,
         resource: monitored_resource_pb2.MonitoredResource = None,
-        labels: Sequence[logging.WriteLogEntriesRequest.LabelsEntry] = None,
+        labels: Mapping[str, str] = None,
         entries: Sequence[log_entry.LogEntry] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
@@ -540,7 +549,6 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         Logging. A single request may contain log entries for a
         maximum of 1000 different resources (projects,
         organizations, billing accounts or folders)
-
 
         .. code-block:: python
 
@@ -609,7 +617,7 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
                 This corresponds to the ``resource`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            labels (Sequence[google.cloud.logging_v2.types.WriteLogEntriesRequest.LabelsEntry]):
+            labels (Mapping[str, str]):
                 Optional. Default labels that are added to the
                 ``labels`` field of all log entries in ``entries``. If a
                 log entry already has a label with the same key as a
@@ -720,7 +728,6 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         originated from a project/folder/organization/billing account.
         For ways to export log entries, see `Exporting
         Logs <https://cloud.google.com/logging/docs/export>`__.
-
 
         .. code-block:: python
 
@@ -868,7 +875,6 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         r"""Lists the descriptors for monitored resource types
         used by Logging.
 
-
         .. code-block:: python
 
             from google.cloud import logging_v2
@@ -953,7 +959,6 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         r"""Lists the logs in projects, organizations, folders,
         or billing accounts. Only logs that have entries are
         listed.
-
 
         .. code-block:: python
 
@@ -1065,7 +1070,6 @@ class LoggingServiceV2Client(metaclass=LoggingServiceV2ClientMeta):
         r"""Streaming read of log entries as they are ingested.
         Until the stream is terminated, it will continue reading
         logs.
-
 
         .. code-block:: python
 
