@@ -68,7 +68,7 @@ class AdStitchDetail(proto.Message):
         skip_reason (str):
             Optional. Indicates the reason why the ad has
             been skipped.
-        media (Sequence[google.cloud.video.stitcher_v1.types.AdStitchDetail.MediaEntry]):
+        media (Mapping[str, google.protobuf.struct_pb2.Value]):
             Optional. The metadata of the chosen media
             file for the ad.
     """

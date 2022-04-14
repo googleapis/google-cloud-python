@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -715,7 +715,6 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
         r"""Lists all CDN keys in the specified project and
         location.
 
-
         .. code-block:: python
 
             from google.cloud.video import stitcher_v1
@@ -1009,7 +1008,6 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
         r"""Updates the specified CDN key. Only update fields
         specified in the call method body.
 
-
         .. code-block:: python
 
             from google.cloud.video import stitcher_v1
@@ -1121,7 +1119,6 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
         returns the full tracking and playback metadata of the
         session.
 
-
         .. code-block:: python
 
             from google.cloud.video import stitcher_v1
@@ -1231,7 +1228,6 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
         r"""Returns the full tracking, playback metadata, and
         relevant ad-ops logs for the specified VOD session.
 
-
         .. code-block:: python
 
             from google.cloud.video import stitcher_v1
@@ -1326,7 +1322,6 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
     ) -> pagers.ListVodStitchDetailsPager:
         r"""Returns a list of detailed stitching information of
         the specified VOD session.
-
 
         .. code-block:: python
 
@@ -1438,7 +1433,6 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
         r"""Returns the specified stitching information for the
         specified VOD session.
 
-
         .. code-block:: python
 
             from google.cloud.video import stitcher_v1
@@ -1535,7 +1529,6 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
     ) -> pagers.ListVodAdTagDetailsPager:
         r"""Return the list of ad tag details for the specified
         VOD session.
-
 
         .. code-block:: python
 
@@ -1647,7 +1640,6 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
         r"""Returns the specified ad tag detail for the specified
         VOD session.
 
-
         .. code-block:: python
 
             from google.cloud.video import stitcher_v1
@@ -1744,7 +1736,6 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
     ) -> pagers.ListLiveAdTagDetailsPager:
         r"""Return the list of ad tag details for the specified
         live session.
-
 
         .. code-block:: python
 
@@ -1854,7 +1845,6 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
     ) -> ad_tag_details.LiveAdTagDetail:
         r"""Returns the specified ad tag detail for the specified
         live session.
-
 
         .. code-block:: python
 
@@ -2068,7 +2058,6 @@ class VideoStitcherServiceClient(metaclass=VideoStitcherServiceClientMeta):
     ) -> pagers.ListSlatesPager:
         r"""Lists all slates in the specified project and
         location.
-
 
         .. code-block:: python
 

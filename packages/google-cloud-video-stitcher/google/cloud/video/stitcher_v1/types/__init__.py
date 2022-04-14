@@ -47,7 +47,9 @@ from .sessions import (
     VodSessionAdBreak,
     VodSessionContent,
 )
-from .slates import Slate
+from .slates import (
+    Slate,
+)
 from .stitch_details import (
     AdStitchDetail,
     VodStitchDetail,

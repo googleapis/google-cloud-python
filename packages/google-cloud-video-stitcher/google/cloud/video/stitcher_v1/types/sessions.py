@@ -53,7 +53,7 @@ class VodSession(proto.Message):
             Required. URI of the media to stitch.
         ad_tag_uri (str):
             Required. Ad tag URI.
-        ad_tag_macro_map (Sequence[google.cloud.video.stitcher_v1.types.VodSession.AdTagMacroMapEntry]):
+        ad_tag_macro_map (Mapping[str, str]):
             Key value pairs for ad tag macro replacement. If the
             specified ad tag URI has macros, this field provides the
             mapping to the value that will replace the macro in the ad
@@ -250,11 +250,11 @@ class LiveSession(proto.Message):
 
             default_ad_tag_id is necessary when ``adTagMap`` has more
             than one key. Its value must be present in the ``adTagMap``.
-        ad_tag_map (Sequence[google.cloud.video.stitcher_v1.types.LiveSession.AdTagMapEntry]):
+        ad_tag_map (Mapping[str, google.cloud.video.stitcher_v1.types.AdTag]):
             Key value pairs for ad tags. Ads parsed from
             ad tags must be MP4 videos each with at least
             one audio track.
-        ad_tag_macros (Sequence[google.cloud.video.stitcher_v1.types.LiveSession.AdTagMacrosEntry]):
+        ad_tag_macros (Mapping[str, str]):
             Key value pairs for ad tag macro replacement. If the
             specified ad tag URI has macros, this field provides the
             mapping to the value that will replace the macro in the ad
