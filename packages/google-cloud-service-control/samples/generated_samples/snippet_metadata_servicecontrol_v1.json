@@ -1,16 +1,57 @@
 {
+  "clientLibrary": {
+    "apis": [
+      {
+        "id": "google.api.servicecontrol.v1",
+        "version": "v1"
+      }
+    ],
+    "language": "PYTHON",
+    "name": "google-cloud-service-control"
+  },
   "snippets": [
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.servicecontrol_v1.QuotaControllerAsyncClient",
+          "shortName": "QuotaControllerAsyncClient"
+        },
+        "fullName": "google.cloud.servicecontrol_v1.QuotaControllerAsyncClient.allocate_quota",
         "method": {
+          "fullName": "google.api.servicecontrol.v1.QuotaController.AllocateQuota",
           "service": {
+            "fullName": "google.api.servicecontrol.v1.QuotaController",
             "shortName": "QuotaController"
           },
           "shortName": "AllocateQuota"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.servicecontrol_v1.types.AllocateQuotaRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.servicecontrol_v1.types.AllocateQuotaResponse",
+        "shortName": "allocate_quota"
       },
+      "description": "Sample for AllocateQuota",
       "file": "servicecontrol_v1_generated_quota_controller_allocate_quota_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "servicecontrol_v1_generated_QuotaController_AllocateQuota_async",
       "segments": [
         {
@@ -43,18 +84,50 @@
           "start": 41,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "servicecontrol_v1_generated_quota_controller_allocate_quota_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.servicecontrol_v1.QuotaControllerClient",
+          "shortName": "QuotaControllerClient"
+        },
+        "fullName": "google.cloud.servicecontrol_v1.QuotaControllerClient.allocate_quota",
         "method": {
+          "fullName": "google.api.servicecontrol.v1.QuotaController.AllocateQuota",
           "service": {
+            "fullName": "google.api.servicecontrol.v1.QuotaController",
             "shortName": "QuotaController"
           },
           "shortName": "AllocateQuota"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.servicecontrol_v1.types.AllocateQuotaRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.servicecontrol_v1.types.AllocateQuotaResponse",
+        "shortName": "allocate_quota"
       },
+      "description": "Sample for AllocateQuota",
       "file": "servicecontrol_v1_generated_quota_controller_allocate_quota_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "servicecontrol_v1_generated_QuotaController_AllocateQuota_sync",
       "segments": [
         {
@@ -87,19 +160,51 @@
           "start": 41,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "servicecontrol_v1_generated_quota_controller_allocate_quota_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.servicecontrol_v1.ServiceControllerAsyncClient",
+          "shortName": "ServiceControllerAsyncClient"
+        },
+        "fullName": "google.cloud.servicecontrol_v1.ServiceControllerAsyncClient.check",
         "method": {
+          "fullName": "google.api.servicecontrol.v1.ServiceController.Check",
           "service": {
+            "fullName": "google.api.servicecontrol.v1.ServiceController",
             "shortName": "ServiceController"
           },
           "shortName": "Check"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.servicecontrol_v1.types.CheckRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.servicecontrol_v1.types.CheckResponse",
+        "shortName": "check"
       },
+      "description": "Sample for Check",
       "file": "servicecontrol_v1_generated_service_controller_check_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "servicecontrol_v1_generated_ServiceController_Check_async",
       "segments": [
         {
@@ -132,18 +237,50 @@
           "start": 41,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "servicecontrol_v1_generated_service_controller_check_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.servicecontrol_v1.ServiceControllerClient",
+          "shortName": "ServiceControllerClient"
+        },
+        "fullName": "google.cloud.servicecontrol_v1.ServiceControllerClient.check",
         "method": {
+          "fullName": "google.api.servicecontrol.v1.ServiceController.Check",
           "service": {
+            "fullName": "google.api.servicecontrol.v1.ServiceController",
             "shortName": "ServiceController"
           },
           "shortName": "Check"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.servicecontrol_v1.types.CheckRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.servicecontrol_v1.types.CheckResponse",
+        "shortName": "check"
       },
+      "description": "Sample for Check",
       "file": "servicecontrol_v1_generated_service_controller_check_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "servicecontrol_v1_generated_ServiceController_Check_sync",
       "segments": [
         {
@@ -176,19 +313,51 @@
           "start": 41,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "servicecontrol_v1_generated_service_controller_check_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.servicecontrol_v1.ServiceControllerAsyncClient",
+          "shortName": "ServiceControllerAsyncClient"
+        },
+        "fullName": "google.cloud.servicecontrol_v1.ServiceControllerAsyncClient.report",
         "method": {
+          "fullName": "google.api.servicecontrol.v1.ServiceController.Report",
           "service": {
+            "fullName": "google.api.servicecontrol.v1.ServiceController",
             "shortName": "ServiceController"
           },
           "shortName": "Report"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.servicecontrol_v1.types.ReportRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.servicecontrol_v1.types.ReportResponse",
+        "shortName": "report"
       },
+      "description": "Sample for Report",
       "file": "servicecontrol_v1_generated_service_controller_report_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "servicecontrol_v1_generated_ServiceController_Report_async",
       "segments": [
         {
@@ -221,18 +390,50 @@
           "start": 41,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "servicecontrol_v1_generated_service_controller_report_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.servicecontrol_v1.ServiceControllerClient",
+          "shortName": "ServiceControllerClient"
+        },
+        "fullName": "google.cloud.servicecontrol_v1.ServiceControllerClient.report",
         "method": {
+          "fullName": "google.api.servicecontrol.v1.ServiceController.Report",
           "service": {
+            "fullName": "google.api.servicecontrol.v1.ServiceController",
             "shortName": "ServiceController"
           },
           "shortName": "Report"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.servicecontrol_v1.types.ReportRequest"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.servicecontrol_v1.types.ReportResponse",
+        "shortName": "report"
       },
+      "description": "Sample for Report",
       "file": "servicecontrol_v1_generated_service_controller_report_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "servicecontrol_v1_generated_ServiceController_Report_sync",
       "segments": [
         {
@@ -265,7 +466,8 @@
           "start": 41,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "servicecontrol_v1_generated_service_controller_report_sync.py"
     }
   ]
 }
