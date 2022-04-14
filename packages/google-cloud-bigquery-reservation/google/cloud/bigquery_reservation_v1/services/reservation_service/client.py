@@ -531,7 +531,7 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
 
         .. code-block:: python
 
-                    from google.cloud import bigquery_reservation_v1
+            from google.cloud import bigquery_reservation_v1
 
             def sample_create_reservation():
                 # Create a client
@@ -646,10 +646,9 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
         r"""Lists all the reservations for the project in the
         specified location.
 
-
         .. code-block:: python
 
-                    from google.cloud import bigquery_reservation_v1
+            from google.cloud import bigquery_reservation_v1
 
             def sample_list_reservations():
                 # Create a client
@@ -757,7 +756,7 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
 
         .. code-block:: python
 
-                    from google.cloud import bigquery_reservation_v1
+            from google.cloud import bigquery_reservation_v1
 
             def sample_get_reservation():
                 # Create a client
@@ -853,10 +852,9 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
         ``google.rpc.Code.FAILED_PRECONDITION`` when reservation has
         assignments.
 
-
         .. code-block:: python
 
-                    from google.cloud import bigquery_reservation_v1
+            from google.cloud import bigquery_reservation_v1
 
             def sample_delete_reservation():
                 # Create a client
@@ -941,7 +939,7 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
 
         .. code-block:: python
 
-                    from google.cloud import bigquery_reservation_v1
+            from google.cloud import bigquery_reservation_v1
 
             def sample_update_reservation():
                 # Create a client
@@ -1045,7 +1043,7 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
 
         .. code-block:: python
 
-                    from google.cloud import bigquery_reservation_v1
+            from google.cloud import bigquery_reservation_v1
 
             def sample_create_capacity_commitment():
                 # Create a client
@@ -1162,10 +1160,9 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
         r"""Lists all the capacity commitments for the admin
         project.
 
-
         .. code-block:: python
 
-                    from google.cloud import bigquery_reservation_v1
+            from google.cloud import bigquery_reservation_v1
 
             def sample_list_capacity_commitments():
                 # Create a client
@@ -1275,7 +1272,7 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
 
         .. code-block:: python
 
-                    from google.cloud import bigquery_reservation_v1
+            from google.cloud import bigquery_reservation_v1
 
             def sample_get_capacity_commitment():
                 # Create a client
@@ -1383,10 +1380,9 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
         commitment before its commitment_end_time will fail with the
         error code ``google.rpc.Code.FAILED_PRECONDITION``.
 
-
         .. code-block:: python
 
-                    from google.cloud import bigquery_reservation_v1
+            from google.cloud import bigquery_reservation_v1
 
             def sample_delete_capacity_commitment():
                 # Create a client
@@ -1478,10 +1474,9 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
         period will fail with the error code
         ``google.rpc.Code.FAILED_PRECONDITION``.
 
-
         .. code-block:: python
 
-                    from google.cloud import bigquery_reservation_v1
+            from google.cloud import bigquery_reservation_v1
 
             def sample_update_capacity_commitment():
                 # Create a client
@@ -1607,10 +1602,9 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
         and 8000. Then, you delete the first one after the commitment
         end time passes.
 
-
         .. code-block:: python
 
-                    from google.cloud import bigquery_reservation_v1
+            from google.cloud import bigquery_reservation_v1
 
             def sample_split_capacity_commitment():
                 # Create a client
@@ -1724,10 +1718,9 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
         fail with the error code
         ``google.rpc.Code.FAILED_PRECONDITION``.
 
-
         .. code-block:: python
 
-                    from google.cloud import bigquery_reservation_v1
+            from google.cloud import bigquery_reservation_v1
 
             def sample_merge_capacity_commitments():
                 # Create a client
@@ -1885,10 +1878,9 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
         Returns ``google.rpc.Code.INVALID_ARGUMENT`` when location of
         the assignment does not match location of the reservation.
 
-
         .. code-block:: python
 
-                    from google.cloud import bigquery_reservation_v1
+            from google.cloud import bigquery_reservation_v1
 
             def sample_create_assignment():
                 # Create a client
@@ -2013,10 +2005,9 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
 
         **Note** "-" cannot be used for projects nor locations.
 
-
         .. code-block:: python
 
-                    from google.cloud import bigquery_reservation_v1
+            from google.cloud import bigquery_reservation_v1
 
             def sample_list_assignments():
                 # Create a client
@@ -2142,10 +2133,9 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
         ``project1`` will still use ``res1`` while queries from
         ``project2`` will switch to use on-demand mode.
 
-
         .. code-block:: python
 
-                    from google.cloud import bigquery_reservation_v1
+            from google.cloud import bigquery_reservation_v1
 
             def sample_delete_assignment():
                 # Create a client
@@ -2253,10 +2243,9 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
 
         **Note** "-" cannot be used for projects nor locations.
 
-
         .. code-block:: python
 
-                    from google.cloud import bigquery_reservation_v1
+            from google.cloud import bigquery_reservation_v1
 
             def sample_search_assignments():
                 # Create a client
@@ -2407,10 +2396,9 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
         3. Parent here is ``projects/*/locations/*``, instead of
            ``projects/*/locations/*reservations/*``.
 
-
         .. code-block:: python
 
-                    from google.cloud import bigquery_reservation_v1
+            from google.cloud import bigquery_reservation_v1
 
             def sample_search_all_assignments():
                 # Create a client
@@ -2538,10 +2526,9 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
         that ensures an assignee always has an associated
         reservation.
 
-
         .. code-block:: python
 
-                    from google.cloud import bigquery_reservation_v1
+            from google.cloud import bigquery_reservation_v1
 
             def sample_move_assignment():
                 # Create a client
@@ -2653,10 +2640,9 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
 
         Only the ``priority`` field can be updated.
 
-
         .. code-block:: python
 
-                    from google.cloud import bigquery_reservation_v1
+            from google.cloud import bigquery_reservation_v1
 
             def sample_update_assignment():
                 # Create a client
@@ -2760,7 +2746,7 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
 
         .. code-block:: python
 
-                    from google.cloud import bigquery_reservation_v1
+            from google.cloud import bigquery_reservation_v1
 
             def sample_get_bi_reservation():
                 # Create a client
@@ -2860,10 +2846,9 @@ class ReservationServiceClient(metaclass=ReservationServiceClientMeta):
         greater than 0. In order to release BI capacity reservation size
         must be set to 0.
 
-
         .. code-block:: python
 
-                    from google.cloud import bigquery_reservation_v1
+            from google.cloud import bigquery_reservation_v1
 
             def sample_update_bi_reservation():
                 # Create a client

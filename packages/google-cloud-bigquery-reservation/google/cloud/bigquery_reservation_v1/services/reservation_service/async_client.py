@@ -369,7 +369,6 @@ class ReservationServiceAsyncClient:
         r"""Lists all the reservations for the project in the
         specified location.
 
-
         .. code-block:: python
 
             from google.cloud import bigquery_reservation_v1
@@ -442,7 +441,8 @@ class ReservationServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.GoogleAPICallError,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=300.0,
             ),
@@ -556,7 +556,8 @@ class ReservationServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.GoogleAPICallError,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=300.0,
             ),
@@ -593,7 +594,6 @@ class ReservationServiceAsyncClient:
         r"""Deletes a reservation. Returns
         ``google.rpc.Code.FAILED_PRECONDITION`` when reservation has
         assignments.
-
 
         .. code-block:: python
 
@@ -655,7 +655,8 @@ class ReservationServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.GoogleAPICallError,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=300.0,
             ),
@@ -910,7 +911,6 @@ class ReservationServiceAsyncClient:
         r"""Lists all the capacity commitments for the admin
         project.
 
-
         .. code-block:: python
 
             from google.cloud import bigquery_reservation_v1
@@ -983,7 +983,8 @@ class ReservationServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.GoogleAPICallError,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=300.0,
             ),
@@ -1109,7 +1110,8 @@ class ReservationServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.GoogleAPICallError,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=300.0,
             ),
@@ -1146,7 +1148,6 @@ class ReservationServiceAsyncClient:
         r"""Deletes a capacity commitment. Attempting to delete capacity
         commitment before its commitment_end_time will fail with the
         error code ``google.rpc.Code.FAILED_PRECONDITION``.
-
 
         .. code-block:: python
 
@@ -1208,7 +1209,8 @@ class ReservationServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.GoogleAPICallError,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=300.0,
             ),
@@ -1248,7 +1250,6 @@ class ReservationServiceAsyncClient:
         period. Attempting to change to a plan with shorter commitment
         period will fail with the error code
         ``google.rpc.Code.FAILED_PRECONDITION``.
-
 
         .. code-block:: python
 
@@ -1376,7 +1377,6 @@ class ReservationServiceAsyncClient:
         and 8000. Then, you delete the first one after the commitment
         end time passes.
 
-
         .. code-block:: python
 
             from google.cloud import bigquery_reservation_v1
@@ -1490,7 +1490,6 @@ class ReservationServiceAsyncClient:
         Attempting to merge capacity commitments of different plan will
         fail with the error code
         ``google.rpc.Code.FAILED_PRECONDITION``.
-
 
         .. code-block:: python
 
@@ -1650,7 +1649,6 @@ class ReservationServiceAsyncClient:
         Returns ``google.rpc.Code.INVALID_ARGUMENT`` when location of
         the assignment does not match location of the reservation.
 
-
         .. code-block:: python
 
             from google.cloud import bigquery_reservation_v1
@@ -1778,7 +1776,6 @@ class ReservationServiceAsyncClient:
 
         **Note** "-" cannot be used for projects nor locations.
 
-
         .. code-block:: python
 
             from google.cloud import bigquery_reservation_v1
@@ -1856,7 +1853,8 @@ class ReservationServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.GoogleAPICallError,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=300.0,
             ),
@@ -1915,7 +1913,6 @@ class ReservationServiceAsyncClient:
         ``<project1, res1>``. After said deletion, queries from
         ``project1`` will still use ``res1`` while queries from
         ``project2`` will switch to use on-demand mode.
-
 
         .. code-block:: python
 
@@ -1978,7 +1975,8 @@ class ReservationServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.GoogleAPICallError,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=300.0,
             ),
@@ -2035,7 +2033,6 @@ class ReservationServiceAsyncClient:
            ``projects/*/locations/*reservations/*``.
 
         **Note** "-" cannot be used for projects nor locations.
-
 
         .. code-block:: python
 
@@ -2131,7 +2128,8 @@ class ReservationServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.GoogleAPICallError,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=300.0,
             ),
@@ -2198,7 +2196,6 @@ class ReservationServiceAsyncClient:
            this API.
         3. Parent here is ``projects/*/locations/*``, instead of
            ``projects/*/locations/*reservations/*``.
-
 
         .. code-block:: python
 
@@ -2330,7 +2327,6 @@ class ReservationServiceAsyncClient:
         that ensures an assignee always has an associated
         reservation.
 
-
         .. code-block:: python
 
             from google.cloud import bigquery_reservation_v1
@@ -2444,7 +2440,6 @@ class ReservationServiceAsyncClient:
         r"""Updates an existing assignment.
 
         Only the ``priority`` field can be updated.
-
 
         .. code-block:: python
 
@@ -2617,7 +2612,8 @@ class ReservationServiceAsyncClient:
                 maximum=60.0,
                 multiplier=1.3,
                 predicate=retries.if_exception_type(
-                    core_exceptions.GoogleAPICallError,
+                    core_exceptions.DeadlineExceeded,
+                    core_exceptions.ServiceUnavailable,
                 ),
                 deadline=300.0,
             ),
@@ -2660,7 +2656,6 @@ class ReservationServiceAsyncClient:
         order to reserve BI capacity it needs to be updated to an amount
         greater than 0. In order to release BI capacity reservation size
         must be set to 0.
-
 
         .. code-block:: python
 
