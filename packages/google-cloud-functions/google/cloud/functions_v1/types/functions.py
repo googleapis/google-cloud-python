@@ -142,12 +142,12 @@ class CloudFunction(proto.Message):
             Output only. The version identifier of the
             Cloud Function. Each deployment attempt results
             in a new version of a function being created.
-        labels (Sequence[google.cloud.functions_v1.types.CloudFunction.LabelsEntry]):
+        labels (Mapping[str, str]):
             Labels associated with this Cloud Function.
-        environment_variables (Sequence[google.cloud.functions_v1.types.CloudFunction.EnvironmentVariablesEntry]):
+        environment_variables (Mapping[str, str]):
             Environment variables that shall be available
             during function execution.
-        build_environment_variables (Sequence[google.cloud.functions_v1.types.CloudFunction.BuildEnvironmentVariablesEntry]):
+        build_environment_variables (Mapping[str, str]):
             Build environment variables that shall be
             available during build time.
         network (str):

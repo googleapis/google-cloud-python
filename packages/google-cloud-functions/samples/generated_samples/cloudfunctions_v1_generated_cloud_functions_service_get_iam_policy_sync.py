@@ -25,6 +25,7 @@
 
 # [START cloudfunctions_v1_generated_CloudFunctionsService_GetIamPolicy_sync]
 from google.cloud import functions_v1
+from google.iam.v1 import iam_policy_pb2  # type: ignore
 
 
 def sample_get_iam_policy():
@@ -32,7 +33,7 @@ def sample_get_iam_policy():
     client = functions_v1.CloudFunctionsServiceClient()
 
     # Initialize request argument(s)
-    request = functions_v1.GetIamPolicyRequest(
+    request = iam_policy_pb2.GetIamPolicyRequest(
         resource="resource_value",
     )
 

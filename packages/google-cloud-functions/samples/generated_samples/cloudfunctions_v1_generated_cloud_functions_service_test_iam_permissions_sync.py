@@ -25,6 +25,7 @@
 
 # [START cloudfunctions_v1_generated_CloudFunctionsService_TestIamPermissions_sync]
 from google.cloud import functions_v1
+from google.iam.v1 import iam_policy_pb2  # type: ignore
 
 
 def sample_test_iam_permissions():
@@ -32,7 +33,7 @@ def sample_test_iam_permissions():
     client = functions_v1.CloudFunctionsServiceClient()
 
     # Initialize request argument(s)
-    request = functions_v1.TestIamPermissionsRequest(
+    request = iam_policy_pb2.TestIamPermissionsRequest(
         resource="resource_value",
         permissions=['permissions_value_1', 'permissions_value_2'],
     )
