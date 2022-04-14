@@ -34,7 +34,9 @@ from .common import (
     PostingRegion,
     Visibility,
 )
-from .company import Company
+from .company import (
+    Company,
+)
 from .company_service import (
     CreateCompanyRequest,
     DeleteCompanyRequest,
@@ -51,7 +53,9 @@ from .event import (
     ClientEvent,
     JobEvent,
 )
-from .event_service import CreateClientEventRequest
+from .event_service import (
+    CreateClientEventRequest,
+)
 from .filters import (
     CommuteFilter,
     CompensationFilter,
@@ -62,7 +66,9 @@ from .histogram import (
     HistogramQuery,
     HistogramQueryResult,
 )
-from .job import Job
+from .job import (
+    Job,
+)
 from .job_service import (
     BatchCreateJobsRequest,
     BatchCreateJobsResponse,
@@ -81,7 +87,9 @@ from .job_service import (
     UpdateJobRequest,
     JobView,
 )
-from .tenant import Tenant
+from .tenant import (
+    Tenant,
+)
 from .tenant_service import (
     CreateTenantRequest,
     DeleteTenantRequest,

@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -219,7 +219,6 @@ class JobServiceAsyncClient:
         r"""Creates a new job.
         Typically, the job becomes searchable within 10 seconds,
         but it may take up to 5 minutes.
-
 
         .. code-block:: python
 
@@ -470,7 +469,6 @@ class JobServiceAsyncClient:
         r"""Retrieves the specified job, whose status is OPEN or
         recently EXPIRED within the last 90 days.
 
-
         .. code-block:: python
 
             from google.cloud import talent_v4beta1
@@ -585,7 +583,6 @@ class JobServiceAsyncClient:
         Typically, updated contents become visible in search
         results within 10 seconds, but it may take up to 5
         minutes.
-
 
         .. code-block:: python
 
@@ -821,7 +818,6 @@ class JobServiceAsyncClient:
         Typically, the job becomes unsearchable within 10
         seconds, but it may take up to 5 minutes.
 
-
         .. code-block:: python
 
             from google.cloud import talent_v4beta1
@@ -921,7 +917,6 @@ class JobServiceAsyncClient:
     ) -> None:
         r"""Deletes a list of [Job][google.cloud.talent.v4beta1.Job]s by
         filter.
-
 
         .. code-block:: python
 
@@ -1189,7 +1184,6 @@ class JobServiceAsyncClient:
         present in the database, and only returns jobs that the caller
         has permission to search against.
 
-
         .. code-block:: python
 
             from google.cloud import talent_v4beta1
@@ -1286,7 +1280,6 @@ class JobServiceAsyncClient:
         [visibility][google.cloud.talent.v4beta1.Job.visibility] of jobs
         present in the database, and only returns jobs the caller has
         permission to search against.
-
 
         .. code-block:: python
 

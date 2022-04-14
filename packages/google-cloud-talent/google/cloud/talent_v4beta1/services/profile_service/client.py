@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -780,7 +780,6 @@ class ProfileServiceClient(metaclass=ProfileServiceClientMeta):
         r"""Updates the specified profile and returns the updated
         result.
 
-
         .. code-block:: python
 
             from google.cloud import talent_v4beta1
@@ -878,7 +877,6 @@ class ProfileServiceClient(metaclass=ProfileServiceClientMeta):
         Prerequisite: The profile has no associated applications
         or assignments associated.
 
-
         .. code-block:: python
 
             from google.cloud import talent_v4beta1
@@ -970,7 +968,6 @@ class ProfileServiceClient(metaclass=ProfileServiceClientMeta):
         See
         [SearchProfilesRequest][google.cloud.talent.v4beta1.SearchProfilesRequest]
         for more information.
-
 
         .. code-block:: python
 

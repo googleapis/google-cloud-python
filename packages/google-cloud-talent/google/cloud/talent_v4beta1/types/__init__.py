@@ -13,7 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .application import Application
+from .application import (
+    Application,
+)
 from .application_service import (
     CreateApplicationRequest,
     DeleteApplicationRequest,
@@ -51,7 +53,9 @@ from .common import (
     SkillProficiencyLevel,
     Visibility,
 )
-from .company import Company
+from .company import (
+    Company,
+)
 from .company_service import (
     CreateCompanyRequest,
     DeleteCompanyRequest,
@@ -69,7 +73,9 @@ from .event import (
     JobEvent,
     ProfileEvent,
 )
-from .event_service import CreateClientEventRequest
+from .event_service import (
+    CreateClientEventRequest,
+)
 from .filters import (
     ApplicationDateFilter,
     ApplicationJobFilter,
@@ -93,7 +99,9 @@ from .histogram import (
     HistogramQuery,
     HistogramQueryResult,
 )
-from .job import Job
+from .job import (
+    Job,
+)
 from .job_service import (
     BatchCreateJobsRequest,
     BatchDeleteJobsRequest,
@@ -137,7 +145,9 @@ from .profile_service import (
     SummarizedProfile,
     UpdateProfileRequest,
 )
-from .tenant import Tenant
+from .tenant import (
+    Tenant,
+)
 from .tenant_service import (
     CreateTenantRequest,
     DeleteTenantRequest,

@@ -132,7 +132,7 @@ class Job(proto.Message):
             Job compensation information (a.k.a. "pay
             rate") i.e., the compensation that will paid to
             the employee.
-        custom_attributes (Sequence[google.cloud.talent_v4.types.Job.CustomAttributesEntry]):
+        custom_attributes (Mapping[str, google.cloud.talent_v4.types.CustomAttribute]):
             A map of fields to hold both filterable and non-filterable
             custom job attributes that are not covered by the provided
             structured fields.

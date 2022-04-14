@@ -255,7 +255,7 @@ class Profile(proto.Message):
         assignments (Sequence[str]):
             Output only. The resource names of the
             candidate's assignments.
-        custom_attributes (Sequence[google.cloud.talent_v4beta1.types.Profile.CustomAttributesEntry]):
+        custom_attributes (Mapping[str, google.cloud.talent_v4beta1.types.CustomAttribute]):
             A map of fields to hold both filterable and non-filterable
             custom profile attributes that aren't covered by the
             provided structured fields. See
