@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -623,7 +623,6 @@ class GroupServiceAsyncClient:
         r"""Updates an existing group. You can change any group attributes
         except ``name``.
 
-
         .. code-block:: python
 
             from google.cloud import monitoring_v3
@@ -856,7 +855,6 @@ class GroupServiceAsyncClient:
     ) -> pagers.ListGroupMembersAsyncPager:
         r"""Lists the monitored resources that are members of a
         group.
-
 
         .. code-block:: python
 

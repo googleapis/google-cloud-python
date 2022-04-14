@@ -87,6 +87,7 @@ class GroupServiceTransport(abc.ABC):
             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
                 be used for service account credentials.
         """
+
         # Save the hostname. Default to port 443 (HTTPS) if none is specified.
         if ":" not in host:
             host += ":443"
@@ -270,6 +271,10 @@ class GroupServiceTransport(abc.ABC):
             Awaitable[group_service.ListGroupMembersResponse],
         ],
     ]:
+        raise NotImplementedError()
+
+    @property
+    def kind(self) -> str:
         raise NotImplementedError()
 
 

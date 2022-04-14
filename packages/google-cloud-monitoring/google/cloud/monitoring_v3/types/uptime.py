@@ -275,7 +275,7 @@ class UptimeCheckConfig(proto.Message):
                 responsible for encrypting the headers. On Get/List calls,
                 if ``mask_headers`` is set to ``true`` then the headers will
                 be obscured with ``******.``
-            headers (Sequence[google.cloud.monitoring_v3.types.UptimeCheckConfig.HttpCheck.HeadersEntry]):
+            headers (Mapping[str, str]):
                 The list of headers to send as part of the
                 Uptime check request. If two headers have the
                 same key and different values, they should be

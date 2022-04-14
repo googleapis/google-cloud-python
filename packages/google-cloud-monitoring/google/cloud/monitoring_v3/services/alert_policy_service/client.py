@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -471,7 +471,6 @@ class AlertPolicyServiceClient(metaclass=AlertPolicyServiceClientMeta):
         r"""Lists the existing alerting policies for the
         workspace.
 
-
         .. code-block:: python
 
             from google.cloud import monitoring_v3
@@ -909,7 +908,6 @@ class AlertPolicyServiceClient(metaclass=AlertPolicyServiceClientMeta):
         policy with a new one or replace only certain fields in the
         current alerting policy by specifying the fields to be updated
         via ``updateMask``. Returns the updated alerting policy.
-
 
         .. code-block:: python
 

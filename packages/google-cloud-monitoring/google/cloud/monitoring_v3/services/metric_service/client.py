@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -474,7 +474,6 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
         r"""Lists monitored resource descriptors that match a
         filter. This method does not require a Workspace.
 
-
         .. code-block:: python
 
             from google.cloud import monitoring_v3
@@ -594,7 +593,6 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
         r"""Gets a single monitored resource descriptor. This
         method does not require a Workspace.
 
-
         .. code-block:: python
 
             from google.cloud import monitoring_v3
@@ -711,7 +709,6 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
         r"""Lists metric descriptors that match a filter. This
         method does not require a Workspace.
 
-
         .. code-block:: python
 
             from google.cloud import monitoring_v3
@@ -824,7 +821,6 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
         r"""Gets a single metric descriptor. This method does not
         require a Workspace.
 
-
         .. code-block:: python
 
             from google.cloud import monitoring_v3
@@ -933,7 +929,6 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
         track its progress. User-created metric descriptors define
         `custom
         metrics <https://cloud.google.com/monitoring/custom-metrics>`__.
-
 
         .. code-block:: python
 
@@ -1047,7 +1042,6 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
         metrics <https://cloud.google.com/monitoring/custom-metrics>`__
         can be deleted.
 
-
         .. code-block:: python
 
             from google.cloud import monitoring_v3
@@ -1141,7 +1135,6 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
     ) -> pagers.ListTimeSeriesPager:
         r"""Lists time series that match a filter. This method
         does not require a Workspace.
-
 
         .. code-block:: python
 
@@ -1303,7 +1296,6 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
         corresponding failure message is included in the error
         response.
 
-
         .. code-block:: python
 
             from google.cloud import monitoring_v3
@@ -1416,7 +1408,6 @@ class MetricServiceClient(metaclass=MetricServiceClientMeta):
         method is only for use by Google Cloud services. Use
         [projects.timeSeries.create][google.monitoring.v3.MetricService.CreateTimeSeries]
         instead.
-
 
         .. code-block:: python
 

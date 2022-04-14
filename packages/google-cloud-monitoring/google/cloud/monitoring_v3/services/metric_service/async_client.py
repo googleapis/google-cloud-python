@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -232,7 +232,6 @@ class MetricServiceAsyncClient:
         r"""Lists monitored resource descriptors that match a
         filter. This method does not require a Workspace.
 
-
         .. code-block:: python
 
             from google.cloud import monitoring_v3
@@ -357,7 +356,6 @@ class MetricServiceAsyncClient:
         r"""Gets a single monitored resource descriptor. This
         method does not require a Workspace.
 
-
         .. code-block:: python
 
             from google.cloud import monitoring_v3
@@ -478,7 +476,6 @@ class MetricServiceAsyncClient:
     ) -> pagers.ListMetricDescriptorsAsyncPager:
         r"""Lists metric descriptors that match a filter. This
         method does not require a Workspace.
-
 
         .. code-block:: python
 
@@ -601,7 +598,6 @@ class MetricServiceAsyncClient:
         r"""Gets a single metric descriptor. This method does not
         require a Workspace.
 
-
         .. code-block:: python
 
             from google.cloud import monitoring_v3
@@ -720,7 +716,6 @@ class MetricServiceAsyncClient:
         `custom
         metrics <https://cloud.google.com/monitoring/custom-metrics>`__.
 
-
         .. code-block:: python
 
             from google.cloud import monitoring_v3
@@ -833,7 +828,6 @@ class MetricServiceAsyncClient:
         metrics <https://cloud.google.com/monitoring/custom-metrics>`__
         can be deleted.
 
-
         .. code-block:: python
 
             from google.cloud import monitoring_v3
@@ -936,7 +930,6 @@ class MetricServiceAsyncClient:
     ) -> pagers.ListTimeSeriesAsyncPager:
         r"""Lists time series that match a filter. This method
         does not require a Workspace.
-
 
         .. code-block:: python
 
@@ -1107,7 +1100,6 @@ class MetricServiceAsyncClient:
         corresponding failure message is included in the error
         response.
 
-
         .. code-block:: python
 
             from google.cloud import monitoring_v3
@@ -1220,7 +1212,6 @@ class MetricServiceAsyncClient:
         method is only for use by Google Cloud services. Use
         [projects.timeSeries.create][google.monitoring.v3.MetricService.CreateTimeSeries]
         instead.
-
 
         .. code-block:: python
 

@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -236,7 +236,6 @@ class AlertPolicyServiceAsyncClient:
     ) -> pagers.ListAlertPoliciesAsyncPager:
         r"""Lists the existing alerting policies for the
         workspace.
-
 
         .. code-block:: python
 
@@ -702,7 +701,6 @@ class AlertPolicyServiceAsyncClient:
         policy with a new one or replace only certain fields in the
         current alerting policy by specifying the fields to be updated
         via ``updateMask``. Returns the updated alerting policy.
-
 
         .. code-block:: python
 

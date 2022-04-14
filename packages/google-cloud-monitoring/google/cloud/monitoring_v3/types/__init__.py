@@ -13,7 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .alert import AlertPolicy
+from .alert import (
+    AlertPolicy,
+)
 from .alert_service import (
     CreateAlertPolicyRequest,
     DeleteAlertPolicyRequest,
@@ -29,8 +31,12 @@ from .common import (
     ComparisonType,
     ServiceTier,
 )
-from .dropped_labels import DroppedLabels
-from .group import Group
+from .dropped_labels import (
+    DroppedLabels,
+)
+from .group import (
+    Group,
+)
 from .group_service import (
     CreateGroupRequest,
     DeleteGroupRequest,
@@ -68,7 +74,9 @@ from .metric_service import (
     QueryTimeSeriesRequest,
     QueryTimeSeriesResponse,
 )
-from .mutation_record import MutationRecord
+from .mutation_record import (
+    MutationRecord,
+)
 from .notification import (
     NotificationChannel,
     NotificationChannelDescriptor,
@@ -113,7 +121,9 @@ from .service_service import (
     UpdateServiceLevelObjectiveRequest,
     UpdateServiceRequest,
 )
-from .span_context import SpanContext
+from .span_context import (
+    SpanContext,
+)
 from .uptime import (
     InternalChecker,
     UptimeCheckConfig,

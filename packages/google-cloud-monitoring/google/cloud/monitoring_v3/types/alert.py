@@ -67,7 +67,7 @@ class AlertPolicy(proto.Message):
             underlying problems detected by the alerting
             policy. Notification channels that have limited
             capacity might not show this documentation.
-        user_labels (Sequence[google.cloud.monitoring_v3.types.AlertPolicy.UserLabelsEntry]):
+        user_labels (Mapping[str, str]):
             User-supplied key/value data to be used for organizing and
             identifying the ``AlertPolicy`` objects.
 
@@ -481,7 +481,7 @@ class AlertPolicy(proto.Message):
                     Required. A logs-based filter. See `Advanced Logs
                     Queries <https://cloud.google.com/logging/docs/view/advanced-queries>`__
                     for how this filter should be constructed.
-                label_extractors (Sequence[google.cloud.monitoring_v3.types.AlertPolicy.Condition.LogMatch.LabelExtractorsEntry]):
+                label_extractors (Mapping[str, str]):
                     Optional. A map from a label key to an extractor expression,
                     which is used to extract the value for this label key. Each
                     entry in this map is a specification for how data should be

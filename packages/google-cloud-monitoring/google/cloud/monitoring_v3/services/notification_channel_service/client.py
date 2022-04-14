@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -469,7 +469,6 @@ class NotificationChannelServiceClient(metaclass=NotificationChannelServiceClien
         The use of descriptors makes it possible for new channel
         types to be dynamically added.
 
-
         .. code-block:: python
 
             from google.cloud import monitoring_v3
@@ -600,7 +599,6 @@ class NotificationChannelServiceClient(metaclass=NotificationChannelServiceClien
         indicates which fields are expected / permitted for a
         notification channel of the given type.
 
-
         .. code-block:: python
 
             from google.cloud import monitoring_v3
@@ -711,7 +709,6 @@ class NotificationChannelServiceClient(metaclass=NotificationChannelServiceClien
     ) -> pagers.ListNotificationChannelsPager:
         r"""Lists the notification channels that have been
         created for the project.
-
 
         .. code-block:: python
 
@@ -842,7 +839,6 @@ class NotificationChannelServiceClient(metaclass=NotificationChannelServiceClien
         identical to the information that was supplied in the
         call to the create method.
 
-
         .. code-block:: python
 
             from google.cloud import monitoring_v3
@@ -951,7 +947,6 @@ class NotificationChannelServiceClient(metaclass=NotificationChannelServiceClien
         r"""Creates a new notification channel, representing a
         single notification endpoint such as an email address,
         SMS number, or PagerDuty service.
-
 
         .. code-block:: python
 
@@ -1081,7 +1076,6 @@ class NotificationChannelServiceClient(metaclass=NotificationChannelServiceClien
     ) -> notification.NotificationChannel:
         r"""Updates a notification channel. Fields not specified
         in the field mask remain unchanged.
-
 
         .. code-block:: python
 
@@ -1311,7 +1305,6 @@ class NotificationChannelServiceClient(metaclass=NotificationChannelServiceClien
         code can then be supplied in ``VerifyNotificationChannel`` to
         verify the channel.
 
-
         .. code-block:: python
 
             from google.cloud import monitoring_v3
@@ -1432,7 +1425,6 @@ class NotificationChannelServiceClient(metaclass=NotificationChannelServiceClien
         typically return a much longer, websafe base 64 encoded
         string that has a longer expiration time.
 
-
         .. code-block:: python
 
             from google.cloud import monitoring_v3
@@ -1542,7 +1534,6 @@ class NotificationChannelServiceClient(metaclass=NotificationChannelServiceClien
         r"""Verifies a ``NotificationChannel`` by proving receipt of the
         code delivered to the channel as a result of calling
         ``SendNotificationChannelVerificationCode``.
-
 
         .. code-block:: python
 

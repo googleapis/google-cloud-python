@@ -144,14 +144,14 @@ class NotificationChannel(proto.Message):
             provide additional details, beyond the display
             name, for the channel. This may not exceed 1024
             Unicode characters.
-        labels (Sequence[google.cloud.monitoring_v3.types.NotificationChannel.LabelsEntry]):
+        labels (Mapping[str, str]):
             Configuration fields that define the channel and its
             behavior. The permissible and required labels are specified
             in the
             [NotificationChannelDescriptor.labels][google.monitoring.v3.NotificationChannelDescriptor.labels]
             of the ``NotificationChannelDescriptor`` corresponding to
             the ``type`` field.
-        user_labels (Sequence[google.cloud.monitoring_v3.types.NotificationChannel.UserLabelsEntry]):
+        user_labels (Mapping[str, str]):
             User-supplied key/value data that does not need to conform
             to the corresponding ``NotificationChannelDescriptor``'s
             schema, unlike the ``labels`` field. This field is intended

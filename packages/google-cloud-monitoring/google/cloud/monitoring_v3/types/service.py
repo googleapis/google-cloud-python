@@ -90,7 +90,7 @@ class Service(proto.Message):
         telemetry (google.cloud.monitoring_v3.types.Service.Telemetry):
             Configuration for how to query telemetry on a
             Service.
-        user_labels (Sequence[google.cloud.monitoring_v3.types.Service.UserLabelsEntry]):
+        user_labels (Mapping[str, str]):
             Labels which have been used to annotate the
             service. Label keys must start with a letter.
             Label keys and values may contain lowercase
@@ -371,7 +371,7 @@ class ServiceLevelObjective(proto.Message):
             ``WEEK``, ``FORTNIGHT``, and ``MONTH`` are supported.
 
             This field is a member of `oneof`_ ``period``.
-        user_labels (Sequence[google.cloud.monitoring_v3.types.ServiceLevelObjective.UserLabelsEntry]):
+        user_labels (Mapping[str, str]):
             Labels which have been used to annotate the
             service-level objective. Label keys must start
             with a letter. Label keys and values may contain
