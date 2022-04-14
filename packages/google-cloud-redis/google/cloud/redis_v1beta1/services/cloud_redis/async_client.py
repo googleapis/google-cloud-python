@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -243,7 +243,6 @@ class CloudRedisAsyncClient:
         regions available to the project are queried, and the results
         are aggregated.
 
-
         .. code-block:: python
 
             from google.cloud import redis_v1beta1
@@ -451,7 +450,6 @@ class CloudRedisAsyncClient:
         This information is not included in the details returned
         to GetInstance.
 
-
         .. code-block:: python
 
             from google.cloud import redis_v1beta1
@@ -560,7 +558,6 @@ class CloudRedisAsyncClient:
 
         The returned operation is automatically deleted after a few
         hours, so there is no need to call DeleteOperation.
-
 
         .. code-block:: python
 
@@ -710,7 +707,6 @@ class CloudRedisAsyncClient:
         operation is automatically deleted after a few hours, so
         there is no need to call DeleteOperation.
 
-
         .. code-block:: python
 
             from google.cloud import redis_v1beta1
@@ -847,7 +843,6 @@ class CloudRedisAsyncClient:
         r"""Upgrades Redis instance to the newer Redis version
         specified in the request.
 
-
         .. code-block:: python
 
             from google.cloud import redis_v1beta1
@@ -978,7 +973,6 @@ class CloudRedisAsyncClient:
         The returned operation is automatically deleted after a
         few hours, so there is no need to call DeleteOperation.
 
-
         .. code-block:: python
 
             from google.cloud import redis_v1beta1
@@ -1108,7 +1102,6 @@ class CloudRedisAsyncClient:
         The returned operation is automatically deleted after a
         few hours, so there is no need to call DeleteOperation.
 
-
         .. code-block:: python
 
             from google.cloud import redis_v1beta1
@@ -1236,7 +1229,6 @@ class CloudRedisAsyncClient:
         replica node for a specific STANDARD tier Cloud
         Memorystore for Redis instance.
 
-
         .. code-block:: python
 
             from google.cloud import redis_v1beta1
@@ -1358,7 +1350,6 @@ class CloudRedisAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Deletes a specific Redis instance.  Instance stops
         serving and data is deleted.
-
 
         .. code-block:: python
 
@@ -1483,7 +1474,6 @@ class CloudRedisAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Reschedule maintenance for a given instance in a
         given project and location.
-
 
         .. code-block:: python
 

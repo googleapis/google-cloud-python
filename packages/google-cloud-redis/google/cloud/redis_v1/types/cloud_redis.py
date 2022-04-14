@@ -97,7 +97,7 @@ class Instance(proto.Message):
         display_name (str):
             An arbitrary and optional user-provided name
             for the instance.
-        labels (Sequence[google.cloud.redis_v1.types.Instance.LabelsEntry]):
+        labels (Mapping[str, str]):
             Resource labels to represent user provided
             metadata
         location_id (str):
@@ -163,7 +163,7 @@ class Instance(proto.Message):
         status_message (str):
             Output only. Additional information about the
             current status of this instance, if available.
-        redis_configs (Sequence[google.cloud.redis_v1.types.Instance.RedisConfigsEntry]):
+        redis_configs (Mapping[str, str]):
             Optional. Redis configuration parameters, according to
             http://redis.io/topics/config. Currently, the only supported
             parameters are:
@@ -1030,7 +1030,7 @@ class LocationMetadata(proto.Message):
     ``google.cloud.location.Location.metadata`` field.
 
     Attributes:
-        available_zones (Sequence[google.cloud.redis_v1.types.LocationMetadata.AvailableZonesEntry]):
+        available_zones (Mapping[str, google.cloud.redis_v1.types.ZoneMetadata]):
             Output only. The set of available zones in the location. The
             map is keyed by the lowercase ID of each zone, as defined by
             GCE. These keys can be specified in ``location_id`` or
