@@ -39,7 +39,7 @@ class Document(proto.Message):
         name (str):
             The resource name of the document, for example
             ``projects/{project_id}/databases/{database_id}/documents/{document_path}``.
-        fields (Sequence[google.cloud.firestore_v1.types.Document.FieldsEntry]):
+        fields (Mapping[str, google.cloud.firestore_v1.types.Value]):
             The document's fields.
 
             The map keys represent field names.
@@ -256,7 +256,7 @@ class MapValue(proto.Message):
     r"""A map value.
 
     Attributes:
-        fields (Sequence[google.cloud.firestore_v1.types.MapValue.FieldsEntry]):
+        fields (Mapping[str, google.cloud.firestore_v1.types.Value]):
             The map's fields.
 
             The map keys represent field names. Field names matching the

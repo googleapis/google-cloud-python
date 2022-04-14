@@ -16,7 +16,17 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Iterable, Iterator, Sequence, Tuple, Type, Union
+from typing import (
+    Dict,
+    Mapping,
+    Optional,
+    Iterable,
+    Iterator,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -791,7 +801,6 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
         Documents returned by this method are not guaranteed to
         be returned in the same order that they were requested.
 
-
         .. code-block:: python
 
             from google.cloud import firestore_v1
@@ -965,7 +974,6 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
     ) -> firestore.CommitResponse:
         r"""Commits a transaction, while optionally updating
         documents.
-
 
         .. code-block:: python
 
@@ -1244,7 +1252,6 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
         used by RunQuery as starting/end points for the query
         results.
 
-
         .. code-block:: python
 
             from google.cloud import firestore_v1
@@ -1332,7 +1339,6 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
     ) -> Iterable[firestore.WriteResponse]:
         r"""Streams batches of document updates and deletes, in
         order.
-
 
         .. code-block:: python
 
@@ -1619,7 +1625,6 @@ class FirestoreClient(metaclass=FirestoreClientMeta):
 
         If you require an atomically applied set of writes, use
         [Commit][google.firestore.v1.Firestore.Commit] instead.
-
 
         .. code-block:: python
 

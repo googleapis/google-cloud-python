@@ -156,7 +156,10 @@ class StructuredQuery(proto.Message):
                 The operator for combining multiple filters.
             filters (Sequence[google.cloud.firestore_v1.types.StructuredQuery.Filter]):
                 The list of filters to combine.
-                Must contain at least one filter.
+
+                Requires:
+
+                -  At least one filter is present.
         """
 
         class Operator(proto.Enum):

@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -267,7 +267,6 @@ class FirestoreAdminAsyncClient:
         which may be used to track the status of the creation. The
         metadata for the operation will be the type
         [IndexOperationMetadata][google.firestore.admin.v1.IndexOperationMetadata].
-
 
         .. code-block:: python
 
@@ -831,7 +830,6 @@ class FirestoreAdminAsyncClient:
         the special ``Field`` with resource name:
         ``projects/{project_id}/databases/{database_id}/collectionGroups/__default__/fields/*``.
 
-
         .. code-block:: python
 
             from google.cloud import firestore_admin_v1
@@ -956,7 +954,6 @@ class FirestoreAdminAsyncClient:
         [FirestoreAdmin.ListFields][google.firestore.admin.v1.FirestoreAdmin.ListFields]
         with the filter set to ``indexConfig.usesAncestorConfig:false``
         .
-
 
         .. code-block:: python
 
@@ -1090,7 +1087,6 @@ class FirestoreAdminAsyncClient:
         refer to:
         https://cloud.google.com/firestore/docs/manage-data/export-import
 
-
         .. code-block:: python
 
             from google.cloud import firestore_admin_v1
@@ -1208,7 +1204,6 @@ class FirestoreAdminAsyncClient:
         is created. If an ImportDocuments operation is
         cancelled, it is possible that a subset of the data has
         already been imported to Cloud Firestore.
-
 
         .. code-block:: python
 

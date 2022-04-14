@@ -18,6 +18,7 @@ import functools
 import re
 from typing import (
     Dict,
+    Mapping,
     Optional,
     AsyncIterable,
     Awaitable,
@@ -637,7 +638,6 @@ class FirestoreAsyncClient:
         Documents returned by this method are not guaranteed to
         be returned in the same order that they were requested.
 
-
         .. code-block:: python
 
             from google.cloud import firestore_v1
@@ -834,7 +834,6 @@ class FirestoreAsyncClient:
     ) -> firestore.CommitResponse:
         r"""Commits a transaction, while optionally updating
         documents.
-
 
         .. code-block:: python
 
@@ -1146,7 +1145,6 @@ class FirestoreAsyncClient:
         used by RunQuery as starting/end points for the query
         results.
 
-
         .. code-block:: python
 
             from google.cloud import firestore_v1
@@ -1245,7 +1243,6 @@ class FirestoreAsyncClient:
     ) -> Awaitable[AsyncIterable[firestore.WriteResponse]]:
         r"""Streams batches of document updates and deletes, in
         order.
-
 
         .. code-block:: python
 
@@ -1564,7 +1561,6 @@ class FirestoreAsyncClient:
 
         If you require an atomically applied set of writes, use
         [Commit][google.firestore.v1.Firestore.Commit] instead.
-
 
         .. code-block:: python
 

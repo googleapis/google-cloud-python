@@ -13,8 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .database import Database
-from .field import Field
+from .database import (
+    Database,
+)
+from .field import (
+    Field,
+)
 from .firestore_admin import (
     CreateIndexRequest,
     DeleteIndexRequest,
@@ -33,8 +37,12 @@ from .firestore_admin import (
     UpdateDatabaseRequest,
     UpdateFieldRequest,
 )
-from .index import Index
-from .location import LocationMetadata
+from .index import (
+    Index,
+)
+from .location import (
+    LocationMetadata,
+)
 from .operation import (
     ExportDocumentsMetadata,
     ExportDocumentsResponse,

@@ -924,7 +924,7 @@ class WriteRequest(proto.Message):
             ``stream_id`` field.
 
             Leave this field unset when creating a new stream.
-        labels (Sequence[google.cloud.firestore_v1.types.WriteRequest.LabelsEntry]):
+        labels (Mapping[str, str]):
             Labels associated with this write request.
     """
 
@@ -1020,7 +1020,7 @@ class ListenRequest(proto.Message):
             stream.
 
             This field is a member of `oneof`_ ``target_change``.
-        labels (Sequence[google.cloud.firestore_v1.types.ListenRequest.LabelsEntry]):
+        labels (Mapping[str, str]):
             Labels associated with this target change.
     """
 
@@ -1383,7 +1383,7 @@ class BatchWriteRequest(proto.Message):
             not guarantee ordering. Each write succeeds or
             fails independently. You cannot write to the
             same document more than once per request.
-        labels (Sequence[google.cloud.firestore_v1.types.BatchWriteRequest.LabelsEntry]):
+        labels (Mapping[str, str]):
             Labels associated with this batch write.
     """
 
