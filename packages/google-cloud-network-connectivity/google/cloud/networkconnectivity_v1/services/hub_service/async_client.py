@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -579,7 +579,6 @@ class HubServiceAsyncClient:
         r"""Updates the description and/or labels of the
         specified hub.
 
-
         .. code-block:: python
 
             from google.cloud import networkconnectivity_v1
@@ -828,7 +827,6 @@ class HubServiceAsyncClient:
         r"""Lists the spokes in the specified project and
         location.
 
-
         .. code-block:: python
 
             from google.cloud import networkconnectivity_v1
@@ -1040,7 +1038,6 @@ class HubServiceAsyncClient:
     ) -> operation_async.AsyncOperation:
         r"""Creates a spoke in the specified project and
         location.
-
 
         .. code-block:: python
 

@@ -66,7 +66,7 @@ class Hub(proto.Message):
             Time when the Hub was created.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Time when the Hub was updated.
-        labels (Sequence[google.cloud.networkconnectivity_v1alpha1.types.Hub.LabelsEntry]):
+        labels (Mapping[str, str]):
             User-defined labels.
         description (str):
             Short description of the hub resource.
@@ -133,7 +133,7 @@ class Spoke(proto.Message):
             The time when the Spoke was created.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             The time when the Spoke was updated.
-        labels (Sequence[google.cloud.networkconnectivity_v1alpha1.types.Spoke.LabelsEntry]):
+        labels (Mapping[str, str]):
             User-defined labels.
         description (str):
             Short description of the spoke resource

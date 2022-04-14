@@ -83,7 +83,7 @@ class Hub(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time the hub was last
             updated.
-        labels (Sequence[google.cloud.networkconnectivity_v1.types.Hub.LabelsEntry]):
+        labels (Mapping[str, str]):
             Optional labels in key:value format. For more information
             about labels, see `Requirements for
             labels <https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements>`__.
@@ -191,7 +191,7 @@ class Spoke(proto.Message):
         update_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. The time the spoke was last
             updated.
-        labels (Sequence[google.cloud.networkconnectivity_v1.types.Spoke.LabelsEntry]):
+        labels (Mapping[str, str]):
             Optional labels in key:value format. For more information
             about labels, see `Requirements for
             labels <https://cloud.google.com/resource-manager/docs/creating-managing-labels#requirements>`__.
