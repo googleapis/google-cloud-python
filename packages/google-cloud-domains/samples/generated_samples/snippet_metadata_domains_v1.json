@@ -1,16 +1,69 @@
 {
+  "clientLibrary": {
+    "apis": [
+      {
+        "id": "google.cloud.domains.v1",
+        "version": "v1"
+      }
+    ],
+    "language": "PYTHON",
+    "name": "google-cloud-domains"
+  },
   "snippets": [
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.domains_v1.DomainsAsyncClient",
+          "shortName": "DomainsAsyncClient"
+        },
+        "fullName": "google.cloud.domains_v1.DomainsAsyncClient.configure_contact_settings",
         "method": {
+          "fullName": "google.cloud.domains.v1.Domains.ConfigureContactSettings",
           "service": {
+            "fullName": "google.cloud.domains.v1.Domains",
             "shortName": "Domains"
           },
           "shortName": "ConfigureContactSettings"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.domains_v1.types.ConfigureContactSettingsRequest"
+          },
+          {
+            "name": "registration",
+            "type": "str"
+          },
+          {
+            "name": "contact_settings",
+            "type": "google.cloud.domains_v1.types.ContactSettings"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "configure_contact_settings"
       },
+      "description": "Sample for ConfigureContactSettings",
       "file": "domains_v1_generated_domains_configure_contact_settings_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "domains_v1_generated_Domains_ConfigureContactSettings_async",
       "segments": [
         {
@@ -43,18 +96,62 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "domains_v1_generated_domains_configure_contact_settings_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.domains_v1.DomainsClient",
+          "shortName": "DomainsClient"
+        },
+        "fullName": "google.cloud.domains_v1.DomainsClient.configure_contact_settings",
         "method": {
+          "fullName": "google.cloud.domains.v1.Domains.ConfigureContactSettings",
           "service": {
+            "fullName": "google.cloud.domains.v1.Domains",
             "shortName": "Domains"
           },
           "shortName": "ConfigureContactSettings"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.domains_v1.types.ConfigureContactSettingsRequest"
+          },
+          {
+            "name": "registration",
+            "type": "str"
+          },
+          {
+            "name": "contact_settings",
+            "type": "google.cloud.domains_v1.types.ContactSettings"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "configure_contact_settings"
       },
+      "description": "Sample for ConfigureContactSettings",
       "file": "domains_v1_generated_domains_configure_contact_settings_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "domains_v1_generated_Domains_ConfigureContactSettings_sync",
       "segments": [
         {
@@ -87,19 +184,63 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "domains_v1_generated_domains_configure_contact_settings_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.domains_v1.DomainsAsyncClient",
+          "shortName": "DomainsAsyncClient"
+        },
+        "fullName": "google.cloud.domains_v1.DomainsAsyncClient.configure_dns_settings",
         "method": {
+          "fullName": "google.cloud.domains.v1.Domains.ConfigureDnsSettings",
           "service": {
+            "fullName": "google.cloud.domains.v1.Domains",
             "shortName": "Domains"
           },
           "shortName": "ConfigureDnsSettings"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.domains_v1.types.ConfigureDnsSettingsRequest"
+          },
+          {
+            "name": "registration",
+            "type": "str"
+          },
+          {
+            "name": "dns_settings",
+            "type": "google.cloud.domains_v1.types.DnsSettings"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "configure_dns_settings"
       },
+      "description": "Sample for ConfigureDnsSettings",
       "file": "domains_v1_generated_domains_configure_dns_settings_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "domains_v1_generated_Domains_ConfigureDnsSettings_async",
       "segments": [
         {
@@ -132,18 +273,62 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "domains_v1_generated_domains_configure_dns_settings_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.domains_v1.DomainsClient",
+          "shortName": "DomainsClient"
+        },
+        "fullName": "google.cloud.domains_v1.DomainsClient.configure_dns_settings",
         "method": {
+          "fullName": "google.cloud.domains.v1.Domains.ConfigureDnsSettings",
           "service": {
+            "fullName": "google.cloud.domains.v1.Domains",
             "shortName": "Domains"
           },
           "shortName": "ConfigureDnsSettings"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.domains_v1.types.ConfigureDnsSettingsRequest"
+          },
+          {
+            "name": "registration",
+            "type": "str"
+          },
+          {
+            "name": "dns_settings",
+            "type": "google.cloud.domains_v1.types.DnsSettings"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "configure_dns_settings"
       },
+      "description": "Sample for ConfigureDnsSettings",
       "file": "domains_v1_generated_domains_configure_dns_settings_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "domains_v1_generated_Domains_ConfigureDnsSettings_sync",
       "segments": [
         {
@@ -176,19 +361,63 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "domains_v1_generated_domains_configure_dns_settings_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.domains_v1.DomainsAsyncClient",
+          "shortName": "DomainsAsyncClient"
+        },
+        "fullName": "google.cloud.domains_v1.DomainsAsyncClient.configure_management_settings",
         "method": {
+          "fullName": "google.cloud.domains.v1.Domains.ConfigureManagementSettings",
           "service": {
+            "fullName": "google.cloud.domains.v1.Domains",
             "shortName": "Domains"
           },
           "shortName": "ConfigureManagementSettings"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.domains_v1.types.ConfigureManagementSettingsRequest"
+          },
+          {
+            "name": "registration",
+            "type": "str"
+          },
+          {
+            "name": "management_settings",
+            "type": "google.cloud.domains_v1.types.ManagementSettings"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "configure_management_settings"
       },
+      "description": "Sample for ConfigureManagementSettings",
       "file": "domains_v1_generated_domains_configure_management_settings_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "domains_v1_generated_Domains_ConfigureManagementSettings_async",
       "segments": [
         {
@@ -221,18 +450,62 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "domains_v1_generated_domains_configure_management_settings_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.domains_v1.DomainsClient",
+          "shortName": "DomainsClient"
+        },
+        "fullName": "google.cloud.domains_v1.DomainsClient.configure_management_settings",
         "method": {
+          "fullName": "google.cloud.domains.v1.Domains.ConfigureManagementSettings",
           "service": {
+            "fullName": "google.cloud.domains.v1.Domains",
             "shortName": "Domains"
           },
           "shortName": "ConfigureManagementSettings"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.domains_v1.types.ConfigureManagementSettingsRequest"
+          },
+          {
+            "name": "registration",
+            "type": "str"
+          },
+          {
+            "name": "management_settings",
+            "type": "google.cloud.domains_v1.types.ManagementSettings"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "configure_management_settings"
       },
+      "description": "Sample for ConfigureManagementSettings",
       "file": "domains_v1_generated_domains_configure_management_settings_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "domains_v1_generated_Domains_ConfigureManagementSettings_sync",
       "segments": [
         {
@@ -265,19 +538,55 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "domains_v1_generated_domains_configure_management_settings_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.domains_v1.DomainsAsyncClient",
+          "shortName": "DomainsAsyncClient"
+        },
+        "fullName": "google.cloud.domains_v1.DomainsAsyncClient.delete_registration",
         "method": {
+          "fullName": "google.cloud.domains.v1.Domains.DeleteRegistration",
           "service": {
+            "fullName": "google.cloud.domains.v1.Domains",
             "shortName": "Domains"
           },
           "shortName": "DeleteRegistration"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.domains_v1.types.DeleteRegistrationRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "delete_registration"
       },
+      "description": "Sample for DeleteRegistration",
       "file": "domains_v1_generated_domains_delete_registration_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "domains_v1_generated_Domains_DeleteRegistration_async",
       "segments": [
         {
@@ -310,18 +619,54 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "domains_v1_generated_domains_delete_registration_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.domains_v1.DomainsClient",
+          "shortName": "DomainsClient"
+        },
+        "fullName": "google.cloud.domains_v1.DomainsClient.delete_registration",
         "method": {
+          "fullName": "google.cloud.domains.v1.Domains.DeleteRegistration",
           "service": {
+            "fullName": "google.cloud.domains.v1.Domains",
             "shortName": "Domains"
           },
           "shortName": "DeleteRegistration"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.domains_v1.types.DeleteRegistrationRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "delete_registration"
       },
+      "description": "Sample for DeleteRegistration",
       "file": "domains_v1_generated_domains_delete_registration_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "domains_v1_generated_Domains_DeleteRegistration_sync",
       "segments": [
         {
@@ -354,19 +699,55 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "domains_v1_generated_domains_delete_registration_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.domains_v1.DomainsAsyncClient",
+          "shortName": "DomainsAsyncClient"
+        },
+        "fullName": "google.cloud.domains_v1.DomainsAsyncClient.export_registration",
         "method": {
+          "fullName": "google.cloud.domains.v1.Domains.ExportRegistration",
           "service": {
+            "fullName": "google.cloud.domains.v1.Domains",
             "shortName": "Domains"
           },
           "shortName": "ExportRegistration"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.domains_v1.types.ExportRegistrationRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "export_registration"
       },
+      "description": "Sample for ExportRegistration",
       "file": "domains_v1_generated_domains_export_registration_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "domains_v1_generated_Domains_ExportRegistration_async",
       "segments": [
         {
@@ -399,18 +780,54 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "domains_v1_generated_domains_export_registration_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.domains_v1.DomainsClient",
+          "shortName": "DomainsClient"
+        },
+        "fullName": "google.cloud.domains_v1.DomainsClient.export_registration",
         "method": {
+          "fullName": "google.cloud.domains.v1.Domains.ExportRegistration",
           "service": {
+            "fullName": "google.cloud.domains.v1.Domains",
             "shortName": "Domains"
           },
           "shortName": "ExportRegistration"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.domains_v1.types.ExportRegistrationRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "export_registration"
       },
+      "description": "Sample for ExportRegistration",
       "file": "domains_v1_generated_domains_export_registration_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "domains_v1_generated_Domains_ExportRegistration_sync",
       "segments": [
         {
@@ -443,19 +860,55 @@
           "start": 46,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "domains_v1_generated_domains_export_registration_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.domains_v1.DomainsAsyncClient",
+          "shortName": "DomainsAsyncClient"
+        },
+        "fullName": "google.cloud.domains_v1.DomainsAsyncClient.get_registration",
         "method": {
+          "fullName": "google.cloud.domains.v1.Domains.GetRegistration",
           "service": {
+            "fullName": "google.cloud.domains.v1.Domains",
             "shortName": "Domains"
           },
           "shortName": "GetRegistration"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.domains_v1.types.GetRegistrationRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.domains_v1.types.Registration",
+        "shortName": "get_registration"
       },
+      "description": "Sample for GetRegistration",
       "file": "domains_v1_generated_domains_get_registration_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "domains_v1_generated_Domains_GetRegistration_async",
       "segments": [
         {
@@ -488,18 +941,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "domains_v1_generated_domains_get_registration_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.domains_v1.DomainsClient",
+          "shortName": "DomainsClient"
+        },
+        "fullName": "google.cloud.domains_v1.DomainsClient.get_registration",
         "method": {
+          "fullName": "google.cloud.domains.v1.Domains.GetRegistration",
           "service": {
+            "fullName": "google.cloud.domains.v1.Domains",
             "shortName": "Domains"
           },
           "shortName": "GetRegistration"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.domains_v1.types.GetRegistrationRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.domains_v1.types.Registration",
+        "shortName": "get_registration"
       },
+      "description": "Sample for GetRegistration",
       "file": "domains_v1_generated_domains_get_registration_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "domains_v1_generated_Domains_GetRegistration_sync",
       "segments": [
         {
@@ -532,19 +1021,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "domains_v1_generated_domains_get_registration_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.domains_v1.DomainsAsyncClient",
+          "shortName": "DomainsAsyncClient"
+        },
+        "fullName": "google.cloud.domains_v1.DomainsAsyncClient.list_registrations",
         "method": {
+          "fullName": "google.cloud.domains.v1.Domains.ListRegistrations",
           "service": {
+            "fullName": "google.cloud.domains.v1.Domains",
             "shortName": "Domains"
           },
           "shortName": "ListRegistrations"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.domains_v1.types.ListRegistrationsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.domains_v1.services.domains.pagers.ListRegistrationsAsyncPager",
+        "shortName": "list_registrations"
       },
+      "description": "Sample for ListRegistrations",
       "file": "domains_v1_generated_domains_list_registrations_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "domains_v1_generated_Domains_ListRegistrations_async",
       "segments": [
         {
@@ -577,18 +1102,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "domains_v1_generated_domains_list_registrations_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.domains_v1.DomainsClient",
+          "shortName": "DomainsClient"
+        },
+        "fullName": "google.cloud.domains_v1.DomainsClient.list_registrations",
         "method": {
+          "fullName": "google.cloud.domains.v1.Domains.ListRegistrations",
           "service": {
+            "fullName": "google.cloud.domains.v1.Domains",
             "shortName": "Domains"
           },
           "shortName": "ListRegistrations"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.domains_v1.types.ListRegistrationsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.domains_v1.services.domains.pagers.ListRegistrationsPager",
+        "shortName": "list_registrations"
       },
+      "description": "Sample for ListRegistrations",
       "file": "domains_v1_generated_domains_list_registrations_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "domains_v1_generated_Domains_ListRegistrations_sync",
       "segments": [
         {
@@ -621,19 +1182,63 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "domains_v1_generated_domains_list_registrations_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.domains_v1.DomainsAsyncClient",
+          "shortName": "DomainsAsyncClient"
+        },
+        "fullName": "google.cloud.domains_v1.DomainsAsyncClient.register_domain",
         "method": {
+          "fullName": "google.cloud.domains.v1.Domains.RegisterDomain",
           "service": {
+            "fullName": "google.cloud.domains.v1.Domains",
             "shortName": "Domains"
           },
           "shortName": "RegisterDomain"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.domains_v1.types.RegisterDomainRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "registration",
+            "type": "google.cloud.domains_v1.types.Registration"
+          },
+          {
+            "name": "yearly_price",
+            "type": "google.type.money_pb2.Money"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "register_domain"
       },
+      "description": "Sample for RegisterDomain",
       "file": "domains_v1_generated_domains_register_domain_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "domains_v1_generated_Domains_RegisterDomain_async",
       "segments": [
         {
@@ -666,18 +1271,62 @@
           "start": 57,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "domains_v1_generated_domains_register_domain_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.domains_v1.DomainsClient",
+          "shortName": "DomainsClient"
+        },
+        "fullName": "google.cloud.domains_v1.DomainsClient.register_domain",
         "method": {
+          "fullName": "google.cloud.domains.v1.Domains.RegisterDomain",
           "service": {
+            "fullName": "google.cloud.domains.v1.Domains",
             "shortName": "Domains"
           },
           "shortName": "RegisterDomain"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.domains_v1.types.RegisterDomainRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "registration",
+            "type": "google.cloud.domains_v1.types.Registration"
+          },
+          {
+            "name": "yearly_price",
+            "type": "google.type.money_pb2.Money"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "register_domain"
       },
+      "description": "Sample for RegisterDomain",
       "file": "domains_v1_generated_domains_register_domain_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "domains_v1_generated_Domains_RegisterDomain_sync",
       "segments": [
         {
@@ -710,19 +1359,55 @@
           "start": 57,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "domains_v1_generated_domains_register_domain_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.domains_v1.DomainsAsyncClient",
+          "shortName": "DomainsAsyncClient"
+        },
+        "fullName": "google.cloud.domains_v1.DomainsAsyncClient.reset_authorization_code",
         "method": {
+          "fullName": "google.cloud.domains.v1.Domains.ResetAuthorizationCode",
           "service": {
+            "fullName": "google.cloud.domains.v1.Domains",
             "shortName": "Domains"
           },
           "shortName": "ResetAuthorizationCode"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.domains_v1.types.ResetAuthorizationCodeRequest"
+          },
+          {
+            "name": "registration",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.domains_v1.types.AuthorizationCode",
+        "shortName": "reset_authorization_code"
       },
+      "description": "Sample for ResetAuthorizationCode",
       "file": "domains_v1_generated_domains_reset_authorization_code_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "domains_v1_generated_Domains_ResetAuthorizationCode_async",
       "segments": [
         {
@@ -755,18 +1440,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "domains_v1_generated_domains_reset_authorization_code_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.domains_v1.DomainsClient",
+          "shortName": "DomainsClient"
+        },
+        "fullName": "google.cloud.domains_v1.DomainsClient.reset_authorization_code",
         "method": {
+          "fullName": "google.cloud.domains.v1.Domains.ResetAuthorizationCode",
           "service": {
+            "fullName": "google.cloud.domains.v1.Domains",
             "shortName": "Domains"
           },
           "shortName": "ResetAuthorizationCode"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.domains_v1.types.ResetAuthorizationCodeRequest"
+          },
+          {
+            "name": "registration",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.domains_v1.types.AuthorizationCode",
+        "shortName": "reset_authorization_code"
       },
+      "description": "Sample for ResetAuthorizationCode",
       "file": "domains_v1_generated_domains_reset_authorization_code_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "domains_v1_generated_Domains_ResetAuthorizationCode_sync",
       "segments": [
         {
@@ -799,19 +1520,55 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "domains_v1_generated_domains_reset_authorization_code_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.domains_v1.DomainsAsyncClient",
+          "shortName": "DomainsAsyncClient"
+        },
+        "fullName": "google.cloud.domains_v1.DomainsAsyncClient.retrieve_authorization_code",
         "method": {
+          "fullName": "google.cloud.domains.v1.Domains.RetrieveAuthorizationCode",
           "service": {
+            "fullName": "google.cloud.domains.v1.Domains",
             "shortName": "Domains"
           },
           "shortName": "RetrieveAuthorizationCode"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.domains_v1.types.RetrieveAuthorizationCodeRequest"
+          },
+          {
+            "name": "registration",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.domains_v1.types.AuthorizationCode",
+        "shortName": "retrieve_authorization_code"
       },
+      "description": "Sample for RetrieveAuthorizationCode",
       "file": "domains_v1_generated_domains_retrieve_authorization_code_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "domains_v1_generated_Domains_RetrieveAuthorizationCode_async",
       "segments": [
         {
@@ -844,18 +1601,54 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "domains_v1_generated_domains_retrieve_authorization_code_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.domains_v1.DomainsClient",
+          "shortName": "DomainsClient"
+        },
+        "fullName": "google.cloud.domains_v1.DomainsClient.retrieve_authorization_code",
         "method": {
+          "fullName": "google.cloud.domains.v1.Domains.RetrieveAuthorizationCode",
           "service": {
+            "fullName": "google.cloud.domains.v1.Domains",
             "shortName": "Domains"
           },
           "shortName": "RetrieveAuthorizationCode"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.domains_v1.types.RetrieveAuthorizationCodeRequest"
+          },
+          {
+            "name": "registration",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.domains_v1.types.AuthorizationCode",
+        "shortName": "retrieve_authorization_code"
       },
+      "description": "Sample for RetrieveAuthorizationCode",
       "file": "domains_v1_generated_domains_retrieve_authorization_code_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "domains_v1_generated_Domains_RetrieveAuthorizationCode_sync",
       "segments": [
         {
@@ -888,19 +1681,59 @@
           "start": 42,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "domains_v1_generated_domains_retrieve_authorization_code_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.domains_v1.DomainsAsyncClient",
+          "shortName": "DomainsAsyncClient"
+        },
+        "fullName": "google.cloud.domains_v1.DomainsAsyncClient.retrieve_register_parameters",
         "method": {
+          "fullName": "google.cloud.domains.v1.Domains.RetrieveRegisterParameters",
           "service": {
+            "fullName": "google.cloud.domains.v1.Domains",
             "shortName": "Domains"
           },
           "shortName": "RetrieveRegisterParameters"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.domains_v1.types.RetrieveRegisterParametersRequest"
+          },
+          {
+            "name": "location",
+            "type": "str"
+          },
+          {
+            "name": "domain_name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.domains_v1.types.RetrieveRegisterParametersResponse",
+        "shortName": "retrieve_register_parameters"
       },
+      "description": "Sample for RetrieveRegisterParameters",
       "file": "domains_v1_generated_domains_retrieve_register_parameters_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "domains_v1_generated_Domains_RetrieveRegisterParameters_async",
       "segments": [
         {
@@ -933,18 +1766,58 @@
           "start": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "domains_v1_generated_domains_retrieve_register_parameters_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.domains_v1.DomainsClient",
+          "shortName": "DomainsClient"
+        },
+        "fullName": "google.cloud.domains_v1.DomainsClient.retrieve_register_parameters",
         "method": {
+          "fullName": "google.cloud.domains.v1.Domains.RetrieveRegisterParameters",
           "service": {
+            "fullName": "google.cloud.domains.v1.Domains",
             "shortName": "Domains"
           },
           "shortName": "RetrieveRegisterParameters"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.domains_v1.types.RetrieveRegisterParametersRequest"
+          },
+          {
+            "name": "location",
+            "type": "str"
+          },
+          {
+            "name": "domain_name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.domains_v1.types.RetrieveRegisterParametersResponse",
+        "shortName": "retrieve_register_parameters"
       },
+      "description": "Sample for RetrieveRegisterParameters",
       "file": "domains_v1_generated_domains_retrieve_register_parameters_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "domains_v1_generated_Domains_RetrieveRegisterParameters_sync",
       "segments": [
         {
@@ -977,19 +1850,59 @@
           "start": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "domains_v1_generated_domains_retrieve_register_parameters_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.domains_v1.DomainsAsyncClient",
+          "shortName": "DomainsAsyncClient"
+        },
+        "fullName": "google.cloud.domains_v1.DomainsAsyncClient.retrieve_transfer_parameters",
         "method": {
+          "fullName": "google.cloud.domains.v1.Domains.RetrieveTransferParameters",
           "service": {
+            "fullName": "google.cloud.domains.v1.Domains",
             "shortName": "Domains"
           },
           "shortName": "RetrieveTransferParameters"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.domains_v1.types.RetrieveTransferParametersRequest"
+          },
+          {
+            "name": "location",
+            "type": "str"
+          },
+          {
+            "name": "domain_name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.domains_v1.types.RetrieveTransferParametersResponse",
+        "shortName": "retrieve_transfer_parameters"
       },
+      "description": "Sample for RetrieveTransferParameters",
       "file": "domains_v1_generated_domains_retrieve_transfer_parameters_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "domains_v1_generated_Domains_RetrieveTransferParameters_async",
       "segments": [
         {
@@ -1022,18 +1935,58 @@
           "start": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "domains_v1_generated_domains_retrieve_transfer_parameters_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.domains_v1.DomainsClient",
+          "shortName": "DomainsClient"
+        },
+        "fullName": "google.cloud.domains_v1.DomainsClient.retrieve_transfer_parameters",
         "method": {
+          "fullName": "google.cloud.domains.v1.Domains.RetrieveTransferParameters",
           "service": {
+            "fullName": "google.cloud.domains.v1.Domains",
             "shortName": "Domains"
           },
           "shortName": "RetrieveTransferParameters"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.domains_v1.types.RetrieveTransferParametersRequest"
+          },
+          {
+            "name": "location",
+            "type": "str"
+          },
+          {
+            "name": "domain_name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.domains_v1.types.RetrieveTransferParametersResponse",
+        "shortName": "retrieve_transfer_parameters"
       },
+      "description": "Sample for RetrieveTransferParameters",
       "file": "domains_v1_generated_domains_retrieve_transfer_parameters_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "domains_v1_generated_Domains_RetrieveTransferParameters_sync",
       "segments": [
         {
@@ -1066,19 +2019,59 @@
           "start": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "domains_v1_generated_domains_retrieve_transfer_parameters_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.domains_v1.DomainsAsyncClient",
+          "shortName": "DomainsAsyncClient"
+        },
+        "fullName": "google.cloud.domains_v1.DomainsAsyncClient.search_domains",
         "method": {
+          "fullName": "google.cloud.domains.v1.Domains.SearchDomains",
           "service": {
+            "fullName": "google.cloud.domains.v1.Domains",
             "shortName": "Domains"
           },
           "shortName": "SearchDomains"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.domains_v1.types.SearchDomainsRequest"
+          },
+          {
+            "name": "location",
+            "type": "str"
+          },
+          {
+            "name": "query",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.domains_v1.types.SearchDomainsResponse",
+        "shortName": "search_domains"
       },
+      "description": "Sample for SearchDomains",
       "file": "domains_v1_generated_domains_search_domains_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "domains_v1_generated_Domains_SearchDomains_async",
       "segments": [
         {
@@ -1111,18 +2104,58 @@
           "start": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "domains_v1_generated_domains_search_domains_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.domains_v1.DomainsClient",
+          "shortName": "DomainsClient"
+        },
+        "fullName": "google.cloud.domains_v1.DomainsClient.search_domains",
         "method": {
+          "fullName": "google.cloud.domains.v1.Domains.SearchDomains",
           "service": {
+            "fullName": "google.cloud.domains.v1.Domains",
             "shortName": "Domains"
           },
           "shortName": "SearchDomains"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.domains_v1.types.SearchDomainsRequest"
+          },
+          {
+            "name": "location",
+            "type": "str"
+          },
+          {
+            "name": "query",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.domains_v1.types.SearchDomainsResponse",
+        "shortName": "search_domains"
       },
+      "description": "Sample for SearchDomains",
       "file": "domains_v1_generated_domains_search_domains_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "domains_v1_generated_Domains_SearchDomains_sync",
       "segments": [
         {
@@ -1155,19 +2188,67 @@
           "start": 43,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "domains_v1_generated_domains_search_domains_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.domains_v1.DomainsAsyncClient",
+          "shortName": "DomainsAsyncClient"
+        },
+        "fullName": "google.cloud.domains_v1.DomainsAsyncClient.transfer_domain",
         "method": {
+          "fullName": "google.cloud.domains.v1.Domains.TransferDomain",
           "service": {
+            "fullName": "google.cloud.domains.v1.Domains",
             "shortName": "Domains"
           },
           "shortName": "TransferDomain"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.domains_v1.types.TransferDomainRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "registration",
+            "type": "google.cloud.domains_v1.types.Registration"
+          },
+          {
+            "name": "yearly_price",
+            "type": "google.type.money_pb2.Money"
+          },
+          {
+            "name": "authorization_code",
+            "type": "google.cloud.domains_v1.types.AuthorizationCode"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "transfer_domain"
       },
+      "description": "Sample for TransferDomain",
       "file": "domains_v1_generated_domains_transfer_domain_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "domains_v1_generated_Domains_TransferDomain_async",
       "segments": [
         {
@@ -1200,18 +2281,66 @@
           "start": 57,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "domains_v1_generated_domains_transfer_domain_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.domains_v1.DomainsClient",
+          "shortName": "DomainsClient"
+        },
+        "fullName": "google.cloud.domains_v1.DomainsClient.transfer_domain",
         "method": {
+          "fullName": "google.cloud.domains.v1.Domains.TransferDomain",
           "service": {
+            "fullName": "google.cloud.domains.v1.Domains",
             "shortName": "Domains"
           },
           "shortName": "TransferDomain"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.domains_v1.types.TransferDomainRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "registration",
+            "type": "google.cloud.domains_v1.types.Registration"
+          },
+          {
+            "name": "yearly_price",
+            "type": "google.type.money_pb2.Money"
+          },
+          {
+            "name": "authorization_code",
+            "type": "google.cloud.domains_v1.types.AuthorizationCode"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "transfer_domain"
       },
+      "description": "Sample for TransferDomain",
       "file": "domains_v1_generated_domains_transfer_domain_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "domains_v1_generated_Domains_TransferDomain_sync",
       "segments": [
         {
@@ -1244,19 +2373,59 @@
           "start": 57,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "domains_v1_generated_domains_transfer_domain_sync.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
         "async": true,
+        "client": {
+          "fullName": "google.cloud.domains_v1.DomainsAsyncClient",
+          "shortName": "DomainsAsyncClient"
+        },
+        "fullName": "google.cloud.domains_v1.DomainsAsyncClient.update_registration",
         "method": {
+          "fullName": "google.cloud.domains.v1.Domains.UpdateRegistration",
           "service": {
+            "fullName": "google.cloud.domains.v1.Domains",
             "shortName": "Domains"
           },
           "shortName": "UpdateRegistration"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.domains_v1.types.UpdateRegistrationRequest"
+          },
+          {
+            "name": "registration",
+            "type": "google.cloud.domains_v1.types.Registration"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation_async.AsyncOperation",
+        "shortName": "update_registration"
       },
+      "description": "Sample for UpdateRegistration",
       "file": "domains_v1_generated_domains_update_registration_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "domains_v1_generated_Domains_UpdateRegistration_async",
       "segments": [
         {
@@ -1289,18 +2458,58 @@
           "start": 45,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "domains_v1_generated_domains_update_registration_async.py"
     },
     {
+      "canonical": true,
       "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.domains_v1.DomainsClient",
+          "shortName": "DomainsClient"
+        },
+        "fullName": "google.cloud.domains_v1.DomainsClient.update_registration",
         "method": {
+          "fullName": "google.cloud.domains.v1.Domains.UpdateRegistration",
           "service": {
+            "fullName": "google.cloud.domains.v1.Domains",
             "shortName": "Domains"
           },
           "shortName": "UpdateRegistration"
-        }
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.domains_v1.types.UpdateRegistrationRequest"
+          },
+          {
+            "name": "registration",
+            "type": "google.cloud.domains_v1.types.Registration"
+          },
+          {
+            "name": "update_mask",
+            "type": "google.protobuf.field_mask_pb2.FieldMask"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.api_core.operation.Operation",
+        "shortName": "update_registration"
       },
+      "description": "Sample for UpdateRegistration",
       "file": "domains_v1_generated_domains_update_registration_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
       "regionTag": "domains_v1_generated_Domains_UpdateRegistration_sync",
       "segments": [
         {
@@ -1333,7 +2542,8 @@
           "start": 45,
           "type": "RESPONSE_HANDLING"
         }
-      ]
+      ],
+      "title": "domains_v1_generated_domains_update_registration_sync.py"
     }
   ]
 }
