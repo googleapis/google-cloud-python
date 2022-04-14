@@ -65,7 +65,7 @@ class resourcemanagerCallTransformer(cst.CSTTransformer):
         'search_folders': ('page_size', 'page_token', 'query', ),
         'search_organizations': ('page_size', 'page_token', 'query', ),
         'search_projects': ('query', 'page_token', 'page_size', ),
-        'set_iam_policy': ('resource', 'policy', ),
+        'set_iam_policy': ('resource', 'policy', 'update_mask', ),
         'test_iam_permissions': ('resource', 'permissions', ),
         'undelete_folder': ('name', ),
         'undelete_project': ('name', ),

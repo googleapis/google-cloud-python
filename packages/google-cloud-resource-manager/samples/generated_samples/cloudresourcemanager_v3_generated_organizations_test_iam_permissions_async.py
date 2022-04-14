@@ -25,6 +25,7 @@
 
 # [START cloudresourcemanager_v3_generated_Organizations_TestIamPermissions_async]
 from google.cloud import resourcemanager_v3
+from google.iam.v1 import iam_policy_pb2  # type: ignore
 
 
 async def sample_test_iam_permissions():
@@ -32,7 +33,7 @@ async def sample_test_iam_permissions():
     client = resourcemanager_v3.OrganizationsAsyncClient()
 
     # Initialize request argument(s)
-    request = resourcemanager_v3.TestIamPermissionsRequest(
+    request = iam_policy_pb2.TestIamPermissionsRequest(
         resource="resource_value",
         permissions=['permissions_value_1', 'permissions_value_2'],
     )

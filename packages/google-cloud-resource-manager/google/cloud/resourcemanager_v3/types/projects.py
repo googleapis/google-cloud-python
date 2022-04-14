@@ -87,7 +87,7 @@ class Project(proto.Message):
             resource. This may be sent on update and delete
             requests to ensure the client has an up-to-date
             value before proceeding.
-        labels (Sequence[google.cloud.resourcemanager_v3.types.Project.LabelsEntry]):
+        labels (Mapping[str, str]):
             Optional. The labels associated with this project.
 
             Label keys must be between 1 and 63 characters long and must

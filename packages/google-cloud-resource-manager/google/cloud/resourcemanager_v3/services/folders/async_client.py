@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -219,7 +219,6 @@ class FoldersAsyncClient:
         caller must have ``resourcemanager.folders.get`` permission on
         the identified folder.
 
-
         .. code-block:: python
 
             from google.cloud import resourcemanager_v3
@@ -329,7 +328,6 @@ class FoldersAsyncClient:
         ordering of their display_name. The caller must have
         ``resourcemanager.folders.list`` permission on the identified
         parent.
-
 
         .. code-block:: python
 
@@ -450,7 +448,6 @@ class FoldersAsyncClient:
 
         This will only return folders on which the caller has the
         permission ``resourcemanager.folders.get``.
-
 
         .. code-block:: python
 
@@ -614,7 +611,6 @@ class FoldersAsyncClient:
         The caller must have ``resourcemanager.folders.create``
         permission on the identified parent.
 
-
         .. code-block:: python
 
             from google.cloud import resourcemanager_v3
@@ -739,7 +735,6 @@ class FoldersAsyncClient:
         If the update fails due to the unique name constraint then a
         ``PreconditionFailure`` explaining this violation will be
         returned in the Status.details field.
-
 
         .. code-block:: python
 
@@ -888,7 +883,6 @@ class FoldersAsyncClient:
         ``resourcemanager.folders.move`` permission on the folder's
         current and proposed new parent.
 
-
         .. code-block:: python
 
             from google.cloud import resourcemanager_v3
@@ -1020,7 +1014,6 @@ class FoldersAsyncClient:
         must have ``resourcemanager.folders.delete`` permission on the
         identified folder.
 
-
         .. code-block:: python
 
             from google.cloud import resourcemanager_v3
@@ -1141,7 +1134,6 @@ class FoldersAsyncClient:
         ``resourcemanager.folders.undelete`` permission on the
         identified folder.
 
-
         .. code-block:: python
 
             from google.cloud import resourcemanager_v3
@@ -1255,17 +1247,17 @@ class FoldersAsyncClient:
         ``resourcemanager.folders.getIamPolicy`` permission on the
         identified folder.
 
-
         .. code-block:: python
 
             from google.cloud import resourcemanager_v3
+            from google.iam.v1 import iam_policy_pb2  # type: ignore
 
             def sample_get_iam_policy():
                 # Create a client
                 client = resourcemanager_v3.FoldersClient()
 
                 # Initialize request argument(s)
-                request = resourcemanager_v3.GetIamPolicyRequest(
+                request = iam_policy_pb2.GetIamPolicyRequest(
                     resource="resource_value",
                 )
 
@@ -1296,21 +1288,26 @@ class FoldersAsyncClient:
 
         Returns:
             google.iam.v1.policy_pb2.Policy:
-                Defines an Identity and Access Management (IAM) policy. It is used to
-                   specify access control policies for Cloud Platform
-                   resources.
+                An Identity and Access Management (IAM) policy, which specifies access
+                   controls for Google Cloud resources.
 
                    A Policy is a collection of bindings. A binding binds
-                   one or more members to a single role. Members can be
-                   user accounts, service accounts, Google groups, and
-                   domains (such as G Suite). A role is a named list of
-                   permissions (defined by IAM or configured by users).
-                   A binding can optionally specify a condition, which
-                   is a logic expression that further constrains the
-                   role binding based on attributes about the request
-                   and/or target resource.
+                   one or more members, or principals, to a single role.
+                   Principals can be user accounts, service accounts,
+                   Google groups, and domains (such as G Suite). A role
+                   is a named list of permissions; each role can be an
+                   IAM predefined role or a user-created custom role.
 
-                   **JSON Example**
+                   For some types of Google Cloud resources, a binding
+                   can also specify a condition, which is a logical
+                   expression that allows access to a resource only if
+                   the expression evaluates to true. A condition can add
+                   constraints based on attributes of the request, the
+                   resource, or both. To learn which resources support
+                   conditions in their IAM policies, see the [IAM
+                   documentation](\ https://cloud.google.com/iam/help/conditions/resource-policies).
+
+                   **JSON example:**
 
                       {
                          "bindings": [
@@ -1325,17 +1322,17 @@ class FoldersAsyncClient:
 
                             }, { "role":
                             "roles/resourcemanager.organizationViewer",
-                            "members": ["user:eve@example.com"],
+                            "members": [ "user:eve@example.com" ],
                             "condition": { "title": "expirable access",
                             "description": "Does not grant access after
                             Sep 2020", "expression": "request.time <
                             timestamp('2020-10-01T00:00:00.000Z')", } }
 
-                         ]
+                         ], "etag": "BwWWja0YfJA=", "version": 3
 
                       }
 
-                   **YAML Example**
+                   **YAML example:**
 
                       bindings: - members: - user:\ mike@example.com -
                       group:\ admins@example.com - domain:google.com -
@@ -1346,11 +1343,12 @@ class FoldersAsyncClient:
                       condition: title: expirable access description:
                       Does not grant access after Sep 2020 expression:
                       request.time <
-                      timestamp('2020-10-01T00:00:00.000Z')
+                      timestamp('2020-10-01T00:00:00.000Z') etag:
+                      BwWWja0YfJA= version: 3
 
                    For a description of IAM and its features, see the
-                   [IAM developer's
-                   guide](\ https://cloud.google.com/iam/docs).
+                   [IAM
+                   documentation](\ https://cloud.google.com/iam/docs/).
 
         """
         # Create or coerce a protobuf request object.
@@ -1421,17 +1419,17 @@ class FoldersAsyncClient:
         ``resourcemanager.folders.setIamPolicy`` permission on the
         identified folder.
 
-
         .. code-block:: python
 
             from google.cloud import resourcemanager_v3
+            from google.iam.v1 import iam_policy_pb2  # type: ignore
 
             def sample_set_iam_policy():
                 # Create a client
                 client = resourcemanager_v3.FoldersClient()
 
                 # Initialize request argument(s)
-                request = resourcemanager_v3.SetIamPolicyRequest(
+                request = iam_policy_pb2.SetIamPolicyRequest(
                     resource="resource_value",
                 )
 
@@ -1462,21 +1460,26 @@ class FoldersAsyncClient:
 
         Returns:
             google.iam.v1.policy_pb2.Policy:
-                Defines an Identity and Access Management (IAM) policy. It is used to
-                   specify access control policies for Cloud Platform
-                   resources.
+                An Identity and Access Management (IAM) policy, which specifies access
+                   controls for Google Cloud resources.
 
                    A Policy is a collection of bindings. A binding binds
-                   one or more members to a single role. Members can be
-                   user accounts, service accounts, Google groups, and
-                   domains (such as G Suite). A role is a named list of
-                   permissions (defined by IAM or configured by users).
-                   A binding can optionally specify a condition, which
-                   is a logic expression that further constrains the
-                   role binding based on attributes about the request
-                   and/or target resource.
+                   one or more members, or principals, to a single role.
+                   Principals can be user accounts, service accounts,
+                   Google groups, and domains (such as G Suite). A role
+                   is a named list of permissions; each role can be an
+                   IAM predefined role or a user-created custom role.
 
-                   **JSON Example**
+                   For some types of Google Cloud resources, a binding
+                   can also specify a condition, which is a logical
+                   expression that allows access to a resource only if
+                   the expression evaluates to true. A condition can add
+                   constraints based on attributes of the request, the
+                   resource, or both. To learn which resources support
+                   conditions in their IAM policies, see the [IAM
+                   documentation](\ https://cloud.google.com/iam/help/conditions/resource-policies).
+
+                   **JSON example:**
 
                       {
                          "bindings": [
@@ -1491,17 +1494,17 @@ class FoldersAsyncClient:
 
                             }, { "role":
                             "roles/resourcemanager.organizationViewer",
-                            "members": ["user:eve@example.com"],
+                            "members": [ "user:eve@example.com" ],
                             "condition": { "title": "expirable access",
                             "description": "Does not grant access after
                             Sep 2020", "expression": "request.time <
                             timestamp('2020-10-01T00:00:00.000Z')", } }
 
-                         ]
+                         ], "etag": "BwWWja0YfJA=", "version": 3
 
                       }
 
-                   **YAML Example**
+                   **YAML example:**
 
                       bindings: - members: - user:\ mike@example.com -
                       group:\ admins@example.com - domain:google.com -
@@ -1512,11 +1515,12 @@ class FoldersAsyncClient:
                       condition: title: expirable access description:
                       Does not grant access after Sep 2020 expression:
                       request.time <
-                      timestamp('2020-10-01T00:00:00.000Z')
+                      timestamp('2020-10-01T00:00:00.000Z') etag:
+                      BwWWja0YfJA= version: 3
 
                    For a description of IAM and its features, see the
-                   [IAM developer's
-                   guide](\ https://cloud.google.com/iam/docs).
+                   [IAM
+                   documentation](\ https://cloud.google.com/iam/docs/).
 
         """
         # Create or coerce a protobuf request object.
@@ -1579,17 +1583,17 @@ class FoldersAsyncClient:
 
         There are no permissions required for making this API call.
 
-
         .. code-block:: python
 
             from google.cloud import resourcemanager_v3
+            from google.iam.v1 import iam_policy_pb2  # type: ignore
 
             def sample_test_iam_permissions():
                 # Create a client
                 client = resourcemanager_v3.FoldersClient()
 
                 # Initialize request argument(s)
-                request = resourcemanager_v3.TestIamPermissionsRequest(
+                request = iam_policy_pb2.TestIamPermissionsRequest(
                     resource="resource_value",
                     permissions=['permissions_value_1', 'permissions_value_2'],
                 )

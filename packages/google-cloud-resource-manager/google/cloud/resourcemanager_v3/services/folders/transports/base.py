@@ -87,6 +87,7 @@ class FoldersTransport(abc.ABC):
             always_use_jwt_access (Optional[bool]): Whether self signed JWT should
                 be used for service account credentials.
         """
+
         # Save the hostname. Default to port 443 (HTTPS) if none is specified.
         if ":" not in host:
             host += ":443"
@@ -324,6 +325,10 @@ class FoldersTransport(abc.ABC):
             Awaitable[iam_policy_pb2.TestIamPermissionsResponse],
         ],
     ]:
+        raise NotImplementedError()
+
+    @property
+    def kind(self) -> str:
         raise NotImplementedError()
 
 

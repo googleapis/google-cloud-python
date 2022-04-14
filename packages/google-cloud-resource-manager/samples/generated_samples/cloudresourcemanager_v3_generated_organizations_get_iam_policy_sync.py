@@ -25,6 +25,7 @@
 
 # [START cloudresourcemanager_v3_generated_Organizations_GetIamPolicy_sync]
 from google.cloud import resourcemanager_v3
+from google.iam.v1 import iam_policy_pb2  # type: ignore
 
 
 def sample_get_iam_policy():
@@ -32,7 +33,7 @@ def sample_get_iam_policy():
     client = resourcemanager_v3.OrganizationsClient()
 
     # Initialize request argument(s)
-    request = resourcemanager_v3.GetIamPolicyRequest(
+    request = iam_policy_pb2.GetIamPolicyRequest(
         resource="resource_value",
     )
 

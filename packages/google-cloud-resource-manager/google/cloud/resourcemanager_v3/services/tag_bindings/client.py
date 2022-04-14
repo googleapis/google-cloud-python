@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -439,7 +439,6 @@ class TagBindingsClient(metaclass=TagBindingsClientMeta):
         name:
         https://cloud.google.com/apis/design/resource_names#full_resource_name
 
-
         .. code-block:: python
 
             from google.cloud import resourcemanager_v3
@@ -543,7 +542,6 @@ class TagBindingsClient(metaclass=TagBindingsClientMeta):
     ) -> operation.Operation:
         r"""Creates a TagBinding between a TagValue and a cloud
         resource (currently project, folder, or organization).
-
 
         .. code-block:: python
 

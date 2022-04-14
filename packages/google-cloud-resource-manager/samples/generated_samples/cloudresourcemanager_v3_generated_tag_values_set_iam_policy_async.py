@@ -25,6 +25,7 @@
 
 # [START cloudresourcemanager_v3_generated_TagValues_SetIamPolicy_async]
 from google.cloud import resourcemanager_v3
+from google.iam.v1 import iam_policy_pb2  # type: ignore
 
 
 async def sample_set_iam_policy():
@@ -32,7 +33,7 @@ async def sample_set_iam_policy():
     client = resourcemanager_v3.TagValuesAsyncClient()
 
     # Initialize request argument(s)
-    request = resourcemanager_v3.SetIamPolicyRequest(
+    request = iam_policy_pb2.SetIamPolicyRequest(
         resource="resource_value",
     )
 
