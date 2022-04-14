@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 import warnings
 
@@ -486,7 +486,6 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         r"""Retrieves a supported data source and returns its
         settings.
 
-
         .. code-block:: python
 
             from google.cloud import bigquery_datatransfer_v1
@@ -584,7 +583,6 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
     ) -> pagers.ListDataSourcesPager:
         r"""Lists supported data sources and returns their
         settings.
-
 
         .. code-block:: python
 
@@ -823,7 +821,6 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         r"""Updates a data transfer configuration.
         All fields must be set, even if they are not updated.
 
-
         .. code-block:: python
 
             from google.cloud import bigquery_datatransfer_v1
@@ -941,7 +938,6 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
     ) -> None:
         r"""Deletes a data transfer configuration, including any
         associated transfer runs and logs.
-
 
         .. code-block:: python
 
@@ -1133,7 +1129,6 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         r"""Returns information about all transfer configs owned
         by a project in the specified location.
 
-
         .. code-block:: python
 
             from google.cloud import bigquery_datatransfer_v1
@@ -1248,7 +1243,6 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         - in the range, one transfer run is created. Note that runs are
         created per UTC time in the time range. DEPRECATED: use
         StartManualTransferRuns instead.
-
 
         .. code-block:: python
 
@@ -1371,7 +1365,6 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         time range where the run_time is between start_time (inclusive)
         and end_time (exclusive), or for a specific run_time.
 
-
         .. code-block:: python
 
             from google.cloud import bigquery_datatransfer_v1
@@ -1448,7 +1441,6 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
     ) -> transfer.TransferRun:
         r"""Returns information about the particular transfer
         run.
-
 
         .. code-block:: python
 
@@ -1632,7 +1624,6 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
     ) -> pagers.ListTransferRunsPager:
         r"""Returns information about running and completed
         transfer runs.
-
 
         .. code-block:: python
 
@@ -1856,7 +1847,6 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         r"""Returns true if valid credentials exist for the given
         data source and requesting user.
 
-
         .. code-block:: python
 
             from google.cloud import bigquery_datatransfer_v1
@@ -1965,7 +1955,6 @@ class DataTransferServiceClient(metaclass=DataTransferServiceClientMeta):
         can be found at
         https://cloud.google.com/bigquery/bigquery-web-ui and
         https://cloud.google.com/bigquery/docs/working-with-transfers).
-
 
         .. code-block:: python
 
