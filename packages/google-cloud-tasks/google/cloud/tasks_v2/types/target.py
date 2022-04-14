@@ -101,7 +101,7 @@ class HttpRequest(proto.Message):
         http_method (google.cloud.tasks_v2.types.HttpMethod):
             The HTTP method to use for the request. The
             default is POST.
-        headers (Sequence[google.cloud.tasks_v2.types.HttpRequest.HeadersEntry]):
+        headers (Mapping[str, str]):
             HTTP request headers.
 
             This map contains the header field names and values. Headers
@@ -289,7 +289,7 @@ class AppEngineHttpRequest(proto.Message):
             is empty, then the root path "/" will be used.
             No spaces are allowed, and the maximum length
             allowed is 2083 characters.
-        headers (Sequence[google.cloud.tasks_v2.types.AppEngineHttpRequest.HeadersEntry]):
+        headers (Mapping[str, str]):
             HTTP request headers.
 
             This map contains the header field names and values. Headers

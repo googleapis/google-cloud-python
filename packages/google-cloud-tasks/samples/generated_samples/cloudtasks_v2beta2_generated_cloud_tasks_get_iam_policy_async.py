@@ -25,6 +25,7 @@
 
 # [START cloudtasks_v2beta2_generated_CloudTasks_GetIamPolicy_async]
 from google.cloud import tasks_v2beta2
+from google.iam.v1 import iam_policy_pb2  # type: ignore
 
 
 async def sample_get_iam_policy():
@@ -32,7 +33,7 @@ async def sample_get_iam_policy():
     client = tasks_v2beta2.CloudTasksAsyncClient()
 
     # Initialize request argument(s)
-    request = tasks_v2beta2.GetIamPolicyRequest(
+    request = iam_policy_pb2.GetIamPolicyRequest(
         resource="resource_value",
     )
 

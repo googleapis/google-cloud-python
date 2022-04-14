@@ -25,6 +25,7 @@
 
 # [START cloudtasks_v2beta3_generated_CloudTasks_TestIamPermissions_sync]
 from google.cloud import tasks_v2beta3
+from google.iam.v1 import iam_policy_pb2  # type: ignore
 
 
 def sample_test_iam_permissions():
@@ -32,7 +33,7 @@ def sample_test_iam_permissions():
     client = tasks_v2beta3.CloudTasksClient()
 
     # Initialize request argument(s)
-    request = tasks_v2beta3.TestIamPermissionsRequest(
+    request = iam_policy_pb2.TestIamPermissionsRequest(
         resource="resource_value",
         permissions=['permissions_value_1', 'permissions_value_2'],
     )

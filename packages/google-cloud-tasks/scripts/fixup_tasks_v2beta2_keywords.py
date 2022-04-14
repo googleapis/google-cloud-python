@@ -56,7 +56,7 @@ class tasksCallTransformer(cst.CSTTransformer):
         'renew_lease': ('name', 'schedule_time', 'lease_duration', 'response_view', ),
         'resume_queue': ('name', ),
         'run_task': ('name', 'response_view', ),
-        'set_iam_policy': ('resource', 'policy', ),
+        'set_iam_policy': ('resource', 'policy', 'update_mask', ),
         'test_iam_permissions': ('resource', 'permissions', ),
         'update_queue': ('queue', 'update_mask', ),
     }

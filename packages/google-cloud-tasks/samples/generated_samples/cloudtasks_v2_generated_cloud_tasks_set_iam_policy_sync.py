@@ -25,6 +25,7 @@
 
 # [START cloudtasks_v2_generated_CloudTasks_SetIamPolicy_sync]
 from google.cloud import tasks_v2
+from google.iam.v1 import iam_policy_pb2  # type: ignore
 
 
 def sample_set_iam_policy():
@@ -32,7 +33,7 @@ def sample_set_iam_policy():
     client = tasks_v2.CloudTasksClient()
 
     # Initialize request argument(s)
-    request = tasks_v2.SetIamPolicyRequest(
+    request = iam_policy_pb2.SetIamPolicyRequest(
         resource="resource_value",
     )
 

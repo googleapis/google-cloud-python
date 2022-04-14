@@ -52,7 +52,7 @@ class tasksCallTransformer(cst.CSTTransformer):
         'purge_queue': ('name', ),
         'resume_queue': ('name', ),
         'run_task': ('name', 'response_view', ),
-        'set_iam_policy': ('resource', 'policy', ),
+        'set_iam_policy': ('resource', 'policy', 'update_mask', ),
         'test_iam_permissions': ('resource', 'permissions', ),
         'update_queue': ('queue', 'update_mask', ),
     }
