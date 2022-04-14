@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -568,7 +568,6 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         https://cloud.google.com/dlp/docs/inspecting-images and
         https://cloud.google.com/dlp/docs/inspecting-text,
 
-
         .. code-block:: python
 
             from google.cloud import dlp_v2
@@ -648,7 +647,6 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         this request, the system will automatically choose what
         detectors to run. By default this may be all types, but
         may change over time as detectors are updated.
-
 
         .. code-block:: python
 
@@ -731,7 +729,6 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         detectors to run. By default this may be all types, but
         may change over time as detectors are updated.
 
-
         .. code-block:: python
 
             from google.cloud import dlp_v2
@@ -807,7 +804,6 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         https://cloud.google.com/dlp/docs/pseudonymization#re-identification_in_free_text_code_example
         to learn more.
 
-
         .. code-block:: python
 
             from google.cloud import dlp_v2
@@ -882,7 +878,6 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         that the DLP API supports. See
         https://cloud.google.com/dlp/docs/infotypes-reference to
         learn more.
-
 
         .. code-block:: python
 
@@ -980,7 +975,6 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         storage. See
         https://cloud.google.com/dlp/docs/creating-templates to
         learn more.
-
 
         .. code-block:: python
 
@@ -1117,7 +1111,6 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         See https://cloud.google.com/dlp/docs/creating-templates
         to learn more.
 
-
         .. code-block:: python
 
             from google.cloud import dlp_v2
@@ -1238,7 +1231,6 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         See https://cloud.google.com/dlp/docs/creating-templates
         to learn more.
 
-
         .. code-block:: python
 
             from google.cloud import dlp_v2
@@ -1342,7 +1334,6 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         r"""Lists InspectTemplates.
         See https://cloud.google.com/dlp/docs/creating-templates
         to learn more.
-
 
         .. code-block:: python
 
@@ -1476,7 +1467,6 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         See https://cloud.google.com/dlp/docs/creating-templates
         to learn more.
 
-
         .. code-block:: python
 
             from google.cloud import dlp_v2
@@ -1566,7 +1556,6 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         and storage. See
         https://cloud.google.com/dlp/docs/creating-templates-deid
         to learn more.
-
 
         .. code-block:: python
 
@@ -1704,7 +1693,6 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         https://cloud.google.com/dlp/docs/creating-templates-deid
         to learn more.
 
-
         .. code-block:: python
 
             from google.cloud import dlp_v2
@@ -1826,7 +1814,6 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         https://cloud.google.com/dlp/docs/creating-templates-deid
         to learn more.
 
-
         .. code-block:: python
 
             from google.cloud import dlp_v2
@@ -1929,7 +1916,6 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         See
         https://cloud.google.com/dlp/docs/creating-templates-deid
         to learn more.
-
 
         .. code-block:: python
 
@@ -2066,7 +2052,6 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         https://cloud.google.com/dlp/docs/creating-templates-deid
         to learn more.
 
-
         .. code-block:: python
 
             from google.cloud import dlp_v2
@@ -2158,7 +2143,6 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         schedule. See
         https://cloud.google.com/dlp/docs/creating-job-triggers
         to learn more.
-
 
         .. code-block:: python
 
@@ -2290,7 +2274,6 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         https://cloud.google.com/dlp/docs/creating-job-triggers
         to learn more.
 
-
         .. code-block:: python
 
             from google.cloud import dlp_v2
@@ -2408,7 +2391,6 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         asynchronously. To review the findings monitor the jobs
         within the trigger.
 
-
         .. code-block:: python
 
             from google.cloud import dlp_v2
@@ -2510,7 +2492,6 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         https://cloud.google.com/dlp/docs/creating-job-triggers
         to learn more.
 
-
         .. code-block:: python
 
             from google.cloud import dlp_v2
@@ -2610,7 +2591,6 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         See
         https://cloud.google.com/dlp/docs/creating-job-triggers
         to learn more.
-
 
         .. code-block:: python
 
@@ -2738,7 +2718,6 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         https://cloud.google.com/dlp/docs/creating-job-triggers
         to learn more.
 
-
         .. code-block:: python
 
             from google.cloud import dlp_v2
@@ -2824,7 +2803,6 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         of a trigger instead of waiting on the trigger event to
         occur.
 
-
         .. code-block:: python
 
             from google.cloud import dlp_v2
@@ -2909,7 +2887,6 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         inspect jobs, the system will automatically choose what
         detectors to run. By default this may be all types, but
         may change over time as detectors are updated.
-
 
         .. code-block:: python
 
@@ -3048,7 +3025,6 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         https://cloud.google.com/dlp/docs/compute-risk-analysis
         to learn more.
 
-
         .. code-block:: python
 
             from google.cloud import dlp_v2
@@ -3178,7 +3154,6 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         https://cloud.google.com/dlp/docs/compute-risk-analysis
         to learn more.
 
-
         .. code-block:: python
 
             from google.cloud import dlp_v2
@@ -3280,7 +3255,6 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         https://cloud.google.com/dlp/docs/compute-risk-analysis
         to learn more.
 
-
         .. code-block:: python
 
             from google.cloud import dlp_v2
@@ -3369,7 +3343,6 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         https://cloud.google.com/dlp/docs/compute-risk-analysis
         to learn more.
 
-
         .. code-block:: python
 
             from google.cloud import dlp_v2
@@ -3436,7 +3409,6 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         inspection. See
         https://cloud.google.com/dlp/docs/creating-stored-infotypes
         to learn more.
-
 
         .. code-block:: python
 
@@ -3571,7 +3543,6 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         https://cloud.google.com/dlp/docs/creating-stored-infotypes
         to learn more.
 
-
         .. code-block:: python
 
             from google.cloud import dlp_v2
@@ -3693,7 +3664,6 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         https://cloud.google.com/dlp/docs/creating-stored-infotypes
         to learn more.
 
-
         .. code-block:: python
 
             from google.cloud import dlp_v2
@@ -3794,7 +3764,6 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         See
         https://cloud.google.com/dlp/docs/creating-stored-infotypes
         to learn more.
-
 
         .. code-block:: python
 
@@ -3929,7 +3898,6 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         https://cloud.google.com/dlp/docs/creating-stored-infotypes
         to learn more.
 
-
         .. code-block:: python
 
             from google.cloud import dlp_v2
@@ -4016,7 +3984,6 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         r"""Inspect hybrid content and store findings to a job.
         To review the findings, inspect the job. Inspection will
         occur asynchronously.
-
 
         .. code-block:: python
 
@@ -4114,7 +4081,6 @@ class DlpServiceClient(metaclass=DlpServiceClientMeta):
         r"""Finish a running hybrid DlpJob. Triggers the
         finalization steps and running of any enabled actions
         that have not yet run.
-
 
         .. code-block:: python
 

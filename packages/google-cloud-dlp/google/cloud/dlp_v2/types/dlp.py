@@ -735,7 +735,7 @@ class Finding(proto.Message):
         trigger_name (str):
             Job trigger name, if applicable, for this
             finding.
-        labels (Sequence[google.cloud.dlp_v2.types.Finding.LabelsEntry]):
+        labels (Mapping[str, str]):
             The labels associated with this ``Finding``.
 
             Label keys must be between 1 and 63 characters long and must
@@ -7051,7 +7051,7 @@ class HybridFindingDetails(proto.Message):
             each inspect hybrid call and the two will be merged. Note
             that identifying_fields will only be stored to BigQuery, and
             only if the BigQuery action has been included.
-        labels (Sequence[google.cloud.dlp_v2.types.HybridFindingDetails.LabelsEntry]):
+        labels (Mapping[str, str]):
             Labels to represent user provided metadata about the data
             being inspected. If configured by the job, some key values
             may be required. The labels associated with ``Finding``'s
@@ -7237,7 +7237,7 @@ class TableDataProfile(proto.Message):
             How broadly a resource has been shared.
         profile_last_generated (google.protobuf.timestamp_pb2.Timestamp):
             The last time the profile was generated.
-        resource_labels (Sequence[google.cloud.dlp_v2.types.TableDataProfile.ResourceLabelsEntry]):
+        resource_labels (Mapping[str, str]):
             The labels applied to the resource at the
             time the profile was generated.
         create_time (google.protobuf.timestamp_pb2.Timestamp):

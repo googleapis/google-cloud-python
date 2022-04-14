@@ -998,7 +998,7 @@ class HybridOptions(proto.Message):
             ``[a-z]([-a-z0-9]*[a-z0-9])?``.
 
             No more than 10 keys can be required.
-        labels (Sequence[google.cloud.dlp_v2.types.HybridOptions.LabelsEntry]):
+        labels (Mapping[str, str]):
             To organize findings, these labels will be added to each
             finding.
 
