@@ -92,7 +92,7 @@ class Dataset(proto.Message):
             Used to perform consistent read-modify-write
             updates. If not set, a blind "overwrite" update
             happens.
-        labels (Sequence[google.cloud.automl_v1.types.Dataset.LabelsEntry]):
+        labels (Mapping[str, str]):
             Optional. The labels with user-defined
             metadata to organize your dataset.
             Label keys and values can be no longer than 64

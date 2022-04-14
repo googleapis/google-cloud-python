@@ -233,7 +233,7 @@ class TimestampStats(proto.Message):
     r"""The data statistics of a series of TIMESTAMP values.
 
     Attributes:
-        granular_stats (Sequence[google.cloud.automl_v1beta1.types.TimestampStats.GranularStatsEntry]):
+        granular_stats (Mapping[str, google.cloud.automl_v1beta1.types.TimestampStats.GranularStats]):
             The string key is the pre-defined granularity. Currently
             supported: hour_of_day, day_of_week, month_of_year.
             Granularities finer that the granularity of timestamp data
@@ -245,7 +245,7 @@ class TimestampStats(proto.Message):
         r"""Stats split by a defined in context granularity.
 
         Attributes:
-            buckets (Sequence[google.cloud.automl_v1beta1.types.TimestampStats.GranularStats.BucketsEntry]):
+            buckets (Mapping[int, int]):
                 A map from granularity key to example count for that key.
                 E.g. for hour_of_day ``13`` means 1pm, or for month_of_year
                 ``5`` means May).
@@ -286,7 +286,7 @@ class StructStats(proto.Message):
     r"""The data statistics of a series of STRUCT values.
 
     Attributes:
-        field_stats (Sequence[google.cloud.automl_v1beta1.types.StructStats.FieldStatsEntry]):
+        field_stats (Mapping[str, google.cloud.automl_v1beta1.types.DataStats]):
             Map from a field name of the struct to data
             stats aggregated over series of all data in that
             field across all the structs.

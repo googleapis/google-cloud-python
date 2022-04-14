@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -1020,7 +1020,6 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         completes, and ``delete_details`` in the
         [metadata][google.longrunning.Operation.metadata] field.
 
-
         .. code-block:: python
 
             from google.cloud import automl_v1beta1
@@ -1150,7 +1149,6 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
            parameter must be explicitly set. Returns an empty response
            in the [response][google.longrunning.Operation.response]
            field when it completes.
-
 
         .. code-block:: python
 
@@ -1286,7 +1284,6 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         an empty response in the
         [response][google.longrunning.Operation.response] field when it
         completes.
-
 
         .. code-block:: python
 
@@ -2129,7 +2126,6 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         are created for it: a global evaluation, and one evaluation for
         each annotation spec.
 
-
         .. code-block:: python
 
             from google.cloud import automl_v1beta1
@@ -2452,7 +2448,6 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         completes, and ``delete_details`` in the
         [metadata][google.longrunning.Operation.metadata] field.
 
-
         .. code-block:: python
 
             from google.cloud import automl_v1beta1
@@ -2587,7 +2582,6 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         [response][google.longrunning.Operation.response] field when it
         completes.
 
-
         .. code-block:: python
 
             from google.cloud import automl_v1beta1
@@ -2715,7 +2709,6 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         Returns an empty response in the
         [response][google.longrunning.Operation.response] field when it
         completes.
-
 
         .. code-block:: python
 
@@ -2845,7 +2838,6 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         Returns an empty response in the
         [response][google.longrunning.Operation.response] field when it
         completes.
-
 
         .. code-block:: python
 
@@ -2992,7 +2984,6 @@ class AutoMlClient(metaclass=AutoMlClientMeta):
         Returns an empty response in the
         [response][google.longrunning.Operation.response] field when it
         completes.
-
 
         .. code-block:: python
 

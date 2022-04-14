@@ -91,7 +91,7 @@ class Model(proto.Message):
             Used to perform a consistent
             read-modify-write updates. If not set, a blind
             "overwrite" update happens.
-        labels (Sequence[google.cloud.automl_v1.types.Model.LabelsEntry]):
+        labels (Mapping[str, str]):
             Optional. The labels with user-defined
             metadata to organize your model.
             Label keys and values can be no longer than 64

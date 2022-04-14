@@ -43,7 +43,7 @@ class PredictRequest(proto.Message):
             Required. Payload to perform a prediction on.
             The payload must match the problem type that the
             model was trained to solve.
-        params (Sequence[google.cloud.automl_v1beta1.types.PredictRequest.ParamsEntry]):
+        params (Mapping[str, str]):
             Additional domain-specific parameters, any string must be up
             to 25000 characters long.
 
@@ -101,7 +101,7 @@ class PredictResponse(proto.Message):
             -  For Text Extraction: If the input is a .pdf file, the
                OCR'ed text will be provided in
                [document_text][google.cloud.automl.v1beta1.Document.document_text].
-        metadata (Sequence[google.cloud.automl_v1beta1.types.PredictResponse.MetadataEntry]):
+        metadata (Mapping[str, str]):
             Additional domain-specific prediction response metadata.
 
             -  For Image Object Detection: ``max_bounding_box_count`` -
@@ -151,7 +151,7 @@ class BatchPredictRequest(proto.Message):
         output_config (google.cloud.automl_v1beta1.types.BatchPredictOutputConfig):
             Required. The Configuration specifying where
             output predictions should be written.
-        params (Sequence[google.cloud.automl_v1beta1.types.BatchPredictRequest.ParamsEntry]):
+        params (Mapping[str, str]):
             Required. Additional domain-specific parameters for the
             predictions, any string must be up to 25000 characters long.
 
@@ -259,7 +259,7 @@ class BatchPredictResult(proto.Message):
     [PredictionService.BatchPredict][google.cloud.automl.v1beta1.PredictionService.BatchPredict].
 
     Attributes:
-        metadata (Sequence[google.cloud.automl_v1beta1.types.BatchPredictResult.MetadataEntry]):
+        metadata (Mapping[str, str]):
             Additional domain-specific prediction response metadata.
 
             -  For Image Object Detection: ``max_bounding_box_count`` -

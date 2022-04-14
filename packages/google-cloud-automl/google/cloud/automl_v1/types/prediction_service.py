@@ -43,7 +43,7 @@ class PredictRequest(proto.Message):
             Required. Payload to perform a prediction on.
             The payload must match the problem type that the
             model was trained to solve.
-        params (Sequence[google.cloud.automl_v1.types.PredictRequest.ParamsEntry]):
+        params (Mapping[str, str]):
             Additional domain-specific parameters, any string must be up
             to 25000 characters long.
 
@@ -109,7 +109,7 @@ class PredictResponse(proto.Message):
             document, the recognized text is returned in the
             [document_text][google.cloud.automl.v1.Document.document_text]
             property.
-        metadata (Sequence[google.cloud.automl_v1.types.PredictResponse.MetadataEntry]):
+        metadata (Mapping[str, str]):
             Additional domain-specific prediction response metadata.
 
             AutoML Vision Object Detection
@@ -161,7 +161,7 @@ class BatchPredictRequest(proto.Message):
         output_config (google.cloud.automl_v1.types.BatchPredictOutputConfig):
             Required. The Configuration specifying where
             output predictions should be written.
-        params (Sequence[google.cloud.automl_v1.types.BatchPredictRequest.ParamsEntry]):
+        params (Mapping[str, str]):
             Additional domain-specific parameters for the predictions,
             any string must be up to 25000 characters long.
 
@@ -274,7 +274,7 @@ class BatchPredictResult(proto.Message):
     [PredictionService.BatchPredict][google.cloud.automl.v1.PredictionService.BatchPredict].
 
     Attributes:
-        metadata (Sequence[google.cloud.automl_v1.types.BatchPredictResult.MetadataEntry]):
+        metadata (Mapping[str, str]):
             Additional domain-specific prediction response metadata.
 
             AutoML Vision Object Detection

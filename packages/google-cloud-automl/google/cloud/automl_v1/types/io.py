@@ -720,7 +720,7 @@ class InputConfig(proto.Message):
             [InputConfig][google.cloud.automl.v1.InputConfig].
 
             This field is a member of `oneof`_ ``source``.
-        params (Sequence[google.cloud.automl_v1.types.InputConfig.ParamsEntry]):
+        params (Mapping[str, str]):
             Additional domain-specific parameters describing the
             semantic of the imported data, any string must be up to
             25000 characters long.
@@ -1500,7 +1500,7 @@ class ModelExportOutputConfig(proto.Message):
                quickstart <https://cloud.google.com/vision/automl/docs/containers-gcs-quickstart>`__
 
             -  core_ml - Used for iOS mobile devices.
-        params (Sequence[google.cloud.automl_v1.types.ModelExportOutputConfig.ParamsEntry]):
+        params (Mapping[str, str]):
             Additional model-type and format specific parameters
             describing the requirements for the to be exported model
             files, any string must be up to 25000 characters long.

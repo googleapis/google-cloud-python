@@ -80,7 +80,7 @@ class TablesDatasetMetadata(proto.Message):
             as ``UNASSIGNED``. NOTE: Updates of this field will
             instantly affect any other users concurrently working with
             the dataset.
-        target_column_correlations (Sequence[google.cloud.automl_v1beta1.types.TablesDatasetMetadata.TargetColumnCorrelationsEntry]):
+        target_column_correlations (Mapping[str, google.cloud.automl_v1beta1.types.CorrelationStats]):
             Output only. Correlations between
 
             [TablesDatasetMetadata.target_column_spec_id][google.cloud.automl.v1beta1.TablesDatasetMetadata.target_column_spec_id],

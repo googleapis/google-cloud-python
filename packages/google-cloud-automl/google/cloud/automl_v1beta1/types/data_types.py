@@ -126,7 +126,7 @@ class StructType(proto.Message):
     [STRUCT][google.cloud.automl.v1beta1.TypeCode.STRUCT] type.
 
     Attributes:
-        fields (Sequence[google.cloud.automl_v1beta1.types.StructType.FieldsEntry]):
+        fields (Mapping[str, google.cloud.automl_v1beta1.types.DataType]):
             Unordered map of struct field names to their
             data types. Fields cannot be added or removed
             via Update. Their names and data types are still

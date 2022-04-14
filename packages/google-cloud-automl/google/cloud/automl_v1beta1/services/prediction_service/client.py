@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -441,7 +441,7 @@ class PredictionServiceClient(metaclass=PredictionServiceClientMeta):
         *,
         name: str = None,
         payload: data_items.ExamplePayload = None,
-        params: Sequence[prediction_service.PredictRequest.ParamsEntry] = None,
+        params: Mapping[str, str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -467,7 +467,6 @@ class PredictionServiceClient(metaclass=PredictionServiceClientMeta):
 
         -  Text Sentiment - TextSnippet, content up 500 characters,
            UTF-8 encoded.
-
 
         .. code-block:: python
 
@@ -512,7 +511,7 @@ class PredictionServiceClient(metaclass=PredictionServiceClientMeta):
                 This corresponds to the ``payload`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            params (Sequence[google.cloud.automl_v1beta1.types.PredictRequest.ParamsEntry]):
+            params (Mapping[str, str]):
                 Additional domain-specific parameters, any string must
                 be up to 25000 characters long.
 
@@ -604,7 +603,7 @@ class PredictionServiceClient(metaclass=PredictionServiceClientMeta):
         name: str = None,
         input_config: io.BatchPredictInputConfig = None,
         output_config: io.BatchPredictOutputConfig = None,
-        params: Sequence[prediction_service.BatchPredictRequest.ParamsEntry] = None,
+        params: Mapping[str, str] = None,
         retry: OptionalRetry = gapic_v1.method.DEFAULT,
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
@@ -626,7 +625,6 @@ class PredictionServiceClient(metaclass=PredictionServiceClientMeta):
         -  Video Classification
         -  Video Object Tracking \* Text Extraction
         -  Tables
-
 
         .. code-block:: python
 
@@ -677,7 +675,7 @@ class PredictionServiceClient(metaclass=PredictionServiceClientMeta):
                 This corresponds to the ``output_config`` field
                 on the ``request`` instance; if ``request`` is provided, this
                 should not be set.
-            params (Sequence[google.cloud.automl_v1beta1.types.BatchPredictRequest.ParamsEntry]):
+            params (Mapping[str, str]):
                 Required. Additional domain-specific parameters for the
                 predictions, any string must be up to 25000 characters
                 long.

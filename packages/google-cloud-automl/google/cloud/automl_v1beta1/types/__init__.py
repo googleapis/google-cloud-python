@@ -13,15 +13,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .annotation_payload import AnnotationPayload
-from .annotation_spec import AnnotationSpec
+from .annotation_payload import (
+    AnnotationPayload,
+)
+from .annotation_spec import (
+    AnnotationSpec,
+)
 from .classification import (
     ClassificationAnnotation,
     ClassificationEvaluationMetrics,
     VideoClassificationAnnotation,
     ClassificationType,
 )
-from .column_spec import ColumnSpec
+from .column_spec import (
+    ColumnSpec,
+)
 from .data_items import (
     Document,
     DocumentDimensions,
@@ -45,7 +51,9 @@ from .data_types import (
     StructType,
     TypeCode,
 )
-from .dataset import Dataset
+from .dataset import (
+    Dataset,
+)
 from .detection import (
     BoundingBoxMetricsEntry,
     ImageObjectDetectionAnnotation,
@@ -79,8 +87,12 @@ from .io import (
     ModelExportOutputConfig,
     OutputConfig,
 )
-from .model import Model
-from .model_evaluation import ModelEvaluation
+from .model import (
+    Model,
+)
+from .model_evaluation import (
+    ModelEvaluation,
+)
 from .operations import (
     BatchPredictOperationMetadata,
     CreateModelOperationMetadata,
@@ -99,8 +111,12 @@ from .prediction_service import (
     PredictRequest,
     PredictResponse,
 )
-from .ranges import DoubleRange
-from .regression import RegressionEvaluationMetrics
+from .ranges import (
+    DoubleRange,
+)
+from .regression import (
+    RegressionEvaluationMetrics,
+)
 from .service import (
     CreateDatasetRequest,
     CreateModelRequest,
@@ -132,14 +148,18 @@ from .service import (
     UpdateDatasetRequest,
     UpdateTableSpecRequest,
 )
-from .table_spec import TableSpec
+from .table_spec import (
+    TableSpec,
+)
 from .tables import (
     TablesAnnotation,
     TablesDatasetMetadata,
     TablesModelColumnInfo,
     TablesModelMetadata,
 )
-from .temporal import TimeSegment
+from .temporal import (
+    TimeSegment,
+)
 from .text import (
     TextClassificationDatasetMetadata,
     TextClassificationModelMetadata,
@@ -152,7 +172,9 @@ from .text_extraction import (
     TextExtractionAnnotation,
     TextExtractionEvaluationMetrics,
 )
-from .text_segment import TextSegment
+from .text_segment import (
+    TextSegment,
+)
 from .text_sentiment import (
     TextSentimentAnnotation,
     TextSentimentEvaluationMetrics,

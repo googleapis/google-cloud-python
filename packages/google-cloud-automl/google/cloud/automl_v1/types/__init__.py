@@ -13,8 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .annotation_payload import AnnotationPayload
-from .annotation_spec import AnnotationSpec
+from .annotation_payload import (
+    AnnotationPayload,
+)
+from .annotation_spec import (
+    AnnotationSpec,
+)
 from .classification import (
     ClassificationAnnotation,
     ClassificationEvaluationMetrics,
@@ -27,7 +31,9 @@ from .data_items import (
     Image,
     TextSnippet,
 )
-from .dataset import Dataset
+from .dataset import (
+    Dataset,
+)
 from .detection import (
     BoundingBoxMetricsEntry,
     ImageObjectDetectionAnnotation,
@@ -55,8 +61,12 @@ from .io import (
     ModelExportOutputConfig,
     OutputConfig,
 )
-from .model import Model
-from .model_evaluation import ModelEvaluation
+from .model import (
+    Model,
+)
+from .model_evaluation import (
+    ModelEvaluation,
+)
 from .operations import (
     BatchPredictOperationMetadata,
     CreateDatasetOperationMetadata,
@@ -110,7 +120,9 @@ from .text_extraction import (
     TextExtractionAnnotation,
     TextExtractionEvaluationMetrics,
 )
-from .text_segment import TextSegment
+from .text_segment import (
+    TextSegment,
+)
 from .text_sentiment import (
     TextSentimentAnnotation,
     TextSentimentEvaluationMetrics,
