@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import functools
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core.client_options import ClientOptions
@@ -215,7 +215,6 @@ class LookupServiceAsyncClient:
         r"""Returns a [service][google.cloud.servicedirectory.v1.Service]
         and its associated endpoints. Resolving a service is not
         considered an active developer method.
-
 
         .. code-block:: python
 

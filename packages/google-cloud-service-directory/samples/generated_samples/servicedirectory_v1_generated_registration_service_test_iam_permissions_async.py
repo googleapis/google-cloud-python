@@ -25,6 +25,7 @@
 
 # [START servicedirectory_v1_generated_RegistrationService_TestIamPermissions_async]
 from google.cloud import servicedirectory_v1
+from google.iam.v1 import iam_policy_pb2  # type: ignore
 
 
 async def sample_test_iam_permissions():
@@ -32,7 +33,7 @@ async def sample_test_iam_permissions():
     client = servicedirectory_v1.RegistrationServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = servicedirectory_v1.TestIamPermissionsRequest(
+    request = iam_policy_pb2.TestIamPermissionsRequest(
         resource="resource_value",
         permissions=['permissions_value_1', 'permissions_value_2'],
     )

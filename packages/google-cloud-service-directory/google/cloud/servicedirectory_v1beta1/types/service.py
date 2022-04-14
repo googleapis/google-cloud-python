@@ -37,7 +37,7 @@ class Service(proto.Message):
         name (str):
             Immutable. The resource name for the service in the format
             ``projects/*/locations/*/namespaces/*/services/*``.
-        metadata (Sequence[google.cloud.servicedirectory_v1beta1.types.Service.MetadataEntry]):
+        metadata (Mapping[str, str]):
             Optional. Metadata for the service. This data can be
             consumed by service clients.
 

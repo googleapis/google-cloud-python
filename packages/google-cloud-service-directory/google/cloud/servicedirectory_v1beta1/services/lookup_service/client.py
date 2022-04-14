@@ -16,7 +16,7 @@
 from collections import OrderedDict
 import os
 import re
-from typing import Dict, Optional, Sequence, Tuple, Type, Union
+from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
 import pkg_resources
 
 from google.api_core import client_options as client_options_lib
@@ -484,7 +484,6 @@ class LookupServiceClient(metaclass=LookupServiceClientMeta):
         [service][google.cloud.servicedirectory.v1beta1.Service] and its
         associated endpoints. Resolving a service is not considered an
         active developer method.
-
 
         .. code-block:: python
 

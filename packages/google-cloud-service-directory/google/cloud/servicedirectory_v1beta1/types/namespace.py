@@ -36,7 +36,7 @@ class Namespace(proto.Message):
         name (str):
             Immutable. The resource name for the namespace in the format
             ``projects/*/locations/*/namespaces/*``.
-        labels (Sequence[google.cloud.servicedirectory_v1beta1.types.Namespace.LabelsEntry]):
+        labels (Mapping[str, str]):
             Optional. Resource labels associated with
             this namespace. No more than 64 user labels can
             be associated with a given resource. Label keys

@@ -13,12 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .endpoint import Endpoint
+from .endpoint import (
+    Endpoint,
+)
 from .lookup_service import (
     ResolveServiceRequest,
     ResolveServiceResponse,
 )
-from .namespace import Namespace
+from .namespace import (
+    Namespace,
+)
 from .registration_service import (
     CreateEndpointRequest,
     CreateNamespaceRequest,
@@ -39,7 +43,9 @@ from .registration_service import (
     UpdateNamespaceRequest,
     UpdateServiceRequest,
 )
-from .service import Service
+from .service import (
+    Service,
+)
 
 __all__ = (
     "Endpoint",

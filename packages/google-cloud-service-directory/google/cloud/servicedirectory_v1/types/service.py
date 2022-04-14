@@ -36,7 +36,7 @@ class Service(proto.Message):
         name (str):
             Immutable. The resource name for the service in the format
             ``projects/*/locations/*/namespaces/*/services/*``.
-        annotations (Sequence[google.cloud.servicedirectory_v1.types.Service.AnnotationsEntry]):
+        annotations (Mapping[str, str]):
             Optional. Annotations for the service. This data can be
             consumed by service clients. Restrictions:
 

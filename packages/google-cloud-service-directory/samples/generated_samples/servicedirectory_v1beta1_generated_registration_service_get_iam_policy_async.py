@@ -25,6 +25,7 @@
 
 # [START servicedirectory_v1beta1_generated_RegistrationService_GetIamPolicy_async]
 from google.cloud import servicedirectory_v1beta1
+from google.iam.v1 import iam_policy_pb2  # type: ignore
 
 
 async def sample_get_iam_policy():
@@ -32,7 +33,7 @@ async def sample_get_iam_policy():
     client = servicedirectory_v1beta1.RegistrationServiceAsyncClient()
 
     # Initialize request argument(s)
-    request = servicedirectory_v1beta1.GetIamPolicyRequest(
+    request = iam_policy_pb2.GetIamPolicyRequest(
         resource="resource_value",
     )
 

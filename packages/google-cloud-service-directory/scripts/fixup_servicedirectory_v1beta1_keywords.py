@@ -53,7 +53,7 @@ class servicedirectoryCallTransformer(cst.CSTTransformer):
         'list_namespaces': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
         'list_services': ('parent', 'page_size', 'page_token', 'filter', 'order_by', ),
         'resolve_service': ('name', 'max_endpoints', 'endpoint_filter', ),
-        'set_iam_policy': ('resource', 'policy', ),
+        'set_iam_policy': ('resource', 'policy', 'update_mask', ),
         'test_iam_permissions': ('resource', 'permissions', ),
         'update_endpoint': ('endpoint', 'update_mask', ),
         'update_namespace': ('namespace', 'update_mask', ),
