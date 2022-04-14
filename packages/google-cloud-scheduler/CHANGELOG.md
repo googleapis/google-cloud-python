@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-scheduler/#history
 
+### [2.6.3](https://github.com/googleapis/python-scheduler/compare/v2.6.2...v2.6.3) (2022-04-14)
+
+
+### Bug Fixes
+
+* fix type in docstring for map fields ([#223](https://github.com/googleapis/python-scheduler/issues/223)) ([34d7478](https://github.com/googleapis/python-scheduler/commit/34d7478c4ac14489b36980099446b9520ff3eb4a))
+
 ### [2.6.2](https://github.com/googleapis/python-scheduler/compare/v2.6.1...v2.6.2) (2022-03-05)
 
 
