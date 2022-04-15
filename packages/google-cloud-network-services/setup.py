@@ -21,10 +21,10 @@ import setuptools
 
 
 name = "google-cloud-network-services"
-description = "Access Approval API client library"
+description = "Network Services API client library"
 version = "0.1.0"
 release_status = "Development Status :: 4 - Beta"
-url = ("https://github.com/googleapis/python-network-services",)
+url = "https://github.com/googleapis/python-network-services"
 dependencies = [
     # NOTE: Maintainers, please do not require google-api-core>=2.x.x
     # Until this issue is closed
