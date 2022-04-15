@@ -42,6 +42,7 @@ def test_bucket_lifecycle_rules(storage_client, buckets_to_delete):
     from google.cloud.storage import constants
     from google.cloud.storage.bucket import LifecycleRuleDelete
     from google.cloud.storage.bucket import LifecycleRuleSetStorageClass
+    from google.cloud.storage.bucket import LifecycleRuleAbortIncompleteMultipartUpload
 
     bucket_name = _helpers.unique_name("w-lifcycle-rules")
     custom_time_before = datetime.date(2018, 8, 1)
@@ -64,6 +65,9 @@ def test_bucket_lifecycle_rules(storage_client, buckets_to_delete):
         is_live=False,
         matches_storage_class=[constants.NEARLINE_STORAGE_CLASS],
     )
+    bucket.add_lifecycle_abort_incomplete_multipart_upload_rule(
+        age=42,
+    )
 
     expected_rules = [
         LifecycleRuleDelete(
@@ -79,6 +83,9 @@ def test_bucket_lifecycle_rules(storage_client, buckets_to_delete):
             is_live=False,
             matches_storage_class=[constants.NEARLINE_STORAGE_CLASS],
         ),
+        LifecycleRuleAbortIncompleteMultipartUpload(
+            age=42,
+        ),
     ]
 
     _helpers.retry_429_503(bucket.create)(location="us")
@@ -87,6 +94,16 @@ def test_bucket_lifecycle_rules(storage_client, buckets_to_delete):
     assert bucket.name == bucket_name
     assert list(bucket.lifecycle_rules) == expected_rules
 
+    # Test modifying lifecycle rules
+    expected_rules[0] = LifecycleRuleDelete(age=30)
+    rules = list(bucket.lifecycle_rules)
+    rules[0]["condition"] = {"age": 30}
+    bucket.lifecycle_rules = rules
+    bucket.patch()
+
+    assert list(bucket.lifecycle_rules) == expected_rules
+
+    # Test clearing lifecycle rules
     bucket.clear_lifecyle_rules()
     bucket.patch()
 

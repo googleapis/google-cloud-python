@@ -323,7 +323,7 @@ class LifecycleRuleDelete(dict):
     def __init__(self, **kw):
         conditions = LifecycleRuleConditions(**kw)
         rule = {"action": {"type": "Delete"}, "condition": dict(conditions)}
-        super(LifecycleRuleDelete, self).__init__(rule)
+        super().__init__(rule)
 
     @classmethod
     def from_api_repr(cls, resource):
@@ -356,7 +356,7 @@ class LifecycleRuleSetStorageClass(dict):
             "action": {"type": "SetStorageClass", "storageClass": storage_class},
             "condition": dict(conditions),
         }
-        super(LifecycleRuleSetStorageClass, self).__init__(rule)
+        super().__init__(rule)
 
     @classmethod
     def from_api_repr(cls, resource):
@@ -365,11 +365,43 @@ class LifecycleRuleSetStorageClass(dict):
         :type resource: dict
         :param resource: mapping as returned from API call.
 
-        :rtype: :class:`LifecycleRuleDelete`
+        :rtype: :class:`LifecycleRuleSetStorageClass`
         :returns: Instance created from resource.
         """
         action = resource["action"]
         instance = cls(action["storageClass"], _factory=True)
+        instance.update(resource)
+        return instance
+
+
+class LifecycleRuleAbortIncompleteMultipartUpload(dict):
+    """Map a rule aborting incomplete multipart uploads of matching items.
+
+    The "age" lifecycle condition is the only supported condition for this rule.
+
+    :type kw: dict
+    :params kw: arguments passed to :class:`LifecycleRuleConditions`.
+    """
+
+    def __init__(self, **kw):
+        conditions = LifecycleRuleConditions(**kw)
+        rule = {
+            "action": {"type": "AbortIncompleteMultipartUpload"},
+            "condition": dict(conditions),
+        }
+        super().__init__(rule)
+
+    @classmethod
+    def from_api_repr(cls, resource):
+        """Factory:  construct instance from resource.
+
+        :type resource: dict
+        :param resource: mapping as returned from API call.
+
+        :rtype: :class:`LifecycleRuleAbortIncompleteMultipartUpload`
+        :returns: Instance created from resource.
+        """
+        instance = cls(_factory=True)
         instance.update(resource)
         return instance
 
@@ -2240,6 +2272,8 @@ class Bucket(_PropertyMixin):
                 yield LifecycleRuleDelete.from_api_repr(rule)
             elif action_type == "SetStorageClass":
                 yield LifecycleRuleSetStorageClass.from_api_repr(rule)
+            elif action_type == "AbortIncompleteMultipartUpload":
+                yield LifecycleRuleAbortIncompleteMultipartUpload.from_api_repr(rule)
             else:
                 warnings.warn(
                     "Unknown lifecycle rule type received: {}. Please upgrade to the latest version of google-cloud-storage.".format(
@@ -2289,7 +2323,7 @@ class Bucket(_PropertyMixin):
         self.lifecycle_rules = rules
 
     def add_lifecycle_set_storage_class_rule(self, storage_class, **kw):
-        """Add a "delete" rule to lifestyle rules configured for this bucket.
+        """Add a "set storage class" rule to lifestyle rules.
 
         See https://cloud.google.com/storage/docs/lifecycle and
              https://cloud.google.com/storage/docs/json_api/v1/buckets
@@ -2307,6 +2341,22 @@ class Bucket(_PropertyMixin):
         """
         rules = list(self.lifecycle_rules)
         rules.append(LifecycleRuleSetStorageClass(storage_class, **kw))
+        self.lifecycle_rules = rules
+
+    def add_lifecycle_abort_incomplete_multipart_upload_rule(self, **kw):
+        """Add a "abort incomplete multipart upload" rule to lifestyle rules.
+
+        Note that the "age" lifecycle condition is the only supported condition
+        for this rule.
+
+        See https://cloud.google.com/storage/docs/lifecycle and
+             https://cloud.google.com/storage/docs/json_api/v1/buckets
+
+        :type kw: dict
+        :params kw: arguments passed to :class:`LifecycleRuleConditions`.
+        """
+        rules = list(self.lifecycle_rules)
+        rules.append(LifecycleRuleAbortIncompleteMultipartUpload(**kw))
         self.lifecycle_rules = rules
 
     _location = _scalar_property("location")

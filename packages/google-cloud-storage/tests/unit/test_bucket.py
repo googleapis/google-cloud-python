@@ -337,6 +337,43 @@ class Test_LifecycleRuleSetStorageClass(unittest.TestCase):
         self.assertEqual(dict(rule), resource)
 
 
+class Test_LifecycleRuleAbortIncompleteMultipartUpload(unittest.TestCase):
+    @staticmethod
+    def _get_target_class():
+        from google.cloud.storage.bucket import (
+            LifecycleRuleAbortIncompleteMultipartUpload,
+        )
+
+        return LifecycleRuleAbortIncompleteMultipartUpload
+
+    def _make_one(self, **kw):
+        return self._get_target_class()(**kw)
+
+    def test_ctor_wo_conditions(self):
+        with self.assertRaises(ValueError):
+            self._make_one()
+
+    def test_ctor_w_condition(self):
+        rule = self._make_one(age=10)
+        expected = {
+            "action": {"type": "AbortIncompleteMultipartUpload"},
+            "condition": {"age": 10},
+        }
+        self.assertEqual(dict(rule), expected)
+
+    def test_from_api_repr(self):
+        klass = self._get_target_class()
+        conditions = {
+            "age": 10,
+        }
+        resource = {
+            "action": {"type": "AbortIncompleteMultipartUpload"},
+            "condition": conditions,
+        }
+        rule = klass.from_api_repr(resource)
+        self.assertEqual(dict(rule), resource)
+
+
 class Test_IAMConfiguration(unittest.TestCase):
     @staticmethod
     def _get_target_class():
@@ -2242,6 +2279,7 @@ class Test_Bucket(unittest.TestCase):
         from google.cloud.storage.bucket import (
             LifecycleRuleDelete,
             LifecycleRuleSetStorageClass,
+            LifecycleRuleAbortIncompleteMultipartUpload,
         )
 
         NAME = "name"
@@ -2250,7 +2288,11 @@ class Test_Bucket(unittest.TestCase):
             "action": {"type": "SetStorageClass", "storageClass": "NEARLINE"},
             "condition": {"isLive": False},
         }
-        rules = [DELETE_RULE, SSC_RULE]
+        MULTIPART_RULE = {
+            "action": {"type": "AbortIncompleteMultipartUpload"},
+            "condition": {"age": 42},
+        }
+        rules = [DELETE_RULE, SSC_RULE, MULTIPART_RULE]
         properties = {"lifecycle": {"rule": rules}}
         bucket = self._make_one(name=NAME, properties=properties)
 
@@ -2263,6 +2305,12 @@ class Test_Bucket(unittest.TestCase):
         ssc_rule = found[1]
         self.assertIsInstance(ssc_rule, LifecycleRuleSetStorageClass)
         self.assertEqual(dict(ssc_rule), SSC_RULE)
+
+        multipart_rule = found[2]
+        self.assertIsInstance(
+            multipart_rule, LifecycleRuleAbortIncompleteMultipartUpload
+        )
+        self.assertEqual(dict(multipart_rule), MULTIPART_RULE)
 
     def test_lifecycle_rules_setter_w_dicts(self):
         NAME = "name"
@@ -2344,6 +2392,21 @@ class Test_Bucket(unittest.TestCase):
         self.assertEqual(list(bucket.lifecycle_rules), [])
 
         bucket.add_lifecycle_set_storage_class_rule("NEARLINE", is_live=False)
+
+        self.assertEqual([dict(rule) for rule in bucket.lifecycle_rules], rules)
+        self.assertTrue("lifecycle" in bucket._changes)
+
+    def test_add_lifecycle_abort_incomplete_multipart_upload_rule(self):
+        NAME = "name"
+        AIMPU_RULE = {
+            "action": {"type": "AbortIncompleteMultipartUpload"},
+            "condition": {"age": 42},
+        }
+        rules = [AIMPU_RULE]
+        bucket = self._make_one(name=NAME)
+        self.assertEqual(list(bucket.lifecycle_rules), [])
+
+        bucket.add_lifecycle_abort_incomplete_multipart_upload_rule(age=42)
 
         self.assertEqual([dict(rule) for rule in bucket.lifecycle_rules], rules)
         self.assertTrue("lifecycle" in bucket._changes)
