@@ -66,6 +66,7 @@ s.move(templated_files,
         ".coveragerc", 
         "docs/multiprocessing.rst",
         ".github/workflows", # exclude gh actions as credentials are needed for tests
+        ".github/auto-label.yaml",
         ])
 
 # adjust .trampolinerc for environment tests
