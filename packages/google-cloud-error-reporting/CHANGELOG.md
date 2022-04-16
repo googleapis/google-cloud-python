@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-cloud-error-reporting/#history
 
+### [1.5.2](https://github.com/googleapis/python-error-reporting/compare/v1.5.1...v1.5.2) (2022-04-16)
+
+
+### Bug Fixes
+
+* Reenable staleness bot ([#264](https://github.com/googleapis/python-error-reporting/issues/264)) ([393141a](https://github.com/googleapis/python-error-reporting/commit/393141ac2c661485fdafb8f21fe13a6b2c854d07))
+
 ### [1.5.1](https://github.com/googleapis/python-error-reporting/compare/v1.5.0...v1.5.1) (2022-03-07)
 
 
