@@ -43,6 +43,7 @@ from google.cloud.securitycenter_v1.services.security_center import pagers
 from google.cloud.securitycenter_v1.services.security_center import transports
 from google.cloud.securitycenter_v1.types import access
 from google.cloud.securitycenter_v1.types import bigquery_export
+from google.cloud.securitycenter_v1.types import connection
 from google.cloud.securitycenter_v1.types import external_system
 from google.cloud.securitycenter_v1.types import external_system as gcs_external_system
 from google.cloud.securitycenter_v1.types import finding
@@ -1209,6 +1210,7 @@ def test_create_finding(request_type, transport: str = "grpc"):
             mute=gcs_finding.Finding.Mute.MUTED,
             finding_class=gcs_finding.Finding.FindingClass.THREAT,
             mute_initiator="mute_initiator_value",
+            description="description_value",
             next_steps="next_steps_value",
         )
         response = client.create_finding(request)
@@ -1231,6 +1233,7 @@ def test_create_finding(request_type, transport: str = "grpc"):
     assert response.mute == gcs_finding.Finding.Mute.MUTED
     assert response.finding_class == gcs_finding.Finding.FindingClass.THREAT
     assert response.mute_initiator == "mute_initiator_value"
+    assert response.description == "description_value"
     assert response.next_steps == "next_steps_value"
 
 
@@ -1280,6 +1283,7 @@ async def test_create_finding_async(
                 mute=gcs_finding.Finding.Mute.MUTED,
                 finding_class=gcs_finding.Finding.FindingClass.THREAT,
                 mute_initiator="mute_initiator_value",
+                description="description_value",
                 next_steps="next_steps_value",
             )
         )
@@ -1303,6 +1307,7 @@ async def test_create_finding_async(
     assert response.mute == gcs_finding.Finding.Mute.MUTED
     assert response.finding_class == gcs_finding.Finding.FindingClass.THREAT
     assert response.mute_initiator == "mute_initiator_value"
+    assert response.description == "description_value"
     assert response.next_steps == "next_steps_value"
 
 
@@ -7098,6 +7103,7 @@ def test_set_finding_state(request_type, transport: str = "grpc"):
             mute=finding.Finding.Mute.MUTED,
             finding_class=finding.Finding.FindingClass.THREAT,
             mute_initiator="mute_initiator_value",
+            description="description_value",
             next_steps="next_steps_value",
         )
         response = client.set_finding_state(request)
@@ -7120,6 +7126,7 @@ def test_set_finding_state(request_type, transport: str = "grpc"):
     assert response.mute == finding.Finding.Mute.MUTED
     assert response.finding_class == finding.Finding.FindingClass.THREAT
     assert response.mute_initiator == "mute_initiator_value"
+    assert response.description == "description_value"
     assert response.next_steps == "next_steps_value"
 
 
@@ -7173,6 +7180,7 @@ async def test_set_finding_state_async(
                 mute=finding.Finding.Mute.MUTED,
                 finding_class=finding.Finding.FindingClass.THREAT,
                 mute_initiator="mute_initiator_value",
+                description="description_value",
                 next_steps="next_steps_value",
             )
         )
@@ -7196,6 +7204,7 @@ async def test_set_finding_state_async(
     assert response.mute == finding.Finding.Mute.MUTED
     assert response.finding_class == finding.Finding.FindingClass.THREAT
     assert response.mute_initiator == "mute_initiator_value"
+    assert response.description == "description_value"
     assert response.next_steps == "next_steps_value"
 
 
@@ -7403,6 +7412,7 @@ def test_set_mute(request_type, transport: str = "grpc"):
             mute=finding.Finding.Mute.MUTED,
             finding_class=finding.Finding.FindingClass.THREAT,
             mute_initiator="mute_initiator_value",
+            description="description_value",
             next_steps="next_steps_value",
         )
         response = client.set_mute(request)
@@ -7425,6 +7435,7 @@ def test_set_mute(request_type, transport: str = "grpc"):
     assert response.mute == finding.Finding.Mute.MUTED
     assert response.finding_class == finding.Finding.FindingClass.THREAT
     assert response.mute_initiator == "mute_initiator_value"
+    assert response.description == "description_value"
     assert response.next_steps == "next_steps_value"
 
 
@@ -7473,6 +7484,7 @@ async def test_set_mute_async(
                 mute=finding.Finding.Mute.MUTED,
                 finding_class=finding.Finding.FindingClass.THREAT,
                 mute_initiator="mute_initiator_value",
+                description="description_value",
                 next_steps="next_steps_value",
             )
         )
@@ -7496,6 +7508,7 @@ async def test_set_mute_async(
     assert response.mute == finding.Finding.Mute.MUTED
     assert response.finding_class == finding.Finding.FindingClass.THREAT
     assert response.mute_initiator == "mute_initiator_value"
+    assert response.description == "description_value"
     assert response.next_steps == "next_steps_value"
 
 
@@ -8480,6 +8493,7 @@ def test_update_finding(request_type, transport: str = "grpc"):
             mute=gcs_finding.Finding.Mute.MUTED,
             finding_class=gcs_finding.Finding.FindingClass.THREAT,
             mute_initiator="mute_initiator_value",
+            description="description_value",
             next_steps="next_steps_value",
         )
         response = client.update_finding(request)
@@ -8502,6 +8516,7 @@ def test_update_finding(request_type, transport: str = "grpc"):
     assert response.mute == gcs_finding.Finding.Mute.MUTED
     assert response.finding_class == gcs_finding.Finding.FindingClass.THREAT
     assert response.mute_initiator == "mute_initiator_value"
+    assert response.description == "description_value"
     assert response.next_steps == "next_steps_value"
 
 
@@ -8551,6 +8566,7 @@ async def test_update_finding_async(
                 mute=gcs_finding.Finding.Mute.MUTED,
                 finding_class=gcs_finding.Finding.FindingClass.THREAT,
                 mute_initiator="mute_initiator_value",
+                description="description_value",
                 next_steps="next_steps_value",
             )
         )
@@ -8574,6 +8590,7 @@ async def test_update_finding_async(
     assert response.mute == gcs_finding.Finding.Mute.MUTED
     assert response.finding_class == gcs_finding.Finding.FindingClass.THREAT
     assert response.mute_initiator == "mute_initiator_value"
+    assert response.description == "description_value"
     assert response.next_steps == "next_steps_value"
 
 

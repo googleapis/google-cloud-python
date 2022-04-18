@@ -25,6 +25,7 @@ from google.cloud.securitycenter_v1.types.access import Access
 from google.cloud.securitycenter_v1.types.access import Geolocation
 from google.cloud.securitycenter_v1.types.asset import Asset
 from google.cloud.securitycenter_v1.types.bigquery_export import BigQueryExport
+from google.cloud.securitycenter_v1.types.connection import Connection
 from google.cloud.securitycenter_v1.types.external_system import ExternalSystem
 from google.cloud.securitycenter_v1.types.finding import Finding
 from google.cloud.securitycenter_v1.types.folder import Folder
@@ -180,6 +181,7 @@ __all__ = (
     "Geolocation",
     "Asset",
     "BigQueryExport",
+    "Connection",
     "ExternalSystem",
     "Finding",
     "Folder",

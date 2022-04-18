@@ -23,6 +23,9 @@ from .asset import (
 from .bigquery_export import (
     BigQueryExport,
 )
+from .connection import (
+    Connection,
+)
 from .external_system import (
     ExternalSystem,
 )
@@ -122,6 +125,7 @@ __all__ = (
     "Geolocation",
     "Asset",
     "BigQueryExport",
+    "Connection",
     "ExternalSystem",
     "Finding",
     "Folder",

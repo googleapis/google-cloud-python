@@ -21,6 +21,7 @@ from .types.access import Access
 from .types.access import Geolocation
 from .types.asset import Asset
 from .types.bigquery_export import BigQueryExport
+from .types.connection import Connection
 from .types.external_system import ExternalSystem
 from .types.finding import Finding
 from .types.folder import Folder
@@ -90,6 +91,7 @@ __all__ = (
     "BigQueryExport",
     "BulkMuteFindingsRequest",
     "BulkMuteFindingsResponse",
+    "Connection",
     "CreateBigQueryExportRequest",
     "CreateFindingRequest",
     "CreateMuteConfigRequest",

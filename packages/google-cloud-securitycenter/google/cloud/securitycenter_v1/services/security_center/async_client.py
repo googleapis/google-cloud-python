@@ -36,6 +36,7 @@ from google.api_core import operation_async  # type: ignore
 from google.cloud.securitycenter_v1.services.security_center import pagers
 from google.cloud.securitycenter_v1.types import access
 from google.cloud.securitycenter_v1.types import bigquery_export
+from google.cloud.securitycenter_v1.types import connection
 from google.cloud.securitycenter_v1.types import external_system as gcs_external_system
 from google.cloud.securitycenter_v1.types import finding
 from google.cloud.securitycenter_v1.types import finding as gcs_finding

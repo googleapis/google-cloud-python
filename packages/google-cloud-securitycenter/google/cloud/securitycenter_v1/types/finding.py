@@ -16,6 +16,7 @@
 import proto  # type: ignore
 
 from google.cloud.securitycenter_v1.types import access as gcs_access
+from google.cloud.securitycenter_v1.types import connection
 from google.cloud.securitycenter_v1.types import external_system
 from google.cloud.securitycenter_v1.types import iam_binding
 from google.cloud.securitycenter_v1.types import indicator as gcs_indicator
@@ -141,12 +142,17 @@ class Finding(proto.Message):
             Access details associated to the Finding,
             such as more information on the caller, which
             method was accessed, from where, etc.
+        connections (Sequence[google.cloud.securitycenter_v1.types.Connection]):
+            Contains information about the IP connection
+            associated with the finding.
         mute_initiator (str):
             First known as mute_annotation. Records additional
             information about the mute operation e.g. mute config that
             muted the finding, user who muted the finding, etc. Unlike
             other attributes of a finding, a finding provider shouldn't
             set the value of mute.
+        description (str):
+            Contains more detail about the finding.
         iam_bindings (Sequence[google.cloud.securitycenter_v1.types.IamBinding]):
             Represents IAM bindings associated with the
             Finding.
@@ -280,9 +286,18 @@ class Finding(proto.Message):
         number=26,
         message=gcs_access.Access,
     )
+    connections = proto.RepeatedField(
+        proto.MESSAGE,
+        number=31,
+        message=connection.Connection,
+    )
     mute_initiator = proto.Field(
         proto.STRING,
         number=28,
+    )
+    description = proto.Field(
+        proto.STRING,
+        number=37,
     )
     iam_bindings = proto.RepeatedField(
         proto.MESSAGE,
