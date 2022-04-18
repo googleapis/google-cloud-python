@@ -1010,7 +1010,7 @@ class TestCasesAsyncClient:
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
         r"""Imports the test cases from a Cloud Storage bucket or a local
-        file. It always creates new test cases and won't overwite any
+        file. It always creates new test cases and won't overwrite any
         existing ones. The provided ID in the imported test case is
         neglected.
 

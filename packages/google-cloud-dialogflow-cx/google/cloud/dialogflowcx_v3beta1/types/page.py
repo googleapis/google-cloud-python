@@ -68,7 +68,7 @@ class Page(proto.Message):
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/pages/<Page ID>``.
         display_name (str):
             Required. The human-readable name of the
-            page, unique within the agent.
+            page, unique within the flow.
         entry_fulfillment (google.cloud.dialogflowcx_v3beta1.types.Fulfillment):
             The fulfillment to call when the session is
             entering the page.

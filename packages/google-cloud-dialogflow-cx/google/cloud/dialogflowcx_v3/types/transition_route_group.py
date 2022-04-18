@@ -45,10 +45,10 @@ class TransitionRouteGroup(proto.Message):
             populates the name automatically. Format:
             ``projects/<Project ID>/locations/<Location ID>/agents/<Agent ID>/flows/<Flow ID>/transitionRouteGroups/<Transition Route Group ID>``.
         display_name (str):
-            Required. The human-readable name of the transition route
-            group, unique within the
-            [Agent][google.cloud.dialogflow.cx.v3.Agent]. The display
-            name can be no longer than 30 characters.
+            Required. The human-readable name of the
+            transition route group, unique within the flow.
+            The display name can be no longer than 30
+            characters.
         transition_routes (Sequence[google.cloud.dialogflowcx_v3.types.TransitionRoute]):
             Transition routes associated with the
             [TransitionRouteGroup][google.cloud.dialogflow.cx.v3.TransitionRouteGroup].
