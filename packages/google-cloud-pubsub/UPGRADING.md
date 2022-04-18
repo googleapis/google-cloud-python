@@ -149,7 +149,7 @@ and now only exist in the relevant client, e.g. `subscriber.subscription_path()`
 The `project_path()` method has been removed from both the publisher and subscriber
 client, this path must now be constructed manually:
 ```py
-project_path = f"project/{PROJECT_ID}"
+project_path = f"projects/{PROJECT_ID}"
 ```
 
 ## Removed `client_config` Parameter
