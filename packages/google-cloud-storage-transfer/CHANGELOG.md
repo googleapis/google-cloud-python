@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.3.0](https://github.com/googleapis/python-storage-transfer/compare/v1.2.1...v1.3.0) (2022-04-14)
+
+
+### Features
+
+* add support for Agent Pools ([#74](https://github.com/googleapis/python-storage-transfer/issues/74)) ([131bef4](https://github.com/googleapis/python-storage-transfer/commit/131bef48fa04b6b3b483675f0f07fc819a6f20d6))
+* add support for Cloud Logging ([131bef4](https://github.com/googleapis/python-storage-transfer/commit/131bef48fa04b6b3b483675f0f07fc819a6f20d6))
+* add support for metadata preservation ([131bef4](https://github.com/googleapis/python-storage-transfer/commit/131bef48fa04b6b3b483675f0f07fc819a6f20d6))
+* add support for transferring a specific list of objects (manifest) ([131bef4](https://github.com/googleapis/python-storage-transfer/commit/131bef48fa04b6b3b483675f0f07fc819a6f20d6))
+* add support for transfers between file systems ([131bef4](https://github.com/googleapis/python-storage-transfer/commit/131bef48fa04b6b3b483675f0f07fc819a6f20d6))
+
 ### [1.2.1](https://github.com/googleapis/python-storage-transfer/compare/v1.2.0...v1.2.1) (2022-03-05)
 
 
