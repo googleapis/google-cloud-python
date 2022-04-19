@@ -57,7 +57,7 @@ deploy() {
   tar -xvf $TMP_DIR/lib.tar --directory $TMP_DIR/python-logging
   # copy test scripts
   cp $REPO_ROOT/deployable/python/*.py $TMP_DIR
-  echo  "-e ./python-logging" | cat $REPO_ROOT/deployable/python/requirements.txt - > $TMP_DIR/requirements.txt
+  echo  $'\n-e ./python-logging' | cat $REPO_ROOT/deployable/python/requirements.txt - > $TMP_DIR/requirements.txt
   # build app.yaml
   cat <<EOF > $TMP_DIR/app.yaml
     runtime: python37
