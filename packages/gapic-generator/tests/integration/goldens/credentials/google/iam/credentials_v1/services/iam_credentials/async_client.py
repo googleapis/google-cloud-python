@@ -212,9 +212,9 @@ class IAMCredentialsAsyncClient:
 
             from google.iam import credentials_v1
 
-            def sample_generate_access_token():
+            async def sample_generate_access_token():
                 # Create a client
-                client = credentials_v1.IAMCredentialsClient()
+                client = credentials_v1.IAMCredentialsAsyncClient()
 
                 # Initialize request argument(s)
                 request = credentials_v1.GenerateAccessTokenRequest(
@@ -223,7 +223,7 @@ class IAMCredentialsAsyncClient:
                 )
 
                 # Make the request
-                response = client.generate_access_token(request=request)
+                response = await client.generate_access_token(request=request)
 
                 # Handle the response
                 print(response)
@@ -365,9 +365,9 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
             from google.iam import credentials_v1
 
-            def sample_generate_id_token():
+            async def sample_generate_id_token():
                 # Create a client
-                client = credentials_v1.IAMCredentialsClient()
+                client = credentials_v1.IAMCredentialsAsyncClient()
 
                 # Initialize request argument(s)
                 request = credentials_v1.GenerateIdTokenRequest(
@@ -376,7 +376,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 )
 
                 # Make the request
-                response = client.generate_id_token(request=request)
+                response = await client.generate_id_token(request=request)
 
                 # Handle the response
                 print(response)
@@ -511,9 +511,9 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
             from google.iam import credentials_v1
 
-            def sample_sign_blob():
+            async def sample_sign_blob():
                 # Create a client
-                client = credentials_v1.IAMCredentialsClient()
+                client = credentials_v1.IAMCredentialsAsyncClient()
 
                 # Initialize request argument(s)
                 request = credentials_v1.SignBlobRequest(
@@ -522,7 +522,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 )
 
                 # Make the request
-                response = client.sign_blob(request=request)
+                response = await client.sign_blob(request=request)
 
                 # Handle the response
                 print(response)
@@ -644,9 +644,9 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
             from google.iam import credentials_v1
 
-            def sample_sign_jwt():
+            async def sample_sign_jwt():
                 # Create a client
-                client = credentials_v1.IAMCredentialsClient()
+                client = credentials_v1.IAMCredentialsAsyncClient()
 
                 # Initialize request argument(s)
                 request = credentials_v1.SignJwtRequest(
@@ -655,7 +655,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 )
 
                 # Make the request
-                response = client.sign_jwt(request=request)
+                response = await client.sign_jwt(request=request)
 
                 # Handle the response
                 print(response)

@@ -211,7 +211,7 @@ class {{ service.async_client_name }}:
             {% endif %}
         r"""{{ method.meta.doc|rst(width=72, indent=8)|trim }}
 
-        {% with snippet = snippet_index.get_snippet(service.name, method.name, sync=True) %}
+        {% with snippet = snippet_index.get_snippet(service.name, method.name, sync=False) %}
         {% if snippet is not none %}
         .. code-block:: python
 

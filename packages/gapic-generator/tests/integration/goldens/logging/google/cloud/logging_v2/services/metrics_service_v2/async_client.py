@@ -200,9 +200,9 @@ class MetricsServiceV2AsyncClient:
 
             from google.cloud import logging_v2
 
-            def sample_list_log_metrics():
+            async def sample_list_log_metrics():
                 # Create a client
-                client = logging_v2.MetricsServiceV2Client()
+                client = logging_v2.MetricsServiceV2AsyncClient()
 
                 # Initialize request argument(s)
                 request = logging_v2.ListLogMetricsRequest(
@@ -213,7 +213,7 @@ class MetricsServiceV2AsyncClient:
                 page_result = client.list_log_metrics(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -317,9 +317,9 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
             from google.cloud import logging_v2
 
-            def sample_get_log_metric():
+            async def sample_get_log_metric():
                 # Create a client
-                client = logging_v2.MetricsServiceV2Client()
+                client = logging_v2.MetricsServiceV2AsyncClient()
 
                 # Initialize request argument(s)
                 request = logging_v2.GetLogMetricRequest(
@@ -327,7 +327,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 )
 
                 # Make the request
-                response = client.get_log_metric(request=request)
+                response = await client.get_log_metric(request=request)
 
                 # Handle the response
                 print(response)
@@ -431,9 +431,9 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
             from google.cloud import logging_v2
 
-            def sample_create_log_metric():
+            async def sample_create_log_metric():
                 # Create a client
-                client = logging_v2.MetricsServiceV2Client()
+                client = logging_v2.MetricsServiceV2AsyncClient()
 
                 # Initialize request argument(s)
                 metric = logging_v2.LogMetric()
@@ -446,7 +446,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 )
 
                 # Make the request
-                response = client.create_log_metric(request=request)
+                response = await client.create_log_metric(request=request)
 
                 # Handle the response
                 print(response)
@@ -555,9 +555,9 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
             from google.cloud import logging_v2
 
-            def sample_update_log_metric():
+            async def sample_update_log_metric():
                 # Create a client
-                client = logging_v2.MetricsServiceV2Client()
+                client = logging_v2.MetricsServiceV2AsyncClient()
 
                 # Initialize request argument(s)
                 metric = logging_v2.LogMetric()
@@ -570,7 +570,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 )
 
                 # Make the request
-                response = client.update_log_metric(request=request)
+                response = await client.update_log_metric(request=request)
 
                 # Handle the response
                 print(response)
@@ -685,9 +685,9 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
             from google.cloud import logging_v2
 
-            def sample_delete_log_metric():
+            async def sample_delete_log_metric():
                 # Create a client
-                client = logging_v2.MetricsServiceV2Client()
+                client = logging_v2.MetricsServiceV2AsyncClient()
 
                 # Initialize request argument(s)
                 request = logging_v2.DeleteLogMetricRequest(
@@ -695,7 +695,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 )
 
                 # Make the request
-                client.delete_log_metric(request=request)
+                await client.delete_log_metric(request=request)
 
         Args:
             request (Union[google.cloud.logging_v2.types.DeleteLogMetricRequest, dict]):

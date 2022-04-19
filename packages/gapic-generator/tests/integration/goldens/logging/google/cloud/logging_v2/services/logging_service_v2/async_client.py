@@ -203,9 +203,9 @@ class LoggingServiceV2AsyncClient:
 
             from google.cloud import logging_v2
 
-            def sample_delete_log():
+            async def sample_delete_log():
                 # Create a client
-                client = logging_v2.LoggingServiceV2Client()
+                client = logging_v2.LoggingServiceV2AsyncClient()
 
                 # Initialize request argument(s)
                 request = logging_v2.DeleteLogRequest(
@@ -213,7 +213,7 @@ class LoggingServiceV2AsyncClient:
                 )
 
                 # Make the request
-                client.delete_log(request=request)
+                await client.delete_log(request=request)
 
         Args:
             request (Union[google.cloud.logging_v2.types.DeleteLogRequest, dict]):
@@ -313,9 +313,9 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
             from google.cloud import logging_v2
 
-            def sample_write_log_entries():
+            async def sample_write_log_entries():
                 # Create a client
-                client = logging_v2.LoggingServiceV2Client()
+                client = logging_v2.LoggingServiceV2AsyncClient()
 
                 # Initialize request argument(s)
                 entries = logging_v2.LogEntry()
@@ -326,7 +326,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 )
 
                 # Make the request
-                response = client.write_log_entries(request=request)
+                response = await client.write_log_entries(request=request)
 
                 # Handle the response
                 print(response)
@@ -500,9 +500,9 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
             from google.cloud import logging_v2
 
-            def sample_list_log_entries():
+            async def sample_list_log_entries():
                 # Create a client
-                client = logging_v2.LoggingServiceV2Client()
+                client = logging_v2.LoggingServiceV2AsyncClient()
 
                 # Initialize request argument(s)
                 request = logging_v2.ListLogEntriesRequest(
@@ -513,7 +513,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 page_result = client.list_log_entries(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -652,9 +652,9 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
             from google.cloud import logging_v2
 
-            def sample_list_monitored_resource_descriptors():
+            async def sample_list_monitored_resource_descriptors():
                 # Create a client
-                client = logging_v2.LoggingServiceV2Client()
+                client = logging_v2.LoggingServiceV2AsyncClient()
 
                 # Initialize request argument(s)
                 request = logging_v2.ListMonitoredResourceDescriptorsRequest(
@@ -664,7 +664,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 page_result = client.list_monitored_resource_descriptors(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -741,9 +741,9 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
             from google.cloud import logging_v2
 
-            def sample_list_logs():
+            async def sample_list_logs():
                 # Create a client
-                client = logging_v2.LoggingServiceV2Client()
+                client = logging_v2.LoggingServiceV2AsyncClient()
 
                 # Initialize request argument(s)
                 request = logging_v2.ListLogsRequest(
@@ -754,7 +754,7 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                 page_result = client.list_logs(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -861,9 +861,9 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
 
             from google.cloud import logging_v2
 
-            def sample_tail_log_entries():
+            async def sample_tail_log_entries():
                 # Create a client
-                client = logging_v2.LoggingServiceV2Client()
+                client = logging_v2.LoggingServiceV2AsyncClient()
 
                 # Initialize request argument(s)
                 request = logging_v2.TailLogEntriesRequest(
@@ -881,10 +881,10 @@ initial=0.1,maximum=60.0,multiplier=1.3,                predicate=retries.if_exc
                         yield request
 
                 # Make the request
-                stream = client.tail_log_entries(requests=request_generator())
+                stream = await client.tail_log_entries(requests=request_generator())
 
                 # Handle the response
-                for response in stream:
+                async for response in stream:
                     print(response)
 
         Args:
