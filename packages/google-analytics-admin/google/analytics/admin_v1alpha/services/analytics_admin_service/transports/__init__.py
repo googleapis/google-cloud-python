@@ -20,7 +20,6 @@ from .base import AnalyticsAdminServiceTransport
 from .grpc import AnalyticsAdminServiceGrpcTransport
 from .grpc_asyncio import AnalyticsAdminServiceGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = (
     OrderedDict()

@@ -22,9 +22,11 @@ for more information.
 """
 # [START analyticsadmin_properties_user_links_batch_update]
 from google.analytics.admin import AnalyticsAdminServiceClient
-from google.analytics.admin_v1alpha.types import BatchUpdateUserLinksRequest
-from google.analytics.admin_v1alpha.types import UpdateUserLinkRequest
-from google.analytics.admin_v1alpha.types import UserLink
+from google.analytics.admin_v1alpha.types import (
+    BatchUpdateUserLinksRequest,
+    UpdateUserLinkRequest,
+    UserLink,
+)
 
 
 def run_sample():

@@ -21,14 +21,13 @@ See https://developers.google.com/analytics/devguides/config/admin/v1/rest/v1alp
 for more information.
 """
 # [START analyticsadmin_properties_conversion_events_create]
-from datetime import datetime
-from datetime import timedelta
+from datetime import datetime, timedelta
 
-from google.analytics.admin import AnalyticsAdminServiceClient
-from google.analytics.admin import SearchChangeHistoryEventsRequest
-from google.analytics.admin_v1alpha.types import ActionType
-from google.analytics.admin_v1alpha.types import ActorType
-
+from google.analytics.admin import (
+    AnalyticsAdminServiceClient,
+    SearchChangeHistoryEventsRequest,
+)
+from google.analytics.admin_v1alpha.types import ActionType, ActorType
 from google.protobuf.timestamp_pb2 import Timestamp
 
 

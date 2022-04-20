@@ -16,7 +16,6 @@ import os
 
 import properties_data_streams_get_global_site_tag
 
-
 TEST_PROPERTY_ID = os.getenv("GA_TEST_PROPERTY_ID")
 TEST_DATA_STREAM_ID = os.getenv("GA_TEST_WEB_DATA_STREAM_ID")
 

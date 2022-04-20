@@ -14,7 +14,6 @@
 
 import accounts_provision_account_ticket
 
-
 TEST_REDIRECT_URL = "https://www.google.com"
 
 

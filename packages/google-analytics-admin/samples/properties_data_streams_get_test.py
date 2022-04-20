@@ -16,7 +16,6 @@ import os
 
 import properties_data_streams_get
 
-
 TEST_PROPERTY_ID = os.getenv("GA_TEST_PROPERTY_ID")
 TEST_DATA_STREAM_ID = os.getenv("GA_TEST_WEB_DATA_STREAM_ID")
 

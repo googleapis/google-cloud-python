@@ -16,7 +16,6 @@ import pytest
 
 import properties_delete
 
-
 FAKE_PROPERTY_ID = "1"
 
 

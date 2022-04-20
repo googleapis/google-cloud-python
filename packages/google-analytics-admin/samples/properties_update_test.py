@@ -16,7 +16,6 @@ import pytest
 
 import properties_update
 
-
 FAKE_PROPERTY_ID = "1"
 
 

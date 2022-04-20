@@ -16,7 +16,6 @@ import pytest
 
 import properties_create
 
-
 FAKE_ACCOUNT_ID = "1"
 
 

@@ -22,8 +22,7 @@ for more information.
 """
 # [START analyticsadmin_accounts_user_links_create]
 from google.analytics.admin import AnalyticsAdminServiceClient
-from google.analytics.admin_v1alpha.types import CreateUserLinkRequest
-from google.analytics.admin_v1alpha.types import UserLink
+from google.analytics.admin_v1alpha.types import CreateUserLinkRequest, UserLink
 
 
 def run_sample():

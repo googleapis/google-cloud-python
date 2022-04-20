@@ -18,7 +18,6 @@ import pytest
 
 import accounts_user_links_create
 
-
 FAKE_ACCOUNT_ID = "1"
 TEST_EMAIL_ADDRESS = os.getenv("GA_TEST_EMAIL_ADDRESS")
 

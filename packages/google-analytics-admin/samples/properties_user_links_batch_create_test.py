@@ -16,7 +16,6 @@ import pytest
 
 import properties_user_links_batch_create
 
-
 FAKE_PROPERTY_ID = "1"
 FAKE_EMAIL_ADDRESS = "test@google.com"
 

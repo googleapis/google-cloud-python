@@ -16,7 +16,6 @@ import pytest
 
 import properties_firebase_links_create
 
-
 FAKE_PROPERTY_ID = "1"
 FAKE_FIREBASE_PROJECT_ID = "1"
 

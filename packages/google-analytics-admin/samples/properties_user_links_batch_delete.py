@@ -22,8 +22,10 @@ for more information.
 """
 # [START analyticsadmin_properties_user_links_batch_delete]
 from google.analytics.admin import AnalyticsAdminServiceClient
-from google.analytics.admin_v1alpha.types import BatchDeleteUserLinksRequest
-from google.analytics.admin_v1alpha.types import DeleteUserLinkRequest
+from google.analytics.admin_v1alpha.types import (
+    BatchDeleteUserLinksRequest,
+    DeleteUserLinkRequest,
+)
 
 
 def run_sample():

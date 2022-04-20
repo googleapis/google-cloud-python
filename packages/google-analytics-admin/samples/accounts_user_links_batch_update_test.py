@@ -16,7 +16,6 @@ import pytest
 
 import accounts_user_links_batch_update
 
-
 FAKE_ACCOUNT_ID = "1"
 FAKE_ACCOUNT_USER_LINK_ID = "1"
 

@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import AnalyticsAdminServiceClient
 from .async_client import AnalyticsAdminServiceAsyncClient
+from .client import AnalyticsAdminServiceClient
 
 __all__ = (
     "AnalyticsAdminServiceClient",

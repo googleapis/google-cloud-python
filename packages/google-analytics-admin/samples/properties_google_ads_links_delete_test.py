@@ -16,7 +16,6 @@ import pytest
 
 import properties_google_ads_links_delete
 
-
 FAKE_PROPERTY_ID = "1"
 FAKE_GOOGLE_ADS_LINK_ID = "1"
 

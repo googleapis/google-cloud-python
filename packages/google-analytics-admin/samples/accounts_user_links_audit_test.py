@@ -16,7 +16,6 @@ import os
 
 import accounts_user_links_audit
 
-
 TEST_ACCOUNT_ID = os.getenv("GA_TEST_ACCOUNT_ID")
 
 

@@ -16,7 +16,6 @@ import pytest
 
 import properties_google_ads_links_create
 
-
 FAKE_PROPERTY_ID = "1"
 FAKE_ADS_CUSTOMER_ID = "1234567890"
 

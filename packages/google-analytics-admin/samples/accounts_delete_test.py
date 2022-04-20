@@ -16,7 +16,6 @@ import pytest
 
 import accounts_delete
 
-
 FAKE_ACCOUNT_ID = "1"
 
 

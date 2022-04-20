@@ -16,7 +16,6 @@ import pytest
 
 import properties_data_streams_update
 
-
 FAKE_PROPERTY_ID = "1"
 FAKE_STREAM_ID = "1"
 

@@ -39,8 +39,7 @@ for more information.
 """
 # [START analyticsadmin_accounts_provision_account_ticket]
 from google.analytics.admin import AnalyticsAdminServiceClient
-from google.analytics.admin_v1alpha.types import Account
-from google.analytics.admin_v1alpha.types import ProvisionAccountTicketRequest
+from google.analytics.admin_v1alpha.types import Account, ProvisionAccountTicketRequest
 
 
 def run_sample():

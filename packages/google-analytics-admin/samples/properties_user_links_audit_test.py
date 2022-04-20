@@ -16,7 +16,6 @@ import os
 
 import properties_user_links_audit
 
-
 TEST_PROPERTY_ID = os.getenv("GA_TEST_PROPERTY_ID")
 
 

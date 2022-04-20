@@ -16,7 +16,6 @@ import pytest
 
 import properties_user_links_delete
 
-
 FAKE_PROPERTY_ID = "1"
 FAKE_USER_LINK_ID = "1"
 
