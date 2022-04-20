@@ -19,10 +19,14 @@ from .services.publisher import PublisherAsyncClient
 
 from .types.publisher import PublishChannelConnectionEventsRequest
 from .types.publisher import PublishChannelConnectionEventsResponse
+from .types.publisher import PublishEventsRequest
+from .types.publisher import PublishEventsResponse
 
 __all__ = (
     "PublisherAsyncClient",
     "PublishChannelConnectionEventsRequest",
     "PublishChannelConnectionEventsResponse",
+    "PublishEventsRequest",
+    "PublishEventsResponse",
     "PublisherClient",
 )

@@ -23,6 +23,8 @@ __protobuf__ = proto.module(
     manifest={
         "PublishChannelConnectionEventsRequest",
         "PublishChannelConnectionEventsResponse",
+        "PublishEventsRequest",
+        "PublishEventsResponse",
     },
 )
 
@@ -57,6 +59,33 @@ class PublishChannelConnectionEventsResponse(proto.Message):
     method.
 
     """
+
+
+class PublishEventsRequest(proto.Message):
+    r"""The request message for the PublishEvents method.
+
+    Attributes:
+        channel (str):
+            The full name of the channel to publish to. For example:
+            ``projects/{project}/locations/{location}/channels/{channel-id}``.
+        events (Sequence[google.protobuf.any_pb2.Any]):
+            The CloudEvents v1.0 events to publish. No
+            other types are allowed.
+    """
+
+    channel = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    events = proto.RepeatedField(
+        proto.MESSAGE,
+        number=2,
+        message=any_pb2.Any,
+    )
+
+
+class PublishEventsResponse(proto.Message):
+    r"""The response message for the PublishEvents method."""
 
 
 __all__ = tuple(sorted(__protobuf__.manifest))

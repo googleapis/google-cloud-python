@@ -40,6 +40,7 @@ class eventarc_publishingCallTransformer(cst.CSTTransformer):
     CTRL_PARAMS: Tuple[str] = ('retry', 'timeout', 'metadata')
     METHOD_TO_PARAMS: Dict[str, Tuple[str]] = {
         'publish_channel_connection_events': ('channel_connection', 'events', ),
+        'publish_events': ('channel', 'events', ),
     }
 
     def leave_Call(self, original: cst.Call, updated: cst.Call) -> cst.CSTNode:

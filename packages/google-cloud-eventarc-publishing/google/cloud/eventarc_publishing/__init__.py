@@ -27,10 +27,14 @@ from google.cloud.eventarc_publishing_v1.types.publisher import (
 from google.cloud.eventarc_publishing_v1.types.publisher import (
     PublishChannelConnectionEventsResponse,
 )
+from google.cloud.eventarc_publishing_v1.types.publisher import PublishEventsRequest
+from google.cloud.eventarc_publishing_v1.types.publisher import PublishEventsResponse
 
 __all__ = (
     "PublisherClient",
     "PublisherAsyncClient",
     "PublishChannelConnectionEventsRequest",
     "PublishChannelConnectionEventsResponse",
+    "PublishEventsRequest",
+    "PublishEventsResponse",
 )

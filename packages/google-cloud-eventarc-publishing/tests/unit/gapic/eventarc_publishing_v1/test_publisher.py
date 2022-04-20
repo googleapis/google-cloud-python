@@ -773,6 +773,150 @@ async def test_publish_channel_connection_events_field_headers_async():
     ) in kw["metadata"]
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        publisher.PublishEventsRequest,
+        dict,
+    ],
+)
+def test_publish_events(request_type, transport: str = "grpc"):
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.publish_events), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = publisher.PublishEventsResponse()
+        response = client.publish_events(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == publisher.PublishEventsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, publisher.PublishEventsResponse)
+
+
+def test_publish_events_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.publish_events), "__call__") as call:
+        client.publish_events()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == publisher.PublishEventsRequest()
+
+
+@pytest.mark.asyncio
+async def test_publish_events_async(
+    transport: str = "grpc_asyncio", request_type=publisher.PublishEventsRequest
+):
+    client = PublisherAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.publish_events), "__call__") as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            publisher.PublishEventsResponse()
+        )
+        response = await client.publish_events(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == publisher.PublishEventsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, publisher.PublishEventsResponse)
+
+
+@pytest.mark.asyncio
+async def test_publish_events_async_from_dict():
+    await test_publish_events_async(request_type=dict)
+
+
+def test_publish_events_field_headers():
+    client = PublisherClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = publisher.PublishEventsRequest()
+
+    request.channel = "channel/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.publish_events), "__call__") as call:
+        call.return_value = publisher.PublishEventsResponse()
+        client.publish_events(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "channel=channel/value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_publish_events_field_headers_async():
+    client = PublisherAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = publisher.PublishEventsRequest()
+
+    request.channel = "channel/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.publish_events), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            publisher.PublishEventsResponse()
+        )
+        await client.publish_events(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "channel=channel/value",
+    ) in kw["metadata"]
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.PublisherGrpcTransport(
@@ -909,7 +1053,10 @@ def test_publisher_base_transport():
 
     # Every method on the transport should just blindly
     # raise NotImplementedError.
-    methods = ("publish_channel_connection_events",)
+    methods = (
+        "publish_channel_connection_events",
+        "publish_events",
+    )
     for method in methods:
         with pytest.raises(NotImplementedError):
             getattr(transport, method)(request=object())

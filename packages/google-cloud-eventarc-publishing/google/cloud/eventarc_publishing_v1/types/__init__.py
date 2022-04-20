@@ -16,9 +16,13 @@
 from .publisher import (
     PublishChannelConnectionEventsRequest,
     PublishChannelConnectionEventsResponse,
+    PublishEventsRequest,
+    PublishEventsResponse,
 )
 
 __all__ = (
     "PublishChannelConnectionEventsRequest",
     "PublishChannelConnectionEventsResponse",
+    "PublishEventsRequest",
+    "PublishEventsResponse",
 )

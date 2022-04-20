@@ -283,6 +283,32 @@ class PublisherGrpcTransport(PublisherTransport):
             )
         return self._stubs["publish_channel_connection_events"]
 
+    @property
+    def publish_events(
+        self,
+    ) -> Callable[[publisher.PublishEventsRequest], publisher.PublishEventsResponse]:
+        r"""Return a callable for the publish events method over gRPC.
+
+        Publish events to a subscriber's channel.
+
+        Returns:
+            Callable[[~.PublishEventsRequest],
+                    ~.PublishEventsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "publish_events" not in self._stubs:
+            self._stubs["publish_events"] = self.grpc_channel.unary_unary(
+                "/google.cloud.eventarc.publishing.v1.Publisher/PublishEvents",
+                request_serializer=publisher.PublishEventsRequest.serialize,
+                response_deserializer=publisher.PublishEventsResponse.deserialize,
+            )
+        return self._stubs["publish_events"]
+
     def close(self):
         self.grpc_channel.close()
 

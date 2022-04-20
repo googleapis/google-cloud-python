@@ -292,6 +292,78 @@ class PublisherAsyncClient:
         # Done; return the response.
         return response
 
+    async def publish_events(
+        self,
+        request: Union[publisher.PublishEventsRequest, dict] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> publisher.PublishEventsResponse:
+        r"""Publish events to a subscriber's channel.
+
+        .. code-block:: python
+
+            from google.cloud import eventarc_publishing_v1
+
+            def sample_publish_events():
+                # Create a client
+                client = eventarc_publishing_v1.PublisherClient()
+
+                # Initialize request argument(s)
+                request = eventarc_publishing_v1.PublishEventsRequest(
+                )
+
+                # Make the request
+                response = client.publish_events(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.eventarc_publishing_v1.types.PublishEventsRequest, dict]):
+                The request object. The request message for the
+                PublishEvents method.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.eventarc_publishing_v1.types.PublishEventsResponse:
+                The response message for the
+                PublishEvents method.
+
+        """
+        # Create or coerce a protobuf request object.
+        request = publisher.PublishEventsRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.publish_events,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("channel", request.channel),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     async def __aenter__(self):
         return self
 
