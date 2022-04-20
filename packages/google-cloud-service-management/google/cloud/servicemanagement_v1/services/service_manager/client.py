@@ -105,7 +105,9 @@ class ServiceManagerClientMeta(type):
 
 
 class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
-    """`Google Service Management API </service-management/overview>`__"""
+    """`Google Service Management
+    API <https://cloud.google.com/service-infrastructure/docs/overview>`__
+    """
 
     @staticmethod
     def _get_default_mtls_endpoint(api_endpoint):
@@ -1535,11 +1537,11 @@ class ServiceManagerClient(metaclass=ServiceManagerClientMeta):
             filter (str):
                 Required. Use ``filter`` to return subset of rollouts.
                 The following filters are supported: -- To limit the
-                results to only those in
-                `status <google.api.servicemanagement.v1.RolloutStatus>`__
+                results to only those in status
+                (google.api.servicemanagement.v1.RolloutStatus)
                 'SUCCESS', use filter='status=SUCCESS' -- To limit the
-                results to those in
-                `status <google.api.servicemanagement.v1.RolloutStatus>`__
+                results to those in status
+                (google.api.servicemanagement.v1.RolloutStatus)
                 'CANCELLED' or 'FAILED', use filter='status=CANCELLED OR
                 status=FAILED'
 

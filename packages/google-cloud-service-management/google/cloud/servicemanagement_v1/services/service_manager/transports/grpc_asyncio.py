@@ -36,7 +36,8 @@ from .grpc import ServiceManagerGrpcTransport
 class ServiceManagerGrpcAsyncIOTransport(ServiceManagerTransport):
     """gRPC AsyncIO backend transport for ServiceManager.
 
-    `Google Service Management API </service-management/overview>`__
+    `Google Service Management
+    API <https://cloud.google.com/service-infrastructure/docs/overview>`__
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation

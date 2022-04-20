@@ -35,7 +35,8 @@ from .base import ServiceManagerTransport, DEFAULT_CLIENT_INFO
 class ServiceManagerGrpcTransport(ServiceManagerTransport):
     """gRPC backend transport for ServiceManager.
 
-    `Google Service Management API </service-management/overview>`__
+    `Google Service Management
+    API <https://cloud.google.com/service-infrastructure/docs/overview>`__
 
     This class defines the same methods as the primary client, so the
     primary client can load the underlying transport implementation

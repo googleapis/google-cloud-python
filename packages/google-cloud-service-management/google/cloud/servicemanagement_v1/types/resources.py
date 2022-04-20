@@ -41,8 +41,8 @@ class ManagedService(proto.Message):
     Attributes:
         service_name (str):
             The name of the service. See the
-            `overview </service-management/overview>`__ for naming
-            requirements.
+            `overview <https://cloud.google.com/service-infrastructure/docs/overview>`__
+            for naming requirements.
         producer_project_id (str):
             ID of the project that produces and owns this
             service.
