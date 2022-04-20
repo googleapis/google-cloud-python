@@ -57,6 +57,7 @@ Execute unit tests by running one of the sessions prefixed with `unit-`.
     ```sh
     bazel run //tests/integration:asset_update
     bazel run //tests/integration:credentials_update
+    bazel run //tests/integration:eventarc_update
     bazel run //tests/integration:logging_update
     bazel run //tests/integration:redis_update
     ```

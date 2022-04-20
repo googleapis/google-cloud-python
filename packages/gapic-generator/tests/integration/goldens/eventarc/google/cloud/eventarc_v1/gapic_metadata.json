@@ -1,0 +1,73 @@
+ {
+  "comment": "This file maps proto services/RPCs to the corresponding library clients/methods",
+  "language": "python",
+  "libraryPackage": "google.cloud.eventarc_v1",
+  "protoPackage": "google.cloud.eventarc.v1",
+  "schema": "1.0",
+  "services": {
+    "Eventarc": {
+      "clients": {
+        "grpc": {
+          "libraryClient": "EventarcClient",
+          "rpcs": {
+            "CreateTrigger": {
+              "methods": [
+                "create_trigger"
+              ]
+            },
+            "DeleteTrigger": {
+              "methods": [
+                "delete_trigger"
+              ]
+            },
+            "GetTrigger": {
+              "methods": [
+                "get_trigger"
+              ]
+            },
+            "ListTriggers": {
+              "methods": [
+                "list_triggers"
+              ]
+            },
+            "UpdateTrigger": {
+              "methods": [
+                "update_trigger"
+              ]
+            }
+          }
+        },
+        "grpc-async": {
+          "libraryClient": "EventarcAsyncClient",
+          "rpcs": {
+            "CreateTrigger": {
+              "methods": [
+                "create_trigger"
+              ]
+            },
+            "DeleteTrigger": {
+              "methods": [
+                "delete_trigger"
+              ]
+            },
+            "GetTrigger": {
+              "methods": [
+                "get_trigger"
+              ]
+            },
+            "ListTriggers": {
+              "methods": [
+                "list_triggers"
+              ]
+            },
+            "UpdateTrigger": {
+              "methods": [
+                "update_trigger"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

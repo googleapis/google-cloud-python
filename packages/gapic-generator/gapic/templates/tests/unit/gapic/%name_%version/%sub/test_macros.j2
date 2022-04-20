@@ -1,5 +1,5 @@
 {% macro grpc_required_tests(method, service, full_extended_lro=False) %}
-{% with method_name = method.name|snake_case + "_unary" if method.extended_lro and not full_extended_lro else method.name|snake_case, method_output = method.extended_lro.operation_type if method.extended_lro and not full_extended_lro else method.output %}
+{% with method_name = method.safe_name|snake_case + "_unary" if method.extended_lro and not full_extended_lro else method.safe_name|snake_case, method_output = method.extended_lro.operation_type if method.extended_lro and not full_extended_lro else method.output %}
 @pytest.mark.parametrize("request_type", [
   {{ method.input.ident }},
   dict,
@@ -43,7 +43,7 @@ def test_{{ method_name }}(request_type, transport: str = 'grpc'):
         )
         {% endif %}
         {% if method.client_streaming %}
-        response = client.{{ method.name|snake_case }}(iter(requests))
+        response = client.{{ method.safe_name|snake_case }}(iter(requests))
         {% else %}
         response = client.{{ method_name }}(request)
         {% endif %}
@@ -227,7 +227,7 @@ def test_{{ method.name|snake_case }}_routing_parameters():
         {% else %}
         call.return_value = {{ method.output.ident }}()
         {% endif %}
-        client.{{ method.name|snake_case }}(request)
+        client.{{ method.safe_name|snake_case }}(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls) == 1
@@ -834,7 +834,7 @@ def test_{{ method_name }}_raw_page_lro():
 {% endmacro %}
 
 {% macro rest_required_tests(method, service, full_extended_lro=False) %}
-{% with method_name = method.name|snake_case + "_unary" if method.extended_lro and not full_extended_lro else method.name|snake_case, method_output = method.extended_lro.operation_type if method.extended_lro and not full_extended_lro else method.output %}{% if method.http_options %}
+{% with method_name = method.safe_name|snake_case + "_unary" if method.extended_lro and not full_extended_lro else method.name|snake_case, method_output = method.extended_lro.operation_type if method.extended_lro and not full_extended_lro else method.output %}{% if method.http_options %}
 {# TODO(kbandes): remove this if condition when lro and client streaming are supported. #}
 {% if not method.client_streaming %}
 @pytest.mark.parametrize("request_type", [

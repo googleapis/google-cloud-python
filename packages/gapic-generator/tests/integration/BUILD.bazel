@@ -26,6 +26,7 @@ package(default_visibility = ["//visibility:public"])
 INTEGRATION_TEST_LIBRARIES = [
     "asset",  # Basic case.
     "credentials",  # Check that the capital name edge case is handled.
+    "eventarc", # create_channel is a reserved term in transport layer.
     "logging",  # Java package remapping in gapic.yaml.
     "redis",  # Has a gapic.yaml.
 ]
@@ -62,6 +63,18 @@ py_gapic_library(
     srcs = ["@com_google_googleapis//google/iam/credentials/v1:credentials_proto"],
     grpc_service_config = "iamcredentials_grpc_service_config.json",
     opt_args = [
+        "autogen-snippets",
+    ],
+)
+
+# Eventarc.
+py_gapic_library(
+    name = "eventarc_py_gapic",
+    srcs = ["@com_google_googleapis//google/cloud/eventarc/v1:eventarc_proto"],
+    grpc_service_config = "eventarc_grpc_service_config.json",
+    opt_args = [
+        "python-gapic-namespace=google.cloud",
+        "python-gapic-name=eventarc",
         "autogen-snippets",
     ],
 )

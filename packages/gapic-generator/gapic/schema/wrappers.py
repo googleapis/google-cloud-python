@@ -30,6 +30,7 @@ Documentation is consistently at ``{thing}.meta.doc``.
 import collections
 import dataclasses
 import json
+import keyword
 import re
 from itertools import chain
 from typing import (Any, cast, Dict, FrozenSet, Iterator, Iterable, List, Mapping,
@@ -1076,6 +1077,13 @@ class Method:
         return getattr(self.method_pb, name)
 
     @property
+    def safe_name(self) -> str:
+        # Used to prevent collisions with python keywords at the client level
+
+        name = self.name
+        return name + "_" if name.lower() in keyword.kwlist else name
+
+    @property
     def transport_safe_name(self) -> str:
         # These names conflict with other methods in the transport.
         # We don't want to disambiguate the names at the client level
@@ -1083,12 +1091,15 @@ class Method:
         #
         # Note: this should really be a class variable,
         # but python 3.6 can't handle that.
-        TRANSPORT_UNSAFE_NAMES = {
-            "CreateChannel",
-            "GrpcChannel",
-            "OperationsClient",
-        }
-        return f"{self.name}_" if self.name in TRANSPORT_UNSAFE_NAMES else self.name
+        TRANSPORT_UNSAFE_NAMES = chain(
+            {
+                "createchannel",
+                "grpcchannel",
+                "operationsclient",
+            },
+            keyword.kwlist,
+        )
+        return f"{self.name}_" if self.name.lower() in TRANSPORT_UNSAFE_NAMES else self.name
 
     @property
     def is_operation_polling_method(self):

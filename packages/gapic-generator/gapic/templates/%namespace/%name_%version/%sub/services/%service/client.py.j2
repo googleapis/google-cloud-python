@@ -359,11 +359,11 @@ class {{ service.client_name }}(metaclass={{ service.client_name }}Meta):
 
     {% for method in service.methods.values() %}
 {% if method.operation_service %}{# Uses extended operations #}
-{{ macros.client_method(method, method.name|snake_case + "_unary", snippet_index, api, service) }}
+{{ macros.client_method(method, method.safe_name|snake_case + "_unary", snippet_index, api, service) }}
 
-{{ macros.client_method(method, method.name|snake_case, snippet_index, api, service, full_extended_lro=True) }}
+{{ macros.client_method(method, method.safe_name|snake_case, snippet_index, api, service, full_extended_lro=True) }}
 {% else %}
-{{ macros.client_method(method, method.name|snake_case, snippet_index, api, service) }}
+{{ macros.client_method(method, method.safe_name|snake_case, snippet_index, api, service) }}
 {% endif %}
     {% endfor %}
 

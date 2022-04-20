@@ -949,12 +949,12 @@ def test_differently_named_extended_operation_fields(
 def test_transport_safe_name():
     unsafe_methods = {
         name: make_method(name=name)
-        for name in ["CreateChannel", "GrpcChannel", "OperationsClient"]
+        for name in ["CreateChannel", "GrpcChannel", "OperationsClient", "import", "Import", "Raise"]
     }
 
     safe_methods = {
         name: make_method(name=name)
-        for name in ["Call", "Put", "Hold", "Raise"]
+        for name in ["Call", "Put", "Hold"]
     }
 
     for name, method in safe_methods.items():
@@ -962,3 +962,21 @@ def test_transport_safe_name():
 
     for name, method in unsafe_methods.items():
         assert method.transport_safe_name == f"{name}_"
+
+
+def test_safe_name():
+    unsafe_methods = {
+        name: make_method(name=name)
+        for name in ["import", "Import", "Raise"]
+    }
+
+    safe_methods = {
+        name: make_method(name=name)
+        for name in ["Call", "Put", "Hold"]
+    }
+
+    for name, method in safe_methods.items():
+        assert method.safe_name == name
+
+    for name, method in unsafe_methods.items():
+        assert method.safe_name == f"{name}_"
