@@ -582,7 +582,7 @@ def test_generate_access_token_field_headers():
     # a field header. Set these to a non-empty value.
     request = common.GenerateAccessTokenRequest()
 
-    request.name = 'name/value'
+    request.name = 'name_value'
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -600,7 +600,7 @@ def test_generate_access_token_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         'x-goog-request-params',
-        'name=name/value',
+        'name=name_value',
     ) in kw['metadata']
 
 
@@ -614,7 +614,7 @@ async def test_generate_access_token_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = common.GenerateAccessTokenRequest()
 
-    request.name = 'name/value'
+    request.name = 'name_value'
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -632,7 +632,7 @@ async def test_generate_access_token_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         'x-goog-request-params',
-        'name=name/value',
+        'name=name_value',
     ) in kw['metadata']
 
 
@@ -840,7 +840,7 @@ def test_generate_id_token_field_headers():
     # a field header. Set these to a non-empty value.
     request = common.GenerateIdTokenRequest()
 
-    request.name = 'name/value'
+    request.name = 'name_value'
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -858,7 +858,7 @@ def test_generate_id_token_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         'x-goog-request-params',
-        'name=name/value',
+        'name=name_value',
     ) in kw['metadata']
 
 
@@ -872,7 +872,7 @@ async def test_generate_id_token_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = common.GenerateIdTokenRequest()
 
-    request.name = 'name/value'
+    request.name = 'name_value'
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -890,7 +890,7 @@ async def test_generate_id_token_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         'x-goog-request-params',
-        'name=name/value',
+        'name=name_value',
     ) in kw['metadata']
 
 
@@ -1106,7 +1106,7 @@ def test_sign_blob_field_headers():
     # a field header. Set these to a non-empty value.
     request = common.SignBlobRequest()
 
-    request.name = 'name/value'
+    request.name = 'name_value'
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1124,7 +1124,7 @@ def test_sign_blob_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         'x-goog-request-params',
-        'name=name/value',
+        'name=name_value',
     ) in kw['metadata']
 
 
@@ -1138,7 +1138,7 @@ async def test_sign_blob_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = common.SignBlobRequest()
 
-    request.name = 'name/value'
+    request.name = 'name_value'
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1156,7 +1156,7 @@ async def test_sign_blob_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         'x-goog-request-params',
-        'name=name/value',
+        'name=name_value',
     ) in kw['metadata']
 
 
@@ -1362,7 +1362,7 @@ def test_sign_jwt_field_headers():
     # a field header. Set these to a non-empty value.
     request = common.SignJwtRequest()
 
-    request.name = 'name/value'
+    request.name = 'name_value'
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1380,7 +1380,7 @@ def test_sign_jwt_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         'x-goog-request-params',
-        'name=name/value',
+        'name=name_value',
     ) in kw['metadata']
 
 
@@ -1394,7 +1394,7 @@ async def test_sign_jwt_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = common.SignJwtRequest()
 
-    request.name = 'name/value'
+    request.name = 'name_value'
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1412,7 +1412,7 @@ async def test_sign_jwt_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         'x-goog-request-params',
-        'name=name/value',
+        'name=name_value',
     ) in kw['metadata']
 
 

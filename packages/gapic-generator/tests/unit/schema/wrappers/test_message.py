@@ -154,6 +154,7 @@ def test_get_field_recursive():
     # Assert that a recusive retrieval works.
     assert outer.get_field('inner', 'zero') == inner_fields[0]
     assert outer.get_field('inner', 'one') == inner_fields[1]
+    assert outer.get_field('inner.one') == inner_fields[1]
 
 
 def test_get_field_nested_not_found_error():

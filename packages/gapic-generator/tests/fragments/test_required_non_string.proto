@@ -33,7 +33,7 @@ service RestService {
 
 message MethodRequest {
   int32 mass_kg = 1 [(google.api.field_behavior) = REQUIRED];
-  float length_cm = 2 [(google.api.field_behavior) = REQUIRED];
+  int32 length_cm = 2 [(google.api.field_behavior) = REQUIRED];
 }
 
 message MethodResponse {

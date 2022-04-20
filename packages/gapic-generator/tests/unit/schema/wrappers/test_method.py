@@ -299,6 +299,13 @@ def test_method_field_headers_present():
         assert method.field_headers[0].raw == 'object'
         assert method.field_headers[0].disambiguated == 'object_'
 
+        # test w/o equal sign
+        rule = http_pb2.HttpRule(**{v: '/v1/{parent}/topics'})
+        method = make_method('DoSomething', http_rule=rule)
+        assert method.field_headers == (wrappers.FieldHeader('parent'),)
+        assert method.field_headers[0].raw == 'parent'
+        assert method.field_headers[0].disambiguated == 'parent'
+
 
 def test_method_routing_rule():
     routing_rule = routing_pb2.RoutingRule()

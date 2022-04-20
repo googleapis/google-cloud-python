@@ -252,7 +252,7 @@ def test_{{ method_name }}_field_headers():
     request = {{ method.input.ident }}()
 
     {% for field_header in method.field_headers %}
-    request.{{ field_header.disambiguated }} = '{{ field_header.raw }}/value'
+    request.{{ field_header.disambiguated }} = {{ method.input.get_field(field_header.disambiguated).mock_value }}
     {% endfor %}
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -280,7 +280,7 @@ def test_{{ method_name }}_field_headers():
     assert (
         'x-goog-request-params',
         '{% for field_header in method.field_headers -%}
-        {{ field_header.raw }}={{ field_header.raw }}/value
+        {{ field_header.raw }}={{ method.input.get_field(field_header.disambiguated).mock_value|trim("'") }}
         {%- if not loop.last %}&{% endif %}
         {%- endfor -%}',
     ) in kw['metadata']
@@ -298,7 +298,7 @@ async def test_{{ method_name }}_field_headers_async():
     request = {{ method.input.ident }}()
 
     {% for field_header in method.field_headers %}
-    request.{{ field_header.disambiguated }} = '{{ field_header.raw }}/value'
+    request.{{ field_header.disambiguated }} = {{ method.input.get_field(field_header.disambiguated).mock_value }}
     {% endfor %}
 
     # Mock the actual call within the gRPC stub, and fake the request.
@@ -327,7 +327,7 @@ async def test_{{ method_name }}_field_headers_async():
     assert (
         'x-goog-request-params',
         '{% for field_header in method.field_headers -%}
-        {{ field_header.raw }}={{ field_header.raw }}/value
+        {{ field_header.raw }}={{ method.input.get_field(field_header.disambiguated).mock_value|trim("'") }}
         {%- if not loop.last %}&{% endif %}
         {%- endfor -%}',
     ) in kw['metadata']

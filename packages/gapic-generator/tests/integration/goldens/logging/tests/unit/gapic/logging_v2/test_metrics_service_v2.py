@@ -591,7 +591,7 @@ def test_list_log_metrics_field_headers():
     # a field header. Set these to a non-empty value.
     request = logging_metrics.ListLogMetricsRequest()
 
-    request.parent = 'parent/value'
+    request.parent = 'parent_value'
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -609,7 +609,7 @@ def test_list_log_metrics_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         'x-goog-request-params',
-        'parent=parent/value',
+        'parent=parent_value',
     ) in kw['metadata']
 
 
@@ -623,7 +623,7 @@ async def test_list_log_metrics_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = logging_metrics.ListLogMetricsRequest()
 
-    request.parent = 'parent/value'
+    request.parent = 'parent_value'
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -641,7 +641,7 @@ async def test_list_log_metrics_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         'x-goog-request-params',
-        'parent=parent/value',
+        'parent=parent_value',
     ) in kw['metadata']
 
 
@@ -1027,7 +1027,7 @@ def test_get_log_metric_field_headers():
     # a field header. Set these to a non-empty value.
     request = logging_metrics.GetLogMetricRequest()
 
-    request.metric_name = 'metric_name/value'
+    request.metric_name = 'metric_name_value'
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1045,7 +1045,7 @@ def test_get_log_metric_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         'x-goog-request-params',
-        'metric_name=metric_name/value',
+        'metric_name=metric_name_value',
     ) in kw['metadata']
 
 
@@ -1059,7 +1059,7 @@ async def test_get_log_metric_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = logging_metrics.GetLogMetricRequest()
 
-    request.metric_name = 'metric_name/value'
+    request.metric_name = 'metric_name_value'
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1077,7 +1077,7 @@ async def test_get_log_metric_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         'x-goog-request-params',
-        'metric_name=metric_name/value',
+        'metric_name=metric_name_value',
     ) in kw['metadata']
 
 
@@ -1275,7 +1275,7 @@ def test_create_log_metric_field_headers():
     # a field header. Set these to a non-empty value.
     request = logging_metrics.CreateLogMetricRequest()
 
-    request.parent = 'parent/value'
+    request.parent = 'parent_value'
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1293,7 +1293,7 @@ def test_create_log_metric_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         'x-goog-request-params',
-        'parent=parent/value',
+        'parent=parent_value',
     ) in kw['metadata']
 
 
@@ -1307,7 +1307,7 @@ async def test_create_log_metric_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = logging_metrics.CreateLogMetricRequest()
 
-    request.parent = 'parent/value'
+    request.parent = 'parent_value'
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1325,7 +1325,7 @@ async def test_create_log_metric_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         'x-goog-request-params',
-        'parent=parent/value',
+        'parent=parent_value',
     ) in kw['metadata']
 
 
@@ -1533,7 +1533,7 @@ def test_update_log_metric_field_headers():
     # a field header. Set these to a non-empty value.
     request = logging_metrics.UpdateLogMetricRequest()
 
-    request.metric_name = 'metric_name/value'
+    request.metric_name = 'metric_name_value'
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1551,7 +1551,7 @@ def test_update_log_metric_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         'x-goog-request-params',
-        'metric_name=metric_name/value',
+        'metric_name=metric_name_value',
     ) in kw['metadata']
 
 
@@ -1565,7 +1565,7 @@ async def test_update_log_metric_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = logging_metrics.UpdateLogMetricRequest()
 
-    request.metric_name = 'metric_name/value'
+    request.metric_name = 'metric_name_value'
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1583,7 +1583,7 @@ async def test_update_log_metric_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         'x-goog-request-params',
-        'metric_name=metric_name/value',
+        'metric_name=metric_name_value',
     ) in kw['metadata']
 
 
@@ -1769,7 +1769,7 @@ def test_delete_log_metric_field_headers():
     # a field header. Set these to a non-empty value.
     request = logging_metrics.DeleteLogMetricRequest()
 
-    request.metric_name = 'metric_name/value'
+    request.metric_name = 'metric_name_value'
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1787,7 +1787,7 @@ def test_delete_log_metric_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         'x-goog-request-params',
-        'metric_name=metric_name/value',
+        'metric_name=metric_name_value',
     ) in kw['metadata']
 
 
@@ -1801,7 +1801,7 @@ async def test_delete_log_metric_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = logging_metrics.DeleteLogMetricRequest()
 
-    request.metric_name = 'metric_name/value'
+    request.metric_name = 'metric_name_value'
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1819,7 +1819,7 @@ async def test_delete_log_metric_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         'x-goog-request-params',
-        'metric_name=metric_name/value',
+        'metric_name=metric_name_value',
     ) in kw['metadata']
 
 

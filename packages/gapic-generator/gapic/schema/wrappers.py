@@ -618,6 +618,10 @@ class MessageType:
             KeyError: If a repeated field is used in the non-terminal position
                 in the path.
         """
+        # This covers the case when field_path is a string path.
+        if len(field_path) == 1 and '.' in field_path[0]:
+            field_path = tuple(field_path[0].split('.'))
+
         # If collisions are not explicitly specified, retrieve them
         # from this message's address.
         # This ensures that calls to `get_field` will return a field with
@@ -1211,7 +1215,9 @@ class Method:
 
         http = self.options.Extensions[annotations_pb2.http]
 
-        pattern = re.compile(r'\{([a-z][\w\d_.]+)=')
+        # Copied from Node generator.
+        # https://github.com/googleapis/gapic-generator-typescript/blob/3ab47f04678d72171ddf25b439d50f6dfb44584c/typescript/src/schema/proto.ts#L587
+        pattern = re.compile(r'{(.*?)[=}]')
 
         potential_verbs = [
             http.get,
