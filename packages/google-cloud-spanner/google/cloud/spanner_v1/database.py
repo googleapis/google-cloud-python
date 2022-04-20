@@ -868,6 +868,12 @@ class SnapshotCheckout(object):
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         """End ``with`` block."""
+        if isinstance(exc_val, NotFound):
+            # If NotFound exception occurs inside the with block
+            # then we validate if the session still exists.
+            if not self._session.exists():
+                self._session = self._database._pool._new_session()
+                self._session.create()
         self._database._pool.put(self._session)
 
 

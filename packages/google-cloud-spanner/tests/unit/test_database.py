@@ -17,7 +17,6 @@ import unittest
 
 import mock
 from google.api_core import gapic_v1
-
 from google.cloud.spanner_v1.param_types import INT64
 from google.api_core.retry import Retry
 
@@ -1791,6 +1790,66 @@ class TestSnapshotCheckout(_BaseTest):
                 raise Testing()
 
         self.assertIs(pool._session, session)
+
+    def test_context_mgr_session_not_found_error(self):
+        from google.cloud.exceptions import NotFound
+
+        database = _Database(self.DATABASE_NAME)
+        session = _Session(database, name="session-1")
+        session.exists = mock.MagicMock(return_value=False)
+        pool = database._pool = _Pool()
+        new_session = _Session(database, name="session-2")
+        new_session.create = mock.MagicMock(return_value=[])
+        pool._new_session = mock.MagicMock(return_value=new_session)
+
+        pool.put(session)
+        checkout = self._make_one(database)
+
+        self.assertEqual(pool._session, session)
+        with self.assertRaises(NotFound):
+            with checkout as _:
+                raise NotFound("Session not found")
+        # Assert that session-1 was removed from pool and new session was added.
+        self.assertEqual(pool._session, new_session)
+
+    def test_context_mgr_table_not_found_error(self):
+        from google.cloud.exceptions import NotFound
+
+        database = _Database(self.DATABASE_NAME)
+        session = _Session(database, name="session-1")
+        session.exists = mock.MagicMock(return_value=True)
+        pool = database._pool = _Pool()
+        pool._new_session = mock.MagicMock(return_value=[])
+
+        pool.put(session)
+        checkout = self._make_one(database)
+
+        self.assertEqual(pool._session, session)
+        with self.assertRaises(NotFound):
+            with checkout as _:
+                raise NotFound("Table not found")
+        # Assert that session-1 was not removed from pool.
+        self.assertEqual(pool._session, session)
+        pool._new_session.assert_not_called()
+
+    def test_context_mgr_unknown_error(self):
+        database = _Database(self.DATABASE_NAME)
+        session = _Session(database)
+        pool = database._pool = _Pool()
+        pool._new_session = mock.MagicMock(return_value=[])
+        pool.put(session)
+        checkout = self._make_one(database)
+
+        class Testing(Exception):
+            pass
+
+        self.assertEqual(pool._session, session)
+        with self.assertRaises(Testing):
+            with checkout as _:
+                raise Testing("Unknown error.")
+        # Assert that session-1 was not removed from pool.
+        self.assertEqual(pool._session, session)
+        pool._new_session.assert_not_called()
 
 
 class TestBatchSnapshot(_BaseTest):
