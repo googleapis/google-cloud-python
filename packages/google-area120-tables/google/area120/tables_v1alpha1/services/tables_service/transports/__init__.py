@@ -20,7 +20,6 @@ from .base import TablesServiceTransport
 from .grpc import TablesServiceGrpcTransport
 from .grpc_asyncio import TablesServiceGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[TablesServiceTransport]]
 _transport_registry["grpc"] = TablesServiceGrpcTransport

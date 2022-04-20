@@ -13,20 +13,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import warnings
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
+import warnings
 
-from google.api_core import grpc_helpers
-from google.api_core import gapic_v1
+from google.api_core import gapic_v1, grpc_helpers
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-
+from google.protobuf import empty_pb2  # type: ignore
 import grpc  # type: ignore
 
 from google.area120.tables_v1alpha1.types import tables
-from google.protobuf import empty_pb2  # type: ignore
-from .base import TablesServiceTransport, DEFAULT_CLIENT_INFO
+
+from .base import DEFAULT_CLIENT_INFO, TablesServiceTransport
 
 
 class TablesServiceGrpcTransport(TablesServiceTransport):

@@ -37,8 +37,8 @@ from .tables import (
     Row,
     Table,
     UpdateRowRequest,
-    Workspace,
     View,
+    Workspace,
 )
 
 __all__ = (

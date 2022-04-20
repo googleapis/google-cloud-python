@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import TablesServiceClient
 from .async_client import TablesServiceAsyncClient
+from .client import TablesServiceClient
 
 __all__ = (
     "TablesServiceClient",
