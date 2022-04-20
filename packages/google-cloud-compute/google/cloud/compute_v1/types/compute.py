@@ -50310,8 +50310,6 @@ class MoveFirewallPolicyRequest(proto.Message):
             Name of the firewall policy to update.
         parent_id (str):
             The new parent of the firewall policy.
-
-            This field is a member of `oneof`_ ``_parent_id``.
         request_id (str):
             An optional request ID to identify requests.
             Specify a unique request ID so that if you must
@@ -50339,7 +50337,6 @@ class MoveFirewallPolicyRequest(proto.Message):
     parent_id = proto.Field(
         proto.STRING,
         number=459714768,
-        optional=True,
     )
     request_id = proto.Field(
         proto.STRING,

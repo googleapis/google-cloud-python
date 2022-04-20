@@ -5461,6 +5461,7 @@ def test_move_rest_required_fields(request_type=compute.MoveFirewallPolicyReques
 
     request_init = {}
     request_init["firewall_policy"] = ""
+    request_init["parent_id"] = ""
     request = request_type(request_init)
     jsonified_request = json.loads(
         request_type.to_json(
@@ -5469,6 +5470,7 @@ def test_move_rest_required_fields(request_type=compute.MoveFirewallPolicyReques
     )
 
     # verify fields with default values are dropped
+    assert "parentId" not in jsonified_request
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
@@ -5476,8 +5478,11 @@ def test_move_rest_required_fields(request_type=compute.MoveFirewallPolicyReques
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
+    assert "parentId" in jsonified_request
+    assert jsonified_request["parentId"] == request_init["parent_id"]
 
     jsonified_request["firewallPolicy"] = "firewall_policy_value"
+    jsonified_request["parentId"] = "parent_id_value"
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
@@ -5494,6 +5499,8 @@ def test_move_rest_required_fields(request_type=compute.MoveFirewallPolicyReques
     # verify required fields with non-default values are left alone
     assert "firewallPolicy" in jsonified_request
     assert jsonified_request["firewallPolicy"] == "firewall_policy_value"
+    assert "parentId" in jsonified_request
+    assert jsonified_request["parentId"] == "parent_id_value"
 
     client = FirewallPoliciesClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -5526,7 +5533,12 @@ def test_move_rest_required_fields(request_type=compute.MoveFirewallPolicyReques
 
             response = client.move(request)
 
-            expected_params = []
+            expected_params = [
+                (
+                    "parentId",
+                    "",
+                ),
+            ]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -5544,7 +5556,12 @@ def test_move_rest_unset_required_fields():
                 "requestId",
             )
         )
-        & set(("firewallPolicy",))
+        & set(
+            (
+                "firewallPolicy",
+                "parentId",
+            )
+        )
     )
 
 
@@ -5753,6 +5770,7 @@ def test_move_unary_rest_required_fields(
 
     request_init = {}
     request_init["firewall_policy"] = ""
+    request_init["parent_id"] = ""
     request = request_type(request_init)
     jsonified_request = json.loads(
         request_type.to_json(
@@ -5761,6 +5779,7 @@ def test_move_unary_rest_required_fields(
     )
 
     # verify fields with default values are dropped
+    assert "parentId" not in jsonified_request
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
@@ -5768,8 +5787,11 @@ def test_move_unary_rest_required_fields(
     jsonified_request.update(unset_fields)
 
     # verify required fields with default values are now present
+    assert "parentId" in jsonified_request
+    assert jsonified_request["parentId"] == request_init["parent_id"]
 
     jsonified_request["firewallPolicy"] = "firewall_policy_value"
+    jsonified_request["parentId"] = "parent_id_value"
 
     unset_fields = transport_class(
         credentials=ga_credentials.AnonymousCredentials()
@@ -5786,6 +5808,8 @@ def test_move_unary_rest_required_fields(
     # verify required fields with non-default values are left alone
     assert "firewallPolicy" in jsonified_request
     assert jsonified_request["firewallPolicy"] == "firewall_policy_value"
+    assert "parentId" in jsonified_request
+    assert jsonified_request["parentId"] == "parent_id_value"
 
     client = FirewallPoliciesClient(
         credentials=ga_credentials.AnonymousCredentials(),
@@ -5818,7 +5842,12 @@ def test_move_unary_rest_required_fields(
 
             response = client.move_unary(request)
 
-            expected_params = []
+            expected_params = [
+                (
+                    "parentId",
+                    "",
+                ),
+            ]
             actual_params = req.call_args.kwargs["params"]
             assert expected_params == actual_params
 
@@ -5836,7 +5865,12 @@ def test_move_unary_rest_unset_required_fields():
                 "requestId",
             )
         )
-        & set(("firewallPolicy",))
+        & set(
+            (
+                "firewallPolicy",
+                "parentId",
+            )
+        )
     )
 
 

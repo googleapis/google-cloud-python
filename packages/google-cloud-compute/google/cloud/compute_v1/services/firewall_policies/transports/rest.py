@@ -1805,7 +1805,9 @@ class FirewallPoliciesRestTransport(FirewallPoliciesTransport):
         def __hash__(self):
             return hash("Move")
 
-        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {}
+        __REQUIRED_FIELDS_DEFAULT_VALUES: Dict[str, str] = {
+            "parentId": "",
+        }
 
         @classmethod
         def _get_unset_required_fields(cls, message_dict):
