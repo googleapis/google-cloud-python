@@ -14,31 +14,34 @@
 # limitations under the License.
 #
 
-from .services.api_gateway_service import ApiGatewayServiceClient
-from .services.api_gateway_service import ApiGatewayServiceAsyncClient
-
-from .types.apigateway import Api
-from .types.apigateway import ApiConfig
-from .types.apigateway import CreateApiConfigRequest
-from .types.apigateway import CreateApiRequest
-from .types.apigateway import CreateGatewayRequest
-from .types.apigateway import DeleteApiConfigRequest
-from .types.apigateway import DeleteApiRequest
-from .types.apigateway import DeleteGatewayRequest
-from .types.apigateway import Gateway
-from .types.apigateway import GetApiConfigRequest
-from .types.apigateway import GetApiRequest
-from .types.apigateway import GetGatewayRequest
-from .types.apigateway import ListApiConfigsRequest
-from .types.apigateway import ListApiConfigsResponse
-from .types.apigateway import ListApisRequest
-from .types.apigateway import ListApisResponse
-from .types.apigateway import ListGatewaysRequest
-from .types.apigateway import ListGatewaysResponse
-from .types.apigateway import OperationMetadata
-from .types.apigateway import UpdateApiConfigRequest
-from .types.apigateway import UpdateApiRequest
-from .types.apigateway import UpdateGatewayRequest
+from .services.api_gateway_service import (
+    ApiGatewayServiceAsyncClient,
+    ApiGatewayServiceClient,
+)
+from .types.apigateway import (
+    Api,
+    ApiConfig,
+    CreateApiConfigRequest,
+    CreateApiRequest,
+    CreateGatewayRequest,
+    DeleteApiConfigRequest,
+    DeleteApiRequest,
+    DeleteGatewayRequest,
+    Gateway,
+    GetApiConfigRequest,
+    GetApiRequest,
+    GetGatewayRequest,
+    ListApiConfigsRequest,
+    ListApiConfigsResponse,
+    ListApisRequest,
+    ListApisResponse,
+    ListGatewaysRequest,
+    ListGatewaysResponse,
+    OperationMetadata,
+    UpdateApiConfigRequest,
+    UpdateApiRequest,
+    UpdateGatewayRequest,
+)
 
 __all__ = (
     "ApiGatewayServiceAsyncClient",

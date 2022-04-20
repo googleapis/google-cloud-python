@@ -20,7 +20,6 @@ from .base import ApiGatewayServiceTransport
 from .grpc import ApiGatewayServiceGrpcTransport
 from .grpc_asyncio import ApiGatewayServiceGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[ApiGatewayServiceTransport]]
 _transport_registry["grpc"] = ApiGatewayServiceGrpcTransport

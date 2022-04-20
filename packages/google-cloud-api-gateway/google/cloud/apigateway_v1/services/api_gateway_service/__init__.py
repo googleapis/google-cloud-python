@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import ApiGatewayServiceClient
 from .async_client import ApiGatewayServiceAsyncClient
+from .client import ApiGatewayServiceClient
 
 __all__ = (
     "ApiGatewayServiceClient",
