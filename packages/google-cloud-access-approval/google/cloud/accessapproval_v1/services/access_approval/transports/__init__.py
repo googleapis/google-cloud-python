@@ -20,7 +20,6 @@ from .base import AccessApprovalTransport
 from .grpc import AccessApprovalGrpcTransport
 from .grpc_asyncio import AccessApprovalGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[AccessApprovalTransport]]
 _transport_registry["grpc"] = AccessApprovalGrpcTransport

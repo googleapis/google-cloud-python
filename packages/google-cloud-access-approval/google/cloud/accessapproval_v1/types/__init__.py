@@ -24,13 +24,13 @@ from .accessapproval import (
     DismissApprovalRequestMessage,
     DismissDecision,
     EnrolledService,
+    EnrollmentLevel,
     GetAccessApprovalSettingsMessage,
     GetApprovalRequestMessage,
     ListApprovalRequestsMessage,
     ListApprovalRequestsResponse,
     ResourceProperties,
     UpdateAccessApprovalSettingsMessage,
-    EnrollmentLevel,
 )
 
 __all__ = (

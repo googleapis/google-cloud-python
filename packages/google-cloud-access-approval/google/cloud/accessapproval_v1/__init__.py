@@ -14,26 +14,26 @@
 # limitations under the License.
 #
 
-from .services.access_approval import AccessApprovalClient
-from .services.access_approval import AccessApprovalAsyncClient
-
-from .types.accessapproval import AccessApprovalSettings
-from .types.accessapproval import AccessLocations
-from .types.accessapproval import AccessReason
-from .types.accessapproval import ApprovalRequest
-from .types.accessapproval import ApproveApprovalRequestMessage
-from .types.accessapproval import ApproveDecision
-from .types.accessapproval import DeleteAccessApprovalSettingsMessage
-from .types.accessapproval import DismissApprovalRequestMessage
-from .types.accessapproval import DismissDecision
-from .types.accessapproval import EnrolledService
-from .types.accessapproval import GetAccessApprovalSettingsMessage
-from .types.accessapproval import GetApprovalRequestMessage
-from .types.accessapproval import ListApprovalRequestsMessage
-from .types.accessapproval import ListApprovalRequestsResponse
-from .types.accessapproval import ResourceProperties
-from .types.accessapproval import UpdateAccessApprovalSettingsMessage
-from .types.accessapproval import EnrollmentLevel
+from .services.access_approval import AccessApprovalAsyncClient, AccessApprovalClient
+from .types.accessapproval import (
+    AccessApprovalSettings,
+    AccessLocations,
+    AccessReason,
+    ApprovalRequest,
+    ApproveApprovalRequestMessage,
+    ApproveDecision,
+    DeleteAccessApprovalSettingsMessage,
+    DismissApprovalRequestMessage,
+    DismissDecision,
+    EnrolledService,
+    EnrollmentLevel,
+    GetAccessApprovalSettingsMessage,
+    GetApprovalRequestMessage,
+    ListApprovalRequestsMessage,
+    ListApprovalRequestsResponse,
+    ResourceProperties,
+    UpdateAccessApprovalSettingsMessage,
+)
 
 __all__ = (
     "AccessApprovalAsyncClient",

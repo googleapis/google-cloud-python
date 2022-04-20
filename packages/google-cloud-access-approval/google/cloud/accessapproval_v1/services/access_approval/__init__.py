@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import AccessApprovalClient
 from .async_client import AccessApprovalAsyncClient
+from .client import AccessApprovalClient
 
 __all__ = (
     "AccessApprovalClient",
