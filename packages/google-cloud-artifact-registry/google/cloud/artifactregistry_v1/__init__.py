@@ -14,59 +14,72 @@
 # limitations under the License.
 #
 
-from .services.artifact_registry import ArtifactRegistryClient
-from .services.artifact_registry import ArtifactRegistryAsyncClient
-
-from .types.apt_artifact import AptArtifact
-from .types.apt_artifact import ImportAptArtifactsErrorInfo
-from .types.apt_artifact import ImportAptArtifactsGcsSource
-from .types.apt_artifact import ImportAptArtifactsMetadata
-from .types.apt_artifact import ImportAptArtifactsRequest
-from .types.apt_artifact import ImportAptArtifactsResponse
-from .types.artifact import DockerImage
-from .types.artifact import GetDockerImageRequest
-from .types.artifact import ListDockerImagesRequest
-from .types.artifact import ListDockerImagesResponse
-from .types.file import File
-from .types.file import GetFileRequest
-from .types.file import Hash
-from .types.file import ListFilesRequest
-from .types.file import ListFilesResponse
-from .types.package import DeletePackageRequest
-from .types.package import GetPackageRequest
-from .types.package import ListPackagesRequest
-from .types.package import ListPackagesResponse
-from .types.package import Package
-from .types.repository import CreateRepositoryRequest
-from .types.repository import DeleteRepositoryRequest
-from .types.repository import GetRepositoryRequest
-from .types.repository import ListRepositoriesRequest
-from .types.repository import ListRepositoriesResponse
-from .types.repository import Repository
-from .types.repository import UpdateRepositoryRequest
+from .services.artifact_registry import (
+    ArtifactRegistryAsyncClient,
+    ArtifactRegistryClient,
+)
+from .types.apt_artifact import (
+    AptArtifact,
+    ImportAptArtifactsErrorInfo,
+    ImportAptArtifactsGcsSource,
+    ImportAptArtifactsMetadata,
+    ImportAptArtifactsRequest,
+    ImportAptArtifactsResponse,
+)
+from .types.artifact import (
+    DockerImage,
+    GetDockerImageRequest,
+    ListDockerImagesRequest,
+    ListDockerImagesResponse,
+)
+from .types.file import File, GetFileRequest, Hash, ListFilesRequest, ListFilesResponse
+from .types.package import (
+    DeletePackageRequest,
+    GetPackageRequest,
+    ListPackagesRequest,
+    ListPackagesResponse,
+    Package,
+)
+from .types.repository import (
+    CreateRepositoryRequest,
+    DeleteRepositoryRequest,
+    GetRepositoryRequest,
+    ListRepositoriesRequest,
+    ListRepositoriesResponse,
+    Repository,
+    UpdateRepositoryRequest,
+)
 from .types.service import OperationMetadata
-from .types.settings import GetProjectSettingsRequest
-from .types.settings import ProjectSettings
-from .types.settings import UpdateProjectSettingsRequest
-from .types.tag import CreateTagRequest
-from .types.tag import DeleteTagRequest
-from .types.tag import GetTagRequest
-from .types.tag import ListTagsRequest
-from .types.tag import ListTagsResponse
-from .types.tag import Tag
-from .types.tag import UpdateTagRequest
-from .types.version import DeleteVersionRequest
-from .types.version import GetVersionRequest
-from .types.version import ListVersionsRequest
-from .types.version import ListVersionsResponse
-from .types.version import Version
-from .types.version import VersionView
-from .types.yum_artifact import ImportYumArtifactsErrorInfo
-from .types.yum_artifact import ImportYumArtifactsGcsSource
-from .types.yum_artifact import ImportYumArtifactsMetadata
-from .types.yum_artifact import ImportYumArtifactsRequest
-from .types.yum_artifact import ImportYumArtifactsResponse
-from .types.yum_artifact import YumArtifact
+from .types.settings import (
+    GetProjectSettingsRequest,
+    ProjectSettings,
+    UpdateProjectSettingsRequest,
+)
+from .types.tag import (
+    CreateTagRequest,
+    DeleteTagRequest,
+    GetTagRequest,
+    ListTagsRequest,
+    ListTagsResponse,
+    Tag,
+    UpdateTagRequest,
+)
+from .types.version import (
+    DeleteVersionRequest,
+    GetVersionRequest,
+    ListVersionsRequest,
+    ListVersionsResponse,
+    Version,
+    VersionView,
+)
+from .types.yum_artifact import (
+    ImportYumArtifactsErrorInfo,
+    ImportYumArtifactsGcsSource,
+    ImportYumArtifactsMetadata,
+    ImportYumArtifactsRequest,
+    ImportYumArtifactsResponse,
+    YumArtifact,
+)
 
 __all__ = (
     "ArtifactRegistryAsyncClient",

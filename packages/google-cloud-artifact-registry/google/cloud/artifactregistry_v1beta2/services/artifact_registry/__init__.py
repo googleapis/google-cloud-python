@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import ArtifactRegistryClient
 from .async_client import ArtifactRegistryAsyncClient
+from .client import ArtifactRegistryClient
 
 __all__ = (
     "ArtifactRegistryClient",

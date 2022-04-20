@@ -20,7 +20,6 @@ from .base import ArtifactRegistryTransport
 from .grpc import ArtifactRegistryGrpcTransport
 from .grpc_asyncio import ArtifactRegistryGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[ArtifactRegistryTransport]]
 _transport_registry["grpc"] = ArtifactRegistryGrpcTransport

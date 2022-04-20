@@ -15,7 +15,6 @@
 #
 import proto  # type: ignore
 
-
 __protobuf__ = proto.module(
     package="google.devtools.artifactregistry.v1beta2",
     manifest={

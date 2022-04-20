@@ -27,13 +27,7 @@ from .artifact import (
     ListDockerImagesRequest,
     ListDockerImagesResponse,
 )
-from .file import (
-    File,
-    GetFileRequest,
-    Hash,
-    ListFilesRequest,
-    ListFilesResponse,
-)
+from .file import File, GetFileRequest, Hash, ListFilesRequest, ListFilesResponse
 from .package import (
     DeletePackageRequest,
     GetPackageRequest,
@@ -50,9 +44,7 @@ from .repository import (
     Repository,
     UpdateRepositoryRequest,
 )
-from .service import (
-    OperationMetadata,
-)
+from .service import OperationMetadata
 from .settings import (
     GetProjectSettingsRequest,
     ProjectSettings,

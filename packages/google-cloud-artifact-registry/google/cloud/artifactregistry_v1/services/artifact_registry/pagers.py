@@ -18,18 +18,20 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Callable,
+    Iterator,
+    Optional,
     Sequence,
     Tuple,
-    Optional,
-    Iterator,
 )
 
-from google.cloud.artifactregistry_v1.types import artifact
-from google.cloud.artifactregistry_v1.types import file
-from google.cloud.artifactregistry_v1.types import package
-from google.cloud.artifactregistry_v1.types import repository
-from google.cloud.artifactregistry_v1.types import tag
-from google.cloud.artifactregistry_v1.types import version
+from google.cloud.artifactregistry_v1.types import (
+    artifact,
+    file,
+    package,
+    repository,
+    tag,
+    version,
+)
 
 
 class ListDockerImagesPager:

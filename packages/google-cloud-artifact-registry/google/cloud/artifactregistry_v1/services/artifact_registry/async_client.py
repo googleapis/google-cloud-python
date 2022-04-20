@@ -17,14 +17,14 @@ from collections import OrderedDict
 import functools
 import re
 from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
 
-from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
+from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -33,28 +33,25 @@ except AttributeError:  # pragma: NO COVER
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
-from google.cloud.artifactregistry_v1.services.artifact_registry import pagers
-from google.cloud.artifactregistry_v1.types import apt_artifact
-from google.cloud.artifactregistry_v1.types import artifact
-from google.cloud.artifactregistry_v1.types import file
-from google.cloud.artifactregistry_v1.types import package
-from google.cloud.artifactregistry_v1.types import repository
-from google.cloud.artifactregistry_v1.types import repository as gda_repository
-from google.cloud.artifactregistry_v1.types import service
-from google.cloud.artifactregistry_v1.types import settings
-from google.cloud.artifactregistry_v1.types import tag
-from google.cloud.artifactregistry_v1.types import tag as gda_tag
-from google.cloud.artifactregistry_v1.types import version
-from google.cloud.artifactregistry_v1.types import yum_artifact
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-from .transports.base import ArtifactRegistryTransport, DEFAULT_CLIENT_INFO
-from .transports.grpc_asyncio import ArtifactRegistryGrpcAsyncIOTransport
+
+from google.cloud.artifactregistry_v1.services.artifact_registry import pagers
+from google.cloud.artifactregistry_v1.types import apt_artifact, artifact, file, package
+from google.cloud.artifactregistry_v1.types import repository
+from google.cloud.artifactregistry_v1.types import repository as gda_repository
+from google.cloud.artifactregistry_v1.types import service, settings
+from google.cloud.artifactregistry_v1.types import tag
+from google.cloud.artifactregistry_v1.types import tag as gda_tag
+from google.cloud.artifactregistry_v1.types import version, yum_artifact
+
 from .client import ArtifactRegistryClient
+from .transports.base import DEFAULT_CLIENT_INFO, ArtifactRegistryTransport
+from .transports.grpc_asyncio import ArtifactRegistryGrpcAsyncIOTransport
 
 
 class ArtifactRegistryAsyncClient:
