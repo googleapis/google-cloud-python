@@ -4,6 +4,28 @@
 
 [1]: https://pypi.org/project/google-cloud-spanner/#history
 
+## [3.14.0](https://github.com/googleapis/python-spanner/compare/v3.13.0...v3.14.0) (2022-04-20)
+
+
+### Features
+
+* add support for Cross region backup proto changes ([#691](https://github.com/googleapis/python-spanner/issues/691)) ([8ac62cb](https://github.com/googleapis/python-spanner/commit/8ac62cb83ee5525d6233dcc34919dcbf9471461b))
+* add support for spanner copy backup feature ([#600](https://github.com/googleapis/python-spanner/issues/600)) ([97faf6c](https://github.com/googleapis/python-spanner/commit/97faf6c11f985f128446bc7d9e99a22362bd1bc1))
+* AuditConfig for IAM v1 ([7642eba](https://github.com/googleapis/python-spanner/commit/7642eba1d9c66525ea1ca6f36dd91c759ed3cbde))
+
+
+### Bug Fixes
+
+* add NOT_FOUND  error check in __exit__ method of SessionCheckout. ([#718](https://github.com/googleapis/python-spanner/issues/718)) ([265e207](https://github.com/googleapis/python-spanner/commit/265e20711510aafc956552e9684ab7a39074bf70))
+* **deps:** require google-api-core>=1.31.5, >=2.3.2 ([#685](https://github.com/googleapis/python-spanner/issues/685)) ([7a46a27](https://github.com/googleapis/python-spanner/commit/7a46a27bacbdcb1e72888bd93dfce93c439ceae2))
+* **deps:** require grpc-google-iam-v1 >=0.12.4 ([7642eba](https://github.com/googleapis/python-spanner/commit/7642eba1d9c66525ea1ca6f36dd91c759ed3cbde))
+* **deps:** require proto-plus>=1.15.0 ([7a46a27](https://github.com/googleapis/python-spanner/commit/7a46a27bacbdcb1e72888bd93dfce93c439ceae2))
+
+
+### Documentation
+
+* add generated snippets ([#680](https://github.com/googleapis/python-spanner/issues/680)) ([f21dac4](https://github.com/googleapis/python-spanner/commit/f21dac4c47cb6a6a85fd282b8e5de966b467b1b6))
+
 ## [3.13.0](https://github.com/googleapis/python-spanner/compare/v3.12.1...v3.13.0) (2022-02-04)
 
 
