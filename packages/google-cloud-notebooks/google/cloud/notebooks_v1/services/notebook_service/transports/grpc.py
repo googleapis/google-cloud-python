@@ -493,6 +493,37 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
         return self._stubs["set_instance_labels"]
 
     @property
+    def update_instance_metadata_items(
+        self,
+    ) -> Callable[
+        [service.UpdateInstanceMetadataItemsRequest],
+        service.UpdateInstanceMetadataItemsResponse,
+    ]:
+        r"""Return a callable for the update instance metadata items method over gRPC.
+
+        Add/update metadata items for an instance.
+
+        Returns:
+            Callable[[~.UpdateInstanceMetadataItemsRequest],
+                    ~.UpdateInstanceMetadataItemsResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_instance_metadata_items" not in self._stubs:
+            self._stubs[
+                "update_instance_metadata_items"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.notebooks.v1.NotebookService/UpdateInstanceMetadataItems",
+                request_serializer=service.UpdateInstanceMetadataItemsRequest.serialize,
+                response_deserializer=service.UpdateInstanceMetadataItemsResponse.deserialize,
+            )
+        return self._stubs["update_instance_metadata_items"]
+
+    @property
     def delete_instance(
         self,
     ) -> Callable[[service.DeleteInstanceRequest], operations_pb2.Operation]:
@@ -1080,8 +1111,8 @@ class NotebookServiceGrpcTransport(NotebookServiceTransport):
     ) -> Callable[[service.CreateExecutionRequest], operations_pb2.Operation]:
         r"""Return a callable for the create execution method over gRPC.
 
-        Creates a new Scheduled Notebook in a given project
-        and location.
+        Creates a new Execution in a given project and
+        location.
 
         Returns:
             Callable[[~.CreateExecutionRequest],

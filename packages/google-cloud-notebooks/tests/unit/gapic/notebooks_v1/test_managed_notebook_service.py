@@ -2963,6 +2963,263 @@ async def test_report_runtime_event_flattened_error_async():
         )
 
 
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        managed_service.RefreshRuntimeTokenInternalRequest,
+        dict,
+    ],
+)
+def test_refresh_runtime_token_internal(request_type, transport: str = "grpc"):
+    client = ManagedNotebookServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.refresh_runtime_token_internal), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = managed_service.RefreshRuntimeTokenInternalResponse(
+            access_token="access_token_value",
+        )
+        response = client.refresh_runtime_token_internal(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == managed_service.RefreshRuntimeTokenInternalRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, managed_service.RefreshRuntimeTokenInternalResponse)
+    assert response.access_token == "access_token_value"
+
+
+def test_refresh_runtime_token_internal_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = ManagedNotebookServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.refresh_runtime_token_internal), "__call__"
+    ) as call:
+        client.refresh_runtime_token_internal()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == managed_service.RefreshRuntimeTokenInternalRequest()
+
+
+@pytest.mark.asyncio
+async def test_refresh_runtime_token_internal_async(
+    transport: str = "grpc_asyncio",
+    request_type=managed_service.RefreshRuntimeTokenInternalRequest,
+):
+    client = ManagedNotebookServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.refresh_runtime_token_internal), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            managed_service.RefreshRuntimeTokenInternalResponse(
+                access_token="access_token_value",
+            )
+        )
+        response = await client.refresh_runtime_token_internal(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == managed_service.RefreshRuntimeTokenInternalRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, managed_service.RefreshRuntimeTokenInternalResponse)
+    assert response.access_token == "access_token_value"
+
+
+@pytest.mark.asyncio
+async def test_refresh_runtime_token_internal_async_from_dict():
+    await test_refresh_runtime_token_internal_async(request_type=dict)
+
+
+def test_refresh_runtime_token_internal_field_headers():
+    client = ManagedNotebookServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = managed_service.RefreshRuntimeTokenInternalRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.refresh_runtime_token_internal), "__call__"
+    ) as call:
+        call.return_value = managed_service.RefreshRuntimeTokenInternalResponse()
+        client.refresh_runtime_token_internal(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_refresh_runtime_token_internal_field_headers_async():
+    client = ManagedNotebookServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = managed_service.RefreshRuntimeTokenInternalRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.refresh_runtime_token_internal), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            managed_service.RefreshRuntimeTokenInternalResponse()
+        )
+        await client.refresh_runtime_token_internal(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
+
+
+def test_refresh_runtime_token_internal_flattened():
+    client = ManagedNotebookServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.refresh_runtime_token_internal), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = managed_service.RefreshRuntimeTokenInternalResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.refresh_runtime_token_internal(
+            name="name_value",
+            vm_id="vm_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].vm_id
+        mock_val = "vm_id_value"
+        assert arg == mock_val
+
+
+def test_refresh_runtime_token_internal_flattened_error():
+    client = ManagedNotebookServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.refresh_runtime_token_internal(
+            managed_service.RefreshRuntimeTokenInternalRequest(),
+            name="name_value",
+            vm_id="vm_id_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_refresh_runtime_token_internal_flattened_async():
+    client = ManagedNotebookServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.refresh_runtime_token_internal), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = managed_service.RefreshRuntimeTokenInternalResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            managed_service.RefreshRuntimeTokenInternalResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.refresh_runtime_token_internal(
+            name="name_value",
+            vm_id="vm_id_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+        arg = args[0].vm_id
+        mock_val = "vm_id_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_refresh_runtime_token_internal_flattened_error_async():
+    client = ManagedNotebookServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.refresh_runtime_token_internal(
+            managed_service.RefreshRuntimeTokenInternalRequest(),
+            name="name_value",
+            vm_id="vm_id_value",
+        )
+
+
 def test_credentials_transport_error():
     # It is an error to provide credentials and a transport instance.
     transport = transports.ManagedNotebookServiceGrpcTransport(
@@ -3109,6 +3366,7 @@ def test_managed_notebook_service_base_transport():
         "switch_runtime",
         "reset_runtime",
         "report_runtime_event",
+        "refresh_runtime_token_internal",
     )
     for method in methods:
         with pytest.raises(NotImplementedError):

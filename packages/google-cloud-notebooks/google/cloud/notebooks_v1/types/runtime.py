@@ -86,6 +86,8 @@ class Runtime(proto.Message):
         HEALTH_STATE_UNSPECIFIED = 0
         HEALTHY = 1
         UNHEALTHY = 2
+        AGENT_NOT_INSTALLED = 3
+        AGENT_NOT_RUNNING = 4
 
     name = proto.Field(
         proto.STRING,
@@ -144,6 +146,7 @@ class RuntimeAcceleratorConfig(proto.Message):
     -  ``nvidia-tesla-k80``
     -  ``nvidia-tesla-p100``
     -  ``nvidia-tesla-v100``
+    -  ``nvidia-tesla-p4``
     -  ``nvidia-tesla-t4``
     -  ``nvidia-tesla-a100``
 
@@ -403,6 +406,7 @@ class LocalDiskInitializeParams(proto.Message):
         PD_STANDARD = 1
         PD_SSD = 2
         PD_BALANCED = 3
+        PD_EXTREME = 4
 
     description = proto.Field(
         proto.STRING,
@@ -448,6 +452,7 @@ class RuntimeAccessConfig(proto.Message):
         """
         RUNTIME_ACCESS_TYPE_UNSPECIFIED = 0
         SINGLE_USER = 1
+        SERVICE_ACCOUNT = 2
 
     access_type = proto.Field(
         proto.ENUM,
@@ -471,7 +476,7 @@ class RuntimeSoftwareConfig(proto.Message):
 
     -  ``idle_shutdown: true``
     -  ``idle_shutdown_timeout: 180``
-    -  ``report-system-health: true``
+    -  ``enable_health_monitoring: true``
 
     Attributes:
         notebook_upgrade_schedule (str):
@@ -493,6 +498,7 @@ class RuntimeSoftwareConfig(proto.Message):
             runtime. Default: 180 minutes
         install_gpu_driver (bool):
             Install Nvidia Driver automatically.
+            Default: True
         custom_gpu_driver_path (str):
             Specify a custom Cloud Storage path where the
             GPU driver is stored. If not specified, we'll
@@ -501,6 +507,14 @@ class RuntimeSoftwareConfig(proto.Message):
             Path to a Bash script that automatically runs after a
             notebook instance fully boots up. The path must be a URL or
             Cloud Storage path (``gs://path-to-file/file-name``).
+        kernels (Sequence[google.cloud.notebooks_v1.types.ContainerImage]):
+            Optional. Use a list of container images to
+            use as Kernels in the notebook instance.
+        upgradeable (bool):
+            Output only. Bool indicating whether an newer
+            image is available in an image family.
+
+            This field is a member of `oneof`_ ``_upgradeable``.
     """
 
     notebook_upgrade_schedule = proto.Field(
@@ -532,6 +546,16 @@ class RuntimeSoftwareConfig(proto.Message):
     post_startup_script = proto.Field(
         proto.STRING,
         number=7,
+    )
+    kernels = proto.RepeatedField(
+        proto.MESSAGE,
+        number=8,
+        message=environment.ContainerImage,
+    )
+    upgradeable = proto.Field(
+        proto.BOOL,
+        number=9,
+        optional=True,
     )
 
 
@@ -642,7 +666,7 @@ class VirtualMachineConfig(proto.Message):
             -  ``e2-standard-8``
         container_images (Sequence[google.cloud.notebooks_v1.types.ContainerImage]):
             Optional. Use a list of container images to
-            start the notebook instance.
+            use as Kernels in the notebook instance.
         data_disk (google.cloud.notebooks_v1.types.LocalDisk):
             Required. Data disk option configuration
             settings.
@@ -713,6 +737,25 @@ class VirtualMachineConfig(proto.Message):
         nic_type (google.cloud.notebooks_v1.types.VirtualMachineConfig.NicType):
             Optional. The type of vNIC to be used on this
             interface. This may be gVNIC or VirtioNet.
+        reserved_ip_range (str):
+            Optional. Reserved IP Range name is used for VPC Peering.
+            The subnetwork allocation will use the range *name* if it's
+            assigned.
+
+            | Example: managed-notebooks-range-c
+              PEERING_RANGE_NAME_3=managed-notebooks-range-c gcloud
+              compute addresses create $PEERING_RANGE_NAME_3
+            | --global
+            | --prefix-length=24
+            | --description="Google Cloud Managed Notebooks Range 24 c"
+            | --network=$NETWORK
+            | --addresses=192.168.0.0
+            | --purpose=VPC_PEERING
+
+            Field value will be: ``managed-notebooks-range-c``
+        boot_image (google.cloud.notebooks_v1.types.VirtualMachineConfig.BootImage):
+            Optional. Boot image metadata used for
+            runtime upgradeability.
     """
 
     class NicType(proto.Enum):
@@ -720,6 +763,12 @@ class VirtualMachineConfig(proto.Message):
         UNSPECIFIED_NIC_TYPE = 0
         VIRTIO_NET = 1
         GVNIC = 2
+
+    class BootImage(proto.Message):
+        r"""Definition of the boot image used by the Runtime.
+        Used to facilitate runtime upgradeability.
+
+        """
 
     zone = proto.Field(
         proto.STRING,
@@ -789,6 +838,15 @@ class VirtualMachineConfig(proto.Message):
         proto.ENUM,
         number=17,
         enum=NicType,
+    )
+    reserved_ip_range = proto.Field(
+        proto.STRING,
+        number=18,
+    )
+    boot_image = proto.Field(
+        proto.MESSAGE,
+        number=19,
+        message=BootImage,
     )
 
 

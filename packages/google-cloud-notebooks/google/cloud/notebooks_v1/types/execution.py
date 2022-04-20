@@ -30,6 +30,11 @@ __protobuf__ = proto.module(
 class ExecutionTemplate(proto.Message):
     r"""The description a notebook execution workload.
 
+    This message has `oneof`_ fields (mutually exclusive fields).
+    For each oneof, at most one member field can be set at the same time.
+    Setting any member of the oneof automatically clears all other
+    members.
+
     .. _oneof: https://proto-plus-python.readthedocs.io/en/stable/fields.html#oneofs-mutually-exclusive-fields
 
     Attributes:
@@ -83,8 +88,9 @@ class ExecutionTemplate(proto.Message):
             -  ``complex_model_l_v100``
 
             Finally, if you want to use a TPU for training, specify
-            ``cloud_tpu`` in this field. Learn more about the [special
-            configuration options for training with TPU.
+            ``cloud_tpu`` in this field. Learn more about the `special
+            configuration options for training with
+            TPU <https://cloud.google.com/ai-platform/training/docs/using-tpus#configuring_a_custom_tpu_machine>`__.
         accelerator_config (google.cloud.notebooks_v1.types.ExecutionTemplate.SchedulerAcceleratorConfig):
             Configuration (count and accelerator type)
             for hardware running notebook execution.
@@ -98,7 +104,7 @@ class ExecutionTemplate(proto.Message):
         input_notebook_file (str):
             Path to the notebook file to execute. Must be in a Google
             Cloud Storage bucket. Format:
-            ``gs://{project_id}/{folder}/{notebook_file_name}`` Ex:
+            ``gs://{bucket_name}/{folder}/{notebook_file_name}`` Ex:
             ``gs://notebook_user/scheduled_notebooks/sentiment_notebook.ipynb``
         container_image_uri (str):
             Container Image URI to a DLVM
@@ -109,7 +115,7 @@ class ExecutionTemplate(proto.Message):
         output_notebook_folder (str):
             Path to the notebook folder to write to. Must be in a Google
             Cloud Storage bucket path. Format:
-            ``gs://{project_id}/{folder}`` Ex:
+            ``gs://{bucket_name}/{folder}`` Ex:
             ``gs://notebook_user/scheduled_notebooks``
         params_yaml_file (str):
             Parameters to be overridden in the notebook during
@@ -132,6 +138,20 @@ class ExecutionTemplate(proto.Message):
             executions.
 
             This field is a member of `oneof`_ ``job_parameters``.
+        vertex_ai_parameters (google.cloud.notebooks_v1.types.ExecutionTemplate.VertexAIParameters):
+            Parameters used in Vertex AI JobType
+            executions.
+
+            This field is a member of `oneof`_ ``job_parameters``.
+        kernel_spec (str):
+            Name of the kernel spec to use. This must be
+            specified if the kernel spec name on the
+            execution target does not match the name in the
+            input notebook file.
+        tensorboard (str):
+            The name of a Vertex AI [Tensorboard] resource to which this
+            execution will upload Tensorboard logs. Format:
+            ``projects/{project}/locations/{location}/tensorboards/{tensorboard}``
     """
 
     class ScaleTier(proto.Enum):
@@ -154,6 +174,7 @@ class ExecutionTemplate(proto.Message):
         NVIDIA_TESLA_V100 = 3
         NVIDIA_TESLA_P4 = 4
         NVIDIA_TESLA_T4 = 5
+        NVIDIA_TESLA_A100 = 10
         TPU_V2 = 6
         TPU_V3 = 7
 
@@ -165,8 +186,9 @@ class ExecutionTemplate(proto.Message):
 
     class SchedulerAcceleratorConfig(proto.Message):
         r"""Definition of a hardware accelerator. Note that not all combinations
-        of ``type`` and ``core_count`` are valid. Check GPUs on Compute
-        Engine to find a valid combination. TPUs are not supported.
+        of ``type`` and ``core_count`` are valid. Check `GPUs on Compute
+        Engine <https://cloud.google.com/compute/docs/gpus>`__ to find a
+        valid combination. TPUs are not supported.
 
         Attributes:
             type_ (google.cloud.notebooks_v1.types.ExecutionTemplate.SchedulerAcceleratorType):
@@ -197,6 +219,40 @@ class ExecutionTemplate(proto.Message):
         cluster = proto.Field(
             proto.STRING,
             number=1,
+        )
+
+    class VertexAIParameters(proto.Message):
+        r"""Parameters used in Vertex AI JobType executions.
+
+        Attributes:
+            network (str):
+                The full name of the Compute Engine
+                `network </compute/docs/networks-and-firewalls#networks>`__
+                to which the Job should be peered. For example,
+                ``projects/12345/global/networks/myVPC``.
+                `Format <https://cloud.google.com/compute/docs/reference/rest/v1/networks/insert>`__
+                is of the form
+                ``projects/{project}/global/networks/{network}``. Where
+                {project} is a project number, as in ``12345``, and
+                {network} is a network name.
+
+                Private services access must already be configured for the
+                network. If left unspecified, the job is not peered with any
+                network.
+            env (Mapping[str, str]):
+                Environment variables. At most 100 environment variables can
+                be specified and unique. Example:
+                GCP_BUCKET=gs://my-bucket/samples/
+        """
+
+        network = proto.Field(
+            proto.STRING,
+            number=1,
+        )
+        env = proto.MapField(
+            proto.STRING,
+            proto.STRING,
+            number=2,
         )
 
     scale_tier = proto.Field(
@@ -253,6 +309,20 @@ class ExecutionTemplate(proto.Message):
         oneof="job_parameters",
         message=DataprocParameters,
     )
+    vertex_ai_parameters = proto.Field(
+        proto.MESSAGE,
+        number=13,
+        oneof="job_parameters",
+        message=VertexAIParameters,
+    )
+    kernel_spec = proto.Field(
+        proto.STRING,
+        number=14,
+    )
+    tensorboard = proto.Field(
+        proto.STRING,
+        number=15,
+    )
 
 
 class Execution(proto.Message):
@@ -264,7 +334,7 @@ class Execution(proto.Message):
             spec, region, labels, etc.
         name (str):
             Output only. The resource name of the execute. Format:
-            ``projects/{project_id}/locations/{location}/execution/{execution_id}``
+            ``projects/{project_id}/locations/{location}/executions/{execution_id}``
         display_name (str):
             Output only. Name used for UI purposes. Name can only
             contain alphanumeric characters and underscores '_'.

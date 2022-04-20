@@ -218,6 +218,13 @@ class Instance(proto.Message):
             field will apply the specified `Zonal Compute
             Reservation <https://cloud.google.com/compute/docs/instances/reserving-zonal-resources>`__
             to this notebook instance.
+        creator (str):
+            Output only. Email address of entity that
+            sent original CreateInstance request.
+        can_ip_forward (bool):
+            Optional. Flag to enable ip forwarding or
+            not, default false/off.
+            https://cloud.google.com/vpc/docs/using-routes#canipforward
         create_time (google.protobuf.timestamp_pb2.Timestamp):
             Output only. Instance creation time.
         update_time (google.protobuf.timestamp_pb2.Timestamp):
@@ -253,6 +260,8 @@ class Instance(proto.Message):
         UPGRADING = 7
         INITIALIZING = 8
         REGISTERING = 9
+        SUSPENDING = 10
+        SUSPENDED = 11
 
     class DiskType(proto.Enum):
         r"""Possible disk types for notebook instances."""
@@ -260,6 +269,7 @@ class Instance(proto.Message):
         PD_STANDARD = 1
         PD_SSD = 2
         PD_BALANCED = 3
+        PD_EXTREME = 4
 
     class DiskEncryption(proto.Enum):
         r"""Definition of the disk encryption options."""
@@ -714,6 +724,14 @@ class Instance(proto.Message):
         proto.MESSAGE,
         number=34,
         message="ReservationAffinity",
+    )
+    creator = proto.Field(
+        proto.STRING,
+        number=36,
+    )
+    can_ip_forward = proto.Field(
+        proto.BOOL,
+        number=39,
     )
     create_time = proto.Field(
         proto.MESSAGE,

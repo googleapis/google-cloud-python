@@ -30,6 +30,11 @@
                 "list_runtimes"
               ]
             },
+            "RefreshRuntimeTokenInternal": {
+              "methods": [
+                "refresh_runtime_token_internal"
+              ]
+            },
             "ReportRuntimeEvent": {
               "methods": [
                 "report_runtime_event"
@@ -78,6 +83,11 @@
             "ListRuntimes": {
               "methods": [
                 "list_runtimes"
+              ]
+            },
+            "RefreshRuntimeTokenInternal": {
+              "methods": [
+                "refresh_runtime_token_internal"
               ]
             },
             "ReportRuntimeEvent": {
@@ -259,6 +269,11 @@
                 "update_instance_config"
               ]
             },
+            "UpdateInstanceMetadataItems": {
+              "methods": [
+                "update_instance_metadata_items"
+              ]
+            },
             "UpdateShieldedInstanceConfig": {
               "methods": [
                 "update_shielded_instance_config"
@@ -422,6 +437,11 @@
             "UpdateInstanceConfig": {
               "methods": [
                 "update_instance_config"
+              ]
+            },
+            "UpdateInstanceMetadataItems": {
+              "methods": [
+                "update_instance_metadata_items"
               ]
             },
             "UpdateShieldedInstanceConfig": {

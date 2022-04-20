@@ -35,12 +35,18 @@ class Event(proto.Message):
             Event report time.
         type_ (google.cloud.notebooks_v1.types.Event.EventType):
             Event type.
+        details (Mapping[str, str]):
+            Optional. Event details. This field is used
+            to pass event information.
     """
 
     class EventType(proto.Enum):
-        r"""The definition of the even types."""
+        r"""The definition of the event types."""
         EVENT_TYPE_UNSPECIFIED = 0
         IDLE = 1
+        HEARTBEAT = 2
+        HEALTH = 3
+        MAINTENANCE = 4
 
     report_time = proto.Field(
         proto.MESSAGE,
@@ -51,6 +57,11 @@ class Event(proto.Message):
         proto.ENUM,
         number=2,
         enum=EventType,
+    )
+    details = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=3,
     )
 
 

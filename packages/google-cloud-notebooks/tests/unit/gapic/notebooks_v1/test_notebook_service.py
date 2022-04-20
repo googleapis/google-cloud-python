@@ -1144,6 +1144,8 @@ def test_get_instance(request_type, transport: str = "grpc"):
             subnet="subnet_value",
             tags=["tags_value"],
             nic_type=instance.Instance.NicType.VIRTIO_NET,
+            creator="creator_value",
+            can_ip_forward=True,
             vm_image=environment.VmImage(project="project_value"),
         )
         response = client.get_instance(request)
@@ -1178,6 +1180,8 @@ def test_get_instance(request_type, transport: str = "grpc"):
     assert response.subnet == "subnet_value"
     assert response.tags == ["tags_value"]
     assert response.nic_type == instance.Instance.NicType.VIRTIO_NET
+    assert response.creator == "creator_value"
+    assert response.can_ip_forward is True
 
 
 def test_get_instance_empty_call():
@@ -1237,6 +1241,8 @@ async def test_get_instance_async(
                 subnet="subnet_value",
                 tags=["tags_value"],
                 nic_type=instance.Instance.NicType.VIRTIO_NET,
+                creator="creator_value",
+                can_ip_forward=True,
             )
         )
         response = await client.get_instance(request)
@@ -1271,6 +1277,8 @@ async def test_get_instance_async(
     assert response.subnet == "subnet_value"
     assert response.tags == ["tags_value"]
     assert response.nic_type == instance.Instance.NicType.VIRTIO_NET
+    assert response.creator == "creator_value"
+    assert response.can_ip_forward is True
 
 
 @pytest.mark.asyncio
@@ -2574,6 +2582,161 @@ async def test_set_instance_labels_field_headers_async():
             operations_pb2.Operation(name="operations/op")
         )
         await client.set_instance_labels(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UpdateInstanceMetadataItemsRequest,
+        dict,
+    ],
+)
+def test_update_instance_metadata_items(request_type, transport: str = "grpc"):
+    client = NotebookServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_instance_metadata_items), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.UpdateInstanceMetadataItemsResponse()
+        response = client.update_instance_metadata_items(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.UpdateInstanceMetadataItemsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, service.UpdateInstanceMetadataItemsResponse)
+
+
+def test_update_instance_metadata_items_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = NotebookServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_instance_metadata_items), "__call__"
+    ) as call:
+        client.update_instance_metadata_items()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.UpdateInstanceMetadataItemsRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_instance_metadata_items_async(
+    transport: str = "grpc_asyncio",
+    request_type=service.UpdateInstanceMetadataItemsRequest,
+):
+    client = NotebookServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_instance_metadata_items), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.UpdateInstanceMetadataItemsResponse()
+        )
+        response = await client.update_instance_metadata_items(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.UpdateInstanceMetadataItemsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, service.UpdateInstanceMetadataItemsResponse)
+
+
+@pytest.mark.asyncio
+async def test_update_instance_metadata_items_async_from_dict():
+    await test_update_instance_metadata_items_async(request_type=dict)
+
+
+def test_update_instance_metadata_items_field_headers():
+    client = NotebookServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.UpdateInstanceMetadataItemsRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_instance_metadata_items), "__call__"
+    ) as call:
+        call.return_value = service.UpdateInstanceMetadataItemsResponse()
+        client.update_instance_metadata_items(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_instance_metadata_items_field_headers_async():
+    client = NotebookServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.UpdateInstanceMetadataItemsRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_instance_metadata_items), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.UpdateInstanceMetadataItemsResponse()
+        )
+        await client.update_instance_metadata_items(request)
 
         # Establish that the underlying gRPC stub method was called.
         assert len(call.mock_calls)
@@ -8067,6 +8230,7 @@ def test_notebook_service_base_transport():
         "update_instance_config",
         "update_shielded_instance_config",
         "set_instance_labels",
+        "update_instance_metadata_items",
         "delete_instance",
         "start_instance",
         "stop_instance",
@@ -8550,8 +8714,36 @@ def test_parse_schedule_path():
     assert expected == actual
 
 
+def test_tensorboard_path():
+    project = "winkle"
+    location = "nautilus"
+    tensorboard = "scallop"
+    expected = (
+        "projects/{project}/locations/{location}/tensorboards/{tensorboard}".format(
+            project=project,
+            location=location,
+            tensorboard=tensorboard,
+        )
+    )
+    actual = NotebookServiceClient.tensorboard_path(project, location, tensorboard)
+    assert expected == actual
+
+
+def test_parse_tensorboard_path():
+    expected = {
+        "project": "abalone",
+        "location": "squid",
+        "tensorboard": "clam",
+    }
+    path = NotebookServiceClient.tensorboard_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = NotebookServiceClient.parse_tensorboard_path(path)
+    assert expected == actual
+
+
 def test_common_billing_account_path():
-    billing_account = "winkle"
+    billing_account = "whelk"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -8561,7 +8753,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "nautilus",
+        "billing_account": "octopus",
     }
     path = NotebookServiceClient.common_billing_account_path(**expected)
 
@@ -8571,7 +8763,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "scallop"
+    folder = "oyster"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -8581,7 +8773,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "abalone",
+        "folder": "nudibranch",
     }
     path = NotebookServiceClient.common_folder_path(**expected)
 
@@ -8591,7 +8783,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "squid"
+    organization = "cuttlefish"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -8601,7 +8793,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "clam",
+        "organization": "mussel",
     }
     path = NotebookServiceClient.common_organization_path(**expected)
 
@@ -8611,7 +8803,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "whelk"
+    project = "winkle"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -8621,7 +8813,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "octopus",
+        "project": "nautilus",
     }
     path = NotebookServiceClient.common_project_path(**expected)
 
@@ -8631,8 +8823,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "oyster"
-    location = "nudibranch"
+    project = "scallop"
+    location = "abalone"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -8643,8 +8835,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "cuttlefish",
-        "location": "mussel",
+        "project": "squid",
+        "location": "clam",
     }
     path = NotebookServiceClient.common_location_path(**expected)
 

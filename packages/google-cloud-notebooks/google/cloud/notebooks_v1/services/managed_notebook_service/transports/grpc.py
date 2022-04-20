@@ -493,6 +493,39 @@ class ManagedNotebookServiceGrpcTransport(ManagedNotebookServiceTransport):
             )
         return self._stubs["report_runtime_event"]
 
+    @property
+    def refresh_runtime_token_internal(
+        self,
+    ) -> Callable[
+        [managed_service.RefreshRuntimeTokenInternalRequest],
+        managed_service.RefreshRuntimeTokenInternalResponse,
+    ]:
+        r"""Return a callable for the refresh runtime token internal method over gRPC.
+
+        Gets an access token for the consumer service account
+        that the customer attached to the runtime. Only
+        accessible from the tenant instance.
+
+        Returns:
+            Callable[[~.RefreshRuntimeTokenInternalRequest],
+                    ~.RefreshRuntimeTokenInternalResponse]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "refresh_runtime_token_internal" not in self._stubs:
+            self._stubs[
+                "refresh_runtime_token_internal"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.notebooks.v1.ManagedNotebookService/RefreshRuntimeTokenInternal",
+                request_serializer=managed_service.RefreshRuntimeTokenInternalRequest.serialize,
+                response_deserializer=managed_service.RefreshRuntimeTokenInternalResponse.deserialize,
+            )
+        return self._stubs["refresh_runtime_token_internal"]
+
     def close(self):
         self.grpc_channel.close()
 

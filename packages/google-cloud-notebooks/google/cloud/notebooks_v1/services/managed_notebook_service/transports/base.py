@@ -169,6 +169,11 @@ class ManagedNotebookServiceTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.refresh_runtime_token_internal: gapic_v1.method.wrap_method(
+                self.refresh_runtime_token_internal,
+                default_timeout=None,
+                client_info=client_info,
+            ),
         }
 
     def close(self):
@@ -266,6 +271,18 @@ class ManagedNotebookServiceTransport(abc.ABC):
     ) -> Callable[
         [managed_service.ReportRuntimeEventRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def refresh_runtime_token_internal(
+        self,
+    ) -> Callable[
+        [managed_service.RefreshRuntimeTokenInternalRequest],
+        Union[
+            managed_service.RefreshRuntimeTokenInternalResponse,
+            Awaitable[managed_service.RefreshRuntimeTokenInternalResponse],
+        ],
     ]:
         raise NotImplementedError()
 

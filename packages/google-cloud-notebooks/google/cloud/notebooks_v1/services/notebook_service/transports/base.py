@@ -172,6 +172,11 @@ class NotebookServiceTransport(abc.ABC):
                 default_timeout=60.0,
                 client_info=client_info,
             ),
+            self.update_instance_metadata_items: gapic_v1.method.wrap_method(
+                self.update_instance_metadata_items,
+                default_timeout=None,
+                client_info=client_info,
+            ),
             self.delete_instance: gapic_v1.method.wrap_method(
                 self.delete_instance,
                 default_timeout=60.0,
@@ -381,6 +386,18 @@ class NotebookServiceTransport(abc.ABC):
     ) -> Callable[
         [service.SetInstanceLabelsRequest],
         Union[operations_pb2.Operation, Awaitable[operations_pb2.Operation]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_instance_metadata_items(
+        self,
+    ) -> Callable[
+        [service.UpdateInstanceMetadataItemsRequest],
+        Union[
+            service.UpdateInstanceMetadataItemsResponse,
+            Awaitable[service.UpdateInstanceMetadataItemsResponse],
+        ],
     ]:
         raise NotImplementedError()
 

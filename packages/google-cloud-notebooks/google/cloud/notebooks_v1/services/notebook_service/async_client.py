@@ -66,6 +66,8 @@ class NotebookServiceAsyncClient:
     parse_instance_path = staticmethod(NotebookServiceClient.parse_instance_path)
     schedule_path = staticmethod(NotebookServiceClient.schedule_path)
     parse_schedule_path = staticmethod(NotebookServiceClient.parse_schedule_path)
+    tensorboard_path = staticmethod(NotebookServiceClient.tensorboard_path)
+    parse_tensorboard_path = staticmethod(NotebookServiceClient.parse_tensorboard_path)
     common_billing_account_path = staticmethod(
         NotebookServiceClient.common_billing_account_path
     )
@@ -1097,6 +1099,79 @@ class NotebookServiceAsyncClient:
         # Done; return the response.
         return response
 
+    async def update_instance_metadata_items(
+        self,
+        request: Union[service.UpdateInstanceMetadataItemsRequest, dict] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> service.UpdateInstanceMetadataItemsResponse:
+        r"""Add/update metadata items for an instance.
+
+        .. code-block:: python
+
+            from google.cloud import notebooks_v1
+
+            def sample_update_instance_metadata_items():
+                # Create a client
+                client = notebooks_v1.NotebookServiceClient()
+
+                # Initialize request argument(s)
+                request = notebooks_v1.UpdateInstanceMetadataItemsRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.update_instance_metadata_items(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.notebooks_v1.types.UpdateInstanceMetadataItemsRequest, dict]):
+                The request object. Request for adding/changing metadata
+                items  for an instance.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.notebooks_v1.types.UpdateInstanceMetadataItemsResponse:
+                Response for adding/changing metadata
+                items for an instance.
+
+        """
+        # Create or coerce a protobuf request object.
+        request = service.UpdateInstanceMetadataItemsRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.update_instance_metadata_items,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     async def delete_instance(
         self,
         request: Union[service.DeleteInstanceRequest, dict] = None,
@@ -1428,7 +1503,7 @@ class NotebookServiceAsyncClient:
 
         Args:
             request (Union[google.cloud.notebooks_v1.types.ResetInstanceRequest, dict]):
-                The request object. Request for reseting a notebook
+                The request object. Request for resetting a notebook
                 instance
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -3345,8 +3420,8 @@ class NotebookServiceAsyncClient:
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation_async.AsyncOperation:
-        r"""Creates a new Scheduled Notebook in a given project
-        and location.
+        r"""Creates a new Execution in a given project and
+        location.
 
         .. code-block:: python
 

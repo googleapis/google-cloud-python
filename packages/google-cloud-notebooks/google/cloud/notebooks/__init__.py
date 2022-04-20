@@ -41,6 +41,12 @@ from google.cloud.notebooks_v1.types.managed_service import DeleteRuntimeRequest
 from google.cloud.notebooks_v1.types.managed_service import GetRuntimeRequest
 from google.cloud.notebooks_v1.types.managed_service import ListRuntimesRequest
 from google.cloud.notebooks_v1.types.managed_service import ListRuntimesResponse
+from google.cloud.notebooks_v1.types.managed_service import (
+    RefreshRuntimeTokenInternalRequest,
+)
+from google.cloud.notebooks_v1.types.managed_service import (
+    RefreshRuntimeTokenInternalResponse,
+)
 from google.cloud.notebooks_v1.types.managed_service import ReportRuntimeEventRequest
 from google.cloud.notebooks_v1.types.managed_service import ResetRuntimeRequest
 from google.cloud.notebooks_v1.types.managed_service import StartRuntimeRequest
@@ -94,9 +100,12 @@ from google.cloud.notebooks_v1.types.service import StartInstanceRequest
 from google.cloud.notebooks_v1.types.service import StopInstanceRequest
 from google.cloud.notebooks_v1.types.service import TriggerScheduleRequest
 from google.cloud.notebooks_v1.types.service import UpdateInstanceConfigRequest
+from google.cloud.notebooks_v1.types.service import UpdateInstanceMetadataItemsRequest
+from google.cloud.notebooks_v1.types.service import UpdateInstanceMetadataItemsResponse
 from google.cloud.notebooks_v1.types.service import UpdateShieldedInstanceConfigRequest
 from google.cloud.notebooks_v1.types.service import UpgradeInstanceInternalRequest
 from google.cloud.notebooks_v1.types.service import UpgradeInstanceRequest
+from google.cloud.notebooks_v1.types.service import UpgradeType
 
 __all__ = (
     "ManagedNotebookServiceClient",
@@ -117,6 +126,8 @@ __all__ = (
     "GetRuntimeRequest",
     "ListRuntimesRequest",
     "ListRuntimesResponse",
+    "RefreshRuntimeTokenInternalRequest",
+    "RefreshRuntimeTokenInternalResponse",
     "ReportRuntimeEventRequest",
     "ResetRuntimeRequest",
     "StartRuntimeRequest",
@@ -170,7 +181,10 @@ __all__ = (
     "StopInstanceRequest",
     "TriggerScheduleRequest",
     "UpdateInstanceConfigRequest",
+    "UpdateInstanceMetadataItemsRequest",
+    "UpdateInstanceMetadataItemsResponse",
     "UpdateShieldedInstanceConfigRequest",
     "UpgradeInstanceInternalRequest",
     "UpgradeInstanceRequest",
+    "UpgradeType",
 )

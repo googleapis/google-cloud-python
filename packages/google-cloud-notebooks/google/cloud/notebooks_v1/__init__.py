@@ -33,6 +33,8 @@ from .types.managed_service import DeleteRuntimeRequest
 from .types.managed_service import GetRuntimeRequest
 from .types.managed_service import ListRuntimesRequest
 from .types.managed_service import ListRuntimesResponse
+from .types.managed_service import RefreshRuntimeTokenInternalRequest
+from .types.managed_service import RefreshRuntimeTokenInternalResponse
 from .types.managed_service import ReportRuntimeEventRequest
 from .types.managed_service import ResetRuntimeRequest
 from .types.managed_service import StartRuntimeRequest
@@ -86,9 +88,12 @@ from .types.service import StartInstanceRequest
 from .types.service import StopInstanceRequest
 from .types.service import TriggerScheduleRequest
 from .types.service import UpdateInstanceConfigRequest
+from .types.service import UpdateInstanceMetadataItemsRequest
+from .types.service import UpdateInstanceMetadataItemsResponse
 from .types.service import UpdateShieldedInstanceConfigRequest
 from .types.service import UpgradeInstanceInternalRequest
 from .types.service import UpgradeInstanceRequest
+from .types.service import UpgradeType
 
 __all__ = (
     "ManagedNotebookServiceAsyncClient",
@@ -135,6 +140,8 @@ __all__ = (
     "ManagedNotebookServiceClient",
     "NotebookServiceClient",
     "OperationMetadata",
+    "RefreshRuntimeTokenInternalRequest",
+    "RefreshRuntimeTokenInternalResponse",
     "RegisterInstanceRequest",
     "ReportInstanceInfoRequest",
     "ReportRuntimeEventRequest",
@@ -159,9 +166,12 @@ __all__ = (
     "SwitchRuntimeRequest",
     "TriggerScheduleRequest",
     "UpdateInstanceConfigRequest",
+    "UpdateInstanceMetadataItemsRequest",
+    "UpdateInstanceMetadataItemsResponse",
     "UpdateShieldedInstanceConfigRequest",
     "UpgradeInstanceInternalRequest",
     "UpgradeInstanceRequest",
+    "UpgradeType",
     "VirtualMachine",
     "VirtualMachineConfig",
     "VmImage",

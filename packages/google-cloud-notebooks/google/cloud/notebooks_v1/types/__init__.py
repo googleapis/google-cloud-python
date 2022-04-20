@@ -38,6 +38,8 @@ from .managed_service import (
     GetRuntimeRequest,
     ListRuntimesRequest,
     ListRuntimesResponse,
+    RefreshRuntimeTokenInternalRequest,
+    RefreshRuntimeTokenInternalResponse,
     ReportRuntimeEventRequest,
     ResetRuntimeRequest,
     StartRuntimeRequest,
@@ -97,9 +99,12 @@ from .service import (
     StopInstanceRequest,
     TriggerScheduleRequest,
     UpdateInstanceConfigRequest,
+    UpdateInstanceMetadataItemsRequest,
+    UpdateInstanceMetadataItemsResponse,
     UpdateShieldedInstanceConfigRequest,
     UpgradeInstanceInternalRequest,
     UpgradeInstanceRequest,
+    UpgradeType,
 )
 
 __all__ = (
@@ -117,6 +122,8 @@ __all__ = (
     "GetRuntimeRequest",
     "ListRuntimesRequest",
     "ListRuntimesResponse",
+    "RefreshRuntimeTokenInternalRequest",
+    "RefreshRuntimeTokenInternalResponse",
     "ReportRuntimeEventRequest",
     "ResetRuntimeRequest",
     "StartRuntimeRequest",
@@ -170,7 +177,10 @@ __all__ = (
     "StopInstanceRequest",
     "TriggerScheduleRequest",
     "UpdateInstanceConfigRequest",
+    "UpdateInstanceMetadataItemsRequest",
+    "UpdateInstanceMetadataItemsResponse",
     "UpdateShieldedInstanceConfigRequest",
     "UpgradeInstanceInternalRequest",
     "UpgradeInstanceRequest",
+    "UpgradeType",
 )

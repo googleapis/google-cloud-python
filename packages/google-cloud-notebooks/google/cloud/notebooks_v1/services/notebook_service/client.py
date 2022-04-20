@@ -255,6 +255,30 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         return m.groupdict() if m else {}
 
     @staticmethod
+    def tensorboard_path(
+        project: str,
+        location: str,
+        tensorboard: str,
+    ) -> str:
+        """Returns a fully-qualified tensorboard string."""
+        return (
+            "projects/{project}/locations/{location}/tensorboards/{tensorboard}".format(
+                project=project,
+                location=location,
+                tensorboard=tensorboard,
+            )
+        )
+
+    @staticmethod
+    def parse_tensorboard_path(path: str) -> Dict[str, str]:
+        """Parses a tensorboard path into its component segments."""
+        m = re.match(
+            r"^projects/(?P<project>.+?)/locations/(?P<location>.+?)/tensorboards/(?P<tensorboard>.+?)$",
+            path,
+        )
+        return m.groupdict() if m else {}
+
+    @staticmethod
     def common_billing_account_path(
         billing_account: str,
     ) -> str:
@@ -1383,6 +1407,82 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         # Done; return the response.
         return response
 
+    def update_instance_metadata_items(
+        self,
+        request: Union[service.UpdateInstanceMetadataItemsRequest, dict] = None,
+        *,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> service.UpdateInstanceMetadataItemsResponse:
+        r"""Add/update metadata items for an instance.
+
+        .. code-block:: python
+
+            from google.cloud import notebooks_v1
+
+            def sample_update_instance_metadata_items():
+                # Create a client
+                client = notebooks_v1.NotebookServiceClient()
+
+                # Initialize request argument(s)
+                request = notebooks_v1.UpdateInstanceMetadataItemsRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.update_instance_metadata_items(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.notebooks_v1.types.UpdateInstanceMetadataItemsRequest, dict]):
+                The request object. Request for adding/changing metadata
+                items  for an instance.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.notebooks_v1.types.UpdateInstanceMetadataItemsResponse:
+                Response for adding/changing metadata
+                items for an instance.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Minor optimization to avoid making a copy if the user passes
+        # in a service.UpdateInstanceMetadataItemsRequest.
+        # There's no risk of modifying the input as we've already verified
+        # there are no flattened fields.
+        if not isinstance(request, service.UpdateInstanceMetadataItemsRequest):
+            request = service.UpdateInstanceMetadataItemsRequest(request)
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = self._transport._wrapped_methods[
+            self._transport.update_instance_metadata_items
+        ]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
     def delete_instance(
         self,
         request: Union[service.DeleteInstanceRequest, dict] = None,
@@ -1716,7 +1816,7 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
 
         Args:
             request (Union[google.cloud.notebooks_v1.types.ResetInstanceRequest, dict]):
-                The request object. Request for reseting a notebook
+                The request object. Request for resetting a notebook
                 instance
             retry (google.api_core.retry.Retry): Designation of what errors, if any,
                 should be retried.
@@ -3642,8 +3742,8 @@ class NotebookServiceClient(metaclass=NotebookServiceClientMeta):
         timeout: float = None,
         metadata: Sequence[Tuple[str, str]] = (),
     ) -> operation.Operation:
-        r"""Creates a new Scheduled Notebook in a given project
-        and location.
+        r"""Creates a new Execution in a given project and
+        location.
 
         .. code-block:: python
 

@@ -26,6 +26,7 @@ from google.protobuf import timestamp_pb2  # type: ignore
 __protobuf__ = proto.module(
     package="google.cloud.notebooks.v1",
     manifest={
+        "UpgradeType",
         "OperationMetadata",
         "ListInstancesRequest",
         "ListInstancesResponse",
@@ -36,6 +37,8 @@ __protobuf__ = proto.module(
         "SetInstanceMachineTypeRequest",
         "UpdateInstanceConfigRequest",
         "SetInstanceLabelsRequest",
+        "UpdateInstanceMetadataItemsRequest",
+        "UpdateInstanceMetadataItemsResponse",
         "UpdateShieldedInstanceConfigRequest",
         "DeleteInstanceRequest",
         "StartInstanceRequest",
@@ -67,6 +70,17 @@ __protobuf__ = proto.module(
         "CreateExecutionRequest",
     },
 )
+
+
+class UpgradeType(proto.Enum):
+    r"""Definition of the types of upgrade that can be used on this
+    instance.
+    """
+    UPGRADE_TYPE_UNSPECIFIED = 0
+    UPGRADE_FRAMEWORK = 1
+    UPGRADE_OS = 2
+    UPGRADE_CUDA = 3
+    UPGRADE_ALL = 4
 
 
 class OperationMetadata(proto.Message):
@@ -365,6 +379,45 @@ class SetInstanceLabelsRequest(proto.Message):
     )
 
 
+class UpdateInstanceMetadataItemsRequest(proto.Message):
+    r"""Request for adding/changing metadata items  for an instance.
+
+    Attributes:
+        name (str):
+            Required. Format:
+            ``projects/{project_id}/locations/{location}/instances/{instance_id}``
+        items (Mapping[str, str]):
+            Metadata items to add/update for the
+            instance.
+    """
+
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    items = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=2,
+    )
+
+
+class UpdateInstanceMetadataItemsResponse(proto.Message):
+    r"""Response for adding/changing metadata items for an instance.
+
+    Attributes:
+        items (Mapping[str, str]):
+            Map of items that were added/updated to/in
+            the metadata.
+    """
+
+    items = proto.MapField(
+        proto.STRING,
+        proto.STRING,
+        number=1,
+    )
+
+
 class UpdateShieldedInstanceConfigRequest(proto.Message):
     r"""Request for updating the Shielded Instance config for a
     notebook instance. You can only use this method on a stopped
@@ -435,7 +488,7 @@ class StopInstanceRequest(proto.Message):
 
 
 class ResetInstanceRequest(proto.Message):
-    r"""Request for reseting a notebook instance
+    r"""Request for resetting a notebook instance
 
     Attributes:
         name (str):
@@ -488,11 +541,20 @@ class IsInstanceUpgradeableRequest(proto.Message):
         notebook_instance (str):
             Required. Format:
             ``projects/{project_id}/locations/{location}/instances/{instance_id}``
+        type_ (google.cloud.notebooks_v1.types.UpgradeType):
+            Optional. The optional UpgradeType. Setting
+            this field will search for additional compute
+            images to upgrade this instance.
     """
 
     notebook_instance = proto.Field(
         proto.STRING,
         number=1,
+    )
+    type_ = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum="UpgradeType",
     )
 
 
@@ -589,11 +651,20 @@ class UpgradeInstanceRequest(proto.Message):
         name (str):
             Required. Format:
             ``projects/{project_id}/locations/{location}/instances/{instance_id}``
+        type_ (google.cloud.notebooks_v1.types.UpgradeType):
+            Optional. The optional UpgradeType. Setting
+            this field will search for additional compute
+            images to upgrade this instance.
     """
 
     name = proto.Field(
         proto.STRING,
         number=1,
+    )
+    type_ = proto.Field(
+        proto.ENUM,
+        number=2,
+        enum="UpgradeType",
     )
 
 
@@ -631,6 +702,10 @@ class UpgradeInstanceInternalRequest(proto.Message):
             Required. The VM hardware token for
             authenticating the VM.
             https://cloud.google.com/compute/docs/instances/verifying-instance-identity
+        type_ (google.cloud.notebooks_v1.types.UpgradeType):
+            Optional. The optional UpgradeType. Setting
+            this field will search for additional compute
+            images to upgrade this instance.
     """
 
     name = proto.Field(
@@ -640,6 +715,11 @@ class UpgradeInstanceInternalRequest(proto.Message):
     vm_id = proto.Field(
         proto.STRING,
         number=2,
+    )
+    type_ = proto.Field(
+        proto.ENUM,
+        number=3,
+        enum="UpgradeType",
     )
 
 

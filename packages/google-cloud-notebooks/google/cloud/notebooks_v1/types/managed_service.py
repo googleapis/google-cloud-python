@@ -17,6 +17,7 @@ import proto  # type: ignore
 
 from google.cloud.notebooks_v1.types import event as gcn_event
 from google.cloud.notebooks_v1.types import runtime as gcn_runtime
+from google.protobuf import timestamp_pb2  # type: ignore
 
 
 __protobuf__ = proto.module(
@@ -32,6 +33,8 @@ __protobuf__ = proto.module(
         "SwitchRuntimeRequest",
         "ResetRuntimeRequest",
         "ReportRuntimeEventRequest",
+        "RefreshRuntimeTokenInternalRequest",
+        "RefreshRuntimeTokenInternalResponse",
     },
 )
 
@@ -126,6 +129,8 @@ class CreateRuntimeRequest(proto.Message):
             Runtime.
         runtime (google.cloud.notebooks_v1.types.Runtime):
             Required. The Runtime to be created.
+        request_id (str):
+            Idempotent request UUID.
     """
 
     parent = proto.Field(
@@ -141,6 +146,10 @@ class CreateRuntimeRequest(proto.Message):
         number=3,
         message=gcn_runtime.Runtime,
     )
+    request_id = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class DeleteRuntimeRequest(proto.Message):
@@ -150,11 +159,17 @@ class DeleteRuntimeRequest(proto.Message):
         name (str):
             Required. Format:
             ``projects/{project_id}/locations/{location}/runtimes/{runtime_id}``
+        request_id (str):
+            Idempotent request UUID.
     """
 
     name = proto.Field(
         proto.STRING,
         number=1,
+    )
+    request_id = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 
@@ -165,11 +180,17 @@ class StartRuntimeRequest(proto.Message):
         name (str):
             Required. Format:
             ``projects/{project_id}/locations/{location}/runtimes/{runtime_id}``
+        request_id (str):
+            Idempotent request UUID.
     """
 
     name = proto.Field(
         proto.STRING,
         number=1,
+    )
+    request_id = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 
@@ -180,11 +201,17 @@ class StopRuntimeRequest(proto.Message):
         name (str):
             Required. Format:
             ``projects/{project_id}/locations/{location}/runtimes/{runtime_id}``
+        request_id (str):
+            Idempotent request UUID.
     """
 
     name = proto.Field(
         proto.STRING,
         number=1,
+    )
+    request_id = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 
@@ -199,6 +226,8 @@ class SwitchRuntimeRequest(proto.Message):
             machine type.
         accelerator_config (google.cloud.notebooks_v1.types.RuntimeAcceleratorConfig):
             accelerator config.
+        request_id (str):
+            Idempotent request UUID.
     """
 
     name = proto.Field(
@@ -214,20 +243,30 @@ class SwitchRuntimeRequest(proto.Message):
         number=3,
         message=gcn_runtime.RuntimeAcceleratorConfig,
     )
+    request_id = proto.Field(
+        proto.STRING,
+        number=4,
+    )
 
 
 class ResetRuntimeRequest(proto.Message):
-    r"""Request for reseting a Managed Notebook Runtime.
+    r"""Request for resetting a Managed Notebook Runtime.
 
     Attributes:
         name (str):
             Required. Format:
             ``projects/{project_id}/locations/{location}/runtimes/{runtime_id}``
+        request_id (str):
+            Idempotent request UUID.
     """
 
     name = proto.Field(
         proto.STRING,
         number=1,
+    )
+    request_id = proto.Field(
+        proto.STRING,
+        number=2,
     )
 
 
@@ -258,6 +297,50 @@ class ReportRuntimeEventRequest(proto.Message):
         proto.MESSAGE,
         number=3,
         message=gcn_event.Event,
+    )
+
+
+class RefreshRuntimeTokenInternalRequest(proto.Message):
+    r"""Request for getting a new access token.
+
+    Attributes:
+        name (str):
+            Required. Format:
+            ``projects/{project_id}/locations/{location}/runtimes/{runtime_id}``
+        vm_id (str):
+            Required. The VM hardware token for
+            authenticating the VM.
+            https://cloud.google.com/compute/docs/instances/verifying-instance-identity
+    """
+
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    vm_id = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class RefreshRuntimeTokenInternalResponse(proto.Message):
+    r"""Response with a new access token.
+
+    Attributes:
+        access_token (str):
+            The OAuth 2.0 access token.
+        expire_time (google.protobuf.timestamp_pb2.Timestamp):
+            Output only. Token expiration time.
+    """
+
+    access_token = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    expire_time = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=timestamp_pb2.Timestamp,
     )
 
 
