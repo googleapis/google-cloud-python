@@ -1985,7 +1985,7 @@ class RowIterator(HTTPIterator):
 
         if geography_as_object:
             for field in self.schema:
-                if field.field_type.upper() == "GEOGRAPHY":
+                if field.field_type.upper() == "GEOGRAPHY" and field.mode != "REPEATED":
                     df[field.name] = df[field.name].dropna().apply(_read_wkt)
 
         return df
