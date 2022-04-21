@@ -14,33 +14,22 @@
 # limitations under the License.
 #
 
-from google.cloud.monitoring_metrics_scope_v1.services.metrics_scopes.client import (
-    MetricsScopesClient,
-)
 from google.cloud.monitoring_metrics_scope_v1.services.metrics_scopes.async_client import (
     MetricsScopesAsyncClient,
 )
-
-from google.cloud.monitoring_metrics_scope_v1.types.metrics_scope import MetricsScope
+from google.cloud.monitoring_metrics_scope_v1.services.metrics_scopes.client import (
+    MetricsScopesClient,
+)
 from google.cloud.monitoring_metrics_scope_v1.types.metrics_scope import (
+    MetricsScope,
     MonitoredProject,
 )
 from google.cloud.monitoring_metrics_scope_v1.types.metrics_scopes import (
     CreateMonitoredProjectRequest,
-)
-from google.cloud.monitoring_metrics_scope_v1.types.metrics_scopes import (
     DeleteMonitoredProjectRequest,
-)
-from google.cloud.monitoring_metrics_scope_v1.types.metrics_scopes import (
     GetMetricsScopeRequest,
-)
-from google.cloud.monitoring_metrics_scope_v1.types.metrics_scopes import (
     ListMetricsScopesByMonitoredProjectRequest,
-)
-from google.cloud.monitoring_metrics_scope_v1.types.metrics_scopes import (
     ListMetricsScopesByMonitoredProjectResponse,
-)
-from google.cloud.monitoring_metrics_scope_v1.types.metrics_scopes import (
     OperationMetadata,
 )
 

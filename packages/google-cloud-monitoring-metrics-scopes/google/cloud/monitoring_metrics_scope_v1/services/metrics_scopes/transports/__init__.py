@@ -20,7 +20,6 @@ from .base import MetricsScopesTransport
 from .grpc import MetricsScopesGrpcTransport
 from .grpc_asyncio import MetricsScopesGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[MetricsScopesTransport]]
 _transport_registry["grpc"] = MetricsScopesGrpcTransport

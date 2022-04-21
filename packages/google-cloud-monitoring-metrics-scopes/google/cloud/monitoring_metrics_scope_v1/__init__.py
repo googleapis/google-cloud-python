@@ -14,17 +14,16 @@
 # limitations under the License.
 #
 
-from .services.metrics_scopes import MetricsScopesClient
-from .services.metrics_scopes import MetricsScopesAsyncClient
-
-from .types.metrics_scope import MetricsScope
-from .types.metrics_scope import MonitoredProject
-from .types.metrics_scopes import CreateMonitoredProjectRequest
-from .types.metrics_scopes import DeleteMonitoredProjectRequest
-from .types.metrics_scopes import GetMetricsScopeRequest
-from .types.metrics_scopes import ListMetricsScopesByMonitoredProjectRequest
-from .types.metrics_scopes import ListMetricsScopesByMonitoredProjectResponse
-from .types.metrics_scopes import OperationMetadata
+from .services.metrics_scopes import MetricsScopesAsyncClient, MetricsScopesClient
+from .types.metrics_scope import MetricsScope, MonitoredProject
+from .types.metrics_scopes import (
+    CreateMonitoredProjectRequest,
+    DeleteMonitoredProjectRequest,
+    GetMetricsScopeRequest,
+    ListMetricsScopesByMonitoredProjectRequest,
+    ListMetricsScopesByMonitoredProjectResponse,
+    OperationMetadata,
+)
 
 __all__ = (
     "MetricsScopesAsyncClient",

@@ -13,10 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .metrics_scope import (
-    MetricsScope,
-    MonitoredProject,
-)
+from .metrics_scope import MetricsScope, MonitoredProject
 from .metrics_scopes import (
     CreateMonitoredProjectRequest,
     DeleteMonitoredProjectRequest,
