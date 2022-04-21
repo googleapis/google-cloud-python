@@ -14,35 +14,38 @@
 # limitations under the License.
 #
 
-from google.cloud.functions_v1.services.cloud_functions_service.client import (
-    CloudFunctionsServiceClient,
-)
 from google.cloud.functions_v1.services.cloud_functions_service.async_client import (
     CloudFunctionsServiceAsyncClient,
 )
-
-from google.cloud.functions_v1.types.functions import CallFunctionRequest
-from google.cloud.functions_v1.types.functions import CallFunctionResponse
-from google.cloud.functions_v1.types.functions import CloudFunction
-from google.cloud.functions_v1.types.functions import CreateFunctionRequest
-from google.cloud.functions_v1.types.functions import DeleteFunctionRequest
-from google.cloud.functions_v1.types.functions import EventTrigger
-from google.cloud.functions_v1.types.functions import FailurePolicy
-from google.cloud.functions_v1.types.functions import GenerateDownloadUrlRequest
-from google.cloud.functions_v1.types.functions import GenerateDownloadUrlResponse
-from google.cloud.functions_v1.types.functions import GenerateUploadUrlRequest
-from google.cloud.functions_v1.types.functions import GenerateUploadUrlResponse
-from google.cloud.functions_v1.types.functions import GetFunctionRequest
-from google.cloud.functions_v1.types.functions import HttpsTrigger
-from google.cloud.functions_v1.types.functions import ListFunctionsRequest
-from google.cloud.functions_v1.types.functions import ListFunctionsResponse
-from google.cloud.functions_v1.types.functions import SecretEnvVar
-from google.cloud.functions_v1.types.functions import SecretVolume
-from google.cloud.functions_v1.types.functions import SourceRepository
-from google.cloud.functions_v1.types.functions import UpdateFunctionRequest
-from google.cloud.functions_v1.types.functions import CloudFunctionStatus
-from google.cloud.functions_v1.types.operations import OperationMetadataV1
-from google.cloud.functions_v1.types.operations import OperationType
+from google.cloud.functions_v1.services.cloud_functions_service.client import (
+    CloudFunctionsServiceClient,
+)
+from google.cloud.functions_v1.types.functions import (
+    CallFunctionRequest,
+    CallFunctionResponse,
+    CloudFunction,
+    CloudFunctionStatus,
+    CreateFunctionRequest,
+    DeleteFunctionRequest,
+    EventTrigger,
+    FailurePolicy,
+    GenerateDownloadUrlRequest,
+    GenerateDownloadUrlResponse,
+    GenerateUploadUrlRequest,
+    GenerateUploadUrlResponse,
+    GetFunctionRequest,
+    HttpsTrigger,
+    ListFunctionsRequest,
+    ListFunctionsResponse,
+    SecretEnvVar,
+    SecretVolume,
+    SourceRepository,
+    UpdateFunctionRequest,
+)
+from google.cloud.functions_v1.types.operations import (
+    OperationMetadataV1,
+    OperationType,
+)
 
 __all__ = (
     "CloudFunctionsServiceClient",

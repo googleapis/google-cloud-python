@@ -17,6 +17,7 @@ from .functions import (
     CallFunctionRequest,
     CallFunctionResponse,
     CloudFunction,
+    CloudFunctionStatus,
     CreateFunctionRequest,
     DeleteFunctionRequest,
     EventTrigger,
@@ -33,12 +34,8 @@ from .functions import (
     SecretVolume,
     SourceRepository,
     UpdateFunctionRequest,
-    CloudFunctionStatus,
 )
-from .operations import (
-    OperationMetadataV1,
-    OperationType,
-)
+from .operations import OperationMetadataV1, OperationType
 
 __all__ = (
     "CallFunctionRequest",

@@ -20,7 +20,6 @@ from .base import CloudFunctionsServiceTransport
 from .grpc import CloudFunctionsServiceGrpcTransport
 from .grpc_asyncio import CloudFunctionsServiceGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = (
     OrderedDict()

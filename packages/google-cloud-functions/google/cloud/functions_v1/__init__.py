@@ -14,31 +14,33 @@
 # limitations under the License.
 #
 
-from .services.cloud_functions_service import CloudFunctionsServiceClient
-from .services.cloud_functions_service import CloudFunctionsServiceAsyncClient
-
-from .types.functions import CallFunctionRequest
-from .types.functions import CallFunctionResponse
-from .types.functions import CloudFunction
-from .types.functions import CreateFunctionRequest
-from .types.functions import DeleteFunctionRequest
-from .types.functions import EventTrigger
-from .types.functions import FailurePolicy
-from .types.functions import GenerateDownloadUrlRequest
-from .types.functions import GenerateDownloadUrlResponse
-from .types.functions import GenerateUploadUrlRequest
-from .types.functions import GenerateUploadUrlResponse
-from .types.functions import GetFunctionRequest
-from .types.functions import HttpsTrigger
-from .types.functions import ListFunctionsRequest
-from .types.functions import ListFunctionsResponse
-from .types.functions import SecretEnvVar
-from .types.functions import SecretVolume
-from .types.functions import SourceRepository
-from .types.functions import UpdateFunctionRequest
-from .types.functions import CloudFunctionStatus
-from .types.operations import OperationMetadataV1
-from .types.operations import OperationType
+from .services.cloud_functions_service import (
+    CloudFunctionsServiceAsyncClient,
+    CloudFunctionsServiceClient,
+)
+from .types.functions import (
+    CallFunctionRequest,
+    CallFunctionResponse,
+    CloudFunction,
+    CloudFunctionStatus,
+    CreateFunctionRequest,
+    DeleteFunctionRequest,
+    EventTrigger,
+    FailurePolicy,
+    GenerateDownloadUrlRequest,
+    GenerateDownloadUrlResponse,
+    GenerateUploadUrlRequest,
+    GenerateUploadUrlResponse,
+    GetFunctionRequest,
+    HttpsTrigger,
+    ListFunctionsRequest,
+    ListFunctionsResponse,
+    SecretEnvVar,
+    SecretVolume,
+    SourceRepository,
+    UpdateFunctionRequest,
+)
+from .types.operations import OperationMetadataV1, OperationType
 
 __all__ = (
     "CloudFunctionsServiceAsyncClient",
