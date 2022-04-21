@@ -15,16 +15,18 @@
 #
 
 
-from .types.source_context import AliasContext
-from .types.source_context import CloudRepoSourceContext
-from .types.source_context import CloudWorkspaceId
-from .types.source_context import CloudWorkspaceSourceContext
-from .types.source_context import ExtendedSourceContext
-from .types.source_context import GerritSourceContext
-from .types.source_context import GitSourceContext
-from .types.source_context import ProjectRepoId
-from .types.source_context import RepoId
-from .types.source_context import SourceContext
+from .types.source_context import (
+    AliasContext,
+    CloudRepoSourceContext,
+    CloudWorkspaceId,
+    CloudWorkspaceSourceContext,
+    ExtendedSourceContext,
+    GerritSourceContext,
+    GitSourceContext,
+    ProjectRepoId,
+    RepoId,
+    SourceContext,
+)
 
 __all__ = (
     "AliasContext",

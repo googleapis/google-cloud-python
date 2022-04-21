@@ -19,7 +19,6 @@ import os
 
 import setuptools
 
-
 name = "google-cloud-source-context"
 description = "Python client for Source Context"
 version = "1.2.2"
