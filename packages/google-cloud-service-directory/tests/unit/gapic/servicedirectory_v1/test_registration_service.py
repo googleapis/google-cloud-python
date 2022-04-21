@@ -13,32 +13,33 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-import mock
-
-import grpc
-from grpc.experimental import aio
 import math
-import pytest
-from proto.marshal.rules.dates import DurationRule, TimestampRule
+import os
 
-
+from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1
-from google.api_core import grpc_helpers
-from google.api_core import grpc_helpers_async
-from google.api_core import path_template
+import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
+from google.iam.v1 import iam_policy_pb2  # type: ignore
+from google.iam.v1 import options_pb2  # type: ignore
+from google.iam.v1 import policy_pb2  # type: ignore
+from google.oauth2 import service_account
+from google.protobuf import field_mask_pb2  # type: ignore
+from google.type import expr_pb2  # type: ignore
+import grpc
+from grpc.experimental import aio
+import mock
+from proto.marshal.rules.dates import DurationRule, TimestampRule
+import pytest
+
 from google.cloud.servicedirectory_v1.services.registration_service import (
     RegistrationServiceAsyncClient,
-)
-from google.cloud.servicedirectory_v1.services.registration_service import (
     RegistrationServiceClient,
+    pagers,
+    transports,
 )
-from google.cloud.servicedirectory_v1.services.registration_service import pagers
-from google.cloud.servicedirectory_v1.services.registration_service import transports
 from google.cloud.servicedirectory_v1.types import endpoint
 from google.cloud.servicedirectory_v1.types import endpoint as gcs_endpoint
 from google.cloud.servicedirectory_v1.types import namespace
@@ -46,13 +47,6 @@ from google.cloud.servicedirectory_v1.types import namespace as gcs_namespace
 from google.cloud.servicedirectory_v1.types import registration_service
 from google.cloud.servicedirectory_v1.types import service
 from google.cloud.servicedirectory_v1.types import service as gcs_service
-from google.iam.v1 import iam_policy_pb2  # type: ignore
-from google.iam.v1 import options_pb2  # type: ignore
-from google.iam.v1 import policy_pb2  # type: ignore
-from google.oauth2 import service_account
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.type import expr_pb2  # type: ignore
-import google.auth
 
 
 def client_cert_source_callback():

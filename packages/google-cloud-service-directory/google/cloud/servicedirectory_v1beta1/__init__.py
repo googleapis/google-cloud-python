@@ -14,33 +14,34 @@
 # limitations under the License.
 #
 
-from .services.lookup_service import LookupServiceClient
-from .services.lookup_service import LookupServiceAsyncClient
-from .services.registration_service import RegistrationServiceClient
-from .services.registration_service import RegistrationServiceAsyncClient
-
+from .services.lookup_service import LookupServiceAsyncClient, LookupServiceClient
+from .services.registration_service import (
+    RegistrationServiceAsyncClient,
+    RegistrationServiceClient,
+)
 from .types.endpoint import Endpoint
-from .types.lookup_service import ResolveServiceRequest
-from .types.lookup_service import ResolveServiceResponse
+from .types.lookup_service import ResolveServiceRequest, ResolveServiceResponse
 from .types.namespace import Namespace
-from .types.registration_service import CreateEndpointRequest
-from .types.registration_service import CreateNamespaceRequest
-from .types.registration_service import CreateServiceRequest
-from .types.registration_service import DeleteEndpointRequest
-from .types.registration_service import DeleteNamespaceRequest
-from .types.registration_service import DeleteServiceRequest
-from .types.registration_service import GetEndpointRequest
-from .types.registration_service import GetNamespaceRequest
-from .types.registration_service import GetServiceRequest
-from .types.registration_service import ListEndpointsRequest
-from .types.registration_service import ListEndpointsResponse
-from .types.registration_service import ListNamespacesRequest
-from .types.registration_service import ListNamespacesResponse
-from .types.registration_service import ListServicesRequest
-from .types.registration_service import ListServicesResponse
-from .types.registration_service import UpdateEndpointRequest
-from .types.registration_service import UpdateNamespaceRequest
-from .types.registration_service import UpdateServiceRequest
+from .types.registration_service import (
+    CreateEndpointRequest,
+    CreateNamespaceRequest,
+    CreateServiceRequest,
+    DeleteEndpointRequest,
+    DeleteNamespaceRequest,
+    DeleteServiceRequest,
+    GetEndpointRequest,
+    GetNamespaceRequest,
+    GetServiceRequest,
+    ListEndpointsRequest,
+    ListEndpointsResponse,
+    ListNamespacesRequest,
+    ListNamespacesResponse,
+    ListServicesRequest,
+    ListServicesResponse,
+    UpdateEndpointRequest,
+    UpdateNamespaceRequest,
+    UpdateServiceRequest,
+)
 from .types.service import Service
 
 __all__ = (

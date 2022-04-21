@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import RegistrationServiceClient
 from .async_client import RegistrationServiceAsyncClient
+from .client import RegistrationServiceClient
 
 __all__ = (
     "RegistrationServiceClient",

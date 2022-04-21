@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import LookupServiceClient
 from .async_client import LookupServiceAsyncClient
+from .client import LookupServiceClient
 
 __all__ = (
     "LookupServiceClient",

@@ -18,16 +18,18 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Callable,
+    Iterator,
+    Optional,
     Sequence,
     Tuple,
-    Optional,
-    Iterator,
 )
 
-from google.cloud.servicedirectory_v1.types import endpoint
-from google.cloud.servicedirectory_v1.types import namespace
-from google.cloud.servicedirectory_v1.types import registration_service
-from google.cloud.servicedirectory_v1.types import service
+from google.cloud.servicedirectory_v1.types import (
+    endpoint,
+    namespace,
+    registration_service,
+    service,
+)
 
 
 class ListNamespacesPager:

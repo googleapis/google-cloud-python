@@ -17,7 +17,6 @@ import proto  # type: ignore
 
 from google.cloud.servicedirectory_v1.types import endpoint
 
-
 __protobuf__ = proto.module(
     package="google.cloud.servicedirectory.v1",
     manifest={
