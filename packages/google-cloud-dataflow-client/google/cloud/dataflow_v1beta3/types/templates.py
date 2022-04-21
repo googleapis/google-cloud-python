@@ -13,12 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.rpc import status_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.dataflow_v1beta3.types import environment as gd_environment
 from google.cloud.dataflow_v1beta3.types import jobs
-from google.rpc import status_pb2  # type: ignore
-
 
 __protobuf__ = proto.module(
     package="google.dataflow.v1beta3",

@@ -13,13 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import proto  # type: ignore
-
-from google.cloud.dataflow_v1beta3.types import environment as gd_environment
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
+import proto  # type: ignore
 
+from google.cloud.dataflow_v1beta3.types import environment as gd_environment
 
 __protobuf__ = proto.module(
     package="google.dataflow.v1beta3",

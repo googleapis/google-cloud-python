@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import SnapshotsV1Beta3Client
 from .async_client import SnapshotsV1Beta3AsyncClient
+from .client import SnapshotsV1Beta3Client
 
 __all__ = (
     "SnapshotsV1Beta3Client",

@@ -17,30 +17,30 @@ from collections import OrderedDict
 import os
 import re
 from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
-from google.cloud.dataflow_v1beta3.services.jobs_v1_beta3 import pagers
-from google.cloud.dataflow_v1beta3.types import environment
-from google.cloud.dataflow_v1beta3.types import jobs
-from google.cloud.dataflow_v1beta3.types import snapshots
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-from .transports.base import JobsV1Beta3Transport, DEFAULT_CLIENT_INFO
+
+from google.cloud.dataflow_v1beta3.services.jobs_v1_beta3 import pagers
+from google.cloud.dataflow_v1beta3.types import environment, jobs, snapshots
+
+from .transports.base import DEFAULT_CLIENT_INFO, JobsV1Beta3Transport
 from .transports.grpc import JobsV1Beta3GrpcTransport
 from .transports.grpc_asyncio import JobsV1Beta3GrpcAsyncIOTransport
 

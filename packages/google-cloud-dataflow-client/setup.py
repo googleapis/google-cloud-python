@@ -19,7 +19,6 @@ import os
 
 import setuptools
 
-
 name = "google-cloud-dataflow-client"
 description = "Cloud Dataflow API client library"
 version = "0.5.0"

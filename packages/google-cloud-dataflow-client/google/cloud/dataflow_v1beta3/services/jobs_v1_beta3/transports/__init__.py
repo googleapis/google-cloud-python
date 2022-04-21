@@ -20,7 +20,6 @@ from .base import JobsV1Beta3Transport
 from .grpc import JobsV1Beta3GrpcTransport
 from .grpc_asyncio import JobsV1Beta3GrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[JobsV1Beta3Transport]]
 _transport_registry["grpc"] = JobsV1Beta3GrpcTransport

@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import MetricsV1Beta3Client
 from .async_client import MetricsV1Beta3AsyncClient
+from .client import MetricsV1Beta3Client
 
 __all__ = (
     "MetricsV1Beta3Client",

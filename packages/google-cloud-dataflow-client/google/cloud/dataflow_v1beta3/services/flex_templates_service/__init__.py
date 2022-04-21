@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import FlexTemplatesServiceClient
 from .async_client import FlexTemplatesServiceAsyncClient
+from .client import FlexTemplatesServiceClient
 
 __all__ = (
     "FlexTemplatesServiceClient",

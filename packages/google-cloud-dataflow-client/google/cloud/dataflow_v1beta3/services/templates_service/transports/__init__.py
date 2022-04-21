@@ -20,7 +20,6 @@ from .base import TemplatesServiceTransport
 from .grpc import TemplatesServiceGrpcTransport
 from .grpc_asyncio import TemplatesServiceGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[TemplatesServiceTransport]]
 _transport_registry["grpc"] = TemplatesServiceGrpcTransport
