@@ -18,6 +18,7 @@ import functools
 import re
 from typing import (
     Dict,
+    Mapping,
     Optional,
     AsyncIterable,
     Awaitable,
@@ -240,7 +241,6 @@ class StreamingVideoIntelligenceServiceAsyncClient:
         streaming: emitting results while sending video/audio
         bytes. This method is only available via the gRPC API
         (not REST).
-
 
         .. code-block:: python
 
