@@ -15,6 +15,7 @@
 #
 import io
 import os
+
 import setuptools  # type: ignore
 
 version = "1.0.1"
