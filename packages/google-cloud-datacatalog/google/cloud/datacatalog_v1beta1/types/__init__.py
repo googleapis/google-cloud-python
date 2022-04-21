@@ -26,6 +26,7 @@ from .datacatalog import (
     DeleteTagTemplateRequest,
     Entry,
     EntryGroup,
+    EntryType,
     GetEntryGroupRequest,
     GetEntryRequest,
     GetTagTemplateRequest,
@@ -44,12 +45,8 @@ from .datacatalog import (
     UpdateTagRequest,
     UpdateTagTemplateFieldRequest,
     UpdateTagTemplateRequest,
-    EntryType,
 )
-from .gcs_fileset_spec import (
-    GcsFilesetSpec,
-    GcsFileSpec,
-)
+from .gcs_fileset_spec import GcsFilesetSpec, GcsFileSpec
 from .policytagmanager import (
     CreatePolicyTagRequest,
     CreateTaxonomyRequest,
@@ -75,31 +72,17 @@ from .policytagmanagerserialization import (
     SerializedPolicyTag,
     SerializedTaxonomy,
 )
-from .schema import (
-    ColumnSchema,
-    Schema,
-)
-from .search import (
-    SearchCatalogResult,
-    SearchResultType,
-)
+from .schema import ColumnSchema, Schema
+from .search import SearchCatalogResult, SearchResultType
 from .table_spec import (
     BigQueryDateShardedSpec,
     BigQueryTableSpec,
+    TableSourceType,
     TableSpec,
     ViewSpec,
-    TableSourceType,
 )
-from .tags import (
-    FieldType,
-    Tag,
-    TagField,
-    TagTemplate,
-    TagTemplateField,
-)
-from .timestamps import (
-    SystemTimestamps,
-)
+from .tags import FieldType, Tag, TagField, TagTemplate, TagTemplateField
+from .timestamps import SystemTimestamps
 
 __all__ = (
     "IntegratedSystem",

@@ -20,7 +20,6 @@ from .base import DataCatalogTransport
 from .grpc import DataCatalogGrpcTransport
 from .grpc_asyncio import DataCatalogGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[DataCatalogTransport]]
 _transport_registry["grpc"] = DataCatalogGrpcTransport

@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import PolicyTagManagerClient
 from .async_client import PolicyTagManagerAsyncClient
+from .client import PolicyTagManagerClient
 
 __all__ = (
     "PolicyTagManagerClient",

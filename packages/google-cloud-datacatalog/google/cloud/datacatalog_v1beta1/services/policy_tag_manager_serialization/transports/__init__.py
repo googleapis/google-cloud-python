@@ -20,7 +20,6 @@ from .base import PolicyTagManagerSerializationTransport
 from .grpc import PolicyTagManagerSerializationGrpcTransport
 from .grpc_asyncio import PolicyTagManagerSerializationGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = (
     OrderedDict()

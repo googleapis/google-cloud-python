@@ -18,15 +18,13 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Callable,
+    Iterator,
+    Optional,
     Sequence,
     Tuple,
-    Optional,
-    Iterator,
 )
 
-from google.cloud.datacatalog_v1.types import datacatalog
-from google.cloud.datacatalog_v1.types import search
-from google.cloud.datacatalog_v1.types import tags
+from google.cloud.datacatalog_v1.types import datacatalog, search, tags
 
 
 class SearchCatalogPager:

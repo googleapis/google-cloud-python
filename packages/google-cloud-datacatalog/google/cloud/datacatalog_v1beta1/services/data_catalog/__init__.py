@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import DataCatalogClient
 from .async_client import DataCatalogAsyncClient
+from .client import DataCatalogClient
 
 __all__ = (
     "DataCatalogClient",

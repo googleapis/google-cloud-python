@@ -15,9 +15,7 @@
 #
 import proto  # type: ignore
 
-from google.cloud.datacatalog_v1.types import common
-from google.cloud.datacatalog_v1.types import physical_schema
-
+from google.cloud.datacatalog_v1.types import common, physical_schema
 
 __protobuf__ = proto.module(
     package="google.cloud.datacatalog.v1",

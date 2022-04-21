@@ -13,21 +13,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.datacatalog_v1.types import bigquery
-from google.cloud.datacatalog_v1.types import common
+from google.cloud.datacatalog_v1.types import gcs_fileset_spec as gcd_gcs_fileset_spec
+from google.cloud.datacatalog_v1.types import bigquery, common
 from google.cloud.datacatalog_v1.types import data_source as gcd_data_source
 from google.cloud.datacatalog_v1.types import dataplex_spec
-from google.cloud.datacatalog_v1.types import gcs_fileset_spec as gcd_gcs_fileset_spec
 from google.cloud.datacatalog_v1.types import schema as gcd_schema
-from google.cloud.datacatalog_v1.types import search
-from google.cloud.datacatalog_v1.types import table_spec
+from google.cloud.datacatalog_v1.types import search, table_spec
 from google.cloud.datacatalog_v1.types import tags as gcd_tags
-from google.cloud.datacatalog_v1.types import timestamps
-from google.cloud.datacatalog_v1.types import usage
-from google.protobuf import field_mask_pb2  # type: ignore
-
+from google.cloud.datacatalog_v1.types import timestamps, usage
 
 __protobuf__ = proto.module(
     package="google.cloud.datacatalog.v1",

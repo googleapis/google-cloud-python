@@ -17,26 +17,29 @@ from collections import OrderedDict
 import os
 import re
 from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
-from google.cloud.datacatalog_v1beta1.types import policytagmanager
-from google.cloud.datacatalog_v1beta1.types import policytagmanagerserialization
-from .transports.base import PolicyTagManagerSerializationTransport, DEFAULT_CLIENT_INFO
+from google.cloud.datacatalog_v1beta1.types import (
+    policytagmanager,
+    policytagmanagerserialization,
+)
+
+from .transports.base import DEFAULT_CLIENT_INFO, PolicyTagManagerSerializationTransport
 from .transports.grpc import PolicyTagManagerSerializationGrpcTransport
 from .transports.grpc_asyncio import PolicyTagManagerSerializationGrpcAsyncIOTransport
 

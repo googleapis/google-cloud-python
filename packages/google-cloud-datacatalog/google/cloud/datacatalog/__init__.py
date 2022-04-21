@@ -14,140 +14,135 @@
 # limitations under the License.
 #
 
-from google.cloud.datacatalog_v1.services.data_catalog.client import DataCatalogClient
 from google.cloud.datacatalog_v1.services.data_catalog.async_client import (
     DataCatalogAsyncClient,
+)
+from google.cloud.datacatalog_v1.services.data_catalog.client import DataCatalogClient
+from google.cloud.datacatalog_v1.services.policy_tag_manager.async_client import (
+    PolicyTagManagerAsyncClient,
 )
 from google.cloud.datacatalog_v1.services.policy_tag_manager.client import (
     PolicyTagManagerClient,
 )
-from google.cloud.datacatalog_v1.services.policy_tag_manager.async_client import (
-    PolicyTagManagerAsyncClient,
+from google.cloud.datacatalog_v1.services.policy_tag_manager_serialization.async_client import (
+    PolicyTagManagerSerializationAsyncClient,
 )
 from google.cloud.datacatalog_v1.services.policy_tag_manager_serialization.client import (
     PolicyTagManagerSerializationClient,
 )
-from google.cloud.datacatalog_v1.services.policy_tag_manager_serialization.async_client import (
-    PolicyTagManagerSerializationAsyncClient,
+from google.cloud.datacatalog_v1.types.bigquery import (
+    BigQueryConnectionSpec,
+    BigQueryRoutineSpec,
+    CloudSqlBigQueryConnectionSpec,
 )
-
-from google.cloud.datacatalog_v1.types.bigquery import BigQueryConnectionSpec
-from google.cloud.datacatalog_v1.types.bigquery import BigQueryRoutineSpec
-from google.cloud.datacatalog_v1.types.bigquery import CloudSqlBigQueryConnectionSpec
-from google.cloud.datacatalog_v1.types.common import PersonalDetails
-from google.cloud.datacatalog_v1.types.common import IntegratedSystem
-from google.cloud.datacatalog_v1.types.data_source import DataSource
-from google.cloud.datacatalog_v1.types.data_source import StorageProperties
-from google.cloud.datacatalog_v1.types.datacatalog import BusinessContext
-from google.cloud.datacatalog_v1.types.datacatalog import Contacts
-from google.cloud.datacatalog_v1.types.datacatalog import CreateEntryGroupRequest
-from google.cloud.datacatalog_v1.types.datacatalog import CreateEntryRequest
-from google.cloud.datacatalog_v1.types.datacatalog import CreateTagRequest
-from google.cloud.datacatalog_v1.types.datacatalog import CreateTagTemplateFieldRequest
-from google.cloud.datacatalog_v1.types.datacatalog import CreateTagTemplateRequest
-from google.cloud.datacatalog_v1.types.datacatalog import DatabaseTableSpec
-from google.cloud.datacatalog_v1.types.datacatalog import DataSourceConnectionSpec
-from google.cloud.datacatalog_v1.types.datacatalog import DeleteEntryGroupRequest
-from google.cloud.datacatalog_v1.types.datacatalog import DeleteEntryRequest
-from google.cloud.datacatalog_v1.types.datacatalog import DeleteTagRequest
-from google.cloud.datacatalog_v1.types.datacatalog import DeleteTagTemplateFieldRequest
-from google.cloud.datacatalog_v1.types.datacatalog import DeleteTagTemplateRequest
-from google.cloud.datacatalog_v1.types.datacatalog import Entry
-from google.cloud.datacatalog_v1.types.datacatalog import EntryGroup
-from google.cloud.datacatalog_v1.types.datacatalog import EntryOverview
-from google.cloud.datacatalog_v1.types.datacatalog import FilesetSpec
-from google.cloud.datacatalog_v1.types.datacatalog import GetEntryGroupRequest
-from google.cloud.datacatalog_v1.types.datacatalog import GetEntryRequest
-from google.cloud.datacatalog_v1.types.datacatalog import GetTagTemplateRequest
-from google.cloud.datacatalog_v1.types.datacatalog import ListEntriesRequest
-from google.cloud.datacatalog_v1.types.datacatalog import ListEntriesResponse
-from google.cloud.datacatalog_v1.types.datacatalog import ListEntryGroupsRequest
-from google.cloud.datacatalog_v1.types.datacatalog import ListEntryGroupsResponse
-from google.cloud.datacatalog_v1.types.datacatalog import ListTagsRequest
-from google.cloud.datacatalog_v1.types.datacatalog import ListTagsResponse
-from google.cloud.datacatalog_v1.types.datacatalog import LookupEntryRequest
-from google.cloud.datacatalog_v1.types.datacatalog import ModifyEntryContactsRequest
-from google.cloud.datacatalog_v1.types.datacatalog import ModifyEntryOverviewRequest
+from google.cloud.datacatalog_v1.types.common import IntegratedSystem, PersonalDetails
+from google.cloud.datacatalog_v1.types.data_source import DataSource, StorageProperties
 from google.cloud.datacatalog_v1.types.datacatalog import (
+    BusinessContext,
+    Contacts,
+    CreateEntryGroupRequest,
+    CreateEntryRequest,
+    CreateTagRequest,
+    CreateTagTemplateFieldRequest,
+    CreateTagTemplateRequest,
+    DatabaseTableSpec,
+    DataSourceConnectionSpec,
+    DeleteEntryGroupRequest,
+    DeleteEntryRequest,
+    DeleteTagRequest,
+    DeleteTagTemplateFieldRequest,
+    DeleteTagTemplateRequest,
+    Entry,
+    EntryGroup,
+    EntryOverview,
+    EntryType,
+    FilesetSpec,
+    GetEntryGroupRequest,
+    GetEntryRequest,
+    GetTagTemplateRequest,
+    ListEntriesRequest,
+    ListEntriesResponse,
+    ListEntryGroupsRequest,
+    ListEntryGroupsResponse,
+    ListTagsRequest,
+    ListTagsResponse,
+    LookupEntryRequest,
+    ModifyEntryContactsRequest,
+    ModifyEntryOverviewRequest,
     RenameTagTemplateFieldEnumValueRequest,
+    RenameTagTemplateFieldRequest,
+    RoutineSpec,
+    SearchCatalogRequest,
+    SearchCatalogResponse,
+    StarEntryRequest,
+    StarEntryResponse,
+    UnstarEntryRequest,
+    UnstarEntryResponse,
+    UpdateEntryGroupRequest,
+    UpdateEntryRequest,
+    UpdateTagRequest,
+    UpdateTagTemplateFieldRequest,
+    UpdateTagTemplateRequest,
 )
-from google.cloud.datacatalog_v1.types.datacatalog import RenameTagTemplateFieldRequest
-from google.cloud.datacatalog_v1.types.datacatalog import RoutineSpec
-from google.cloud.datacatalog_v1.types.datacatalog import SearchCatalogRequest
-from google.cloud.datacatalog_v1.types.datacatalog import SearchCatalogResponse
-from google.cloud.datacatalog_v1.types.datacatalog import StarEntryRequest
-from google.cloud.datacatalog_v1.types.datacatalog import StarEntryResponse
-from google.cloud.datacatalog_v1.types.datacatalog import UnstarEntryRequest
-from google.cloud.datacatalog_v1.types.datacatalog import UnstarEntryResponse
-from google.cloud.datacatalog_v1.types.datacatalog import UpdateEntryGroupRequest
-from google.cloud.datacatalog_v1.types.datacatalog import UpdateEntryRequest
-from google.cloud.datacatalog_v1.types.datacatalog import UpdateTagRequest
-from google.cloud.datacatalog_v1.types.datacatalog import UpdateTagTemplateFieldRequest
-from google.cloud.datacatalog_v1.types.datacatalog import UpdateTagTemplateRequest
-from google.cloud.datacatalog_v1.types.datacatalog import EntryType
-from google.cloud.datacatalog_v1.types.dataplex_spec import DataplexExternalTable
-from google.cloud.datacatalog_v1.types.dataplex_spec import DataplexFilesetSpec
-from google.cloud.datacatalog_v1.types.dataplex_spec import DataplexSpec
-from google.cloud.datacatalog_v1.types.dataplex_spec import DataplexTableSpec
-from google.cloud.datacatalog_v1.types.gcs_fileset_spec import GcsFilesetSpec
-from google.cloud.datacatalog_v1.types.gcs_fileset_spec import GcsFileSpec
+from google.cloud.datacatalog_v1.types.dataplex_spec import (
+    DataplexExternalTable,
+    DataplexFilesetSpec,
+    DataplexSpec,
+    DataplexTableSpec,
+)
+from google.cloud.datacatalog_v1.types.gcs_fileset_spec import (
+    GcsFilesetSpec,
+    GcsFileSpec,
+)
 from google.cloud.datacatalog_v1.types.physical_schema import PhysicalSchema
-from google.cloud.datacatalog_v1.types.policytagmanager import CreatePolicyTagRequest
-from google.cloud.datacatalog_v1.types.policytagmanager import CreateTaxonomyRequest
-from google.cloud.datacatalog_v1.types.policytagmanager import DeletePolicyTagRequest
-from google.cloud.datacatalog_v1.types.policytagmanager import DeleteTaxonomyRequest
-from google.cloud.datacatalog_v1.types.policytagmanager import GetPolicyTagRequest
-from google.cloud.datacatalog_v1.types.policytagmanager import GetTaxonomyRequest
-from google.cloud.datacatalog_v1.types.policytagmanager import ListPolicyTagsRequest
-from google.cloud.datacatalog_v1.types.policytagmanager import ListPolicyTagsResponse
-from google.cloud.datacatalog_v1.types.policytagmanager import ListTaxonomiesRequest
-from google.cloud.datacatalog_v1.types.policytagmanager import ListTaxonomiesResponse
-from google.cloud.datacatalog_v1.types.policytagmanager import PolicyTag
-from google.cloud.datacatalog_v1.types.policytagmanager import Taxonomy
-from google.cloud.datacatalog_v1.types.policytagmanager import UpdatePolicyTagRequest
-from google.cloud.datacatalog_v1.types.policytagmanager import UpdateTaxonomyRequest
+from google.cloud.datacatalog_v1.types.policytagmanager import (
+    CreatePolicyTagRequest,
+    CreateTaxonomyRequest,
+    DeletePolicyTagRequest,
+    DeleteTaxonomyRequest,
+    GetPolicyTagRequest,
+    GetTaxonomyRequest,
+    ListPolicyTagsRequest,
+    ListPolicyTagsResponse,
+    ListTaxonomiesRequest,
+    ListTaxonomiesResponse,
+    PolicyTag,
+    Taxonomy,
+    UpdatePolicyTagRequest,
+    UpdateTaxonomyRequest,
+)
 from google.cloud.datacatalog_v1.types.policytagmanagerserialization import (
     CrossRegionalSource,
-)
-from google.cloud.datacatalog_v1.types.policytagmanagerserialization import (
     ExportTaxonomiesRequest,
-)
-from google.cloud.datacatalog_v1.types.policytagmanagerserialization import (
     ExportTaxonomiesResponse,
-)
-from google.cloud.datacatalog_v1.types.policytagmanagerserialization import (
     ImportTaxonomiesRequest,
-)
-from google.cloud.datacatalog_v1.types.policytagmanagerserialization import (
     ImportTaxonomiesResponse,
-)
-from google.cloud.datacatalog_v1.types.policytagmanagerserialization import InlineSource
-from google.cloud.datacatalog_v1.types.policytagmanagerserialization import (
+    InlineSource,
     ReplaceTaxonomyRequest,
-)
-from google.cloud.datacatalog_v1.types.policytagmanagerserialization import (
     SerializedPolicyTag,
-)
-from google.cloud.datacatalog_v1.types.policytagmanagerserialization import (
     SerializedTaxonomy,
 )
-from google.cloud.datacatalog_v1.types.schema import ColumnSchema
-from google.cloud.datacatalog_v1.types.schema import Schema
-from google.cloud.datacatalog_v1.types.search import SearchCatalogResult
-from google.cloud.datacatalog_v1.types.search import SearchResultType
-from google.cloud.datacatalog_v1.types.table_spec import BigQueryDateShardedSpec
-from google.cloud.datacatalog_v1.types.table_spec import BigQueryTableSpec
-from google.cloud.datacatalog_v1.types.table_spec import TableSpec
-from google.cloud.datacatalog_v1.types.table_spec import ViewSpec
-from google.cloud.datacatalog_v1.types.table_spec import TableSourceType
-from google.cloud.datacatalog_v1.types.tags import FieldType
-from google.cloud.datacatalog_v1.types.tags import Tag
-from google.cloud.datacatalog_v1.types.tags import TagField
-from google.cloud.datacatalog_v1.types.tags import TagTemplate
-from google.cloud.datacatalog_v1.types.tags import TagTemplateField
+from google.cloud.datacatalog_v1.types.schema import ColumnSchema, Schema
+from google.cloud.datacatalog_v1.types.search import (
+    SearchCatalogResult,
+    SearchResultType,
+)
+from google.cloud.datacatalog_v1.types.table_spec import (
+    BigQueryDateShardedSpec,
+    BigQueryTableSpec,
+    TableSourceType,
+    TableSpec,
+    ViewSpec,
+)
+from google.cloud.datacatalog_v1.types.tags import (
+    FieldType,
+    Tag,
+    TagField,
+    TagTemplate,
+    TagTemplateField,
+)
 from google.cloud.datacatalog_v1.types.timestamps import SystemTimestamps
-from google.cloud.datacatalog_v1.types.usage import UsageSignal
-from google.cloud.datacatalog_v1.types.usage import UsageStats
+from google.cloud.datacatalog_v1.types.usage import UsageSignal, UsageStats
 
 __all__ = (
     "DataCatalogClient",

@@ -17,36 +17,40 @@ from collections import OrderedDict
 import os
 import re
 from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
-from google.cloud.datacatalog_v1beta1.services.data_catalog import pagers
-from google.cloud.datacatalog_v1beta1.types import common
-from google.cloud.datacatalog_v1beta1.types import datacatalog
-from google.cloud.datacatalog_v1beta1.types import gcs_fileset_spec
-from google.cloud.datacatalog_v1beta1.types import schema
-from google.cloud.datacatalog_v1beta1.types import search
-from google.cloud.datacatalog_v1beta1.types import table_spec
-from google.cloud.datacatalog_v1beta1.types import tags
-from google.cloud.datacatalog_v1beta1.types import timestamps
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
-from .transports.base import DataCatalogTransport, DEFAULT_CLIENT_INFO
+
+from google.cloud.datacatalog_v1beta1.services.data_catalog import pagers
+from google.cloud.datacatalog_v1beta1.types import (
+    common,
+    datacatalog,
+    gcs_fileset_spec,
+    schema,
+    search,
+    table_spec,
+    tags,
+    timestamps,
+)
+
+from .transports.base import DEFAULT_CLIENT_INFO, DataCatalogTransport
 from .transports.grpc import DataCatalogGrpcTransport
 from .transports.grpc_asyncio import DataCatalogGrpcAsyncIOTransport
 

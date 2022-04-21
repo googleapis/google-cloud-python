@@ -15,18 +15,20 @@
 #
 import abc
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
-import pkg_resources
 
-import google.auth  # type: ignore
 import google.api_core
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
+import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
-from google.cloud.datacatalog_v1.types import policytagmanager
-from google.cloud.datacatalog_v1.types import policytagmanagerserialization
+from google.cloud.datacatalog_v1.types import (
+    policytagmanager,
+    policytagmanagerserialization,
+)
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(

@@ -13,38 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-import mock
-
-import grpc
-from grpc.experimental import aio
 import math
-import pytest
-from proto.marshal.rules.dates import DurationRule, TimestampRule
+import os
 
-
+from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1
-from google.api_core import grpc_helpers
-from google.api_core import grpc_helpers_async
-from google.api_core import path_template
+import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
-from google.cloud.datacatalog_v1beta1.services.data_catalog import (
-    DataCatalogAsyncClient,
-)
-from google.cloud.datacatalog_v1beta1.services.data_catalog import DataCatalogClient
-from google.cloud.datacatalog_v1beta1.services.data_catalog import pagers
-from google.cloud.datacatalog_v1beta1.services.data_catalog import transports
-from google.cloud.datacatalog_v1beta1.types import common
-from google.cloud.datacatalog_v1beta1.types import datacatalog
-from google.cloud.datacatalog_v1beta1.types import gcs_fileset_spec
-from google.cloud.datacatalog_v1beta1.types import schema
-from google.cloud.datacatalog_v1beta1.types import search
-from google.cloud.datacatalog_v1beta1.types import table_spec
-from google.cloud.datacatalog_v1beta1.types import tags
-from google.cloud.datacatalog_v1beta1.types import timestamps
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import options_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
@@ -52,7 +29,28 @@ from google.oauth2 import service_account
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.type import expr_pb2  # type: ignore
-import google.auth
+import grpc
+from grpc.experimental import aio
+import mock
+from proto.marshal.rules.dates import DurationRule, TimestampRule
+import pytest
+
+from google.cloud.datacatalog_v1beta1.services.data_catalog import (
+    DataCatalogAsyncClient,
+    DataCatalogClient,
+    pagers,
+    transports,
+)
+from google.cloud.datacatalog_v1beta1.types import (
+    common,
+    datacatalog,
+    gcs_fileset_spec,
+    schema,
+    search,
+    table_spec,
+    tags,
+    timestamps,
+)
 
 
 def client_cert_source_callback():

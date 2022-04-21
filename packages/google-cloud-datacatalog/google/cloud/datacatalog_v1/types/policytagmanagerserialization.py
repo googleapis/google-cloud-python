@@ -17,7 +17,6 @@ import proto  # type: ignore
 
 from google.cloud.datacatalog_v1.types import policytagmanager
 
-
 __protobuf__ = proto.module(
     package="google.cloud.datacatalog.v1",
     manifest={

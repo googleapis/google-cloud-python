@@ -14,116 +14,116 @@
 # limitations under the License.
 #
 
-from .services.data_catalog import DataCatalogClient
-from .services.data_catalog import DataCatalogAsyncClient
-from .services.policy_tag_manager import PolicyTagManagerClient
-from .services.policy_tag_manager import PolicyTagManagerAsyncClient
-from .services.policy_tag_manager_serialization import (
-    PolicyTagManagerSerializationClient,
+from .services.data_catalog import DataCatalogAsyncClient, DataCatalogClient
+from .services.policy_tag_manager import (
+    PolicyTagManagerAsyncClient,
+    PolicyTagManagerClient,
 )
 from .services.policy_tag_manager_serialization import (
     PolicyTagManagerSerializationAsyncClient,
+    PolicyTagManagerSerializationClient,
 )
-
-from .types.bigquery import BigQueryConnectionSpec
-from .types.bigquery import BigQueryRoutineSpec
-from .types.bigquery import CloudSqlBigQueryConnectionSpec
-from .types.common import PersonalDetails
-from .types.common import IntegratedSystem
-from .types.data_source import DataSource
-from .types.data_source import StorageProperties
-from .types.datacatalog import BusinessContext
-from .types.datacatalog import Contacts
-from .types.datacatalog import CreateEntryGroupRequest
-from .types.datacatalog import CreateEntryRequest
-from .types.datacatalog import CreateTagRequest
-from .types.datacatalog import CreateTagTemplateFieldRequest
-from .types.datacatalog import CreateTagTemplateRequest
-from .types.datacatalog import DatabaseTableSpec
-from .types.datacatalog import DataSourceConnectionSpec
-from .types.datacatalog import DeleteEntryGroupRequest
-from .types.datacatalog import DeleteEntryRequest
-from .types.datacatalog import DeleteTagRequest
-from .types.datacatalog import DeleteTagTemplateFieldRequest
-from .types.datacatalog import DeleteTagTemplateRequest
-from .types.datacatalog import Entry
-from .types.datacatalog import EntryGroup
-from .types.datacatalog import EntryOverview
-from .types.datacatalog import FilesetSpec
-from .types.datacatalog import GetEntryGroupRequest
-from .types.datacatalog import GetEntryRequest
-from .types.datacatalog import GetTagTemplateRequest
-from .types.datacatalog import ListEntriesRequest
-from .types.datacatalog import ListEntriesResponse
-from .types.datacatalog import ListEntryGroupsRequest
-from .types.datacatalog import ListEntryGroupsResponse
-from .types.datacatalog import ListTagsRequest
-from .types.datacatalog import ListTagsResponse
-from .types.datacatalog import LookupEntryRequest
-from .types.datacatalog import ModifyEntryContactsRequest
-from .types.datacatalog import ModifyEntryOverviewRequest
-from .types.datacatalog import RenameTagTemplateFieldEnumValueRequest
-from .types.datacatalog import RenameTagTemplateFieldRequest
-from .types.datacatalog import RoutineSpec
-from .types.datacatalog import SearchCatalogRequest
-from .types.datacatalog import SearchCatalogResponse
-from .types.datacatalog import StarEntryRequest
-from .types.datacatalog import StarEntryResponse
-from .types.datacatalog import UnstarEntryRequest
-from .types.datacatalog import UnstarEntryResponse
-from .types.datacatalog import UpdateEntryGroupRequest
-from .types.datacatalog import UpdateEntryRequest
-from .types.datacatalog import UpdateTagRequest
-from .types.datacatalog import UpdateTagTemplateFieldRequest
-from .types.datacatalog import UpdateTagTemplateRequest
-from .types.datacatalog import EntryType
-from .types.dataplex_spec import DataplexExternalTable
-from .types.dataplex_spec import DataplexFilesetSpec
-from .types.dataplex_spec import DataplexSpec
-from .types.dataplex_spec import DataplexTableSpec
-from .types.gcs_fileset_spec import GcsFilesetSpec
-from .types.gcs_fileset_spec import GcsFileSpec
+from .types.bigquery import (
+    BigQueryConnectionSpec,
+    BigQueryRoutineSpec,
+    CloudSqlBigQueryConnectionSpec,
+)
+from .types.common import IntegratedSystem, PersonalDetails
+from .types.data_source import DataSource, StorageProperties
+from .types.datacatalog import (
+    BusinessContext,
+    Contacts,
+    CreateEntryGroupRequest,
+    CreateEntryRequest,
+    CreateTagRequest,
+    CreateTagTemplateFieldRequest,
+    CreateTagTemplateRequest,
+    DatabaseTableSpec,
+    DataSourceConnectionSpec,
+    DeleteEntryGroupRequest,
+    DeleteEntryRequest,
+    DeleteTagRequest,
+    DeleteTagTemplateFieldRequest,
+    DeleteTagTemplateRequest,
+    Entry,
+    EntryGroup,
+    EntryOverview,
+    EntryType,
+    FilesetSpec,
+    GetEntryGroupRequest,
+    GetEntryRequest,
+    GetTagTemplateRequest,
+    ListEntriesRequest,
+    ListEntriesResponse,
+    ListEntryGroupsRequest,
+    ListEntryGroupsResponse,
+    ListTagsRequest,
+    ListTagsResponse,
+    LookupEntryRequest,
+    ModifyEntryContactsRequest,
+    ModifyEntryOverviewRequest,
+    RenameTagTemplateFieldEnumValueRequest,
+    RenameTagTemplateFieldRequest,
+    RoutineSpec,
+    SearchCatalogRequest,
+    SearchCatalogResponse,
+    StarEntryRequest,
+    StarEntryResponse,
+    UnstarEntryRequest,
+    UnstarEntryResponse,
+    UpdateEntryGroupRequest,
+    UpdateEntryRequest,
+    UpdateTagRequest,
+    UpdateTagTemplateFieldRequest,
+    UpdateTagTemplateRequest,
+)
+from .types.dataplex_spec import (
+    DataplexExternalTable,
+    DataplexFilesetSpec,
+    DataplexSpec,
+    DataplexTableSpec,
+)
+from .types.gcs_fileset_spec import GcsFilesetSpec, GcsFileSpec
 from .types.physical_schema import PhysicalSchema
-from .types.policytagmanager import CreatePolicyTagRequest
-from .types.policytagmanager import CreateTaxonomyRequest
-from .types.policytagmanager import DeletePolicyTagRequest
-from .types.policytagmanager import DeleteTaxonomyRequest
-from .types.policytagmanager import GetPolicyTagRequest
-from .types.policytagmanager import GetTaxonomyRequest
-from .types.policytagmanager import ListPolicyTagsRequest
-from .types.policytagmanager import ListPolicyTagsResponse
-from .types.policytagmanager import ListTaxonomiesRequest
-from .types.policytagmanager import ListTaxonomiesResponse
-from .types.policytagmanager import PolicyTag
-from .types.policytagmanager import Taxonomy
-from .types.policytagmanager import UpdatePolicyTagRequest
-from .types.policytagmanager import UpdateTaxonomyRequest
-from .types.policytagmanagerserialization import CrossRegionalSource
-from .types.policytagmanagerserialization import ExportTaxonomiesRequest
-from .types.policytagmanagerserialization import ExportTaxonomiesResponse
-from .types.policytagmanagerserialization import ImportTaxonomiesRequest
-from .types.policytagmanagerserialization import ImportTaxonomiesResponse
-from .types.policytagmanagerserialization import InlineSource
-from .types.policytagmanagerserialization import ReplaceTaxonomyRequest
-from .types.policytagmanagerserialization import SerializedPolicyTag
-from .types.policytagmanagerserialization import SerializedTaxonomy
-from .types.schema import ColumnSchema
-from .types.schema import Schema
-from .types.search import SearchCatalogResult
-from .types.search import SearchResultType
-from .types.table_spec import BigQueryDateShardedSpec
-from .types.table_spec import BigQueryTableSpec
-from .types.table_spec import TableSpec
-from .types.table_spec import ViewSpec
-from .types.table_spec import TableSourceType
-from .types.tags import FieldType
-from .types.tags import Tag
-from .types.tags import TagField
-from .types.tags import TagTemplate
-from .types.tags import TagTemplateField
+from .types.policytagmanager import (
+    CreatePolicyTagRequest,
+    CreateTaxonomyRequest,
+    DeletePolicyTagRequest,
+    DeleteTaxonomyRequest,
+    GetPolicyTagRequest,
+    GetTaxonomyRequest,
+    ListPolicyTagsRequest,
+    ListPolicyTagsResponse,
+    ListTaxonomiesRequest,
+    ListTaxonomiesResponse,
+    PolicyTag,
+    Taxonomy,
+    UpdatePolicyTagRequest,
+    UpdateTaxonomyRequest,
+)
+from .types.policytagmanagerserialization import (
+    CrossRegionalSource,
+    ExportTaxonomiesRequest,
+    ExportTaxonomiesResponse,
+    ImportTaxonomiesRequest,
+    ImportTaxonomiesResponse,
+    InlineSource,
+    ReplaceTaxonomyRequest,
+    SerializedPolicyTag,
+    SerializedTaxonomy,
+)
+from .types.schema import ColumnSchema, Schema
+from .types.search import SearchCatalogResult, SearchResultType
+from .types.table_spec import (
+    BigQueryDateShardedSpec,
+    BigQueryTableSpec,
+    TableSourceType,
+    TableSpec,
+    ViewSpec,
+)
+from .types.tags import FieldType, Tag, TagField, TagTemplate, TagTemplateField
 from .types.timestamps import SystemTimestamps
-from .types.usage import UsageSignal
-from .types.usage import UsageStats
+from .types.usage import UsageSignal, UsageStats
 
 __all__ = (
     "DataCatalogAsyncClient",

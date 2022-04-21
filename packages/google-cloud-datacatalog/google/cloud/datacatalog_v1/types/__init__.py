@@ -18,14 +18,8 @@ from .bigquery import (
     BigQueryRoutineSpec,
     CloudSqlBigQueryConnectionSpec,
 )
-from .common import (
-    PersonalDetails,
-    IntegratedSystem,
-)
-from .data_source import (
-    DataSource,
-    StorageProperties,
-)
+from .common import IntegratedSystem, PersonalDetails
+from .data_source import DataSource, StorageProperties
 from .datacatalog import (
     BusinessContext,
     Contacts,
@@ -44,6 +38,7 @@ from .datacatalog import (
     Entry,
     EntryGroup,
     EntryOverview,
+    EntryType,
     FilesetSpec,
     GetEntryGroupRequest,
     GetEntryRequest,
@@ -71,7 +66,6 @@ from .datacatalog import (
     UpdateTagRequest,
     UpdateTagTemplateFieldRequest,
     UpdateTagTemplateRequest,
-    EntryType,
 )
 from .dataplex_spec import (
     DataplexExternalTable,
@@ -79,13 +73,8 @@ from .dataplex_spec import (
     DataplexSpec,
     DataplexTableSpec,
 )
-from .gcs_fileset_spec import (
-    GcsFilesetSpec,
-    GcsFileSpec,
-)
-from .physical_schema import (
-    PhysicalSchema,
-)
+from .gcs_fileset_spec import GcsFilesetSpec, GcsFileSpec
+from .physical_schema import PhysicalSchema
 from .policytagmanager import (
     CreatePolicyTagRequest,
     CreateTaxonomyRequest,
@@ -113,35 +102,18 @@ from .policytagmanagerserialization import (
     SerializedPolicyTag,
     SerializedTaxonomy,
 )
-from .schema import (
-    ColumnSchema,
-    Schema,
-)
-from .search import (
-    SearchCatalogResult,
-    SearchResultType,
-)
+from .schema import ColumnSchema, Schema
+from .search import SearchCatalogResult, SearchResultType
 from .table_spec import (
     BigQueryDateShardedSpec,
     BigQueryTableSpec,
+    TableSourceType,
     TableSpec,
     ViewSpec,
-    TableSourceType,
 )
-from .tags import (
-    FieldType,
-    Tag,
-    TagField,
-    TagTemplate,
-    TagTemplateField,
-)
-from .timestamps import (
-    SystemTimestamps,
-)
-from .usage import (
-    UsageSignal,
-    UsageStats,
-)
+from .tags import FieldType, Tag, TagField, TagTemplate, TagTemplateField
+from .timestamps import SystemTimestamps
+from .usage import UsageSignal, UsageStats
 
 __all__ = (
     "BigQueryConnectionSpec",

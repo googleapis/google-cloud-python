@@ -20,7 +20,6 @@ from .base import PolicyTagManagerTransport
 from .grpc import PolicyTagManagerGrpcTransport
 from .grpc_asyncio import PolicyTagManagerGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[PolicyTagManagerTransport]]
 _transport_registry["grpc"] = PolicyTagManagerGrpcTransport
