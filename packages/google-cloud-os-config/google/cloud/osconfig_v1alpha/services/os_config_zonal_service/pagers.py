@@ -18,17 +18,19 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Callable,
+    Iterator,
+    Optional,
     Sequence,
     Tuple,
-    Optional,
-    Iterator,
 )
 
-from google.cloud.osconfig_v1alpha.types import instance_os_policies_compliance
-from google.cloud.osconfig_v1alpha.types import inventory
-from google.cloud.osconfig_v1alpha.types import os_policy_assignment_reports
-from google.cloud.osconfig_v1alpha.types import os_policy_assignments
-from google.cloud.osconfig_v1alpha.types import vulnerability
+from google.cloud.osconfig_v1alpha.types import (
+    instance_os_policies_compliance,
+    inventory,
+    os_policy_assignment_reports,
+    os_policy_assignments,
+    vulnerability,
+)
 
 
 class ListOSPolicyAssignmentsPager:

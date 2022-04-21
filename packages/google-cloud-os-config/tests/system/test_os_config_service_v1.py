@@ -15,10 +15,10 @@
 import os
 import uuid
 
-from google.cloud.osconfig_v1.services.os_config_service import OsConfigServiceClient
-from google.cloud.osconfig_v1.types import patch_deployments
-from google.cloud.osconfig_v1.types import patch_jobs
 from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
+
+from google.cloud.osconfig_v1.services.os_config_service import OsConfigServiceClient
+from google.cloud.osconfig_v1.types import patch_deployments, patch_jobs
 
 
 class TestOsConfigServiceV1(object):

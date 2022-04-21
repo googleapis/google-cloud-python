@@ -17,8 +17,8 @@
 
 import io
 import os
-import setuptools  # type: ignore
 
+import setuptools  # type: ignore
 
 # Package metadata.
 

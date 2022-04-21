@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import OsConfigServiceClient
 from .async_client import OsConfigServiceAsyncClient
+from .client import OsConfigServiceClient
 
 __all__ = (
     "OsConfigServiceClient",

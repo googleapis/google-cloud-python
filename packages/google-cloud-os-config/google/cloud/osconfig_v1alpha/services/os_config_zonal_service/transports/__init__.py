@@ -20,7 +20,6 @@ from .base import OsConfigZonalServiceTransport
 from .grpc import OsConfigZonalServiceGrpcTransport
 from .grpc_asyncio import OsConfigZonalServiceGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = (
     OrderedDict()

@@ -18,14 +18,13 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Callable,
+    Iterator,
+    Optional,
     Sequence,
     Tuple,
-    Optional,
-    Iterator,
 )
 
-from google.cloud.osconfig_v1.types import patch_deployments
-from google.cloud.osconfig_v1.types import patch_jobs
+from google.cloud.osconfig_v1.types import patch_deployments, patch_jobs
 
 
 class ListPatchJobsPager:

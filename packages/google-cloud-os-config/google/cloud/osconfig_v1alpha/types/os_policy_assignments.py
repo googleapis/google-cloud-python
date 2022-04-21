@@ -13,14 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import proto  # type: ignore
-
-from google.cloud.osconfig_v1alpha.types import os_policy
-from google.cloud.osconfig_v1alpha.types import osconfig_common
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
+import proto  # type: ignore
 
+from google.cloud.osconfig_v1alpha.types import os_policy, osconfig_common
 
 __protobuf__ = proto.module(
     package="google.cloud.osconfig.v1alpha",

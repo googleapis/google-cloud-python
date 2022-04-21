@@ -14,9 +14,9 @@
 # limitations under the License.
 #
 from .config_common import (
+    OSPolicyComplianceState,
     OSPolicyResourceCompliance,
     OSPolicyResourceConfigStep,
-    OSPolicyComplianceState,
 )
 from .instance_os_policies_compliance import (
     GetInstanceOSPoliciesComplianceRequest,
@@ -27,13 +27,11 @@ from .instance_os_policies_compliance import (
 from .inventory import (
     GetInventoryRequest,
     Inventory,
+    InventoryView,
     ListInventoriesRequest,
     ListInventoriesResponse,
-    InventoryView,
 )
-from .os_policy import (
-    OSPolicy,
-)
+from .os_policy import OSPolicy
 from .os_policy_assignment_reports import (
     GetOSPolicyAssignmentReportRequest,
     ListOSPolicyAssignmentReportsRequest,
@@ -52,9 +50,7 @@ from .os_policy_assignments import (
     OSPolicyAssignmentOperationMetadata,
     UpdateOSPolicyAssignmentRequest,
 )
-from .osconfig_common import (
-    FixedOrPercent,
-)
+from .osconfig_common import FixedOrPercent
 from .vulnerability import (
     CVSSv3,
     GetVulnerabilityReportRequest,

@@ -16,13 +16,11 @@
 from .inventory import (
     GetInventoryRequest,
     Inventory,
+    InventoryView,
     ListInventoriesRequest,
     ListInventoriesResponse,
-    InventoryView,
 )
-from .os_policy import (
-    OSPolicy,
-)
+from .os_policy import OSPolicy
 from .os_policy_assignment_reports import (
     GetOSPolicyAssignmentReportRequest,
     ListOSPolicyAssignmentReportsRequest,
@@ -41,9 +39,7 @@ from .os_policy_assignments import (
     OSPolicyAssignmentOperationMetadata,
     UpdateOSPolicyAssignmentRequest,
 )
-from .osconfig_common import (
-    FixedOrPercent,
-)
+from .osconfig_common import FixedOrPercent
 from .patch_deployments import (
     CreatePatchDeploymentRequest,
     DeletePatchDeploymentRequest,
