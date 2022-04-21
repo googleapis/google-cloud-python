@@ -20,7 +20,6 @@ from .base import CloudRedisTransport
 from .grpc import CloudRedisGrpcTransport
 from .grpc_asyncio import CloudRedisGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[CloudRedisTransport]]
 _transport_registry["grpc"] = CloudRedisGrpcTransport
