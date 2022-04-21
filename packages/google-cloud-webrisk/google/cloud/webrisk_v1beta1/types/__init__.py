@@ -14,6 +14,7 @@
 # limitations under the License.
 #
 from .webrisk import (
+    CompressionType,
     ComputeThreatListDiffRequest,
     ComputeThreatListDiffResponse,
     RawHashes,
@@ -25,7 +26,6 @@ from .webrisk import (
     SearchUrisResponse,
     ThreatEntryAdditions,
     ThreatEntryRemovals,
-    CompressionType,
     ThreatType,
 )
 

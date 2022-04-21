@@ -20,7 +20,6 @@ from .base import WebRiskServiceV1Beta1Transport
 from .grpc import WebRiskServiceV1Beta1GrpcTransport
 from .grpc_asyncio import WebRiskServiceV1Beta1GrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = (
     OrderedDict()

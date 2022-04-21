@@ -14,22 +14,25 @@
 # limitations under the License.
 #
 
-from .services.web_risk_service_v1_beta1 import WebRiskServiceV1Beta1Client
-from .services.web_risk_service_v1_beta1 import WebRiskServiceV1Beta1AsyncClient
-
-from .types.webrisk import ComputeThreatListDiffRequest
-from .types.webrisk import ComputeThreatListDiffResponse
-from .types.webrisk import RawHashes
-from .types.webrisk import RawIndices
-from .types.webrisk import RiceDeltaEncoding
-from .types.webrisk import SearchHashesRequest
-from .types.webrisk import SearchHashesResponse
-from .types.webrisk import SearchUrisRequest
-from .types.webrisk import SearchUrisResponse
-from .types.webrisk import ThreatEntryAdditions
-from .types.webrisk import ThreatEntryRemovals
-from .types.webrisk import CompressionType
-from .types.webrisk import ThreatType
+from .services.web_risk_service_v1_beta1 import (
+    WebRiskServiceV1Beta1AsyncClient,
+    WebRiskServiceV1Beta1Client,
+)
+from .types.webrisk import (
+    CompressionType,
+    ComputeThreatListDiffRequest,
+    ComputeThreatListDiffResponse,
+    RawHashes,
+    RawIndices,
+    RiceDeltaEncoding,
+    SearchHashesRequest,
+    SearchHashesResponse,
+    SearchUrisRequest,
+    SearchUrisResponse,
+    ThreatEntryAdditions,
+    ThreatEntryRemovals,
+    ThreatType,
+)
 
 __all__ = (
     "WebRiskServiceV1Beta1AsyncClient",

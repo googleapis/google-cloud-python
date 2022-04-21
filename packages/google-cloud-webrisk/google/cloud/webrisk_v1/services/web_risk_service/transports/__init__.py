@@ -20,7 +20,6 @@ from .base import WebRiskServiceTransport
 from .grpc import WebRiskServiceGrpcTransport
 from .grpc_asyncio import WebRiskServiceGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[WebRiskServiceTransport]]
 _transport_registry["grpc"] = WebRiskServiceGrpcTransport

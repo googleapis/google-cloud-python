@@ -14,24 +14,24 @@
 # limitations under the License.
 #
 
-from .services.web_risk_service import WebRiskServiceClient
-from .services.web_risk_service import WebRiskServiceAsyncClient
-
-from .types.webrisk import ComputeThreatListDiffRequest
-from .types.webrisk import ComputeThreatListDiffResponse
-from .types.webrisk import CreateSubmissionRequest
-from .types.webrisk import RawHashes
-from .types.webrisk import RawIndices
-from .types.webrisk import RiceDeltaEncoding
-from .types.webrisk import SearchHashesRequest
-from .types.webrisk import SearchHashesResponse
-from .types.webrisk import SearchUrisRequest
-from .types.webrisk import SearchUrisResponse
-from .types.webrisk import Submission
-from .types.webrisk import ThreatEntryAdditions
-from .types.webrisk import ThreatEntryRemovals
-from .types.webrisk import CompressionType
-from .types.webrisk import ThreatType
+from .services.web_risk_service import WebRiskServiceAsyncClient, WebRiskServiceClient
+from .types.webrisk import (
+    CompressionType,
+    ComputeThreatListDiffRequest,
+    ComputeThreatListDiffResponse,
+    CreateSubmissionRequest,
+    RawHashes,
+    RawIndices,
+    RiceDeltaEncoding,
+    SearchHashesRequest,
+    SearchHashesResponse,
+    SearchUrisRequest,
+    SearchUrisResponse,
+    Submission,
+    ThreatEntryAdditions,
+    ThreatEntryRemovals,
+    ThreatType,
+)
 
 __all__ = (
     "WebRiskServiceAsyncClient",
