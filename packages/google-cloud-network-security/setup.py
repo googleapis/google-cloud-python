@@ -19,7 +19,6 @@ import os
 
 import setuptools
 
-
 name = "google-cloud-network-security"
 description = "Network Security API client library"
 version = "0.4.1"

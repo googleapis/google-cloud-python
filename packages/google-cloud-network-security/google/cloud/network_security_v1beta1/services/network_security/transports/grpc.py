@@ -13,32 +13,30 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import warnings
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
+import warnings
 
-from google.api_core import grpc_helpers
-from google.api_core import operations_v1
-from google.api_core import gapic_v1
+from google.api_core import gapic_v1, grpc_helpers, operations_v1
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-
+from google.longrunning import operations_pb2  # type: ignore
 import grpc  # type: ignore
 
-from google.cloud.network_security_v1beta1.types import authorization_policy
 from google.cloud.network_security_v1beta1.types import (
     authorization_policy as gcn_authorization_policy,
 )
-from google.cloud.network_security_v1beta1.types import client_tls_policy
 from google.cloud.network_security_v1beta1.types import (
     client_tls_policy as gcn_client_tls_policy,
 )
-from google.cloud.network_security_v1beta1.types import server_tls_policy
 from google.cloud.network_security_v1beta1.types import (
     server_tls_policy as gcn_server_tls_policy,
 )
-from google.longrunning import operations_pb2  # type: ignore
-from .base import NetworkSecurityTransport, DEFAULT_CLIENT_INFO
+from google.cloud.network_security_v1beta1.types import authorization_policy
+from google.cloud.network_security_v1beta1.types import client_tls_policy
+from google.cloud.network_security_v1beta1.types import server_tls_policy
+
+from .base import DEFAULT_CLIENT_INFO, NetworkSecurityTransport
 
 
 class NetworkSecurityGrpcTransport(NetworkSecurityTransport):

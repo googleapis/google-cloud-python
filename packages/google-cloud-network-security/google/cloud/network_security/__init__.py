@@ -14,81 +14,46 @@
 # limitations under the License.
 #
 
-from google.cloud.network_security_v1beta1.services.network_security.client import (
-    NetworkSecurityClient,
-)
 from google.cloud.network_security_v1beta1.services.network_security.async_client import (
     NetworkSecurityAsyncClient,
 )
-
+from google.cloud.network_security_v1beta1.services.network_security.client import (
+    NetworkSecurityClient,
+)
 from google.cloud.network_security_v1beta1.types.authorization_policy import (
     AuthorizationPolicy,
-)
-from google.cloud.network_security_v1beta1.types.authorization_policy import (
     CreateAuthorizationPolicyRequest,
-)
-from google.cloud.network_security_v1beta1.types.authorization_policy import (
     DeleteAuthorizationPolicyRequest,
-)
-from google.cloud.network_security_v1beta1.types.authorization_policy import (
     GetAuthorizationPolicyRequest,
-)
-from google.cloud.network_security_v1beta1.types.authorization_policy import (
     ListAuthorizationPoliciesRequest,
-)
-from google.cloud.network_security_v1beta1.types.authorization_policy import (
     ListAuthorizationPoliciesResponse,
-)
-from google.cloud.network_security_v1beta1.types.authorization_policy import (
     UpdateAuthorizationPolicyRequest,
 )
 from google.cloud.network_security_v1beta1.types.client_tls_policy import (
     ClientTlsPolicy,
-)
-from google.cloud.network_security_v1beta1.types.client_tls_policy import (
     CreateClientTlsPolicyRequest,
-)
-from google.cloud.network_security_v1beta1.types.client_tls_policy import (
     DeleteClientTlsPolicyRequest,
-)
-from google.cloud.network_security_v1beta1.types.client_tls_policy import (
     GetClientTlsPolicyRequest,
-)
-from google.cloud.network_security_v1beta1.types.client_tls_policy import (
     ListClientTlsPoliciesRequest,
-)
-from google.cloud.network_security_v1beta1.types.client_tls_policy import (
     ListClientTlsPoliciesResponse,
-)
-from google.cloud.network_security_v1beta1.types.client_tls_policy import (
     UpdateClientTlsPolicyRequest,
 )
 from google.cloud.network_security_v1beta1.types.common import OperationMetadata
 from google.cloud.network_security_v1beta1.types.server_tls_policy import (
     CreateServerTlsPolicyRequest,
-)
-from google.cloud.network_security_v1beta1.types.server_tls_policy import (
     DeleteServerTlsPolicyRequest,
-)
-from google.cloud.network_security_v1beta1.types.server_tls_policy import (
     GetServerTlsPolicyRequest,
-)
-from google.cloud.network_security_v1beta1.types.server_tls_policy import (
     ListServerTlsPoliciesRequest,
-)
-from google.cloud.network_security_v1beta1.types.server_tls_policy import (
     ListServerTlsPoliciesResponse,
-)
-from google.cloud.network_security_v1beta1.types.server_tls_policy import (
     ServerTlsPolicy,
-)
-from google.cloud.network_security_v1beta1.types.server_tls_policy import (
     UpdateServerTlsPolicyRequest,
 )
-from google.cloud.network_security_v1beta1.types.tls import CertificateProvider
-from google.cloud.network_security_v1beta1.types.tls import CertificateProviderInstance
-from google.cloud.network_security_v1beta1.types.tls import GrpcEndpoint
-from google.cloud.network_security_v1beta1.types.tls import ValidationCA
+from google.cloud.network_security_v1beta1.types.tls import (
+    CertificateProvider,
+    CertificateProviderInstance,
+    GrpcEndpoint,
+    ValidationCA,
+)
 
 __all__ = (
     "NetworkSecurityClient",
