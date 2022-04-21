@@ -20,7 +20,6 @@ from .base import ReservationServiceTransport
 from .grpc import ReservationServiceGrpcTransport
 from .grpc_asyncio import ReservationServiceGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = (
     OrderedDict()

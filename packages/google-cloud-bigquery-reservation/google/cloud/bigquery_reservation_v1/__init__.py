@@ -14,41 +14,44 @@
 # limitations under the License.
 #
 
-from .services.reservation_service import ReservationServiceClient
-from .services.reservation_service import ReservationServiceAsyncClient
-
-from .types.reservation import Assignment
-from .types.reservation import BiReservation
-from .types.reservation import CapacityCommitment
-from .types.reservation import CreateAssignmentRequest
-from .types.reservation import CreateCapacityCommitmentRequest
-from .types.reservation import CreateReservationRequest
-from .types.reservation import DeleteAssignmentRequest
-from .types.reservation import DeleteCapacityCommitmentRequest
-from .types.reservation import DeleteReservationRequest
-from .types.reservation import GetBiReservationRequest
-from .types.reservation import GetCapacityCommitmentRequest
-from .types.reservation import GetReservationRequest
-from .types.reservation import ListAssignmentsRequest
-from .types.reservation import ListAssignmentsResponse
-from .types.reservation import ListCapacityCommitmentsRequest
-from .types.reservation import ListCapacityCommitmentsResponse
-from .types.reservation import ListReservationsRequest
-from .types.reservation import ListReservationsResponse
-from .types.reservation import MergeCapacityCommitmentsRequest
-from .types.reservation import MoveAssignmentRequest
-from .types.reservation import Reservation
-from .types.reservation import SearchAllAssignmentsRequest
-from .types.reservation import SearchAllAssignmentsResponse
-from .types.reservation import SearchAssignmentsRequest
-from .types.reservation import SearchAssignmentsResponse
-from .types.reservation import SplitCapacityCommitmentRequest
-from .types.reservation import SplitCapacityCommitmentResponse
-from .types.reservation import TableReference
-from .types.reservation import UpdateAssignmentRequest
-from .types.reservation import UpdateBiReservationRequest
-from .types.reservation import UpdateCapacityCommitmentRequest
-from .types.reservation import UpdateReservationRequest
+from .services.reservation_service import (
+    ReservationServiceAsyncClient,
+    ReservationServiceClient,
+)
+from .types.reservation import (
+    Assignment,
+    BiReservation,
+    CapacityCommitment,
+    CreateAssignmentRequest,
+    CreateCapacityCommitmentRequest,
+    CreateReservationRequest,
+    DeleteAssignmentRequest,
+    DeleteCapacityCommitmentRequest,
+    DeleteReservationRequest,
+    GetBiReservationRequest,
+    GetCapacityCommitmentRequest,
+    GetReservationRequest,
+    ListAssignmentsRequest,
+    ListAssignmentsResponse,
+    ListCapacityCommitmentsRequest,
+    ListCapacityCommitmentsResponse,
+    ListReservationsRequest,
+    ListReservationsResponse,
+    MergeCapacityCommitmentsRequest,
+    MoveAssignmentRequest,
+    Reservation,
+    SearchAllAssignmentsRequest,
+    SearchAllAssignmentsResponse,
+    SearchAssignmentsRequest,
+    SearchAssignmentsResponse,
+    SplitCapacityCommitmentRequest,
+    SplitCapacityCommitmentResponse,
+    TableReference,
+    UpdateAssignmentRequest,
+    UpdateBiReservationRequest,
+    UpdateCapacityCommitmentRequest,
+    UpdateReservationRequest,
+)
 
 __all__ = (
     "ReservationServiceAsyncClient",

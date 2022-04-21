@@ -17,30 +17,32 @@ from collections import OrderedDict
 import functools
 import re
 from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
 import warnings
 
-from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
+from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
-from google.cloud.bigquery_reservation_v1.services.reservation_service import pagers
-from google.cloud.bigquery_reservation_v1.types import reservation
-from google.cloud.bigquery_reservation_v1.types import reservation as gcbr_reservation
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
-from .transports.base import ReservationServiceTransport, DEFAULT_CLIENT_INFO
-from .transports.grpc_asyncio import ReservationServiceGrpcAsyncIOTransport
+
+from google.cloud.bigquery_reservation_v1.services.reservation_service import pagers
+from google.cloud.bigquery_reservation_v1.types import reservation as gcbr_reservation
+from google.cloud.bigquery_reservation_v1.types import reservation
+
 from .client import ReservationServiceClient
+from .transports.base import DEFAULT_CLIENT_INFO, ReservationServiceTransport
+from .transports.grpc_asyncio import ReservationServiceGrpcAsyncIOTransport
 
 
 class ReservationServiceAsyncClient:
