@@ -13,22 +13,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import warnings
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
+import warnings
 
-from google.api_core import gapic_v1
-from google.api_core import grpc_helpers_async
+from google.api_core import gapic_v1, grpc_helpers_async
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-
+from google.protobuf import empty_pb2  # type: ignore
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
 from google.cloud.talent_v4beta1.types import company
 from google.cloud.talent_v4beta1.types import company as gct_company
 from google.cloud.talent_v4beta1.types import company_service
-from google.protobuf import empty_pb2  # type: ignore
-from .base import CompanyServiceTransport, DEFAULT_CLIENT_INFO
+
+from .base import DEFAULT_CLIENT_INFO, CompanyServiceTransport
 from .grpc import CompanyServiceGrpcTransport
 
 

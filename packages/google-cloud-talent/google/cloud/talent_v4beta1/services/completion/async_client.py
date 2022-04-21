@@ -17,25 +17,25 @@ from collections import OrderedDict
 import functools
 import re
 from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
 
-from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
+from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
-from google.cloud.talent_v4beta1.types import common
-from google.cloud.talent_v4beta1.types import completion_service
-from .transports.base import CompletionTransport, DEFAULT_CLIENT_INFO
-from .transports.grpc_asyncio import CompletionGrpcAsyncIOTransport
+from google.cloud.talent_v4beta1.types import common, completion_service
+
 from .client import CompletionClient
+from .transports.base import DEFAULT_CLIENT_INFO, CompletionTransport
+from .transports.grpc_asyncio import CompletionGrpcAsyncIOTransport
 
 
 class CompletionAsyncClient:

@@ -13,16 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import proto  # type: ignore
-
-from google.cloud.talent_v4beta1.types import common
-from google.cloud.talent_v4beta1.types import filters
-from google.cloud.talent_v4beta1.types import histogram
-from google.cloud.talent_v4beta1.types import job as gct_job
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
+import proto  # type: ignore
 
+from google.cloud.talent_v4beta1.types import common, filters, histogram
+from google.cloud.talent_v4beta1.types import job as gct_job
 
 __protobuf__ = proto.module(
     package="google.cloud.talent.v4beta1",

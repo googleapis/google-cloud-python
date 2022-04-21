@@ -13,13 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import proto  # type: ignore
-
-from google.cloud.talent_v4.types import common
 from google.protobuf import duration_pb2  # type: ignore
 from google.type import latlng_pb2  # type: ignore
 from google.type import timeofday_pb2  # type: ignore
+import proto  # type: ignore
 
+from google.cloud.talent_v4.types import common
 
 __protobuf__ = proto.module(
     package="google.cloud.talent.v4",

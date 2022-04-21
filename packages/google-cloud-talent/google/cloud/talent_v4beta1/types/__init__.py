@@ -13,9 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .application import (
-    Application,
-)
+from .application import Application
 from .application_service import (
     CreateApplicationRequest,
     DeleteApplicationRequest,
@@ -25,37 +23,35 @@ from .application_service import (
     UpdateApplicationRequest,
 )
 from .common import (
+    AvailabilitySignalType,
     BatchOperationMetadata,
     Certification,
+    CommuteMethod,
+    CompanySize,
     CompensationInfo,
+    ContactInfoUsage,
     CustomAttribute,
+    DegreeType,
     DeviceInfo,
+    EmploymentType,
+    HtmlSanitization,
     Interview,
+    JobBenefit,
+    JobCategory,
+    JobLevel,
     Location,
+    Outcome,
+    PostingRegion,
     Rating,
     RequestMetadata,
     ResponseMetadata,
     Skill,
+    SkillProficiencyLevel,
     SpellingCorrection,
     TimestampRange,
-    AvailabilitySignalType,
-    CommuteMethod,
-    CompanySize,
-    ContactInfoUsage,
-    DegreeType,
-    EmploymentType,
-    HtmlSanitization,
-    JobBenefit,
-    JobCategory,
-    JobLevel,
-    Outcome,
-    PostingRegion,
-    SkillProficiencyLevel,
     Visibility,
 )
-from .company import (
-    Company,
-)
+from .company import Company
 from .company_service import (
     CreateCompanyRequest,
     DeleteCompanyRequest,
@@ -64,18 +60,9 @@ from .company_service import (
     ListCompaniesResponse,
     UpdateCompanyRequest,
 )
-from .completion_service import (
-    CompleteQueryRequest,
-    CompleteQueryResponse,
-)
-from .event import (
-    ClientEvent,
-    JobEvent,
-    ProfileEvent,
-)
-from .event_service import (
-    CreateClientEventRequest,
-)
+from .completion_service import CompleteQueryRequest, CompleteQueryResponse
+from .event import ClientEvent, JobEvent, ProfileEvent
+from .event_service import CreateClientEventRequest
 from .filters import (
     ApplicationDateFilter,
     ApplicationJobFilter,
@@ -95,13 +82,8 @@ from .filters import (
     TimeFilter,
     WorkExperienceFilter,
 )
-from .histogram import (
-    HistogramQuery,
-    HistogramQueryResult,
-)
-from .job import (
-    Job,
-)
+from .histogram import HistogramQuery, HistogramQueryResult
+from .job import Job
 from .job_service import (
     BatchCreateJobsRequest,
     BatchDeleteJobsRequest,
@@ -110,12 +92,12 @@ from .job_service import (
     DeleteJobRequest,
     GetJobRequest,
     JobOperationResult,
+    JobView,
     ListJobsRequest,
     ListJobsResponse,
     SearchJobsRequest,
     SearchJobsResponse,
     UpdateJobRequest,
-    JobView,
 )
 from .profile import (
     Activity,
@@ -145,9 +127,7 @@ from .profile_service import (
     SummarizedProfile,
     UpdateProfileRequest,
 )
-from .tenant import (
-    Tenant,
-)
+from .tenant import Tenant
 from .tenant_service import (
     CreateTenantRequest,
     DeleteTenantRequest,

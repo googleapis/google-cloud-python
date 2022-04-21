@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import CompletionClient
 from .async_client import CompletionAsyncClient
+from .client import CompletionClient
 
 __all__ = (
     "CompletionClient",

@@ -18,15 +18,13 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Callable,
+    Iterator,
+    Optional,
     Sequence,
     Tuple,
-    Optional,
-    Iterator,
 )
 
-from google.cloud.talent_v4beta1.types import histogram
-from google.cloud.talent_v4beta1.types import profile
-from google.cloud.talent_v4beta1.types import profile_service
+from google.cloud.talent_v4beta1.types import histogram, profile, profile_service
 
 
 class ListProfilesPager:

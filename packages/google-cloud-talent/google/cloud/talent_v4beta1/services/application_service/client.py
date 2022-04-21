@@ -17,32 +17,33 @@ from collections import OrderedDict
 import os
 import re
 from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
-from google.cloud.talent_v4beta1.services.application_service import pagers
-from google.cloud.talent_v4beta1.types import application
-from google.cloud.talent_v4beta1.types import application as gct_application
-from google.cloud.talent_v4beta1.types import application_service
-from google.cloud.talent_v4beta1.types import common
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.protobuf import wrappers_pb2  # type: ignore
 from google.type import date_pb2  # type: ignore
-from .transports.base import ApplicationServiceTransport, DEFAULT_CLIENT_INFO
+
+from google.cloud.talent_v4beta1.services.application_service import pagers
+from google.cloud.talent_v4beta1.types import application
+from google.cloud.talent_v4beta1.types import application as gct_application
+from google.cloud.talent_v4beta1.types import application_service, common
+
+from .transports.base import DEFAULT_CLIENT_INFO, ApplicationServiceTransport
 from .transports.grpc import ApplicationServiceGrpcTransport
 from .transports.grpc_asyncio import ApplicationServiceGrpcAsyncIOTransport
 

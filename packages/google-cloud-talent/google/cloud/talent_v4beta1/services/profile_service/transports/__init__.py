@@ -20,7 +20,6 @@ from .base import ProfileServiceTransport
 from .grpc import ProfileServiceGrpcTransport
 from .grpc_asyncio import ProfileServiceGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[ProfileServiceTransport]]
 _transport_registry["grpc"] = ProfileServiceGrpcTransport

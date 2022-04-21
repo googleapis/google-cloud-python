@@ -18,14 +18,13 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Callable,
+    Iterator,
+    Optional,
     Sequence,
     Tuple,
-    Optional,
-    Iterator,
 )
 
-from google.cloud.talent_v4beta1.types import tenant
-from google.cloud.talent_v4beta1.types import tenant_service
+from google.cloud.talent_v4beta1.types import tenant, tenant_service
 
 
 class ListTenantsPager:

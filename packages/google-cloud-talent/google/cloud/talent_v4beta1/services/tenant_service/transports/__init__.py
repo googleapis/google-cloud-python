@@ -20,7 +20,6 @@ from .base import TenantServiceTransport
 from .grpc import TenantServiceGrpcTransport
 from .grpc_asyncio import TenantServiceGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[TenantServiceTransport]]
 _transport_registry["grpc"] = TenantServiceGrpcTransport

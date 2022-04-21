@@ -17,14 +17,14 @@ from collections import OrderedDict
 import functools
 import re
 from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
 
-from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
+from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -33,15 +33,17 @@ except AttributeError:  # pragma: NO COVER
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
+
 from google.cloud.talent_v4beta1.services.job_service import pagers
 from google.cloud.talent_v4beta1.types import common
 from google.cloud.talent_v4beta1.types import job
 from google.cloud.talent_v4beta1.types import job as gct_job
 from google.cloud.talent_v4beta1.types import job_service
-from google.protobuf import timestamp_pb2  # type: ignore
-from .transports.base import JobServiceTransport, DEFAULT_CLIENT_INFO
-from .transports.grpc_asyncio import JobServiceGrpcAsyncIOTransport
+
 from .client import JobServiceClient
+from .transports.base import DEFAULT_CLIENT_INFO, JobServiceTransport
+from .transports.grpc_asyncio import JobServiceGrpcAsyncIOTransport
 
 
 class JobServiceAsyncClient:

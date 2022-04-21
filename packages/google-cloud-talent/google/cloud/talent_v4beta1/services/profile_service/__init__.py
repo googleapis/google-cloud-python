@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import ProfileServiceClient
 from .async_client import ProfileServiceAsyncClient
+from .client import ProfileServiceClient
 
 __all__ = (
     "ProfileServiceClient",

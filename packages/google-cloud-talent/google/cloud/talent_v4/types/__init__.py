@@ -15,28 +15,26 @@
 #
 from .common import (
     BatchOperationMetadata,
-    CompensationInfo,
-    CustomAttribute,
-    DeviceInfo,
-    Location,
-    RequestMetadata,
-    ResponseMetadata,
-    SpellingCorrection,
-    TimestampRange,
     CommuteMethod,
     CompanySize,
+    CompensationInfo,
+    CustomAttribute,
     DegreeType,
+    DeviceInfo,
     EmploymentType,
     HtmlSanitization,
     JobBenefit,
     JobCategory,
     JobLevel,
+    Location,
     PostingRegion,
+    RequestMetadata,
+    ResponseMetadata,
+    SpellingCorrection,
+    TimestampRange,
     Visibility,
 )
-from .company import (
-    Company,
-)
+from .company import Company
 from .company_service import (
     CreateCompanyRequest,
     DeleteCompanyRequest,
@@ -45,30 +43,12 @@ from .company_service import (
     ListCompaniesResponse,
     UpdateCompanyRequest,
 )
-from .completion_service import (
-    CompleteQueryRequest,
-    CompleteQueryResponse,
-)
-from .event import (
-    ClientEvent,
-    JobEvent,
-)
-from .event_service import (
-    CreateClientEventRequest,
-)
-from .filters import (
-    CommuteFilter,
-    CompensationFilter,
-    JobQuery,
-    LocationFilter,
-)
-from .histogram import (
-    HistogramQuery,
-    HistogramQueryResult,
-)
-from .job import (
-    Job,
-)
+from .completion_service import CompleteQueryRequest, CompleteQueryResponse
+from .event import ClientEvent, JobEvent
+from .event_service import CreateClientEventRequest
+from .filters import CommuteFilter, CompensationFilter, JobQuery, LocationFilter
+from .histogram import HistogramQuery, HistogramQueryResult
+from .job import Job
 from .job_service import (
     BatchCreateJobsRequest,
     BatchCreateJobsResponse,
@@ -80,16 +60,14 @@ from .job_service import (
     DeleteJobRequest,
     GetJobRequest,
     JobResult,
+    JobView,
     ListJobsRequest,
     ListJobsResponse,
     SearchJobsRequest,
     SearchJobsResponse,
     UpdateJobRequest,
-    JobView,
 )
-from .tenant import (
-    Tenant,
-)
+from .tenant import Tenant
 from .tenant_service import (
     CreateTenantRequest,
     DeleteTenantRequest,

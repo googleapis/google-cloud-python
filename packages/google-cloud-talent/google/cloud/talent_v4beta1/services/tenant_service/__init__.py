@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import TenantServiceClient
 from .async_client import TenantServiceAsyncClient
+from .client import TenantServiceClient
 
 __all__ = (
     "TenantServiceClient",

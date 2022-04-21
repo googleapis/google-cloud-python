@@ -17,7 +17,6 @@ import proto  # type: ignore
 
 from google.cloud.talent_v4.types import event
 
-
 __protobuf__ = proto.module(
     package="google.cloud.talent.v4",
     manifest={
