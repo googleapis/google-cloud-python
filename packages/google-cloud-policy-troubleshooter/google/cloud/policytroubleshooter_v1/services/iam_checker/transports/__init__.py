@@ -20,7 +20,6 @@ from .base import IamCheckerTransport
 from .grpc import IamCheckerGrpcTransport
 from .grpc_asyncio import IamCheckerGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[IamCheckerTransport]]
 _transport_registry["grpc"] = IamCheckerGrpcTransport

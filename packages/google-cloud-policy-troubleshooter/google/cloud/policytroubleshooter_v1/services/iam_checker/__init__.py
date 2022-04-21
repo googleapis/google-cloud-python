@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import IamCheckerClient
 from .async_client import IamCheckerAsyncClient
+from .client import IamCheckerClient
 
 __all__ = (
     "IamCheckerClient",

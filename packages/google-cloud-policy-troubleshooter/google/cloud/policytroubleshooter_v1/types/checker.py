@@ -17,7 +17,6 @@ import proto  # type: ignore
 
 from google.cloud.policytroubleshooter_v1.types import explanations
 
-
 __protobuf__ = proto.module(
     package="google.cloud.policytroubleshooter.v1",
     manifest={

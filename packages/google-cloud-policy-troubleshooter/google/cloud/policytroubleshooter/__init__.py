@@ -14,24 +14,23 @@
 # limitations under the License.
 #
 
-from google.cloud.policytroubleshooter_v1.services.iam_checker.client import (
-    IamCheckerClient,
-)
 from google.cloud.policytroubleshooter_v1.services.iam_checker.async_client import (
     IamCheckerAsyncClient,
 )
-
+from google.cloud.policytroubleshooter_v1.services.iam_checker.client import (
+    IamCheckerClient,
+)
 from google.cloud.policytroubleshooter_v1.types.checker import (
     TroubleshootIamPolicyRequest,
-)
-from google.cloud.policytroubleshooter_v1.types.checker import (
     TroubleshootIamPolicyResponse,
 )
-from google.cloud.policytroubleshooter_v1.types.explanations import AccessTuple
-from google.cloud.policytroubleshooter_v1.types.explanations import BindingExplanation
-from google.cloud.policytroubleshooter_v1.types.explanations import ExplainedPolicy
-from google.cloud.policytroubleshooter_v1.types.explanations import AccessState
-from google.cloud.policytroubleshooter_v1.types.explanations import HeuristicRelevance
+from google.cloud.policytroubleshooter_v1.types.explanations import (
+    AccessState,
+    AccessTuple,
+    BindingExplanation,
+    ExplainedPolicy,
+    HeuristicRelevance,
+)
 
 __all__ = (
     "IamCheckerClient",
