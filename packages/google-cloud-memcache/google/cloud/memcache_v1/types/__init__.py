@@ -22,10 +22,10 @@ from .cloud_memcache import (
     ListInstancesRequest,
     ListInstancesResponse,
     MemcacheParameters,
+    MemcacheVersion,
     OperationMetadata,
     UpdateInstanceRequest,
     UpdateParametersRequest,
-    MemcacheVersion,
 )
 
 __all__ = (

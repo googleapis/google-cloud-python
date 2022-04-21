@@ -14,23 +14,24 @@
 # limitations under the License.
 #
 
-from google.cloud.memcache_v1.services.cloud_memcache.client import CloudMemcacheClient
 from google.cloud.memcache_v1.services.cloud_memcache.async_client import (
     CloudMemcacheAsyncClient,
 )
-
-from google.cloud.memcache_v1.types.cloud_memcache import ApplyParametersRequest
-from google.cloud.memcache_v1.types.cloud_memcache import CreateInstanceRequest
-from google.cloud.memcache_v1.types.cloud_memcache import DeleteInstanceRequest
-from google.cloud.memcache_v1.types.cloud_memcache import GetInstanceRequest
-from google.cloud.memcache_v1.types.cloud_memcache import Instance
-from google.cloud.memcache_v1.types.cloud_memcache import ListInstancesRequest
-from google.cloud.memcache_v1.types.cloud_memcache import ListInstancesResponse
-from google.cloud.memcache_v1.types.cloud_memcache import MemcacheParameters
-from google.cloud.memcache_v1.types.cloud_memcache import OperationMetadata
-from google.cloud.memcache_v1.types.cloud_memcache import UpdateInstanceRequest
-from google.cloud.memcache_v1.types.cloud_memcache import UpdateParametersRequest
-from google.cloud.memcache_v1.types.cloud_memcache import MemcacheVersion
+from google.cloud.memcache_v1.services.cloud_memcache.client import CloudMemcacheClient
+from google.cloud.memcache_v1.types.cloud_memcache import (
+    ApplyParametersRequest,
+    CreateInstanceRequest,
+    DeleteInstanceRequest,
+    GetInstanceRequest,
+    Instance,
+    ListInstancesRequest,
+    ListInstancesResponse,
+    MemcacheParameters,
+    MemcacheVersion,
+    OperationMetadata,
+    UpdateInstanceRequest,
+    UpdateParametersRequest,
+)
 
 __all__ = (
     "CloudMemcacheClient",

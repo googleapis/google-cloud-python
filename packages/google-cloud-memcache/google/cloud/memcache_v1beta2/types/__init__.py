@@ -24,11 +24,11 @@ from .cloud_memcache import (
     ListInstancesResponse,
     LocationMetadata,
     MemcacheParameters,
+    MemcacheVersion,
     OperationMetadata,
     UpdateInstanceRequest,
     UpdateParametersRequest,
     ZoneMetadata,
-    MemcacheVersion,
 )
 
 __all__ = (

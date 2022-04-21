@@ -14,21 +14,21 @@
 # limitations under the License.
 #
 
-from .services.cloud_memcache import CloudMemcacheClient
-from .services.cloud_memcache import CloudMemcacheAsyncClient
-
-from .types.cloud_memcache import ApplyParametersRequest
-from .types.cloud_memcache import CreateInstanceRequest
-from .types.cloud_memcache import DeleteInstanceRequest
-from .types.cloud_memcache import GetInstanceRequest
-from .types.cloud_memcache import Instance
-from .types.cloud_memcache import ListInstancesRequest
-from .types.cloud_memcache import ListInstancesResponse
-from .types.cloud_memcache import MemcacheParameters
-from .types.cloud_memcache import OperationMetadata
-from .types.cloud_memcache import UpdateInstanceRequest
-from .types.cloud_memcache import UpdateParametersRequest
-from .types.cloud_memcache import MemcacheVersion
+from .services.cloud_memcache import CloudMemcacheAsyncClient, CloudMemcacheClient
+from .types.cloud_memcache import (
+    ApplyParametersRequest,
+    CreateInstanceRequest,
+    DeleteInstanceRequest,
+    GetInstanceRequest,
+    Instance,
+    ListInstancesRequest,
+    ListInstancesResponse,
+    MemcacheParameters,
+    MemcacheVersion,
+    OperationMetadata,
+    UpdateInstanceRequest,
+    UpdateParametersRequest,
+)
 
 __all__ = (
     "CloudMemcacheAsyncClient",

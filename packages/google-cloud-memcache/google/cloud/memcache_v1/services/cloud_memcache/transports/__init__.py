@@ -20,7 +20,6 @@ from .base import CloudMemcacheTransport
 from .grpc import CloudMemcacheGrpcTransport
 from .grpc_asyncio import CloudMemcacheGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[CloudMemcacheTransport]]
 _transport_registry["grpc"] = CloudMemcacheGrpcTransport
