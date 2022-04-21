@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import RecaptchaEnterpriseServiceClient
 from .async_client import RecaptchaEnterpriseServiceAsyncClient
+from .client import RecaptchaEnterpriseServiceClient
 
 __all__ = (
     "RecaptchaEnterpriseServiceClient",

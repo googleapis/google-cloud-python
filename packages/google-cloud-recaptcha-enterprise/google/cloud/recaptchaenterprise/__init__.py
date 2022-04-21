@@ -14,92 +14,47 @@
 # limitations under the License.
 #
 
-from google.cloud.recaptchaenterprise_v1.services.recaptcha_enterprise_service.client import (
-    RecaptchaEnterpriseServiceClient,
-)
 from google.cloud.recaptchaenterprise_v1.services.recaptcha_enterprise_service.async_client import (
     RecaptchaEnterpriseServiceAsyncClient,
 )
-
+from google.cloud.recaptchaenterprise_v1.services.recaptcha_enterprise_service.client import (
+    RecaptchaEnterpriseServiceClient,
+)
 from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import (
     AccountDefenderAssessment,
-)
-from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import (
     AndroidKeySettings,
-)
-from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import (
     AnnotateAssessmentRequest,
-)
-from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import (
     AnnotateAssessmentResponse,
-)
-from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import Assessment
-from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import (
+    Assessment,
     ChallengeMetrics,
-)
-from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import (
     CreateAssessmentRequest,
-)
-from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import (
     CreateKeyRequest,
-)
-from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import (
     DeleteKeyRequest,
-)
-from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import Event
-from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import GetKeyRequest
-from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import (
+    Event,
+    GetKeyRequest,
     GetMetricsRequest,
-)
-from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import IOSKeySettings
-from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import Key
-from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import (
+    IOSKeySettings,
+    Key,
     ListKeysRequest,
-)
-from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import (
     ListKeysResponse,
-)
-from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import (
     ListRelatedAccountGroupMembershipsRequest,
-)
-from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import (
     ListRelatedAccountGroupMembershipsResponse,
-)
-from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import (
     ListRelatedAccountGroupsRequest,
-)
-from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import (
     ListRelatedAccountGroupsResponse,
-)
-from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import Metrics
-from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import (
+    Metrics,
     MigrateKeyRequest,
-)
-from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import (
     RelatedAccountGroup,
-)
-from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import (
     RelatedAccountGroupMembership,
-)
-from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import RiskAnalysis
-from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import (
+    RiskAnalysis,
     ScoreDistribution,
-)
-from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import ScoreMetrics
-from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import (
+    ScoreMetrics,
     SearchRelatedAccountGroupMembershipsRequest,
-)
-from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import (
     SearchRelatedAccountGroupMembershipsResponse,
-)
-from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import TestingOptions
-from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import (
+    TestingOptions,
     TokenProperties,
-)
-from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import (
     UpdateKeyRequest,
+    WebKeySettings,
 )
-from google.cloud.recaptchaenterprise_v1.types.recaptchaenterprise import WebKeySettings
 
 __all__ = (
     "RecaptchaEnterpriseServiceClient",

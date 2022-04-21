@@ -20,7 +20,6 @@ from .base import RecaptchaEnterpriseServiceTransport
 from .grpc import RecaptchaEnterpriseServiceGrpcTransport
 from .grpc_asyncio import RecaptchaEnterpriseServiceGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = (
     OrderedDict()
