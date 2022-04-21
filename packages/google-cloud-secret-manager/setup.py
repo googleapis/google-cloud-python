@@ -19,7 +19,6 @@ import os
 
 import setuptools
 
-
 name = "google-cloud-secret-manager"
 description = "Secret Manager API API client library"
 version = "2.10.0"

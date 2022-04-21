@@ -20,27 +20,26 @@ from distutils import util
 import os
 import re
 from typing import Callable, Dict, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
 
 from google.api_core import client_options as client_options_lib  # type: ignore
 from google.api_core import exceptions  # type: ignore
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import retry as retries  # type: ignore
 from google.auth import credentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
-from google.oauth2 import service_account  # type: ignore
-
-from google.cloud.secretmanager_v1beta1.services.secret_manager_service import pagers
-from google.cloud.secretmanager_v1beta1.types import resources
-from google.cloud.secretmanager_v1beta1.types import service
 from google.iam.v1 import iam_policy_pb2 as iam_policy  # type: ignore
 from google.iam.v1 import policy_pb2 as policy  # type: ignore
+from google.oauth2 import service_account  # type: ignore
 from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
 from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
+import pkg_resources
 
-from .transports.base import SecretManagerServiceTransport, DEFAULT_CLIENT_INFO
+from google.cloud.secretmanager_v1beta1.services.secret_manager_service import pagers
+from google.cloud.secretmanager_v1beta1.types import resources, service
+
+from .transports.base import DEFAULT_CLIENT_INFO, SecretManagerServiceTransport
 from .transports.grpc import SecretManagerServiceGrpcTransport
 from .transports.grpc_asyncio import SecretManagerServiceGrpcAsyncIOTransport
 

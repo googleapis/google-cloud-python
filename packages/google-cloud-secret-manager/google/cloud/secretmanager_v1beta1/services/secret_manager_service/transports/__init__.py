@@ -22,7 +22,6 @@ from .base import SecretManagerServiceTransport
 from .grpc import SecretManagerServiceGrpcTransport
 from .grpc_asyncio import SecretManagerServiceGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = (
     OrderedDict()

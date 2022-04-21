@@ -15,25 +15,23 @@
 # limitations under the License.
 #
 
-import warnings
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple
+import warnings
 
 from google.api_core import gapic_v1  # type: ignore
 from google.api_core import grpc_helpers_async  # type: ignore
-from google import auth  # type: ignore
 from google.auth import credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-
-import grpc  # type: ignore
-from grpc.experimental import aio  # type: ignore
-
-from google.cloud.secretmanager_v1beta1.types import resources
-from google.cloud.secretmanager_v1beta1.types import service
 from google.iam.v1 import iam_policy_pb2 as iam_policy  # type: ignore
 from google.iam.v1 import policy_pb2 as policy  # type: ignore
 from google.protobuf import empty_pb2 as empty  # type: ignore
+import grpc  # type: ignore
+from grpc.experimental import aio  # type: ignore
 
-from .base import SecretManagerServiceTransport, DEFAULT_CLIENT_INFO
+from google import auth  # type: ignore
+from google.cloud.secretmanager_v1beta1.types import resources, service
+
+from .base import DEFAULT_CLIENT_INFO, SecretManagerServiceTransport
 from .grpc import SecretManagerServiceGrpcTransport
 
 

@@ -16,26 +16,24 @@
 #
 
 from .services.secret_manager_service import SecretManagerServiceClient
-from .types.resources import Replication
-from .types.resources import Secret
-from .types.resources import SecretPayload
-from .types.resources import SecretVersion
-from .types.service import AccessSecretVersionRequest
-from .types.service import AccessSecretVersionResponse
-from .types.service import AddSecretVersionRequest
-from .types.service import CreateSecretRequest
-from .types.service import DeleteSecretRequest
-from .types.service import DestroySecretVersionRequest
-from .types.service import DisableSecretVersionRequest
-from .types.service import EnableSecretVersionRequest
-from .types.service import GetSecretRequest
-from .types.service import GetSecretVersionRequest
-from .types.service import ListSecretVersionsRequest
-from .types.service import ListSecretVersionsResponse
-from .types.service import ListSecretsRequest
-from .types.service import ListSecretsResponse
-from .types.service import UpdateSecretRequest
-
+from .types.resources import Replication, Secret, SecretPayload, SecretVersion
+from .types.service import (
+    AccessSecretVersionRequest,
+    AccessSecretVersionResponse,
+    AddSecretVersionRequest,
+    CreateSecretRequest,
+    DeleteSecretRequest,
+    DestroySecretVersionRequest,
+    DisableSecretVersionRequest,
+    EnableSecretVersionRequest,
+    GetSecretRequest,
+    GetSecretVersionRequest,
+    ListSecretsRequest,
+    ListSecretsResponse,
+    ListSecretVersionsRequest,
+    ListSecretVersionsResponse,
+    UpdateSecretRequest,
+)
 
 __all__ = (
     "AccessSecretVersionRequest",

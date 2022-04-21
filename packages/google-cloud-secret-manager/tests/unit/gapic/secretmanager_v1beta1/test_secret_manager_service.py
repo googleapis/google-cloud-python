@@ -15,35 +15,18 @@
 # limitations under the License.
 #
 
-import os
-import mock
-
-import grpc
-from grpc.experimental import aio
 import math
-import pytest
-from proto.marshal.rules.dates import DurationRule, TimestampRule
+import os
 
-from google import auth
-from google.api_core import client_options
-from google.api_core import exceptions
-from google.api_core import gapic_v1
-from google.api_core import grpc_helpers
-from google.api_core import grpc_helpers_async
+from google.api_core import (
+    client_options,
+    exceptions,
+    gapic_v1,
+    grpc_helpers,
+    grpc_helpers_async,
+)
 from google.auth import credentials
 from google.auth.exceptions import MutualTLSChannelError
-from google.cloud.secretmanager_v1beta1.services.secret_manager_service import (
-    SecretManagerServiceAsyncClient,
-)
-from google.cloud.secretmanager_v1beta1.services.secret_manager_service import (
-    SecretManagerServiceClient,
-)
-from google.cloud.secretmanager_v1beta1.services.secret_manager_service import pagers
-from google.cloud.secretmanager_v1beta1.services.secret_manager_service import (
-    transports,
-)
-from google.cloud.secretmanager_v1beta1.types import resources
-from google.cloud.secretmanager_v1beta1.types import service
 from google.iam.v1 import iam_policy_pb2 as iam_policy  # type: ignore
 from google.iam.v1 import options_pb2 as options  # type: ignore
 from google.iam.v1 import policy_pb2 as policy  # type: ignore
@@ -51,6 +34,20 @@ from google.oauth2 import service_account
 from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
 from google.protobuf import timestamp_pb2 as timestamp  # type: ignore
 from google.type import expr_pb2 as expr  # type: ignore
+import grpc
+from grpc.experimental import aio
+import mock
+from proto.marshal.rules.dates import DurationRule, TimestampRule
+import pytest
+
+from google import auth
+from google.cloud.secretmanager_v1beta1.services.secret_manager_service import (
+    SecretManagerServiceAsyncClient,
+    SecretManagerServiceClient,
+    pagers,
+    transports,
+)
+from google.cloud.secretmanager_v1beta1.types import resources, service
 
 
 def client_cert_source_callback():

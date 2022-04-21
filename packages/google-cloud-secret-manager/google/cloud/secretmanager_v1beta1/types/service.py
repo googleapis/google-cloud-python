@@ -15,12 +15,10 @@
 # limitations under the License.
 #
 
+from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
 import proto  # type: ignore
 
-
 from google.cloud.secretmanager_v1beta1.types import resources
-from google.protobuf import field_mask_pb2 as field_mask  # type: ignore
-
 
 __protobuf__ = proto.module(
     package="google.cloud.secrets.v1beta1",

@@ -15,8 +15,8 @@
 # limitations under the License.
 #
 
-from .client import SecretManagerServiceClient
 from .async_client import SecretManagerServiceAsyncClient
+from .client import SecretManagerServiceClient
 
 __all__ = (
     "SecretManagerServiceClient",

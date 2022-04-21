@@ -21,13 +21,12 @@ from typing import (
     Awaitable,
     Callable,
     Iterable,
+    Optional,
     Sequence,
     Tuple,
-    Optional,
 )
 
-from google.cloud.secretmanager_v1beta1.types import resources
-from google.cloud.secretmanager_v1beta1.types import service
+from google.cloud.secretmanager_v1beta1.types import resources, service
 
 
 class ListSecretsPager:
