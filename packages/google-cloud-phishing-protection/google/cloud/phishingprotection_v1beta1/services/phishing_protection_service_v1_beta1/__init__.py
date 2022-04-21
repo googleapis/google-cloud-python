@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import PhishingProtectionServiceV1Beta1Client
 from .async_client import PhishingProtectionServiceV1Beta1AsyncClient
+from .client import PhishingProtectionServiceV1Beta1Client
 
 __all__ = (
     "PhishingProtectionServiceV1Beta1Client",

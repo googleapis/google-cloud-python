@@ -15,14 +15,10 @@
 #
 
 from .services.phishing_protection_service_v1_beta1 import (
+    PhishingProtectionServiceV1Beta1AsyncClient,
     PhishingProtectionServiceV1Beta1Client,
 )
-from .services.phishing_protection_service_v1_beta1 import (
-    PhishingProtectionServiceV1Beta1AsyncClient,
-)
-
-from .types.phishingprotection import ReportPhishingRequest
-from .types.phishingprotection import ReportPhishingResponse
+from .types.phishingprotection import ReportPhishingRequest, ReportPhishingResponse
 
 __all__ = (
     "PhishingProtectionServiceV1Beta1AsyncClient",

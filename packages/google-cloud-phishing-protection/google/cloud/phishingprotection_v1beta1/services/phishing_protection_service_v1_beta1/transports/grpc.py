@@ -13,19 +13,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import warnings
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
+import warnings
 
-from google.api_core import grpc_helpers
-from google.api_core import gapic_v1
+from google.api_core import gapic_v1, grpc_helpers
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-
 import grpc  # type: ignore
 
 from google.cloud.phishingprotection_v1beta1.types import phishingprotection
-from .base import PhishingProtectionServiceV1Beta1Transport, DEFAULT_CLIENT_INFO
+
+from .base import DEFAULT_CLIENT_INFO, PhishingProtectionServiceV1Beta1Transport
 
 
 class PhishingProtectionServiceV1Beta1GrpcTransport(

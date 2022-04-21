@@ -20,7 +20,6 @@ from .base import PhishingProtectionServiceV1Beta1Transport
 from .grpc import PhishingProtectionServiceV1Beta1GrpcTransport
 from .grpc_asyncio import PhishingProtectionServiceV1Beta1GrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = (
     OrderedDict()

@@ -14,17 +14,14 @@
 # limitations under the License.
 #
 
-from google.cloud.phishingprotection_v1beta1.services.phishing_protection_service_v1_beta1.client import (
-    PhishingProtectionServiceV1Beta1Client,
-)
 from google.cloud.phishingprotection_v1beta1.services.phishing_protection_service_v1_beta1.async_client import (
     PhishingProtectionServiceV1Beta1AsyncClient,
 )
-
-from google.cloud.phishingprotection_v1beta1.types.phishingprotection import (
-    ReportPhishingRequest,
+from google.cloud.phishingprotection_v1beta1.services.phishing_protection_service_v1_beta1.client import (
+    PhishingProtectionServiceV1Beta1Client,
 )
 from google.cloud.phishingprotection_v1beta1.types.phishingprotection import (
+    ReportPhishingRequest,
     ReportPhishingResponse,
 )
 
