@@ -17,35 +17,38 @@ from collections import OrderedDict
 import os
 import re
 from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
-from google.cloud.websecurityscanner_v1alpha.services.web_security_scanner import pagers
-from google.cloud.websecurityscanner_v1alpha.types import crawled_url
-from google.cloud.websecurityscanner_v1alpha.types import finding
-from google.cloud.websecurityscanner_v1alpha.types import finding_addon
-from google.cloud.websecurityscanner_v1alpha.types import finding_type_stats
-from google.cloud.websecurityscanner_v1alpha.types import scan_config
-from google.cloud.websecurityscanner_v1alpha.types import scan_config as gcw_scan_config
-from google.cloud.websecurityscanner_v1alpha.types import scan_run
-from google.cloud.websecurityscanner_v1alpha.types import web_security_scanner
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-from .transports.base import WebSecurityScannerTransport, DEFAULT_CLIENT_INFO
+
+from google.cloud.websecurityscanner_v1alpha.services.web_security_scanner import pagers
+from google.cloud.websecurityscanner_v1alpha.types import scan_run, web_security_scanner
+from google.cloud.websecurityscanner_v1alpha.types import (
+    crawled_url,
+    finding,
+    finding_addon,
+    finding_type_stats,
+)
+from google.cloud.websecurityscanner_v1alpha.types import scan_config as gcw_scan_config
+from google.cloud.websecurityscanner_v1alpha.types import scan_config
+
+from .transports.base import DEFAULT_CLIENT_INFO, WebSecurityScannerTransport
 from .transports.grpc import WebSecurityScannerGrpcTransport
 from .transports.grpc_asyncio import WebSecurityScannerGrpcAsyncIOTransport
 

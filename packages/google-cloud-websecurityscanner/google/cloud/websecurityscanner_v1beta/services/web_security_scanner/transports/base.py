@@ -15,22 +15,21 @@
 #
 import abc
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
-import pkg_resources
 
-import google.auth  # type: ignore
 import google.api_core
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
+import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
+import pkg_resources
 
+from google.cloud.websecurityscanner_v1beta.types import scan_run, web_security_scanner
+from google.cloud.websecurityscanner_v1beta.types import scan_config as gcw_scan_config
 from google.cloud.websecurityscanner_v1beta.types import finding
 from google.cloud.websecurityscanner_v1beta.types import scan_config
-from google.cloud.websecurityscanner_v1beta.types import scan_config as gcw_scan_config
-from google.cloud.websecurityscanner_v1beta.types import scan_run
-from google.cloud.websecurityscanner_v1beta.types import web_security_scanner
-from google.protobuf import empty_pb2  # type: ignore
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(

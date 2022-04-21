@@ -13,24 +13,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import warnings
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
+import warnings
 
-from google.api_core import grpc_helpers
-from google.api_core import gapic_v1
+from google.api_core import gapic_v1, grpc_helpers
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-
+from google.protobuf import empty_pb2  # type: ignore
 import grpc  # type: ignore
 
+from google.cloud.websecurityscanner_v1alpha.types import scan_run, web_security_scanner
+from google.cloud.websecurityscanner_v1alpha.types import scan_config as gcw_scan_config
 from google.cloud.websecurityscanner_v1alpha.types import finding
 from google.cloud.websecurityscanner_v1alpha.types import scan_config
-from google.cloud.websecurityscanner_v1alpha.types import scan_config as gcw_scan_config
-from google.cloud.websecurityscanner_v1alpha.types import scan_run
-from google.cloud.websecurityscanner_v1alpha.types import web_security_scanner
-from google.protobuf import empty_pb2  # type: ignore
-from .base import WebSecurityScannerTransport, DEFAULT_CLIENT_INFO
+
+from .base import DEFAULT_CLIENT_INFO, WebSecurityScannerTransport
 
 
 class WebSecurityScannerGrpcTransport(WebSecurityScannerTransport):

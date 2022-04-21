@@ -18,17 +18,19 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Callable,
+    Iterator,
+    Optional,
     Sequence,
     Tuple,
-    Optional,
-    Iterator,
 )
 
-from google.cloud.websecurityscanner_v1beta.types import crawled_url
-from google.cloud.websecurityscanner_v1beta.types import finding
-from google.cloud.websecurityscanner_v1beta.types import scan_config
-from google.cloud.websecurityscanner_v1beta.types import scan_run
-from google.cloud.websecurityscanner_v1beta.types import web_security_scanner
+from google.cloud.websecurityscanner_v1beta.types import (
+    crawled_url,
+    finding,
+    scan_config,
+    scan_run,
+    web_security_scanner,
+)
 
 
 class ListScanConfigsPager:

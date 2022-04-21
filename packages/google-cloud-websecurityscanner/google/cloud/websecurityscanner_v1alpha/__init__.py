@@ -14,37 +14,42 @@
 # limitations under the License.
 #
 
-from .services.web_security_scanner import WebSecurityScannerClient
-from .services.web_security_scanner import WebSecurityScannerAsyncClient
-
+from .services.web_security_scanner import (
+    WebSecurityScannerAsyncClient,
+    WebSecurityScannerClient,
+)
 from .types.crawled_url import CrawledUrl
 from .types.finding import Finding
-from .types.finding_addon import OutdatedLibrary
-from .types.finding_addon import ViolatingResource
-from .types.finding_addon import VulnerableHeaders
-from .types.finding_addon import VulnerableParameters
-from .types.finding_addon import Xss
+from .types.finding_addon import (
+    OutdatedLibrary,
+    ViolatingResource,
+    VulnerableHeaders,
+    VulnerableParameters,
+    Xss,
+)
 from .types.finding_type_stats import FindingTypeStats
 from .types.scan_config import ScanConfig
 from .types.scan_run import ScanRun
-from .types.web_security_scanner import CreateScanConfigRequest
-from .types.web_security_scanner import DeleteScanConfigRequest
-from .types.web_security_scanner import GetFindingRequest
-from .types.web_security_scanner import GetScanConfigRequest
-from .types.web_security_scanner import GetScanRunRequest
-from .types.web_security_scanner import ListCrawledUrlsRequest
-from .types.web_security_scanner import ListCrawledUrlsResponse
-from .types.web_security_scanner import ListFindingsRequest
-from .types.web_security_scanner import ListFindingsResponse
-from .types.web_security_scanner import ListFindingTypeStatsRequest
-from .types.web_security_scanner import ListFindingTypeStatsResponse
-from .types.web_security_scanner import ListScanConfigsRequest
-from .types.web_security_scanner import ListScanConfigsResponse
-from .types.web_security_scanner import ListScanRunsRequest
-from .types.web_security_scanner import ListScanRunsResponse
-from .types.web_security_scanner import StartScanRunRequest
-from .types.web_security_scanner import StopScanRunRequest
-from .types.web_security_scanner import UpdateScanConfigRequest
+from .types.web_security_scanner import (
+    CreateScanConfigRequest,
+    DeleteScanConfigRequest,
+    GetFindingRequest,
+    GetScanConfigRequest,
+    GetScanRunRequest,
+    ListCrawledUrlsRequest,
+    ListCrawledUrlsResponse,
+    ListFindingsRequest,
+    ListFindingsResponse,
+    ListFindingTypeStatsRequest,
+    ListFindingTypeStatsResponse,
+    ListScanConfigsRequest,
+    ListScanConfigsResponse,
+    ListScanRunsRequest,
+    ListScanRunsResponse,
+    StartScanRunRequest,
+    StopScanRunRequest,
+    UpdateScanConfigRequest,
+)
 
 __all__ = (
     "WebSecurityScannerAsyncClient",

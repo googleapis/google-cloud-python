@@ -13,17 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.websecurityscanner_v1beta.types import crawled_url
-from google.cloud.websecurityscanner_v1beta.types import finding
 from google.cloud.websecurityscanner_v1beta.types import (
     finding_type_stats as gcw_finding_type_stats,
 )
 from google.cloud.websecurityscanner_v1beta.types import scan_config as gcw_scan_config
+from google.cloud.websecurityscanner_v1beta.types import crawled_url, finding
 from google.cloud.websecurityscanner_v1beta.types import scan_run
-from google.protobuf import field_mask_pb2  # type: ignore
-
 
 __protobuf__ = proto.module(
     package="google.cloud.websecurityscanner.v1beta",

@@ -17,7 +17,6 @@ import proto  # type: ignore
 
 from google.cloud.websecurityscanner_v1beta.types import finding_addon
 
-
 __protobuf__ = proto.module(
     package="google.cloud.websecurityscanner.v1beta",
     manifest={

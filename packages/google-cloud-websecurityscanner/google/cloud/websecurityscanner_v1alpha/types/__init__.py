@@ -13,12 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .crawled_url import (
-    CrawledUrl,
-)
-from .finding import (
-    Finding,
-)
+from .crawled_url import CrawledUrl
+from .finding import Finding
 from .finding_addon import (
     OutdatedLibrary,
     ViolatingResource,
@@ -26,15 +22,9 @@ from .finding_addon import (
     VulnerableParameters,
     Xss,
 )
-from .finding_type_stats import (
-    FindingTypeStats,
-)
-from .scan_config import (
-    ScanConfig,
-)
-from .scan_run import (
-    ScanRun,
-)
+from .finding_type_stats import FindingTypeStats
+from .scan_config import ScanConfig
+from .scan_run import ScanRun
 from .web_security_scanner import (
     CreateScanConfigRequest,
     DeleteScanConfigRequest,

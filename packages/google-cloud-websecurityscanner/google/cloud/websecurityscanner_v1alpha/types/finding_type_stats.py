@@ -17,7 +17,6 @@ import proto  # type: ignore
 
 from google.cloud.websecurityscanner_v1alpha.types import finding
 
-
 __protobuf__ = proto.module(
     package="google.cloud.websecurityscanner.v1alpha",
     manifest={

@@ -19,7 +19,6 @@ from google.cloud.websecurityscanner_v1.types import (
     scan_config_error as gcw_scan_config_error,
 )
 
-
 __protobuf__ = proto.module(
     package="google.cloud.websecurityscanner.v1",
     manifest={

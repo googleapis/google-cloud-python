@@ -13,49 +13,45 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-import mock
-
-import grpc
-from grpc.experimental import aio
 import math
-import pytest
-from proto.marshal.rules.dates import DurationRule, TimestampRule
+import os
 
-
+from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1
-from google.api_core import grpc_helpers
-from google.api_core import grpc_helpers_async
-from google.api_core import path_template
+import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
-from google.cloud.websecurityscanner_v1beta.services.web_security_scanner import (
-    WebSecurityScannerAsyncClient,
-)
-from google.cloud.websecurityscanner_v1beta.services.web_security_scanner import (
-    WebSecurityScannerClient,
-)
-from google.cloud.websecurityscanner_v1beta.services.web_security_scanner import pagers
-from google.cloud.websecurityscanner_v1beta.services.web_security_scanner import (
-    transports,
-)
-from google.cloud.websecurityscanner_v1beta.types import crawled_url
-from google.cloud.websecurityscanner_v1beta.types import finding
-from google.cloud.websecurityscanner_v1beta.types import finding_addon
-from google.cloud.websecurityscanner_v1beta.types import finding_type_stats
-from google.cloud.websecurityscanner_v1beta.types import scan_config
-from google.cloud.websecurityscanner_v1beta.types import scan_config as gcw_scan_config
-from google.cloud.websecurityscanner_v1beta.types import scan_config_error
-from google.cloud.websecurityscanner_v1beta.types import scan_run
-from google.cloud.websecurityscanner_v1beta.types import scan_run_error_trace
-from google.cloud.websecurityscanner_v1beta.types import scan_run_warning_trace
-from google.cloud.websecurityscanner_v1beta.types import web_security_scanner
 from google.oauth2 import service_account
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-import google.auth
+import grpc
+from grpc.experimental import aio
+import mock
+from proto.marshal.rules.dates import DurationRule, TimestampRule
+import pytest
+
+from google.cloud.websecurityscanner_v1beta.services.web_security_scanner import (
+    WebSecurityScannerAsyncClient,
+    WebSecurityScannerClient,
+    pagers,
+    transports,
+)
+from google.cloud.websecurityscanner_v1beta.types import (
+    scan_config_error,
+    scan_run,
+    scan_run_error_trace,
+    scan_run_warning_trace,
+    web_security_scanner,
+)
+from google.cloud.websecurityscanner_v1beta.types import (
+    crawled_url,
+    finding,
+    finding_addon,
+    finding_type_stats,
+)
+from google.cloud.websecurityscanner_v1beta.types import scan_config as gcw_scan_config
+from google.cloud.websecurityscanner_v1beta.types import scan_config
 
 
 def client_cert_source_callback():

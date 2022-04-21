@@ -20,7 +20,6 @@ from .base import WebSecurityScannerTransport
 from .grpc import WebSecurityScannerGrpcTransport
 from .grpc_asyncio import WebSecurityScannerGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = (
     OrderedDict()

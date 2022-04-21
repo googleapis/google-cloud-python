@@ -13,12 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.websecurityscanner_v1beta.types import scan_run_error_trace
-from google.cloud.websecurityscanner_v1beta.types import scan_run_warning_trace
-from google.protobuf import timestamp_pb2  # type: ignore
-
+from google.cloud.websecurityscanner_v1beta.types import (
+    scan_run_error_trace,
+    scan_run_warning_trace,
+)
 
 __protobuf__ = proto.module(
     package="google.cloud.websecurityscanner.v1beta",
