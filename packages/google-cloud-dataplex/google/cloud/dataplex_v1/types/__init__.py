@@ -13,11 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .analyze import (
-    Content,
-    Environment,
-    Session,
-)
+from .analyze import Content, Environment, Session
 from .content import (
     CreateContentRequest,
     DeleteContentRequest,
@@ -26,11 +22,7 @@ from .content import (
     ListContentResponse,
     UpdateContentRequest,
 )
-from .logs import (
-    DiscoveryEvent,
-    JobEvent,
-    SessionEvent,
-)
+from .logs import DiscoveryEvent, JobEvent, SessionEvent
 from .metadata_ import (
     CreateEntityRequest,
     CreatePartitionRequest,
@@ -46,17 +38,10 @@ from .metadata_ import (
     Partition,
     Schema,
     StorageFormat,
-    UpdateEntityRequest,
     StorageSystem,
+    UpdateEntityRequest,
 )
-from .resources import (
-    Action,
-    Asset,
-    AssetStatus,
-    Lake,
-    Zone,
-    State,
-)
+from .resources import Action, Asset, AssetStatus, Lake, State, Zone
 from .service import (
     CancelJobRequest,
     CreateAssetRequest,
@@ -100,10 +85,7 @@ from .service import (
     UpdateTaskRequest,
     UpdateZoneRequest,
 )
-from .tasks import (
-    Job,
-    Task,
-)
+from .tasks import Job, Task
 
 __all__ = (
     "Content",

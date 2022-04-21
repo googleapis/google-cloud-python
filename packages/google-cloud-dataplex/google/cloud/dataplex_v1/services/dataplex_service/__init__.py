@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import DataplexServiceClient
 from .async_client import DataplexServiceAsyncClient
+from .client import DataplexServiceClient
 
 __all__ = (
     "DataplexServiceClient",

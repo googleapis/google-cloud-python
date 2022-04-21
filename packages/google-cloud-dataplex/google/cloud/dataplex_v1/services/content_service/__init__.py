@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import ContentServiceClient
 from .async_client import ContentServiceAsyncClient
+from .client import ContentServiceClient
 
 __all__ = (
     "ContentServiceClient",

@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import MetadataServiceClient
 from .async_client import MetadataServiceAsyncClient
+from .client import MetadataServiceClient
 
 __all__ = (
     "MetadataServiceClient",

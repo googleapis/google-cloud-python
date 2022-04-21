@@ -18,16 +18,13 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Callable,
+    Iterator,
+    Optional,
     Sequence,
     Tuple,
-    Optional,
-    Iterator,
 )
 
-from google.cloud.dataplex_v1.types import analyze
-from google.cloud.dataplex_v1.types import resources
-from google.cloud.dataplex_v1.types import service
-from google.cloud.dataplex_v1.types import tasks
+from google.cloud.dataplex_v1.types import analyze, resources, service, tasks
 
 
 class ListLakesPager:

@@ -19,7 +19,6 @@ import os
 
 import setuptools
 
-
 name = "google-cloud-dataplex"
 description = "Dataplex API client library"
 url = "https://github.com/googleapis/python-dataplex"

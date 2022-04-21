@@ -18,14 +18,13 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Callable,
+    Iterator,
+    Optional,
     Sequence,
     Tuple,
-    Optional,
-    Iterator,
 )
 
-from google.cloud.dataplex_v1.types import analyze
-from google.cloud.dataplex_v1.types import content
+from google.cloud.dataplex_v1.types import analyze, content
 
 
 class ListContentPager:

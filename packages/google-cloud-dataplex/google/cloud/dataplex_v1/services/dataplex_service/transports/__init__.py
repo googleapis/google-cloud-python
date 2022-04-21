@@ -20,7 +20,6 @@ from .base import DataplexServiceTransport
 from .grpc import DataplexServiceGrpcTransport
 from .grpc_asyncio import DataplexServiceGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[DataplexServiceTransport]]
 _transport_registry["grpc"] = DataplexServiceGrpcTransport
