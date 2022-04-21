@@ -20,7 +20,6 @@ from .base import ServiceControllerTransport
 from .grpc import ServiceControllerGrpcTransport
 from .grpc_asyncio import ServiceControllerGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[ServiceControllerTransport]]
 _transport_registry["grpc"] = ServiceControllerGrpcTransport

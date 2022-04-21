@@ -13,11 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.rpc import status_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.servicecontrol_v1.types import metric_value
-from google.rpc import status_pb2  # type: ignore
-
 
 __protobuf__ = proto.module(
     package="google.api.servicecontrol.v1",

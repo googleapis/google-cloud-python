@@ -13,10 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import proto  # type: ignore
-
 from google.api import distribution_pb2  # type: ignore
-
+import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.api.servicecontrol.v1",

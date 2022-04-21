@@ -13,46 +13,42 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-import mock
-
-import grpc
-from grpc.experimental import aio
 import math
-import pytest
-from proto.marshal.rules.dates import DurationRule, TimestampRule
-
+import os
 
 from google.api import distribution_pb2  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1
-from google.api_core import grpc_helpers
-from google.api_core import grpc_helpers_async
-from google.api_core import path_template
+import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
-from google.cloud.servicecontrol_v1.services.service_controller import (
-    ServiceControllerAsyncClient,
-)
-from google.cloud.servicecontrol_v1.services.service_controller import (
-    ServiceControllerClient,
-)
-from google.cloud.servicecontrol_v1.services.service_controller import transports
-from google.cloud.servicecontrol_v1.types import check_error
-from google.cloud.servicecontrol_v1.types import distribution as gas_distribution
-from google.cloud.servicecontrol_v1.types import http_request
-from google.cloud.servicecontrol_v1.types import log_entry
-from google.cloud.servicecontrol_v1.types import metric_value
-from google.cloud.servicecontrol_v1.types import operation
-from google.cloud.servicecontrol_v1.types import service_controller
 from google.logging.type import log_severity_pb2  # type: ignore
 from google.oauth2 import service_account
 from google.protobuf import any_pb2  # type: ignore
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-import google.auth
+import grpc
+from grpc.experimental import aio
+import mock
+from proto.marshal.rules.dates import DurationRule, TimestampRule
+import pytest
+
+from google.cloud.servicecontrol_v1.services.service_controller import (
+    ServiceControllerAsyncClient,
+    ServiceControllerClient,
+    transports,
+)
+from google.cloud.servicecontrol_v1.types import (
+    http_request,
+    log_entry,
+    metric_value,
+    operation,
+    service_controller,
+)
+from google.cloud.servicecontrol_v1.types import distribution as gas_distribution
+from google.cloud.servicecontrol_v1.types import check_error
 
 
 def client_cert_source_callback():

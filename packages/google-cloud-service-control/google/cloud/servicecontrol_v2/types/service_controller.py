@@ -13,11 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import proto  # type: ignore
-
 from google.rpc import status_pb2  # type: ignore
 from google.rpc.context import attribute_context_pb2  # type: ignore
-
+import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.api.servicecontrol.v2",

@@ -13,13 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import proto  # type: ignore
-
-from google.cloud.servicecontrol_v1.types import log_entry
-from google.cloud.servicecontrol_v1.types import metric_value
 from google.protobuf import any_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
+import proto  # type: ignore
 
+from google.cloud.servicecontrol_v1.types import log_entry, metric_value
 
 __protobuf__ = proto.module(
     package="google.api.servicecontrol.v1",

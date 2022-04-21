@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import QuotaControllerClient
 from .async_client import QuotaControllerAsyncClient
+from .client import QuotaControllerClient
 
 __all__ = (
     "QuotaControllerClient",

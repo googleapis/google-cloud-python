@@ -13,11 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.servicecontrol_v1.types import distribution as gas_distribution
-from google.protobuf import timestamp_pb2  # type: ignore
-
 
 __protobuf__ = proto.module(
     package="google.api.servicecontrol.v1",

@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import ServiceControllerClient
 from .async_client import ServiceControllerAsyncClient
+from .client import ServiceControllerClient
 
 __all__ = (
     "ServiceControllerClient",

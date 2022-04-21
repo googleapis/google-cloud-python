@@ -20,7 +20,6 @@ from .base import QuotaControllerTransport
 from .grpc import QuotaControllerGrpcTransport
 from .grpc_asyncio import QuotaControllerGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[QuotaControllerTransport]]
 _transport_registry["grpc"] = QuotaControllerGrpcTransport

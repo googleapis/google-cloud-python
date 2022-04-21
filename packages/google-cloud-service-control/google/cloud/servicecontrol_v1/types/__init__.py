@@ -13,27 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .check_error import (
-    CheckError,
-)
-from .distribution import (
-    Distribution,
-)
-from .http_request import (
-    HttpRequest,
-)
-from .log_entry import (
-    LogEntry,
-    LogEntryOperation,
-    LogEntrySourceLocation,
-)
-from .metric_value import (
-    MetricValue,
-    MetricValueSet,
-)
-from .operation import (
-    Operation,
-)
+from .check_error import CheckError
+from .distribution import Distribution
+from .http_request import HttpRequest
+from .log_entry import LogEntry, LogEntryOperation, LogEntrySourceLocation
+from .metric_value import MetricValue, MetricValueSet
+from .operation import Operation
 from .quota_controller import (
     AllocateQuotaRequest,
     AllocateQuotaResponse,
