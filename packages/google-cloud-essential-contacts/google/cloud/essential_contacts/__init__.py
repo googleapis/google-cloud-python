@@ -14,25 +14,28 @@
 # limitations under the License.
 #
 
-from google.cloud.essential_contacts_v1.services.essential_contacts_service.client import (
-    EssentialContactsServiceClient,
-)
 from google.cloud.essential_contacts_v1.services.essential_contacts_service.async_client import (
     EssentialContactsServiceAsyncClient,
 )
-
-from google.cloud.essential_contacts_v1.types.enums import NotificationCategory
-from google.cloud.essential_contacts_v1.types.enums import ValidationState
-from google.cloud.essential_contacts_v1.types.service import ComputeContactsRequest
-from google.cloud.essential_contacts_v1.types.service import ComputeContactsResponse
-from google.cloud.essential_contacts_v1.types.service import Contact
-from google.cloud.essential_contacts_v1.types.service import CreateContactRequest
-from google.cloud.essential_contacts_v1.types.service import DeleteContactRequest
-from google.cloud.essential_contacts_v1.types.service import GetContactRequest
-from google.cloud.essential_contacts_v1.types.service import ListContactsRequest
-from google.cloud.essential_contacts_v1.types.service import ListContactsResponse
-from google.cloud.essential_contacts_v1.types.service import SendTestMessageRequest
-from google.cloud.essential_contacts_v1.types.service import UpdateContactRequest
+from google.cloud.essential_contacts_v1.services.essential_contacts_service.client import (
+    EssentialContactsServiceClient,
+)
+from google.cloud.essential_contacts_v1.types.enums import (
+    NotificationCategory,
+    ValidationState,
+)
+from google.cloud.essential_contacts_v1.types.service import (
+    ComputeContactsRequest,
+    ComputeContactsResponse,
+    Contact,
+    CreateContactRequest,
+    DeleteContactRequest,
+    GetContactRequest,
+    ListContactsRequest,
+    ListContactsResponse,
+    SendTestMessageRequest,
+    UpdateContactRequest,
+)
 
 __all__ = (
     "EssentialContactsServiceClient",

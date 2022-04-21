@@ -20,7 +20,6 @@ from .base import EssentialContactsServiceTransport
 from .grpc import EssentialContactsServiceGrpcTransport
 from .grpc_asyncio import EssentialContactsServiceGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = (
     OrderedDict()

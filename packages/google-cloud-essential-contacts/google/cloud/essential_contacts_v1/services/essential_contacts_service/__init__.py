@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import EssentialContactsServiceClient
 from .async_client import EssentialContactsServiceAsyncClient
+from .client import EssentialContactsServiceClient
 
 __all__ = (
     "EssentialContactsServiceClient",

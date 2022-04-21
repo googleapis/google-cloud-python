@@ -15,7 +15,6 @@
 #
 import proto  # type: ignore
 
-
 __protobuf__ = proto.module(
     package="google.cloud.essentialcontacts.v1",
     manifest={
