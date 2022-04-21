@@ -13,10 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .catalog import (
-    Catalog,
-    ProductLevelConfig,
-)
+from .catalog import Catalog, ProductLevelConfig
 from .catalog_service import (
     GetDefaultBranchRequest,
     GetDefaultBranchResponse,
@@ -37,10 +34,7 @@ from .common import (
     Rating,
     UserInfo,
 )
-from .completion_service import (
-    CompleteQueryRequest,
-    CompleteQueryResponse,
-)
+from .completion_service import CompleteQueryRequest, CompleteQueryResponse
 from .import_config import (
     BigQuerySource,
     CompletionDataInputConfig,
@@ -59,13 +53,8 @@ from .import_config import (
     UserEventInlineSource,
     UserEventInputConfig,
 )
-from .prediction_service import (
-    PredictRequest,
-    PredictResponse,
-)
-from .product import (
-    Product,
-)
+from .prediction_service import PredictRequest, PredictResponse
+from .product import Product
 from .product_service import (
     AddFulfillmentPlacesMetadata,
     AddFulfillmentPlacesRequest,
@@ -89,24 +78,10 @@ from .product_service import (
     SetInventoryResponse,
     UpdateProductRequest,
 )
-from .promotion import (
-    Promotion,
-)
-from .purge_config import (
-    PurgeMetadata,
-    PurgeUserEventsRequest,
-    PurgeUserEventsResponse,
-)
-from .search_service import (
-    SearchRequest,
-    SearchResponse,
-)
-from .user_event import (
-    CompletionDetail,
-    ProductDetail,
-    PurchaseTransaction,
-    UserEvent,
-)
+from .promotion import Promotion
+from .purge_config import PurgeMetadata, PurgeUserEventsRequest, PurgeUserEventsResponse
+from .search_service import SearchRequest, SearchResponse
+from .user_event import CompletionDetail, ProductDetail, PurchaseTransaction, UserEvent
 from .user_event_service import (
     CollectUserEventRequest,
     RejoinUserEventsMetadata,

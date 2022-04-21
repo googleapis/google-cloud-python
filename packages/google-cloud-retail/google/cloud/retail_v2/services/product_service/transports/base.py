@@ -15,23 +15,22 @@
 #
 import abc
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
-import pkg_resources
 
-import google.auth  # type: ignore
 import google.api_core
 from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1
+from google.api_core import gapic_v1, operations_v1
 from google.api_core import retry as retries
-from google.api_core import operations_v1
+import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.longrunning import operations_pb2  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
+import pkg_resources
 
 from google.cloud.retail_v2.types import import_config
 from google.cloud.retail_v2.types import product
 from google.cloud.retail_v2.types import product as gcr_product
 from google.cloud.retail_v2.types import product_service
-from google.longrunning import operations_pb2  # type: ignore
-from google.protobuf import empty_pb2  # type: ignore
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(

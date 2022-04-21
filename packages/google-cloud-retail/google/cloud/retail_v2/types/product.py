@@ -13,15 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import proto  # type: ignore
-
-from google.cloud.retail_v2.types import common
-from google.cloud.retail_v2.types import promotion
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.protobuf import wrappers_pb2  # type: ignore
+import proto  # type: ignore
 
+from google.cloud.retail_v2.types import common, promotion
 
 __protobuf__ = proto.module(
     package="google.cloud.retail.v2",

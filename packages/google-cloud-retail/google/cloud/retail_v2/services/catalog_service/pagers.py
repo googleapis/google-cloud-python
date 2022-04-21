@@ -18,14 +18,13 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Callable,
+    Iterator,
+    Optional,
     Sequence,
     Tuple,
-    Optional,
-    Iterator,
 )
 
-from google.cloud.retail_v2.types import catalog
-from google.cloud.retail_v2.types import catalog_service
+from google.cloud.retail_v2.types import catalog, catalog_service
 
 
 class ListCatalogsPager:

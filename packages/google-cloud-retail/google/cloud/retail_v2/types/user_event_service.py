@@ -17,7 +17,6 @@ import proto  # type: ignore
 
 from google.cloud.retail_v2.types import user_event as gcr_user_event
 
-
 __protobuf__ = proto.module(
     package="google.cloud.retail.v2",
     manifest={

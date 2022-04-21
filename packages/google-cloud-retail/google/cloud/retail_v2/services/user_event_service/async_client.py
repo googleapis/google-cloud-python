@@ -17,14 +17,14 @@ from collections import OrderedDict
 import functools
 import re
 from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
 
-from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
+from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -34,16 +34,20 @@ except AttributeError:  # pragma: NO COVER
 from google.api import httpbody_pb2  # type: ignore
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
-from google.cloud.retail_v2.types import common
-from google.cloud.retail_v2.types import import_config
-from google.cloud.retail_v2.types import purge_config
-from google.cloud.retail_v2.types import user_event
-from google.cloud.retail_v2.types import user_event_service
 from google.protobuf import any_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-from .transports.base import UserEventServiceTransport, DEFAULT_CLIENT_INFO
-from .transports.grpc_asyncio import UserEventServiceGrpcAsyncIOTransport
+
+from google.cloud.retail_v2.types import (
+    common,
+    import_config,
+    purge_config,
+    user_event,
+    user_event_service,
+)
+
 from .client import UserEventServiceClient
+from .transports.base import DEFAULT_CLIENT_INFO, UserEventServiceTransport
+from .transports.grpc_asyncio import UserEventServiceGrpcAsyncIOTransport
 
 
 class UserEventServiceAsyncClient:

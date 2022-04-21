@@ -13,39 +13,39 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-import mock
-
-import grpc
-from grpc.experimental import aio
 import math
-import pytest
-from proto.marshal.rules.dates import DurationRule, TimestampRule
+import os
 
-
+from google.api_core import (
+    future,
+    gapic_v1,
+    grpc_helpers,
+    grpc_helpers_async,
+    operation,
+    operations_v1,
+    path_template,
+)
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
-from google.api_core import future
-from google.api_core import gapic_v1
-from google.api_core import grpc_helpers
-from google.api_core import grpc_helpers_async
-from google.api_core import operation
 from google.api_core import operation_async  # type: ignore
-from google.api_core import operations_v1
-from google.api_core import path_template
+import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
-from google.cloud.retail_v2.services.completion_service import (
-    CompletionServiceAsyncClient,
-)
-from google.cloud.retail_v2.services.completion_service import CompletionServiceClient
-from google.cloud.retail_v2.services.completion_service import transports
-from google.cloud.retail_v2.types import completion_service
-from google.cloud.retail_v2.types import import_config
 from google.longrunning import operations_pb2
 from google.oauth2 import service_account
 from google.type import date_pb2  # type: ignore
-import google.auth
+import grpc
+from grpc.experimental import aio
+import mock
+from proto.marshal.rules.dates import DurationRule, TimestampRule
+import pytest
+
+from google.cloud.retail_v2.services.completion_service import (
+    CompletionServiceAsyncClient,
+    CompletionServiceClient,
+    transports,
+)
+from google.cloud.retail_v2.types import completion_service, import_config
 
 
 def client_cert_source_callback():

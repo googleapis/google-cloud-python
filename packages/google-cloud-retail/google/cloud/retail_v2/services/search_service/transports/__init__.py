@@ -20,7 +20,6 @@ from .base import SearchServiceTransport
 from .grpc import SearchServiceGrpcTransport
 from .grpc_asyncio import SearchServiceGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[SearchServiceTransport]]
 _transport_registry["grpc"] = SearchServiceGrpcTransport

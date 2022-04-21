@@ -20,7 +20,6 @@ from .base import UserEventServiceTransport
 from .grpc import UserEventServiceGrpcTransport
 from .grpc_asyncio import UserEventServiceGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[UserEventServiceTransport]]
 _transport_registry["grpc"] = UserEventServiceGrpcTransport

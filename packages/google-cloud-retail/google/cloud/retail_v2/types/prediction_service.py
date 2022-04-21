@@ -13,11 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.protobuf import struct_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.retail_v2.types import user_event as gcr_user_event
-from google.protobuf import struct_pb2  # type: ignore
-
 
 __protobuf__ = proto.module(
     package="google.cloud.retail.v2",
