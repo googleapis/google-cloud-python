@@ -14,42 +14,42 @@
 # limitations under the License.
 #
 
-from .services.tpu import TpuClient
-from .services.tpu import TpuAsyncClient
-
-from .types.cloud_tpu import AcceleratorType
-from .types.cloud_tpu import AccessConfig
-from .types.cloud_tpu import AttachedDisk
-from .types.cloud_tpu import CreateNodeRequest
-from .types.cloud_tpu import DeleteNodeRequest
-from .types.cloud_tpu import GenerateServiceIdentityRequest
-from .types.cloud_tpu import GenerateServiceIdentityResponse
-from .types.cloud_tpu import GetAcceleratorTypeRequest
-from .types.cloud_tpu import GetGuestAttributesRequest
-from .types.cloud_tpu import GetGuestAttributesResponse
-from .types.cloud_tpu import GetNodeRequest
-from .types.cloud_tpu import GetRuntimeVersionRequest
-from .types.cloud_tpu import GuestAttributes
-from .types.cloud_tpu import GuestAttributesEntry
-from .types.cloud_tpu import GuestAttributesValue
-from .types.cloud_tpu import ListAcceleratorTypesRequest
-from .types.cloud_tpu import ListAcceleratorTypesResponse
-from .types.cloud_tpu import ListNodesRequest
-from .types.cloud_tpu import ListNodesResponse
-from .types.cloud_tpu import ListRuntimeVersionsRequest
-from .types.cloud_tpu import ListRuntimeVersionsResponse
-from .types.cloud_tpu import NetworkConfig
-from .types.cloud_tpu import NetworkEndpoint
-from .types.cloud_tpu import Node
-from .types.cloud_tpu import OperationMetadata
-from .types.cloud_tpu import RuntimeVersion
-from .types.cloud_tpu import SchedulingConfig
-from .types.cloud_tpu import ServiceAccount
-from .types.cloud_tpu import ServiceIdentity
-from .types.cloud_tpu import StartNodeRequest
-from .types.cloud_tpu import StopNodeRequest
-from .types.cloud_tpu import Symptom
-from .types.cloud_tpu import UpdateNodeRequest
+from .services.tpu import TpuAsyncClient, TpuClient
+from .types.cloud_tpu import (
+    AcceleratorType,
+    AccessConfig,
+    AttachedDisk,
+    CreateNodeRequest,
+    DeleteNodeRequest,
+    GenerateServiceIdentityRequest,
+    GenerateServiceIdentityResponse,
+    GetAcceleratorTypeRequest,
+    GetGuestAttributesRequest,
+    GetGuestAttributesResponse,
+    GetNodeRequest,
+    GetRuntimeVersionRequest,
+    GuestAttributes,
+    GuestAttributesEntry,
+    GuestAttributesValue,
+    ListAcceleratorTypesRequest,
+    ListAcceleratorTypesResponse,
+    ListNodesRequest,
+    ListNodesResponse,
+    ListRuntimeVersionsRequest,
+    ListRuntimeVersionsResponse,
+    NetworkConfig,
+    NetworkEndpoint,
+    Node,
+    OperationMetadata,
+    RuntimeVersion,
+    SchedulingConfig,
+    ServiceAccount,
+    ServiceIdentity,
+    StartNodeRequest,
+    StopNodeRequest,
+    Symptom,
+    UpdateNodeRequest,
+)
 
 __all__ = (
     "TpuAsyncClient",

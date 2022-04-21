@@ -19,7 +19,6 @@ import os
 
 import setuptools
 
-
 name = "google-cloud-tpu"
 description = "Cloud TPU API client library"
 version = "1.3.2"

@@ -20,7 +20,6 @@ from .base import TpuTransport
 from .grpc import TpuGrpcTransport
 from .grpc_asyncio import TpuGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[TpuTransport]]
 _transport_registry["grpc"] = TpuGrpcTransport
