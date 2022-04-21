@@ -14,22 +14,22 @@
 # limitations under the License.
 #
 
-from .services.private_catalog import PrivateCatalogClient
-from .services.private_catalog import PrivateCatalogAsyncClient
-
-from .types.private_catalog import AssetReference
-from .types.private_catalog import Catalog
-from .types.private_catalog import GcsSource
-from .types.private_catalog import GitSource
-from .types.private_catalog import Inputs
-from .types.private_catalog import Product
-from .types.private_catalog import SearchCatalogsRequest
-from .types.private_catalog import SearchCatalogsResponse
-from .types.private_catalog import SearchProductsRequest
-from .types.private_catalog import SearchProductsResponse
-from .types.private_catalog import SearchVersionsRequest
-from .types.private_catalog import SearchVersionsResponse
-from .types.private_catalog import Version
+from .services.private_catalog import PrivateCatalogAsyncClient, PrivateCatalogClient
+from .types.private_catalog import (
+    AssetReference,
+    Catalog,
+    GcsSource,
+    GitSource,
+    Inputs,
+    Product,
+    SearchCatalogsRequest,
+    SearchCatalogsResponse,
+    SearchProductsRequest,
+    SearchProductsResponse,
+    SearchVersionsRequest,
+    SearchVersionsResponse,
+    Version,
+)
 
 __all__ = (
     "PrivateCatalogAsyncClient",

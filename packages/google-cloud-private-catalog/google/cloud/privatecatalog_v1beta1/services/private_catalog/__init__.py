@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import PrivateCatalogClient
 from .async_client import PrivateCatalogAsyncClient
+from .client import PrivateCatalogClient
 
 __all__ = (
     "PrivateCatalogClient",

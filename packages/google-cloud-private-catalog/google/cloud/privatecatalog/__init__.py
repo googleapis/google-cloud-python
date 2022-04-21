@@ -14,38 +14,27 @@
 # limitations under the License.
 #
 
-from google.cloud.privatecatalog_v1beta1.services.private_catalog.client import (
-    PrivateCatalogClient,
-)
 from google.cloud.privatecatalog_v1beta1.services.private_catalog.async_client import (
     PrivateCatalogAsyncClient,
 )
-
-from google.cloud.privatecatalog_v1beta1.types.private_catalog import AssetReference
-from google.cloud.privatecatalog_v1beta1.types.private_catalog import Catalog
-from google.cloud.privatecatalog_v1beta1.types.private_catalog import GcsSource
-from google.cloud.privatecatalog_v1beta1.types.private_catalog import GitSource
-from google.cloud.privatecatalog_v1beta1.types.private_catalog import Inputs
-from google.cloud.privatecatalog_v1beta1.types.private_catalog import Product
+from google.cloud.privatecatalog_v1beta1.services.private_catalog.client import (
+    PrivateCatalogClient,
+)
 from google.cloud.privatecatalog_v1beta1.types.private_catalog import (
+    AssetReference,
+    Catalog,
+    GcsSource,
+    GitSource,
+    Inputs,
+    Product,
     SearchCatalogsRequest,
-)
-from google.cloud.privatecatalog_v1beta1.types.private_catalog import (
     SearchCatalogsResponse,
-)
-from google.cloud.privatecatalog_v1beta1.types.private_catalog import (
     SearchProductsRequest,
-)
-from google.cloud.privatecatalog_v1beta1.types.private_catalog import (
     SearchProductsResponse,
-)
-from google.cloud.privatecatalog_v1beta1.types.private_catalog import (
     SearchVersionsRequest,
-)
-from google.cloud.privatecatalog_v1beta1.types.private_catalog import (
     SearchVersionsResponse,
+    Version,
 )
-from google.cloud.privatecatalog_v1beta1.types.private_catalog import Version
 
 __all__ = (
     "PrivateCatalogClient",

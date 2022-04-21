@@ -20,7 +20,6 @@ from .base import PrivateCatalogTransport
 from .grpc import PrivateCatalogGrpcTransport
 from .grpc_asyncio import PrivateCatalogGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[PrivateCatalogTransport]]
 _transport_registry["grpc"] = PrivateCatalogGrpcTransport
