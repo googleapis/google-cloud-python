@@ -20,7 +20,6 @@ from .base import DlpServiceTransport
 from .grpc import DlpServiceGrpcTransport
 from .grpc_asyncio import DlpServiceGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[DlpServiceTransport]]
 _transport_registry["grpc"] = DlpServiceGrpcTransport

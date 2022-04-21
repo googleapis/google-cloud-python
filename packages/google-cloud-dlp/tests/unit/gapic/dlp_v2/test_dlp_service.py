@@ -13,30 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-import mock
-
-import grpc
-from grpc.experimental import aio
 import math
-import pytest
-from proto.marshal.rules.dates import DurationRule, TimestampRule
+import os
 
-
+from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1
-from google.api_core import grpc_helpers
-from google.api_core import grpc_helpers_async
-from google.api_core import path_template
+import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
-from google.cloud.dlp_v2.services.dlp_service import DlpServiceAsyncClient
-from google.cloud.dlp_v2.services.dlp_service import DlpServiceClient
-from google.cloud.dlp_v2.services.dlp_service import pagers
-from google.cloud.dlp_v2.services.dlp_service import transports
-from google.cloud.dlp_v2.types import dlp
-from google.cloud.dlp_v2.types import storage
 from google.oauth2 import service_account
 from google.protobuf import any_pb2  # type: ignore
 from google.protobuf import duration_pb2  # type: ignore
@@ -46,7 +31,19 @@ from google.rpc import status_pb2  # type: ignore
 from google.type import date_pb2  # type: ignore
 from google.type import dayofweek_pb2  # type: ignore
 from google.type import timeofday_pb2  # type: ignore
-import google.auth
+import grpc
+from grpc.experimental import aio
+import mock
+from proto.marshal.rules.dates import DurationRule, TimestampRule
+import pytest
+
+from google.cloud.dlp_v2.services.dlp_service import (
+    DlpServiceAsyncClient,
+    DlpServiceClient,
+    pagers,
+    transports,
+)
+from google.cloud.dlp_v2.types import dlp, storage
 
 
 def client_cert_source_callback():

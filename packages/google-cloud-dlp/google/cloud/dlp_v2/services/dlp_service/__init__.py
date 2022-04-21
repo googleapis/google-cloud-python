@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import DlpServiceClient
 from .async_client import DlpServiceAsyncClient
+from .client import DlpServiceClient
 
 __all__ = (
     "DlpServiceClient",

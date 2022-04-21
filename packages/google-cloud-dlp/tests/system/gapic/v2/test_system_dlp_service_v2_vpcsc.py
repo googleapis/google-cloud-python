@@ -15,13 +15,12 @@
 # limitations under the License.
 
 import os
-import pytest
 
-from google.cloud import dlp_v2
 from google.api_core import exceptions
-
+import pytest
 from test_utils.vpcsc_config import vpcsc_config
 
+from google.cloud import dlp_v2
 
 _VPCSC_PROHIBITED_MESSAGE = "Request is prohibited by organization's policy"
 
