@@ -18,18 +18,20 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Callable,
+    Iterator,
+    Optional,
     Sequence,
     Tuple,
-    Optional,
-    Iterator,
 )
 
-from google.cloud.channel_v1.types import channel_partner_links
-from google.cloud.channel_v1.types import customers
-from google.cloud.channel_v1.types import entitlements
-from google.cloud.channel_v1.types import offers
-from google.cloud.channel_v1.types import products
-from google.cloud.channel_v1.types import service
+from google.cloud.channel_v1.types import (
+    channel_partner_links,
+    customers,
+    entitlements,
+    offers,
+    products,
+    service,
+)
 
 
 class ListCustomersPager:

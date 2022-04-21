@@ -18,16 +18,8 @@ from .channel_partner_links import (
     ChannelPartnerLinkState,
     ChannelPartnerLinkView,
 )
-from .common import (
-    AdminUser,
-    CloudIdentityInfo,
-    EduData,
-    Value,
-)
-from .customers import (
-    ContactInfo,
-    Customer,
-)
+from .common import AdminUser, CloudIdentityInfo, EduData, Value
+from .customers import ContactInfo, Customer
 from .entitlements import (
     AssociationInfo,
     CommitmentSettings,
@@ -44,28 +36,20 @@ from .offers import (
     CustomerConstraints,
     Offer,
     ParameterDefinition,
+    PaymentPlan,
+    PaymentType,
     Period,
+    PeriodType,
     Plan,
     Price,
     PriceByResource,
     PricePhase,
     PriceTier,
-    PaymentPlan,
-    PaymentType,
-    PeriodType,
     PromotionalOrderType,
     ResourceType,
 )
-from .operations import (
-    OperationMetadata,
-)
-from .products import (
-    MarketingInfo,
-    Media,
-    Product,
-    Sku,
-    MediaType,
-)
+from .operations import OperationMetadata
+from .products import MarketingInfo, Media, MediaType, Product, Sku
 from .service import (
     ActivateEntitlementRequest,
     CancelEntitlementRequest,
@@ -122,11 +106,7 @@ from .service import (
     UpdateChannelPartnerLinkRequest,
     UpdateCustomerRequest,
 )
-from .subscriber_event import (
-    CustomerEvent,
-    EntitlementEvent,
-    SubscriberEvent,
-)
+from .subscriber_event import CustomerEvent, EntitlementEvent, SubscriberEvent
 
 __all__ = (
     "ChannelPartnerLink",

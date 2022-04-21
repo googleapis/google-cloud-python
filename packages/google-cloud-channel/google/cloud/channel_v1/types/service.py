@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.channel_v1.types import (
@@ -23,8 +24,6 @@ from google.cloud.channel_v1.types import customers as gcc_customers
 from google.cloud.channel_v1.types import entitlements as gcc_entitlements
 from google.cloud.channel_v1.types import offers as gcc_offers
 from google.cloud.channel_v1.types import products as gcc_products
-from google.protobuf import field_mask_pb2  # type: ignore
-
 
 __protobuf__ = proto.module(
     package="google.cloud.channel.v1",

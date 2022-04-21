@@ -13,13 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import proto  # type: ignore
-
-from google.cloud.channel_v1.types import common
-from google.cloud.channel_v1.types import products
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.type import money_pb2  # type: ignore
+import proto  # type: ignore
 
+from google.cloud.channel_v1.types import common, products
 
 __protobuf__ = proto.module(
     package="google.cloud.channel.v1",

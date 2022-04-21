@@ -20,7 +20,6 @@ from .base import CloudChannelServiceTransport
 from .grpc import CloudChannelServiceGrpcTransport
 from .grpc_asyncio import CloudChannelServiceGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = (
     OrderedDict()
