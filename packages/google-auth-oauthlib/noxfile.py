@@ -25,7 +25,8 @@ import warnings
 import nox
 
 BLACK_VERSION = "black==22.3.0"
-BLACK_PATHS = ["docs", "google_auth_oauthlib", "tests", "noxfile.py", "setup.py"]
+ISORT_VERSION = "isort==5.10.1"
+LINT_PATHS = ["docs", "google_auth_oauthlib", "tests", "noxfile.py", "setup.py"]
 
 DEFAULT_PYTHON_VERSION = "3.8"
 
@@ -85,9 +86,9 @@ def lint(session):
     session.run(
         "black",
         "--check",
-        *BLACK_PATHS,
+        *LINT_PATHS,
     )
-    session.run("flake8", *BLACK_PATHS)
+    session.run("flake8", *LINT_PATHS)
 
 
 @nox.session(python=DEFAULT_PYTHON_VERSION)
@@ -96,7 +97,27 @@ def blacken(session):
     session.install(BLACK_VERSION)
     session.run(
         "black",
-        *BLACK_PATHS,
+        *LINT_PATHS,
+    )
+
+
+@nox.session(python=DEFAULT_PYTHON_VERSION)
+def format(session):
+    """
+    Run isort to sort imports. Then run black
+    to format code to uniform standard.
+    """
+    session.install(BLACK_VERSION, ISORT_VERSION)
+    # Use the --fss option to sort imports using strict alphabetical order.
+    # See https://pycqa.github.io/isort/docs/configuration/options.html#force-sort-within-sections
+    session.run(
+        "isort",
+        "--fss",
+        *LINT_PATHS,
+    )
+    session.run(
+        "black",
+        *LINT_PATHS,
     )
 
 

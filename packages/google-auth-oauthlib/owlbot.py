@@ -18,15 +18,15 @@ s.move(templated_files, excludes=[
 # Change black paths
 s.replace(
     "noxfile.py",
-    """BLACK_PATHS =.*""",
-    """BLACK_PATHS = ["docs", "google_auth_oauthlib", "tests", "noxfile.py", "setup.py"]""",
+    """LINT_PATHS =.*""",
+    """LINT_PATHS = ["docs", "google_auth_oauthlib", "tests", "noxfile.py", "setup.py"]""",
 )
 
 # Change flake8 paths
 s.replace(
     "noxfile.py",
     'session.run\("flake8", "google", "tests"\)',
-    'session.run("flake8", *BLACK_PATHS)',
+    'session.run("flake8", *LINT_PATHS)',
 )
 
 s.replace(
@@ -34,8 +34,5 @@ s.replace(
     '"--cov=google",',
     '"--cov=google_auth_oauthlib",',
 )
-
-# Work around bug in templates https://github.com/googleapis/synthtool/pull/1335
-s.replace(".github/workflows/unittest.yml", "--fail-under=100", "--fail-under=99")
 
 s.shell.run(["nox", "-s", "blacken"], hide_output=False)
