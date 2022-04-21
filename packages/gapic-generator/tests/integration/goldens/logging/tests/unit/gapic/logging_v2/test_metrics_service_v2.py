@@ -776,7 +776,7 @@ def test_list_log_metrics_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, logging_metrics.LogMetric)
                    for i in results)

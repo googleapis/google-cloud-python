@@ -922,7 +922,7 @@ def test_list_assets_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, assets.Asset)
                    for i in results)
@@ -2694,7 +2694,7 @@ def test_search_all_resources_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, assets.ResourceSearchResult)
                    for i in results)
@@ -3124,7 +3124,7 @@ def test_search_all_iam_policies_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, assets.IamPolicySearchResult)
                    for i in results)

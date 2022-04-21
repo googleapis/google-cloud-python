@@ -771,7 +771,7 @@ def test_list_buckets_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, logging_config.LogBucket)
                    for i in results)
@@ -1977,7 +1977,7 @@ def test_list_views_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, logging_config.LogView)
                    for i in results)
@@ -3015,7 +3015,7 @@ def test_list_sinks_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, logging_config.LogSink)
                    for i in results)
@@ -4474,7 +4474,7 @@ def test_list_exclusions_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, logging_config.LogExclusion)
                    for i in results)

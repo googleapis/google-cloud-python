@@ -825,7 +825,7 @@ def test_{{ method_name }}_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, {{ method.paged_result_field.type.ident }})
                    for i in results)

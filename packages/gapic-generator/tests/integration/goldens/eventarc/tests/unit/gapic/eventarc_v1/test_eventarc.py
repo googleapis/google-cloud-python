@@ -1023,7 +1023,7 @@ def test_list_triggers_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, trigger.Trigger)
                    for i in results)

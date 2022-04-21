@@ -1151,7 +1151,7 @@ def test_list_log_entries_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, log_entry.LogEntry)
                    for i in results)
@@ -1421,7 +1421,7 @@ def test_list_monitored_resource_descriptors_pager(transport_name: str = "grpc")
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, monitored_resource_pb2.MonitoredResourceDescriptor)
                    for i in results)
@@ -1845,7 +1845,7 @@ def test_list_logs_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, str)
                    for i in results)
