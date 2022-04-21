@@ -1,6 +1,15 @@
 # Changelog
 
 
+### [0.65.2](https://github.com/googleapis/gapic-generator-python/compare/v0.65.1...v0.65.2) (2022-04-21)
+
+
+### Bug Fixes
+
+* disambiguate method names ([#1282](https://github.com/googleapis/gapic-generator-python/issues/1282)) ([efe7216](https://github.com/googleapis/gapic-generator-python/commit/efe7216d8d59d945b4ea90ad109248b9eecc33e5))
+* fixes bug when an annotation path in an http rule does not have =. ([#1284](https://github.com/googleapis/gapic-generator-python/issues/1284)) ([6dcb97c](https://github.com/googleapis/gapic-generator-python/commit/6dcb97cfb60d7d81dc205c20c762dfd5e74659e1))
+* use async snippet in async client method docstring ([#1280](https://github.com/googleapis/gapic-generator-python/issues/1280)) ([b72e1e0](https://github.com/googleapis/gapic-generator-python/commit/b72e1e063d587a93b65aa77dd222341bcc87ba39))
+
 ### [0.65.1](https://github.com/googleapis/gapic-generator-python/compare/v0.65.0...v0.65.1) (2022-04-13)
 
 
