@@ -18,17 +18,19 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Callable,
+    Iterator,
+    Optional,
     Sequence,
     Tuple,
-    Optional,
-    Iterator,
 )
 
-from google.cloud.notebooks_v1.types import environment
-from google.cloud.notebooks_v1.types import execution
-from google.cloud.notebooks_v1.types import instance
-from google.cloud.notebooks_v1.types import schedule
-from google.cloud.notebooks_v1.types import service
+from google.cloud.notebooks_v1.types import (
+    environment,
+    execution,
+    instance,
+    schedule,
+    service,
+)
 
 
 class ListInstancesPager:

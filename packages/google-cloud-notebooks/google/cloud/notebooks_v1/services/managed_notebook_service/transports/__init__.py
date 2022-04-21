@@ -20,7 +20,6 @@ from .base import ManagedNotebookServiceTransport
 from .grpc import ManagedNotebookServiceGrpcTransport
 from .grpc_asyncio import ManagedNotebookServiceGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = (
     OrderedDict()

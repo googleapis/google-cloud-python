@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.notebooks_v1.types import environment as gcn_environment
@@ -20,8 +21,6 @@ from google.cloud.notebooks_v1.types import execution as gcn_execution
 from google.cloud.notebooks_v1.types import instance as gcn_instance
 from google.cloud.notebooks_v1.types import instance_config
 from google.cloud.notebooks_v1.types import schedule as gcn_schedule
-from google.protobuf import timestamp_pb2  # type: ignore
-
 
 __protobuf__ = proto.module(
     package="google.cloud.notebooks.v1",

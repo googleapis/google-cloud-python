@@ -14,36 +14,34 @@
 # limitations under the License.
 #
 
-from .services.notebook_service import NotebookServiceClient
-from .services.notebook_service import NotebookServiceAsyncClient
-
-from .types.environment import ContainerImage
-from .types.environment import Environment
-from .types.environment import VmImage
+from .services.notebook_service import NotebookServiceAsyncClient, NotebookServiceClient
+from .types.environment import ContainerImage, Environment, VmImage
 from .types.instance import Instance
-from .types.service import CreateEnvironmentRequest
-from .types.service import CreateInstanceRequest
-from .types.service import DeleteEnvironmentRequest
-from .types.service import DeleteInstanceRequest
-from .types.service import GetEnvironmentRequest
-from .types.service import GetInstanceRequest
-from .types.service import IsInstanceUpgradeableRequest
-from .types.service import IsInstanceUpgradeableResponse
-from .types.service import ListEnvironmentsRequest
-from .types.service import ListEnvironmentsResponse
-from .types.service import ListInstancesRequest
-from .types.service import ListInstancesResponse
-from .types.service import OperationMetadata
-from .types.service import RegisterInstanceRequest
-from .types.service import ReportInstanceInfoRequest
-from .types.service import ResetInstanceRequest
-from .types.service import SetInstanceAcceleratorRequest
-from .types.service import SetInstanceLabelsRequest
-from .types.service import SetInstanceMachineTypeRequest
-from .types.service import StartInstanceRequest
-from .types.service import StopInstanceRequest
-from .types.service import UpgradeInstanceInternalRequest
-from .types.service import UpgradeInstanceRequest
+from .types.service import (
+    CreateEnvironmentRequest,
+    CreateInstanceRequest,
+    DeleteEnvironmentRequest,
+    DeleteInstanceRequest,
+    GetEnvironmentRequest,
+    GetInstanceRequest,
+    IsInstanceUpgradeableRequest,
+    IsInstanceUpgradeableResponse,
+    ListEnvironmentsRequest,
+    ListEnvironmentsResponse,
+    ListInstancesRequest,
+    ListInstancesResponse,
+    OperationMetadata,
+    RegisterInstanceRequest,
+    ReportInstanceInfoRequest,
+    ResetInstanceRequest,
+    SetInstanceAcceleratorRequest,
+    SetInstanceLabelsRequest,
+    SetInstanceMachineTypeRequest,
+    StartInstanceRequest,
+    StopInstanceRequest,
+    UpgradeInstanceInternalRequest,
+    UpgradeInstanceRequest,
+)
 
 __all__ = (
     "NotebookServiceAsyncClient",

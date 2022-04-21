@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import ManagedNotebookServiceClient
 from .async_client import ManagedNotebookServiceAsyncClient
+from .client import ManagedNotebookServiceClient
 
 __all__ = (
     "ManagedNotebookServiceClient",

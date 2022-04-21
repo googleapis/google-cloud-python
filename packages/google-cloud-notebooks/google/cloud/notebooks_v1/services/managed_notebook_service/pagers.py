@@ -18,14 +18,13 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Callable,
+    Iterator,
+    Optional,
     Sequence,
     Tuple,
-    Optional,
-    Iterator,
 )
 
-from google.cloud.notebooks_v1.types import managed_service
-from google.cloud.notebooks_v1.types import runtime
+from google.cloud.notebooks_v1.types import managed_service, runtime
 
 
 class ListRuntimesPager:
