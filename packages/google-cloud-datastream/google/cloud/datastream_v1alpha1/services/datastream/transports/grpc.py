@@ -13,22 +13,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import warnings
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
+import warnings
 
-from google.api_core import grpc_helpers
-from google.api_core import operations_v1
-from google.api_core import gapic_v1
+from google.api_core import gapic_v1, grpc_helpers, operations_v1
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-
+from google.longrunning import operations_pb2  # type: ignore
 import grpc  # type: ignore
 
-from google.cloud.datastream_v1alpha1.types import datastream
-from google.cloud.datastream_v1alpha1.types import datastream_resources
-from google.longrunning import operations_pb2  # type: ignore
-from .base import DatastreamTransport, DEFAULT_CLIENT_INFO
+from google.cloud.datastream_v1alpha1.types import datastream, datastream_resources
+
+from .base import DEFAULT_CLIENT_INFO, DatastreamTransport
 
 
 class DatastreamGrpcTransport(DatastreamTransport):

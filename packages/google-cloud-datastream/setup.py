@@ -19,7 +19,6 @@ import os
 
 import setuptools
 
-
 name = "google-cloud-datastream"
 description = "Datastream client library"
 version = "1.0.0"

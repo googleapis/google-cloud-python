@@ -51,6 +51,7 @@ from .datastream_resources import (
     Error,
     ForwardSshTunnelConnectivity,
     GcsDestinationConfig,
+    GcsFileFormat,
     GcsProfile,
     JsonFileFormat,
     MysqlColumn,
@@ -70,6 +71,7 @@ from .datastream_resources import (
     PrivateConnection,
     PrivateConnectivity,
     Route,
+    SchemaFileFormat,
     SourceConfig,
     StaticServiceIpConnectivity,
     Stream,
@@ -77,8 +79,6 @@ from .datastream_resources import (
     ValidationMessage,
     ValidationResult,
     VpcPeeringConfig,
-    GcsFileFormat,
-    SchemaFileFormat,
 )
 
 __all__ = (

@@ -18,14 +18,13 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Callable,
+    Iterator,
+    Optional,
     Sequence,
     Tuple,
-    Optional,
-    Iterator,
 )
 
-from google.cloud.datastream_v1.types import datastream
-from google.cloud.datastream_v1.types import datastream_resources
+from google.cloud.datastream_v1.types import datastream, datastream_resources
 
 
 class ListConnectionProfilesPager:
