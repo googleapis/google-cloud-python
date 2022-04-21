@@ -17,14 +17,14 @@ from collections import OrderedDict
 import functools
 import re
 from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
 
-from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
+from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -35,9 +35,10 @@ from google.cloud.orchestration.airflow.service_v1beta1.services.image_versions 
     pagers,
 )
 from google.cloud.orchestration.airflow.service_v1beta1.types import image_versions
-from .transports.base import ImageVersionsTransport, DEFAULT_CLIENT_INFO
-from .transports.grpc_asyncio import ImageVersionsGrpcAsyncIOTransport
+
 from .client import ImageVersionsClient
+from .transports.base import DEFAULT_CLIENT_INFO, ImageVersionsTransport
+from .transports.grpc_asyncio import ImageVersionsGrpcAsyncIOTransport
 
 
 class ImageVersionsAsyncClient:

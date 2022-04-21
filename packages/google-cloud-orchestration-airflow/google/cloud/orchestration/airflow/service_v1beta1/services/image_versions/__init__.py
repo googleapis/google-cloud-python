@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import ImageVersionsClient
 from .async_client import ImageVersionsAsyncClient
+from .client import ImageVersionsClient
 
 __all__ = (
     "ImageVersionsClient",

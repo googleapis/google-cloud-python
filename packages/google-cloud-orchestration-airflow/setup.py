@@ -19,7 +19,6 @@ import os
 
 import setuptools
 
-
 name = "google-cloud-orchestration-airflow"
 description = "Cloud Composer API client library"
 version = "1.3.1"
