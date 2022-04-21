@@ -14,24 +14,26 @@
 # limitations under the License.
 #
 
-from .services.managed_identities_service import ManagedIdentitiesServiceClient
-from .services.managed_identities_service import ManagedIdentitiesServiceAsyncClient
-
-from .types.managed_identities_service import AttachTrustRequest
-from .types.managed_identities_service import CreateMicrosoftAdDomainRequest
-from .types.managed_identities_service import DeleteDomainRequest
-from .types.managed_identities_service import DetachTrustRequest
-from .types.managed_identities_service import GetDomainRequest
-from .types.managed_identities_service import ListDomainsRequest
-from .types.managed_identities_service import ListDomainsResponse
-from .types.managed_identities_service import OpMetadata
-from .types.managed_identities_service import ReconfigureTrustRequest
-from .types.managed_identities_service import ResetAdminPasswordRequest
-from .types.managed_identities_service import ResetAdminPasswordResponse
-from .types.managed_identities_service import UpdateDomainRequest
-from .types.managed_identities_service import ValidateTrustRequest
-from .types.resource import Domain
-from .types.resource import Trust
+from .services.managed_identities_service import (
+    ManagedIdentitiesServiceAsyncClient,
+    ManagedIdentitiesServiceClient,
+)
+from .types.managed_identities_service import (
+    AttachTrustRequest,
+    CreateMicrosoftAdDomainRequest,
+    DeleteDomainRequest,
+    DetachTrustRequest,
+    GetDomainRequest,
+    ListDomainsRequest,
+    ListDomainsResponse,
+    OpMetadata,
+    ReconfigureTrustRequest,
+    ResetAdminPasswordRequest,
+    ResetAdminPasswordResponse,
+    UpdateDomainRequest,
+    ValidateTrustRequest,
+)
+from .types.resource import Domain, Trust
 
 __all__ = (
     "ManagedIdentitiesServiceAsyncClient",

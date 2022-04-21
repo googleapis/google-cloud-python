@@ -20,7 +20,6 @@ from .base import ManagedIdentitiesServiceTransport
 from .grpc import ManagedIdentitiesServiceGrpcTransport
 from .grpc_asyncio import ManagedIdentitiesServiceGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = (
     OrderedDict()

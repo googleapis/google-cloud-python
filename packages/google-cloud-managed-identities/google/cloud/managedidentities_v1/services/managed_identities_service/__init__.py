@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import ManagedIdentitiesServiceClient
 from .async_client import ManagedIdentitiesServiceAsyncClient
+from .client import ManagedIdentitiesServiceClient
 
 __all__ = (
     "ManagedIdentitiesServiceClient",

@@ -28,10 +28,7 @@ from .managed_identities_service import (
     UpdateDomainRequest,
     ValidateTrustRequest,
 )
-from .resource import (
-    Domain,
-    Trust,
-)
+from .resource import Domain, Trust
 
 __all__ = (
     "AttachTrustRequest",

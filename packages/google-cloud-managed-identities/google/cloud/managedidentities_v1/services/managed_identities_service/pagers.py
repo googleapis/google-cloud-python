@@ -18,14 +18,13 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Callable,
+    Iterator,
+    Optional,
     Sequence,
     Tuple,
-    Optional,
-    Iterator,
 )
 
-from google.cloud.managedidentities_v1.types import managed_identities_service
-from google.cloud.managedidentities_v1.types import resource
+from google.cloud.managedidentities_v1.types import managed_identities_service, resource
 
 
 class ListDomainsPager:

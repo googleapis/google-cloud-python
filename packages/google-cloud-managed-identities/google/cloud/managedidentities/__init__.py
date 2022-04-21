@@ -14,54 +14,28 @@
 # limitations under the License.
 #
 
-from google.cloud.managedidentities_v1.services.managed_identities_service.client import (
-    ManagedIdentitiesServiceClient,
-)
 from google.cloud.managedidentities_v1.services.managed_identities_service.async_client import (
     ManagedIdentitiesServiceAsyncClient,
 )
-
+from google.cloud.managedidentities_v1.services.managed_identities_service.client import (
+    ManagedIdentitiesServiceClient,
+)
 from google.cloud.managedidentities_v1.types.managed_identities_service import (
     AttachTrustRequest,
-)
-from google.cloud.managedidentities_v1.types.managed_identities_service import (
     CreateMicrosoftAdDomainRequest,
-)
-from google.cloud.managedidentities_v1.types.managed_identities_service import (
     DeleteDomainRequest,
-)
-from google.cloud.managedidentities_v1.types.managed_identities_service import (
     DetachTrustRequest,
-)
-from google.cloud.managedidentities_v1.types.managed_identities_service import (
     GetDomainRequest,
-)
-from google.cloud.managedidentities_v1.types.managed_identities_service import (
     ListDomainsRequest,
-)
-from google.cloud.managedidentities_v1.types.managed_identities_service import (
     ListDomainsResponse,
-)
-from google.cloud.managedidentities_v1.types.managed_identities_service import (
     OpMetadata,
-)
-from google.cloud.managedidentities_v1.types.managed_identities_service import (
     ReconfigureTrustRequest,
-)
-from google.cloud.managedidentities_v1.types.managed_identities_service import (
     ResetAdminPasswordRequest,
-)
-from google.cloud.managedidentities_v1.types.managed_identities_service import (
     ResetAdminPasswordResponse,
-)
-from google.cloud.managedidentities_v1.types.managed_identities_service import (
     UpdateDomainRequest,
-)
-from google.cloud.managedidentities_v1.types.managed_identities_service import (
     ValidateTrustRequest,
 )
-from google.cloud.managedidentities_v1.types.resource import Domain
-from google.cloud.managedidentities_v1.types.resource import Trust
+from google.cloud.managedidentities_v1.types.resource import Domain, Trust
 
 __all__ = (
     "ManagedIdentitiesServiceClient",
