@@ -14,16 +14,17 @@
 # limitations under the License.
 #
 
-from google.cloud.ids_v1.services.ids.client import IDSClient
 from google.cloud.ids_v1.services.ids.async_client import IDSAsyncClient
-
-from google.cloud.ids_v1.types.ids import CreateEndpointRequest
-from google.cloud.ids_v1.types.ids import DeleteEndpointRequest
-from google.cloud.ids_v1.types.ids import Endpoint
-from google.cloud.ids_v1.types.ids import GetEndpointRequest
-from google.cloud.ids_v1.types.ids import ListEndpointsRequest
-from google.cloud.ids_v1.types.ids import ListEndpointsResponse
-from google.cloud.ids_v1.types.ids import OperationMetadata
+from google.cloud.ids_v1.services.ids.client import IDSClient
+from google.cloud.ids_v1.types.ids import (
+    CreateEndpointRequest,
+    DeleteEndpointRequest,
+    Endpoint,
+    GetEndpointRequest,
+    ListEndpointsRequest,
+    ListEndpointsResponse,
+    OperationMetadata,
+)
 
 __all__ = (
     "IDSClient",

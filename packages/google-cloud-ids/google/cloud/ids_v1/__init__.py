@@ -14,16 +14,16 @@
 # limitations under the License.
 #
 
-from .services.ids import IDSClient
-from .services.ids import IDSAsyncClient
-
-from .types.ids import CreateEndpointRequest
-from .types.ids import DeleteEndpointRequest
-from .types.ids import Endpoint
-from .types.ids import GetEndpointRequest
-from .types.ids import ListEndpointsRequest
-from .types.ids import ListEndpointsResponse
-from .types.ids import OperationMetadata
+from .services.ids import IDSAsyncClient, IDSClient
+from .types.ids import (
+    CreateEndpointRequest,
+    DeleteEndpointRequest,
+    Endpoint,
+    GetEndpointRequest,
+    ListEndpointsRequest,
+    ListEndpointsResponse,
+    OperationMetadata,
+)
 
 __all__ = (
     "IDSAsyncClient",

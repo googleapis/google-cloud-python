@@ -19,7 +19,6 @@ import os
 
 import setuptools
 
-
 name = "google-cloud-ids"
 description = "Cloud IDS API client library"
 version = "1.1.1"
