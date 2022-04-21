@@ -14,15 +14,13 @@
 # limitations under the License.
 #
 
-from google.cloud.securitycenter_v1.services.security_center.client import (
-    SecurityCenterClient,
-)
 from google.cloud.securitycenter_v1.services.security_center.async_client import (
     SecurityCenterAsyncClient,
 )
-
-from google.cloud.securitycenter_v1.types.access import Access
-from google.cloud.securitycenter_v1.types.access import Geolocation
+from google.cloud.securitycenter_v1.services.security_center.client import (
+    SecurityCenterClient,
+)
+from google.cloud.securitycenter_v1.types.access import Access, Geolocation
 from google.cloud.securitycenter_v1.types.asset import Asset
 from google.cloud.securitycenter_v1.types.bigquery_export import BigQueryExport
 from google.cloud.securitycenter_v1.types.connection import Connection
@@ -47,132 +45,56 @@ from google.cloud.securitycenter_v1.types.run_asset_discovery_response import (
 from google.cloud.securitycenter_v1.types.security_marks import SecurityMarks
 from google.cloud.securitycenter_v1.types.securitycenter_service import (
     BulkMuteFindingsRequest,
-)
-from google.cloud.securitycenter_v1.types.securitycenter_service import (
     BulkMuteFindingsResponse,
-)
-from google.cloud.securitycenter_v1.types.securitycenter_service import (
     CreateBigQueryExportRequest,
-)
-from google.cloud.securitycenter_v1.types.securitycenter_service import (
     CreateFindingRequest,
-)
-from google.cloud.securitycenter_v1.types.securitycenter_service import (
     CreateMuteConfigRequest,
-)
-from google.cloud.securitycenter_v1.types.securitycenter_service import (
     CreateNotificationConfigRequest,
-)
-from google.cloud.securitycenter_v1.types.securitycenter_service import (
     CreateSourceRequest,
-)
-from google.cloud.securitycenter_v1.types.securitycenter_service import (
     DeleteBigQueryExportRequest,
-)
-from google.cloud.securitycenter_v1.types.securitycenter_service import (
     DeleteMuteConfigRequest,
-)
-from google.cloud.securitycenter_v1.types.securitycenter_service import (
     DeleteNotificationConfigRequest,
-)
-from google.cloud.securitycenter_v1.types.securitycenter_service import (
     GetBigQueryExportRequest,
-)
-from google.cloud.securitycenter_v1.types.securitycenter_service import (
     GetMuteConfigRequest,
-)
-from google.cloud.securitycenter_v1.types.securitycenter_service import (
     GetNotificationConfigRequest,
-)
-from google.cloud.securitycenter_v1.types.securitycenter_service import (
     GetOrganizationSettingsRequest,
-)
-from google.cloud.securitycenter_v1.types.securitycenter_service import GetSourceRequest
-from google.cloud.securitycenter_v1.types.securitycenter_service import (
+    GetSourceRequest,
     GroupAssetsRequest,
-)
-from google.cloud.securitycenter_v1.types.securitycenter_service import (
     GroupAssetsResponse,
-)
-from google.cloud.securitycenter_v1.types.securitycenter_service import (
     GroupFindingsRequest,
-)
-from google.cloud.securitycenter_v1.types.securitycenter_service import (
     GroupFindingsResponse,
-)
-from google.cloud.securitycenter_v1.types.securitycenter_service import GroupResult
-from google.cloud.securitycenter_v1.types.securitycenter_service import (
+    GroupResult,
     ListAssetsRequest,
-)
-from google.cloud.securitycenter_v1.types.securitycenter_service import (
     ListAssetsResponse,
-)
-from google.cloud.securitycenter_v1.types.securitycenter_service import (
     ListBigQueryExportsRequest,
-)
-from google.cloud.securitycenter_v1.types.securitycenter_service import (
     ListBigQueryExportsResponse,
-)
-from google.cloud.securitycenter_v1.types.securitycenter_service import (
     ListFindingsRequest,
-)
-from google.cloud.securitycenter_v1.types.securitycenter_service import (
     ListFindingsResponse,
-)
-from google.cloud.securitycenter_v1.types.securitycenter_service import (
     ListMuteConfigsRequest,
-)
-from google.cloud.securitycenter_v1.types.securitycenter_service import (
     ListMuteConfigsResponse,
-)
-from google.cloud.securitycenter_v1.types.securitycenter_service import (
     ListNotificationConfigsRequest,
-)
-from google.cloud.securitycenter_v1.types.securitycenter_service import (
     ListNotificationConfigsResponse,
-)
-from google.cloud.securitycenter_v1.types.securitycenter_service import (
     ListSourcesRequest,
-)
-from google.cloud.securitycenter_v1.types.securitycenter_service import (
     ListSourcesResponse,
-)
-from google.cloud.securitycenter_v1.types.securitycenter_service import (
     RunAssetDiscoveryRequest,
-)
-from google.cloud.securitycenter_v1.types.securitycenter_service import (
     SetFindingStateRequest,
-)
-from google.cloud.securitycenter_v1.types.securitycenter_service import SetMuteRequest
-from google.cloud.securitycenter_v1.types.securitycenter_service import (
+    SetMuteRequest,
     UpdateBigQueryExportRequest,
-)
-from google.cloud.securitycenter_v1.types.securitycenter_service import (
     UpdateExternalSystemRequest,
-)
-from google.cloud.securitycenter_v1.types.securitycenter_service import (
     UpdateFindingRequest,
-)
-from google.cloud.securitycenter_v1.types.securitycenter_service import (
     UpdateMuteConfigRequest,
-)
-from google.cloud.securitycenter_v1.types.securitycenter_service import (
     UpdateNotificationConfigRequest,
-)
-from google.cloud.securitycenter_v1.types.securitycenter_service import (
     UpdateOrganizationSettingsRequest,
-)
-from google.cloud.securitycenter_v1.types.securitycenter_service import (
     UpdateSecurityMarksRequest,
-)
-from google.cloud.securitycenter_v1.types.securitycenter_service import (
     UpdateSourceRequest,
 )
 from google.cloud.securitycenter_v1.types.source import Source
-from google.cloud.securitycenter_v1.types.vulnerability import Cve
-from google.cloud.securitycenter_v1.types.vulnerability import Cvssv3
-from google.cloud.securitycenter_v1.types.vulnerability import Reference
-from google.cloud.securitycenter_v1.types.vulnerability import Vulnerability
+from google.cloud.securitycenter_v1.types.vulnerability import (
+    Cve,
+    Cvssv3,
+    Reference,
+    Vulnerability,
+)
 
 __all__ = (
     "SecurityCenterClient",

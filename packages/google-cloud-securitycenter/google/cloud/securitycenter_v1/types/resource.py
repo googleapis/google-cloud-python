@@ -17,7 +17,6 @@ import proto  # type: ignore
 
 from google.cloud.securitycenter_v1.types import folder
 
-
 __protobuf__ = proto.module(
     package="google.cloud.securitycenter.v1",
     manifest={

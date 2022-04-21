@@ -13,19 +13,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.protobuf import struct_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.securitycenter_v1.types import access as gcs_access
-from google.cloud.securitycenter_v1.types import connection
-from google.cloud.securitycenter_v1.types import external_system
-from google.cloud.securitycenter_v1.types import iam_binding
-from google.cloud.securitycenter_v1.types import indicator as gcs_indicator
+from google.cloud.securitycenter_v1.types import (
+    connection,
+    external_system,
+    iam_binding,
+)
 from google.cloud.securitycenter_v1.types import mitre_attack as gcs_mitre_attack
 from google.cloud.securitycenter_v1.types import security_marks as gcs_security_marks
 from google.cloud.securitycenter_v1.types import vulnerability as gcs_vulnerability
-from google.protobuf import struct_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-
+from google.cloud.securitycenter_v1.types import access as gcs_access
+from google.cloud.securitycenter_v1.types import indicator as gcs_indicator
 
 __protobuf__ = proto.module(
     package="google.cloud.securitycenter.v1",

@@ -18,15 +18,17 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Callable,
+    Iterator,
+    Optional,
     Sequence,
     Tuple,
-    Optional,
-    Iterator,
 )
 
-from google.cloud.securitycenter_v1beta1.types import finding
-from google.cloud.securitycenter_v1beta1.types import securitycenter_service
-from google.cloud.securitycenter_v1beta1.types import source
+from google.cloud.securitycenter_v1beta1.types import (
+    finding,
+    securitycenter_service,
+    source,
+)
 
 
 class GroupAssetsPager:

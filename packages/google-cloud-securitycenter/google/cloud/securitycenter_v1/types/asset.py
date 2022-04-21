@@ -13,13 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import proto  # type: ignore
-
-from google.cloud.securitycenter_v1.types import folder
-from google.cloud.securitycenter_v1.types import security_marks as gcs_security_marks
 from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
+import proto  # type: ignore
 
+from google.cloud.securitycenter_v1.types import security_marks as gcs_security_marks
+from google.cloud.securitycenter_v1.types import folder
 
 __protobuf__ = proto.module(
     package="google.cloud.securitycenter.v1",

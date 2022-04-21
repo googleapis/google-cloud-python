@@ -20,7 +20,6 @@ from .base import SecurityCenterTransport
 from .grpc import SecurityCenterGrpcTransport
 from .grpc_asyncio import SecurityCenterGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[SecurityCenterTransport]]
 _transport_registry["grpc"] = SecurityCenterGrpcTransport

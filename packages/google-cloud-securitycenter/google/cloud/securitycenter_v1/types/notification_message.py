@@ -18,7 +18,6 @@ import proto  # type: ignore
 from google.cloud.securitycenter_v1.types import finding as gcs_finding
 from google.cloud.securitycenter_v1.types import resource as gcs_resource
 
-
 __protobuf__ = proto.module(
     package="google.cloud.securitycenter.v1",
     manifest={

@@ -18,17 +18,19 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Callable,
+    Iterator,
+    Optional,
     Sequence,
     Tuple,
-    Optional,
-    Iterator,
 )
 
-from google.cloud.securitycenter_v1.types import bigquery_export
-from google.cloud.securitycenter_v1.types import mute_config
-from google.cloud.securitycenter_v1.types import notification_config
-from google.cloud.securitycenter_v1.types import securitycenter_service
-from google.cloud.securitycenter_v1.types import source
+from google.cloud.securitycenter_v1.types import (
+    bigquery_export,
+    mute_config,
+    notification_config,
+    securitycenter_service,
+    source,
+)
 
 
 class GroupAssetsPager:

@@ -18,15 +18,17 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Callable,
+    Iterator,
+    Optional,
     Sequence,
     Tuple,
-    Optional,
-    Iterator,
 )
 
-from google.cloud.securitycenter_v1p1beta1.types import notification_config
-from google.cloud.securitycenter_v1p1beta1.types import securitycenter_service
-from google.cloud.securitycenter_v1p1beta1.types import source
+from google.cloud.securitycenter_v1p1beta1.types import (
+    notification_config,
+    securitycenter_service,
+    source,
+)
 
 
 class GroupAssetsPager:
