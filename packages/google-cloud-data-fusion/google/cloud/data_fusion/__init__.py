@@ -14,26 +14,27 @@
 # limitations under the License.
 #
 
-from google.cloud.data_fusion_v1.services.data_fusion.client import DataFusionClient
 from google.cloud.data_fusion_v1.services.data_fusion.async_client import (
     DataFusionAsyncClient,
 )
-
-from google.cloud.data_fusion_v1.types.datafusion import Accelerator
-from google.cloud.data_fusion_v1.types.datafusion import CreateInstanceRequest
-from google.cloud.data_fusion_v1.types.datafusion import CryptoKeyConfig
-from google.cloud.data_fusion_v1.types.datafusion import DeleteInstanceRequest
-from google.cloud.data_fusion_v1.types.datafusion import GetInstanceRequest
-from google.cloud.data_fusion_v1.types.datafusion import Instance
-from google.cloud.data_fusion_v1.types.datafusion import ListAvailableVersionsRequest
-from google.cloud.data_fusion_v1.types.datafusion import ListAvailableVersionsResponse
-from google.cloud.data_fusion_v1.types.datafusion import ListInstancesRequest
-from google.cloud.data_fusion_v1.types.datafusion import ListInstancesResponse
-from google.cloud.data_fusion_v1.types.datafusion import NetworkConfig
-from google.cloud.data_fusion_v1.types.datafusion import OperationMetadata
-from google.cloud.data_fusion_v1.types.datafusion import RestartInstanceRequest
-from google.cloud.data_fusion_v1.types.datafusion import UpdateInstanceRequest
-from google.cloud.data_fusion_v1.types.datafusion import Version
+from google.cloud.data_fusion_v1.services.data_fusion.client import DataFusionClient
+from google.cloud.data_fusion_v1.types.datafusion import (
+    Accelerator,
+    CreateInstanceRequest,
+    CryptoKeyConfig,
+    DeleteInstanceRequest,
+    GetInstanceRequest,
+    Instance,
+    ListAvailableVersionsRequest,
+    ListAvailableVersionsResponse,
+    ListInstancesRequest,
+    ListInstancesResponse,
+    NetworkConfig,
+    OperationMetadata,
+    RestartInstanceRequest,
+    UpdateInstanceRequest,
+    Version,
+)
 
 __all__ = (
     "DataFusionClient",

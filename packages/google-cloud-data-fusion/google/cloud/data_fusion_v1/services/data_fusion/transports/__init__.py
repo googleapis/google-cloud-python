@@ -20,7 +20,6 @@ from .base import DataFusionTransport
 from .grpc import DataFusionGrpcTransport
 from .grpc_asyncio import DataFusionGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[DataFusionTransport]]
 _transport_registry["grpc"] = DataFusionGrpcTransport

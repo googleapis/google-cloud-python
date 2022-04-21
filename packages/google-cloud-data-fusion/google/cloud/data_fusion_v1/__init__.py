@@ -14,24 +14,24 @@
 # limitations under the License.
 #
 
-from .services.data_fusion import DataFusionClient
-from .services.data_fusion import DataFusionAsyncClient
-
-from .types.datafusion import Accelerator
-from .types.datafusion import CreateInstanceRequest
-from .types.datafusion import CryptoKeyConfig
-from .types.datafusion import DeleteInstanceRequest
-from .types.datafusion import GetInstanceRequest
-from .types.datafusion import Instance
-from .types.datafusion import ListAvailableVersionsRequest
-from .types.datafusion import ListAvailableVersionsResponse
-from .types.datafusion import ListInstancesRequest
-from .types.datafusion import ListInstancesResponse
-from .types.datafusion import NetworkConfig
-from .types.datafusion import OperationMetadata
-from .types.datafusion import RestartInstanceRequest
-from .types.datafusion import UpdateInstanceRequest
-from .types.datafusion import Version
+from .services.data_fusion import DataFusionAsyncClient, DataFusionClient
+from .types.datafusion import (
+    Accelerator,
+    CreateInstanceRequest,
+    CryptoKeyConfig,
+    DeleteInstanceRequest,
+    GetInstanceRequest,
+    Instance,
+    ListAvailableVersionsRequest,
+    ListAvailableVersionsResponse,
+    ListInstancesRequest,
+    ListInstancesResponse,
+    NetworkConfig,
+    OperationMetadata,
+    RestartInstanceRequest,
+    UpdateInstanceRequest,
+    Version,
+)
 
 __all__ = (
     "DataFusionAsyncClient",

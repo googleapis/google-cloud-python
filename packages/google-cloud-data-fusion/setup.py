@@ -19,7 +19,6 @@ import os
 
 import setuptools
 
-
 name = "google-cloud-data-fusion"
 description = "Cloud Data Fusion API client library"
 version = "1.4.1"
