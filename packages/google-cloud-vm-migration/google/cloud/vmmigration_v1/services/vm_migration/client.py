@@ -17,17 +17,17 @@ from collections import OrderedDict
 import os
 import re
 from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -36,13 +36,15 @@ except AttributeError:  # pragma: NO COVER
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
-from google.cloud.vmmigration_v1.services.vm_migration import pagers
-from google.cloud.vmmigration_v1.types import vmmigration
 from google.protobuf import empty_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
-from .transports.base import VmMigrationTransport, DEFAULT_CLIENT_INFO
+
+from google.cloud.vmmigration_v1.services.vm_migration import pagers
+from google.cloud.vmmigration_v1.types import vmmigration
+
+from .transports.base import DEFAULT_CLIENT_INFO, VmMigrationTransport
 from .transports.grpc import VmMigrationGrpcTransport
 from .transports.grpc_asyncio import VmMigrationGrpcAsyncIOTransport
 

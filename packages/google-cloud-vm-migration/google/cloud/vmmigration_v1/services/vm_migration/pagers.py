@@ -18,10 +18,10 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Callable,
+    Iterator,
+    Optional,
     Sequence,
     Tuple,
-    Optional,
-    Iterator,
 )
 
 from google.cloud.vmmigration_v1.types import vmmigration

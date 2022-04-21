@@ -20,7 +20,6 @@ from .base import VmMigrationTransport
 from .grpc import VmMigrationGrpcTransport
 from .grpc_asyncio import VmMigrationGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[VmMigrationTransport]]
 _transport_registry["grpc"] = VmMigrationGrpcTransport

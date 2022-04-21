@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import VmMigrationClient
 from .async_client import VmMigrationAsyncClient
+from .client import VmMigrationClient
 
 __all__ = (
     "VmMigrationClient",

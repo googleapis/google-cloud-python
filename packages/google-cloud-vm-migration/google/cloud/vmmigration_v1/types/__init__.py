@@ -22,6 +22,9 @@ from .vmmigration import (
     CancelCutoverJobRequest,
     CancelCutoverJobResponse,
     CloneJob,
+    ComputeEngineBootOption,
+    ComputeEngineDiskType,
+    ComputeEngineLicenseType,
     ComputeEngineTargetDefaults,
     ComputeEngineTargetDetails,
     ComputeScheduling,
@@ -93,15 +96,12 @@ from .vmmigration import (
     UpdateSourceRequest,
     UpdateTargetProjectRequest,
     UtilizationReport,
+    UtilizationReportView,
     VmUtilizationInfo,
     VmUtilizationMetrics,
     VmwareSourceDetails,
     VmwareVmDetails,
     VmwareVmsDetails,
-    ComputeEngineBootOption,
-    ComputeEngineDiskType,
-    ComputeEngineLicenseType,
-    UtilizationReportView,
 )
 
 __all__ = (

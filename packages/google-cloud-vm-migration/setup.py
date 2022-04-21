@@ -19,7 +19,6 @@ import os
 
 import setuptools
 
-
 name = "google-cloud-vm-migration"
 description = "Cloud VM Migration API client library"
 version = "1.1.1"
