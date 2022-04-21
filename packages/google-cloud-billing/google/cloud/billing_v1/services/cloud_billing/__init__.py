@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import CloudBillingClient
 from .async_client import CloudBillingAsyncClient
+from .client import CloudBillingClient
 
 __all__ = (
     "CloudBillingClient",

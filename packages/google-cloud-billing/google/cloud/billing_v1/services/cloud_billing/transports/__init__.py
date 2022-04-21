@@ -20,7 +20,6 @@ from .base import CloudBillingTransport
 from .grpc import CloudBillingGrpcTransport
 from .grpc_asyncio import CloudBillingGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[CloudBillingTransport]]
 _transport_registry["grpc"] = CloudBillingGrpcTransport

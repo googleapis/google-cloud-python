@@ -14,36 +14,39 @@
 # limitations under the License.
 #
 
-from google.cloud.billing_v1.services.cloud_billing.client import CloudBillingClient
 from google.cloud.billing_v1.services.cloud_billing.async_client import (
     CloudBillingAsyncClient,
 )
-from google.cloud.billing_v1.services.cloud_catalog.client import CloudCatalogClient
+from google.cloud.billing_v1.services.cloud_billing.client import CloudBillingClient
 from google.cloud.billing_v1.services.cloud_catalog.async_client import (
     CloudCatalogAsyncClient,
 )
-
-from google.cloud.billing_v1.types.cloud_billing import BillingAccount
-from google.cloud.billing_v1.types.cloud_billing import CreateBillingAccountRequest
-from google.cloud.billing_v1.types.cloud_billing import GetBillingAccountRequest
-from google.cloud.billing_v1.types.cloud_billing import GetProjectBillingInfoRequest
-from google.cloud.billing_v1.types.cloud_billing import ListBillingAccountsRequest
-from google.cloud.billing_v1.types.cloud_billing import ListBillingAccountsResponse
-from google.cloud.billing_v1.types.cloud_billing import ListProjectBillingInfoRequest
-from google.cloud.billing_v1.types.cloud_billing import ListProjectBillingInfoResponse
-from google.cloud.billing_v1.types.cloud_billing import ProjectBillingInfo
-from google.cloud.billing_v1.types.cloud_billing import UpdateBillingAccountRequest
-from google.cloud.billing_v1.types.cloud_billing import UpdateProjectBillingInfoRequest
-from google.cloud.billing_v1.types.cloud_catalog import AggregationInfo
-from google.cloud.billing_v1.types.cloud_catalog import Category
-from google.cloud.billing_v1.types.cloud_catalog import ListServicesRequest
-from google.cloud.billing_v1.types.cloud_catalog import ListServicesResponse
-from google.cloud.billing_v1.types.cloud_catalog import ListSkusRequest
-from google.cloud.billing_v1.types.cloud_catalog import ListSkusResponse
-from google.cloud.billing_v1.types.cloud_catalog import PricingExpression
-from google.cloud.billing_v1.types.cloud_catalog import PricingInfo
-from google.cloud.billing_v1.types.cloud_catalog import Service
-from google.cloud.billing_v1.types.cloud_catalog import Sku
+from google.cloud.billing_v1.services.cloud_catalog.client import CloudCatalogClient
+from google.cloud.billing_v1.types.cloud_billing import (
+    BillingAccount,
+    CreateBillingAccountRequest,
+    GetBillingAccountRequest,
+    GetProjectBillingInfoRequest,
+    ListBillingAccountsRequest,
+    ListBillingAccountsResponse,
+    ListProjectBillingInfoRequest,
+    ListProjectBillingInfoResponse,
+    ProjectBillingInfo,
+    UpdateBillingAccountRequest,
+    UpdateProjectBillingInfoRequest,
+)
+from google.cloud.billing_v1.types.cloud_catalog import (
+    AggregationInfo,
+    Category,
+    ListServicesRequest,
+    ListServicesResponse,
+    ListSkusRequest,
+    ListSkusResponse,
+    PricingExpression,
+    PricingInfo,
+    Service,
+    Sku,
+)
 
 __all__ = (
     "CloudBillingClient",

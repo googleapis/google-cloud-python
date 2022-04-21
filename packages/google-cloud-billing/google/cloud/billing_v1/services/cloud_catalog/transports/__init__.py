@@ -20,7 +20,6 @@ from .base import CloudCatalogTransport
 from .grpc import CloudCatalogGrpcTransport
 from .grpc_asyncio import CloudCatalogGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[CloudCatalogTransport]]
 _transport_registry["grpc"] = CloudCatalogGrpcTransport
