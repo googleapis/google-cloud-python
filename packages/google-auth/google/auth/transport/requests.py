@@ -150,8 +150,14 @@ class Request(transport.Request):
         self.session = session
 
     def __del__(self):
-        if hasattr(self, "session") and self.session is not None:
-            self.session.close()
+        try:
+            if hasattr(self, "session") and self.session is not None:
+                self.session.close()
+        except TypeError:
+            # NOTE: For certain Python binary built, the queue.Empty exception
+            # might not be considered a normal Python exception causing
+            # TypeError.
+            pass
 
     def __call__(
         self,

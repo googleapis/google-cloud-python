@@ -57,6 +57,12 @@ class TestRequestResponse(compliance.RequestResponseTests):
         request.__del__()
         http.close.assert_called_with()
 
+        http = mock.create_autospec(requests.Session, instance=True)
+        http.close.side_effect = TypeError("test injected TypeError")
+        request = google.auth.transport.requests.Request(http)
+        request.__del__()
+        http.close.assert_called_with()
+
 
 class TestTimeoutGuard(object):
     def make_guard(self, *args, **kwargs):
