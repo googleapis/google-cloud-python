@@ -17,7 +17,6 @@ import os
 
 import setuptools
 
-
 # Package metadata.
 
 name = "google-cloud-container"

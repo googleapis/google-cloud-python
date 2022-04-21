@@ -35,6 +35,7 @@ from .cluster_service import (
     CreateNodePoolRequest,
     DailyMaintenanceWindow,
     DatabaseEncryption,
+    DatapathProvider,
     DefaultSnatStatus,
     DeleteClusterRequest,
     DeleteNodePoolRequest,
@@ -96,6 +97,7 @@ from .cluster_service import (
     OperationProgress,
     PrivateClusterConfig,
     PrivateClusterMasterGlobalAccessConfig,
+    PrivateIPv6GoogleAccess,
     RecurringTimeWindow,
     ReleaseChannel,
     ReservationAffinity,
@@ -128,15 +130,13 @@ from .cluster_service import (
     UpdateNodePoolRequest,
     UpgradeAvailableEvent,
     UpgradeEvent,
+    UpgradeResourceType,
     UsableSubnetwork,
     UsableSubnetworkSecondaryRange,
     VerticalPodAutoscaling,
     VirtualNIC,
     WorkloadIdentityConfig,
     WorkloadMetadataConfig,
-    DatapathProvider,
-    PrivateIPv6GoogleAccess,
-    UpgradeResourceType,
 )
 
 __all__ = (

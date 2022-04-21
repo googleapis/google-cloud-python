@@ -17,7 +17,6 @@ from collections import OrderedDict
 import os
 import re
 from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
 import warnings
 
 from google.api_core import client_options as client_options_lib
@@ -25,20 +24,23 @@ from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
+from google.rpc import status_pb2  # type: ignore
+
 from google.cloud.container_v1beta1.services.cluster_manager import pagers
 from google.cloud.container_v1beta1.types import cluster_service
-from google.rpc import status_pb2  # type: ignore
-from .transports.base import ClusterManagerTransport, DEFAULT_CLIENT_INFO
+
+from .transports.base import DEFAULT_CLIENT_INFO, ClusterManagerTransport
 from .transports.grpc import ClusterManagerGrpcTransport
 from .transports.grpc_asyncio import ClusterManagerGrpcAsyncIOTransport
 

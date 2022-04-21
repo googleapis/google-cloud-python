@@ -20,7 +20,6 @@ from .base import ClusterManagerTransport
 from .grpc import ClusterManagerGrpcTransport
 from .grpc_asyncio import ClusterManagerGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[ClusterManagerTransport]]
 _transport_registry["grpc"] = ClusterManagerGrpcTransport

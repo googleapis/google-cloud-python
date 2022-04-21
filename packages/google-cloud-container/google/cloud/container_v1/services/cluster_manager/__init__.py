@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import ClusterManagerClient
 from .async_client import ClusterManagerAsyncClient
+from .client import ClusterManagerClient
 
 __all__ = (
     "ClusterManagerClient",
