@@ -20,7 +20,6 @@ from .base import IdentityAwareProxyAdminServiceTransport
 from .grpc import IdentityAwareProxyAdminServiceGrpcTransport
 from .grpc_asyncio import IdentityAwareProxyAdminServiceGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = (
     OrderedDict()

@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import IdentityAwareProxyOAuthServiceClient
 from .async_client import IdentityAwareProxyOAuthServiceAsyncClient
+from .client import IdentityAwareProxyOAuthServiceClient
 
 __all__ = (
     "IdentityAwareProxyOAuthServiceClient",

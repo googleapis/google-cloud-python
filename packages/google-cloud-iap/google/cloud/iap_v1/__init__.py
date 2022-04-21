@@ -15,40 +15,37 @@
 #
 
 from .services.identity_aware_proxy_admin_service import (
-    IdentityAwareProxyAdminServiceClient,
-)
-from .services.identity_aware_proxy_admin_service import (
     IdentityAwareProxyAdminServiceAsyncClient,
-)
-from .services.identity_aware_proxy_o_auth_service import (
-    IdentityAwareProxyOAuthServiceClient,
+    IdentityAwareProxyAdminServiceClient,
 )
 from .services.identity_aware_proxy_o_auth_service import (
     IdentityAwareProxyOAuthServiceAsyncClient,
+    IdentityAwareProxyOAuthServiceClient,
 )
-
-from .types.service import AccessDeniedPageSettings
-from .types.service import AccessSettings
-from .types.service import ApplicationSettings
-from .types.service import Brand
-from .types.service import CorsSettings
-from .types.service import CreateBrandRequest
-from .types.service import CreateIdentityAwareProxyClientRequest
-from .types.service import CsmSettings
-from .types.service import DeleteIdentityAwareProxyClientRequest
-from .types.service import GcipSettings
-from .types.service import GetBrandRequest
-from .types.service import GetIapSettingsRequest
-from .types.service import GetIdentityAwareProxyClientRequest
-from .types.service import IapSettings
-from .types.service import IdentityAwareProxyClient
-from .types.service import ListBrandsRequest
-from .types.service import ListBrandsResponse
-from .types.service import ListIdentityAwareProxyClientsRequest
-from .types.service import ListIdentityAwareProxyClientsResponse
-from .types.service import OAuthSettings
-from .types.service import ResetIdentityAwareProxyClientSecretRequest
-from .types.service import UpdateIapSettingsRequest
+from .types.service import (
+    AccessDeniedPageSettings,
+    AccessSettings,
+    ApplicationSettings,
+    Brand,
+    CorsSettings,
+    CreateBrandRequest,
+    CreateIdentityAwareProxyClientRequest,
+    CsmSettings,
+    DeleteIdentityAwareProxyClientRequest,
+    GcipSettings,
+    GetBrandRequest,
+    GetIapSettingsRequest,
+    GetIdentityAwareProxyClientRequest,
+    IapSettings,
+    IdentityAwareProxyClient,
+    ListBrandsRequest,
+    ListBrandsResponse,
+    ListIdentityAwareProxyClientsRequest,
+    ListIdentityAwareProxyClientsResponse,
+    OAuthSettings,
+    ResetIdentityAwareProxyClientSecretRequest,
+    UpdateIapSettingsRequest,
+)
 
 __all__ = (
     "IdentityAwareProxyAdminServiceAsyncClient",
