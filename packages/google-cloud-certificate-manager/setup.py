@@ -19,7 +19,6 @@ import os
 
 import setuptools
 
-
 name = "google-cloud-certificate-manager"
 description = "Certificate Manager API client library"
 url = "https://github.com/googleapis/python-certificate-manager"

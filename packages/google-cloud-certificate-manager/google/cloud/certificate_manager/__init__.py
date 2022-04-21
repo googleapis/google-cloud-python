@@ -14,97 +14,44 @@
 # limitations under the License.
 #
 
-from google.cloud.certificate_manager_v1.services.certificate_manager.client import (
-    CertificateManagerClient,
-)
 from google.cloud.certificate_manager_v1.services.certificate_manager.async_client import (
     CertificateManagerAsyncClient,
 )
-
-from google.cloud.certificate_manager_v1.types.certificate_manager import Certificate
-from google.cloud.certificate_manager_v1.types.certificate_manager import CertificateMap
+from google.cloud.certificate_manager_v1.services.certificate_manager.client import (
+    CertificateManagerClient,
+)
 from google.cloud.certificate_manager_v1.types.certificate_manager import (
+    Certificate,
+    CertificateMap,
     CertificateMapEntry,
-)
-from google.cloud.certificate_manager_v1.types.certificate_manager import (
     CreateCertificateMapEntryRequest,
-)
-from google.cloud.certificate_manager_v1.types.certificate_manager import (
     CreateCertificateMapRequest,
-)
-from google.cloud.certificate_manager_v1.types.certificate_manager import (
     CreateCertificateRequest,
-)
-from google.cloud.certificate_manager_v1.types.certificate_manager import (
     CreateDnsAuthorizationRequest,
-)
-from google.cloud.certificate_manager_v1.types.certificate_manager import (
     DeleteCertificateMapEntryRequest,
-)
-from google.cloud.certificate_manager_v1.types.certificate_manager import (
     DeleteCertificateMapRequest,
-)
-from google.cloud.certificate_manager_v1.types.certificate_manager import (
     DeleteCertificateRequest,
-)
-from google.cloud.certificate_manager_v1.types.certificate_manager import (
     DeleteDnsAuthorizationRequest,
-)
-from google.cloud.certificate_manager_v1.types.certificate_manager import (
     DnsAuthorization,
-)
-from google.cloud.certificate_manager_v1.types.certificate_manager import (
     GetCertificateMapEntryRequest,
-)
-from google.cloud.certificate_manager_v1.types.certificate_manager import (
     GetCertificateMapRequest,
-)
-from google.cloud.certificate_manager_v1.types.certificate_manager import (
     GetCertificateRequest,
-)
-from google.cloud.certificate_manager_v1.types.certificate_manager import (
     GetDnsAuthorizationRequest,
-)
-from google.cloud.certificate_manager_v1.types.certificate_manager import (
     ListCertificateMapEntriesRequest,
-)
-from google.cloud.certificate_manager_v1.types.certificate_manager import (
     ListCertificateMapEntriesResponse,
-)
-from google.cloud.certificate_manager_v1.types.certificate_manager import (
     ListCertificateMapsRequest,
-)
-from google.cloud.certificate_manager_v1.types.certificate_manager import (
     ListCertificateMapsResponse,
-)
-from google.cloud.certificate_manager_v1.types.certificate_manager import (
     ListCertificatesRequest,
-)
-from google.cloud.certificate_manager_v1.types.certificate_manager import (
     ListCertificatesResponse,
-)
-from google.cloud.certificate_manager_v1.types.certificate_manager import (
     ListDnsAuthorizationsRequest,
-)
-from google.cloud.certificate_manager_v1.types.certificate_manager import (
     ListDnsAuthorizationsResponse,
-)
-from google.cloud.certificate_manager_v1.types.certificate_manager import (
     OperationMetadata,
-)
-from google.cloud.certificate_manager_v1.types.certificate_manager import (
+    ServingState,
     UpdateCertificateMapEntryRequest,
-)
-from google.cloud.certificate_manager_v1.types.certificate_manager import (
     UpdateCertificateMapRequest,
-)
-from google.cloud.certificate_manager_v1.types.certificate_manager import (
     UpdateCertificateRequest,
-)
-from google.cloud.certificate_manager_v1.types.certificate_manager import (
     UpdateDnsAuthorizationRequest,
 )
-from google.cloud.certificate_manager_v1.types.certificate_manager import ServingState
 
 __all__ = (
     "CertificateManagerClient",

@@ -14,39 +14,42 @@
 # limitations under the License.
 #
 
-from .services.certificate_manager import CertificateManagerClient
-from .services.certificate_manager import CertificateManagerAsyncClient
-
-from .types.certificate_manager import Certificate
-from .types.certificate_manager import CertificateMap
-from .types.certificate_manager import CertificateMapEntry
-from .types.certificate_manager import CreateCertificateMapEntryRequest
-from .types.certificate_manager import CreateCertificateMapRequest
-from .types.certificate_manager import CreateCertificateRequest
-from .types.certificate_manager import CreateDnsAuthorizationRequest
-from .types.certificate_manager import DeleteCertificateMapEntryRequest
-from .types.certificate_manager import DeleteCertificateMapRequest
-from .types.certificate_manager import DeleteCertificateRequest
-from .types.certificate_manager import DeleteDnsAuthorizationRequest
-from .types.certificate_manager import DnsAuthorization
-from .types.certificate_manager import GetCertificateMapEntryRequest
-from .types.certificate_manager import GetCertificateMapRequest
-from .types.certificate_manager import GetCertificateRequest
-from .types.certificate_manager import GetDnsAuthorizationRequest
-from .types.certificate_manager import ListCertificateMapEntriesRequest
-from .types.certificate_manager import ListCertificateMapEntriesResponse
-from .types.certificate_manager import ListCertificateMapsRequest
-from .types.certificate_manager import ListCertificateMapsResponse
-from .types.certificate_manager import ListCertificatesRequest
-from .types.certificate_manager import ListCertificatesResponse
-from .types.certificate_manager import ListDnsAuthorizationsRequest
-from .types.certificate_manager import ListDnsAuthorizationsResponse
-from .types.certificate_manager import OperationMetadata
-from .types.certificate_manager import UpdateCertificateMapEntryRequest
-from .types.certificate_manager import UpdateCertificateMapRequest
-from .types.certificate_manager import UpdateCertificateRequest
-from .types.certificate_manager import UpdateDnsAuthorizationRequest
-from .types.certificate_manager import ServingState
+from .services.certificate_manager import (
+    CertificateManagerAsyncClient,
+    CertificateManagerClient,
+)
+from .types.certificate_manager import (
+    Certificate,
+    CertificateMap,
+    CertificateMapEntry,
+    CreateCertificateMapEntryRequest,
+    CreateCertificateMapRequest,
+    CreateCertificateRequest,
+    CreateDnsAuthorizationRequest,
+    DeleteCertificateMapEntryRequest,
+    DeleteCertificateMapRequest,
+    DeleteCertificateRequest,
+    DeleteDnsAuthorizationRequest,
+    DnsAuthorization,
+    GetCertificateMapEntryRequest,
+    GetCertificateMapRequest,
+    GetCertificateRequest,
+    GetDnsAuthorizationRequest,
+    ListCertificateMapEntriesRequest,
+    ListCertificateMapEntriesResponse,
+    ListCertificateMapsRequest,
+    ListCertificateMapsResponse,
+    ListCertificatesRequest,
+    ListCertificatesResponse,
+    ListDnsAuthorizationsRequest,
+    ListDnsAuthorizationsResponse,
+    OperationMetadata,
+    ServingState,
+    UpdateCertificateMapEntryRequest,
+    UpdateCertificateMapRequest,
+    UpdateCertificateRequest,
+    UpdateDnsAuthorizationRequest,
+)
 
 __all__ = (
     "CertificateManagerAsyncClient",

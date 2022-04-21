@@ -39,11 +39,11 @@ from .certificate_manager import (
     ListDnsAuthorizationsRequest,
     ListDnsAuthorizationsResponse,
     OperationMetadata,
+    ServingState,
     UpdateCertificateMapEntryRequest,
     UpdateCertificateMapRequest,
     UpdateCertificateRequest,
     UpdateDnsAuthorizationRequest,
-    ServingState,
 )
 
 __all__ = (
