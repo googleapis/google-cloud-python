@@ -14,40 +14,41 @@
 # limitations under the License.
 #
 
-from google.cloud.domains_v1.services.domains.client import DomainsClient
 from google.cloud.domains_v1.services.domains.async_client import DomainsAsyncClient
-
-from google.cloud.domains_v1.types.domains import AuthorizationCode
-from google.cloud.domains_v1.types.domains import ConfigureContactSettingsRequest
-from google.cloud.domains_v1.types.domains import ConfigureDnsSettingsRequest
-from google.cloud.domains_v1.types.domains import ConfigureManagementSettingsRequest
-from google.cloud.domains_v1.types.domains import ContactSettings
-from google.cloud.domains_v1.types.domains import DeleteRegistrationRequest
-from google.cloud.domains_v1.types.domains import DnsSettings
-from google.cloud.domains_v1.types.domains import ExportRegistrationRequest
-from google.cloud.domains_v1.types.domains import GetRegistrationRequest
-from google.cloud.domains_v1.types.domains import ListRegistrationsRequest
-from google.cloud.domains_v1.types.domains import ListRegistrationsResponse
-from google.cloud.domains_v1.types.domains import ManagementSettings
-from google.cloud.domains_v1.types.domains import OperationMetadata
-from google.cloud.domains_v1.types.domains import RegisterDomainRequest
-from google.cloud.domains_v1.types.domains import RegisterParameters
-from google.cloud.domains_v1.types.domains import Registration
-from google.cloud.domains_v1.types.domains import ResetAuthorizationCodeRequest
-from google.cloud.domains_v1.types.domains import RetrieveAuthorizationCodeRequest
-from google.cloud.domains_v1.types.domains import RetrieveRegisterParametersRequest
-from google.cloud.domains_v1.types.domains import RetrieveRegisterParametersResponse
-from google.cloud.domains_v1.types.domains import RetrieveTransferParametersRequest
-from google.cloud.domains_v1.types.domains import RetrieveTransferParametersResponse
-from google.cloud.domains_v1.types.domains import SearchDomainsRequest
-from google.cloud.domains_v1.types.domains import SearchDomainsResponse
-from google.cloud.domains_v1.types.domains import TransferDomainRequest
-from google.cloud.domains_v1.types.domains import TransferParameters
-from google.cloud.domains_v1.types.domains import UpdateRegistrationRequest
-from google.cloud.domains_v1.types.domains import ContactNotice
-from google.cloud.domains_v1.types.domains import ContactPrivacy
-from google.cloud.domains_v1.types.domains import DomainNotice
-from google.cloud.domains_v1.types.domains import TransferLockState
+from google.cloud.domains_v1.services.domains.client import DomainsClient
+from google.cloud.domains_v1.types.domains import (
+    AuthorizationCode,
+    ConfigureContactSettingsRequest,
+    ConfigureDnsSettingsRequest,
+    ConfigureManagementSettingsRequest,
+    ContactNotice,
+    ContactPrivacy,
+    ContactSettings,
+    DeleteRegistrationRequest,
+    DnsSettings,
+    DomainNotice,
+    ExportRegistrationRequest,
+    GetRegistrationRequest,
+    ListRegistrationsRequest,
+    ListRegistrationsResponse,
+    ManagementSettings,
+    OperationMetadata,
+    RegisterDomainRequest,
+    RegisterParameters,
+    Registration,
+    ResetAuthorizationCodeRequest,
+    RetrieveAuthorizationCodeRequest,
+    RetrieveRegisterParametersRequest,
+    RetrieveRegisterParametersResponse,
+    RetrieveTransferParametersRequest,
+    RetrieveTransferParametersResponse,
+    SearchDomainsRequest,
+    SearchDomainsResponse,
+    TransferDomainRequest,
+    TransferLockState,
+    TransferParameters,
+    UpdateRegistrationRequest,
+)
 
 __all__ = (
     "DomainsClient",

@@ -20,7 +20,6 @@ from .base import DomainsTransport
 from .grpc import DomainsGrpcTransport
 from .grpc_asyncio import DomainsGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[DomainsTransport]]
 _transport_registry["grpc"] = DomainsGrpcTransport

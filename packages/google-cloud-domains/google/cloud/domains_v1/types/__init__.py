@@ -18,9 +18,12 @@ from .domains import (
     ConfigureContactSettingsRequest,
     ConfigureDnsSettingsRequest,
     ConfigureManagementSettingsRequest,
+    ContactNotice,
+    ContactPrivacy,
     ContactSettings,
     DeleteRegistrationRequest,
     DnsSettings,
+    DomainNotice,
     ExportRegistrationRequest,
     GetRegistrationRequest,
     ListRegistrationsRequest,
@@ -39,12 +42,9 @@ from .domains import (
     SearchDomainsRequest,
     SearchDomainsResponse,
     TransferDomainRequest,
+    TransferLockState,
     TransferParameters,
     UpdateRegistrationRequest,
-    ContactNotice,
-    ContactPrivacy,
-    DomainNotice,
-    TransferLockState,
 )
 
 __all__ = (
