@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import VpcAccessServiceClient
 from .async_client import VpcAccessServiceAsyncClient
+from .client import VpcAccessServiceClient
 
 __all__ = (
     "VpcAccessServiceClient",

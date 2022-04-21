@@ -20,7 +20,6 @@ from .base import VpcAccessServiceTransport
 from .grpc import VpcAccessServiceGrpcTransport
 from .grpc_asyncio import VpcAccessServiceGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[VpcAccessServiceTransport]]
 _transport_registry["grpc"] = VpcAccessServiceGrpcTransport

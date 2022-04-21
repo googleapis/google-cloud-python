@@ -14,20 +14,21 @@
 # limitations under the License.
 #
 
-from google.cloud.vpcaccess_v1.services.vpc_access_service.client import (
-    VpcAccessServiceClient,
-)
 from google.cloud.vpcaccess_v1.services.vpc_access_service.async_client import (
     VpcAccessServiceAsyncClient,
 )
-
-from google.cloud.vpcaccess_v1.types.vpc_access import Connector
-from google.cloud.vpcaccess_v1.types.vpc_access import CreateConnectorRequest
-from google.cloud.vpcaccess_v1.types.vpc_access import DeleteConnectorRequest
-from google.cloud.vpcaccess_v1.types.vpc_access import GetConnectorRequest
-from google.cloud.vpcaccess_v1.types.vpc_access import ListConnectorsRequest
-from google.cloud.vpcaccess_v1.types.vpc_access import ListConnectorsResponse
-from google.cloud.vpcaccess_v1.types.vpc_access import OperationMetadata
+from google.cloud.vpcaccess_v1.services.vpc_access_service.client import (
+    VpcAccessServiceClient,
+)
+from google.cloud.vpcaccess_v1.types.vpc_access import (
+    Connector,
+    CreateConnectorRequest,
+    DeleteConnectorRequest,
+    GetConnectorRequest,
+    ListConnectorsRequest,
+    ListConnectorsResponse,
+    OperationMetadata,
+)
 
 __all__ = (
     "VpcAccessServiceClient",
