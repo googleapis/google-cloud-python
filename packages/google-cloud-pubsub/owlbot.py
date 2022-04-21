@@ -378,7 +378,7 @@ python.py_samples()
 # ----------------------------------------------------------------------------
 s.replace(
     "noxfile.py",
-    r"BLACK_PATHS = \[.*?\]",
+    r"LINT_PATHS = \[.*?\]",
     '\g<0>\n\nMYPY_VERSION = "mypy==0.910"',
 )
 s.replace(
