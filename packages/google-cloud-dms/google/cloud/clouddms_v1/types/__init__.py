@@ -42,6 +42,8 @@ from .clouddms_resources import (
     CloudSqlConnectionProfile,
     CloudSqlSettings,
     ConnectionProfile,
+    DatabaseEngine,
+    DatabaseProvider,
     DatabaseType,
     MigrationJob,
     MigrationJobVerificationError,
@@ -53,8 +55,6 @@ from .clouddms_resources import (
     SslConfig,
     StaticIpConnectivity,
     VpcPeeringConnectivity,
-    DatabaseEngine,
-    DatabaseProvider,
 )
 
 __all__ = (

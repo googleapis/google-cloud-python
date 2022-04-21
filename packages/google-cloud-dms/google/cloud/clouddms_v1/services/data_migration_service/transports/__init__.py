@@ -20,7 +20,6 @@ from .base import DataMigrationServiceTransport
 from .grpc import DataMigrationServiceGrpcTransport
 from .grpc_asyncio import DataMigrationServiceGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = (
     OrderedDict()

@@ -19,7 +19,6 @@ import os
 
 import setuptools
 
-
 name = "google-cloud-dms"
 description = "Cloud Database Migration Service client library"
 version = "1.3.1"

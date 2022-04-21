@@ -18,14 +18,13 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Callable,
+    Iterator,
+    Optional,
     Sequence,
     Tuple,
-    Optional,
-    Iterator,
 )
 
-from google.cloud.clouddms_v1.types import clouddms
-from google.cloud.clouddms_v1.types import clouddms_resources
+from google.cloud.clouddms_v1.types import clouddms, clouddms_resources
 
 
 class ListMigrationJobsPager:
