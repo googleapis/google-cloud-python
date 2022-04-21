@@ -18,8 +18,7 @@
 
 
 def test_shim():
-    from google.cloud import bigquery_datatransfer
-    from google.cloud import bigquery_datatransfer_v1
+    from google.cloud import bigquery_datatransfer, bigquery_datatransfer_v1
 
     assert sorted(bigquery_datatransfer.__all__) == sorted(
         bigquery_datatransfer_v1.__all__

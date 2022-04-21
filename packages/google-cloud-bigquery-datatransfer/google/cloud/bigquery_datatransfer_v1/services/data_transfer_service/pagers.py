@@ -18,14 +18,13 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Callable,
+    Iterator,
+    Optional,
     Sequence,
     Tuple,
-    Optional,
-    Iterator,
 )
 
-from google.cloud.bigquery_datatransfer_v1.types import datatransfer
-from google.cloud.bigquery_datatransfer_v1.types import transfer
+from google.cloud.bigquery_datatransfer_v1.types import datatransfer, transfer
 
 
 class ListDataSourcesPager:

@@ -45,9 +45,9 @@ from .transfer import (
     TransferConfig,
     TransferMessage,
     TransferRun,
-    UserInfo,
     TransferState,
     TransferType,
+    UserInfo,
 )
 
 __all__ = (
