@@ -14,39 +14,38 @@
 # limitations under the License.
 #
 
-from .services.recommender import RecommenderClient
-from .services.recommender import RecommenderAsyncClient
-
-from .types.insight import Insight
-from .types.insight import InsightStateInfo
-from .types.insight_type_config import InsightTypeConfig
-from .types.insight_type_config import InsightTypeGenerationConfig
-from .types.recommendation import CostProjection
-from .types.recommendation import Impact
-from .types.recommendation import Operation
-from .types.recommendation import OperationGroup
-from .types.recommendation import Recommendation
-from .types.recommendation import RecommendationContent
-from .types.recommendation import RecommendationStateInfo
-from .types.recommendation import SecurityProjection
-from .types.recommendation import SustainabilityProjection
-from .types.recommendation import ValueMatcher
-from .types.recommender_config import RecommenderConfig
-from .types.recommender_config import RecommenderGenerationConfig
-from .types.recommender_service import GetInsightRequest
-from .types.recommender_service import GetInsightTypeConfigRequest
-from .types.recommender_service import GetRecommendationRequest
-from .types.recommender_service import GetRecommenderConfigRequest
-from .types.recommender_service import ListInsightsRequest
-from .types.recommender_service import ListInsightsResponse
-from .types.recommender_service import ListRecommendationsRequest
-from .types.recommender_service import ListRecommendationsResponse
-from .types.recommender_service import MarkInsightAcceptedRequest
-from .types.recommender_service import MarkRecommendationClaimedRequest
-from .types.recommender_service import MarkRecommendationFailedRequest
-from .types.recommender_service import MarkRecommendationSucceededRequest
-from .types.recommender_service import UpdateInsightTypeConfigRequest
-from .types.recommender_service import UpdateRecommenderConfigRequest
+from .services.recommender import RecommenderAsyncClient, RecommenderClient
+from .types.insight import Insight, InsightStateInfo
+from .types.insight_type_config import InsightTypeConfig, InsightTypeGenerationConfig
+from .types.recommendation import (
+    CostProjection,
+    Impact,
+    Operation,
+    OperationGroup,
+    Recommendation,
+    RecommendationContent,
+    RecommendationStateInfo,
+    SecurityProjection,
+    SustainabilityProjection,
+    ValueMatcher,
+)
+from .types.recommender_config import RecommenderConfig, RecommenderGenerationConfig
+from .types.recommender_service import (
+    GetInsightRequest,
+    GetInsightTypeConfigRequest,
+    GetRecommendationRequest,
+    GetRecommenderConfigRequest,
+    ListInsightsRequest,
+    ListInsightsResponse,
+    ListRecommendationsRequest,
+    ListRecommendationsResponse,
+    MarkInsightAcceptedRequest,
+    MarkRecommendationClaimedRequest,
+    MarkRecommendationFailedRequest,
+    MarkRecommendationSucceededRequest,
+    UpdateInsightTypeConfigRequest,
+    UpdateRecommenderConfigRequest,
+)
 
 __all__ = (
     "RecommenderAsyncClient",

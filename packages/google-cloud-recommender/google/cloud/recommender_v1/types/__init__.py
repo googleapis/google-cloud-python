@@ -13,10 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .insight import (
-    Insight,
-    InsightStateInfo,
-)
+from .insight import Insight, InsightStateInfo
 from .recommendation import (
     CostProjection,
     Impact,

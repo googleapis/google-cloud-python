@@ -13,29 +13,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import warnings
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
+import warnings
 
-from google.api_core import gapic_v1
-from google.api_core import grpc_helpers_async
+from google.api_core import gapic_v1, grpc_helpers_async
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
-from google.cloud.recommender_v1beta1.types import insight
-from google.cloud.recommender_v1beta1.types import insight_type_config
 from google.cloud.recommender_v1beta1.types import (
     insight_type_config as gcr_insight_type_config,
 )
-from google.cloud.recommender_v1beta1.types import recommendation
-from google.cloud.recommender_v1beta1.types import recommender_config
 from google.cloud.recommender_v1beta1.types import (
     recommender_config as gcr_recommender_config,
 )
+from google.cloud.recommender_v1beta1.types import insight
+from google.cloud.recommender_v1beta1.types import insight_type_config
+from google.cloud.recommender_v1beta1.types import recommendation
+from google.cloud.recommender_v1beta1.types import recommender_config
 from google.cloud.recommender_v1beta1.types import recommender_service
-from .base import RecommenderTransport, DEFAULT_CLIENT_INFO
+
+from .base import DEFAULT_CLIENT_INFO, RecommenderTransport
 from .grpc import RecommenderGrpcTransport
 
 

@@ -18,15 +18,17 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Callable,
+    Iterator,
+    Optional,
     Sequence,
     Tuple,
-    Optional,
-    Iterator,
 )
 
-from google.cloud.recommender_v1.types import insight
-from google.cloud.recommender_v1.types import recommendation
-from google.cloud.recommender_v1.types import recommender_service
+from google.cloud.recommender_v1.types import (
+    insight,
+    recommendation,
+    recommender_service,
+)
 
 
 class ListInsightsPager:

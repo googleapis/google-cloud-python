@@ -17,31 +17,35 @@ from collections import OrderedDict
 import os
 import re
 from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
-from google.cloud.recommender_v1.services.recommender import pagers
-from google.cloud.recommender_v1.types import insight
-from google.cloud.recommender_v1.types import recommendation
-from google.cloud.recommender_v1.types import recommender_service
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-from .transports.base import RecommenderTransport, DEFAULT_CLIENT_INFO
+
+from google.cloud.recommender_v1.services.recommender import pagers
+from google.cloud.recommender_v1.types import (
+    insight,
+    recommendation,
+    recommender_service,
+)
+
+from .transports.base import DEFAULT_CLIENT_INFO, RecommenderTransport
 from .transports.grpc import RecommenderGrpcTransport
 from .transports.grpc_asyncio import RecommenderGrpcAsyncIOTransport
 

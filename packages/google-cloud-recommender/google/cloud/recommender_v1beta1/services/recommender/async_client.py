@@ -17,39 +17,41 @@ from collections import OrderedDict
 import functools
 import re
 from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
 
-from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
+from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
-from google.cloud.recommender_v1beta1.services.recommender import pagers
-from google.cloud.recommender_v1beta1.types import insight
-from google.cloud.recommender_v1beta1.types import insight_type_config
-from google.cloud.recommender_v1beta1.types import (
-    insight_type_config as gcr_insight_type_config,
-)
-from google.cloud.recommender_v1beta1.types import recommendation
-from google.cloud.recommender_v1beta1.types import recommender_config
-from google.cloud.recommender_v1beta1.types import (
-    recommender_config as gcr_recommender_config,
-)
-from google.cloud.recommender_v1beta1.types import recommender_service
 from google.protobuf import duration_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import struct_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
-from .transports.base import RecommenderTransport, DEFAULT_CLIENT_INFO
-from .transports.grpc_asyncio import RecommenderGrpcAsyncIOTransport
+
+from google.cloud.recommender_v1beta1.services.recommender import pagers
+from google.cloud.recommender_v1beta1.types import (
+    insight_type_config as gcr_insight_type_config,
+)
+from google.cloud.recommender_v1beta1.types import (
+    recommender_config as gcr_recommender_config,
+)
+from google.cloud.recommender_v1beta1.types import insight
+from google.cloud.recommender_v1beta1.types import insight_type_config
+from google.cloud.recommender_v1beta1.types import recommendation
+from google.cloud.recommender_v1beta1.types import recommender_config
+from google.cloud.recommender_v1beta1.types import recommender_service
+
 from .client import RecommenderClient
+from .transports.base import DEFAULT_CLIENT_INFO, RecommenderTransport
+from .transports.grpc_asyncio import RecommenderGrpcAsyncIOTransport
 
 
 class RecommenderAsyncClient:

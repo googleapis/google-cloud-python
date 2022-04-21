@@ -13,18 +13,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.recommender_v1beta1.types import insight
 from google.cloud.recommender_v1beta1.types import (
     insight_type_config as gcr_insight_type_config,
 )
-from google.cloud.recommender_v1beta1.types import recommendation
 from google.cloud.recommender_v1beta1.types import (
     recommender_config as gcr_recommender_config,
 )
-from google.protobuf import field_mask_pb2  # type: ignore
-
+from google.cloud.recommender_v1beta1.types import insight
+from google.cloud.recommender_v1beta1.types import recommendation
 
 __protobuf__ = proto.module(
     package="google.cloud.recommender.v1beta1",

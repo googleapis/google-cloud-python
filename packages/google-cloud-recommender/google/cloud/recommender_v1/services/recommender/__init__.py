@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import RecommenderClient
 from .async_client import RecommenderAsyncClient
+from .client import RecommenderClient
 
 __all__ = (
     "RecommenderClient",

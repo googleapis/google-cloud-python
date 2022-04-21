@@ -14,30 +14,31 @@
 # limitations under the License.
 #
 
-from .services.recommender import RecommenderClient
-from .services.recommender import RecommenderAsyncClient
-
-from .types.insight import Insight
-from .types.insight import InsightStateInfo
-from .types.recommendation import CostProjection
-from .types.recommendation import Impact
-from .types.recommendation import Operation
-from .types.recommendation import OperationGroup
-from .types.recommendation import Recommendation
-from .types.recommendation import RecommendationContent
-from .types.recommendation import RecommendationStateInfo
-from .types.recommendation import SecurityProjection
-from .types.recommendation import ValueMatcher
-from .types.recommender_service import GetInsightRequest
-from .types.recommender_service import GetRecommendationRequest
-from .types.recommender_service import ListInsightsRequest
-from .types.recommender_service import ListInsightsResponse
-from .types.recommender_service import ListRecommendationsRequest
-from .types.recommender_service import ListRecommendationsResponse
-from .types.recommender_service import MarkInsightAcceptedRequest
-from .types.recommender_service import MarkRecommendationClaimedRequest
-from .types.recommender_service import MarkRecommendationFailedRequest
-from .types.recommender_service import MarkRecommendationSucceededRequest
+from .services.recommender import RecommenderAsyncClient, RecommenderClient
+from .types.insight import Insight, InsightStateInfo
+from .types.recommendation import (
+    CostProjection,
+    Impact,
+    Operation,
+    OperationGroup,
+    Recommendation,
+    RecommendationContent,
+    RecommendationStateInfo,
+    SecurityProjection,
+    ValueMatcher,
+)
+from .types.recommender_service import (
+    GetInsightRequest,
+    GetRecommendationRequest,
+    ListInsightsRequest,
+    ListInsightsResponse,
+    ListRecommendationsRequest,
+    ListRecommendationsResponse,
+    MarkInsightAcceptedRequest,
+    MarkRecommendationClaimedRequest,
+    MarkRecommendationFailedRequest,
+    MarkRecommendationSucceededRequest,
+)
 
 __all__ = (
     "RecommenderAsyncClient",

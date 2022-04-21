@@ -20,7 +20,6 @@ from .base import RecommenderTransport
 from .grpc import RecommenderGrpcTransport
 from .grpc_asyncio import RecommenderGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[RecommenderTransport]]
 _transport_registry["grpc"] = RecommenderGrpcTransport

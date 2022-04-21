@@ -15,9 +15,7 @@
 #
 import proto  # type: ignore
 
-from google.cloud.recommender_v1.types import insight
-from google.cloud.recommender_v1.types import recommendation
-
+from google.cloud.recommender_v1.types import insight, recommendation
 
 __protobuf__ = proto.module(
     package="google.cloud.recommender.v1",

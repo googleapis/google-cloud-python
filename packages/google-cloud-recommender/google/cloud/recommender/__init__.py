@@ -14,44 +14,32 @@
 # limitations under the License.
 #
 
-from google.cloud.recommender_v1.services.recommender.client import RecommenderClient
 from google.cloud.recommender_v1.services.recommender.async_client import (
     RecommenderAsyncClient,
 )
-
-from google.cloud.recommender_v1.types.insight import Insight
-from google.cloud.recommender_v1.types.insight import InsightStateInfo
-from google.cloud.recommender_v1.types.recommendation import CostProjection
-from google.cloud.recommender_v1.types.recommendation import Impact
-from google.cloud.recommender_v1.types.recommendation import Operation
-from google.cloud.recommender_v1.types.recommendation import OperationGroup
-from google.cloud.recommender_v1.types.recommendation import Recommendation
-from google.cloud.recommender_v1.types.recommendation import RecommendationContent
-from google.cloud.recommender_v1.types.recommendation import RecommendationStateInfo
-from google.cloud.recommender_v1.types.recommendation import SecurityProjection
-from google.cloud.recommender_v1.types.recommendation import ValueMatcher
-from google.cloud.recommender_v1.types.recommender_service import GetInsightRequest
+from google.cloud.recommender_v1.services.recommender.client import RecommenderClient
+from google.cloud.recommender_v1.types.insight import Insight, InsightStateInfo
+from google.cloud.recommender_v1.types.recommendation import (
+    CostProjection,
+    Impact,
+    Operation,
+    OperationGroup,
+    Recommendation,
+    RecommendationContent,
+    RecommendationStateInfo,
+    SecurityProjection,
+    ValueMatcher,
+)
 from google.cloud.recommender_v1.types.recommender_service import (
+    GetInsightRequest,
     GetRecommendationRequest,
-)
-from google.cloud.recommender_v1.types.recommender_service import ListInsightsRequest
-from google.cloud.recommender_v1.types.recommender_service import ListInsightsResponse
-from google.cloud.recommender_v1.types.recommender_service import (
+    ListInsightsRequest,
+    ListInsightsResponse,
     ListRecommendationsRequest,
-)
-from google.cloud.recommender_v1.types.recommender_service import (
     ListRecommendationsResponse,
-)
-from google.cloud.recommender_v1.types.recommender_service import (
     MarkInsightAcceptedRequest,
-)
-from google.cloud.recommender_v1.types.recommender_service import (
     MarkRecommendationClaimedRequest,
-)
-from google.cloud.recommender_v1.types.recommender_service import (
     MarkRecommendationFailedRequest,
-)
-from google.cloud.recommender_v1.types.recommender_service import (
     MarkRecommendationSucceededRequest,
 )
 
