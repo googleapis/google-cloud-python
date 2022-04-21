@@ -13,23 +13,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import warnings
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
+import warnings
 
-from google.api_core import grpc_helpers
-from google.api_core import gapic_v1
+from google.api_core import gapic_v1, grpc_helpers
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-
-import grpc  # type: ignore
-
-from google.cloud.bigquery_connection_v1.types import connection
-from google.cloud.bigquery_connection_v1.types import connection as gcbc_connection
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 from google.iam.v1 import policy_pb2  # type: ignore
 from google.protobuf import empty_pb2  # type: ignore
-from .base import ConnectionServiceTransport, DEFAULT_CLIENT_INFO
+import grpc  # type: ignore
+
+from google.cloud.bigquery_connection_v1.types import connection as gcbc_connection
+from google.cloud.bigquery_connection_v1.types import connection
+
+from .base import DEFAULT_CLIENT_INFO, ConnectionServiceTransport
 
 
 class ConnectionServiceGrpcTransport(ConnectionServiceTransport):

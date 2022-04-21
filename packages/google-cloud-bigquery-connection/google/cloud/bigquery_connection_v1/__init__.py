@@ -14,23 +14,26 @@
 # limitations under the License.
 #
 
-from .services.connection_service import ConnectionServiceClient
-from .services.connection_service import ConnectionServiceAsyncClient
-
-from .types.connection import AwsAccessRole
-from .types.connection import AwsCrossAccountRole
-from .types.connection import AwsProperties
-from .types.connection import CloudResourceProperties
-from .types.connection import CloudSpannerProperties
-from .types.connection import CloudSqlCredential
-from .types.connection import CloudSqlProperties
-from .types.connection import Connection
-from .types.connection import CreateConnectionRequest
-from .types.connection import DeleteConnectionRequest
-from .types.connection import GetConnectionRequest
-from .types.connection import ListConnectionsRequest
-from .types.connection import ListConnectionsResponse
-from .types.connection import UpdateConnectionRequest
+from .services.connection_service import (
+    ConnectionServiceAsyncClient,
+    ConnectionServiceClient,
+)
+from .types.connection import (
+    AwsAccessRole,
+    AwsCrossAccountRole,
+    AwsProperties,
+    CloudResourceProperties,
+    CloudSpannerProperties,
+    CloudSqlCredential,
+    CloudSqlProperties,
+    Connection,
+    CreateConnectionRequest,
+    DeleteConnectionRequest,
+    GetConnectionRequest,
+    ListConnectionsRequest,
+    ListConnectionsResponse,
+    UpdateConnectionRequest,
+)
 
 __all__ = (
     "ConnectionServiceAsyncClient",

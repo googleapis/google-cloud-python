@@ -15,6 +15,7 @@
 # limitations under the License.
 
 import os
+
 import pytest
 
 from google.cloud import bigquery_connection

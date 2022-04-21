@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import ConnectionServiceClient
 from .async_client import ConnectionServiceAsyncClient
+from .client import ConnectionServiceClient
 
 __all__ = (
     "ConnectionServiceClient",

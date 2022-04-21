@@ -14,27 +14,28 @@
 # limitations under the License.
 #
 
-from google.cloud.bigquery_connection_v1.services.connection_service.client import (
-    ConnectionServiceClient,
-)
 from google.cloud.bigquery_connection_v1.services.connection_service.async_client import (
     ConnectionServiceAsyncClient,
 )
-
-from google.cloud.bigquery_connection_v1.types.connection import AwsAccessRole
-from google.cloud.bigquery_connection_v1.types.connection import AwsCrossAccountRole
-from google.cloud.bigquery_connection_v1.types.connection import AwsProperties
-from google.cloud.bigquery_connection_v1.types.connection import CloudResourceProperties
-from google.cloud.bigquery_connection_v1.types.connection import CloudSpannerProperties
-from google.cloud.bigquery_connection_v1.types.connection import CloudSqlCredential
-from google.cloud.bigquery_connection_v1.types.connection import CloudSqlProperties
-from google.cloud.bigquery_connection_v1.types.connection import Connection
-from google.cloud.bigquery_connection_v1.types.connection import CreateConnectionRequest
-from google.cloud.bigquery_connection_v1.types.connection import DeleteConnectionRequest
-from google.cloud.bigquery_connection_v1.types.connection import GetConnectionRequest
-from google.cloud.bigquery_connection_v1.types.connection import ListConnectionsRequest
-from google.cloud.bigquery_connection_v1.types.connection import ListConnectionsResponse
-from google.cloud.bigquery_connection_v1.types.connection import UpdateConnectionRequest
+from google.cloud.bigquery_connection_v1.services.connection_service.client import (
+    ConnectionServiceClient,
+)
+from google.cloud.bigquery_connection_v1.types.connection import (
+    AwsAccessRole,
+    AwsCrossAccountRole,
+    AwsProperties,
+    CloudResourceProperties,
+    CloudSpannerProperties,
+    CloudSqlCredential,
+    CloudSqlProperties,
+    Connection,
+    CreateConnectionRequest,
+    DeleteConnectionRequest,
+    GetConnectionRequest,
+    ListConnectionsRequest,
+    ListConnectionsResponse,
+    UpdateConnectionRequest,
+)
 
 __all__ = (
     "ConnectionServiceClient",
