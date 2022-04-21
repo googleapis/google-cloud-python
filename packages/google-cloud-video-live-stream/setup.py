@@ -19,7 +19,6 @@ import os
 
 import setuptools
 
-
 name = "google-cloud-video-live-stream"
 description = "Live Stream API client library"
 url = "https://github.com/googleapis/python-video-live-stream"

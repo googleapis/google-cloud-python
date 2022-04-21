@@ -18,14 +18,13 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Callable,
+    Iterator,
+    Optional,
     Sequence,
     Tuple,
-    Optional,
-    Iterator,
 )
 
-from google.cloud.video.live_stream_v1.types import resources
-from google.cloud.video.live_stream_v1.types import service
+from google.cloud.video.live_stream_v1.types import resources, service
 
 
 class ListChannelsPager:

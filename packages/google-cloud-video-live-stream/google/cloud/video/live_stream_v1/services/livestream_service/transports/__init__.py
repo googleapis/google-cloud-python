@@ -20,7 +20,6 @@ from .base import LivestreamServiceTransport
 from .grpc import LivestreamServiceGrpcTransport
 from .grpc_asyncio import LivestreamServiceGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[LivestreamServiceTransport]]
 _transport_registry["grpc"] = LivestreamServiceGrpcTransport
