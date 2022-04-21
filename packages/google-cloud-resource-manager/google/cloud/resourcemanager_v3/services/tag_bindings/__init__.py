@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import TagBindingsClient
 from .async_client import TagBindingsAsyncClient
+from .client import TagBindingsClient
 
 __all__ = (
     "TagBindingsClient",

@@ -20,7 +20,6 @@ from .base import FoldersTransport
 from .grpc import FoldersGrpcTransport
 from .grpc_asyncio import FoldersGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[FoldersTransport]]
 _transport_registry["grpc"] = FoldersGrpcTransport

@@ -20,7 +20,6 @@ from .base import TagBindingsTransport
 from .grpc import TagBindingsGrpcTransport
 from .grpc_asyncio import TagBindingsGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[TagBindingsTransport]]
 _transport_registry["grpc"] = TagBindingsGrpcTransport

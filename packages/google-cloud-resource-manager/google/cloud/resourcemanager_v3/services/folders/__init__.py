@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import FoldersClient
 from .async_client import FoldersAsyncClient
+from .client import FoldersClient
 
 __all__ = (
     "FoldersClient",

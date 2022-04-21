@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import ProjectsClient
 from .async_client import ProjectsAsyncClient
+from .client import ProjectsClient
 
 __all__ = (
     "ProjectsClient",

@@ -17,7 +17,6 @@ import os
 
 import setuptools
 
-
 # Package metadata.
 name = "google-cloud-resource-manager"
 description = "Google Cloud Resource Manager API client library"
