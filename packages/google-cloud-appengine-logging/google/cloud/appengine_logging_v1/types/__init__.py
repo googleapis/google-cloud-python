@@ -13,12 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .request_log import (
-    LogLine,
-    RequestLog,
-    SourceLocation,
-    SourceReference,
-)
+from .request_log import LogLine, RequestLog, SourceLocation, SourceReference
 
 __all__ = (
     "LogLine",

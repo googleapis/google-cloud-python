@@ -15,10 +15,12 @@
 #
 
 
-from google.cloud.appengine_logging_v1.types.request_log import LogLine
-from google.cloud.appengine_logging_v1.types.request_log import RequestLog
-from google.cloud.appengine_logging_v1.types.request_log import SourceLocation
-from google.cloud.appengine_logging_v1.types.request_log import SourceReference
+from google.cloud.appengine_logging_v1.types.request_log import (
+    LogLine,
+    RequestLog,
+    SourceLocation,
+    SourceReference,
+)
 
 __all__ = (
     "LogLine",
