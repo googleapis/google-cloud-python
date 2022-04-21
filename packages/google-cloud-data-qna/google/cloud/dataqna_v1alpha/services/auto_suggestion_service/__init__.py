@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import AutoSuggestionServiceClient
 from .async_client import AutoSuggestionServiceAsyncClient
+from .client import AutoSuggestionServiceClient
 
 __all__ = (
     "AutoSuggestionServiceClient",

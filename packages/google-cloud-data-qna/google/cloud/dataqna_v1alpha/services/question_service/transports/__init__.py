@@ -20,7 +20,6 @@ from .base import QuestionServiceTransport
 from .grpc import QuestionServiceGrpcTransport
 from .grpc_asyncio import QuestionServiceGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[QuestionServiceTransport]]
 _transport_registry["grpc"] = QuestionServiceGrpcTransport

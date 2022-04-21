@@ -13,23 +13,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import warnings
 from typing import Callable, Dict, Optional, Sequence, Tuple, Union
+import warnings
 
-from google.api_core import grpc_helpers
-from google.api_core import gapic_v1
+from google.api_core import gapic_v1, grpc_helpers
 import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-
 import grpc  # type: ignore
 
+from google.cloud.dataqna_v1alpha.types import user_feedback as gcd_user_feedback
 from google.cloud.dataqna_v1alpha.types import question
 from google.cloud.dataqna_v1alpha.types import question as gcd_question
 from google.cloud.dataqna_v1alpha.types import question_service
 from google.cloud.dataqna_v1alpha.types import user_feedback
-from google.cloud.dataqna_v1alpha.types import user_feedback as gcd_user_feedback
-from .base import QuestionServiceTransport, DEFAULT_CLIENT_INFO
+
+from .base import DEFAULT_CLIENT_INFO, QuestionServiceTransport
 
 
 class QuestionServiceGrpcTransport(QuestionServiceTransport):

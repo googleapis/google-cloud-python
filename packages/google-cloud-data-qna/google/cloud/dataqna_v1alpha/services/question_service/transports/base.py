@@ -15,21 +15,21 @@
 #
 import abc
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
-import pkg_resources
 
-import google.auth  # type: ignore
 import google.api_core
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
+import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
+from google.cloud.dataqna_v1alpha.types import user_feedback as gcd_user_feedback
 from google.cloud.dataqna_v1alpha.types import question
 from google.cloud.dataqna_v1alpha.types import question as gcd_question
 from google.cloud.dataqna_v1alpha.types import question_service
 from google.cloud.dataqna_v1alpha.types import user_feedback
-from google.cloud.dataqna_v1alpha.types import user_feedback as gcd_user_feedback
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(

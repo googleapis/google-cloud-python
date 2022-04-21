@@ -14,44 +14,43 @@
 # limitations under the License.
 #
 
-from google.cloud.dataqna_v1alpha.services.auto_suggestion_service.client import (
-    AutoSuggestionServiceClient,
-)
 from google.cloud.dataqna_v1alpha.services.auto_suggestion_service.async_client import (
     AutoSuggestionServiceAsyncClient,
 )
-from google.cloud.dataqna_v1alpha.services.question_service.client import (
-    QuestionServiceClient,
+from google.cloud.dataqna_v1alpha.services.auto_suggestion_service.client import (
+    AutoSuggestionServiceClient,
 )
 from google.cloud.dataqna_v1alpha.services.question_service.async_client import (
     QuestionServiceAsyncClient,
 )
-
-from google.cloud.dataqna_v1alpha.types.annotated_string import AnnotatedString
-from google.cloud.dataqna_v1alpha.types.auto_suggestion_service import Suggestion
-from google.cloud.dataqna_v1alpha.types.auto_suggestion_service import SuggestionInfo
-from google.cloud.dataqna_v1alpha.types.auto_suggestion_service import (
-    SuggestQueriesRequest,
+from google.cloud.dataqna_v1alpha.services.question_service.client import (
+    QuestionServiceClient,
 )
+from google.cloud.dataqna_v1alpha.types.annotated_string import AnnotatedString
 from google.cloud.dataqna_v1alpha.types.auto_suggestion_service import (
+    Suggestion,
+    SuggestionInfo,
+    SuggestionType,
+    SuggestQueriesRequest,
     SuggestQueriesResponse,
 )
-from google.cloud.dataqna_v1alpha.types.auto_suggestion_service import SuggestionType
-from google.cloud.dataqna_v1alpha.types.question import BigQueryJob
-from google.cloud.dataqna_v1alpha.types.question import DataQuery
-from google.cloud.dataqna_v1alpha.types.question import DebugFlags
-from google.cloud.dataqna_v1alpha.types.question import ExecutionInfo
-from google.cloud.dataqna_v1alpha.types.question import HumanReadable
-from google.cloud.dataqna_v1alpha.types.question import Interpretation
-from google.cloud.dataqna_v1alpha.types.question import InterpretationStructure
-from google.cloud.dataqna_v1alpha.types.question import InterpretError
-from google.cloud.dataqna_v1alpha.types.question import Question
-from google.cloud.dataqna_v1alpha.types.question import InterpretEntity
-from google.cloud.dataqna_v1alpha.types.question_service import CreateQuestionRequest
-from google.cloud.dataqna_v1alpha.types.question_service import ExecuteQuestionRequest
-from google.cloud.dataqna_v1alpha.types.question_service import GetQuestionRequest
-from google.cloud.dataqna_v1alpha.types.question_service import GetUserFeedbackRequest
+from google.cloud.dataqna_v1alpha.types.question import (
+    BigQueryJob,
+    DataQuery,
+    DebugFlags,
+    ExecutionInfo,
+    HumanReadable,
+    Interpretation,
+    InterpretationStructure,
+    InterpretEntity,
+    InterpretError,
+    Question,
+)
 from google.cloud.dataqna_v1alpha.types.question_service import (
+    CreateQuestionRequest,
+    ExecuteQuestionRequest,
+    GetQuestionRequest,
+    GetUserFeedbackRequest,
     UpdateUserFeedbackRequest,
 )
 from google.cloud.dataqna_v1alpha.types.user_feedback import UserFeedback

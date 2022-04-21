@@ -20,7 +20,6 @@ from .base import AutoSuggestionServiceTransport
 from .grpc import AutoSuggestionServiceGrpcTransport
 from .grpc_asyncio import AutoSuggestionServiceGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = (
     OrderedDict()

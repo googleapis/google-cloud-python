@@ -13,15 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .annotated_string import (
-    AnnotatedString,
-)
+from .annotated_string import AnnotatedString
 from .auto_suggestion_service import (
     Suggestion,
     SuggestionInfo,
+    SuggestionType,
     SuggestQueriesRequest,
     SuggestQueriesResponse,
-    SuggestionType,
 )
 from .question import (
     BigQueryJob,
@@ -31,9 +29,9 @@ from .question import (
     HumanReadable,
     Interpretation,
     InterpretationStructure,
+    InterpretEntity,
     InterpretError,
     Question,
-    InterpretEntity,
 )
 from .question_service import (
     CreateQuestionRequest,
@@ -42,9 +40,7 @@ from .question_service import (
     GetUserFeedbackRequest,
     UpdateUserFeedbackRequest,
 )
-from .user_feedback import (
-    UserFeedback,
-)
+from .user_feedback import UserFeedback
 
 __all__ = (
     "AnnotatedString",

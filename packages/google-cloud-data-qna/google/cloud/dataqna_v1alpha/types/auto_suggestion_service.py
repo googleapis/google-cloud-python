@@ -17,7 +17,6 @@ import proto  # type: ignore
 
 from google.cloud.dataqna_v1alpha.types import annotated_string
 
-
 __protobuf__ = proto.module(
     package="google.cloud.dataqna.v1alpha",
     manifest={

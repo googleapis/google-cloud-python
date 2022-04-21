@@ -13,13 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import proto  # type: ignore
-
-from google.cloud.dataqna_v1alpha.types import annotated_string
 from google.protobuf import any_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
+import proto  # type: ignore
 
+from google.cloud.dataqna_v1alpha.types import annotated_string
 
 __protobuf__ = proto.module(
     package="google.cloud.dataqna.v1alpha",

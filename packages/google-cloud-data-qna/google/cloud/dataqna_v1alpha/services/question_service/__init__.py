@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import QuestionServiceClient
 from .async_client import QuestionServiceAsyncClient
+from .client import QuestionServiceClient
 
 __all__ = (
     "QuestionServiceClient",

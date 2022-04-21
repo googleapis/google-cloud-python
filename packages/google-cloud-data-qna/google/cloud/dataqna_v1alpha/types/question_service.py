@@ -13,12 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.dataqna_v1alpha.types import question as gcd_question
 from google.cloud.dataqna_v1alpha.types import user_feedback as gcd_user_feedback
-from google.protobuf import field_mask_pb2  # type: ignore
-
+from google.cloud.dataqna_v1alpha.types import question as gcd_question
 
 __protobuf__ = proto.module(
     package="google.cloud.dataqna.v1alpha",
