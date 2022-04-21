@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import CloudShellServiceClient
 from .async_client import CloudShellServiceAsyncClient
+from .client import CloudShellServiceClient
 
 __all__ = (
     "CloudShellServiceClient",

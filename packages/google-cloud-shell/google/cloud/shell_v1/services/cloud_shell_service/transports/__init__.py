@@ -20,7 +20,6 @@ from .base import CloudShellServiceTransport
 from .grpc import CloudShellServiceGrpcTransport
 from .grpc_asyncio import CloudShellServiceGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[CloudShellServiceTransport]]
 _transport_registry["grpc"] = CloudShellServiceGrpcTransport
