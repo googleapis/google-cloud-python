@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import CloudTasksClient
 from .async_client import CloudTasksAsyncClient
+from .client import CloudTasksClient
 
 __all__ = (
     "CloudTasksClient",

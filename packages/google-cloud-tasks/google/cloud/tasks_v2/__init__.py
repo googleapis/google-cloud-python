@@ -14,36 +14,34 @@
 # limitations under the License.
 #
 
-from .services.cloud_tasks import CloudTasksClient
-from .services.cloud_tasks import CloudTasksAsyncClient
-
-from .types.cloudtasks import CreateQueueRequest
-from .types.cloudtasks import CreateTaskRequest
-from .types.cloudtasks import DeleteQueueRequest
-from .types.cloudtasks import DeleteTaskRequest
-from .types.cloudtasks import GetQueueRequest
-from .types.cloudtasks import GetTaskRequest
-from .types.cloudtasks import ListQueuesRequest
-from .types.cloudtasks import ListQueuesResponse
-from .types.cloudtasks import ListTasksRequest
-from .types.cloudtasks import ListTasksResponse
-from .types.cloudtasks import PauseQueueRequest
-from .types.cloudtasks import PurgeQueueRequest
-from .types.cloudtasks import ResumeQueueRequest
-from .types.cloudtasks import RunTaskRequest
-from .types.cloudtasks import UpdateQueueRequest
-from .types.queue import Queue
-from .types.queue import RateLimits
-from .types.queue import RetryConfig
-from .types.queue import StackdriverLoggingConfig
-from .types.target import AppEngineHttpRequest
-from .types.target import AppEngineRouting
-from .types.target import HttpRequest
-from .types.target import OAuthToken
-from .types.target import OidcToken
-from .types.target import HttpMethod
-from .types.task import Attempt
-from .types.task import Task
+from .services.cloud_tasks import CloudTasksAsyncClient, CloudTasksClient
+from .types.cloudtasks import (
+    CreateQueueRequest,
+    CreateTaskRequest,
+    DeleteQueueRequest,
+    DeleteTaskRequest,
+    GetQueueRequest,
+    GetTaskRequest,
+    ListQueuesRequest,
+    ListQueuesResponse,
+    ListTasksRequest,
+    ListTasksResponse,
+    PauseQueueRequest,
+    PurgeQueueRequest,
+    ResumeQueueRequest,
+    RunTaskRequest,
+    UpdateQueueRequest,
+)
+from .types.queue import Queue, RateLimits, RetryConfig, StackdriverLoggingConfig
+from .types.target import (
+    AppEngineHttpRequest,
+    AppEngineRouting,
+    HttpMethod,
+    HttpRequest,
+    OAuthToken,
+    OidcToken,
+)
+from .types.task import Attempt, Task
 
 __all__ = (
     "CloudTasksAsyncClient",

@@ -14,42 +14,39 @@
 # limitations under the License.
 #
 
-from .services.cloud_tasks import CloudTasksClient
-from .services.cloud_tasks import CloudTasksAsyncClient
-
-from .types.cloudtasks import AcknowledgeTaskRequest
-from .types.cloudtasks import CancelLeaseRequest
-from .types.cloudtasks import CreateQueueRequest
-from .types.cloudtasks import CreateTaskRequest
-from .types.cloudtasks import DeleteQueueRequest
-from .types.cloudtasks import DeleteTaskRequest
-from .types.cloudtasks import GetQueueRequest
-from .types.cloudtasks import GetTaskRequest
-from .types.cloudtasks import LeaseTasksRequest
-from .types.cloudtasks import LeaseTasksResponse
-from .types.cloudtasks import ListQueuesRequest
-from .types.cloudtasks import ListQueuesResponse
-from .types.cloudtasks import ListTasksRequest
-from .types.cloudtasks import ListTasksResponse
-from .types.cloudtasks import PauseQueueRequest
-from .types.cloudtasks import PurgeQueueRequest
-from .types.cloudtasks import RenewLeaseRequest
-from .types.cloudtasks import ResumeQueueRequest
-from .types.cloudtasks import RunTaskRequest
-from .types.cloudtasks import UpdateQueueRequest
-from .types.queue import Queue
-from .types.queue import QueueStats
-from .types.queue import RateLimits
-from .types.queue import RetryConfig
-from .types.target import AppEngineHttpRequest
-from .types.target import AppEngineHttpTarget
-from .types.target import AppEngineRouting
-from .types.target import PullMessage
-from .types.target import PullTarget
-from .types.target import HttpMethod
-from .types.task import AttemptStatus
-from .types.task import Task
-from .types.task import TaskStatus
+from .services.cloud_tasks import CloudTasksAsyncClient, CloudTasksClient
+from .types.cloudtasks import (
+    AcknowledgeTaskRequest,
+    CancelLeaseRequest,
+    CreateQueueRequest,
+    CreateTaskRequest,
+    DeleteQueueRequest,
+    DeleteTaskRequest,
+    GetQueueRequest,
+    GetTaskRequest,
+    LeaseTasksRequest,
+    LeaseTasksResponse,
+    ListQueuesRequest,
+    ListQueuesResponse,
+    ListTasksRequest,
+    ListTasksResponse,
+    PauseQueueRequest,
+    PurgeQueueRequest,
+    RenewLeaseRequest,
+    ResumeQueueRequest,
+    RunTaskRequest,
+    UpdateQueueRequest,
+)
+from .types.queue import Queue, QueueStats, RateLimits, RetryConfig
+from .types.target import (
+    AppEngineHttpRequest,
+    AppEngineHttpTarget,
+    AppEngineRouting,
+    HttpMethod,
+    PullMessage,
+    PullTarget,
+)
+from .types.task import AttemptStatus, Task, TaskStatus
 
 __all__ = (
     "CloudTasksAsyncClient",

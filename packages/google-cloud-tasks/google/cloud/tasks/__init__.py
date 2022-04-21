@@ -14,38 +14,42 @@
 # limitations under the License.
 #
 
-from google.cloud.tasks_v2.services.cloud_tasks.client import CloudTasksClient
 from google.cloud.tasks_v2.services.cloud_tasks.async_client import (
     CloudTasksAsyncClient,
 )
-
-from google.cloud.tasks_v2.types.cloudtasks import CreateQueueRequest
-from google.cloud.tasks_v2.types.cloudtasks import CreateTaskRequest
-from google.cloud.tasks_v2.types.cloudtasks import DeleteQueueRequest
-from google.cloud.tasks_v2.types.cloudtasks import DeleteTaskRequest
-from google.cloud.tasks_v2.types.cloudtasks import GetQueueRequest
-from google.cloud.tasks_v2.types.cloudtasks import GetTaskRequest
-from google.cloud.tasks_v2.types.cloudtasks import ListQueuesRequest
-from google.cloud.tasks_v2.types.cloudtasks import ListQueuesResponse
-from google.cloud.tasks_v2.types.cloudtasks import ListTasksRequest
-from google.cloud.tasks_v2.types.cloudtasks import ListTasksResponse
-from google.cloud.tasks_v2.types.cloudtasks import PauseQueueRequest
-from google.cloud.tasks_v2.types.cloudtasks import PurgeQueueRequest
-from google.cloud.tasks_v2.types.cloudtasks import ResumeQueueRequest
-from google.cloud.tasks_v2.types.cloudtasks import RunTaskRequest
-from google.cloud.tasks_v2.types.cloudtasks import UpdateQueueRequest
-from google.cloud.tasks_v2.types.queue import Queue
-from google.cloud.tasks_v2.types.queue import RateLimits
-from google.cloud.tasks_v2.types.queue import RetryConfig
-from google.cloud.tasks_v2.types.queue import StackdriverLoggingConfig
-from google.cloud.tasks_v2.types.target import AppEngineHttpRequest
-from google.cloud.tasks_v2.types.target import AppEngineRouting
-from google.cloud.tasks_v2.types.target import HttpRequest
-from google.cloud.tasks_v2.types.target import OAuthToken
-from google.cloud.tasks_v2.types.target import OidcToken
-from google.cloud.tasks_v2.types.target import HttpMethod
-from google.cloud.tasks_v2.types.task import Attempt
-from google.cloud.tasks_v2.types.task import Task
+from google.cloud.tasks_v2.services.cloud_tasks.client import CloudTasksClient
+from google.cloud.tasks_v2.types.cloudtasks import (
+    CreateQueueRequest,
+    CreateTaskRequest,
+    DeleteQueueRequest,
+    DeleteTaskRequest,
+    GetQueueRequest,
+    GetTaskRequest,
+    ListQueuesRequest,
+    ListQueuesResponse,
+    ListTasksRequest,
+    ListTasksResponse,
+    PauseQueueRequest,
+    PurgeQueueRequest,
+    ResumeQueueRequest,
+    RunTaskRequest,
+    UpdateQueueRequest,
+)
+from google.cloud.tasks_v2.types.queue import (
+    Queue,
+    RateLimits,
+    RetryConfig,
+    StackdriverLoggingConfig,
+)
+from google.cloud.tasks_v2.types.target import (
+    AppEngineHttpRequest,
+    AppEngineRouting,
+    HttpMethod,
+    HttpRequest,
+    OAuthToken,
+    OidcToken,
+)
+from google.cloud.tasks_v2.types.task import Attempt, Task
 
 __all__ = (
     "CloudTasksClient",

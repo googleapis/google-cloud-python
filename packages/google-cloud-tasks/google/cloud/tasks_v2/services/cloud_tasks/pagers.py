@@ -18,15 +18,13 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Callable,
+    Iterator,
+    Optional,
     Sequence,
     Tuple,
-    Optional,
-    Iterator,
 )
 
-from google.cloud.tasks_v2.types import cloudtasks
-from google.cloud.tasks_v2.types import queue
-from google.cloud.tasks_v2.types import task
+from google.cloud.tasks_v2.types import cloudtasks, queue, task
 
 
 class ListQueuesPager:

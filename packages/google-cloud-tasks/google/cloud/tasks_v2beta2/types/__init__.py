@@ -35,25 +35,16 @@ from .cloudtasks import (
     RunTaskRequest,
     UpdateQueueRequest,
 )
-from .queue import (
-    Queue,
-    QueueStats,
-    RateLimits,
-    RetryConfig,
-)
+from .queue import Queue, QueueStats, RateLimits, RetryConfig
 from .target import (
     AppEngineHttpRequest,
     AppEngineHttpTarget,
     AppEngineRouting,
+    HttpMethod,
     PullMessage,
     PullTarget,
-    HttpMethod,
 )
-from .task import (
-    AttemptStatus,
-    Task,
-    TaskStatus,
-)
+from .task import AttemptStatus, Task, TaskStatus
 
 __all__ = (
     "AcknowledgeTaskRequest",
