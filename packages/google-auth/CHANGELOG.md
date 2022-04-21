@@ -4,6 +4,13 @@
 
 [1]: https://pypi.org/project/google-auth/#history
 
+### [2.6.6](https://github.com/googleapis/google-auth-library-python/compare/v2.6.5...v2.6.6) (2022-04-21)
+
+
+### Bug Fixes
+
+* silence TypeError during tear down stage ([#1027](https://github.com/googleapis/google-auth-library-python/issues/1027)) ([952a6aa](https://github.com/googleapis/google-auth-library-python/commit/952a6aad888140c13815aada95f33792e414e061))
+
 ### [2.6.5](https://github.com/googleapis/google-auth-library-python/compare/v2.6.4...v2.6.5) (2022-04-14)
 
 
