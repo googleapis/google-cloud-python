@@ -14,45 +14,47 @@
 # limitations under the License.
 #
 
-from .services.migration_service import MigrationServiceClient
-from .services.migration_service import MigrationServiceAsyncClient
-
-from .types.migration_entities import MigrationSubtask
-from .types.migration_entities import MigrationTask
-from .types.migration_entities import MigrationWorkflow
-from .types.migration_error_details import ErrorDetail
-from .types.migration_error_details import ErrorLocation
-from .types.migration_error_details import ResourceErrorDetail
-from .types.migration_metrics import Point
-from .types.migration_metrics import TimeInterval
-from .types.migration_metrics import TimeSeries
-from .types.migration_metrics import TypedValue
-from .types.migration_service import CreateMigrationWorkflowRequest
-from .types.migration_service import DeleteMigrationWorkflowRequest
-from .types.migration_service import GetMigrationSubtaskRequest
-from .types.migration_service import GetMigrationWorkflowRequest
-from .types.migration_service import ListMigrationSubtasksRequest
-from .types.migration_service import ListMigrationSubtasksResponse
-from .types.migration_service import ListMigrationWorkflowsRequest
-from .types.migration_service import ListMigrationWorkflowsResponse
-from .types.migration_service import StartMigrationWorkflowRequest
-from .types.translation_config import AzureSynapseDialect
-from .types.translation_config import BigQueryDialect
-from .types.translation_config import Dialect
-from .types.translation_config import HiveQLDialect
-from .types.translation_config import NameMappingKey
-from .types.translation_config import NameMappingValue
-from .types.translation_config import NetezzaDialect
-from .types.translation_config import ObjectNameMapping
-from .types.translation_config import ObjectNameMappingList
-from .types.translation_config import OracleDialect
-from .types.translation_config import RedshiftDialect
-from .types.translation_config import SnowflakeDialect
-from .types.translation_config import SourceEnv
-from .types.translation_config import SparkSQLDialect
-from .types.translation_config import TeradataDialect
-from .types.translation_config import TranslationConfigDetails
-from .types.translation_config import VerticaDialect
+from .services.migration_service import (
+    MigrationServiceAsyncClient,
+    MigrationServiceClient,
+)
+from .types.migration_entities import MigrationSubtask, MigrationTask, MigrationWorkflow
+from .types.migration_error_details import (
+    ErrorDetail,
+    ErrorLocation,
+    ResourceErrorDetail,
+)
+from .types.migration_metrics import Point, TimeInterval, TimeSeries, TypedValue
+from .types.migration_service import (
+    CreateMigrationWorkflowRequest,
+    DeleteMigrationWorkflowRequest,
+    GetMigrationSubtaskRequest,
+    GetMigrationWorkflowRequest,
+    ListMigrationSubtasksRequest,
+    ListMigrationSubtasksResponse,
+    ListMigrationWorkflowsRequest,
+    ListMigrationWorkflowsResponse,
+    StartMigrationWorkflowRequest,
+)
+from .types.translation_config import (
+    AzureSynapseDialect,
+    BigQueryDialect,
+    Dialect,
+    HiveQLDialect,
+    NameMappingKey,
+    NameMappingValue,
+    NetezzaDialect,
+    ObjectNameMapping,
+    ObjectNameMappingList,
+    OracleDialect,
+    RedshiftDialect,
+    SnowflakeDialect,
+    SourceEnv,
+    SparkSQLDialect,
+    TeradataDialect,
+    TranslationConfigDetails,
+    VerticaDialect,
+)
 
 __all__ = (
     "MigrationServiceAsyncClient",

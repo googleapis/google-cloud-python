@@ -17,31 +17,35 @@ from collections import OrderedDict
 import os
 import re
 from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
-from google.cloud.bigquery_migration_v2.services.migration_service import pagers
-from google.cloud.bigquery_migration_v2.types import migration_entities
-from google.cloud.bigquery_migration_v2.types import migration_error_details
-from google.cloud.bigquery_migration_v2.types import migration_metrics
-from google.cloud.bigquery_migration_v2.types import migration_service
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import error_details_pb2  # type: ignore
-from .transports.base import MigrationServiceTransport, DEFAULT_CLIENT_INFO
+
+from google.cloud.bigquery_migration_v2.services.migration_service import pagers
+from google.cloud.bigquery_migration_v2.types import (
+    migration_entities,
+    migration_error_details,
+    migration_metrics,
+    migration_service,
+)
+
+from .transports.base import DEFAULT_CLIENT_INFO, MigrationServiceTransport
 from .transports.grpc import MigrationServiceGrpcTransport
 from .transports.grpc_asyncio import MigrationServiceGrpcAsyncIOTransport
 

@@ -18,14 +18,16 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Callable,
+    Iterator,
+    Optional,
     Sequence,
     Tuple,
-    Optional,
-    Iterator,
 )
 
-from google.cloud.bigquery_migration_v2alpha.types import migration_entities
-from google.cloud.bigquery_migration_v2alpha.types import migration_service
+from google.cloud.bigquery_migration_v2alpha.types import (
+    migration_entities,
+    migration_service,
+)
 
 
 class ListMigrationWorkflowsPager:

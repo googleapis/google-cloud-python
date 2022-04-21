@@ -13,27 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .assessment_task import (
-    AssessmentOrchestrationResultDetails,
-    AssessmentTaskDetails,
-)
+from .assessment_task import AssessmentOrchestrationResultDetails, AssessmentTaskDetails
 from .migration_entities import (
     MigrationSubtask,
     MigrationTask,
     MigrationTaskOrchestrationResult,
     MigrationWorkflow,
 )
-from .migration_error_details import (
-    ErrorDetail,
-    ErrorLocation,
-    ResourceErrorDetail,
-)
-from .migration_metrics import (
-    Point,
-    TimeInterval,
-    TimeSeries,
-    TypedValue,
-)
+from .migration_error_details import ErrorDetail, ErrorLocation, ResourceErrorDetail
+from .migration_metrics import Point, TimeInterval, TimeSeries, TypedValue
 from .migration_service import (
     CreateMigrationWorkflowRequest,
     DeleteMigrationWorkflowRequest,

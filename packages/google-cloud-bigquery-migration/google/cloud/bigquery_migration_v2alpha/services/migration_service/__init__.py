@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import MigrationServiceClient
 from .async_client import MigrationServiceAsyncClient
+from .client import MigrationServiceClient
 
 __all__ = (
     "MigrationServiceClient",

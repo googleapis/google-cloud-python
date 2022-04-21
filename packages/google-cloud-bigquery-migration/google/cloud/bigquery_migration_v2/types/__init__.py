@@ -13,22 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .migration_entities import (
-    MigrationSubtask,
-    MigrationTask,
-    MigrationWorkflow,
-)
-from .migration_error_details import (
-    ErrorDetail,
-    ErrorLocation,
-    ResourceErrorDetail,
-)
-from .migration_metrics import (
-    Point,
-    TimeInterval,
-    TimeSeries,
-    TypedValue,
-)
+from .migration_entities import MigrationSubtask, MigrationTask, MigrationWorkflow
+from .migration_error_details import ErrorDetail, ErrorLocation, ResourceErrorDetail
+from .migration_metrics import Point, TimeInterval, TimeSeries, TypedValue
 from .migration_service import (
     CreateMigrationWorkflowRequest,
     DeleteMigrationWorkflowRequest,

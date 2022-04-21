@@ -13,16 +13,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import proto  # type: ignore
-
-from google.cloud.bigquery_migration_v2alpha.types import assessment_task
-from google.cloud.bigquery_migration_v2alpha.types import migration_error_details
-from google.cloud.bigquery_migration_v2alpha.types import migration_metrics
-from google.cloud.bigquery_migration_v2alpha.types import translation_task
 from google.protobuf import any_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import error_details_pb2  # type: ignore
+import proto  # type: ignore
 
+from google.cloud.bigquery_migration_v2alpha.types import (
+    assessment_task,
+    migration_error_details,
+    migration_metrics,
+    translation_task,
+)
 
 __protobuf__ = proto.module(
     package="google.cloud.bigquery.migration.v2alpha",

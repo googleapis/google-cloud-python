@@ -14,38 +14,46 @@
 # limitations under the License.
 #
 
-from .services.migration_service import MigrationServiceClient
-from .services.migration_service import MigrationServiceAsyncClient
-
-from .types.assessment_task import AssessmentOrchestrationResultDetails
-from .types.assessment_task import AssessmentTaskDetails
-from .types.migration_entities import MigrationSubtask
-from .types.migration_entities import MigrationTask
-from .types.migration_entities import MigrationTaskOrchestrationResult
-from .types.migration_entities import MigrationWorkflow
-from .types.migration_error_details import ErrorDetail
-from .types.migration_error_details import ErrorLocation
-from .types.migration_error_details import ResourceErrorDetail
-from .types.migration_metrics import Point
-from .types.migration_metrics import TimeInterval
-from .types.migration_metrics import TimeSeries
-from .types.migration_metrics import TypedValue
-from .types.migration_service import CreateMigrationWorkflowRequest
-from .types.migration_service import DeleteMigrationWorkflowRequest
-from .types.migration_service import GetMigrationSubtaskRequest
-from .types.migration_service import GetMigrationWorkflowRequest
-from .types.migration_service import ListMigrationSubtasksRequest
-from .types.migration_service import ListMigrationSubtasksResponse
-from .types.migration_service import ListMigrationWorkflowsRequest
-from .types.migration_service import ListMigrationWorkflowsResponse
-from .types.migration_service import StartMigrationWorkflowRequest
-from .types.translation_task import BteqOptions
-from .types.translation_task import DatasetReference
-from .types.translation_task import Filter
-from .types.translation_task import IdentifierSettings
-from .types.translation_task import TeradataOptions
-from .types.translation_task import TranslationFileMapping
-from .types.translation_task import TranslationTaskDetails
+from .services.migration_service import (
+    MigrationServiceAsyncClient,
+    MigrationServiceClient,
+)
+from .types.assessment_task import (
+    AssessmentOrchestrationResultDetails,
+    AssessmentTaskDetails,
+)
+from .types.migration_entities import (
+    MigrationSubtask,
+    MigrationTask,
+    MigrationTaskOrchestrationResult,
+    MigrationWorkflow,
+)
+from .types.migration_error_details import (
+    ErrorDetail,
+    ErrorLocation,
+    ResourceErrorDetail,
+)
+from .types.migration_metrics import Point, TimeInterval, TimeSeries, TypedValue
+from .types.migration_service import (
+    CreateMigrationWorkflowRequest,
+    DeleteMigrationWorkflowRequest,
+    GetMigrationSubtaskRequest,
+    GetMigrationWorkflowRequest,
+    ListMigrationSubtasksRequest,
+    ListMigrationSubtasksResponse,
+    ListMigrationWorkflowsRequest,
+    ListMigrationWorkflowsResponse,
+    StartMigrationWorkflowRequest,
+)
+from .types.translation_task import (
+    BteqOptions,
+    DatasetReference,
+    Filter,
+    IdentifierSettings,
+    TeradataOptions,
+    TranslationFileMapping,
+    TranslationTaskDetails,
+)
 
 __all__ = (
     "MigrationServiceAsyncClient",
