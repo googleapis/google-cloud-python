@@ -4,7 +4,7 @@
 # license that can be found in the LICENSE file or at
 # https://developers.google.com/open-source/licenses/bsd
 
-from ubuntu:20.04
+from ubuntu:22.04
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -52,8 +52,24 @@ RUN apt-get update \
   && rm -rf /var/lib/apt/lists/* \
   && rm -f /var/cache/apt/archives/*.deb
 
+###################### Install python 3.8.11
+
+# Download python 3.8.11
+RUN wget https://www.python.org/ftp/python/3.8.11/Python-3.8.11.tgz
+
+# Extract files
+RUN tar -xvf Python-3.8.11.tgz
+
+# Install python 3.8.11
+RUN ./Python-3.8.11/configure --enable-optimizations
+RUN make altinstall
+
+###################### Install pip
 RUN wget -O /tmp/get-pip.py 'https://bootstrap.pypa.io/get-pip.py' \
-  && python3.8 /tmp/get-pip.py \
+  && python3 /tmp/get-pip.py \
   && rm /tmp/get-pip.py
+
+# Test pip
+RUN python3 -m pip
 
 CMD ["python3.8"]
