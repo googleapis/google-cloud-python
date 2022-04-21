@@ -17,28 +17,29 @@ from collections import OrderedDict
 import functools
 import re
 from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
 
-from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
+from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
 except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
-from google.cloud.video.transcoder_v1.services.transcoder_service import pagers
-from google.cloud.video.transcoder_v1.types import resources
-from google.cloud.video.transcoder_v1.types import services
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
-from .transports.base import TranscoderServiceTransport, DEFAULT_CLIENT_INFO
-from .transports.grpc_asyncio import TranscoderServiceGrpcAsyncIOTransport
+
+from google.cloud.video.transcoder_v1.services.transcoder_service import pagers
+from google.cloud.video.transcoder_v1.types import resources, services
+
 from .client import TranscoderServiceClient
+from .transports.base import DEFAULT_CLIENT_INFO, TranscoderServiceTransport
+from .transports.grpc_asyncio import TranscoderServiceGrpcAsyncIOTransport
 
 
 class TranscoderServiceAsyncClient:

@@ -17,7 +17,6 @@ import proto  # type: ignore
 
 from google.cloud.video.transcoder_v1.types import resources
 
-
 __protobuf__ = proto.module(
     package="google.cloud.video.transcoder.v1",
     manifest={

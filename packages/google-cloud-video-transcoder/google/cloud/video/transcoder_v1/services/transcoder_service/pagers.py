@@ -18,14 +18,13 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Callable,
+    Iterator,
+    Optional,
     Sequence,
     Tuple,
-    Optional,
-    Iterator,
 )
 
-from google.cloud.video.transcoder_v1.types import resources
-from google.cloud.video.transcoder_v1.types import services
+from google.cloud.video.transcoder_v1.types import resources, services
 
 
 class ListJobsPager:

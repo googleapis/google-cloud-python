@@ -14,37 +14,42 @@
 # limitations under the License.
 #
 
-from .services.transcoder_service import TranscoderServiceClient
-from .services.transcoder_service import TranscoderServiceAsyncClient
-
-from .types.resources import AdBreak
-from .types.resources import AudioStream
-from .types.resources import EditAtom
-from .types.resources import ElementaryStream
-from .types.resources import Input
-from .types.resources import Job
-from .types.resources import JobConfig
-from .types.resources import JobTemplate
-from .types.resources import Manifest
-from .types.resources import MuxStream
-from .types.resources import Output
-from .types.resources import Overlay
-from .types.resources import PreprocessingConfig
-from .types.resources import PubsubDestination
-from .types.resources import SegmentSettings
-from .types.resources import SpriteSheet
-from .types.resources import TextStream
-from .types.resources import VideoStream
-from .types.services import CreateJobRequest
-from .types.services import CreateJobTemplateRequest
-from .types.services import DeleteJobRequest
-from .types.services import DeleteJobTemplateRequest
-from .types.services import GetJobRequest
-from .types.services import GetJobTemplateRequest
-from .types.services import ListJobsRequest
-from .types.services import ListJobsResponse
-from .types.services import ListJobTemplatesRequest
-from .types.services import ListJobTemplatesResponse
+from .services.transcoder_service import (
+    TranscoderServiceAsyncClient,
+    TranscoderServiceClient,
+)
+from .types.resources import (
+    AdBreak,
+    AudioStream,
+    EditAtom,
+    ElementaryStream,
+    Input,
+    Job,
+    JobConfig,
+    JobTemplate,
+    Manifest,
+    MuxStream,
+    Output,
+    Overlay,
+    PreprocessingConfig,
+    PubsubDestination,
+    SegmentSettings,
+    SpriteSheet,
+    TextStream,
+    VideoStream,
+)
+from .types.services import (
+    CreateJobRequest,
+    CreateJobTemplateRequest,
+    DeleteJobRequest,
+    DeleteJobTemplateRequest,
+    GetJobRequest,
+    GetJobTemplateRequest,
+    ListJobsRequest,
+    ListJobsResponse,
+    ListJobTemplatesRequest,
+    ListJobTemplatesResponse,
+)
 
 __all__ = (
     "TranscoderServiceAsyncClient",

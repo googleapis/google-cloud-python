@@ -20,7 +20,6 @@ from .base import TranscoderServiceTransport
 from .grpc import TranscoderServiceGrpcTransport
 from .grpc_asyncio import TranscoderServiceGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[TranscoderServiceTransport]]
 _transport_registry["grpc"] = TranscoderServiceGrpcTransport

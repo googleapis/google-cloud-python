@@ -15,19 +15,18 @@
 #
 import abc
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
-import pkg_resources
 
-import google.auth  # type: ignore
 import google.api_core
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
+import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
-
-from google.cloud.video.transcoder_v1.types import resources
-from google.cloud.video.transcoder_v1.types import services
 from google.protobuf import empty_pb2  # type: ignore
+import pkg_resources
+
+from google.cloud.video.transcoder_v1.types import resources, services
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(
