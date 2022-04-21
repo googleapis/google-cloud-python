@@ -20,11 +20,7 @@ from .ad_tag_details import (
     ResponseMetadata,
     VodAdTagDetail,
 )
-from .cdn_keys import (
-    AkamaiCdnKey,
-    CdnKey,
-    GoogleCdnKey,
-)
+from .cdn_keys import AkamaiCdnKey, CdnKey, GoogleCdnKey
 from .companions import (
     Companion,
     CompanionAds,
@@ -32,10 +28,7 @@ from .companions import (
     IframeAdResource,
     StaticAdResource,
 )
-from .events import (
-    Event,
-    ProgressEvent,
-)
+from .events import Event, ProgressEvent
 from .sessions import (
     AdTag,
     Interstitials,
@@ -47,13 +40,8 @@ from .sessions import (
     VodSessionAdBreak,
     VodSessionContent,
 )
-from .slates import (
-    Slate,
-)
-from .stitch_details import (
-    AdStitchDetail,
-    VodStitchDetail,
-)
+from .slates import Slate
+from .stitch_details import AdStitchDetail, VodStitchDetail
 from .video_stitcher_service import (
     CreateCdnKeyRequest,
     CreateLiveSessionRequest,

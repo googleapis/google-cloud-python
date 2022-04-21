@@ -18,17 +18,19 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Callable,
+    Iterator,
+    Optional,
     Sequence,
     Tuple,
-    Optional,
-    Iterator,
 )
 
-from google.cloud.video.stitcher_v1.types import ad_tag_details
-from google.cloud.video.stitcher_v1.types import cdn_keys
-from google.cloud.video.stitcher_v1.types import slates
-from google.cloud.video.stitcher_v1.types import stitch_details
-from google.cloud.video.stitcher_v1.types import video_stitcher_service
+from google.cloud.video.stitcher_v1.types import (
+    ad_tag_details,
+    cdn_keys,
+    slates,
+    stitch_details,
+    video_stitcher_service,
+)
 
 
 class ListCdnKeysPager:

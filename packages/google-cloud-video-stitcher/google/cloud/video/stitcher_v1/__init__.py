@@ -14,61 +14,66 @@
 # limitations under the License.
 #
 
-from .services.video_stitcher_service import VideoStitcherServiceClient
-from .services.video_stitcher_service import VideoStitcherServiceAsyncClient
-
-from .types.ad_tag_details import AdRequest
-from .types.ad_tag_details import LiveAdTagDetail
-from .types.ad_tag_details import RequestMetadata
-from .types.ad_tag_details import ResponseMetadata
-from .types.ad_tag_details import VodAdTagDetail
-from .types.cdn_keys import AkamaiCdnKey
-from .types.cdn_keys import CdnKey
-from .types.cdn_keys import GoogleCdnKey
-from .types.companions import Companion
-from .types.companions import CompanionAds
-from .types.companions import HtmlAdResource
-from .types.companions import IframeAdResource
-from .types.companions import StaticAdResource
-from .types.events import Event
-from .types.events import ProgressEvent
-from .types.sessions import AdTag
-from .types.sessions import Interstitials
-from .types.sessions import LiveSession
-from .types.sessions import ManifestOptions
-from .types.sessions import RenditionFilter
-from .types.sessions import VodSession
-from .types.sessions import VodSessionAd
-from .types.sessions import VodSessionAdBreak
-from .types.sessions import VodSessionContent
+from .services.video_stitcher_service import (
+    VideoStitcherServiceAsyncClient,
+    VideoStitcherServiceClient,
+)
+from .types.ad_tag_details import (
+    AdRequest,
+    LiveAdTagDetail,
+    RequestMetadata,
+    ResponseMetadata,
+    VodAdTagDetail,
+)
+from .types.cdn_keys import AkamaiCdnKey, CdnKey, GoogleCdnKey
+from .types.companions import (
+    Companion,
+    CompanionAds,
+    HtmlAdResource,
+    IframeAdResource,
+    StaticAdResource,
+)
+from .types.events import Event, ProgressEvent
+from .types.sessions import (
+    AdTag,
+    Interstitials,
+    LiveSession,
+    ManifestOptions,
+    RenditionFilter,
+    VodSession,
+    VodSessionAd,
+    VodSessionAdBreak,
+    VodSessionContent,
+)
 from .types.slates import Slate
-from .types.stitch_details import AdStitchDetail
-from .types.stitch_details import VodStitchDetail
-from .types.video_stitcher_service import CreateCdnKeyRequest
-from .types.video_stitcher_service import CreateLiveSessionRequest
-from .types.video_stitcher_service import CreateSlateRequest
-from .types.video_stitcher_service import CreateVodSessionRequest
-from .types.video_stitcher_service import DeleteCdnKeyRequest
-from .types.video_stitcher_service import DeleteSlateRequest
-from .types.video_stitcher_service import GetCdnKeyRequest
-from .types.video_stitcher_service import GetLiveAdTagDetailRequest
-from .types.video_stitcher_service import GetLiveSessionRequest
-from .types.video_stitcher_service import GetSlateRequest
-from .types.video_stitcher_service import GetVodAdTagDetailRequest
-from .types.video_stitcher_service import GetVodSessionRequest
-from .types.video_stitcher_service import GetVodStitchDetailRequest
-from .types.video_stitcher_service import ListCdnKeysRequest
-from .types.video_stitcher_service import ListCdnKeysResponse
-from .types.video_stitcher_service import ListLiveAdTagDetailsRequest
-from .types.video_stitcher_service import ListLiveAdTagDetailsResponse
-from .types.video_stitcher_service import ListSlatesRequest
-from .types.video_stitcher_service import ListSlatesResponse
-from .types.video_stitcher_service import ListVodAdTagDetailsRequest
-from .types.video_stitcher_service import ListVodAdTagDetailsResponse
-from .types.video_stitcher_service import ListVodStitchDetailsRequest
-from .types.video_stitcher_service import ListVodStitchDetailsResponse
-from .types.video_stitcher_service import UpdateCdnKeyRequest
-from .types.video_stitcher_service import UpdateSlateRequest
+from .types.stitch_details import AdStitchDetail, VodStitchDetail
+from .types.video_stitcher_service import (
+    CreateCdnKeyRequest,
+    CreateLiveSessionRequest,
+    CreateSlateRequest,
+    CreateVodSessionRequest,
+    DeleteCdnKeyRequest,
+    DeleteSlateRequest,
+    GetCdnKeyRequest,
+    GetLiveAdTagDetailRequest,
+    GetLiveSessionRequest,
+    GetSlateRequest,
+    GetVodAdTagDetailRequest,
+    GetVodSessionRequest,
+    GetVodStitchDetailRequest,
+    ListCdnKeysRequest,
+    ListCdnKeysResponse,
+    ListLiveAdTagDetailsRequest,
+    ListLiveAdTagDetailsResponse,
+    ListSlatesRequest,
+    ListSlatesResponse,
+    ListVodAdTagDetailsRequest,
+    ListVodAdTagDetailsResponse,
+    ListVodStitchDetailsRequest,
+    ListVodStitchDetailsResponse,
+    UpdateCdnKeyRequest,
+    UpdateSlateRequest,
+)
 
 __all__ = (
     "VideoStitcherServiceAsyncClient",

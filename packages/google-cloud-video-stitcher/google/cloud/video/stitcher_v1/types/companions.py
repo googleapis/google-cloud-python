@@ -17,7 +17,6 @@ import proto  # type: ignore
 
 from google.cloud.video.stitcher_v1.types import events as gcvs_events
 
-
 __protobuf__ = proto.module(
     package="google.cloud.video.stitcher.v1",
     manifest={

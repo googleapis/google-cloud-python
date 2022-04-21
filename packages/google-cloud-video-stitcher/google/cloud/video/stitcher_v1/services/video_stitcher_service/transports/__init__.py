@@ -20,7 +20,6 @@ from .base import VideoStitcherServiceTransport
 from .grpc import VideoStitcherServiceGrpcTransport
 from .grpc_asyncio import VideoStitcherServiceGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = (
     OrderedDict()

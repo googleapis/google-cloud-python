@@ -13,12 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.protobuf import duration_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.video.stitcher_v1.types import companions
-from google.cloud.video.stitcher_v1.types import events
-from google.protobuf import duration_pb2  # type: ignore
-
+from google.cloud.video.stitcher_v1.types import companions, events
 
 __protobuf__ = proto.module(
     package="google.cloud.video.stitcher.v1",
