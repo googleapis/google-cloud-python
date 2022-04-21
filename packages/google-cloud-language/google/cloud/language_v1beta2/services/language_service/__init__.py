@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import LanguageServiceClient
 from .async_client import LanguageServiceAsyncClient
+from .client import LanguageServiceClient
 
 __all__ = (
     "LanguageServiceClient",

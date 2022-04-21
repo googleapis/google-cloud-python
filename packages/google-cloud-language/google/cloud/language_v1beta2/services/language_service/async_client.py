@@ -17,14 +17,14 @@ from collections import OrderedDict
 import functools
 import re
 from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
 
-from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
+from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -32,9 +32,10 @@ except AttributeError:  # pragma: NO COVER
     OptionalRetry = Union[retries.Retry, object]  # type: ignore
 
 from google.cloud.language_v1beta2.types import language_service
-from .transports.base import LanguageServiceTransport, DEFAULT_CLIENT_INFO
-from .transports.grpc_asyncio import LanguageServiceGrpcAsyncIOTransport
+
 from .client import LanguageServiceClient
+from .transports.base import DEFAULT_CLIENT_INFO, LanguageServiceTransport
+from .transports.grpc_asyncio import LanguageServiceGrpcAsyncIOTransport
 
 
 class LanguageServiceAsyncClient:

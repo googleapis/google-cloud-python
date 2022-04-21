@@ -29,6 +29,7 @@ from .language_service import (
     ClassifyTextResponse,
     DependencyEdge,
     Document,
+    EncodingType,
     Entity,
     EntityMention,
     PartOfSpeech,
@@ -36,7 +37,6 @@ from .language_service import (
     Sentiment,
     TextSpan,
     Token,
-    EncodingType,
 )
 
 __all__ = (
