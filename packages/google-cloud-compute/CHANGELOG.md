@@ -1,5 +1,26 @@
 # Changelog
 
+## [1.3.0](https://github.com/googleapis/python-compute/compare/v1.2.0...v1.3.0) (2022-04-21)
+
+
+### Features
+
+* add new methods for long running operations ([526fb10](https://github.com/googleapis/python-compute/commit/526fb1021cfa25aa34ee93fcca122fb8798c8359))
+
+
+### Bug Fixes
+
+* **compute:** remove proto3_optional from parent_id ([#260](https://github.com/googleapis/python-compute/issues/260)) ([526fb10](https://github.com/googleapis/python-compute/commit/526fb1021cfa25aa34ee93fcca122fb8798c8359))
+* **compute:** replace missing REQUIRED for parent_id ([526fb10](https://github.com/googleapis/python-compute/commit/526fb1021cfa25aa34ee93fcca122fb8798c8359))
+* **deps:** require google-api-core>=2.7.0 ([526fb10](https://github.com/googleapis/python-compute/commit/526fb1021cfa25aa34ee93fcca122fb8798c8359))
+* revert proto3_optional, required removal on parent_id ([#714](https://github.com/googleapis/python-compute/issues/714)) ([#265](https://github.com/googleapis/python-compute/issues/265)) ([ae1aeac](https://github.com/googleapis/python-compute/commit/ae1aeac4290d7a0e5961751bb00e03e08ade699e))
+
+
+### Documentation
+
+* **samples:** Add samples for suspending/resuming an instance ([#259](https://github.com/googleapis/python-compute/issues/259)) ([685d909](https://github.com/googleapis/python-compute/commit/685d909ebd015ccb5277f1ad2f3e9d142d532a13))
+* **samples:** Migrate samples to use new type of operations ([#264](https://github.com/googleapis/python-compute/issues/264)) ([767d7c8](https://github.com/googleapis/python-compute/commit/767d7c803453bc329499a12f92c20693134e4d91))
+
 ## [1.2.0](https://github.com/googleapis/python-compute/compare/v1.1.0...v1.2.0) (2022-04-07)
 
 
