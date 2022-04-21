@@ -15,20 +15,18 @@
 #
 import abc
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Union
-import pkg_resources
 
-import google.auth  # type: ignore
 import google.api_core
 from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1
+from google.api_core import gapic_v1, operations_v1
 from google.api_core import retry as retries
-from google.api_core import operations_v1
+import google.auth  # type: ignore
 from google.auth import credentials as ga_credentials  # type: ignore
-from google.oauth2 import service_account  # type: ignore
-
-from google.cloud.network_management_v1.types import connectivity_test
-from google.cloud.network_management_v1.types import reachability
 from google.longrunning import operations_pb2  # type: ignore
+from google.oauth2 import service_account  # type: ignore
+import pkg_resources
+
+from google.cloud.network_management_v1.types import connectivity_test, reachability
 
 try:
     DEFAULT_CLIENT_INFO = gapic_v1.client_info.ClientInfo(

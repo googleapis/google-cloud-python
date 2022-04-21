@@ -14,58 +14,47 @@
 # limitations under the License.
 #
 
-from google.cloud.network_management_v1.services.reachability_service.client import (
-    ReachabilityServiceClient,
-)
 from google.cloud.network_management_v1.services.reachability_service.async_client import (
     ReachabilityServiceAsyncClient,
 )
-
-from google.cloud.network_management_v1.types.connectivity_test import ConnectivityTest
-from google.cloud.network_management_v1.types.connectivity_test import Endpoint
+from google.cloud.network_management_v1.services.reachability_service.client import (
+    ReachabilityServiceClient,
+)
 from google.cloud.network_management_v1.types.connectivity_test import (
+    ConnectivityTest,
+    Endpoint,
     ReachabilityDetails,
 )
 from google.cloud.network_management_v1.types.reachability import (
     CreateConnectivityTestRequest,
-)
-from google.cloud.network_management_v1.types.reachability import (
     DeleteConnectivityTestRequest,
-)
-from google.cloud.network_management_v1.types.reachability import (
     GetConnectivityTestRequest,
-)
-from google.cloud.network_management_v1.types.reachability import (
     ListConnectivityTestsRequest,
-)
-from google.cloud.network_management_v1.types.reachability import (
     ListConnectivityTestsResponse,
-)
-from google.cloud.network_management_v1.types.reachability import OperationMetadata
-from google.cloud.network_management_v1.types.reachability import (
+    OperationMetadata,
     RerunConnectivityTestRequest,
-)
-from google.cloud.network_management_v1.types.reachability import (
     UpdateConnectivityTestRequest,
 )
-from google.cloud.network_management_v1.types.trace import AbortInfo
-from google.cloud.network_management_v1.types.trace import CloudSQLInstanceInfo
-from google.cloud.network_management_v1.types.trace import DeliverInfo
-from google.cloud.network_management_v1.types.trace import DropInfo
-from google.cloud.network_management_v1.types.trace import EndpointInfo
-from google.cloud.network_management_v1.types.trace import FirewallInfo
-from google.cloud.network_management_v1.types.trace import ForwardInfo
-from google.cloud.network_management_v1.types.trace import ForwardingRuleInfo
-from google.cloud.network_management_v1.types.trace import GKEMasterInfo
-from google.cloud.network_management_v1.types.trace import InstanceInfo
-from google.cloud.network_management_v1.types.trace import LoadBalancerBackend
-from google.cloud.network_management_v1.types.trace import LoadBalancerInfo
-from google.cloud.network_management_v1.types.trace import NetworkInfo
-from google.cloud.network_management_v1.types.trace import RouteInfo
-from google.cloud.network_management_v1.types.trace import Step
-from google.cloud.network_management_v1.types.trace import Trace
-from google.cloud.network_management_v1.types.trace import VpnGatewayInfo
-from google.cloud.network_management_v1.types.trace import VpnTunnelInfo
+from google.cloud.network_management_v1.types.trace import (
+    AbortInfo,
+    CloudSQLInstanceInfo,
+    DeliverInfo,
+    DropInfo,
+    EndpointInfo,
+    FirewallInfo,
+    ForwardInfo,
+    ForwardingRuleInfo,
+    GKEMasterInfo,
+    InstanceInfo,
+    LoadBalancerBackend,
+    LoadBalancerInfo,
+    NetworkInfo,
+    RouteInfo,
+    Step,
+    Trace,
+    VpnGatewayInfo,
+    VpnTunnelInfo,
+)
 
 __all__ = (
     "ReachabilityServiceClient",

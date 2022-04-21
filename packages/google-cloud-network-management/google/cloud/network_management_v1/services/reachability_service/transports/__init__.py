@@ -20,7 +20,6 @@ from .base import ReachabilityServiceTransport
 from .grpc import ReachabilityServiceGrpcTransport
 from .grpc_asyncio import ReachabilityServiceGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = (
     OrderedDict()

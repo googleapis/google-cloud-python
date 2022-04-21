@@ -18,14 +18,13 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Callable,
+    Iterator,
+    Optional,
     Sequence,
     Tuple,
-    Optional,
-    Iterator,
 )
 
-from google.cloud.network_management_v1.types import connectivity_test
-from google.cloud.network_management_v1.types import reachability
+from google.cloud.network_management_v1.types import connectivity_test, reachability
 
 
 class ListConnectivityTestsPager:
