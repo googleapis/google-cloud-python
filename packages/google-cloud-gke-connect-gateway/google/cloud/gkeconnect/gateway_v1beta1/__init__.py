@@ -14,9 +14,7 @@
 # limitations under the License.
 #
 
-from .services.gateway_service import GatewayServiceClient
-from .services.gateway_service import GatewayServiceAsyncClient
-
+from .services.gateway_service import GatewayServiceAsyncClient, GatewayServiceClient
 
 __all__ = (
     "GatewayServiceAsyncClient",

@@ -14,13 +14,12 @@
 # limitations under the License.
 #
 
-from google.cloud.gkeconnect.gateway_v1beta1.services.gateway_service.client import (
-    GatewayServiceClient,
-)
 from google.cloud.gkeconnect.gateway_v1beta1.services.gateway_service.async_client import (
     GatewayServiceAsyncClient,
 )
-
+from google.cloud.gkeconnect.gateway_v1beta1.services.gateway_service.client import (
+    GatewayServiceClient,
+)
 
 __all__ = (
     "GatewayServiceClient",

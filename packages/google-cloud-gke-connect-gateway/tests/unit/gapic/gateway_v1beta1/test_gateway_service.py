@@ -13,35 +13,29 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-import mock
-
-import grpc
-from grpc.experimental import aio
 import math
-import pytest
-from proto.marshal.rules.dates import DurationRule, TimestampRule
-
+import os
 
 from google.api import httpbody_pb2  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1
-from google.api_core import grpc_helpers
-from google.api_core import grpc_helpers_async
-from google.api_core import path_template
+import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
-from google.cloud.gkeconnect.gateway_v1beta1.services.gateway_service import (
-    GatewayServiceAsyncClient,
-)
-from google.cloud.gkeconnect.gateway_v1beta1.services.gateway_service import (
-    GatewayServiceClient,
-)
-from google.cloud.gkeconnect.gateway_v1beta1.services.gateway_service import transports
 from google.oauth2 import service_account
 from google.protobuf import any_pb2  # type: ignore
-import google.auth
+import grpc
+from grpc.experimental import aio
+import mock
+from proto.marshal.rules.dates import DurationRule, TimestampRule
+import pytest
+
+from google.cloud.gkeconnect.gateway_v1beta1.services.gateway_service import (
+    GatewayServiceAsyncClient,
+    GatewayServiceClient,
+    transports,
+)
 
 
 def client_cert_source_callback():

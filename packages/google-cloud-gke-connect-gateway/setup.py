@@ -19,7 +19,6 @@ import os
 
 import setuptools
 
-
 name = "google-cloud-gke-connect-gateway"
 description = "GKE Connect Gateway API client library"
 version = "0.5.1"

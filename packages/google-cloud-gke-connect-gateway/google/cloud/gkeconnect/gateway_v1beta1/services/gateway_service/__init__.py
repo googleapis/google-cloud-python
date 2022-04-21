@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import GatewayServiceClient
 from .async_client import GatewayServiceAsyncClient
+from .client import GatewayServiceClient
 
 __all__ = (
     "GatewayServiceClient",

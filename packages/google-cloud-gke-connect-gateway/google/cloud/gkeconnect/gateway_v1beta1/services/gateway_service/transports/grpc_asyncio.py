@@ -13,19 +13,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import warnings
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
+import warnings
 
-from google.api_core import gapic_v1
-from google.api_core import grpc_helpers_async
+from google.api import httpbody_pb2  # type: ignore
+from google.api_core import gapic_v1, grpc_helpers_async
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
-from google.api import httpbody_pb2  # type: ignore
-from .base import GatewayServiceTransport, DEFAULT_CLIENT_INFO
+from .base import DEFAULT_CLIENT_INFO, GatewayServiceTransport
 from .grpc import GatewayServiceGrpcTransport
 
 
