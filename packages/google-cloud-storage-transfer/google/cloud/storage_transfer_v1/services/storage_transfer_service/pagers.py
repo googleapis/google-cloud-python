@@ -18,14 +18,13 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Callable,
+    Iterator,
+    Optional,
     Sequence,
     Tuple,
-    Optional,
-    Iterator,
 )
 
-from google.cloud.storage_transfer_v1.types import transfer
-from google.cloud.storage_transfer_v1.types import transfer_types
+from google.cloud.storage_transfer_v1.types import transfer, transfer_types
 
 
 class ListTransferJobsPager:

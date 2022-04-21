@@ -19,7 +19,6 @@ import os
 
 import setuptools
 
-
 name = "google-cloud-storage-transfer"
 description = "Storage Transfer API client library"
 url = "https://github.com/googleapis/python-storage-transfer"

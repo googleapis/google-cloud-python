@@ -20,7 +20,6 @@ from .base import StorageTransferServiceTransport
 from .grpc import StorageTransferServiceGrpcTransport
 from .grpc_asyncio import StorageTransferServiceGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = (
     OrderedDict()
