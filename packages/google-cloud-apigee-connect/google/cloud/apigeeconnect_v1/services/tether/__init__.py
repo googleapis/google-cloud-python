@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import TetherClient
 from .async_client import TetherAsyncClient
+from .client import TetherClient
 
 __all__ = (
     "TetherClient",

@@ -19,7 +19,6 @@ import os
 
 import setuptools
 
-
 name = "google-cloud-apigee-connect"
 description = "Apigee Connect API client library"
 version = "1.3.1"

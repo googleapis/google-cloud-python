@@ -20,17 +20,17 @@ from .connection import (
     ListConnectionsResponse,
 )
 from .tether import (
+    Action,
     EgressRequest,
     EgressResponse,
     Header,
     HttpRequest,
     HttpResponse,
     Payload,
-    StreamInfo,
-    Url,
-    Action,
     Scheme,
+    StreamInfo,
     TetherEndpoint,
+    Url,
 )
 
 __all__ = (

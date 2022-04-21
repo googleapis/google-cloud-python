@@ -20,7 +20,6 @@ from .base import TetherTransport
 from .grpc import TetherGrpcTransport
 from .grpc_asyncio import TetherGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[TetherTransport]]
 _transport_registry["grpc"] = TetherGrpcTransport
