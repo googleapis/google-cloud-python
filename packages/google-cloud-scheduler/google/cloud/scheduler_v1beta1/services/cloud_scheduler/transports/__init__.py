@@ -20,7 +20,6 @@ from .base import CloudSchedulerTransport
 from .grpc import CloudSchedulerGrpcTransport
 from .grpc_asyncio import CloudSchedulerGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[CloudSchedulerTransport]]
 _transport_registry["grpc"] = CloudSchedulerGrpcTransport

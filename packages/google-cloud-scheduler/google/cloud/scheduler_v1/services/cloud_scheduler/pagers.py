@@ -18,14 +18,13 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Callable,
+    Iterator,
+    Optional,
     Sequence,
     Tuple,
-    Optional,
-    Iterator,
 )
 
-from google.cloud.scheduler_v1.types import cloudscheduler
-from google.cloud.scheduler_v1.types import job
+from google.cloud.scheduler_v1.types import cloudscheduler, job
 
 
 class ListJobsPager:

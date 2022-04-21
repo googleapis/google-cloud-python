@@ -14,31 +14,33 @@
 # limitations under the License.
 #
 
-from google.cloud.scheduler_v1.services.cloud_scheduler.client import (
-    CloudSchedulerClient,
-)
 from google.cloud.scheduler_v1.services.cloud_scheduler.async_client import (
     CloudSchedulerAsyncClient,
 )
-
-from google.cloud.scheduler_v1.types.cloudscheduler import CreateJobRequest
-from google.cloud.scheduler_v1.types.cloudscheduler import DeleteJobRequest
-from google.cloud.scheduler_v1.types.cloudscheduler import GetJobRequest
-from google.cloud.scheduler_v1.types.cloudscheduler import ListJobsRequest
-from google.cloud.scheduler_v1.types.cloudscheduler import ListJobsResponse
-from google.cloud.scheduler_v1.types.cloudscheduler import PauseJobRequest
-from google.cloud.scheduler_v1.types.cloudscheduler import ResumeJobRequest
-from google.cloud.scheduler_v1.types.cloudscheduler import RunJobRequest
-from google.cloud.scheduler_v1.types.cloudscheduler import UpdateJobRequest
-from google.cloud.scheduler_v1.types.job import Job
-from google.cloud.scheduler_v1.types.job import RetryConfig
-from google.cloud.scheduler_v1.types.target import AppEngineHttpTarget
-from google.cloud.scheduler_v1.types.target import AppEngineRouting
-from google.cloud.scheduler_v1.types.target import HttpTarget
-from google.cloud.scheduler_v1.types.target import OAuthToken
-from google.cloud.scheduler_v1.types.target import OidcToken
-from google.cloud.scheduler_v1.types.target import PubsubTarget
-from google.cloud.scheduler_v1.types.target import HttpMethod
+from google.cloud.scheduler_v1.services.cloud_scheduler.client import (
+    CloudSchedulerClient,
+)
+from google.cloud.scheduler_v1.types.cloudscheduler import (
+    CreateJobRequest,
+    DeleteJobRequest,
+    GetJobRequest,
+    ListJobsRequest,
+    ListJobsResponse,
+    PauseJobRequest,
+    ResumeJobRequest,
+    RunJobRequest,
+    UpdateJobRequest,
+)
+from google.cloud.scheduler_v1.types.job import Job, RetryConfig
+from google.cloud.scheduler_v1.types.target import (
+    AppEngineHttpTarget,
+    AppEngineRouting,
+    HttpMethod,
+    HttpTarget,
+    OAuthToken,
+    OidcToken,
+    PubsubTarget,
+)
 
 __all__ = (
     "CloudSchedulerClient",

@@ -24,18 +24,15 @@ from .cloudscheduler import (
     RunJobRequest,
     UpdateJobRequest,
 )
-from .job import (
-    Job,
-    RetryConfig,
-)
+from .job import Job, RetryConfig
 from .target import (
     AppEngineHttpTarget,
     AppEngineRouting,
+    HttpMethod,
     HttpTarget,
     OAuthToken,
     OidcToken,
     PubsubTarget,
-    HttpMethod,
 )
 
 __all__ = (

@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import CloudSchedulerClient
 from .async_client import CloudSchedulerAsyncClient
+from .client import CloudSchedulerClient
 
 __all__ = (
     "CloudSchedulerClient",
