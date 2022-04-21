@@ -20,7 +20,6 @@ from .base import IAMCredentialsTransport
 from .grpc import IAMCredentialsGrpcTransport
 from .grpc_asyncio import IAMCredentialsGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[IAMCredentialsTransport]]
 _transport_registry["grpc"] = IAMCredentialsGrpcTransport

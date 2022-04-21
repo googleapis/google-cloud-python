@@ -14,21 +14,22 @@
 # limitations under the License.
 #
 
-from google.cloud.iam_credentials_v1.services.iam_credentials.client import (
-    IAMCredentialsClient,
-)
 from google.cloud.iam_credentials_v1.services.iam_credentials.async_client import (
     IAMCredentialsAsyncClient,
 )
-
-from google.cloud.iam_credentials_v1.types.common import GenerateAccessTokenRequest
-from google.cloud.iam_credentials_v1.types.common import GenerateAccessTokenResponse
-from google.cloud.iam_credentials_v1.types.common import GenerateIdTokenRequest
-from google.cloud.iam_credentials_v1.types.common import GenerateIdTokenResponse
-from google.cloud.iam_credentials_v1.types.common import SignBlobRequest
-from google.cloud.iam_credentials_v1.types.common import SignBlobResponse
-from google.cloud.iam_credentials_v1.types.common import SignJwtRequest
-from google.cloud.iam_credentials_v1.types.common import SignJwtResponse
+from google.cloud.iam_credentials_v1.services.iam_credentials.client import (
+    IAMCredentialsClient,
+)
+from google.cloud.iam_credentials_v1.types.common import (
+    GenerateAccessTokenRequest,
+    GenerateAccessTokenResponse,
+    GenerateIdTokenRequest,
+    GenerateIdTokenResponse,
+    SignBlobRequest,
+    SignBlobResponse,
+    SignJwtRequest,
+    SignJwtResponse,
+)
 
 __all__ = (
     "IAMCredentialsClient",
