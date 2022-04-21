@@ -19,7 +19,6 @@ import os
 
 import setuptools
 
-
 name = "google-cloud-deploy"
 description = "Google Cloud Deploy API client library"
 version = "1.1.1"

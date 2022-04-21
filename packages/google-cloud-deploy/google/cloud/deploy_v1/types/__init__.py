@@ -57,21 +57,11 @@ from .cloud_deploy import (
     UpdateDeliveryPipelineRequest,
     UpdateTargetRequest,
 )
-from .deliverypipeline_notification_payload import (
-    DeliveryPipelineNotificationEvent,
-)
-from .release_notification_payload import (
-    ReleaseNotificationEvent,
-)
-from .release_render_payload import (
-    ReleaseRenderEvent,
-)
-from .rollout_notification_payload import (
-    RolloutNotificationEvent,
-)
-from .target_notification_payload import (
-    TargetNotificationEvent,
-)
+from .deliverypipeline_notification_payload import DeliveryPipelineNotificationEvent
+from .release_notification_payload import ReleaseNotificationEvent
+from .release_render_payload import ReleaseRenderEvent
+from .rollout_notification_payload import RolloutNotificationEvent
+from .target_notification_payload import TargetNotificationEvent
 
 __all__ = (
     "AnthosCluster",

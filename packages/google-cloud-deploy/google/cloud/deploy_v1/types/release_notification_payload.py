@@ -17,7 +17,6 @@ import proto  # type: ignore
 
 from google.cloud.deploy_v1.types import log_enums
 
-
 __protobuf__ = proto.module(
     package="google.cloud.deploy.v1",
     manifest={
