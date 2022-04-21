@@ -14,26 +14,17 @@
 # limitations under the License.
 #
 
-from google.cloud.mediatranslation_v1beta1.services.speech_translation_service.client import (
-    SpeechTranslationServiceClient,
-)
 from google.cloud.mediatranslation_v1beta1.services.speech_translation_service.async_client import (
     SpeechTranslationServiceAsyncClient,
 )
-
+from google.cloud.mediatranslation_v1beta1.services.speech_translation_service.client import (
+    SpeechTranslationServiceClient,
+)
 from google.cloud.mediatranslation_v1beta1.types.media_translation import (
     StreamingTranslateSpeechConfig,
-)
-from google.cloud.mediatranslation_v1beta1.types.media_translation import (
     StreamingTranslateSpeechRequest,
-)
-from google.cloud.mediatranslation_v1beta1.types.media_translation import (
     StreamingTranslateSpeechResponse,
-)
-from google.cloud.mediatranslation_v1beta1.types.media_translation import (
     StreamingTranslateSpeechResult,
-)
-from google.cloud.mediatranslation_v1beta1.types.media_translation import (
     TranslateSpeechConfig,
 )
 

@@ -14,14 +14,17 @@
 # limitations under the License.
 #
 
-from .services.speech_translation_service import SpeechTranslationServiceClient
-from .services.speech_translation_service import SpeechTranslationServiceAsyncClient
-
-from .types.media_translation import StreamingTranslateSpeechConfig
-from .types.media_translation import StreamingTranslateSpeechRequest
-from .types.media_translation import StreamingTranslateSpeechResponse
-from .types.media_translation import StreamingTranslateSpeechResult
-from .types.media_translation import TranslateSpeechConfig
+from .services.speech_translation_service import (
+    SpeechTranslationServiceAsyncClient,
+    SpeechTranslationServiceClient,
+)
+from .types.media_translation import (
+    StreamingTranslateSpeechConfig,
+    StreamingTranslateSpeechRequest,
+    StreamingTranslateSpeechResponse,
+    StreamingTranslateSpeechResult,
+    TranslateSpeechConfig,
+)
 
 __all__ = (
     "SpeechTranslationServiceAsyncClient",
