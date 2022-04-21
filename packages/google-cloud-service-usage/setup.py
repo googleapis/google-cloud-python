@@ -19,7 +19,6 @@ import os
 
 import setuptools
 
-
 name = "google-cloud-service-usage"
 description = "Service Usage API client library"
 version = "1.3.1"

@@ -13,8 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import proto  # type: ignore
-
 from google.api import auth_pb2  # type: ignore
 from google.api import documentation_pb2  # type: ignore
 from google.api import endpoint_pb2  # type: ignore
@@ -23,7 +21,7 @@ from google.api import monitoring_pb2  # type: ignore
 from google.api import quota_pb2  # type: ignore
 from google.api import usage_pb2  # type: ignore
 from google.protobuf import api_pb2  # type: ignore
-
+import proto  # type: ignore
 
 __protobuf__ = proto.module(
     package="google.api.serviceusage.v1",

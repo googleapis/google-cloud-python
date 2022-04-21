@@ -18,14 +18,13 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Callable,
+    Iterator,
+    Optional,
     Sequence,
     Tuple,
-    Optional,
-    Iterator,
 )
 
-from google.cloud.service_usage_v1.types import resources
-from google.cloud.service_usage_v1.types import serviceusage
+from google.cloud.service_usage_v1.types import resources, serviceusage
 
 
 class ListServicesPager:

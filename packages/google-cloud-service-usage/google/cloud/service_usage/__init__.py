@@ -14,28 +14,31 @@
 # limitations under the License.
 #
 
-from google.cloud.service_usage_v1.services.service_usage.client import (
-    ServiceUsageClient,
-)
 from google.cloud.service_usage_v1.services.service_usage.async_client import (
     ServiceUsageAsyncClient,
 )
-
-from google.cloud.service_usage_v1.types.resources import OperationMetadata
-from google.cloud.service_usage_v1.types.resources import Service
-from google.cloud.service_usage_v1.types.resources import ServiceConfig
-from google.cloud.service_usage_v1.types.resources import State
-from google.cloud.service_usage_v1.types.serviceusage import BatchEnableServicesRequest
-from google.cloud.service_usage_v1.types.serviceusage import BatchEnableServicesResponse
-from google.cloud.service_usage_v1.types.serviceusage import BatchGetServicesRequest
-from google.cloud.service_usage_v1.types.serviceusage import BatchGetServicesResponse
-from google.cloud.service_usage_v1.types.serviceusage import DisableServiceRequest
-from google.cloud.service_usage_v1.types.serviceusage import DisableServiceResponse
-from google.cloud.service_usage_v1.types.serviceusage import EnableServiceRequest
-from google.cloud.service_usage_v1.types.serviceusage import EnableServiceResponse
-from google.cloud.service_usage_v1.types.serviceusage import GetServiceRequest
-from google.cloud.service_usage_v1.types.serviceusage import ListServicesRequest
-from google.cloud.service_usage_v1.types.serviceusage import ListServicesResponse
+from google.cloud.service_usage_v1.services.service_usage.client import (
+    ServiceUsageClient,
+)
+from google.cloud.service_usage_v1.types.resources import (
+    OperationMetadata,
+    Service,
+    ServiceConfig,
+    State,
+)
+from google.cloud.service_usage_v1.types.serviceusage import (
+    BatchEnableServicesRequest,
+    BatchEnableServicesResponse,
+    BatchGetServicesRequest,
+    BatchGetServicesResponse,
+    DisableServiceRequest,
+    DisableServiceResponse,
+    EnableServiceRequest,
+    EnableServiceResponse,
+    GetServiceRequest,
+    ListServicesRequest,
+    ListServicesResponse,
+)
 
 __all__ = (
     "ServiceUsageClient",

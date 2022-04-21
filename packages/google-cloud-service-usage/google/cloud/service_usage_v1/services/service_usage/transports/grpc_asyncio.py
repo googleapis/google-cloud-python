@@ -13,22 +13,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import warnings
 from typing import Awaitable, Callable, Dict, Optional, Sequence, Tuple, Union
+import warnings
 
-from google.api_core import gapic_v1
-from google.api_core import grpc_helpers_async
-from google.api_core import operations_v1
+from google.api_core import gapic_v1, grpc_helpers_async, operations_v1
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-
+from google.longrunning import operations_pb2  # type: ignore
 import grpc  # type: ignore
 from grpc.experimental import aio  # type: ignore
 
-from google.cloud.service_usage_v1.types import resources
-from google.cloud.service_usage_v1.types import serviceusage
-from google.longrunning import operations_pb2  # type: ignore
-from .base import ServiceUsageTransport, DEFAULT_CLIENT_INFO
+from google.cloud.service_usage_v1.types import resources, serviceusage
+
+from .base import DEFAULT_CLIENT_INFO, ServiceUsageTransport
 from .grpc import ServiceUsageGrpcTransport
 
 

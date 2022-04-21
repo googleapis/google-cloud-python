@@ -17,7 +17,6 @@ import proto  # type: ignore
 
 from google.cloud.service_usage_v1.types import resources
 
-
 __protobuf__ = proto.module(
     package="google.api.serviceusage.v1",
     manifest={
