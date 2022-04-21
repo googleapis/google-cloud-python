@@ -14,44 +14,45 @@
 # limitations under the License.
 #
 
-from google.cloud.metastore_v1.services.dataproc_metastore.client import (
-    DataprocMetastoreClient,
-)
 from google.cloud.metastore_v1.services.dataproc_metastore.async_client import (
     DataprocMetastoreAsyncClient,
 )
-
-from google.cloud.metastore_v1.types.metastore import Backup
-from google.cloud.metastore_v1.types.metastore import CreateBackupRequest
-from google.cloud.metastore_v1.types.metastore import CreateMetadataImportRequest
-from google.cloud.metastore_v1.types.metastore import CreateServiceRequest
-from google.cloud.metastore_v1.types.metastore import DatabaseDumpSpec
-from google.cloud.metastore_v1.types.metastore import DeleteBackupRequest
-from google.cloud.metastore_v1.types.metastore import DeleteServiceRequest
-from google.cloud.metastore_v1.types.metastore import ExportMetadataRequest
-from google.cloud.metastore_v1.types.metastore import GetBackupRequest
-from google.cloud.metastore_v1.types.metastore import GetMetadataImportRequest
-from google.cloud.metastore_v1.types.metastore import GetServiceRequest
-from google.cloud.metastore_v1.types.metastore import HiveMetastoreConfig
-from google.cloud.metastore_v1.types.metastore import KerberosConfig
-from google.cloud.metastore_v1.types.metastore import ListBackupsRequest
-from google.cloud.metastore_v1.types.metastore import ListBackupsResponse
-from google.cloud.metastore_v1.types.metastore import ListMetadataImportsRequest
-from google.cloud.metastore_v1.types.metastore import ListMetadataImportsResponse
-from google.cloud.metastore_v1.types.metastore import ListServicesRequest
-from google.cloud.metastore_v1.types.metastore import ListServicesResponse
-from google.cloud.metastore_v1.types.metastore import LocationMetadata
-from google.cloud.metastore_v1.types.metastore import MaintenanceWindow
-from google.cloud.metastore_v1.types.metastore import MetadataExport
-from google.cloud.metastore_v1.types.metastore import MetadataImport
-from google.cloud.metastore_v1.types.metastore import MetadataManagementActivity
-from google.cloud.metastore_v1.types.metastore import OperationMetadata
-from google.cloud.metastore_v1.types.metastore import Restore
-from google.cloud.metastore_v1.types.metastore import RestoreServiceRequest
-from google.cloud.metastore_v1.types.metastore import Secret
-from google.cloud.metastore_v1.types.metastore import Service
-from google.cloud.metastore_v1.types.metastore import UpdateMetadataImportRequest
-from google.cloud.metastore_v1.types.metastore import UpdateServiceRequest
+from google.cloud.metastore_v1.services.dataproc_metastore.client import (
+    DataprocMetastoreClient,
+)
+from google.cloud.metastore_v1.types.metastore import (
+    Backup,
+    CreateBackupRequest,
+    CreateMetadataImportRequest,
+    CreateServiceRequest,
+    DatabaseDumpSpec,
+    DeleteBackupRequest,
+    DeleteServiceRequest,
+    ExportMetadataRequest,
+    GetBackupRequest,
+    GetMetadataImportRequest,
+    GetServiceRequest,
+    HiveMetastoreConfig,
+    KerberosConfig,
+    ListBackupsRequest,
+    ListBackupsResponse,
+    ListMetadataImportsRequest,
+    ListMetadataImportsResponse,
+    ListServicesRequest,
+    ListServicesResponse,
+    LocationMetadata,
+    MaintenanceWindow,
+    MetadataExport,
+    MetadataImport,
+    MetadataManagementActivity,
+    OperationMetadata,
+    Restore,
+    RestoreServiceRequest,
+    Secret,
+    Service,
+    UpdateMetadataImportRequest,
+    UpdateServiceRequest,
+)
 
 __all__ = (
     "DataprocMetastoreClient",

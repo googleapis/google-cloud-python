@@ -17,6 +17,7 @@
 
 import io
 import os
+
 import setuptools  # type: ignore
 
 name = "google-cloud-dataproc-metastore"

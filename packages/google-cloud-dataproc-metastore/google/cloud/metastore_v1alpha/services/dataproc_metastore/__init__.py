@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import DataprocMetastoreClient
 from .async_client import DataprocMetastoreAsyncClient
+from .client import DataprocMetastoreClient
 
 __all__ = (
     "DataprocMetastoreClient",

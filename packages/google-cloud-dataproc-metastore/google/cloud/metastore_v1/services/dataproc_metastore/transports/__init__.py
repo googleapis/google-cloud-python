@@ -20,7 +20,6 @@ from .base import DataprocMetastoreTransport
 from .grpc import DataprocMetastoreGrpcTransport
 from .grpc_asyncio import DataprocMetastoreGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = OrderedDict()  # type: Dict[str, Type[DataprocMetastoreTransport]]
 _transport_registry["grpc"] = DataprocMetastoreGrpcTransport
