@@ -14,31 +14,30 @@
 # limitations under the License.
 #
 
-from .services.document_understanding_service import DocumentUnderstandingServiceClient
 from .services.document_understanding_service import (
     DocumentUnderstandingServiceAsyncClient,
+    DocumentUnderstandingServiceClient,
 )
-
 from .types.document import Document
-from .types.document_understanding import AutoMlParams
-from .types.document_understanding import BatchProcessDocumentsRequest
-from .types.document_understanding import BatchProcessDocumentsResponse
-from .types.document_understanding import EntityExtractionParams
-from .types.document_understanding import FormExtractionParams
-from .types.document_understanding import GcsDestination
-from .types.document_understanding import GcsSource
-from .types.document_understanding import InputConfig
-from .types.document_understanding import KeyValuePairHint
-from .types.document_understanding import OcrParams
-from .types.document_understanding import OperationMetadata
-from .types.document_understanding import OutputConfig
-from .types.document_understanding import ProcessDocumentRequest
-from .types.document_understanding import ProcessDocumentResponse
-from .types.document_understanding import TableBoundHint
-from .types.document_understanding import TableExtractionParams
-from .types.geometry import BoundingPoly
-from .types.geometry import NormalizedVertex
-from .types.geometry import Vertex
+from .types.document_understanding import (
+    AutoMlParams,
+    BatchProcessDocumentsRequest,
+    BatchProcessDocumentsResponse,
+    EntityExtractionParams,
+    FormExtractionParams,
+    GcsDestination,
+    GcsSource,
+    InputConfig,
+    KeyValuePairHint,
+    OcrParams,
+    OperationMetadata,
+    OutputConfig,
+    ProcessDocumentRequest,
+    ProcessDocumentResponse,
+    TableBoundHint,
+    TableExtractionParams,
+)
+from .types.geometry import BoundingPoly, NormalizedVertex, Vertex
 
 __all__ = (
     "DocumentUnderstandingServiceAsyncClient",

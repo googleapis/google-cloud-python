@@ -14,41 +14,44 @@
 # limitations under the License.
 #
 
-from .services.document_processor_service import DocumentProcessorServiceClient
-from .services.document_processor_service import DocumentProcessorServiceAsyncClient
-
+from .services.document_processor_service import (
+    DocumentProcessorServiceAsyncClient,
+    DocumentProcessorServiceClient,
+)
 from .types.document import Document
-from .types.document_io import BatchDocumentsInputConfig
-from .types.document_io import DocumentOutputConfig
-from .types.document_io import GcsDocument
-from .types.document_io import GcsDocuments
-from .types.document_io import GcsPrefix
-from .types.document_io import RawDocument
-from .types.document_processor_service import BatchProcessMetadata
-from .types.document_processor_service import BatchProcessRequest
-from .types.document_processor_service import BatchProcessResponse
-from .types.document_processor_service import CreateProcessorRequest
-from .types.document_processor_service import DeleteProcessorMetadata
-from .types.document_processor_service import DeleteProcessorRequest
-from .types.document_processor_service import DisableProcessorMetadata
-from .types.document_processor_service import DisableProcessorRequest
-from .types.document_processor_service import DisableProcessorResponse
-from .types.document_processor_service import EnableProcessorMetadata
-from .types.document_processor_service import EnableProcessorRequest
-from .types.document_processor_service import EnableProcessorResponse
-from .types.document_processor_service import FetchProcessorTypesRequest
-from .types.document_processor_service import FetchProcessorTypesResponse
-from .types.document_processor_service import HumanReviewStatus
-from .types.document_processor_service import ListProcessorsRequest
-from .types.document_processor_service import ListProcessorsResponse
-from .types.document_processor_service import ProcessRequest
-from .types.document_processor_service import ProcessResponse
-from .types.document_processor_service import ReviewDocumentOperationMetadata
-from .types.document_processor_service import ReviewDocumentRequest
-from .types.document_processor_service import ReviewDocumentResponse
-from .types.geometry import BoundingPoly
-from .types.geometry import NormalizedVertex
-from .types.geometry import Vertex
+from .types.document_io import (
+    BatchDocumentsInputConfig,
+    DocumentOutputConfig,
+    GcsDocument,
+    GcsDocuments,
+    GcsPrefix,
+    RawDocument,
+)
+from .types.document_processor_service import (
+    BatchProcessMetadata,
+    BatchProcessRequest,
+    BatchProcessResponse,
+    CreateProcessorRequest,
+    DeleteProcessorMetadata,
+    DeleteProcessorRequest,
+    DisableProcessorMetadata,
+    DisableProcessorRequest,
+    DisableProcessorResponse,
+    EnableProcessorMetadata,
+    EnableProcessorRequest,
+    EnableProcessorResponse,
+    FetchProcessorTypesRequest,
+    FetchProcessorTypesResponse,
+    HumanReviewStatus,
+    ListProcessorsRequest,
+    ListProcessorsResponse,
+    ProcessRequest,
+    ProcessResponse,
+    ReviewDocumentOperationMetadata,
+    ReviewDocumentRequest,
+    ReviewDocumentResponse,
+)
+from .types.geometry import BoundingPoly, NormalizedVertex, Vertex
 from .types.operation_metadata import CommonOperationMetadata
 from .types.processor import Processor
 from .types.processor_type import ProcessorType

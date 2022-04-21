@@ -14,46 +14,37 @@
 # limitations under the License.
 #
 
-from google.cloud.documentai_v1.services.document_processor_service.client import (
-    DocumentProcessorServiceClient,
-)
 from google.cloud.documentai_v1.services.document_processor_service.async_client import (
     DocumentProcessorServiceAsyncClient,
 )
-
+from google.cloud.documentai_v1.services.document_processor_service.client import (
+    DocumentProcessorServiceClient,
+)
 from google.cloud.documentai_v1.types.document import Document
-from google.cloud.documentai_v1.types.document_io import BatchDocumentsInputConfig
-from google.cloud.documentai_v1.types.document_io import DocumentOutputConfig
-from google.cloud.documentai_v1.types.document_io import GcsDocument
-from google.cloud.documentai_v1.types.document_io import GcsDocuments
-from google.cloud.documentai_v1.types.document_io import GcsPrefix
-from google.cloud.documentai_v1.types.document_io import RawDocument
+from google.cloud.documentai_v1.types.document_io import (
+    BatchDocumentsInputConfig,
+    DocumentOutputConfig,
+    GcsDocument,
+    GcsDocuments,
+    GcsPrefix,
+    RawDocument,
+)
 from google.cloud.documentai_v1.types.document_processor_service import (
     BatchProcessMetadata,
-)
-from google.cloud.documentai_v1.types.document_processor_service import (
     BatchProcessRequest,
-)
-from google.cloud.documentai_v1.types.document_processor_service import (
     BatchProcessResponse,
-)
-from google.cloud.documentai_v1.types.document_processor_service import (
     HumanReviewStatus,
-)
-from google.cloud.documentai_v1.types.document_processor_service import ProcessRequest
-from google.cloud.documentai_v1.types.document_processor_service import ProcessResponse
-from google.cloud.documentai_v1.types.document_processor_service import (
+    ProcessRequest,
+    ProcessResponse,
     ReviewDocumentOperationMetadata,
-)
-from google.cloud.documentai_v1.types.document_processor_service import (
     ReviewDocumentRequest,
-)
-from google.cloud.documentai_v1.types.document_processor_service import (
     ReviewDocumentResponse,
 )
-from google.cloud.documentai_v1.types.geometry import BoundingPoly
-from google.cloud.documentai_v1.types.geometry import NormalizedVertex
-from google.cloud.documentai_v1.types.geometry import Vertex
+from google.cloud.documentai_v1.types.geometry import (
+    BoundingPoly,
+    NormalizedVertex,
+    Vertex,
+)
 from google.cloud.documentai_v1.types.operation_metadata import CommonOperationMetadata
 
 __all__ = (

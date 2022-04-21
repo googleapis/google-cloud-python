@@ -17,17 +17,17 @@ from collections import OrderedDict
 import os
 import re
 from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
 
 from google.api_core import client_options as client_options_lib
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
 from google.auth import credentials as ga_credentials  # type: ignore
+from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.auth.transport import mtls  # type: ignore
 from google.auth.transport.grpc import SslCredentials  # type: ignore
-from google.auth.exceptions import MutualTLSChannelError  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -36,15 +36,16 @@ except AttributeError:  # pragma: NO COVER
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
+from google.protobuf import empty_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
+
 from google.cloud.documentai_v1beta3.services.document_processor_service import pagers
-from google.cloud.documentai_v1beta3.types import document
-from google.cloud.documentai_v1beta3.types import document_processor_service
+from google.cloud.documentai_v1beta3.types import document, document_processor_service
 from google.cloud.documentai_v1beta3.types import processor
 from google.cloud.documentai_v1beta3.types import processor as gcd_processor
 from google.cloud.documentai_v1beta3.types import processor_type
-from google.protobuf import empty_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from .transports.base import DocumentProcessorServiceTransport, DEFAULT_CLIENT_INFO
+
+from .transports.base import DEFAULT_CLIENT_INFO, DocumentProcessorServiceTransport
 from .transports.grpc import DocumentProcessorServiceGrpcTransport
 from .transports.grpc_asyncio import DocumentProcessorServiceGrpcAsyncIOTransport
 

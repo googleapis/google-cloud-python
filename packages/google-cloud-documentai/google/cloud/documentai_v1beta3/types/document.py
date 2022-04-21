@@ -13,9 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import proto  # type: ignore
-
-from google.cloud.documentai_v1beta3.types import geometry
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
 from google.type import color_pb2  # type: ignore
@@ -23,7 +20,9 @@ from google.type import date_pb2  # type: ignore
 from google.type import datetime_pb2  # type: ignore
 from google.type import money_pb2  # type: ignore
 from google.type import postal_address_pb2  # type: ignore
+import proto  # type: ignore
 
+from google.cloud.documentai_v1beta3.types import geometry
 
 __protobuf__ = proto.module(
     package="google.cloud.documentai.v1beta3",

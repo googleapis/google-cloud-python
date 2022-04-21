@@ -13,16 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import proto  # type: ignore
-
-from google.cloud.documentai_v1beta3.types import document as gcd_document
-from google.cloud.documentai_v1beta3.types import document_io
-from google.cloud.documentai_v1beta3.types import operation_metadata
-from google.cloud.documentai_v1beta3.types import processor as gcd_processor
-from google.cloud.documentai_v1beta3.types import processor_type
 from google.protobuf import timestamp_pb2  # type: ignore
 from google.rpc import status_pb2  # type: ignore
+import proto  # type: ignore
 
+from google.cloud.documentai_v1beta3.types import document_io, operation_metadata
+from google.cloud.documentai_v1beta3.types import document as gcd_document
+from google.cloud.documentai_v1beta3.types import processor as gcd_processor
+from google.cloud.documentai_v1beta3.types import processor_type
 
 __protobuf__ = proto.module(
     package="google.cloud.documentai.v1beta3",

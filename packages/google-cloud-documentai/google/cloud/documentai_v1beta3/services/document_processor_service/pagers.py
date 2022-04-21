@@ -18,14 +18,13 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Callable,
+    Iterator,
+    Optional,
     Sequence,
     Tuple,
-    Optional,
-    Iterator,
 )
 
-from google.cloud.documentai_v1beta3.types import document_processor_service
-from google.cloud.documentai_v1beta3.types import processor
+from google.cloud.documentai_v1beta3.types import document_processor_service, processor
 
 
 class ListProcessorsPager:
