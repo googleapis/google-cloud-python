@@ -14,17 +14,20 @@
 # limitations under the License.
 #
 
-from .services.resource_settings_service import ResourceSettingsServiceClient
-from .services.resource_settings_service import ResourceSettingsServiceAsyncClient
-
-from .types.resource_settings import GetSettingRequest
-from .types.resource_settings import ListSettingsRequest
-from .types.resource_settings import ListSettingsResponse
-from .types.resource_settings import Setting
-from .types.resource_settings import SettingMetadata
-from .types.resource_settings import UpdateSettingRequest
-from .types.resource_settings import Value
-from .types.resource_settings import SettingView
+from .services.resource_settings_service import (
+    ResourceSettingsServiceAsyncClient,
+    ResourceSettingsServiceClient,
+)
+from .types.resource_settings import (
+    GetSettingRequest,
+    ListSettingsRequest,
+    ListSettingsResponse,
+    Setting,
+    SettingMetadata,
+    SettingView,
+    UpdateSettingRequest,
+    Value,
+)
 
 __all__ = (
     "ResourceSettingsServiceAsyncClient",

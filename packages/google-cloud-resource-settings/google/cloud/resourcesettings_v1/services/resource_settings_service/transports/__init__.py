@@ -20,7 +20,6 @@ from .base import ResourceSettingsServiceTransport
 from .grpc import ResourceSettingsServiceGrpcTransport
 from .grpc_asyncio import ResourceSettingsServiceGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = (
     OrderedDict()

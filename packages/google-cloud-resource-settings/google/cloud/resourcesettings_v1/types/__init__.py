@@ -19,9 +19,9 @@ from .resource_settings import (
     ListSettingsResponse,
     Setting,
     SettingMetadata,
+    SettingView,
     UpdateSettingRequest,
     Value,
-    SettingView,
 )
 
 __all__ = (

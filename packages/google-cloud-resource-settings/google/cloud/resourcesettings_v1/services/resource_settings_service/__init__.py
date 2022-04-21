@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import ResourceSettingsServiceClient
 from .async_client import ResourceSettingsServiceAsyncClient
+from .client import ResourceSettingsServiceClient
 
 __all__ = (
     "ResourceSettingsServiceClient",
