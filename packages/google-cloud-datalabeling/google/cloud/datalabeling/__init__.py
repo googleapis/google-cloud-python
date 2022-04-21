@@ -14,308 +14,165 @@
 # limitations under the License.
 #
 
-from google.cloud.datalabeling_v1beta1.services.data_labeling_service.client import (
-    DataLabelingServiceClient,
-)
 from google.cloud.datalabeling_v1beta1.services.data_labeling_service.async_client import (
     DataLabelingServiceAsyncClient,
 )
-
-from google.cloud.datalabeling_v1beta1.types.annotation import Annotation
-from google.cloud.datalabeling_v1beta1.types.annotation import AnnotationMetadata
-from google.cloud.datalabeling_v1beta1.types.annotation import AnnotationValue
-from google.cloud.datalabeling_v1beta1.types.annotation import BoundingPoly
+from google.cloud.datalabeling_v1beta1.services.data_labeling_service.client import (
+    DataLabelingServiceClient,
+)
 from google.cloud.datalabeling_v1beta1.types.annotation import (
+    Annotation,
+    AnnotationMetadata,
+    AnnotationSentiment,
+    AnnotationSource,
+    AnnotationType,
+    AnnotationValue,
+    BoundingPoly,
     ImageBoundingPolyAnnotation,
-)
-from google.cloud.datalabeling_v1beta1.types.annotation import (
     ImageClassificationAnnotation,
-)
-from google.cloud.datalabeling_v1beta1.types.annotation import ImagePolylineAnnotation
-from google.cloud.datalabeling_v1beta1.types.annotation import (
+    ImagePolylineAnnotation,
     ImageSegmentationAnnotation,
-)
-from google.cloud.datalabeling_v1beta1.types.annotation import NormalizedBoundingPoly
-from google.cloud.datalabeling_v1beta1.types.annotation import NormalizedPolyline
-from google.cloud.datalabeling_v1beta1.types.annotation import NormalizedVertex
-from google.cloud.datalabeling_v1beta1.types.annotation import ObjectTrackingFrame
-from google.cloud.datalabeling_v1beta1.types.annotation import OperatorMetadata
-from google.cloud.datalabeling_v1beta1.types.annotation import Polyline
-from google.cloud.datalabeling_v1beta1.types.annotation import SequentialSegment
-from google.cloud.datalabeling_v1beta1.types.annotation import (
+    NormalizedBoundingPoly,
+    NormalizedPolyline,
+    NormalizedVertex,
+    ObjectTrackingFrame,
+    OperatorMetadata,
+    Polyline,
+    SequentialSegment,
     TextClassificationAnnotation,
-)
-from google.cloud.datalabeling_v1beta1.types.annotation import (
     TextEntityExtractionAnnotation,
-)
-from google.cloud.datalabeling_v1beta1.types.annotation import TimeSegment
-from google.cloud.datalabeling_v1beta1.types.annotation import Vertex
-from google.cloud.datalabeling_v1beta1.types.annotation import (
+    TimeSegment,
+    Vertex,
     VideoClassificationAnnotation,
-)
-from google.cloud.datalabeling_v1beta1.types.annotation import VideoEventAnnotation
-from google.cloud.datalabeling_v1beta1.types.annotation import (
+    VideoEventAnnotation,
     VideoObjectTrackingAnnotation,
 )
-from google.cloud.datalabeling_v1beta1.types.annotation import AnnotationSentiment
-from google.cloud.datalabeling_v1beta1.types.annotation import AnnotationSource
-from google.cloud.datalabeling_v1beta1.types.annotation import AnnotationType
-from google.cloud.datalabeling_v1beta1.types.annotation_spec_set import AnnotationSpec
 from google.cloud.datalabeling_v1beta1.types.annotation_spec_set import (
+    AnnotationSpec,
     AnnotationSpecSet,
 )
 from google.cloud.datalabeling_v1beta1.types.data_labeling_service import (
     CreateAnnotationSpecSetRequest,
-)
-from google.cloud.datalabeling_v1beta1.types.data_labeling_service import (
     CreateDatasetRequest,
-)
-from google.cloud.datalabeling_v1beta1.types.data_labeling_service import (
     CreateEvaluationJobRequest,
-)
-from google.cloud.datalabeling_v1beta1.types.data_labeling_service import (
     CreateInstructionRequest,
-)
-from google.cloud.datalabeling_v1beta1.types.data_labeling_service import (
     DeleteAnnotatedDatasetRequest,
-)
-from google.cloud.datalabeling_v1beta1.types.data_labeling_service import (
     DeleteAnnotationSpecSetRequest,
-)
-from google.cloud.datalabeling_v1beta1.types.data_labeling_service import (
     DeleteDatasetRequest,
-)
-from google.cloud.datalabeling_v1beta1.types.data_labeling_service import (
     DeleteEvaluationJobRequest,
-)
-from google.cloud.datalabeling_v1beta1.types.data_labeling_service import (
     DeleteInstructionRequest,
-)
-from google.cloud.datalabeling_v1beta1.types.data_labeling_service import (
     ExportDataRequest,
-)
-from google.cloud.datalabeling_v1beta1.types.data_labeling_service import (
     GetAnnotatedDatasetRequest,
-)
-from google.cloud.datalabeling_v1beta1.types.data_labeling_service import (
     GetAnnotationSpecSetRequest,
-)
-from google.cloud.datalabeling_v1beta1.types.data_labeling_service import (
     GetDataItemRequest,
-)
-from google.cloud.datalabeling_v1beta1.types.data_labeling_service import (
     GetDatasetRequest,
-)
-from google.cloud.datalabeling_v1beta1.types.data_labeling_service import (
     GetEvaluationJobRequest,
-)
-from google.cloud.datalabeling_v1beta1.types.data_labeling_service import (
     GetEvaluationRequest,
-)
-from google.cloud.datalabeling_v1beta1.types.data_labeling_service import (
     GetExampleRequest,
-)
-from google.cloud.datalabeling_v1beta1.types.data_labeling_service import (
     GetInstructionRequest,
-)
-from google.cloud.datalabeling_v1beta1.types.data_labeling_service import (
     ImportDataRequest,
-)
-from google.cloud.datalabeling_v1beta1.types.data_labeling_service import (
     LabelImageRequest,
-)
-from google.cloud.datalabeling_v1beta1.types.data_labeling_service import (
     LabelTextRequest,
-)
-from google.cloud.datalabeling_v1beta1.types.data_labeling_service import (
     LabelVideoRequest,
-)
-from google.cloud.datalabeling_v1beta1.types.data_labeling_service import (
     ListAnnotatedDatasetsRequest,
-)
-from google.cloud.datalabeling_v1beta1.types.data_labeling_service import (
     ListAnnotatedDatasetsResponse,
-)
-from google.cloud.datalabeling_v1beta1.types.data_labeling_service import (
     ListAnnotationSpecSetsRequest,
-)
-from google.cloud.datalabeling_v1beta1.types.data_labeling_service import (
     ListAnnotationSpecSetsResponse,
-)
-from google.cloud.datalabeling_v1beta1.types.data_labeling_service import (
     ListDataItemsRequest,
-)
-from google.cloud.datalabeling_v1beta1.types.data_labeling_service import (
     ListDataItemsResponse,
-)
-from google.cloud.datalabeling_v1beta1.types.data_labeling_service import (
     ListDatasetsRequest,
-)
-from google.cloud.datalabeling_v1beta1.types.data_labeling_service import (
     ListDatasetsResponse,
-)
-from google.cloud.datalabeling_v1beta1.types.data_labeling_service import (
     ListEvaluationJobsRequest,
-)
-from google.cloud.datalabeling_v1beta1.types.data_labeling_service import (
     ListEvaluationJobsResponse,
-)
-from google.cloud.datalabeling_v1beta1.types.data_labeling_service import (
     ListExamplesRequest,
-)
-from google.cloud.datalabeling_v1beta1.types.data_labeling_service import (
     ListExamplesResponse,
-)
-from google.cloud.datalabeling_v1beta1.types.data_labeling_service import (
     ListInstructionsRequest,
-)
-from google.cloud.datalabeling_v1beta1.types.data_labeling_service import (
     ListInstructionsResponse,
-)
-from google.cloud.datalabeling_v1beta1.types.data_labeling_service import (
     PauseEvaluationJobRequest,
-)
-from google.cloud.datalabeling_v1beta1.types.data_labeling_service import (
     ResumeEvaluationJobRequest,
-)
-from google.cloud.datalabeling_v1beta1.types.data_labeling_service import (
     SearchEvaluationsRequest,
-)
-from google.cloud.datalabeling_v1beta1.types.data_labeling_service import (
     SearchEvaluationsResponse,
-)
-from google.cloud.datalabeling_v1beta1.types.data_labeling_service import (
     SearchExampleComparisonsRequest,
-)
-from google.cloud.datalabeling_v1beta1.types.data_labeling_service import (
     SearchExampleComparisonsResponse,
-)
-from google.cloud.datalabeling_v1beta1.types.data_labeling_service import (
     UpdateEvaluationJobRequest,
 )
-from google.cloud.datalabeling_v1beta1.types.data_payloads import ImagePayload
-from google.cloud.datalabeling_v1beta1.types.data_payloads import TextPayload
-from google.cloud.datalabeling_v1beta1.types.data_payloads import VideoPayload
-from google.cloud.datalabeling_v1beta1.types.data_payloads import VideoThumbnail
-from google.cloud.datalabeling_v1beta1.types.dataset import AnnotatedDataset
-from google.cloud.datalabeling_v1beta1.types.dataset import AnnotatedDatasetMetadata
-from google.cloud.datalabeling_v1beta1.types.dataset import BigQuerySource
-from google.cloud.datalabeling_v1beta1.types.dataset import ClassificationMetadata
-from google.cloud.datalabeling_v1beta1.types.dataset import DataItem
-from google.cloud.datalabeling_v1beta1.types.dataset import Dataset
-from google.cloud.datalabeling_v1beta1.types.dataset import Example
-from google.cloud.datalabeling_v1beta1.types.dataset import GcsDestination
-from google.cloud.datalabeling_v1beta1.types.dataset import GcsFolderDestination
-from google.cloud.datalabeling_v1beta1.types.dataset import GcsSource
-from google.cloud.datalabeling_v1beta1.types.dataset import InputConfig
-from google.cloud.datalabeling_v1beta1.types.dataset import LabelStats
-from google.cloud.datalabeling_v1beta1.types.dataset import OutputConfig
-from google.cloud.datalabeling_v1beta1.types.dataset import TextMetadata
-from google.cloud.datalabeling_v1beta1.types.dataset import DataType
+from google.cloud.datalabeling_v1beta1.types.data_payloads import (
+    ImagePayload,
+    TextPayload,
+    VideoPayload,
+    VideoThumbnail,
+)
+from google.cloud.datalabeling_v1beta1.types.dataset import (
+    AnnotatedDataset,
+    AnnotatedDatasetMetadata,
+    BigQuerySource,
+    ClassificationMetadata,
+    DataItem,
+    Dataset,
+    DataType,
+    Example,
+    GcsDestination,
+    GcsFolderDestination,
+    GcsSource,
+    InputConfig,
+    LabelStats,
+    OutputConfig,
+    TextMetadata,
+)
 from google.cloud.datalabeling_v1beta1.types.evaluation import (
     BoundingBoxEvaluationOptions,
+    ClassificationMetrics,
+    ConfusionMatrix,
+    Evaluation,
+    EvaluationConfig,
+    EvaluationMetrics,
+    ObjectDetectionMetrics,
+    PrCurve,
 )
-from google.cloud.datalabeling_v1beta1.types.evaluation import ClassificationMetrics
-from google.cloud.datalabeling_v1beta1.types.evaluation import ConfusionMatrix
-from google.cloud.datalabeling_v1beta1.types.evaluation import Evaluation
-from google.cloud.datalabeling_v1beta1.types.evaluation import EvaluationConfig
-from google.cloud.datalabeling_v1beta1.types.evaluation import EvaluationMetrics
-from google.cloud.datalabeling_v1beta1.types.evaluation import ObjectDetectionMetrics
-from google.cloud.datalabeling_v1beta1.types.evaluation import PrCurve
-from google.cloud.datalabeling_v1beta1.types.evaluation_job import Attempt
-from google.cloud.datalabeling_v1beta1.types.evaluation_job import EvaluationJob
 from google.cloud.datalabeling_v1beta1.types.evaluation_job import (
+    Attempt,
+    EvaluationJob,
     EvaluationJobAlertConfig,
+    EvaluationJobConfig,
 )
-from google.cloud.datalabeling_v1beta1.types.evaluation_job import EvaluationJobConfig
 from google.cloud.datalabeling_v1beta1.types.human_annotation_config import (
     BoundingPolyConfig,
-)
-from google.cloud.datalabeling_v1beta1.types.human_annotation_config import EventConfig
-from google.cloud.datalabeling_v1beta1.types.human_annotation_config import (
+    EventConfig,
     HumanAnnotationConfig,
-)
-from google.cloud.datalabeling_v1beta1.types.human_annotation_config import (
     ImageClassificationConfig,
-)
-from google.cloud.datalabeling_v1beta1.types.human_annotation_config import (
     ObjectDetectionConfig,
-)
-from google.cloud.datalabeling_v1beta1.types.human_annotation_config import (
     ObjectTrackingConfig,
-)
-from google.cloud.datalabeling_v1beta1.types.human_annotation_config import (
     PolylineConfig,
-)
-from google.cloud.datalabeling_v1beta1.types.human_annotation_config import (
     SegmentationConfig,
-)
-from google.cloud.datalabeling_v1beta1.types.human_annotation_config import (
     SentimentConfig,
-)
-from google.cloud.datalabeling_v1beta1.types.human_annotation_config import (
+    StringAggregationType,
     TextClassificationConfig,
-)
-from google.cloud.datalabeling_v1beta1.types.human_annotation_config import (
     TextEntityExtractionConfig,
-)
-from google.cloud.datalabeling_v1beta1.types.human_annotation_config import (
     VideoClassificationConfig,
 )
-from google.cloud.datalabeling_v1beta1.types.human_annotation_config import (
-    StringAggregationType,
+from google.cloud.datalabeling_v1beta1.types.instruction import (
+    CsvInstruction,
+    Instruction,
+    PdfInstruction,
 )
-from google.cloud.datalabeling_v1beta1.types.instruction import CsvInstruction
-from google.cloud.datalabeling_v1beta1.types.instruction import Instruction
-from google.cloud.datalabeling_v1beta1.types.instruction import PdfInstruction
-from google.cloud.datalabeling_v1beta1.types.operations import CreateInstructionMetadata
 from google.cloud.datalabeling_v1beta1.types.operations import (
+    CreateInstructionMetadata,
     ExportDataOperationMetadata,
-)
-from google.cloud.datalabeling_v1beta1.types.operations import (
     ExportDataOperationResponse,
-)
-from google.cloud.datalabeling_v1beta1.types.operations import (
     ImportDataOperationMetadata,
-)
-from google.cloud.datalabeling_v1beta1.types.operations import (
     ImportDataOperationResponse,
-)
-from google.cloud.datalabeling_v1beta1.types.operations import (
     LabelImageBoundingBoxOperationMetadata,
-)
-from google.cloud.datalabeling_v1beta1.types.operations import (
     LabelImageBoundingPolyOperationMetadata,
-)
-from google.cloud.datalabeling_v1beta1.types.operations import (
     LabelImageClassificationOperationMetadata,
-)
-from google.cloud.datalabeling_v1beta1.types.operations import (
     LabelImageOrientedBoundingBoxOperationMetadata,
-)
-from google.cloud.datalabeling_v1beta1.types.operations import (
     LabelImagePolylineOperationMetadata,
-)
-from google.cloud.datalabeling_v1beta1.types.operations import (
     LabelImageSegmentationOperationMetadata,
-)
-from google.cloud.datalabeling_v1beta1.types.operations import LabelOperationMetadata
-from google.cloud.datalabeling_v1beta1.types.operations import (
+    LabelOperationMetadata,
     LabelTextClassificationOperationMetadata,
-)
-from google.cloud.datalabeling_v1beta1.types.operations import (
     LabelTextEntityExtractionOperationMetadata,
-)
-from google.cloud.datalabeling_v1beta1.types.operations import (
     LabelVideoClassificationOperationMetadata,
-)
-from google.cloud.datalabeling_v1beta1.types.operations import (
     LabelVideoEventOperationMetadata,
-)
-from google.cloud.datalabeling_v1beta1.types.operations import (
     LabelVideoObjectDetectionOperationMetadata,
-)
-from google.cloud.datalabeling_v1beta1.types.operations import (
     LabelVideoObjectTrackingOperationMetadata,
 )
 

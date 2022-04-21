@@ -13,16 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.protobuf import timestamp_pb2  # type: ignore
+from google.rpc import status_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.cloud.datalabeling_v1beta1.types import dataset
-from google.cloud.datalabeling_v1beta1.types import evaluation
 from google.cloud.datalabeling_v1beta1.types import (
     human_annotation_config as gcd_human_annotation_config,
 )
-from google.protobuf import timestamp_pb2  # type: ignore
-from google.rpc import status_pb2  # type: ignore
-
+from google.cloud.datalabeling_v1beta1.types import dataset, evaluation
 
 __protobuf__ = proto.module(
     package="google.cloud.datalabeling.v1beta1",

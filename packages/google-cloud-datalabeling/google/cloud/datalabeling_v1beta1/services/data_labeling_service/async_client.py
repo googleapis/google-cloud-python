@@ -17,14 +17,14 @@ from collections import OrderedDict
 import functools
 import re
 from typing import Dict, Mapping, Optional, Sequence, Tuple, Type, Union
-import pkg_resources
 
-from google.api_core.client_options import ClientOptions
 from google.api_core import exceptions as core_exceptions
 from google.api_core import gapic_v1
 from google.api_core import retry as retries
+from google.api_core.client_options import ClientOptions
 from google.auth import credentials as ga_credentials  # type: ignore
 from google.oauth2 import service_account  # type: ignore
+import pkg_resources
 
 try:
     OptionalRetry = Union[retries.Retry, gapic_v1.method._MethodDefault]
@@ -33,28 +33,29 @@ except AttributeError:  # pragma: NO COVER
 
 from google.api_core import operation  # type: ignore
 from google.api_core import operation_async  # type: ignore
+from google.protobuf import field_mask_pb2  # type: ignore
+from google.protobuf import timestamp_pb2  # type: ignore
+
 from google.cloud.datalabeling_v1beta1.services.data_labeling_service import pagers
-from google.cloud.datalabeling_v1beta1.types import annotation
-from google.cloud.datalabeling_v1beta1.types import annotation_spec_set
+from google.cloud.datalabeling_v1beta1.types import data_labeling_service, data_payloads
 from google.cloud.datalabeling_v1beta1.types import (
     annotation_spec_set as gcd_annotation_spec_set,
 )
-from google.cloud.datalabeling_v1beta1.types import data_labeling_service
-from google.cloud.datalabeling_v1beta1.types import data_payloads
+from google.cloud.datalabeling_v1beta1.types import evaluation_job as gcd_evaluation_job
+from google.cloud.datalabeling_v1beta1.types import instruction as gcd_instruction
+from google.cloud.datalabeling_v1beta1.types import annotation
+from google.cloud.datalabeling_v1beta1.types import annotation_spec_set
 from google.cloud.datalabeling_v1beta1.types import dataset
 from google.cloud.datalabeling_v1beta1.types import dataset as gcd_dataset
 from google.cloud.datalabeling_v1beta1.types import evaluation
 from google.cloud.datalabeling_v1beta1.types import evaluation_job
-from google.cloud.datalabeling_v1beta1.types import evaluation_job as gcd_evaluation_job
 from google.cloud.datalabeling_v1beta1.types import human_annotation_config
 from google.cloud.datalabeling_v1beta1.types import instruction
-from google.cloud.datalabeling_v1beta1.types import instruction as gcd_instruction
 from google.cloud.datalabeling_v1beta1.types import operations
-from google.protobuf import field_mask_pb2  # type: ignore
-from google.protobuf import timestamp_pb2  # type: ignore
-from .transports.base import DataLabelingServiceTransport, DEFAULT_CLIENT_INFO
-from .transports.grpc_asyncio import DataLabelingServiceGrpcAsyncIOTransport
+
 from .client import DataLabelingServiceClient
+from .transports.base import DEFAULT_CLIENT_INFO, DataLabelingServiceTransport
+from .transports.grpc_asyncio import DataLabelingServiceGrpcAsyncIOTransport
 
 
 class DataLabelingServiceAsyncClient:

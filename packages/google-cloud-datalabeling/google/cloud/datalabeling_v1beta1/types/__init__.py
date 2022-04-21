@@ -16,6 +16,9 @@
 from .annotation import (
     Annotation,
     AnnotationMetadata,
+    AnnotationSentiment,
+    AnnotationSource,
+    AnnotationType,
     AnnotationValue,
     BoundingPoly,
     ImageBoundingPolyAnnotation,
@@ -36,14 +39,8 @@ from .annotation import (
     VideoClassificationAnnotation,
     VideoEventAnnotation,
     VideoObjectTrackingAnnotation,
-    AnnotationSentiment,
-    AnnotationSource,
-    AnnotationType,
 )
-from .annotation_spec_set import (
-    AnnotationSpec,
-    AnnotationSpecSet,
-)
+from .annotation_spec_set import AnnotationSpec, AnnotationSpecSet
 from .data_labeling_service import (
     CreateAnnotationSpecSetRequest,
     CreateDatasetRequest,
@@ -89,12 +86,7 @@ from .data_labeling_service import (
     SearchExampleComparisonsResponse,
     UpdateEvaluationJobRequest,
 )
-from .data_payloads import (
-    ImagePayload,
-    TextPayload,
-    VideoPayload,
-    VideoThumbnail,
-)
+from .data_payloads import ImagePayload, TextPayload, VideoPayload, VideoThumbnail
 from .dataset import (
     AnnotatedDataset,
     AnnotatedDatasetMetadata,
@@ -102,6 +94,7 @@ from .dataset import (
     ClassificationMetadata,
     DataItem,
     Dataset,
+    DataType,
     Example,
     GcsDestination,
     GcsFolderDestination,
@@ -110,7 +103,6 @@ from .dataset import (
     LabelStats,
     OutputConfig,
     TextMetadata,
-    DataType,
 )
 from .evaluation import (
     BoundingBoxEvaluationOptions,
@@ -138,16 +130,12 @@ from .human_annotation_config import (
     PolylineConfig,
     SegmentationConfig,
     SentimentConfig,
+    StringAggregationType,
     TextClassificationConfig,
     TextEntityExtractionConfig,
     VideoClassificationConfig,
-    StringAggregationType,
 )
-from .instruction import (
-    CsvInstruction,
-    Instruction,
-    PdfInstruction,
-)
+from .instruction import CsvInstruction, Instruction, PdfInstruction
 from .operations import (
     CreateInstructionMetadata,
     ExportDataOperationMetadata,

@@ -13,18 +13,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.protobuf import field_mask_pb2  # type: ignore
 import proto  # type: ignore
 
 from google.cloud.datalabeling_v1beta1.types import (
     annotation_spec_set as gcd_annotation_spec_set,
 )
+from google.cloud.datalabeling_v1beta1.types import evaluation_job as gcd_evaluation_job
+from google.cloud.datalabeling_v1beta1.types import instruction as gcd_instruction
 from google.cloud.datalabeling_v1beta1.types import dataset as gcd_dataset
 from google.cloud.datalabeling_v1beta1.types import evaluation
-from google.cloud.datalabeling_v1beta1.types import evaluation_job as gcd_evaluation_job
 from google.cloud.datalabeling_v1beta1.types import human_annotation_config
-from google.cloud.datalabeling_v1beta1.types import instruction as gcd_instruction
-from google.protobuf import field_mask_pb2  # type: ignore
-
 
 __protobuf__ = proto.module(
     package="google.cloud.datalabeling.v1beta1",

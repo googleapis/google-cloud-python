@@ -18,18 +18,20 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Callable,
+    Iterator,
+    Optional,
     Sequence,
     Tuple,
-    Optional,
-    Iterator,
 )
 
-from google.cloud.datalabeling_v1beta1.types import annotation_spec_set
-from google.cloud.datalabeling_v1beta1.types import data_labeling_service
-from google.cloud.datalabeling_v1beta1.types import dataset
-from google.cloud.datalabeling_v1beta1.types import evaluation
-from google.cloud.datalabeling_v1beta1.types import evaluation_job
-from google.cloud.datalabeling_v1beta1.types import instruction
+from google.cloud.datalabeling_v1beta1.types import (
+    annotation_spec_set,
+    data_labeling_service,
+    dataset,
+    evaluation,
+    evaluation_job,
+    instruction,
+)
 
 
 class ListDatasetsPager:

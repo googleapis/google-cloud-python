@@ -20,7 +20,6 @@ from .base import DataLabelingServiceTransport
 from .grpc import DataLabelingServiceGrpcTransport
 from .grpc_asyncio import DataLabelingServiceGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = (
     OrderedDict()
