@@ -14,20 +14,20 @@
 # limitations under the License.
 #
 
-from .services.text_to_speech import TextToSpeechClient
-from .services.text_to_speech import TextToSpeechAsyncClient
-
-from .types.cloud_tts import AudioConfig
-from .types.cloud_tts import CustomVoiceParams
-from .types.cloud_tts import ListVoicesRequest
-from .types.cloud_tts import ListVoicesResponse
-from .types.cloud_tts import SynthesisInput
-from .types.cloud_tts import SynthesizeSpeechRequest
-from .types.cloud_tts import SynthesizeSpeechResponse
-from .types.cloud_tts import Voice
-from .types.cloud_tts import VoiceSelectionParams
-from .types.cloud_tts import AudioEncoding
-from .types.cloud_tts import SsmlVoiceGender
+from .services.text_to_speech import TextToSpeechAsyncClient, TextToSpeechClient
+from .types.cloud_tts import (
+    AudioConfig,
+    AudioEncoding,
+    CustomVoiceParams,
+    ListVoicesRequest,
+    ListVoicesResponse,
+    SsmlVoiceGender,
+    SynthesisInput,
+    SynthesizeSpeechRequest,
+    SynthesizeSpeechResponse,
+    Voice,
+    VoiceSelectionParams,
+)
 
 __all__ = (
     "TextToSpeechAsyncClient",

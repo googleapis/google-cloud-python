@@ -13,32 +13,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-import os
-import mock
-
-import grpc
-from grpc.experimental import aio
 import math
-import pytest
-from proto.marshal.rules.dates import DurationRule, TimestampRule
+import os
 
-
+from google.api_core import gapic_v1, grpc_helpers, grpc_helpers_async, path_template
 from google.api_core import client_options
 from google.api_core import exceptions as core_exceptions
-from google.api_core import gapic_v1
-from google.api_core import grpc_helpers
-from google.api_core import grpc_helpers_async
-from google.api_core import path_template
+import google.auth
 from google.auth import credentials as ga_credentials
 from google.auth.exceptions import MutualTLSChannelError
+from google.oauth2 import service_account
+import grpc
+from grpc.experimental import aio
+import mock
+from proto.marshal.rules.dates import DurationRule, TimestampRule
+import pytest
+
 from google.cloud.texttospeech_v1beta1.services.text_to_speech import (
     TextToSpeechAsyncClient,
+    TextToSpeechClient,
+    transports,
 )
-from google.cloud.texttospeech_v1beta1.services.text_to_speech import TextToSpeechClient
-from google.cloud.texttospeech_v1beta1.services.text_to_speech import transports
 from google.cloud.texttospeech_v1beta1.types import cloud_tts
-from google.oauth2 import service_account
-import google.auth
 
 
 def client_cert_source_callback():

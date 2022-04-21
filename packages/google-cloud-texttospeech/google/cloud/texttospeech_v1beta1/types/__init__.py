@@ -15,17 +15,17 @@
 #
 from .cloud_tts import (
     AudioConfig,
+    AudioEncoding,
     CustomVoiceParams,
     ListVoicesRequest,
     ListVoicesResponse,
+    SsmlVoiceGender,
     SynthesisInput,
     SynthesizeSpeechRequest,
     SynthesizeSpeechResponse,
     Timepoint,
     Voice,
     VoiceSelectionParams,
-    AudioEncoding,
-    SsmlVoiceGender,
 )
 
 __all__ = (

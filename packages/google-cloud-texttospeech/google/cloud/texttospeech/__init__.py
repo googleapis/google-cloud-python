@@ -14,24 +14,25 @@
 # limitations under the License.
 #
 
-from google.cloud.texttospeech_v1.services.text_to_speech.client import (
-    TextToSpeechClient,
-)
 from google.cloud.texttospeech_v1.services.text_to_speech.async_client import (
     TextToSpeechAsyncClient,
 )
-
-from google.cloud.texttospeech_v1.types.cloud_tts import AudioConfig
-from google.cloud.texttospeech_v1.types.cloud_tts import CustomVoiceParams
-from google.cloud.texttospeech_v1.types.cloud_tts import ListVoicesRequest
-from google.cloud.texttospeech_v1.types.cloud_tts import ListVoicesResponse
-from google.cloud.texttospeech_v1.types.cloud_tts import SynthesisInput
-from google.cloud.texttospeech_v1.types.cloud_tts import SynthesizeSpeechRequest
-from google.cloud.texttospeech_v1.types.cloud_tts import SynthesizeSpeechResponse
-from google.cloud.texttospeech_v1.types.cloud_tts import Voice
-from google.cloud.texttospeech_v1.types.cloud_tts import VoiceSelectionParams
-from google.cloud.texttospeech_v1.types.cloud_tts import AudioEncoding
-from google.cloud.texttospeech_v1.types.cloud_tts import SsmlVoiceGender
+from google.cloud.texttospeech_v1.services.text_to_speech.client import (
+    TextToSpeechClient,
+)
+from google.cloud.texttospeech_v1.types.cloud_tts import (
+    AudioConfig,
+    AudioEncoding,
+    CustomVoiceParams,
+    ListVoicesRequest,
+    ListVoicesResponse,
+    SsmlVoiceGender,
+    SynthesisInput,
+    SynthesizeSpeechRequest,
+    SynthesizeSpeechResponse,
+    Voice,
+    VoiceSelectionParams,
+)
 
 __all__ = (
     "TextToSpeechClient",
