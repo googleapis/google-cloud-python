@@ -17,11 +17,11 @@ from .budget_model import (
     AllUpdatesRule,
     Budget,
     BudgetAmount,
+    CalendarPeriod,
     CustomPeriod,
     Filter,
     LastPeriodAmount,
     ThresholdRule,
-    CalendarPeriod,
 )
 from .budget_service import (
     CreateBudgetRequest,

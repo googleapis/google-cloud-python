@@ -18,14 +18,13 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Callable,
+    Iterator,
+    Optional,
     Sequence,
     Tuple,
-    Optional,
-    Iterator,
 )
 
-from google.cloud.billing.budgets_v1beta1.types import budget_model
-from google.cloud.billing.budgets_v1beta1.types import budget_service
+from google.cloud.billing.budgets_v1beta1.types import budget_model, budget_service
 
 
 class ListBudgetsPager:

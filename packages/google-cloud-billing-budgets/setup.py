@@ -19,7 +19,6 @@ import os
 
 import setuptools
 
-
 name = "google-cloud-billing-budgets"
 description = "Cloud Billing Budget API API client library"
 version = "1.6.1"

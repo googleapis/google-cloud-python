@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import BudgetServiceClient
 from .async_client import BudgetServiceAsyncClient
+from .client import BudgetServiceClient
 
 __all__ = (
     "BudgetServiceClient",

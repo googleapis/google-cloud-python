@@ -16,12 +16,12 @@
 from .budget_model import (
     Budget,
     BudgetAmount,
+    CalendarPeriod,
     CustomPeriod,
     Filter,
     LastPeriodAmount,
     NotificationsRule,
     ThresholdRule,
-    CalendarPeriod,
 )
 from .budget_service import (
     CreateBudgetRequest,
