@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.2.0](https://github.com/googleapis/python-artifact-registry/compare/v1.1.2...v1.2.0) (2022-04-21)
+
+
+### Features
+
+* AuditConfig for IAM v1 ([c22893b](https://github.com/googleapis/python-artifact-registry/commit/c22893b8e671fea8416ff1e6a4f23aa03e201e74))
+* promote v1beta2 features to v1 ([#138](https://github.com/googleapis/python-artifact-registry/issues/138)) ([842c107](https://github.com/googleapis/python-artifact-registry/commit/842c107cb6f6705c3228495ce43653414801af9f))
+
+
+### Bug Fixes
+
+* **deps:** require grpc-google-iam-v1 >=0.12.4 ([c22893b](https://github.com/googleapis/python-artifact-registry/commit/c22893b8e671fea8416ff1e6a4f23aa03e201e74))
+
 ### [1.1.2](https://github.com/googleapis/python-artifact-registry/compare/v1.1.1...v1.1.2) (2022-03-05)
 
 
