@@ -20,7 +20,6 @@ from .base import ContactCenterInsightsTransport
 from .grpc import ContactCenterInsightsGrpcTransport
 from .grpc_asyncio import ContactCenterInsightsGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = (
     OrderedDict()

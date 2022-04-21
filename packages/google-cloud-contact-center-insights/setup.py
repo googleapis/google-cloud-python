@@ -19,7 +19,6 @@ import os
 
 import setuptools
 
-
 name = "google-cloud-contact-center-insights"
 description = "Contact Center AI Insights API"
 version = "1.3.1"

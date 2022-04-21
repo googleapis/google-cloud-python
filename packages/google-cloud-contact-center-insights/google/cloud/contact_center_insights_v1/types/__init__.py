@@ -18,6 +18,7 @@ from .contact_center_insights import (
     CalculateIssueModelStatsResponse,
     CalculateStatsRequest,
     CalculateStatsResponse,
+    ConversationView,
     CreateAnalysisOperationMetadata,
     CreateAnalysisRequest,
     CreateConversationRequest,
@@ -65,7 +66,6 @@ from .contact_center_insights import (
     UpdatePhraseMatcherRequest,
     UpdateSettingsRequest,
     UpdateViewRequest,
-    ConversationView,
 )
 from .resources import (
     Analysis,

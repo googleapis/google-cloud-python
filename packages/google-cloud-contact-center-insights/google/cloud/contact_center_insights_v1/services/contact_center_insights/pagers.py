@@ -18,14 +18,16 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Callable,
+    Iterator,
+    Optional,
     Sequence,
     Tuple,
-    Optional,
-    Iterator,
 )
 
-from google.cloud.contact_center_insights_v1.types import contact_center_insights
-from google.cloud.contact_center_insights_v1.types import resources
+from google.cloud.contact_center_insights_v1.types import (
+    contact_center_insights,
+    resources,
+)
 
 
 class ListConversationsPager:
