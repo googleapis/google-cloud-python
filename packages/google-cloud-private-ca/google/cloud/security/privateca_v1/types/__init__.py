@@ -26,13 +26,13 @@ from .resources import (
     KeyUsage,
     ObjectId,
     PublicKey,
+    RevocationReason,
     Subject,
     SubjectAltNames,
+    SubjectRequestMode,
     SubordinateConfig,
     X509Extension,
     X509Parameters,
-    RevocationReason,
-    SubjectRequestMode,
 )
 from .service import (
     ActivateCertificateAuthorityRequest,

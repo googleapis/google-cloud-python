@@ -14,115 +14,70 @@
 # limitations under the License.
 #
 
-from google.cloud.security.privateca_v1.services.certificate_authority_service.client import (
-    CertificateAuthorityServiceClient,
-)
 from google.cloud.security.privateca_v1.services.certificate_authority_service.async_client import (
     CertificateAuthorityServiceAsyncClient,
 )
-
-from google.cloud.security.privateca_v1.types.resources import CaPool
-from google.cloud.security.privateca_v1.types.resources import Certificate
-from google.cloud.security.privateca_v1.types.resources import CertificateAuthority
-from google.cloud.security.privateca_v1.types.resources import CertificateConfig
-from google.cloud.security.privateca_v1.types.resources import CertificateDescription
+from google.cloud.security.privateca_v1.services.certificate_authority_service.client import (
+    CertificateAuthorityServiceClient,
+)
 from google.cloud.security.privateca_v1.types.resources import (
+    CaPool,
+    Certificate,
+    CertificateAuthority,
+    CertificateConfig,
+    CertificateDescription,
     CertificateExtensionConstraints,
-)
-from google.cloud.security.privateca_v1.types.resources import (
     CertificateIdentityConstraints,
+    CertificateRevocationList,
+    CertificateTemplate,
+    KeyUsage,
+    ObjectId,
+    PublicKey,
+    RevocationReason,
+    Subject,
+    SubjectAltNames,
+    SubjectRequestMode,
+    SubordinateConfig,
+    X509Extension,
+    X509Parameters,
 )
-from google.cloud.security.privateca_v1.types.resources import CertificateRevocationList
-from google.cloud.security.privateca_v1.types.resources import CertificateTemplate
-from google.cloud.security.privateca_v1.types.resources import KeyUsage
-from google.cloud.security.privateca_v1.types.resources import ObjectId
-from google.cloud.security.privateca_v1.types.resources import PublicKey
-from google.cloud.security.privateca_v1.types.resources import Subject
-from google.cloud.security.privateca_v1.types.resources import SubjectAltNames
-from google.cloud.security.privateca_v1.types.resources import SubordinateConfig
-from google.cloud.security.privateca_v1.types.resources import X509Extension
-from google.cloud.security.privateca_v1.types.resources import X509Parameters
-from google.cloud.security.privateca_v1.types.resources import RevocationReason
-from google.cloud.security.privateca_v1.types.resources import SubjectRequestMode
 from google.cloud.security.privateca_v1.types.service import (
     ActivateCertificateAuthorityRequest,
-)
-from google.cloud.security.privateca_v1.types.service import CreateCaPoolRequest
-from google.cloud.security.privateca_v1.types.service import (
+    CreateCaPoolRequest,
     CreateCertificateAuthorityRequest,
-)
-from google.cloud.security.privateca_v1.types.service import CreateCertificateRequest
-from google.cloud.security.privateca_v1.types.service import (
+    CreateCertificateRequest,
     CreateCertificateTemplateRequest,
-)
-from google.cloud.security.privateca_v1.types.service import DeleteCaPoolRequest
-from google.cloud.security.privateca_v1.types.service import (
+    DeleteCaPoolRequest,
     DeleteCertificateAuthorityRequest,
-)
-from google.cloud.security.privateca_v1.types.service import (
     DeleteCertificateTemplateRequest,
-)
-from google.cloud.security.privateca_v1.types.service import (
     DisableCertificateAuthorityRequest,
-)
-from google.cloud.security.privateca_v1.types.service import (
     EnableCertificateAuthorityRequest,
-)
-from google.cloud.security.privateca_v1.types.service import FetchCaCertsRequest
-from google.cloud.security.privateca_v1.types.service import FetchCaCertsResponse
-from google.cloud.security.privateca_v1.types.service import (
+    FetchCaCertsRequest,
+    FetchCaCertsResponse,
     FetchCertificateAuthorityCsrRequest,
-)
-from google.cloud.security.privateca_v1.types.service import (
     FetchCertificateAuthorityCsrResponse,
-)
-from google.cloud.security.privateca_v1.types.service import GetCaPoolRequest
-from google.cloud.security.privateca_v1.types.service import (
+    GetCaPoolRequest,
     GetCertificateAuthorityRequest,
-)
-from google.cloud.security.privateca_v1.types.service import GetCertificateRequest
-from google.cloud.security.privateca_v1.types.service import (
+    GetCertificateRequest,
     GetCertificateRevocationListRequest,
-)
-from google.cloud.security.privateca_v1.types.service import (
     GetCertificateTemplateRequest,
-)
-from google.cloud.security.privateca_v1.types.service import ListCaPoolsRequest
-from google.cloud.security.privateca_v1.types.service import ListCaPoolsResponse
-from google.cloud.security.privateca_v1.types.service import (
+    ListCaPoolsRequest,
+    ListCaPoolsResponse,
     ListCertificateAuthoritiesRequest,
-)
-from google.cloud.security.privateca_v1.types.service import (
     ListCertificateAuthoritiesResponse,
-)
-from google.cloud.security.privateca_v1.types.service import (
     ListCertificateRevocationListsRequest,
-)
-from google.cloud.security.privateca_v1.types.service import (
     ListCertificateRevocationListsResponse,
-)
-from google.cloud.security.privateca_v1.types.service import ListCertificatesRequest
-from google.cloud.security.privateca_v1.types.service import ListCertificatesResponse
-from google.cloud.security.privateca_v1.types.service import (
+    ListCertificatesRequest,
+    ListCertificatesResponse,
     ListCertificateTemplatesRequest,
-)
-from google.cloud.security.privateca_v1.types.service import (
     ListCertificateTemplatesResponse,
-)
-from google.cloud.security.privateca_v1.types.service import OperationMetadata
-from google.cloud.security.privateca_v1.types.service import RevokeCertificateRequest
-from google.cloud.security.privateca_v1.types.service import (
+    OperationMetadata,
+    RevokeCertificateRequest,
     UndeleteCertificateAuthorityRequest,
-)
-from google.cloud.security.privateca_v1.types.service import UpdateCaPoolRequest
-from google.cloud.security.privateca_v1.types.service import (
+    UpdateCaPoolRequest,
     UpdateCertificateAuthorityRequest,
-)
-from google.cloud.security.privateca_v1.types.service import UpdateCertificateRequest
-from google.cloud.security.privateca_v1.types.service import (
+    UpdateCertificateRequest,
     UpdateCertificateRevocationListRequest,
-)
-from google.cloud.security.privateca_v1.types.service import (
     UpdateCertificateTemplateRequest,
 )
 

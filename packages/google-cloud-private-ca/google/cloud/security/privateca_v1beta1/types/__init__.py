@@ -25,11 +25,11 @@ from .resources import (
     ReusableConfig,
     ReusableConfigValues,
     ReusableConfigWrapper,
+    RevocationReason,
     Subject,
     SubjectAltNames,
     SubordinateConfig,
     X509Extension,
-    RevocationReason,
 )
 from .service import (
     ActivateCertificateAuthorityRequest,

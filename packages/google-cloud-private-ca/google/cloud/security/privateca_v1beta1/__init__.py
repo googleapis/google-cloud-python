@@ -14,53 +14,56 @@
 # limitations under the License.
 #
 
-from .services.certificate_authority_service import CertificateAuthorityServiceClient
 from .services.certificate_authority_service import (
     CertificateAuthorityServiceAsyncClient,
+    CertificateAuthorityServiceClient,
 )
-
-from .types.resources import Certificate
-from .types.resources import CertificateAuthority
-from .types.resources import CertificateConfig
-from .types.resources import CertificateDescription
-from .types.resources import CertificateRevocationList
-from .types.resources import KeyUsage
-from .types.resources import ObjectId
-from .types.resources import PublicKey
-from .types.resources import ReusableConfig
-from .types.resources import ReusableConfigValues
-from .types.resources import ReusableConfigWrapper
-from .types.resources import Subject
-from .types.resources import SubjectAltNames
-from .types.resources import SubordinateConfig
-from .types.resources import X509Extension
-from .types.resources import RevocationReason
-from .types.service import ActivateCertificateAuthorityRequest
-from .types.service import CreateCertificateAuthorityRequest
-from .types.service import CreateCertificateRequest
-from .types.service import DisableCertificateAuthorityRequest
-from .types.service import EnableCertificateAuthorityRequest
-from .types.service import FetchCertificateAuthorityCsrRequest
-from .types.service import FetchCertificateAuthorityCsrResponse
-from .types.service import GetCertificateAuthorityRequest
-from .types.service import GetCertificateRequest
-from .types.service import GetCertificateRevocationListRequest
-from .types.service import GetReusableConfigRequest
-from .types.service import ListCertificateAuthoritiesRequest
-from .types.service import ListCertificateAuthoritiesResponse
-from .types.service import ListCertificateRevocationListsRequest
-from .types.service import ListCertificateRevocationListsResponse
-from .types.service import ListCertificatesRequest
-from .types.service import ListCertificatesResponse
-from .types.service import ListReusableConfigsRequest
-from .types.service import ListReusableConfigsResponse
-from .types.service import OperationMetadata
-from .types.service import RestoreCertificateAuthorityRequest
-from .types.service import RevokeCertificateRequest
-from .types.service import ScheduleDeleteCertificateAuthorityRequest
-from .types.service import UpdateCertificateAuthorityRequest
-from .types.service import UpdateCertificateRequest
-from .types.service import UpdateCertificateRevocationListRequest
+from .types.resources import (
+    Certificate,
+    CertificateAuthority,
+    CertificateConfig,
+    CertificateDescription,
+    CertificateRevocationList,
+    KeyUsage,
+    ObjectId,
+    PublicKey,
+    ReusableConfig,
+    ReusableConfigValues,
+    ReusableConfigWrapper,
+    RevocationReason,
+    Subject,
+    SubjectAltNames,
+    SubordinateConfig,
+    X509Extension,
+)
+from .types.service import (
+    ActivateCertificateAuthorityRequest,
+    CreateCertificateAuthorityRequest,
+    CreateCertificateRequest,
+    DisableCertificateAuthorityRequest,
+    EnableCertificateAuthorityRequest,
+    FetchCertificateAuthorityCsrRequest,
+    FetchCertificateAuthorityCsrResponse,
+    GetCertificateAuthorityRequest,
+    GetCertificateRequest,
+    GetCertificateRevocationListRequest,
+    GetReusableConfigRequest,
+    ListCertificateAuthoritiesRequest,
+    ListCertificateAuthoritiesResponse,
+    ListCertificateRevocationListsRequest,
+    ListCertificateRevocationListsResponse,
+    ListCertificatesRequest,
+    ListCertificatesResponse,
+    ListReusableConfigsRequest,
+    ListReusableConfigsResponse,
+    OperationMetadata,
+    RestoreCertificateAuthorityRequest,
+    RevokeCertificateRequest,
+    ScheduleDeleteCertificateAuthorityRequest,
+    UpdateCertificateAuthorityRequest,
+    UpdateCertificateRequest,
+    UpdateCertificateRevocationListRequest,
+)
 
 __all__ = (
     "CertificateAuthorityServiceAsyncClient",

@@ -20,7 +20,6 @@ from .base import CertificateAuthorityServiceTransport
 from .grpc import CertificateAuthorityServiceGrpcTransport
 from .grpc_asyncio import CertificateAuthorityServiceGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = (
     OrderedDict()
