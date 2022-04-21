@@ -14,36 +14,38 @@
 # limitations under the License.
 #
 
-from .services.service_manager import ServiceManagerClient
-from .services.service_manager import ServiceManagerAsyncClient
-
-from .types.resources import ChangeReport
-from .types.resources import ConfigFile
-from .types.resources import ConfigRef
-from .types.resources import ConfigSource
-from .types.resources import Diagnostic
-from .types.resources import ManagedService
-from .types.resources import OperationMetadata
-from .types.resources import Rollout
-from .types.servicemanager import CreateServiceConfigRequest
-from .types.servicemanager import CreateServiceRequest
-from .types.servicemanager import CreateServiceRolloutRequest
-from .types.servicemanager import DeleteServiceRequest
-from .types.servicemanager import GenerateConfigReportRequest
-from .types.servicemanager import GenerateConfigReportResponse
-from .types.servicemanager import GetServiceConfigRequest
-from .types.servicemanager import GetServiceRequest
-from .types.servicemanager import GetServiceRolloutRequest
-from .types.servicemanager import ListServiceConfigsRequest
-from .types.servicemanager import ListServiceConfigsResponse
-from .types.servicemanager import ListServiceRolloutsRequest
-from .types.servicemanager import ListServiceRolloutsResponse
-from .types.servicemanager import ListServicesRequest
-from .types.servicemanager import ListServicesResponse
-from .types.servicemanager import SubmitConfigSourceRequest
-from .types.servicemanager import SubmitConfigSourceResponse
-from .types.servicemanager import UndeleteServiceRequest
-from .types.servicemanager import UndeleteServiceResponse
+from .services.service_manager import ServiceManagerAsyncClient, ServiceManagerClient
+from .types.resources import (
+    ChangeReport,
+    ConfigFile,
+    ConfigRef,
+    ConfigSource,
+    Diagnostic,
+    ManagedService,
+    OperationMetadata,
+    Rollout,
+)
+from .types.servicemanager import (
+    CreateServiceConfigRequest,
+    CreateServiceRequest,
+    CreateServiceRolloutRequest,
+    DeleteServiceRequest,
+    GenerateConfigReportRequest,
+    GenerateConfigReportResponse,
+    GetServiceConfigRequest,
+    GetServiceRequest,
+    GetServiceRolloutRequest,
+    ListServiceConfigsRequest,
+    ListServiceConfigsResponse,
+    ListServiceRolloutsRequest,
+    ListServiceRolloutsResponse,
+    ListServicesRequest,
+    ListServicesResponse,
+    SubmitConfigSourceRequest,
+    SubmitConfigSourceResponse,
+    UndeleteServiceRequest,
+    UndeleteServiceResponse,
+)
 
 __all__ = (
     "ServiceManagerAsyncClient",

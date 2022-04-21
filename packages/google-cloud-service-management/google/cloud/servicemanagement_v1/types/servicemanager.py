@@ -13,12 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+from google.api import service_pb2  # type: ignore
+from google.protobuf import any_pb2  # type: ignore
 import proto  # type: ignore
 
-from google.api import service_pb2  # type: ignore
 from google.cloud.servicemanagement_v1.types import resources
-from google.protobuf import any_pb2  # type: ignore
-
 
 __protobuf__ = proto.module(
     package="google.api.servicemanagement.v1",

@@ -18,15 +18,15 @@ from typing import (
     AsyncIterator,
     Awaitable,
     Callable,
+    Iterator,
+    Optional,
     Sequence,
     Tuple,
-    Optional,
-    Iterator,
 )
 
 from google.api import service_pb2  # type: ignore
-from google.cloud.servicemanagement_v1.types import resources
-from google.cloud.servicemanagement_v1.types import servicemanager
+
+from google.cloud.servicemanagement_v1.types import resources, servicemanager
 
 
 class ListServicesPager:

@@ -14,66 +14,41 @@
 # limitations under the License.
 #
 
-from google.cloud.servicemanagement_v1.services.service_manager.client import (
-    ServiceManagerClient,
-)
 from google.cloud.servicemanagement_v1.services.service_manager.async_client import (
     ServiceManagerAsyncClient,
 )
-
-from google.cloud.servicemanagement_v1.types.resources import ChangeReport
-from google.cloud.servicemanagement_v1.types.resources import ConfigFile
-from google.cloud.servicemanagement_v1.types.resources import ConfigRef
-from google.cloud.servicemanagement_v1.types.resources import ConfigSource
-from google.cloud.servicemanagement_v1.types.resources import Diagnostic
-from google.cloud.servicemanagement_v1.types.resources import ManagedService
-from google.cloud.servicemanagement_v1.types.resources import OperationMetadata
-from google.cloud.servicemanagement_v1.types.resources import Rollout
+from google.cloud.servicemanagement_v1.services.service_manager.client import (
+    ServiceManagerClient,
+)
+from google.cloud.servicemanagement_v1.types.resources import (
+    ChangeReport,
+    ConfigFile,
+    ConfigRef,
+    ConfigSource,
+    Diagnostic,
+    ManagedService,
+    OperationMetadata,
+    Rollout,
+)
 from google.cloud.servicemanagement_v1.types.servicemanager import (
     CreateServiceConfigRequest,
-)
-from google.cloud.servicemanagement_v1.types.servicemanager import CreateServiceRequest
-from google.cloud.servicemanagement_v1.types.servicemanager import (
+    CreateServiceRequest,
     CreateServiceRolloutRequest,
-)
-from google.cloud.servicemanagement_v1.types.servicemanager import DeleteServiceRequest
-from google.cloud.servicemanagement_v1.types.servicemanager import (
+    DeleteServiceRequest,
     GenerateConfigReportRequest,
-)
-from google.cloud.servicemanagement_v1.types.servicemanager import (
     GenerateConfigReportResponse,
-)
-from google.cloud.servicemanagement_v1.types.servicemanager import (
     GetServiceConfigRequest,
-)
-from google.cloud.servicemanagement_v1.types.servicemanager import GetServiceRequest
-from google.cloud.servicemanagement_v1.types.servicemanager import (
+    GetServiceRequest,
     GetServiceRolloutRequest,
-)
-from google.cloud.servicemanagement_v1.types.servicemanager import (
     ListServiceConfigsRequest,
-)
-from google.cloud.servicemanagement_v1.types.servicemanager import (
     ListServiceConfigsResponse,
-)
-from google.cloud.servicemanagement_v1.types.servicemanager import (
     ListServiceRolloutsRequest,
-)
-from google.cloud.servicemanagement_v1.types.servicemanager import (
     ListServiceRolloutsResponse,
-)
-from google.cloud.servicemanagement_v1.types.servicemanager import ListServicesRequest
-from google.cloud.servicemanagement_v1.types.servicemanager import ListServicesResponse
-from google.cloud.servicemanagement_v1.types.servicemanager import (
+    ListServicesRequest,
+    ListServicesResponse,
     SubmitConfigSourceRequest,
-)
-from google.cloud.servicemanagement_v1.types.servicemanager import (
     SubmitConfigSourceResponse,
-)
-from google.cloud.servicemanagement_v1.types.servicemanager import (
     UndeleteServiceRequest,
-)
-from google.cloud.servicemanagement_v1.types.servicemanager import (
     UndeleteServiceResponse,
 )
 
