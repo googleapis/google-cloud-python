@@ -14,26 +14,26 @@
 # limitations under the License.
 #
 
-from .services.hub_service import HubServiceClient
-from .services.hub_service import HubServiceAsyncClient
-
+from .services.hub_service import HubServiceAsyncClient, HubServiceClient
 from .types.common import OperationMetadata
-from .types.hub import CreateHubRequest
-from .types.hub import CreateSpokeRequest
-from .types.hub import DeleteHubRequest
-from .types.hub import DeleteSpokeRequest
-from .types.hub import GetHubRequest
-from .types.hub import GetSpokeRequest
-from .types.hub import Hub
-from .types.hub import ListHubsRequest
-from .types.hub import ListHubsResponse
-from .types.hub import ListSpokesRequest
-from .types.hub import ListSpokesResponse
-from .types.hub import RouterApplianceInstance
-from .types.hub import Spoke
-from .types.hub import UpdateHubRequest
-from .types.hub import UpdateSpokeRequest
-from .types.hub import State
+from .types.hub import (
+    CreateHubRequest,
+    CreateSpokeRequest,
+    DeleteHubRequest,
+    DeleteSpokeRequest,
+    GetHubRequest,
+    GetSpokeRequest,
+    Hub,
+    ListHubsRequest,
+    ListHubsResponse,
+    ListSpokesRequest,
+    ListSpokesResponse,
+    RouterApplianceInstance,
+    Spoke,
+    State,
+    UpdateHubRequest,
+    UpdateSpokeRequest,
+)
 
 __all__ = (
     "HubServiceAsyncClient",

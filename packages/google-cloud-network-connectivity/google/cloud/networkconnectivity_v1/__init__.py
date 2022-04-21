@@ -14,32 +14,32 @@
 # limitations under the License.
 #
 
-from .services.hub_service import HubServiceClient
-from .services.hub_service import HubServiceAsyncClient
-
+from .services.hub_service import HubServiceAsyncClient, HubServiceClient
 from .types.common import OperationMetadata
-from .types.hub import CreateHubRequest
-from .types.hub import CreateSpokeRequest
-from .types.hub import DeleteHubRequest
-from .types.hub import DeleteSpokeRequest
-from .types.hub import GetHubRequest
-from .types.hub import GetSpokeRequest
-from .types.hub import Hub
-from .types.hub import LinkedInterconnectAttachments
-from .types.hub import LinkedRouterApplianceInstances
-from .types.hub import LinkedVpnTunnels
-from .types.hub import ListHubsRequest
-from .types.hub import ListHubsResponse
-from .types.hub import ListSpokesRequest
-from .types.hub import ListSpokesResponse
-from .types.hub import LocationMetadata
-from .types.hub import RouterApplianceInstance
-from .types.hub import RoutingVPC
-from .types.hub import Spoke
-from .types.hub import UpdateHubRequest
-from .types.hub import UpdateSpokeRequest
-from .types.hub import LocationFeature
-from .types.hub import State
+from .types.hub import (
+    CreateHubRequest,
+    CreateSpokeRequest,
+    DeleteHubRequest,
+    DeleteSpokeRequest,
+    GetHubRequest,
+    GetSpokeRequest,
+    Hub,
+    LinkedInterconnectAttachments,
+    LinkedRouterApplianceInstances,
+    LinkedVpnTunnels,
+    ListHubsRequest,
+    ListHubsResponse,
+    ListSpokesRequest,
+    ListSpokesResponse,
+    LocationFeature,
+    LocationMetadata,
+    RouterApplianceInstance,
+    RoutingVPC,
+    Spoke,
+    State,
+    UpdateHubRequest,
+    UpdateSpokeRequest,
+)
 
 __all__ = (
     "HubServiceAsyncClient",

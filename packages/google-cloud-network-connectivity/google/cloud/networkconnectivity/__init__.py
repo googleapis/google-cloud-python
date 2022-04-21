@@ -14,36 +14,37 @@
 # limitations under the License.
 #
 
-from google.cloud.networkconnectivity_v1.services.hub_service.client import (
-    HubServiceClient,
-)
 from google.cloud.networkconnectivity_v1.services.hub_service.async_client import (
     HubServiceAsyncClient,
 )
-
+from google.cloud.networkconnectivity_v1.services.hub_service.client import (
+    HubServiceClient,
+)
 from google.cloud.networkconnectivity_v1.types.common import OperationMetadata
-from google.cloud.networkconnectivity_v1.types.hub import CreateHubRequest
-from google.cloud.networkconnectivity_v1.types.hub import CreateSpokeRequest
-from google.cloud.networkconnectivity_v1.types.hub import DeleteHubRequest
-from google.cloud.networkconnectivity_v1.types.hub import DeleteSpokeRequest
-from google.cloud.networkconnectivity_v1.types.hub import GetHubRequest
-from google.cloud.networkconnectivity_v1.types.hub import GetSpokeRequest
-from google.cloud.networkconnectivity_v1.types.hub import Hub
-from google.cloud.networkconnectivity_v1.types.hub import LinkedInterconnectAttachments
-from google.cloud.networkconnectivity_v1.types.hub import LinkedRouterApplianceInstances
-from google.cloud.networkconnectivity_v1.types.hub import LinkedVpnTunnels
-from google.cloud.networkconnectivity_v1.types.hub import ListHubsRequest
-from google.cloud.networkconnectivity_v1.types.hub import ListHubsResponse
-from google.cloud.networkconnectivity_v1.types.hub import ListSpokesRequest
-from google.cloud.networkconnectivity_v1.types.hub import ListSpokesResponse
-from google.cloud.networkconnectivity_v1.types.hub import LocationMetadata
-from google.cloud.networkconnectivity_v1.types.hub import RouterApplianceInstance
-from google.cloud.networkconnectivity_v1.types.hub import RoutingVPC
-from google.cloud.networkconnectivity_v1.types.hub import Spoke
-from google.cloud.networkconnectivity_v1.types.hub import UpdateHubRequest
-from google.cloud.networkconnectivity_v1.types.hub import UpdateSpokeRequest
-from google.cloud.networkconnectivity_v1.types.hub import LocationFeature
-from google.cloud.networkconnectivity_v1.types.hub import State
+from google.cloud.networkconnectivity_v1.types.hub import (
+    CreateHubRequest,
+    CreateSpokeRequest,
+    DeleteHubRequest,
+    DeleteSpokeRequest,
+    GetHubRequest,
+    GetSpokeRequest,
+    Hub,
+    LinkedInterconnectAttachments,
+    LinkedRouterApplianceInstances,
+    LinkedVpnTunnels,
+    ListHubsRequest,
+    ListHubsResponse,
+    ListSpokesRequest,
+    ListSpokesResponse,
+    LocationFeature,
+    LocationMetadata,
+    RouterApplianceInstance,
+    RoutingVPC,
+    Spoke,
+    State,
+    UpdateHubRequest,
+    UpdateSpokeRequest,
+)
 
 __all__ = (
     "HubServiceClient",

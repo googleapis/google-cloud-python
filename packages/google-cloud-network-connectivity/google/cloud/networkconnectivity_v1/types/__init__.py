@@ -13,9 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .common import (
-    OperationMetadata,
-)
+from .common import OperationMetadata
 from .hub import (
     CreateHubRequest,
     CreateSpokeRequest,
@@ -31,14 +29,14 @@ from .hub import (
     ListHubsResponse,
     ListSpokesRequest,
     ListSpokesResponse,
+    LocationFeature,
     LocationMetadata,
     RouterApplianceInstance,
     RoutingVPC,
     Spoke,
+    State,
     UpdateHubRequest,
     UpdateSpokeRequest,
-    LocationFeature,
-    State,
 )
 
 __all__ = (
