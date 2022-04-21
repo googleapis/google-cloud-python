@@ -19,7 +19,6 @@ import os
 
 import setuptools
 
-
 name = "google-cloud-life-sciences"
 description = "Cloud Life Sciences client library"
 version = "0.5.1"

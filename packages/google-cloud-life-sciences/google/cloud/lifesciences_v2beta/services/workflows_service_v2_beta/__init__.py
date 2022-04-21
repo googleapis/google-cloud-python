@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import WorkflowsServiceV2BetaClient
 from .async_client import WorkflowsServiceV2BetaAsyncClient
+from .client import WorkflowsServiceV2BetaClient
 
 __all__ = (
     "WorkflowsServiceV2BetaClient",

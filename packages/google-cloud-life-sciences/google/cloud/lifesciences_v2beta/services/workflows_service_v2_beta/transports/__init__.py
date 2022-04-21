@@ -20,7 +20,6 @@ from .base import WorkflowsServiceV2BetaTransport
 from .grpc import WorkflowsServiceV2BetaGrpcTransport
 from .grpc_asyncio import WorkflowsServiceV2BetaGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = (
     OrderedDict()
