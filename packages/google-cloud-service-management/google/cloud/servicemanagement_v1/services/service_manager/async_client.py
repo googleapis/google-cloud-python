@@ -598,8 +598,9 @@ class ServiceManagerAsyncClient:
                 method.
             service_name (:class:`str`):
                 Required. The name of the service. See the
-                `overview </service-management/overview>`__ for naming
-                requirements. For example: ``example.googleapis.com``.
+                `overview <https://cloud.google.com/service-infrastructure/docs/overview>`__
+                for naming requirements. For example:
+                ``example.googleapis.com``.
 
                 This corresponds to the ``service_name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -719,8 +720,9 @@ class ServiceManagerAsyncClient:
                 method.
             service_name (:class:`str`):
                 Required. The name of the service. See the
-                `overview </service-management/overview>`__ for naming
-                requirements. For example: ``example.googleapis.com``.
+                `overview <https://cloud.google.com/service-infrastructure/docs/overview>`__
+                for naming requirements. For example:
+                ``example.googleapis.com``.
 
                 This corresponds to the ``service_name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -822,8 +824,9 @@ class ServiceManagerAsyncClient:
                 ListServiceConfigs method.
             service_name (:class:`str`):
                 Required. The name of the service. See the
-                `overview </service-management/overview>`__ for naming
-                requirements. For example: ``example.googleapis.com``.
+                `overview <https://cloud.google.com/service-infrastructure/docs/overview>`__
+                for naming requirements. For example:
+                ``example.googleapis.com``.
 
                 This corresponds to the ``service_name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -928,8 +931,9 @@ class ServiceManagerAsyncClient:
                 method.
             service_name (:class:`str`):
                 Required. The name of the service. See the
-                `overview </service-management/overview>`__ for naming
-                requirements. For example: ``example.googleapis.com``.
+                `overview <https://cloud.google.com/service-infrastructure/docs/overview>`__
+                for naming requirements. For example:
+                ``example.googleapis.com``.
 
                 This corresponds to the ``service_name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1065,8 +1069,9 @@ class ServiceManagerAsyncClient:
                 CreateServiceConfig method.
             service_name (:class:`str`):
                 Required. The name of the service. See the
-                `overview </service-management/overview>`__ for naming
-                requirements. For example: ``example.googleapis.com``.
+                `overview <https://cloud.google.com/service-infrastructure/docs/overview>`__
+                for naming requirements. For example:
+                ``example.googleapis.com``.
 
                 This corresponds to the ``service_name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1199,8 +1204,9 @@ class ServiceManagerAsyncClient:
                 SubmitConfigSource method.
             service_name (:class:`str`):
                 Required. The name of the service. See the
-                `overview </service-management/overview>`__ for naming
-                requirements. For example: ``example.googleapis.com``.
+                `overview <https://cloud.google.com/service-infrastructure/docs/overview>`__
+                for naming requirements. For example:
+                ``example.googleapis.com``.
 
                 This corresponds to the ``service_name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1325,8 +1331,9 @@ class ServiceManagerAsyncClient:
                 'ListServiceRollouts'
             service_name (:class:`str`):
                 Required. The name of the service. See the
-                `overview </service-management/overview>`__ for naming
-                requirements. For example: ``example.googleapis.com``.
+                `overview <https://cloud.google.com/service-infrastructure/docs/overview>`__
+                for naming requirements. For example:
+                ``example.googleapis.com``.
 
                 This corresponds to the ``service_name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1446,8 +1453,9 @@ class ServiceManagerAsyncClient:
                 GetServiceRollout method.
             service_name (:class:`str`):
                 Required. The name of the service. See the
-                `overview </service-management/overview>`__ for naming
-                requirements. For example: ``example.googleapis.com``.
+                `overview <https://cloud.google.com/service-infrastructure/docs/overview>`__
+                for naming requirements. For example:
+                ``example.googleapis.com``.
 
                 This corresponds to the ``service_name`` field
                 on the ``request`` instance; if ``request`` is provided, this
@@ -1570,8 +1578,9 @@ class ServiceManagerAsyncClient:
                 'CreateServiceRollout'
             service_name (:class:`str`):
                 Required. The name of the service. See the
-                `overview </service-management/overview>`__ for naming
-                requirements. For example: ``example.googleapis.com``.
+                `overview <https://cloud.google.com/service-infrastructure/docs/overview>`__
+                for naming requirements. For example:
+                ``example.googleapis.com``.
 
                 This corresponds to the ``service_name`` field
                 on the ``request`` instance; if ``request`` is provided, this
