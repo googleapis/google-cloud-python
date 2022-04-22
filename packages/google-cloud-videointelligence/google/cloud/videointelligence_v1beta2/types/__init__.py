@@ -25,19 +25,19 @@ from .video_intelligence import (
     FaceDetectionConfig,
     FaceFrame,
     FaceSegment,
+    Feature,
     LabelAnnotation,
     LabelDetectionConfig,
+    LabelDetectionMode,
     LabelFrame,
     LabelSegment,
+    Likelihood,
     NormalizedBoundingBox,
     ShotChangeDetectionConfig,
     VideoAnnotationProgress,
     VideoAnnotationResults,
     VideoContext,
     VideoSegment,
-    Feature,
-    LabelDetectionMode,
-    Likelihood,
 )
 
 __all__ = (

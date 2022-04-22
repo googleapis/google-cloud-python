@@ -14,33 +14,36 @@
 # limitations under the License.
 #
 
-from .services.video_intelligence_service import VideoIntelligenceServiceClient
-from .services.video_intelligence_service import VideoIntelligenceServiceAsyncClient
-
-from .types.video_intelligence import AnnotateVideoProgress
-from .types.video_intelligence import AnnotateVideoRequest
-from .types.video_intelligence import AnnotateVideoResponse
-from .types.video_intelligence import Entity
-from .types.video_intelligence import ExplicitContentAnnotation
-from .types.video_intelligence import ExplicitContentDetectionConfig
-from .types.video_intelligence import ExplicitContentFrame
-from .types.video_intelligence import LabelAnnotation
-from .types.video_intelligence import LabelDetectionConfig
-from .types.video_intelligence import LabelFrame
-from .types.video_intelligence import LabelSegment
-from .types.video_intelligence import ShotChangeDetectionConfig
-from .types.video_intelligence import SpeechContext
-from .types.video_intelligence import SpeechRecognitionAlternative
-from .types.video_intelligence import SpeechTranscription
-from .types.video_intelligence import SpeechTranscriptionConfig
-from .types.video_intelligence import VideoAnnotationProgress
-from .types.video_intelligence import VideoAnnotationResults
-from .types.video_intelligence import VideoContext
-from .types.video_intelligence import VideoSegment
-from .types.video_intelligence import WordInfo
-from .types.video_intelligence import Feature
-from .types.video_intelligence import LabelDetectionMode
-from .types.video_intelligence import Likelihood
+from .services.video_intelligence_service import (
+    VideoIntelligenceServiceAsyncClient,
+    VideoIntelligenceServiceClient,
+)
+from .types.video_intelligence import (
+    AnnotateVideoProgress,
+    AnnotateVideoRequest,
+    AnnotateVideoResponse,
+    Entity,
+    ExplicitContentAnnotation,
+    ExplicitContentDetectionConfig,
+    ExplicitContentFrame,
+    Feature,
+    LabelAnnotation,
+    LabelDetectionConfig,
+    LabelDetectionMode,
+    LabelFrame,
+    LabelSegment,
+    Likelihood,
+    ShotChangeDetectionConfig,
+    SpeechContext,
+    SpeechRecognitionAlternative,
+    SpeechTranscription,
+    SpeechTranscriptionConfig,
+    VideoAnnotationProgress,
+    VideoAnnotationResults,
+    VideoContext,
+    VideoSegment,
+    WordInfo,
+)
 
 __all__ = (
     "VideoIntelligenceServiceAsyncClient",

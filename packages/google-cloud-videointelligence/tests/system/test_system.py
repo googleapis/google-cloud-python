@@ -15,12 +15,12 @@
 """System tests for VideoIntelligence API."""
 
 import os
-import pytest
 
-from google.cloud import videointelligence_v1
+import pytest
 from test_utils.retry import RetryResult
 from test_utils.vpcsc_config import vpcsc_config
 
+from google.cloud import videointelligence_v1
 
 INPUT_URI = "gs://cloud-samples-data/video/cat.mp4"
 VPCSC_INPUT_URI = "gs://{}/cat.mp4".format(

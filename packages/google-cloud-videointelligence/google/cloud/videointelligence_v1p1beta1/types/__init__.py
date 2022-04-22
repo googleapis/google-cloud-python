@@ -21,10 +21,13 @@ from .video_intelligence import (
     ExplicitContentAnnotation,
     ExplicitContentDetectionConfig,
     ExplicitContentFrame,
+    Feature,
     LabelAnnotation,
     LabelDetectionConfig,
+    LabelDetectionMode,
     LabelFrame,
     LabelSegment,
+    Likelihood,
     ShotChangeDetectionConfig,
     SpeechContext,
     SpeechRecognitionAlternative,
@@ -35,9 +38,6 @@ from .video_intelligence import (
     VideoContext,
     VideoSegment,
     WordInfo,
-    Feature,
-    LabelDetectionMode,
-    Likelihood,
 )
 
 __all__ = (

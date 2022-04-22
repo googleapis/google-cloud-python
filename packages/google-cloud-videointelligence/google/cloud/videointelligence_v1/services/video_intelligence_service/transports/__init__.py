@@ -20,7 +20,6 @@ from .base import VideoIntelligenceServiceTransport
 from .grpc import VideoIntelligenceServiceGrpcTransport
 from .grpc_asyncio import VideoIntelligenceServiceGrpcAsyncIOTransport
 
-
 # Compile a registry of transports.
 _transport_registry = (
     OrderedDict()

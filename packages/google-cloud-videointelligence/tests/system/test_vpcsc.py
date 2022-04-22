@@ -15,12 +15,11 @@
 
 import json
 import os
-import requests
 
 from google.auth.transport import requests as goog_auth_requests
 from google.oauth2 import service_account
 import pytest
-
+import requests
 from test_utils.vpcsc_config import vpcsc_config
 
 CLOUD_PLATFORM_SCOPE = "https://www.googleapis.com/auth/cloud-platform"

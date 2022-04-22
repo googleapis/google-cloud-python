@@ -21,10 +21,13 @@ from .video_intelligence import (
     ExplicitContentAnnotation,
     ExplicitContentDetectionConfig,
     ExplicitContentFrame,
+    Feature,
     LabelAnnotation,
     LabelDetectionConfig,
+    LabelDetectionMode,
     LabelFrame,
     LabelSegment,
+    Likelihood,
     NormalizedBoundingBox,
     NormalizedBoundingPoly,
     NormalizedVertex,
@@ -39,9 +42,6 @@ from .video_intelligence import (
     VideoAnnotationResults,
     VideoContext,
     VideoSegment,
-    Feature,
-    LabelDetectionMode,
-    Likelihood,
 )
 
 __all__ = (

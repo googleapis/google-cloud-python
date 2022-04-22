@@ -28,10 +28,13 @@ from .video_intelligence import (
     ExplicitContentFrame,
     FaceDetectionAnnotation,
     FaceDetectionConfig,
+    Feature,
     LabelAnnotation,
     LabelDetectionConfig,
+    LabelDetectionMode,
     LabelFrame,
     LabelSegment,
+    Likelihood,
     LogoRecognitionAnnotation,
     NormalizedBoundingBox,
     NormalizedBoundingPoly,
@@ -52,6 +55,7 @@ from .video_intelligence import (
     StreamingAutomlClassificationConfig,
     StreamingAutomlObjectTrackingConfig,
     StreamingExplicitContentDetectionConfig,
+    StreamingFeature,
     StreamingLabelDetectionConfig,
     StreamingObjectTrackingConfig,
     StreamingShotChangeDetectionConfig,
@@ -69,10 +73,6 @@ from .video_intelligence import (
     VideoContext,
     VideoSegment,
     WordInfo,
-    Feature,
-    LabelDetectionMode,
-    Likelihood,
-    StreamingFeature,
 )
 
 __all__ = (

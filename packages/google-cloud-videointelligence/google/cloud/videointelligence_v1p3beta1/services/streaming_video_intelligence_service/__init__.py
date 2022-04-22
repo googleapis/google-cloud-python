@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-from .client import StreamingVideoIntelligenceServiceClient
 from .async_client import StreamingVideoIntelligenceServiceAsyncClient
+from .client import StreamingVideoIntelligenceServiceClient
 
 __all__ = (
     "StreamingVideoIntelligenceServiceClient",

@@ -28,10 +28,13 @@ from .video_intelligence import (
     FaceDetectionConfig,
     FaceFrame,
     FaceSegment,
+    Feature,
     LabelAnnotation,
     LabelDetectionConfig,
+    LabelDetectionMode,
     LabelFrame,
     LabelSegment,
+    Likelihood,
     LogoRecognitionAnnotation,
     NormalizedBoundingBox,
     NormalizedBoundingPoly,
@@ -57,9 +60,6 @@ from .video_intelligence import (
     VideoContext,
     VideoSegment,
     WordInfo,
-    Feature,
-    LabelDetectionMode,
-    Likelihood,
 )
 
 __all__ = (
