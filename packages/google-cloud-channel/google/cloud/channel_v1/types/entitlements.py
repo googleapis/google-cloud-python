@@ -70,7 +70,9 @@ class Entitlement(proto.Message):
             company tracking usage. If a purchaseOrderId
             value is given, it appears in the API responses
             and shows up in the invoice. The property
-            accepts up to 80 plain text characters.
+            accepts up to 80 plain text characters. This is
+            only supported for Google Workspace
+            entitlements.
         trial_settings (google.cloud.channel_v1.types.TrialSettings):
             Output only. Settings for trial offers.
         association_info (google.cloud.channel_v1.types.AssociationInfo):

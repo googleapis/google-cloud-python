@@ -186,6 +186,11 @@ class ListCustomersRequest(proto.Message):
             of the previous
             [CloudChannelService.ListCustomers][google.cloud.channel.v1.CloudChannelService.ListCustomers]
             call.
+        filter (str):
+            Optional. Filters applied to the
+            [CloudChannelService.ListCustomers] results. See
+            https://cloud.google.com/channel/docs/concepts/google-cloud/filter-customers
+            for more information.
     """
 
     parent = proto.Field(
@@ -199,6 +204,10 @@ class ListCustomersRequest(proto.Message):
     page_token = proto.Field(
         proto.STRING,
         number=3,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=4,
     )
 
 
