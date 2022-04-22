@@ -3742,20 +3742,23 @@ def test_parse_conversation_model_path():
 def test_conversation_model_evaluation_path():
     project = "squid"
     conversation_model = "clam"
-    expected = "projects/{project}/conversationModels/{conversation_model}/evaluations/evaluation".format(
+    evaluation = "whelk"
+    expected = "projects/{project}/conversationModels/{conversation_model}/evaluations/{evaluation}".format(
         project=project,
         conversation_model=conversation_model,
+        evaluation=evaluation,
     )
     actual = ConversationModelsClient.conversation_model_evaluation_path(
-        project, conversation_model
+        project, conversation_model, evaluation
     )
     assert expected == actual
 
 
 def test_parse_conversation_model_evaluation_path():
     expected = {
-        "project": "whelk",
-        "conversation_model": "octopus",
+        "project": "octopus",
+        "conversation_model": "oyster",
+        "evaluation": "nudibranch",
     }
     path = ConversationModelsClient.conversation_model_evaluation_path(**expected)
 
@@ -3765,9 +3768,9 @@ def test_parse_conversation_model_evaluation_path():
 
 
 def test_document_path():
-    project = "oyster"
-    knowledge_base = "nudibranch"
-    document = "cuttlefish"
+    project = "cuttlefish"
+    knowledge_base = "mussel"
+    document = "winkle"
     expected = "projects/{project}/knowledgeBases/{knowledge_base}/documents/{document}".format(
         project=project,
         knowledge_base=knowledge_base,
@@ -3779,9 +3782,9 @@ def test_document_path():
 
 def test_parse_document_path():
     expected = {
-        "project": "mussel",
-        "knowledge_base": "winkle",
-        "document": "nautilus",
+        "project": "nautilus",
+        "knowledge_base": "scallop",
+        "document": "abalone",
     }
     path = ConversationModelsClient.document_path(**expected)
 
@@ -3791,7 +3794,7 @@ def test_parse_document_path():
 
 
 def test_common_billing_account_path():
-    billing_account = "scallop"
+    billing_account = "squid"
     expected = "billingAccounts/{billing_account}".format(
         billing_account=billing_account,
     )
@@ -3801,7 +3804,7 @@ def test_common_billing_account_path():
 
 def test_parse_common_billing_account_path():
     expected = {
-        "billing_account": "abalone",
+        "billing_account": "clam",
     }
     path = ConversationModelsClient.common_billing_account_path(**expected)
 
@@ -3811,7 +3814,7 @@ def test_parse_common_billing_account_path():
 
 
 def test_common_folder_path():
-    folder = "squid"
+    folder = "whelk"
     expected = "folders/{folder}".format(
         folder=folder,
     )
@@ -3821,7 +3824,7 @@ def test_common_folder_path():
 
 def test_parse_common_folder_path():
     expected = {
-        "folder": "clam",
+        "folder": "octopus",
     }
     path = ConversationModelsClient.common_folder_path(**expected)
 
@@ -3831,7 +3834,7 @@ def test_parse_common_folder_path():
 
 
 def test_common_organization_path():
-    organization = "whelk"
+    organization = "oyster"
     expected = "organizations/{organization}".format(
         organization=organization,
     )
@@ -3841,7 +3844,7 @@ def test_common_organization_path():
 
 def test_parse_common_organization_path():
     expected = {
-        "organization": "octopus",
+        "organization": "nudibranch",
     }
     path = ConversationModelsClient.common_organization_path(**expected)
 
@@ -3851,7 +3854,7 @@ def test_parse_common_organization_path():
 
 
 def test_common_project_path():
-    project = "oyster"
+    project = "cuttlefish"
     expected = "projects/{project}".format(
         project=project,
     )
@@ -3861,7 +3864,7 @@ def test_common_project_path():
 
 def test_parse_common_project_path():
     expected = {
-        "project": "nudibranch",
+        "project": "mussel",
     }
     path = ConversationModelsClient.common_project_path(**expected)
 
@@ -3871,8 +3874,8 @@ def test_parse_common_project_path():
 
 
 def test_common_location_path():
-    project = "cuttlefish"
-    location = "mussel"
+    project = "winkle"
+    location = "nautilus"
     expected = "projects/{project}/locations/{location}".format(
         project=project,
         location=location,
@@ -3883,8 +3886,8 @@ def test_common_location_path():
 
 def test_parse_common_location_path():
     expected = {
-        "project": "winkle",
-        "location": "nautilus",
+        "project": "scallop",
+        "location": "abalone",
     }
     path = ConversationModelsClient.common_location_path(**expected)
 

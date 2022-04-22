@@ -217,18 +217,20 @@ class ConversationModelsClient(metaclass=ConversationModelsClientMeta):
     def conversation_model_evaluation_path(
         project: str,
         conversation_model: str,
+        evaluation: str,
     ) -> str:
         """Returns a fully-qualified conversation_model_evaluation string."""
-        return "projects/{project}/conversationModels/{conversation_model}/evaluations/evaluation".format(
+        return "projects/{project}/conversationModels/{conversation_model}/evaluations/{evaluation}".format(
             project=project,
             conversation_model=conversation_model,
+            evaluation=evaluation,
         )
 
     @staticmethod
     def parse_conversation_model_evaluation_path(path: str) -> Dict[str, str]:
         """Parses a conversation_model_evaluation path into its component segments."""
         m = re.match(
-            r"^projects/(?P<project>.+?)/conversationModels/(?P<conversation_model>.+?)/evaluations/evaluation$",
+            r"^projects/(?P<project>.+?)/conversationModels/(?P<conversation_model>.+?)/evaluations/(?P<evaluation>.+?)$",
             path,
         )
         return m.groupdict() if m else {}
