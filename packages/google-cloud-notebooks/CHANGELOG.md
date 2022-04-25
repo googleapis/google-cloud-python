@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/googleapis/python-notebooks/compare/v1.2.1...v1.3.0) (2022-04-21)
+
+
+### Features
+
+* Update Notebooks API for clients libraries ([#154](https://github.com/googleapis/python-notebooks/issues/154)) ([c4a526e](https://github.com/googleapis/python-notebooks/commit/c4a526ed474983b1b18041414a3dc87217ea27aa))
+
 ### [1.2.1](https://github.com/googleapis/python-notebooks/compare/v1.2.0...v1.2.1) (2022-03-05)
 
 
