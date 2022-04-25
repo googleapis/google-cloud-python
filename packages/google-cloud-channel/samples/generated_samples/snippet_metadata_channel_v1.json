@@ -1089,6 +1089,344 @@
           "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient",
           "shortName": "CloudChannelServiceAsyncClient"
         },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient.create_channel_partner_repricing_config",
+        "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.CreateChannelPartnerRepricingConfig",
+          "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
+            "shortName": "CloudChannelService"
+          },
+          "shortName": "CreateChannelPartnerRepricingConfig"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.CreateChannelPartnerRepricingConfigRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "channel_partner_repricing_config",
+            "type": "google.cloud.channel_v1.types.ChannelPartnerRepricingConfig"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.channel_v1.types.ChannelPartnerRepricingConfig",
+        "shortName": "create_channel_partner_repricing_config"
+      },
+      "description": "Sample for CreateChannelPartnerRepricingConfig",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_create_channel_partner_repricing_config_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_CreateChannelPartnerRepricingConfig_async",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 43,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_create_channel_partner_repricing_config_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceClient",
+          "shortName": "CloudChannelServiceClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceClient.create_channel_partner_repricing_config",
+        "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.CreateChannelPartnerRepricingConfig",
+          "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
+            "shortName": "CloudChannelService"
+          },
+          "shortName": "CreateChannelPartnerRepricingConfig"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.CreateChannelPartnerRepricingConfigRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "channel_partner_repricing_config",
+            "type": "google.cloud.channel_v1.types.ChannelPartnerRepricingConfig"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.channel_v1.types.ChannelPartnerRepricingConfig",
+        "shortName": "create_channel_partner_repricing_config"
+      },
+      "description": "Sample for CreateChannelPartnerRepricingConfig",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_create_channel_partner_repricing_config_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_CreateChannelPartnerRepricingConfig_sync",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 43,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_create_channel_partner_repricing_config_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient",
+          "shortName": "CloudChannelServiceAsyncClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient.create_customer_repricing_config",
+        "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.CreateCustomerRepricingConfig",
+          "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
+            "shortName": "CloudChannelService"
+          },
+          "shortName": "CreateCustomerRepricingConfig"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.CreateCustomerRepricingConfigRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "customer_repricing_config",
+            "type": "google.cloud.channel_v1.types.CustomerRepricingConfig"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.channel_v1.types.CustomerRepricingConfig",
+        "shortName": "create_customer_repricing_config"
+      },
+      "description": "Sample for CreateCustomerRepricingConfig",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_create_customer_repricing_config_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_CreateCustomerRepricingConfig_async",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 43,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_create_customer_repricing_config_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceClient",
+          "shortName": "CloudChannelServiceClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceClient.create_customer_repricing_config",
+        "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.CreateCustomerRepricingConfig",
+          "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
+            "shortName": "CloudChannelService"
+          },
+          "shortName": "CreateCustomerRepricingConfig"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.CreateCustomerRepricingConfigRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "customer_repricing_config",
+            "type": "google.cloud.channel_v1.types.CustomerRepricingConfig"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.channel_v1.types.CustomerRepricingConfig",
+        "shortName": "create_customer_repricing_config"
+      },
+      "description": "Sample for CreateCustomerRepricingConfig",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_create_customer_repricing_config_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_CreateCustomerRepricingConfig_sync",
+      "segments": [
+        {
+          "end": 48,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 48,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 42,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 45,
+          "start": 43,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 49,
+          "start": 46,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_create_customer_repricing_config_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient",
+          "shortName": "CloudChannelServiceAsyncClient"
+        },
         "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient.create_customer",
         "method": {
           "fullName": "google.cloud.channel.v1.CloudChannelService.CreateCustomer",
@@ -1386,6 +1724,316 @@
         }
       ],
       "title": "cloudchannel_v1_generated_cloud_channel_service_create_entitlement_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient",
+          "shortName": "CloudChannelServiceAsyncClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient.delete_channel_partner_repricing_config",
+        "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.DeleteChannelPartnerRepricingConfig",
+          "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
+            "shortName": "CloudChannelService"
+          },
+          "shortName": "DeleteChannelPartnerRepricingConfig"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.DeleteChannelPartnerRepricingConfigRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_channel_partner_repricing_config"
+      },
+      "description": "Sample for DeleteChannelPartnerRepricingConfig",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_delete_channel_partner_repricing_config_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_DeleteChannelPartnerRepricingConfig_async",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_delete_channel_partner_repricing_config_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceClient",
+          "shortName": "CloudChannelServiceClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceClient.delete_channel_partner_repricing_config",
+        "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.DeleteChannelPartnerRepricingConfig",
+          "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
+            "shortName": "CloudChannelService"
+          },
+          "shortName": "DeleteChannelPartnerRepricingConfig"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.DeleteChannelPartnerRepricingConfigRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_channel_partner_repricing_config"
+      },
+      "description": "Sample for DeleteChannelPartnerRepricingConfig",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_delete_channel_partner_repricing_config_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_DeleteChannelPartnerRepricingConfig_sync",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_delete_channel_partner_repricing_config_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient",
+          "shortName": "CloudChannelServiceAsyncClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient.delete_customer_repricing_config",
+        "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.DeleteCustomerRepricingConfig",
+          "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
+            "shortName": "CloudChannelService"
+          },
+          "shortName": "DeleteCustomerRepricingConfig"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.DeleteCustomerRepricingConfigRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_customer_repricing_config"
+      },
+      "description": "Sample for DeleteCustomerRepricingConfig",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_delete_customer_repricing_config_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_DeleteCustomerRepricingConfig_async",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_delete_customer_repricing_config_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceClient",
+          "shortName": "CloudChannelServiceClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceClient.delete_customer_repricing_config",
+        "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.DeleteCustomerRepricingConfig",
+          "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
+            "shortName": "CloudChannelService"
+          },
+          "shortName": "DeleteCustomerRepricingConfig"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.DeleteCustomerRepricingConfigRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "shortName": "delete_customer_repricing_config"
+      },
+      "description": "Sample for DeleteCustomerRepricingConfig",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_delete_customer_repricing_config_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_DeleteCustomerRepricingConfig_sync",
+      "segments": [
+        {
+          "end": 42,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 42,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 43,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_delete_customer_repricing_config_sync.py"
     },
     {
       "canonical": true,
@@ -1694,6 +2342,328 @@
         }
       ],
       "title": "cloudchannel_v1_generated_cloud_channel_service_get_channel_partner_link_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient",
+          "shortName": "CloudChannelServiceAsyncClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient.get_channel_partner_repricing_config",
+        "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.GetChannelPartnerRepricingConfig",
+          "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
+            "shortName": "CloudChannelService"
+          },
+          "shortName": "GetChannelPartnerRepricingConfig"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.GetChannelPartnerRepricingConfigRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.channel_v1.types.ChannelPartnerRepricingConfig",
+        "shortName": "get_channel_partner_repricing_config"
+      },
+      "description": "Sample for GetChannelPartnerRepricingConfig",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_get_channel_partner_repricing_config_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_GetChannelPartnerRepricingConfig_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_get_channel_partner_repricing_config_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceClient",
+          "shortName": "CloudChannelServiceClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceClient.get_channel_partner_repricing_config",
+        "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.GetChannelPartnerRepricingConfig",
+          "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
+            "shortName": "CloudChannelService"
+          },
+          "shortName": "GetChannelPartnerRepricingConfig"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.GetChannelPartnerRepricingConfigRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.channel_v1.types.ChannelPartnerRepricingConfig",
+        "shortName": "get_channel_partner_repricing_config"
+      },
+      "description": "Sample for GetChannelPartnerRepricingConfig",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_get_channel_partner_repricing_config_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_GetChannelPartnerRepricingConfig_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_get_channel_partner_repricing_config_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient",
+          "shortName": "CloudChannelServiceAsyncClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient.get_customer_repricing_config",
+        "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.GetCustomerRepricingConfig",
+          "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
+            "shortName": "CloudChannelService"
+          },
+          "shortName": "GetCustomerRepricingConfig"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.GetCustomerRepricingConfigRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.channel_v1.types.CustomerRepricingConfig",
+        "shortName": "get_customer_repricing_config"
+      },
+      "description": "Sample for GetCustomerRepricingConfig",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_get_customer_repricing_config_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_GetCustomerRepricingConfig_async",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_get_customer_repricing_config_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceClient",
+          "shortName": "CloudChannelServiceClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceClient.get_customer_repricing_config",
+        "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.GetCustomerRepricingConfig",
+          "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
+            "shortName": "CloudChannelService"
+          },
+          "shortName": "GetCustomerRepricingConfig"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.GetCustomerRepricingConfigRequest"
+          },
+          {
+            "name": "name",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.channel_v1.types.CustomerRepricingConfig",
+        "shortName": "get_customer_repricing_config"
+      },
+      "description": "Sample for GetCustomerRepricingConfig",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_get_customer_repricing_config_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_GetCustomerRepricingConfig_sync",
+      "segments": [
+        {
+          "end": 44,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 44,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 45,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_get_customer_repricing_config_sync.py"
     },
     {
       "canonical": true,
@@ -2314,6 +3284,328 @@
         }
       ],
       "title": "cloudchannel_v1_generated_cloud_channel_service_list_channel_partner_links_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient",
+          "shortName": "CloudChannelServiceAsyncClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient.list_channel_partner_repricing_configs",
+        "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.ListChannelPartnerRepricingConfigs",
+          "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
+            "shortName": "CloudChannelService"
+          },
+          "shortName": "ListChannelPartnerRepricingConfigs"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.ListChannelPartnerRepricingConfigsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.channel_v1.services.cloud_channel_service.pagers.ListChannelPartnerRepricingConfigsAsyncPager",
+        "shortName": "list_channel_partner_repricing_configs"
+      },
+      "description": "Sample for ListChannelPartnerRepricingConfigs",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_list_channel_partner_repricing_configs_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListChannelPartnerRepricingConfigs_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_list_channel_partner_repricing_configs_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceClient",
+          "shortName": "CloudChannelServiceClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceClient.list_channel_partner_repricing_configs",
+        "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.ListChannelPartnerRepricingConfigs",
+          "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
+            "shortName": "CloudChannelService"
+          },
+          "shortName": "ListChannelPartnerRepricingConfigs"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.ListChannelPartnerRepricingConfigsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.channel_v1.services.cloud_channel_service.pagers.ListChannelPartnerRepricingConfigsPager",
+        "shortName": "list_channel_partner_repricing_configs"
+      },
+      "description": "Sample for ListChannelPartnerRepricingConfigs",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_list_channel_partner_repricing_configs_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListChannelPartnerRepricingConfigs_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_list_channel_partner_repricing_configs_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient",
+          "shortName": "CloudChannelServiceAsyncClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient.list_customer_repricing_configs",
+        "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.ListCustomerRepricingConfigs",
+          "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
+            "shortName": "CloudChannelService"
+          },
+          "shortName": "ListCustomerRepricingConfigs"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.ListCustomerRepricingConfigsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.channel_v1.services.cloud_channel_service.pagers.ListCustomerRepricingConfigsAsyncPager",
+        "shortName": "list_customer_repricing_configs"
+      },
+      "description": "Sample for ListCustomerRepricingConfigs",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_list_customer_repricing_configs_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListCustomerRepricingConfigs_async",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_list_customer_repricing_configs_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceClient",
+          "shortName": "CloudChannelServiceClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceClient.list_customer_repricing_configs",
+        "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.ListCustomerRepricingConfigs",
+          "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
+            "shortName": "CloudChannelService"
+          },
+          "shortName": "ListCustomerRepricingConfigs"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.ListCustomerRepricingConfigsRequest"
+          },
+          {
+            "name": "parent",
+            "type": "str"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.channel_v1.services.cloud_channel_service.pagers.ListCustomerRepricingConfigsPager",
+        "shortName": "list_customer_repricing_configs"
+      },
+      "description": "Sample for ListCustomerRepricingConfigs",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_list_customer_repricing_configs_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_ListCustomerRepricingConfigs_sync",
+      "segments": [
+        {
+          "end": 45,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 45,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 38,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 39,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 46,
+          "start": 42,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_list_customer_repricing_configs_sync.py"
     },
     {
       "canonical": true,
@@ -5221,6 +6513,328 @@
         }
       ],
       "title": "cloudchannel_v1_generated_cloud_channel_service_update_channel_partner_link_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient",
+          "shortName": "CloudChannelServiceAsyncClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient.update_channel_partner_repricing_config",
+        "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.UpdateChannelPartnerRepricingConfig",
+          "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
+            "shortName": "CloudChannelService"
+          },
+          "shortName": "UpdateChannelPartnerRepricingConfig"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.UpdateChannelPartnerRepricingConfigRequest"
+          },
+          {
+            "name": "channel_partner_repricing_config",
+            "type": "google.cloud.channel_v1.types.ChannelPartnerRepricingConfig"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.channel_v1.types.ChannelPartnerRepricingConfig",
+        "shortName": "update_channel_partner_repricing_config"
+      },
+      "description": "Sample for UpdateChannelPartnerRepricingConfig",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_update_channel_partner_repricing_config_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_UpdateChannelPartnerRepricingConfig_async",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 42,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "start": 45,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_update_channel_partner_repricing_config_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceClient",
+          "shortName": "CloudChannelServiceClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceClient.update_channel_partner_repricing_config",
+        "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.UpdateChannelPartnerRepricingConfig",
+          "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
+            "shortName": "CloudChannelService"
+          },
+          "shortName": "UpdateChannelPartnerRepricingConfig"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.UpdateChannelPartnerRepricingConfigRequest"
+          },
+          {
+            "name": "channel_partner_repricing_config",
+            "type": "google.cloud.channel_v1.types.ChannelPartnerRepricingConfig"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.channel_v1.types.ChannelPartnerRepricingConfig",
+        "shortName": "update_channel_partner_repricing_config"
+      },
+      "description": "Sample for UpdateChannelPartnerRepricingConfig",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_update_channel_partner_repricing_config_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_UpdateChannelPartnerRepricingConfig_sync",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 42,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "start": 45,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_update_channel_partner_repricing_config_sync.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "async": true,
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient",
+          "shortName": "CloudChannelServiceAsyncClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceAsyncClient.update_customer_repricing_config",
+        "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.UpdateCustomerRepricingConfig",
+          "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
+            "shortName": "CloudChannelService"
+          },
+          "shortName": "UpdateCustomerRepricingConfig"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.UpdateCustomerRepricingConfigRequest"
+          },
+          {
+            "name": "customer_repricing_config",
+            "type": "google.cloud.channel_v1.types.CustomerRepricingConfig"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.channel_v1.types.CustomerRepricingConfig",
+        "shortName": "update_customer_repricing_config"
+      },
+      "description": "Sample for UpdateCustomerRepricingConfig",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_update_customer_repricing_config_async.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_UpdateCustomerRepricingConfig_async",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 42,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "start": 45,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_update_customer_repricing_config_async.py"
+    },
+    {
+      "canonical": true,
+      "clientMethod": {
+        "client": {
+          "fullName": "google.cloud.channel_v1.CloudChannelServiceClient",
+          "shortName": "CloudChannelServiceClient"
+        },
+        "fullName": "google.cloud.channel_v1.CloudChannelServiceClient.update_customer_repricing_config",
+        "method": {
+          "fullName": "google.cloud.channel.v1.CloudChannelService.UpdateCustomerRepricingConfig",
+          "service": {
+            "fullName": "google.cloud.channel.v1.CloudChannelService",
+            "shortName": "CloudChannelService"
+          },
+          "shortName": "UpdateCustomerRepricingConfig"
+        },
+        "parameters": [
+          {
+            "name": "request",
+            "type": "google.cloud.channel_v1.types.UpdateCustomerRepricingConfigRequest"
+          },
+          {
+            "name": "customer_repricing_config",
+            "type": "google.cloud.channel_v1.types.CustomerRepricingConfig"
+          },
+          {
+            "name": "retry",
+            "type": "google.api_core.retry.Retry"
+          },
+          {
+            "name": "timeout",
+            "type": "float"
+          },
+          {
+            "name": "metadata",
+            "type": "Sequence[Tuple[str, str]"
+          }
+        ],
+        "resultType": "google.cloud.channel_v1.types.CustomerRepricingConfig",
+        "shortName": "update_customer_repricing_config"
+      },
+      "description": "Sample for UpdateCustomerRepricingConfig",
+      "file": "cloudchannel_v1_generated_cloud_channel_service_update_customer_repricing_config_sync.py",
+      "language": "PYTHON",
+      "origin": "API_DEFINITION",
+      "regionTag": "cloudchannel_v1_generated_CloudChannelService_UpdateCustomerRepricingConfig_sync",
+      "segments": [
+        {
+          "end": 47,
+          "start": 27,
+          "type": "FULL"
+        },
+        {
+          "end": 47,
+          "start": 27,
+          "type": "SHORT"
+        },
+        {
+          "end": 33,
+          "start": 31,
+          "type": "CLIENT_INITIALIZATION"
+        },
+        {
+          "end": 41,
+          "start": 34,
+          "type": "REQUEST_INITIALIZATION"
+        },
+        {
+          "end": 44,
+          "start": 42,
+          "type": "REQUEST_EXECUTION"
+        },
+        {
+          "end": 48,
+          "start": 45,
+          "type": "RESPONSE_HANDLING"
+        }
+      ],
+      "title": "cloudchannel_v1_generated_cloud_channel_service_update_customer_repricing_config_sync.py"
     },
     {
       "canonical": true,

@@ -36,6 +36,8 @@ from google.oauth2 import service_account
 from google.protobuf import any_pb2  # type: ignore
 from google.protobuf import field_mask_pb2  # type: ignore
 from google.protobuf import timestamp_pb2  # type: ignore
+from google.type import date_pb2  # type: ignore
+from google.type import decimal_pb2  # type: ignore
 from google.type import postal_address_pb2  # type: ignore
 import grpc
 from grpc.experimental import aio
@@ -57,6 +59,7 @@ from google.cloud.channel_v1.types import (
     offers,
     operations,
     products,
+    repricing,
     service,
 )
 
@@ -5994,6 +5997,2904 @@ async def test_update_channel_partner_link_field_headers_async():
 @pytest.mark.parametrize(
     "request_type",
     [
+        service.GetCustomerRepricingConfigRequest,
+        dict,
+    ],
+)
+def test_get_customer_repricing_config(request_type, transport: str = "grpc"):
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_customer_repricing_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = repricing.CustomerRepricingConfig(
+            name="name_value",
+        )
+        response = client.get_customer_repricing_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.GetCustomerRepricingConfigRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, repricing.CustomerRepricingConfig)
+    assert response.name == "name_value"
+
+
+def test_get_customer_repricing_config_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_customer_repricing_config), "__call__"
+    ) as call:
+        client.get_customer_repricing_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.GetCustomerRepricingConfigRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_customer_repricing_config_async(
+    transport: str = "grpc_asyncio",
+    request_type=service.GetCustomerRepricingConfigRequest,
+):
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_customer_repricing_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            repricing.CustomerRepricingConfig(
+                name="name_value",
+            )
+        )
+        response = await client.get_customer_repricing_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.GetCustomerRepricingConfigRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, repricing.CustomerRepricingConfig)
+    assert response.name == "name_value"
+
+
+@pytest.mark.asyncio
+async def test_get_customer_repricing_config_async_from_dict():
+    await test_get_customer_repricing_config_async(request_type=dict)
+
+
+def test_get_customer_repricing_config_field_headers():
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.GetCustomerRepricingConfigRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_customer_repricing_config), "__call__"
+    ) as call:
+        call.return_value = repricing.CustomerRepricingConfig()
+        client.get_customer_repricing_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_customer_repricing_config_field_headers_async():
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.GetCustomerRepricingConfigRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_customer_repricing_config), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            repricing.CustomerRepricingConfig()
+        )
+        await client.get_customer_repricing_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
+
+
+def test_get_customer_repricing_config_flattened():
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_customer_repricing_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = repricing.CustomerRepricingConfig()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_customer_repricing_config(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_customer_repricing_config_flattened_error():
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_customer_repricing_config(
+            service.GetCustomerRepricingConfigRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_customer_repricing_config_flattened_async():
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_customer_repricing_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = repricing.CustomerRepricingConfig()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            repricing.CustomerRepricingConfig()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_customer_repricing_config(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_customer_repricing_config_flattened_error_async():
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_customer_repricing_config(
+            service.GetCustomerRepricingConfigRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListCustomerRepricingConfigsRequest,
+        dict,
+    ],
+)
+def test_list_customer_repricing_configs(request_type, transport: str = "grpc"):
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_customer_repricing_configs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.ListCustomerRepricingConfigsResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.list_customer_repricing_configs(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ListCustomerRepricingConfigsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListCustomerRepricingConfigsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_customer_repricing_configs_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_customer_repricing_configs), "__call__"
+    ) as call:
+        client.list_customer_repricing_configs()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ListCustomerRepricingConfigsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_customer_repricing_configs_async(
+    transport: str = "grpc_asyncio",
+    request_type=service.ListCustomerRepricingConfigsRequest,
+):
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_customer_repricing_configs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ListCustomerRepricingConfigsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_customer_repricing_configs(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ListCustomerRepricingConfigsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListCustomerRepricingConfigsAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_customer_repricing_configs_async_from_dict():
+    await test_list_customer_repricing_configs_async(request_type=dict)
+
+
+def test_list_customer_repricing_configs_field_headers():
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.ListCustomerRepricingConfigsRequest()
+
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_customer_repricing_configs), "__call__"
+    ) as call:
+        call.return_value = service.ListCustomerRepricingConfigsResponse()
+        client.list_customer_repricing_configs(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_customer_repricing_configs_field_headers_async():
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.ListCustomerRepricingConfigsRequest()
+
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_customer_repricing_configs), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ListCustomerRepricingConfigsResponse()
+        )
+        await client.list_customer_repricing_configs(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
+
+
+def test_list_customer_repricing_configs_flattened():
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_customer_repricing_configs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.ListCustomerRepricingConfigsResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_customer_repricing_configs(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_customer_repricing_configs_flattened_error():
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_customer_repricing_configs(
+            service.ListCustomerRepricingConfigsRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_customer_repricing_configs_flattened_async():
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_customer_repricing_configs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.ListCustomerRepricingConfigsResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ListCustomerRepricingConfigsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_customer_repricing_configs(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_customer_repricing_configs_flattened_error_async():
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_customer_repricing_configs(
+            service.ListCustomerRepricingConfigsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_customer_repricing_configs_pager(transport_name: str = "grpc"):
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_customer_repricing_configs), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            service.ListCustomerRepricingConfigsResponse(
+                customer_repricing_configs=[
+                    repricing.CustomerRepricingConfig(),
+                    repricing.CustomerRepricingConfig(),
+                    repricing.CustomerRepricingConfig(),
+                ],
+                next_page_token="abc",
+            ),
+            service.ListCustomerRepricingConfigsResponse(
+                customer_repricing_configs=[],
+                next_page_token="def",
+            ),
+            service.ListCustomerRepricingConfigsResponse(
+                customer_repricing_configs=[
+                    repricing.CustomerRepricingConfig(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListCustomerRepricingConfigsResponse(
+                customer_repricing_configs=[
+                    repricing.CustomerRepricingConfig(),
+                    repricing.CustomerRepricingConfig(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_customer_repricing_configs(request={})
+
+        assert pager._metadata == metadata
+
+        results = [i for i in pager]
+        assert len(results) == 6
+        assert all(isinstance(i, repricing.CustomerRepricingConfig) for i in results)
+
+
+def test_list_customer_repricing_configs_pages(transport_name: str = "grpc"):
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_customer_repricing_configs), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            service.ListCustomerRepricingConfigsResponse(
+                customer_repricing_configs=[
+                    repricing.CustomerRepricingConfig(),
+                    repricing.CustomerRepricingConfig(),
+                    repricing.CustomerRepricingConfig(),
+                ],
+                next_page_token="abc",
+            ),
+            service.ListCustomerRepricingConfigsResponse(
+                customer_repricing_configs=[],
+                next_page_token="def",
+            ),
+            service.ListCustomerRepricingConfigsResponse(
+                customer_repricing_configs=[
+                    repricing.CustomerRepricingConfig(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListCustomerRepricingConfigsResponse(
+                customer_repricing_configs=[
+                    repricing.CustomerRepricingConfig(),
+                    repricing.CustomerRepricingConfig(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_customer_repricing_configs(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_customer_repricing_configs_async_pager():
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_customer_repricing_configs),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            service.ListCustomerRepricingConfigsResponse(
+                customer_repricing_configs=[
+                    repricing.CustomerRepricingConfig(),
+                    repricing.CustomerRepricingConfig(),
+                    repricing.CustomerRepricingConfig(),
+                ],
+                next_page_token="abc",
+            ),
+            service.ListCustomerRepricingConfigsResponse(
+                customer_repricing_configs=[],
+                next_page_token="def",
+            ),
+            service.ListCustomerRepricingConfigsResponse(
+                customer_repricing_configs=[
+                    repricing.CustomerRepricingConfig(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListCustomerRepricingConfigsResponse(
+                customer_repricing_configs=[
+                    repricing.CustomerRepricingConfig(),
+                    repricing.CustomerRepricingConfig(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_customer_repricing_configs(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(isinstance(i, repricing.CustomerRepricingConfig) for i in responses)
+
+
+@pytest.mark.asyncio
+async def test_list_customer_repricing_configs_async_pages():
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_customer_repricing_configs),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            service.ListCustomerRepricingConfigsResponse(
+                customer_repricing_configs=[
+                    repricing.CustomerRepricingConfig(),
+                    repricing.CustomerRepricingConfig(),
+                    repricing.CustomerRepricingConfig(),
+                ],
+                next_page_token="abc",
+            ),
+            service.ListCustomerRepricingConfigsResponse(
+                customer_repricing_configs=[],
+                next_page_token="def",
+            ),
+            service.ListCustomerRepricingConfigsResponse(
+                customer_repricing_configs=[
+                    repricing.CustomerRepricingConfig(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListCustomerRepricingConfigsResponse(
+                customer_repricing_configs=[
+                    repricing.CustomerRepricingConfig(),
+                    repricing.CustomerRepricingConfig(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        async for page_ in (
+            await client.list_customer_repricing_configs(request={})
+        ).pages:  # pragma: no branch
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateCustomerRepricingConfigRequest,
+        dict,
+    ],
+)
+def test_create_customer_repricing_config(request_type, transport: str = "grpc"):
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_customer_repricing_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = repricing.CustomerRepricingConfig(
+            name="name_value",
+        )
+        response = client.create_customer_repricing_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.CreateCustomerRepricingConfigRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, repricing.CustomerRepricingConfig)
+    assert response.name == "name_value"
+
+
+def test_create_customer_repricing_config_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_customer_repricing_config), "__call__"
+    ) as call:
+        client.create_customer_repricing_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.CreateCustomerRepricingConfigRequest()
+
+
+@pytest.mark.asyncio
+async def test_create_customer_repricing_config_async(
+    transport: str = "grpc_asyncio",
+    request_type=service.CreateCustomerRepricingConfigRequest,
+):
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_customer_repricing_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            repricing.CustomerRepricingConfig(
+                name="name_value",
+            )
+        )
+        response = await client.create_customer_repricing_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.CreateCustomerRepricingConfigRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, repricing.CustomerRepricingConfig)
+    assert response.name == "name_value"
+
+
+@pytest.mark.asyncio
+async def test_create_customer_repricing_config_async_from_dict():
+    await test_create_customer_repricing_config_async(request_type=dict)
+
+
+def test_create_customer_repricing_config_field_headers():
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.CreateCustomerRepricingConfigRequest()
+
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_customer_repricing_config), "__call__"
+    ) as call:
+        call.return_value = repricing.CustomerRepricingConfig()
+        client.create_customer_repricing_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_create_customer_repricing_config_field_headers_async():
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.CreateCustomerRepricingConfigRequest()
+
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_customer_repricing_config), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            repricing.CustomerRepricingConfig()
+        )
+        await client.create_customer_repricing_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
+
+
+def test_create_customer_repricing_config_flattened():
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_customer_repricing_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = repricing.CustomerRepricingConfig()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.create_customer_repricing_config(
+            parent="parent_value",
+            customer_repricing_config=repricing.CustomerRepricingConfig(
+                name="name_value"
+            ),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].customer_repricing_config
+        mock_val = repricing.CustomerRepricingConfig(name="name_value")
+        assert arg == mock_val
+
+
+def test_create_customer_repricing_config_flattened_error():
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_customer_repricing_config(
+            service.CreateCustomerRepricingConfigRequest(),
+            parent="parent_value",
+            customer_repricing_config=repricing.CustomerRepricingConfig(
+                name="name_value"
+            ),
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_customer_repricing_config_flattened_async():
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_customer_repricing_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = repricing.CustomerRepricingConfig()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            repricing.CustomerRepricingConfig()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.create_customer_repricing_config(
+            parent="parent_value",
+            customer_repricing_config=repricing.CustomerRepricingConfig(
+                name="name_value"
+            ),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].customer_repricing_config
+        mock_val = repricing.CustomerRepricingConfig(name="name_value")
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_create_customer_repricing_config_flattened_error_async():
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.create_customer_repricing_config(
+            service.CreateCustomerRepricingConfigRequest(),
+            parent="parent_value",
+            customer_repricing_config=repricing.CustomerRepricingConfig(
+                name="name_value"
+            ),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UpdateCustomerRepricingConfigRequest,
+        dict,
+    ],
+)
+def test_update_customer_repricing_config(request_type, transport: str = "grpc"):
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_customer_repricing_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = repricing.CustomerRepricingConfig(
+            name="name_value",
+        )
+        response = client.update_customer_repricing_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.UpdateCustomerRepricingConfigRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, repricing.CustomerRepricingConfig)
+    assert response.name == "name_value"
+
+
+def test_update_customer_repricing_config_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_customer_repricing_config), "__call__"
+    ) as call:
+        client.update_customer_repricing_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.UpdateCustomerRepricingConfigRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_customer_repricing_config_async(
+    transport: str = "grpc_asyncio",
+    request_type=service.UpdateCustomerRepricingConfigRequest,
+):
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_customer_repricing_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            repricing.CustomerRepricingConfig(
+                name="name_value",
+            )
+        )
+        response = await client.update_customer_repricing_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.UpdateCustomerRepricingConfigRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, repricing.CustomerRepricingConfig)
+    assert response.name == "name_value"
+
+
+@pytest.mark.asyncio
+async def test_update_customer_repricing_config_async_from_dict():
+    await test_update_customer_repricing_config_async(request_type=dict)
+
+
+def test_update_customer_repricing_config_field_headers():
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.UpdateCustomerRepricingConfigRequest()
+
+    request.customer_repricing_config.name = "customer_repricing_config.name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_customer_repricing_config), "__call__"
+    ) as call:
+        call.return_value = repricing.CustomerRepricingConfig()
+        client.update_customer_repricing_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "customer_repricing_config.name=customer_repricing_config.name/value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_customer_repricing_config_field_headers_async():
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.UpdateCustomerRepricingConfigRequest()
+
+    request.customer_repricing_config.name = "customer_repricing_config.name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_customer_repricing_config), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            repricing.CustomerRepricingConfig()
+        )
+        await client.update_customer_repricing_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "customer_repricing_config.name=customer_repricing_config.name/value",
+    ) in kw["metadata"]
+
+
+def test_update_customer_repricing_config_flattened():
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_customer_repricing_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = repricing.CustomerRepricingConfig()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_customer_repricing_config(
+            customer_repricing_config=repricing.CustomerRepricingConfig(
+                name="name_value"
+            ),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].customer_repricing_config
+        mock_val = repricing.CustomerRepricingConfig(name="name_value")
+        assert arg == mock_val
+
+
+def test_update_customer_repricing_config_flattened_error():
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_customer_repricing_config(
+            service.UpdateCustomerRepricingConfigRequest(),
+            customer_repricing_config=repricing.CustomerRepricingConfig(
+                name="name_value"
+            ),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_customer_repricing_config_flattened_async():
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_customer_repricing_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = repricing.CustomerRepricingConfig()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            repricing.CustomerRepricingConfig()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_customer_repricing_config(
+            customer_repricing_config=repricing.CustomerRepricingConfig(
+                name="name_value"
+            ),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].customer_repricing_config
+        mock_val = repricing.CustomerRepricingConfig(name="name_value")
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_customer_repricing_config_flattened_error_async():
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_customer_repricing_config(
+            service.UpdateCustomerRepricingConfigRequest(),
+            customer_repricing_config=repricing.CustomerRepricingConfig(
+                name="name_value"
+            ),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DeleteCustomerRepricingConfigRequest,
+        dict,
+    ],
+)
+def test_delete_customer_repricing_config(request_type, transport: str = "grpc"):
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_customer_repricing_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        response = client.delete_customer_repricing_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.DeleteCustomerRepricingConfigRequest()
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_customer_repricing_config_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_customer_repricing_config), "__call__"
+    ) as call:
+        client.delete_customer_repricing_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.DeleteCustomerRepricingConfigRequest()
+
+
+@pytest.mark.asyncio
+async def test_delete_customer_repricing_config_async(
+    transport: str = "grpc_asyncio",
+    request_type=service.DeleteCustomerRepricingConfigRequest,
+):
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_customer_repricing_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_customer_repricing_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.DeleteCustomerRepricingConfigRequest()
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.asyncio
+async def test_delete_customer_repricing_config_async_from_dict():
+    await test_delete_customer_repricing_config_async(request_type=dict)
+
+
+def test_delete_customer_repricing_config_field_headers():
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.DeleteCustomerRepricingConfigRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_customer_repricing_config), "__call__"
+    ) as call:
+        call.return_value = None
+        client.delete_customer_repricing_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_customer_repricing_config_field_headers_async():
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.DeleteCustomerRepricingConfigRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_customer_repricing_config), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_customer_repricing_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
+
+
+def test_delete_customer_repricing_config_flattened():
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_customer_repricing_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.delete_customer_repricing_config(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_delete_customer_repricing_config_flattened_error():
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_customer_repricing_config(
+            service.DeleteCustomerRepricingConfigRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_customer_repricing_config_flattened_async():
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_customer_repricing_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.delete_customer_repricing_config(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_delete_customer_repricing_config_flattened_error_async():
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.delete_customer_repricing_config(
+            service.DeleteCustomerRepricingConfigRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.GetChannelPartnerRepricingConfigRequest,
+        dict,
+    ],
+)
+def test_get_channel_partner_repricing_config(request_type, transport: str = "grpc"):
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_channel_partner_repricing_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = repricing.ChannelPartnerRepricingConfig(
+            name="name_value",
+        )
+        response = client.get_channel_partner_repricing_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.GetChannelPartnerRepricingConfigRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, repricing.ChannelPartnerRepricingConfig)
+    assert response.name == "name_value"
+
+
+def test_get_channel_partner_repricing_config_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_channel_partner_repricing_config), "__call__"
+    ) as call:
+        client.get_channel_partner_repricing_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.GetChannelPartnerRepricingConfigRequest()
+
+
+@pytest.mark.asyncio
+async def test_get_channel_partner_repricing_config_async(
+    transport: str = "grpc_asyncio",
+    request_type=service.GetChannelPartnerRepricingConfigRequest,
+):
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_channel_partner_repricing_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            repricing.ChannelPartnerRepricingConfig(
+                name="name_value",
+            )
+        )
+        response = await client.get_channel_partner_repricing_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.GetChannelPartnerRepricingConfigRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, repricing.ChannelPartnerRepricingConfig)
+    assert response.name == "name_value"
+
+
+@pytest.mark.asyncio
+async def test_get_channel_partner_repricing_config_async_from_dict():
+    await test_get_channel_partner_repricing_config_async(request_type=dict)
+
+
+def test_get_channel_partner_repricing_config_field_headers():
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.GetChannelPartnerRepricingConfigRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_channel_partner_repricing_config), "__call__"
+    ) as call:
+        call.return_value = repricing.ChannelPartnerRepricingConfig()
+        client.get_channel_partner_repricing_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_channel_partner_repricing_config_field_headers_async():
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.GetChannelPartnerRepricingConfigRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_channel_partner_repricing_config), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            repricing.ChannelPartnerRepricingConfig()
+        )
+        await client.get_channel_partner_repricing_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
+
+
+def test_get_channel_partner_repricing_config_flattened():
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_channel_partner_repricing_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = repricing.ChannelPartnerRepricingConfig()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.get_channel_partner_repricing_config(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_get_channel_partner_repricing_config_flattened_error():
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.get_channel_partner_repricing_config(
+            service.GetChannelPartnerRepricingConfigRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_get_channel_partner_repricing_config_flattened_async():
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_channel_partner_repricing_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = repricing.ChannelPartnerRepricingConfig()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            repricing.ChannelPartnerRepricingConfig()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.get_channel_partner_repricing_config(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_get_channel_partner_repricing_config_flattened_error_async():
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.get_channel_partner_repricing_config(
+            service.GetChannelPartnerRepricingConfigRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.ListChannelPartnerRepricingConfigsRequest,
+        dict,
+    ],
+)
+def test_list_channel_partner_repricing_configs(request_type, transport: str = "grpc"):
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_channel_partner_repricing_configs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.ListChannelPartnerRepricingConfigsResponse(
+            next_page_token="next_page_token_value",
+        )
+        response = client.list_channel_partner_repricing_configs(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ListChannelPartnerRepricingConfigsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListChannelPartnerRepricingConfigsPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+def test_list_channel_partner_repricing_configs_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_channel_partner_repricing_configs), "__call__"
+    ) as call:
+        client.list_channel_partner_repricing_configs()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ListChannelPartnerRepricingConfigsRequest()
+
+
+@pytest.mark.asyncio
+async def test_list_channel_partner_repricing_configs_async(
+    transport: str = "grpc_asyncio",
+    request_type=service.ListChannelPartnerRepricingConfigsRequest,
+):
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_channel_partner_repricing_configs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ListChannelPartnerRepricingConfigsResponse(
+                next_page_token="next_page_token_value",
+            )
+        )
+        response = await client.list_channel_partner_repricing_configs(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.ListChannelPartnerRepricingConfigsRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, pagers.ListChannelPartnerRepricingConfigsAsyncPager)
+    assert response.next_page_token == "next_page_token_value"
+
+
+@pytest.mark.asyncio
+async def test_list_channel_partner_repricing_configs_async_from_dict():
+    await test_list_channel_partner_repricing_configs_async(request_type=dict)
+
+
+def test_list_channel_partner_repricing_configs_field_headers():
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.ListChannelPartnerRepricingConfigsRequest()
+
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_channel_partner_repricing_configs), "__call__"
+    ) as call:
+        call.return_value = service.ListChannelPartnerRepricingConfigsResponse()
+        client.list_channel_partner_repricing_configs(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_channel_partner_repricing_configs_field_headers_async():
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.ListChannelPartnerRepricingConfigsRequest()
+
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_channel_partner_repricing_configs), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ListChannelPartnerRepricingConfigsResponse()
+        )
+        await client.list_channel_partner_repricing_configs(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
+
+
+def test_list_channel_partner_repricing_configs_flattened():
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_channel_partner_repricing_configs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.ListChannelPartnerRepricingConfigsResponse()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.list_channel_partner_repricing_configs(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+def test_list_channel_partner_repricing_configs_flattened_error():
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.list_channel_partner_repricing_configs(
+            service.ListChannelPartnerRepricingConfigsRequest(),
+            parent="parent_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_channel_partner_repricing_configs_flattened_async():
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_channel_partner_repricing_configs), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = service.ListChannelPartnerRepricingConfigsResponse()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            service.ListChannelPartnerRepricingConfigsResponse()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.list_channel_partner_repricing_configs(
+            parent="parent_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_list_channel_partner_repricing_configs_flattened_error_async():
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.list_channel_partner_repricing_configs(
+            service.ListChannelPartnerRepricingConfigsRequest(),
+            parent="parent_value",
+        )
+
+
+def test_list_channel_partner_repricing_configs_pager(transport_name: str = "grpc"):
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_channel_partner_repricing_configs), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            service.ListChannelPartnerRepricingConfigsResponse(
+                channel_partner_repricing_configs=[
+                    repricing.ChannelPartnerRepricingConfig(),
+                    repricing.ChannelPartnerRepricingConfig(),
+                    repricing.ChannelPartnerRepricingConfig(),
+                ],
+                next_page_token="abc",
+            ),
+            service.ListChannelPartnerRepricingConfigsResponse(
+                channel_partner_repricing_configs=[],
+                next_page_token="def",
+            ),
+            service.ListChannelPartnerRepricingConfigsResponse(
+                channel_partner_repricing_configs=[
+                    repricing.ChannelPartnerRepricingConfig(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListChannelPartnerRepricingConfigsResponse(
+                channel_partner_repricing_configs=[
+                    repricing.ChannelPartnerRepricingConfig(),
+                    repricing.ChannelPartnerRepricingConfig(),
+                ],
+            ),
+            RuntimeError,
+        )
+
+        metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", ""),)),
+        )
+        pager = client.list_channel_partner_repricing_configs(request={})
+
+        assert pager._metadata == metadata
+
+        results = [i for i in pager]
+        assert len(results) == 6
+        assert all(
+            isinstance(i, repricing.ChannelPartnerRepricingConfig) for i in results
+        )
+
+
+def test_list_channel_partner_repricing_configs_pages(transport_name: str = "grpc"):
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials,
+        transport=transport_name,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_channel_partner_repricing_configs), "__call__"
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            service.ListChannelPartnerRepricingConfigsResponse(
+                channel_partner_repricing_configs=[
+                    repricing.ChannelPartnerRepricingConfig(),
+                    repricing.ChannelPartnerRepricingConfig(),
+                    repricing.ChannelPartnerRepricingConfig(),
+                ],
+                next_page_token="abc",
+            ),
+            service.ListChannelPartnerRepricingConfigsResponse(
+                channel_partner_repricing_configs=[],
+                next_page_token="def",
+            ),
+            service.ListChannelPartnerRepricingConfigsResponse(
+                channel_partner_repricing_configs=[
+                    repricing.ChannelPartnerRepricingConfig(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListChannelPartnerRepricingConfigsResponse(
+                channel_partner_repricing_configs=[
+                    repricing.ChannelPartnerRepricingConfig(),
+                    repricing.ChannelPartnerRepricingConfig(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = list(client.list_channel_partner_repricing_configs(request={}).pages)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.asyncio
+async def test_list_channel_partner_repricing_configs_async_pager():
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_channel_partner_repricing_configs),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            service.ListChannelPartnerRepricingConfigsResponse(
+                channel_partner_repricing_configs=[
+                    repricing.ChannelPartnerRepricingConfig(),
+                    repricing.ChannelPartnerRepricingConfig(),
+                    repricing.ChannelPartnerRepricingConfig(),
+                ],
+                next_page_token="abc",
+            ),
+            service.ListChannelPartnerRepricingConfigsResponse(
+                channel_partner_repricing_configs=[],
+                next_page_token="def",
+            ),
+            service.ListChannelPartnerRepricingConfigsResponse(
+                channel_partner_repricing_configs=[
+                    repricing.ChannelPartnerRepricingConfig(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListChannelPartnerRepricingConfigsResponse(
+                channel_partner_repricing_configs=[
+                    repricing.ChannelPartnerRepricingConfig(),
+                    repricing.ChannelPartnerRepricingConfig(),
+                ],
+            ),
+            RuntimeError,
+        )
+        async_pager = await client.list_channel_partner_repricing_configs(
+            request={},
+        )
+        assert async_pager.next_page_token == "abc"
+        responses = []
+        async for response in async_pager:  # pragma: no branch
+            responses.append(response)
+
+        assert len(responses) == 6
+        assert all(
+            isinstance(i, repricing.ChannelPartnerRepricingConfig) for i in responses
+        )
+
+
+@pytest.mark.asyncio
+async def test_list_channel_partner_repricing_configs_async_pages():
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials,
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_channel_partner_repricing_configs),
+        "__call__",
+        new_callable=mock.AsyncMock,
+    ) as call:
+        # Set the response to a series of pages.
+        call.side_effect = (
+            service.ListChannelPartnerRepricingConfigsResponse(
+                channel_partner_repricing_configs=[
+                    repricing.ChannelPartnerRepricingConfig(),
+                    repricing.ChannelPartnerRepricingConfig(),
+                    repricing.ChannelPartnerRepricingConfig(),
+                ],
+                next_page_token="abc",
+            ),
+            service.ListChannelPartnerRepricingConfigsResponse(
+                channel_partner_repricing_configs=[],
+                next_page_token="def",
+            ),
+            service.ListChannelPartnerRepricingConfigsResponse(
+                channel_partner_repricing_configs=[
+                    repricing.ChannelPartnerRepricingConfig(),
+                ],
+                next_page_token="ghi",
+            ),
+            service.ListChannelPartnerRepricingConfigsResponse(
+                channel_partner_repricing_configs=[
+                    repricing.ChannelPartnerRepricingConfig(),
+                    repricing.ChannelPartnerRepricingConfig(),
+                ],
+            ),
+            RuntimeError,
+        )
+        pages = []
+        async for page_ in (
+            await client.list_channel_partner_repricing_configs(request={})
+        ).pages:  # pragma: no branch
+            pages.append(page_)
+        for page_, token in zip(pages, ["abc", "def", "ghi", ""]):
+            assert page_.raw_page.next_page_token == token
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.CreateChannelPartnerRepricingConfigRequest,
+        dict,
+    ],
+)
+def test_create_channel_partner_repricing_config(request_type, transport: str = "grpc"):
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_channel_partner_repricing_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = repricing.ChannelPartnerRepricingConfig(
+            name="name_value",
+        )
+        response = client.create_channel_partner_repricing_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.CreateChannelPartnerRepricingConfigRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, repricing.ChannelPartnerRepricingConfig)
+    assert response.name == "name_value"
+
+
+def test_create_channel_partner_repricing_config_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_channel_partner_repricing_config), "__call__"
+    ) as call:
+        client.create_channel_partner_repricing_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.CreateChannelPartnerRepricingConfigRequest()
+
+
+@pytest.mark.asyncio
+async def test_create_channel_partner_repricing_config_async(
+    transport: str = "grpc_asyncio",
+    request_type=service.CreateChannelPartnerRepricingConfigRequest,
+):
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_channel_partner_repricing_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            repricing.ChannelPartnerRepricingConfig(
+                name="name_value",
+            )
+        )
+        response = await client.create_channel_partner_repricing_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.CreateChannelPartnerRepricingConfigRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, repricing.ChannelPartnerRepricingConfig)
+    assert response.name == "name_value"
+
+
+@pytest.mark.asyncio
+async def test_create_channel_partner_repricing_config_async_from_dict():
+    await test_create_channel_partner_repricing_config_async(request_type=dict)
+
+
+def test_create_channel_partner_repricing_config_field_headers():
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.CreateChannelPartnerRepricingConfigRequest()
+
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_channel_partner_repricing_config), "__call__"
+    ) as call:
+        call.return_value = repricing.ChannelPartnerRepricingConfig()
+        client.create_channel_partner_repricing_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_create_channel_partner_repricing_config_field_headers_async():
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.CreateChannelPartnerRepricingConfigRequest()
+
+    request.parent = "parent/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_channel_partner_repricing_config), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            repricing.ChannelPartnerRepricingConfig()
+        )
+        await client.create_channel_partner_repricing_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "parent=parent/value",
+    ) in kw["metadata"]
+
+
+def test_create_channel_partner_repricing_config_flattened():
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_channel_partner_repricing_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = repricing.ChannelPartnerRepricingConfig()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.create_channel_partner_repricing_config(
+            parent="parent_value",
+            channel_partner_repricing_config=repricing.ChannelPartnerRepricingConfig(
+                name="name_value"
+            ),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].channel_partner_repricing_config
+        mock_val = repricing.ChannelPartnerRepricingConfig(name="name_value")
+        assert arg == mock_val
+
+
+def test_create_channel_partner_repricing_config_flattened_error():
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.create_channel_partner_repricing_config(
+            service.CreateChannelPartnerRepricingConfigRequest(),
+            parent="parent_value",
+            channel_partner_repricing_config=repricing.ChannelPartnerRepricingConfig(
+                name="name_value"
+            ),
+        )
+
+
+@pytest.mark.asyncio
+async def test_create_channel_partner_repricing_config_flattened_async():
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.create_channel_partner_repricing_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = repricing.ChannelPartnerRepricingConfig()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            repricing.ChannelPartnerRepricingConfig()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.create_channel_partner_repricing_config(
+            parent="parent_value",
+            channel_partner_repricing_config=repricing.ChannelPartnerRepricingConfig(
+                name="name_value"
+            ),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].parent
+        mock_val = "parent_value"
+        assert arg == mock_val
+        arg = args[0].channel_partner_repricing_config
+        mock_val = repricing.ChannelPartnerRepricingConfig(name="name_value")
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_create_channel_partner_repricing_config_flattened_error_async():
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.create_channel_partner_repricing_config(
+            service.CreateChannelPartnerRepricingConfigRequest(),
+            parent="parent_value",
+            channel_partner_repricing_config=repricing.ChannelPartnerRepricingConfig(
+                name="name_value"
+            ),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.UpdateChannelPartnerRepricingConfigRequest,
+        dict,
+    ],
+)
+def test_update_channel_partner_repricing_config(request_type, transport: str = "grpc"):
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_channel_partner_repricing_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = repricing.ChannelPartnerRepricingConfig(
+            name="name_value",
+        )
+        response = client.update_channel_partner_repricing_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.UpdateChannelPartnerRepricingConfigRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, repricing.ChannelPartnerRepricingConfig)
+    assert response.name == "name_value"
+
+
+def test_update_channel_partner_repricing_config_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_channel_partner_repricing_config), "__call__"
+    ) as call:
+        client.update_channel_partner_repricing_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.UpdateChannelPartnerRepricingConfigRequest()
+
+
+@pytest.mark.asyncio
+async def test_update_channel_partner_repricing_config_async(
+    transport: str = "grpc_asyncio",
+    request_type=service.UpdateChannelPartnerRepricingConfigRequest,
+):
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_channel_partner_repricing_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            repricing.ChannelPartnerRepricingConfig(
+                name="name_value",
+            )
+        )
+        response = await client.update_channel_partner_repricing_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.UpdateChannelPartnerRepricingConfigRequest()
+
+    # Establish that the response is the type that we expect.
+    assert isinstance(response, repricing.ChannelPartnerRepricingConfig)
+    assert response.name == "name_value"
+
+
+@pytest.mark.asyncio
+async def test_update_channel_partner_repricing_config_async_from_dict():
+    await test_update_channel_partner_repricing_config_async(request_type=dict)
+
+
+def test_update_channel_partner_repricing_config_field_headers():
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.UpdateChannelPartnerRepricingConfigRequest()
+
+    request.channel_partner_repricing_config.name = (
+        "channel_partner_repricing_config.name/value"
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_channel_partner_repricing_config), "__call__"
+    ) as call:
+        call.return_value = repricing.ChannelPartnerRepricingConfig()
+        client.update_channel_partner_repricing_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "channel_partner_repricing_config.name=channel_partner_repricing_config.name/value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_channel_partner_repricing_config_field_headers_async():
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.UpdateChannelPartnerRepricingConfigRequest()
+
+    request.channel_partner_repricing_config.name = (
+        "channel_partner_repricing_config.name/value"
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_channel_partner_repricing_config), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            repricing.ChannelPartnerRepricingConfig()
+        )
+        await client.update_channel_partner_repricing_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "channel_partner_repricing_config.name=channel_partner_repricing_config.name/value",
+    ) in kw["metadata"]
+
+
+def test_update_channel_partner_repricing_config_flattened():
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_channel_partner_repricing_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = repricing.ChannelPartnerRepricingConfig()
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.update_channel_partner_repricing_config(
+            channel_partner_repricing_config=repricing.ChannelPartnerRepricingConfig(
+                name="name_value"
+            ),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].channel_partner_repricing_config
+        mock_val = repricing.ChannelPartnerRepricingConfig(name="name_value")
+        assert arg == mock_val
+
+
+def test_update_channel_partner_repricing_config_flattened_error():
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.update_channel_partner_repricing_config(
+            service.UpdateChannelPartnerRepricingConfigRequest(),
+            channel_partner_repricing_config=repricing.ChannelPartnerRepricingConfig(
+                name="name_value"
+            ),
+        )
+
+
+@pytest.mark.asyncio
+async def test_update_channel_partner_repricing_config_flattened_async():
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.update_channel_partner_repricing_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = repricing.ChannelPartnerRepricingConfig()
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            repricing.ChannelPartnerRepricingConfig()
+        )
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.update_channel_partner_repricing_config(
+            channel_partner_repricing_config=repricing.ChannelPartnerRepricingConfig(
+                name="name_value"
+            ),
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].channel_partner_repricing_config
+        mock_val = repricing.ChannelPartnerRepricingConfig(name="name_value")
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_update_channel_partner_repricing_config_flattened_error_async():
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.update_channel_partner_repricing_config(
+            service.UpdateChannelPartnerRepricingConfigRequest(),
+            channel_partner_repricing_config=repricing.ChannelPartnerRepricingConfig(
+                name="name_value"
+            ),
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
+        service.DeleteChannelPartnerRepricingConfigRequest,
+        dict,
+    ],
+)
+def test_delete_channel_partner_repricing_config(request_type, transport: str = "grpc"):
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_channel_partner_repricing_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        response = client.delete_channel_partner_repricing_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.DeleteChannelPartnerRepricingConfigRequest()
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+def test_delete_channel_partner_repricing_config_empty_call():
+    # This test is a coverage failsafe to make sure that totally empty calls,
+    # i.e. request == None and no flattened fields passed, work.
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport="grpc",
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_channel_partner_repricing_config), "__call__"
+    ) as call:
+        client.delete_channel_partner_repricing_config()
+        call.assert_called()
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.DeleteChannelPartnerRepricingConfigRequest()
+
+
+@pytest.mark.asyncio
+async def test_delete_channel_partner_repricing_config_async(
+    transport: str = "grpc_asyncio",
+    request_type=service.DeleteChannelPartnerRepricingConfigRequest,
+):
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+        transport=transport,
+    )
+
+    # Everything is optional in proto3 as far as the runtime is concerned,
+    # and we are mocking out the actual API, so just send an empty request.
+    request = request_type()
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_channel_partner_repricing_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        response = await client.delete_channel_partner_repricing_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == service.DeleteChannelPartnerRepricingConfigRequest()
+
+    # Establish that the response is the type that we expect.
+    assert response is None
+
+
+@pytest.mark.asyncio
+async def test_delete_channel_partner_repricing_config_async_from_dict():
+    await test_delete_channel_partner_repricing_config_async(request_type=dict)
+
+
+def test_delete_channel_partner_repricing_config_field_headers():
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.DeleteChannelPartnerRepricingConfigRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_channel_partner_repricing_config), "__call__"
+    ) as call:
+        call.return_value = None
+        client.delete_channel_partner_repricing_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_channel_partner_repricing_config_field_headers_async():
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = service.DeleteChannelPartnerRepricingConfigRequest()
+
+    request.name = "name/value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_channel_partner_repricing_config), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        await client.delete_channel_partner_repricing_config(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "name=name/value",
+    ) in kw["metadata"]
+
+
+def test_delete_channel_partner_repricing_config_flattened():
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_channel_partner_repricing_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        client.delete_channel_partner_repricing_config(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+def test_delete_channel_partner_repricing_config_flattened_error():
+    client = CloudChannelServiceClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        client.delete_channel_partner_repricing_config(
+            service.DeleteChannelPartnerRepricingConfigRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.asyncio
+async def test_delete_channel_partner_repricing_config_flattened_async():
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.delete_channel_partner_repricing_config), "__call__"
+    ) as call:
+        # Designate an appropriate return value for the call.
+        call.return_value = None
+
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(None)
+        # Call the method with a truthy value for each flattened field,
+        # using the keyword arguments to the method.
+        response = await client.delete_channel_partner_repricing_config(
+            name="name_value",
+        )
+
+        # Establish that the underlying call was made with the expected
+        # request object values.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        arg = args[0].name
+        mock_val = "name_value"
+        assert arg == mock_val
+
+
+@pytest.mark.asyncio
+async def test_delete_channel_partner_repricing_config_flattened_error_async():
+    client = CloudChannelServiceAsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Attempting to call a method with both a request object and flattened
+    # fields is an error.
+    with pytest.raises(ValueError):
+        await client.delete_channel_partner_repricing_config(
+            service.DeleteChannelPartnerRepricingConfigRequest(),
+            name="name_value",
+        )
+
+
+@pytest.mark.parametrize(
+    "request_type",
+    [
         service.LookupOfferRequest,
         dict,
     ],
@@ -8630,6 +11531,16 @@ def test_cloud_channel_service_base_transport():
         "get_channel_partner_link",
         "create_channel_partner_link",
         "update_channel_partner_link",
+        "get_customer_repricing_config",
+        "list_customer_repricing_configs",
+        "create_customer_repricing_config",
+        "update_customer_repricing_config",
+        "delete_customer_repricing_config",
+        "get_channel_partner_repricing_config",
+        "list_channel_partner_repricing_configs",
+        "create_channel_partner_repricing_config",
+        "update_channel_partner_repricing_config",
+        "delete_channel_partner_repricing_config",
         "lookup_offer",
         "list_products",
         "list_skus",
@@ -9028,9 +11939,37 @@ def test_parse_channel_partner_link_path():
     assert expected == actual
 
 
-def test_customer_path():
+def test_channel_partner_repricing_config_path():
     account = "oyster"
-    customer = "nudibranch"
+    channel_partner = "nudibranch"
+    channel_partner_repricing_config = "cuttlefish"
+    expected = "accounts/{account}/channelPartnerLinks/{channel_partner}/channelPartnerRepricingConfigs/{channel_partner_repricing_config}".format(
+        account=account,
+        channel_partner=channel_partner,
+        channel_partner_repricing_config=channel_partner_repricing_config,
+    )
+    actual = CloudChannelServiceClient.channel_partner_repricing_config_path(
+        account, channel_partner, channel_partner_repricing_config
+    )
+    assert expected == actual
+
+
+def test_parse_channel_partner_repricing_config_path():
+    expected = {
+        "account": "mussel",
+        "channel_partner": "winkle",
+        "channel_partner_repricing_config": "nautilus",
+    }
+    path = CloudChannelServiceClient.channel_partner_repricing_config_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = CloudChannelServiceClient.parse_channel_partner_repricing_config_path(path)
+    assert expected == actual
+
+
+def test_customer_path():
+    account = "scallop"
+    customer = "abalone"
     expected = "accounts/{account}/customers/{customer}".format(
         account=account,
         customer=customer,
@@ -9041,13 +11980,41 @@ def test_customer_path():
 
 def test_parse_customer_path():
     expected = {
-        "account": "cuttlefish",
-        "customer": "mussel",
+        "account": "squid",
+        "customer": "clam",
     }
     path = CloudChannelServiceClient.customer_path(**expected)
 
     # Check that the path construction is reversible.
     actual = CloudChannelServiceClient.parse_customer_path(path)
+    assert expected == actual
+
+
+def test_customer_repricing_config_path():
+    account = "whelk"
+    customer = "octopus"
+    customer_repricing_config = "oyster"
+    expected = "accounts/{account}/customers/{customer}/customerRepricingConfigs/{customer_repricing_config}".format(
+        account=account,
+        customer=customer,
+        customer_repricing_config=customer_repricing_config,
+    )
+    actual = CloudChannelServiceClient.customer_repricing_config_path(
+        account, customer, customer_repricing_config
+    )
+    assert expected == actual
+
+
+def test_parse_customer_repricing_config_path():
+    expected = {
+        "account": "nudibranch",
+        "customer": "cuttlefish",
+        "customer_repricing_config": "mussel",
+    }
+    path = CloudChannelServiceClient.customer_repricing_config_path(**expected)
+
+    # Check that the path construction is reversible.
+    actual = CloudChannelServiceClient.parse_customer_repricing_config_path(path)
     assert expected == actual
 
 

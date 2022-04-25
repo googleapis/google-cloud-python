@@ -24,6 +24,7 @@ from google.cloud.channel_v1.types import customers as gcc_customers
 from google.cloud.channel_v1.types import entitlements as gcc_entitlements
 from google.cloud.channel_v1.types import offers as gcc_offers
 from google.cloud.channel_v1.types import products as gcc_products
+from google.cloud.channel_v1.types import repricing
 
 __protobuf__ = proto.module(
     package="google.cloud.channel.v1",
@@ -52,6 +53,18 @@ __protobuf__ = proto.module(
         "GetChannelPartnerLinkRequest",
         "CreateChannelPartnerLinkRequest",
         "UpdateChannelPartnerLinkRequest",
+        "GetCustomerRepricingConfigRequest",
+        "ListCustomerRepricingConfigsRequest",
+        "ListCustomerRepricingConfigsResponse",
+        "CreateCustomerRepricingConfigRequest",
+        "UpdateCustomerRepricingConfigRequest",
+        "DeleteCustomerRepricingConfigRequest",
+        "GetChannelPartnerRepricingConfigRequest",
+        "ListChannelPartnerRepricingConfigsRequest",
+        "ListChannelPartnerRepricingConfigsResponse",
+        "CreateChannelPartnerRepricingConfigRequest",
+        "UpdateChannelPartnerRepricingConfigRequest",
+        "DeleteChannelPartnerRepricingConfigRequest",
         "CreateEntitlementRequest",
         "TransferEntitlementsRequest",
         "TransferEntitlementsResponse",
@@ -919,6 +932,323 @@ class UpdateChannelPartnerLinkRequest(proto.Message):
         proto.MESSAGE,
         number=3,
         message=field_mask_pb2.FieldMask,
+    )
+
+
+class GetCustomerRepricingConfigRequest(proto.Message):
+    r"""Request message for
+    [CloudChannelService.GetCustomerRepricingConfig][google.cloud.channel.v1.CloudChannelService.GetCustomerRepricingConfig].
+
+    Attributes:
+        name (str):
+            Required. The resource name of the CustomerRepricingConfig.
+            Format:
+            accounts/{account_id}/customers/{customer_id}/customerRepricingConfigs/{id}.
+    """
+
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListCustomerRepricingConfigsRequest(proto.Message):
+    r"""Request message for
+    [CloudChannelService.ListCustomerRepricingConfigs][google.cloud.channel.v1.CloudChannelService.ListCustomerRepricingConfigs].
+
+    Attributes:
+        parent (str):
+            Required. The resource name of the customer. Parent uses the
+            format: accounts/{account_id}/customers/{customer_id}.
+            Supports accounts/{account_id}/customers/- to retrieve
+            configs for all customers.
+        page_size (int):
+            Optional. The maximum number of repricing
+            configs to return. The service may return fewer
+            than this value. If unspecified, returns a
+            maximum of 50 rules. The maximum value is 100;
+            values above 100 will be coerced to 100.
+        page_token (str):
+            Optional. A token identifying a page of results beyond the
+            first page. Obtained through
+            [ListCustomerRepricingConfigsResponse.next_page_token][google.cloud.channel.v1.ListCustomerRepricingConfigsResponse.next_page_token]
+            of the previous
+            [CloudChannelService.ListCustomerRepricingConfigs][google.cloud.channel.v1.CloudChannelService.ListCustomerRepricingConfigs]
+            call.
+        filter (str):
+            Optional. A filter for
+            [CloudChannelService.ListCustomerRepricingConfigs] results
+            (customer only). You can use this filter when you support a
+            BatchGet-like query. To use the filter, you must set
+            ``parent=accounts/{account_id}/customers/-``.
+
+            Example: customer = accounts/account_id/customers/c1 OR
+            customer = accounts/account_id/customers/c2.
+    """
+
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class ListCustomerRepricingConfigsResponse(proto.Message):
+    r"""Response message for
+    [CloudChannelService.ListCustomerRepricingConfigs][google.cloud.channel.v1.CloudChannelService.ListCustomerRepricingConfigs].
+
+    Attributes:
+        customer_repricing_configs (Sequence[google.cloud.channel_v1.types.CustomerRepricingConfig]):
+            The repricing configs for this channel
+            partner.
+        next_page_token (str):
+            A token to retrieve the next page of results. Pass to
+            [ListCustomerRepricingConfigsRequest.page_token][google.cloud.channel.v1.ListCustomerRepricingConfigsRequest.page_token]
+            to obtain that page.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    customer_repricing_configs = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=repricing.CustomerRepricingConfig,
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class CreateCustomerRepricingConfigRequest(proto.Message):
+    r"""Request message for
+    [CloudChannelService.CreateCustomerRepricingConfig][google.cloud.channel.v1.CloudChannelService.CreateCustomerRepricingConfig].
+
+    Attributes:
+        parent (str):
+            Required. The resource name of the customer that will
+            receive this repricing config. Parent uses the format:
+            accounts/{account_id}/customers/{customer_id}
+        customer_repricing_config (google.cloud.channel_v1.types.CustomerRepricingConfig):
+            Required. The CustomerRepricingConfig object
+            to update.
+    """
+
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    customer_repricing_config = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=repricing.CustomerRepricingConfig,
+    )
+
+
+class UpdateCustomerRepricingConfigRequest(proto.Message):
+    r"""Request message for
+    [CloudChannelService.UpdateCustomerRepricingConfig][google.cloud.channel.v1.CloudChannelService.UpdateCustomerRepricingConfig].
+
+    Attributes:
+        customer_repricing_config (google.cloud.channel_v1.types.CustomerRepricingConfig):
+            Required. The CustomerRepricingConfig object
+            to update.
+    """
+
+    customer_repricing_config = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=repricing.CustomerRepricingConfig,
+    )
+
+
+class DeleteCustomerRepricingConfigRequest(proto.Message):
+    r"""Request message for
+    [CloudChannelService.DeleteCustomerRepricingConfig][google.cloud.channel.v1.CloudChannelService.DeleteCustomerRepricingConfig].
+
+    Attributes:
+        name (str):
+            Required. The resource name of the customer repricing config
+            rule to delete. Format:
+            accounts/{account_id}/customers/{customer_id}/customerRepricingConfigs/{id}.
+    """
+
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class GetChannelPartnerRepricingConfigRequest(proto.Message):
+    r"""Request message for
+    [CloudChannelService.GetChannelPartnerRepricingConfig][google.cloud.channel.v1.CloudChannelService.GetChannelPartnerRepricingConfig]
+
+    Attributes:
+        name (str):
+            Required. The resource name of the
+            ChannelPartnerRepricingConfig Format:
+            accounts/{account_id}/channelPartnerLinks/{channel_partner_id}/channelPartnerRepricingConfigs/{id}.
+    """
+
+    name = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+
+
+class ListChannelPartnerRepricingConfigsRequest(proto.Message):
+    r"""Request message for
+    [CloudChannelService.ListChannelPartnerRepricingConfigs][google.cloud.channel.v1.CloudChannelService.ListChannelPartnerRepricingConfigs].
+
+    Attributes:
+        parent (str):
+            Required. The resource name of the account's
+            [ChannelPartnerLink][google.cloud.channel.v1.ChannelPartnerLink].
+            Parent uses the format:
+            accounts/{account_id}/channelPartnerLinks/{channel_partner_id}.
+            Supports accounts/{account_id}/channelPartnerLinks/- to
+            retrieve configs for all channel partners.
+        page_size (int):
+            Optional. The maximum number of repricing
+            configs to return. The service may return fewer
+            than this value. If unspecified, returns a
+            maximum of 50 rules. The maximum value is 100;
+            values above 100 will be coerced to 100.
+        page_token (str):
+            Optional. A token identifying a page of results beyond the
+            first page. Obtained through
+            [ListChannelPartnerRepricingConfigsResponse.next_page_token][google.cloud.channel.v1.ListChannelPartnerRepricingConfigsResponse.next_page_token]
+            of the previous
+            [CloudChannelService.ListChannelPartnerRepricingConfigs][google.cloud.channel.v1.CloudChannelService.ListChannelPartnerRepricingConfigs]
+            call.
+        filter (str):
+            Optional. A filter for
+            [CloudChannelService.ListChannelPartnerRepricingConfigs]
+            results (channel_partner_link only). You can use this filter
+            when you support a BatchGet-like query. To use the filter,
+            you must set
+            ``parent=accounts/{account_id}/channelPartnerLinks/-``.
+
+            Example:
+            ``channel_partner_link = accounts/account_id/channelPartnerLinks/c1``
+            OR
+            ``channel_partner_link = accounts/account_id/channelPartnerLinks/c2``.
+    """
+
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    page_size = proto.Field(
+        proto.INT32,
+        number=2,
+    )
+    page_token = proto.Field(
+        proto.STRING,
+        number=3,
+    )
+    filter = proto.Field(
+        proto.STRING,
+        number=4,
+    )
+
+
+class ListChannelPartnerRepricingConfigsResponse(proto.Message):
+    r"""Response message for
+    [CloudChannelService.ListChannelPartnerRepricingConfigs][google.cloud.channel.v1.CloudChannelService.ListChannelPartnerRepricingConfigs].
+
+    Attributes:
+        channel_partner_repricing_configs (Sequence[google.cloud.channel_v1.types.ChannelPartnerRepricingConfig]):
+            The repricing configs for this channel
+            partner.
+        next_page_token (str):
+            A token to retrieve the next page of results. Pass to
+            [ListChannelPartnerRepricingConfigsRequest.page_token][google.cloud.channel.v1.ListChannelPartnerRepricingConfigsRequest.page_token]
+            to obtain that page.
+    """
+
+    @property
+    def raw_page(self):
+        return self
+
+    channel_partner_repricing_configs = proto.RepeatedField(
+        proto.MESSAGE,
+        number=1,
+        message=repricing.ChannelPartnerRepricingConfig,
+    )
+    next_page_token = proto.Field(
+        proto.STRING,
+        number=2,
+    )
+
+
+class CreateChannelPartnerRepricingConfigRequest(proto.Message):
+    r"""Request message for
+    [CloudChannelService.CreateChannelPartnerRepricingConfig][google.cloud.channel.v1.CloudChannelService.CreateChannelPartnerRepricingConfig].
+
+    Attributes:
+        parent (str):
+            Required. The resource name of the ChannelPartner that will
+            receive the repricing config. Parent uses the format:
+            accounts/{account_id}/channelPartnerLinks/{channel_partner_id}
+        channel_partner_repricing_config (google.cloud.channel_v1.types.ChannelPartnerRepricingConfig):
+            Required. The ChannelPartnerRepricingConfig
+            object to update.
+    """
+
+    parent = proto.Field(
+        proto.STRING,
+        number=1,
+    )
+    channel_partner_repricing_config = proto.Field(
+        proto.MESSAGE,
+        number=2,
+        message=repricing.ChannelPartnerRepricingConfig,
+    )
+
+
+class UpdateChannelPartnerRepricingConfigRequest(proto.Message):
+    r"""Request message for
+    [CloudChannelService.UpdateChannelPartnerRepricingConfig][google.cloud.channel.v1.CloudChannelService.UpdateChannelPartnerRepricingConfig].
+
+    Attributes:
+        channel_partner_repricing_config (google.cloud.channel_v1.types.ChannelPartnerRepricingConfig):
+            Required. The ChannelPartnerRepricingConfig
+            object to update.
+    """
+
+    channel_partner_repricing_config = proto.Field(
+        proto.MESSAGE,
+        number=1,
+        message=repricing.ChannelPartnerRepricingConfig,
+    )
+
+
+class DeleteChannelPartnerRepricingConfigRequest(proto.Message):
+    r"""Request message for DeleteChannelPartnerRepricingConfig.
+
+    Attributes:
+        name (str):
+            Required. The resource name of the channel
+            partner repricing config rule to delete.
+    """
+
+    name = proto.Field(
+        proto.STRING,
+        number=1,
     )
 
 

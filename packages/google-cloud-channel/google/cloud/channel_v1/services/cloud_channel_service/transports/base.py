@@ -32,6 +32,7 @@ from google.cloud.channel_v1.types import (
     customers,
     entitlements,
     offers,
+    repricing,
     service,
 )
 
@@ -256,6 +257,56 @@ class CloudChannelServiceTransport(abc.ABC):
             ),
             self.update_channel_partner_link: gapic_v1.method.wrap_method(
                 self.update_channel_partner_link,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_customer_repricing_config: gapic_v1.method.wrap_method(
+                self.get_customer_repricing_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_customer_repricing_configs: gapic_v1.method.wrap_method(
+                self.list_customer_repricing_configs,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_customer_repricing_config: gapic_v1.method.wrap_method(
+                self.create_customer_repricing_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_customer_repricing_config: gapic_v1.method.wrap_method(
+                self.update_customer_repricing_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_customer_repricing_config: gapic_v1.method.wrap_method(
+                self.delete_customer_repricing_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.get_channel_partner_repricing_config: gapic_v1.method.wrap_method(
+                self.get_channel_partner_repricing_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.list_channel_partner_repricing_configs: gapic_v1.method.wrap_method(
+                self.list_channel_partner_repricing_configs,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.create_channel_partner_repricing_config: gapic_v1.method.wrap_method(
+                self.create_channel_partner_repricing_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.update_channel_partner_repricing_config: gapic_v1.method.wrap_method(
+                self.update_channel_partner_repricing_config,
+                default_timeout=None,
+                client_info=client_info,
+            ),
+            self.delete_channel_partner_repricing_config: gapic_v1.method.wrap_method(
+                self.delete_channel_partner_repricing_config,
                 default_timeout=None,
                 client_info=client_info,
             ),
@@ -575,6 +626,120 @@ class CloudChannelServiceTransport(abc.ABC):
             channel_partner_links.ChannelPartnerLink,
             Awaitable[channel_partner_links.ChannelPartnerLink],
         ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_customer_repricing_config(
+        self,
+    ) -> Callable[
+        [service.GetCustomerRepricingConfigRequest],
+        Union[
+            repricing.CustomerRepricingConfig,
+            Awaitable[repricing.CustomerRepricingConfig],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_customer_repricing_configs(
+        self,
+    ) -> Callable[
+        [service.ListCustomerRepricingConfigsRequest],
+        Union[
+            service.ListCustomerRepricingConfigsResponse,
+            Awaitable[service.ListCustomerRepricingConfigsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_customer_repricing_config(
+        self,
+    ) -> Callable[
+        [service.CreateCustomerRepricingConfigRequest],
+        Union[
+            repricing.CustomerRepricingConfig,
+            Awaitable[repricing.CustomerRepricingConfig],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_customer_repricing_config(
+        self,
+    ) -> Callable[
+        [service.UpdateCustomerRepricingConfigRequest],
+        Union[
+            repricing.CustomerRepricingConfig,
+            Awaitable[repricing.CustomerRepricingConfig],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_customer_repricing_config(
+        self,
+    ) -> Callable[
+        [service.DeleteCustomerRepricingConfigRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def get_channel_partner_repricing_config(
+        self,
+    ) -> Callable[
+        [service.GetChannelPartnerRepricingConfigRequest],
+        Union[
+            repricing.ChannelPartnerRepricingConfig,
+            Awaitable[repricing.ChannelPartnerRepricingConfig],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def list_channel_partner_repricing_configs(
+        self,
+    ) -> Callable[
+        [service.ListChannelPartnerRepricingConfigsRequest],
+        Union[
+            service.ListChannelPartnerRepricingConfigsResponse,
+            Awaitable[service.ListChannelPartnerRepricingConfigsResponse],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def create_channel_partner_repricing_config(
+        self,
+    ) -> Callable[
+        [service.CreateChannelPartnerRepricingConfigRequest],
+        Union[
+            repricing.ChannelPartnerRepricingConfig,
+            Awaitable[repricing.ChannelPartnerRepricingConfig],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def update_channel_partner_repricing_config(
+        self,
+    ) -> Callable[
+        [service.UpdateChannelPartnerRepricingConfigRequest],
+        Union[
+            repricing.ChannelPartnerRepricingConfig,
+            Awaitable[repricing.ChannelPartnerRepricingConfig],
+        ],
+    ]:
+        raise NotImplementedError()
+
+    @property
+    def delete_channel_partner_repricing_config(
+        self,
+    ) -> Callable[
+        [service.DeleteChannelPartnerRepricingConfigRequest],
+        Union[empty_pb2.Empty, Awaitable[empty_pb2.Empty]],
     ]:
         raise NotImplementedError()
 

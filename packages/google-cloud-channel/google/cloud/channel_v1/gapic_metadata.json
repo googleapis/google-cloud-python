@@ -45,9 +45,19 @@
                 "create_channel_partner_link"
               ]
             },
+            "CreateChannelPartnerRepricingConfig": {
+              "methods": [
+                "create_channel_partner_repricing_config"
+              ]
+            },
             "CreateCustomer": {
               "methods": [
                 "create_customer"
+              ]
+            },
+            "CreateCustomerRepricingConfig": {
+              "methods": [
+                "create_customer_repricing_config"
               ]
             },
             "CreateEntitlement": {
@@ -55,9 +65,19 @@
                 "create_entitlement"
               ]
             },
+            "DeleteChannelPartnerRepricingConfig": {
+              "methods": [
+                "delete_channel_partner_repricing_config"
+              ]
+            },
             "DeleteCustomer": {
               "methods": [
                 "delete_customer"
+              ]
+            },
+            "DeleteCustomerRepricingConfig": {
+              "methods": [
+                "delete_customer_repricing_config"
               ]
             },
             "GetChannelPartnerLink": {
@@ -65,9 +85,19 @@
                 "get_channel_partner_link"
               ]
             },
+            "GetChannelPartnerRepricingConfig": {
+              "methods": [
+                "get_channel_partner_repricing_config"
+              ]
+            },
             "GetCustomer": {
               "methods": [
                 "get_customer"
+              ]
+            },
+            "GetCustomerRepricingConfig": {
+              "methods": [
+                "get_customer_repricing_config"
               ]
             },
             "GetEntitlement": {
@@ -83,6 +113,16 @@
             "ListChannelPartnerLinks": {
               "methods": [
                 "list_channel_partner_links"
+              ]
+            },
+            "ListChannelPartnerRepricingConfigs": {
+              "methods": [
+                "list_channel_partner_repricing_configs"
+              ]
+            },
+            "ListCustomerRepricingConfigs": {
+              "methods": [
+                "list_customer_repricing_configs"
               ]
             },
             "ListCustomers": {
@@ -180,9 +220,19 @@
                 "update_channel_partner_link"
               ]
             },
+            "UpdateChannelPartnerRepricingConfig": {
+              "methods": [
+                "update_channel_partner_repricing_config"
+              ]
+            },
             "UpdateCustomer": {
               "methods": [
                 "update_customer"
+              ]
+            },
+            "UpdateCustomerRepricingConfig": {
+              "methods": [
+                "update_customer_repricing_config"
               ]
             }
           }
@@ -225,9 +275,19 @@
                 "create_channel_partner_link"
               ]
             },
+            "CreateChannelPartnerRepricingConfig": {
+              "methods": [
+                "create_channel_partner_repricing_config"
+              ]
+            },
             "CreateCustomer": {
               "methods": [
                 "create_customer"
+              ]
+            },
+            "CreateCustomerRepricingConfig": {
+              "methods": [
+                "create_customer_repricing_config"
               ]
             },
             "CreateEntitlement": {
@@ -235,9 +295,19 @@
                 "create_entitlement"
               ]
             },
+            "DeleteChannelPartnerRepricingConfig": {
+              "methods": [
+                "delete_channel_partner_repricing_config"
+              ]
+            },
             "DeleteCustomer": {
               "methods": [
                 "delete_customer"
+              ]
+            },
+            "DeleteCustomerRepricingConfig": {
+              "methods": [
+                "delete_customer_repricing_config"
               ]
             },
             "GetChannelPartnerLink": {
@@ -245,9 +315,19 @@
                 "get_channel_partner_link"
               ]
             },
+            "GetChannelPartnerRepricingConfig": {
+              "methods": [
+                "get_channel_partner_repricing_config"
+              ]
+            },
             "GetCustomer": {
               "methods": [
                 "get_customer"
+              ]
+            },
+            "GetCustomerRepricingConfig": {
+              "methods": [
+                "get_customer_repricing_config"
               ]
             },
             "GetEntitlement": {
@@ -263,6 +343,16 @@
             "ListChannelPartnerLinks": {
               "methods": [
                 "list_channel_partner_links"
+              ]
+            },
+            "ListChannelPartnerRepricingConfigs": {
+              "methods": [
+                "list_channel_partner_repricing_configs"
+              ]
+            },
+            "ListCustomerRepricingConfigs": {
+              "methods": [
+                "list_customer_repricing_configs"
               ]
             },
             "ListCustomers": {
@@ -360,9 +450,19 @@
                 "update_channel_partner_link"
               ]
             },
+            "UpdateChannelPartnerRepricingConfig": {
+              "methods": [
+                "update_channel_partner_repricing_config"
+              ]
+            },
             "UpdateCustomer": {
               "methods": [
                 "update_customer"
+              ]
+            },
+            "UpdateCustomerRepricingConfig": {
+              "methods": [
+                "update_customer_repricing_config"
               ]
             }
           }

@@ -30,6 +30,7 @@ from google.cloud.channel_v1.types import (
     entitlements,
     offers,
     products,
+    repricing,
     service,
 )
 
@@ -666,6 +667,268 @@ class ListChannelPartnerLinksAsyncPager:
         async def async_generator():
             async for page in self.pages:
                 for response in page.channel_partner_links:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListCustomerRepricingConfigsPager:
+    """A pager for iterating through ``list_customer_repricing_configs`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.channel_v1.types.ListCustomerRepricingConfigsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``customer_repricing_configs`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListCustomerRepricingConfigs`` requests and continue to iterate
+    through the ``customer_repricing_configs`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.channel_v1.types.ListCustomerRepricingConfigsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., service.ListCustomerRepricingConfigsResponse],
+        request: service.ListCustomerRepricingConfigsRequest,
+        response: service.ListCustomerRepricingConfigsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.channel_v1.types.ListCustomerRepricingConfigsRequest):
+                The initial request object.
+            response (google.cloud.channel_v1.types.ListCustomerRepricingConfigsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = service.ListCustomerRepricingConfigsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[service.ListCustomerRepricingConfigsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[repricing.CustomerRepricingConfig]:
+        for page in self.pages:
+            yield from page.customer_repricing_configs
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListCustomerRepricingConfigsAsyncPager:
+    """A pager for iterating through ``list_customer_repricing_configs`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.channel_v1.types.ListCustomerRepricingConfigsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``customer_repricing_configs`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListCustomerRepricingConfigs`` requests and continue to iterate
+    through the ``customer_repricing_configs`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.channel_v1.types.ListCustomerRepricingConfigsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., Awaitable[service.ListCustomerRepricingConfigsResponse]],
+        request: service.ListCustomerRepricingConfigsRequest,
+        response: service.ListCustomerRepricingConfigsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.channel_v1.types.ListCustomerRepricingConfigsRequest):
+                The initial request object.
+            response (google.cloud.channel_v1.types.ListCustomerRepricingConfigsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = service.ListCustomerRepricingConfigsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(
+        self,
+    ) -> AsyncIterator[service.ListCustomerRepricingConfigsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[repricing.CustomerRepricingConfig]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.customer_repricing_configs:
+                    yield response
+
+        return async_generator()
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListChannelPartnerRepricingConfigsPager:
+    """A pager for iterating through ``list_channel_partner_repricing_configs`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.channel_v1.types.ListChannelPartnerRepricingConfigsResponse` object, and
+    provides an ``__iter__`` method to iterate through its
+    ``channel_partner_repricing_configs`` field.
+
+    If there are more pages, the ``__iter__`` method will make additional
+    ``ListChannelPartnerRepricingConfigs`` requests and continue to iterate
+    through the ``channel_partner_repricing_configs`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.channel_v1.types.ListChannelPartnerRepricingConfigsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[..., service.ListChannelPartnerRepricingConfigsResponse],
+        request: service.ListChannelPartnerRepricingConfigsRequest,
+        response: service.ListChannelPartnerRepricingConfigsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiate the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.channel_v1.types.ListChannelPartnerRepricingConfigsRequest):
+                The initial request object.
+            response (google.cloud.channel_v1.types.ListChannelPartnerRepricingConfigsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = service.ListChannelPartnerRepricingConfigsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    def pages(self) -> Iterator[service.ListChannelPartnerRepricingConfigsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __iter__(self) -> Iterator[repricing.ChannelPartnerRepricingConfig]:
+        for page in self.pages:
+            yield from page.channel_partner_repricing_configs
+
+    def __repr__(self) -> str:
+        return "{0}<{1!r}>".format(self.__class__.__name__, self._response)
+
+
+class ListChannelPartnerRepricingConfigsAsyncPager:
+    """A pager for iterating through ``list_channel_partner_repricing_configs`` requests.
+
+    This class thinly wraps an initial
+    :class:`google.cloud.channel_v1.types.ListChannelPartnerRepricingConfigsResponse` object, and
+    provides an ``__aiter__`` method to iterate through its
+    ``channel_partner_repricing_configs`` field.
+
+    If there are more pages, the ``__aiter__`` method will make additional
+    ``ListChannelPartnerRepricingConfigs`` requests and continue to iterate
+    through the ``channel_partner_repricing_configs`` field on the
+    corresponding responses.
+
+    All the usual :class:`google.cloud.channel_v1.types.ListChannelPartnerRepricingConfigsResponse`
+    attributes are available on the pager. If multiple requests are made, only
+    the most recent response is retained, and thus used for attribute lookup.
+    """
+
+    def __init__(
+        self,
+        method: Callable[
+            ..., Awaitable[service.ListChannelPartnerRepricingConfigsResponse]
+        ],
+        request: service.ListChannelPartnerRepricingConfigsRequest,
+        response: service.ListChannelPartnerRepricingConfigsResponse,
+        *,
+        metadata: Sequence[Tuple[str, str]] = ()
+    ):
+        """Instantiates the pager.
+
+        Args:
+            method (Callable): The method that was originally called, and
+                which instantiated this pager.
+            request (google.cloud.channel_v1.types.ListChannelPartnerRepricingConfigsRequest):
+                The initial request object.
+            response (google.cloud.channel_v1.types.ListChannelPartnerRepricingConfigsResponse):
+                The initial response object.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        self._method = method
+        self._request = service.ListChannelPartnerRepricingConfigsRequest(request)
+        self._response = response
+        self._metadata = metadata
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._response, name)
+
+    @property
+    async def pages(
+        self,
+    ) -> AsyncIterator[service.ListChannelPartnerRepricingConfigsResponse]:
+        yield self._response
+        while self._response.next_page_token:
+            self._request.page_token = self._response.next_page_token
+            self._response = await self._method(self._request, metadata=self._metadata)
+            yield self._response
+
+    def __aiter__(self) -> AsyncIterator[repricing.ChannelPartnerRepricingConfig]:
+        async def async_generator():
+            async for page in self.pages:
+                for response in page.channel_partner_repricing_configs:
                     yield response
 
         return async_generator()

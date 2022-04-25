@@ -29,6 +29,7 @@ from google.cloud.channel_v1.types import (
     customers,
     entitlements,
     offers,
+    repricing,
     service,
 )
 
@@ -1556,6 +1557,587 @@ class CloudChannelServiceGrpcAsyncIOTransport(CloudChannelServiceTransport):
                 response_deserializer=channel_partner_links.ChannelPartnerLink.deserialize,
             )
         return self._stubs["update_channel_partner_link"]
+
+    @property
+    def get_customer_repricing_config(
+        self,
+    ) -> Callable[
+        [service.GetCustomerRepricingConfigRequest],
+        Awaitable[repricing.CustomerRepricingConfig],
+    ]:
+        r"""Return a callable for the get customer repricing config method over gRPC.
+
+        Gets information about how a Reseller modifies their bill before
+        sending it to a Customer.
+
+        Possible Error Codes:
+
+        -  PERMISSION_DENIED: If the account making the request and the
+           account being queried are different.
+        -  NOT_FOUND: The
+           [CustomerRepricingConfig][google.cloud.channel.v1.CustomerRepricingConfig]
+           was not found.
+        -  INTERNAL: Any non-user error related to technical issues in
+           the backend. In this case, contact Cloud Channel support.
+
+        Return Value: If successful, the
+        [CustomerRepricingConfig][google.cloud.channel.v1.CustomerRepricingConfig]
+        resource, otherwise returns an error.
+
+        Returns:
+            Callable[[~.GetCustomerRepricingConfigRequest],
+                    Awaitable[~.CustomerRepricingConfig]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_customer_repricing_config" not in self._stubs:
+            self._stubs[
+                "get_customer_repricing_config"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.channel.v1.CloudChannelService/GetCustomerRepricingConfig",
+                request_serializer=service.GetCustomerRepricingConfigRequest.serialize,
+                response_deserializer=repricing.CustomerRepricingConfig.deserialize,
+            )
+        return self._stubs["get_customer_repricing_config"]
+
+    @property
+    def list_customer_repricing_configs(
+        self,
+    ) -> Callable[
+        [service.ListCustomerRepricingConfigsRequest],
+        Awaitable[service.ListCustomerRepricingConfigsResponse],
+    ]:
+        r"""Return a callable for the list customer repricing
+        configs method over gRPC.
+
+        Lists information about how a Reseller modifies their bill
+        before sending it to a Customer.
+
+        Possible Error Codes:
+
+        -  PERMISSION_DENIED: If the account making the request and the
+           account being queried are different.
+        -  NOT_FOUND: The
+           [CustomerRepricingConfig][google.cloud.channel.v1.CustomerRepricingConfig]
+           specified does not exist or is not associated with the given
+           account.
+        -  INTERNAL: Any non-user error related to technical issues in
+           the backend. In this case, contact Cloud Channel support.
+
+        Return Value: If successful, the
+        [CustomerRepricingConfig][google.cloud.channel.v1.CustomerRepricingConfig]
+        resources. The data for each resource is displayed in the
+        ascending order of:
+
+        -  customer ID
+        -  [RepricingConfig.EntitlementGranularity.entitlement][google.cloud.channel.v1.RepricingConfig.EntitlementGranularity.entitlement]
+        -  [RepricingConfig.effective_invoice_month][google.cloud.channel.v1.RepricingConfig.effective_invoice_month]
+        -  [CustomerRepricingConfig.update_time][google.cloud.channel.v1.CustomerRepricingConfig.update_time]
+
+        If unsuccessful, returns an error.
+
+        Returns:
+            Callable[[~.ListCustomerRepricingConfigsRequest],
+                    Awaitable[~.ListCustomerRepricingConfigsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_customer_repricing_configs" not in self._stubs:
+            self._stubs[
+                "list_customer_repricing_configs"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.channel.v1.CloudChannelService/ListCustomerRepricingConfigs",
+                request_serializer=service.ListCustomerRepricingConfigsRequest.serialize,
+                response_deserializer=service.ListCustomerRepricingConfigsResponse.deserialize,
+            )
+        return self._stubs["list_customer_repricing_configs"]
+
+    @property
+    def create_customer_repricing_config(
+        self,
+    ) -> Callable[
+        [service.CreateCustomerRepricingConfigRequest],
+        Awaitable[repricing.CustomerRepricingConfig],
+    ]:
+        r"""Return a callable for the create customer repricing
+        config method over gRPC.
+
+        Creates a CustomerRepricingConfig. Call this method to set
+        modifications for a specific customer's bill. You can only
+        create configs if the
+        [RepricingConfig.effective_invoice_month][google.cloud.channel.v1.RepricingConfig.effective_invoice_month]
+        is a future month. If needed, you can create a config for the
+        current month, with some restrictions.
+
+        When creating a config for a future month, make sure there are
+        no existing configs for that
+        [RepricingConfig.effective_invoice_month][google.cloud.channel.v1.RepricingConfig.effective_invoice_month].
+
+        The following restrictions are for creating configs in the
+        current month.
+
+        -  This functionality is reserved for recovering from an
+           erroneous config, and should not be used for regular business
+           cases.
+        -  The new config will not modify exports used with other
+           configs. Changes to the config may be immediate, but may take
+           up to 24 hours.
+        -  There is a limit of ten configs for any
+           [RepricingConfig.EntitlementGranularity.entitlement][google.cloud.channel.v1.RepricingConfig.EntitlementGranularity.entitlement]
+           or
+           [RepricingConfig.effective_invoice_month][google.cloud.channel.v1.RepricingConfig.effective_invoice_month].
+        -  The contained
+           [CustomerRepricingConfig.repricing_config][google.cloud.channel.v1.CustomerRepricingConfig.repricing_config]
+           vaule must be different from the value used in the current
+           config for a
+           [RepricingConfig.EntitlementGranularity.entitlement][google.cloud.channel.v1.RepricingConfig.EntitlementGranularity.entitlement].
+
+        Possible Error Codes:
+
+        -  PERMISSION_DENIED: If the account making the request and the
+           account being queried are different.
+        -  INVALID_ARGUMENT: Missing or invalid required parameters in
+           the request. Also displays if the updated config is for the
+           current month or past months.
+        -  NOT_FOUND: The
+           [CustomerRepricingConfig][google.cloud.channel.v1.CustomerRepricingConfig]
+           specified does not exist or is not associated with the given
+           account.
+        -  INTERNAL: Any non-user error related to technical issues in
+           the backend. In this case, contact Cloud Channel support.
+
+        Return Value: If successful, the updated
+        [CustomerRepricingConfig][google.cloud.channel.v1.CustomerRepricingConfig]
+        resource, otherwise returns an error.
+
+        Returns:
+            Callable[[~.CreateCustomerRepricingConfigRequest],
+                    Awaitable[~.CustomerRepricingConfig]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_customer_repricing_config" not in self._stubs:
+            self._stubs[
+                "create_customer_repricing_config"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.channel.v1.CloudChannelService/CreateCustomerRepricingConfig",
+                request_serializer=service.CreateCustomerRepricingConfigRequest.serialize,
+                response_deserializer=repricing.CustomerRepricingConfig.deserialize,
+            )
+        return self._stubs["create_customer_repricing_config"]
+
+    @property
+    def update_customer_repricing_config(
+        self,
+    ) -> Callable[
+        [service.UpdateCustomerRepricingConfigRequest],
+        Awaitable[repricing.CustomerRepricingConfig],
+    ]:
+        r"""Return a callable for the update customer repricing
+        config method over gRPC.
+
+        Updates a CustomerRepricingConfig. Call this method to set
+        modifications for a specific customer's bill. This method
+        overwrites the existing CustomerRepricingConfig.
+
+        You can only update configs if the
+        [RepricingConfig.effective_invoice_month][google.cloud.channel.v1.RepricingConfig.effective_invoice_month]
+        is a future month. To make changes to configs for the current
+        month, use
+        [CreateCustomerRepricingConfig][google.cloud.channel.v1.CloudChannelService.CreateCustomerRepricingConfig],
+        taking note of its restrictions. You cannot update the
+        [RepricingConfig.effective_invoice_month][google.cloud.channel.v1.RepricingConfig.effective_invoice_month].
+
+        When updating a config in the future:
+
+        -  This config must already exist.
+
+        Possible Error Codes:
+
+        -  PERMISSION_DENIED: If the account making the request and the
+           account being queried are different.
+        -  INVALID_ARGUMENT: Missing or invalid required parameters in
+           the request. Also displays if the updated config is for the
+           current month or past months.
+        -  NOT_FOUND: The
+           [CustomerRepricingConfig][google.cloud.channel.v1.CustomerRepricingConfig]
+           specified does not exist or is not associated with the given
+           account.
+        -  INTERNAL: Any non-user error related to technical issues in
+           the backend. In this case, contact Cloud Channel support.
+
+        Return Value: If successful, the updated
+        [CustomerRepricingConfig][google.cloud.channel.v1.CustomerRepricingConfig]
+        resource, otherwise returns an error.
+
+        Returns:
+            Callable[[~.UpdateCustomerRepricingConfigRequest],
+                    Awaitable[~.CustomerRepricingConfig]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_customer_repricing_config" not in self._stubs:
+            self._stubs[
+                "update_customer_repricing_config"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.channel.v1.CloudChannelService/UpdateCustomerRepricingConfig",
+                request_serializer=service.UpdateCustomerRepricingConfigRequest.serialize,
+                response_deserializer=repricing.CustomerRepricingConfig.deserialize,
+            )
+        return self._stubs["update_customer_repricing_config"]
+
+    @property
+    def delete_customer_repricing_config(
+        self,
+    ) -> Callable[
+        [service.DeleteCustomerRepricingConfigRequest], Awaitable[empty_pb2.Empty]
+    ]:
+        r"""Return a callable for the delete customer repricing
+        config method over gRPC.
+
+        Deletes the given
+        [CustomerRepricingConfig][google.cloud.channel.v1.CustomerRepricingConfig]
+        permanently. You can only delete configs if their
+        [RepricingConfig.effective_invoice_month][google.cloud.channel.v1.RepricingConfig.effective_invoice_month]
+        is set to a date after the current month.
+
+        Possible error codes:
+
+        -  PERMISSION_DENIED: The account making the request does not
+           own this customer.
+        -  INVALID_ARGUMENT: Required request parameters are missing or
+           invalid.
+        -  FAILED_PRECONDITION: The
+           [CustomerRepricingConfig][google.cloud.channel.v1.CustomerRepricingConfig]
+           is active or in the past.
+        -  NOT_FOUND: No
+           [CustomerRepricingConfig][google.cloud.channel.v1.CustomerRepricingConfig]
+           found for the name in the request.
+
+        Returns:
+            Callable[[~.DeleteCustomerRepricingConfigRequest],
+                    Awaitable[~.Empty]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_customer_repricing_config" not in self._stubs:
+            self._stubs[
+                "delete_customer_repricing_config"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.channel.v1.CloudChannelService/DeleteCustomerRepricingConfig",
+                request_serializer=service.DeleteCustomerRepricingConfigRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_customer_repricing_config"]
+
+    @property
+    def get_channel_partner_repricing_config(
+        self,
+    ) -> Callable[
+        [service.GetChannelPartnerRepricingConfigRequest],
+        Awaitable[repricing.ChannelPartnerRepricingConfig],
+    ]:
+        r"""Return a callable for the get channel partner repricing
+        config method over gRPC.
+
+        Gets information about how a Distributor modifies their bill
+        before sending it to a ChannelPartner.
+
+        Possible Error Codes:
+
+        -  PERMISSION_DENIED: If the account making the request and the
+           account being queried are different.
+        -  NOT_FOUND: The
+           [ChannelPartnerRepricingConfig][google.cloud.channel.v1.ChannelPartnerRepricingConfig]
+           was not found.
+        -  INTERNAL: Any non-user error related to technical issues in
+           the backend. In this case, contact Cloud Channel support.
+
+        Return Value: If successful, the
+        [ChannelPartnerRepricingConfig][google.cloud.channel.v1.ChannelPartnerRepricingConfig]
+        resource, otherwise returns an error.
+
+        Returns:
+            Callable[[~.GetChannelPartnerRepricingConfigRequest],
+                    Awaitable[~.ChannelPartnerRepricingConfig]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "get_channel_partner_repricing_config" not in self._stubs:
+            self._stubs[
+                "get_channel_partner_repricing_config"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.channel.v1.CloudChannelService/GetChannelPartnerRepricingConfig",
+                request_serializer=service.GetChannelPartnerRepricingConfigRequest.serialize,
+                response_deserializer=repricing.ChannelPartnerRepricingConfig.deserialize,
+            )
+        return self._stubs["get_channel_partner_repricing_config"]
+
+    @property
+    def list_channel_partner_repricing_configs(
+        self,
+    ) -> Callable[
+        [service.ListChannelPartnerRepricingConfigsRequest],
+        Awaitable[service.ListChannelPartnerRepricingConfigsResponse],
+    ]:
+        r"""Return a callable for the list channel partner repricing
+        configs method over gRPC.
+
+        Lists information about how a Reseller modifies their bill
+        before sending it to a ChannelPartner.
+
+        Possible Error Codes:
+
+        -  PERMISSION_DENIED: If the account making the request and the
+           account being queried are different.
+        -  NOT_FOUND: The
+           [ChannelPartnerRepricingConfig][google.cloud.channel.v1.ChannelPartnerRepricingConfig]
+           specified does not exist or is not associated with the given
+           account.
+        -  INTERNAL: Any non-user error related to technical issues in
+           the backend. In this case, contact Cloud Channel support.
+
+        Return Value: If successful, the
+        [ChannelPartnerRepricingConfig][google.cloud.channel.v1.ChannelPartnerRepricingConfig]
+        resources. The data for each resource is displayed in the
+        ascending order of:
+
+        -  channel partner ID
+        -  [RepricingConfig.effective_invoice_month][google.cloud.channel.v1.RepricingConfig.effective_invoice_month]
+        -  [ChannelPartnerRepricingConfig.update_time][google.cloud.channel.v1.ChannelPartnerRepricingConfig.update_time]
+
+        If unsuccessful, returns an error.
+
+        Returns:
+            Callable[[~.ListChannelPartnerRepricingConfigsRequest],
+                    Awaitable[~.ListChannelPartnerRepricingConfigsResponse]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "list_channel_partner_repricing_configs" not in self._stubs:
+            self._stubs[
+                "list_channel_partner_repricing_configs"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.channel.v1.CloudChannelService/ListChannelPartnerRepricingConfigs",
+                request_serializer=service.ListChannelPartnerRepricingConfigsRequest.serialize,
+                response_deserializer=service.ListChannelPartnerRepricingConfigsResponse.deserialize,
+            )
+        return self._stubs["list_channel_partner_repricing_configs"]
+
+    @property
+    def create_channel_partner_repricing_config(
+        self,
+    ) -> Callable[
+        [service.CreateChannelPartnerRepricingConfigRequest],
+        Awaitable[repricing.ChannelPartnerRepricingConfig],
+    ]:
+        r"""Return a callable for the create channel partner
+        repricing config method over gRPC.
+
+        Creates a ChannelPartnerRepricingConfig. Call this method to set
+        modifications for a specific ChannelPartner's bill. You can only
+        create configs if the
+        [RepricingConfig.effective_invoice_month][google.cloud.channel.v1.RepricingConfig.effective_invoice_month]
+        is a future month. If needed, you can create a config for the
+        current month, with some restrictions.
+
+        When creating a config for a future month, make sure there are
+        no existing configs for that
+        [RepricingConfig.effective_invoice_month][google.cloud.channel.v1.RepricingConfig.effective_invoice_month].
+
+        The following restrictions are for creating configs in the
+        current month.
+
+        -  This functionality is reserved for recovering from an
+           erroneous config, and should not be used for regular business
+           cases.
+        -  The new config will not modify exports used with other
+           configs. Changes to the config may be immediate, but may take
+           up to 24 hours.
+        -  There is a limit of ten configs for any ChannelPartner or
+           [RepricingConfig.effective_invoice_month][google.cloud.channel.v1.RepricingConfig.effective_invoice_month].
+        -  The contained
+           [ChannelPartnerRepricingConfig.repricing_config][google.cloud.channel.v1.ChannelPartnerRepricingConfig.repricing_config]
+           vaule must be different from the value used in the current
+           config for a ChannelPartner.
+
+        Possible Error Codes:
+
+        -  PERMISSION_DENIED: If the account making the request and the
+           account being queried are different.
+        -  INVALID_ARGUMENT: Missing or invalid required parameters in
+           the request. Also displays if the updated config is for the
+           current month or past months.
+        -  NOT_FOUND: The
+           [ChannelPartnerRepricingConfig][google.cloud.channel.v1.ChannelPartnerRepricingConfig]
+           specified does not exist or is not associated with the given
+           account.
+        -  INTERNAL: Any non-user error related to technical issues in
+           the backend. In this case, contact Cloud Channel support.
+
+        Return Value: If successful, the updated
+        [ChannelPartnerRepricingConfig][google.cloud.channel.v1.ChannelPartnerRepricingConfig]
+        resource, otherwise returns an error.
+
+        Returns:
+            Callable[[~.CreateChannelPartnerRepricingConfigRequest],
+                    Awaitable[~.ChannelPartnerRepricingConfig]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "create_channel_partner_repricing_config" not in self._stubs:
+            self._stubs[
+                "create_channel_partner_repricing_config"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.channel.v1.CloudChannelService/CreateChannelPartnerRepricingConfig",
+                request_serializer=service.CreateChannelPartnerRepricingConfigRequest.serialize,
+                response_deserializer=repricing.ChannelPartnerRepricingConfig.deserialize,
+            )
+        return self._stubs["create_channel_partner_repricing_config"]
+
+    @property
+    def update_channel_partner_repricing_config(
+        self,
+    ) -> Callable[
+        [service.UpdateChannelPartnerRepricingConfigRequest],
+        Awaitable[repricing.ChannelPartnerRepricingConfig],
+    ]:
+        r"""Return a callable for the update channel partner
+        repricing config method over gRPC.
+
+        Updates a ChannelPartnerRepricingConfig. Call this method to set
+        modifications for a specific ChannelPartner's bill. This method
+        overwrites the existing CustomerRepricingConfig.
+
+        You can only update configs if the
+        [RepricingConfig.effective_invoice_month][google.cloud.channel.v1.RepricingConfig.effective_invoice_month]
+        is a future month. To make changes to configs for the current
+        month, use
+        [CreateChannelPartnerRepricingConfig][google.cloud.channel.v1.CloudChannelService.CreateChannelPartnerRepricingConfig],
+        taking note of its restrictions. You cannot update the
+        [RepricingConfig.effective_invoice_month][google.cloud.channel.v1.RepricingConfig.effective_invoice_month].
+
+        When updating a config in the future:
+
+        -  This config must already exist.
+
+        Possible Error Codes:
+
+        -  PERMISSION_DENIED: If the account making the request and the
+           account being queried are different.
+        -  INVALID_ARGUMENT: Missing or invalid required parameters in
+           the request. Also displays if the updated config is for the
+           current month or past months.
+        -  NOT_FOUND: The
+           [ChannelPartnerRepricingConfig][google.cloud.channel.v1.ChannelPartnerRepricingConfig]
+           specified does not exist or is not associated with the given
+           account.
+        -  INTERNAL: Any non-user error related to technical issues in
+           the backend. In this case, contact Cloud Channel support.
+
+        Return Value: If successful, the updated
+        [ChannelPartnerRepricingConfig][google.cloud.channel.v1.ChannelPartnerRepricingConfig]
+        resource, otherwise returns an error.
+
+        Returns:
+            Callable[[~.UpdateChannelPartnerRepricingConfigRequest],
+                    Awaitable[~.ChannelPartnerRepricingConfig]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "update_channel_partner_repricing_config" not in self._stubs:
+            self._stubs[
+                "update_channel_partner_repricing_config"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.channel.v1.CloudChannelService/UpdateChannelPartnerRepricingConfig",
+                request_serializer=service.UpdateChannelPartnerRepricingConfigRequest.serialize,
+                response_deserializer=repricing.ChannelPartnerRepricingConfig.deserialize,
+            )
+        return self._stubs["update_channel_partner_repricing_config"]
+
+    @property
+    def delete_channel_partner_repricing_config(
+        self,
+    ) -> Callable[
+        [service.DeleteChannelPartnerRepricingConfigRequest], Awaitable[empty_pb2.Empty]
+    ]:
+        r"""Return a callable for the delete channel partner
+        repricing config method over gRPC.
+
+        Deletes the given
+        [ChannelPartnerRepricingConfig][google.cloud.channel.v1.ChannelPartnerRepricingConfig]
+        permanently. You can only delete configs if their
+        [RepricingConfig.effective_invoice_month][google.cloud.channel.v1.RepricingConfig.effective_invoice_month]
+        is set to a date after the current month.
+
+        Possible error codes:
+
+        -  PERMISSION_DENIED: The account making the request does not
+           own this customer.
+        -  INVALID_ARGUMENT: Required request parameters are missing or
+           invalid.
+        -  FAILED_PRECONDITION: The
+           [ChannelPartnerRepricingConfig][google.cloud.channel.v1.ChannelPartnerRepricingConfig]
+           is active or in the past.
+        -  NOT_FOUND: No
+           [ChannelPartnerRepricingConfig][google.cloud.channel.v1.ChannelPartnerRepricingConfig]
+           found for the name in the request.
+
+        Returns:
+            Callable[[~.DeleteChannelPartnerRepricingConfigRequest],
+                    Awaitable[~.Empty]]:
+                A function that, when called, will call the underlying RPC
+                on the server.
+        """
+        # Generate a "stub function" on-the-fly which will actually make
+        # the request.
+        # gRPC handles serialization and deserialization, so we just need
+        # to pass in the functions for each.
+        if "delete_channel_partner_repricing_config" not in self._stubs:
+            self._stubs[
+                "delete_channel_partner_repricing_config"
+            ] = self.grpc_channel.unary_unary(
+                "/google.cloud.channel.v1.CloudChannelService/DeleteChannelPartnerRepricingConfig",
+                request_serializer=service.DeleteChannelPartnerRepricingConfigRequest.serialize,
+                response_deserializer=empty_pb2.Empty.FromString,
+            )
+        return self._stubs["delete_channel_partner_repricing_config"]
 
     @property
     def lookup_offer(

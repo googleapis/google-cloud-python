@@ -46,6 +46,7 @@ from google.cloud.channel_v1.types import (
     offers,
     operations,
     products,
+    repricing,
     service,
 )
 
@@ -91,8 +92,20 @@ class CloudChannelServiceAsyncClient:
     parse_channel_partner_link_path = staticmethod(
         CloudChannelServiceClient.parse_channel_partner_link_path
     )
+    channel_partner_repricing_config_path = staticmethod(
+        CloudChannelServiceClient.channel_partner_repricing_config_path
+    )
+    parse_channel_partner_repricing_config_path = staticmethod(
+        CloudChannelServiceClient.parse_channel_partner_repricing_config_path
+    )
     customer_path = staticmethod(CloudChannelServiceClient.customer_path)
     parse_customer_path = staticmethod(CloudChannelServiceClient.parse_customer_path)
+    customer_repricing_config_path = staticmethod(
+        CloudChannelServiceClient.customer_repricing_config_path
+    )
+    parse_customer_repricing_config_path = staticmethod(
+        CloudChannelServiceClient.parse_customer_repricing_config_path
+    )
     entitlement_path = staticmethod(CloudChannelServiceClient.entitlement_path)
     parse_entitlement_path = staticmethod(
         CloudChannelServiceClient.parse_entitlement_path
@@ -3041,6 +3054,1292 @@ class CloudChannelServiceAsyncClient:
 
         # Done; return the response.
         return response
+
+    async def get_customer_repricing_config(
+        self,
+        request: Union[service.GetCustomerRepricingConfigRequest, dict] = None,
+        *,
+        name: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> repricing.CustomerRepricingConfig:
+        r"""Gets information about how a Reseller modifies their bill before
+        sending it to a Customer.
+
+        Possible Error Codes:
+
+        -  PERMISSION_DENIED: If the account making the request and the
+           account being queried are different.
+        -  NOT_FOUND: The
+           [CustomerRepricingConfig][google.cloud.channel.v1.CustomerRepricingConfig]
+           was not found.
+        -  INTERNAL: Any non-user error related to technical issues in
+           the backend. In this case, contact Cloud Channel support.
+
+        Return Value: If successful, the
+        [CustomerRepricingConfig][google.cloud.channel.v1.CustomerRepricingConfig]
+        resource, otherwise returns an error.
+
+        .. code-block:: python
+
+            from google.cloud import channel_v1
+
+            def sample_get_customer_repricing_config():
+                # Create a client
+                client = channel_v1.CloudChannelServiceClient()
+
+                # Initialize request argument(s)
+                request = channel_v1.GetCustomerRepricingConfigRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_customer_repricing_config(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.channel_v1.types.GetCustomerRepricingConfigRequest, dict]):
+                The request object. Request message for
+                [CloudChannelService.GetCustomerRepricingConfig][google.cloud.channel.v1.CloudChannelService.GetCustomerRepricingConfig].
+            name (:class:`str`):
+                Required. The resource name of the
+                CustomerRepricingConfig. Format:
+                accounts/{account_id}/customers/{customer_id}/customerRepricingConfigs/{id}.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.channel_v1.types.CustomerRepricingConfig:
+                Configuration for how a reseller will
+                reprice a Customer.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = service.GetCustomerRepricingConfigRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_customer_repricing_config,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_customer_repricing_configs(
+        self,
+        request: Union[service.ListCustomerRepricingConfigsRequest, dict] = None,
+        *,
+        parent: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListCustomerRepricingConfigsAsyncPager:
+        r"""Lists information about how a Reseller modifies their bill
+        before sending it to a Customer.
+
+        Possible Error Codes:
+
+        -  PERMISSION_DENIED: If the account making the request and the
+           account being queried are different.
+        -  NOT_FOUND: The
+           [CustomerRepricingConfig][google.cloud.channel.v1.CustomerRepricingConfig]
+           specified does not exist or is not associated with the given
+           account.
+        -  INTERNAL: Any non-user error related to technical issues in
+           the backend. In this case, contact Cloud Channel support.
+
+        Return Value: If successful, the
+        [CustomerRepricingConfig][google.cloud.channel.v1.CustomerRepricingConfig]
+        resources. The data for each resource is displayed in the
+        ascending order of:
+
+        -  customer ID
+        -  [RepricingConfig.EntitlementGranularity.entitlement][google.cloud.channel.v1.RepricingConfig.EntitlementGranularity.entitlement]
+        -  [RepricingConfig.effective_invoice_month][google.cloud.channel.v1.RepricingConfig.effective_invoice_month]
+        -  [CustomerRepricingConfig.update_time][google.cloud.channel.v1.CustomerRepricingConfig.update_time]
+
+        If unsuccessful, returns an error.
+
+        .. code-block:: python
+
+            from google.cloud import channel_v1
+
+            def sample_list_customer_repricing_configs():
+                # Create a client
+                client = channel_v1.CloudChannelServiceClient()
+
+                # Initialize request argument(s)
+                request = channel_v1.ListCustomerRepricingConfigsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_customer_repricing_configs(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.channel_v1.types.ListCustomerRepricingConfigsRequest, dict]):
+                The request object. Request message for
+                [CloudChannelService.ListCustomerRepricingConfigs][google.cloud.channel.v1.CloudChannelService.ListCustomerRepricingConfigs].
+            parent (:class:`str`):
+                Required. The resource name of the customer. Parent uses
+                the format:
+                accounts/{account_id}/customers/{customer_id}. Supports
+                accounts/{account_id}/customers/- to retrieve configs
+                for all customers.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.channel_v1.services.cloud_channel_service.pagers.ListCustomerRepricingConfigsAsyncPager:
+                Response message for
+                [CloudChannelService.ListCustomerRepricingConfigs][google.cloud.channel.v1.CloudChannelService.ListCustomerRepricingConfigs].
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = service.ListCustomerRepricingConfigsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.list_customer_repricing_configs,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListCustomerRepricingConfigsAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def create_customer_repricing_config(
+        self,
+        request: Union[service.CreateCustomerRepricingConfigRequest, dict] = None,
+        *,
+        parent: str = None,
+        customer_repricing_config: repricing.CustomerRepricingConfig = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> repricing.CustomerRepricingConfig:
+        r"""Creates a CustomerRepricingConfig. Call this method to set
+        modifications for a specific customer's bill. You can only
+        create configs if the
+        [RepricingConfig.effective_invoice_month][google.cloud.channel.v1.RepricingConfig.effective_invoice_month]
+        is a future month. If needed, you can create a config for the
+        current month, with some restrictions.
+
+        When creating a config for a future month, make sure there are
+        no existing configs for that
+        [RepricingConfig.effective_invoice_month][google.cloud.channel.v1.RepricingConfig.effective_invoice_month].
+
+        The following restrictions are for creating configs in the
+        current month.
+
+        -  This functionality is reserved for recovering from an
+           erroneous config, and should not be used for regular business
+           cases.
+        -  The new config will not modify exports used with other
+           configs. Changes to the config may be immediate, but may take
+           up to 24 hours.
+        -  There is a limit of ten configs for any
+           [RepricingConfig.EntitlementGranularity.entitlement][google.cloud.channel.v1.RepricingConfig.EntitlementGranularity.entitlement]
+           or
+           [RepricingConfig.effective_invoice_month][google.cloud.channel.v1.RepricingConfig.effective_invoice_month].
+        -  The contained
+           [CustomerRepricingConfig.repricing_config][google.cloud.channel.v1.CustomerRepricingConfig.repricing_config]
+           vaule must be different from the value used in the current
+           config for a
+           [RepricingConfig.EntitlementGranularity.entitlement][google.cloud.channel.v1.RepricingConfig.EntitlementGranularity.entitlement].
+
+        Possible Error Codes:
+
+        -  PERMISSION_DENIED: If the account making the request and the
+           account being queried are different.
+        -  INVALID_ARGUMENT: Missing or invalid required parameters in
+           the request. Also displays if the updated config is for the
+           current month or past months.
+        -  NOT_FOUND: The
+           [CustomerRepricingConfig][google.cloud.channel.v1.CustomerRepricingConfig]
+           specified does not exist or is not associated with the given
+           account.
+        -  INTERNAL: Any non-user error related to technical issues in
+           the backend. In this case, contact Cloud Channel support.
+
+        Return Value: If successful, the updated
+        [CustomerRepricingConfig][google.cloud.channel.v1.CustomerRepricingConfig]
+        resource, otherwise returns an error.
+
+        .. code-block:: python
+
+            from google.cloud import channel_v1
+
+            def sample_create_customer_repricing_config():
+                # Create a client
+                client = channel_v1.CloudChannelServiceClient()
+
+                # Initialize request argument(s)
+                customer_repricing_config = channel_v1.CustomerRepricingConfig()
+                customer_repricing_config.repricing_config.rebilling_basis = "DIRECT_CUSTOMER_COST"
+
+                request = channel_v1.CreateCustomerRepricingConfigRequest(
+                    parent="parent_value",
+                    customer_repricing_config=customer_repricing_config,
+                )
+
+                # Make the request
+                response = client.create_customer_repricing_config(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.channel_v1.types.CreateCustomerRepricingConfigRequest, dict]):
+                The request object. Request message for
+                [CloudChannelService.CreateCustomerRepricingConfig][google.cloud.channel.v1.CloudChannelService.CreateCustomerRepricingConfig].
+            parent (:class:`str`):
+                Required. The resource name of the customer that will
+                receive this repricing config. Parent uses the format:
+                accounts/{account_id}/customers/{customer_id}
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            customer_repricing_config (:class:`google.cloud.channel_v1.types.CustomerRepricingConfig`):
+                Required. The CustomerRepricingConfig
+                object to update.
+
+                This corresponds to the ``customer_repricing_config`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.channel_v1.types.CustomerRepricingConfig:
+                Configuration for how a reseller will
+                reprice a Customer.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, customer_repricing_config])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = service.CreateCustomerRepricingConfigRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if customer_repricing_config is not None:
+            request.customer_repricing_config = customer_repricing_config
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.create_customer_repricing_config,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def update_customer_repricing_config(
+        self,
+        request: Union[service.UpdateCustomerRepricingConfigRequest, dict] = None,
+        *,
+        customer_repricing_config: repricing.CustomerRepricingConfig = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> repricing.CustomerRepricingConfig:
+        r"""Updates a CustomerRepricingConfig. Call this method to set
+        modifications for a specific customer's bill. This method
+        overwrites the existing CustomerRepricingConfig.
+
+        You can only update configs if the
+        [RepricingConfig.effective_invoice_month][google.cloud.channel.v1.RepricingConfig.effective_invoice_month]
+        is a future month. To make changes to configs for the current
+        month, use
+        [CreateCustomerRepricingConfig][google.cloud.channel.v1.CloudChannelService.CreateCustomerRepricingConfig],
+        taking note of its restrictions. You cannot update the
+        [RepricingConfig.effective_invoice_month][google.cloud.channel.v1.RepricingConfig.effective_invoice_month].
+
+        When updating a config in the future:
+
+        -  This config must already exist.
+
+        Possible Error Codes:
+
+        -  PERMISSION_DENIED: If the account making the request and the
+           account being queried are different.
+        -  INVALID_ARGUMENT: Missing or invalid required parameters in
+           the request. Also displays if the updated config is for the
+           current month or past months.
+        -  NOT_FOUND: The
+           [CustomerRepricingConfig][google.cloud.channel.v1.CustomerRepricingConfig]
+           specified does not exist or is not associated with the given
+           account.
+        -  INTERNAL: Any non-user error related to technical issues in
+           the backend. In this case, contact Cloud Channel support.
+
+        Return Value: If successful, the updated
+        [CustomerRepricingConfig][google.cloud.channel.v1.CustomerRepricingConfig]
+        resource, otherwise returns an error.
+
+        .. code-block:: python
+
+            from google.cloud import channel_v1
+
+            def sample_update_customer_repricing_config():
+                # Create a client
+                client = channel_v1.CloudChannelServiceClient()
+
+                # Initialize request argument(s)
+                customer_repricing_config = channel_v1.CustomerRepricingConfig()
+                customer_repricing_config.repricing_config.rebilling_basis = "DIRECT_CUSTOMER_COST"
+
+                request = channel_v1.UpdateCustomerRepricingConfigRequest(
+                    customer_repricing_config=customer_repricing_config,
+                )
+
+                # Make the request
+                response = client.update_customer_repricing_config(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.channel_v1.types.UpdateCustomerRepricingConfigRequest, dict]):
+                The request object. Request message for
+                [CloudChannelService.UpdateCustomerRepricingConfig][google.cloud.channel.v1.CloudChannelService.UpdateCustomerRepricingConfig].
+            customer_repricing_config (:class:`google.cloud.channel_v1.types.CustomerRepricingConfig`):
+                Required. The CustomerRepricingConfig
+                object to update.
+
+                This corresponds to the ``customer_repricing_config`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.channel_v1.types.CustomerRepricingConfig:
+                Configuration for how a reseller will
+                reprice a Customer.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([customer_repricing_config])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = service.UpdateCustomerRepricingConfigRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if customer_repricing_config is not None:
+            request.customer_repricing_config = customer_repricing_config
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.update_customer_repricing_config,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    (
+                        "customer_repricing_config.name",
+                        request.customer_repricing_config.name,
+                    ),
+                )
+            ),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def delete_customer_repricing_config(
+        self,
+        request: Union[service.DeleteCustomerRepricingConfigRequest, dict] = None,
+        *,
+        name: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Deletes the given
+        [CustomerRepricingConfig][google.cloud.channel.v1.CustomerRepricingConfig]
+        permanently. You can only delete configs if their
+        [RepricingConfig.effective_invoice_month][google.cloud.channel.v1.RepricingConfig.effective_invoice_month]
+        is set to a date after the current month.
+
+        Possible error codes:
+
+        -  PERMISSION_DENIED: The account making the request does not
+           own this customer.
+        -  INVALID_ARGUMENT: Required request parameters are missing or
+           invalid.
+        -  FAILED_PRECONDITION: The
+           [CustomerRepricingConfig][google.cloud.channel.v1.CustomerRepricingConfig]
+           is active or in the past.
+        -  NOT_FOUND: No
+           [CustomerRepricingConfig][google.cloud.channel.v1.CustomerRepricingConfig]
+           found for the name in the request.
+
+        .. code-block:: python
+
+            from google.cloud import channel_v1
+
+            def sample_delete_customer_repricing_config():
+                # Create a client
+                client = channel_v1.CloudChannelServiceClient()
+
+                # Initialize request argument(s)
+                request = channel_v1.DeleteCustomerRepricingConfigRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_customer_repricing_config(request=request)
+
+        Args:
+            request (Union[google.cloud.channel_v1.types.DeleteCustomerRepricingConfigRequest, dict]):
+                The request object. Request message for
+                [CloudChannelService.DeleteCustomerRepricingConfig][google.cloud.channel.v1.CloudChannelService.DeleteCustomerRepricingConfig].
+            name (:class:`str`):
+                Required. The resource name of the customer repricing
+                config rule to delete. Format:
+                accounts/{account_id}/customers/{customer_id}/customerRepricingConfigs/{id}.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = service.DeleteCustomerRepricingConfigRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.delete_customer_repricing_config,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+    async def get_channel_partner_repricing_config(
+        self,
+        request: Union[service.GetChannelPartnerRepricingConfigRequest, dict] = None,
+        *,
+        name: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> repricing.ChannelPartnerRepricingConfig:
+        r"""Gets information about how a Distributor modifies their bill
+        before sending it to a ChannelPartner.
+
+        Possible Error Codes:
+
+        -  PERMISSION_DENIED: If the account making the request and the
+           account being queried are different.
+        -  NOT_FOUND: The
+           [ChannelPartnerRepricingConfig][google.cloud.channel.v1.ChannelPartnerRepricingConfig]
+           was not found.
+        -  INTERNAL: Any non-user error related to technical issues in
+           the backend. In this case, contact Cloud Channel support.
+
+        Return Value: If successful, the
+        [ChannelPartnerRepricingConfig][google.cloud.channel.v1.ChannelPartnerRepricingConfig]
+        resource, otherwise returns an error.
+
+        .. code-block:: python
+
+            from google.cloud import channel_v1
+
+            def sample_get_channel_partner_repricing_config():
+                # Create a client
+                client = channel_v1.CloudChannelServiceClient()
+
+                # Initialize request argument(s)
+                request = channel_v1.GetChannelPartnerRepricingConfigRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                response = client.get_channel_partner_repricing_config(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.channel_v1.types.GetChannelPartnerRepricingConfigRequest, dict]):
+                The request object. Request message for
+                [CloudChannelService.GetChannelPartnerRepricingConfig][google.cloud.channel.v1.CloudChannelService.GetChannelPartnerRepricingConfig]
+            name (:class:`str`):
+                Required. The resource name of the
+                ChannelPartnerRepricingConfig Format:
+                accounts/{account_id}/channelPartnerLinks/{channel_partner_id}/channelPartnerRepricingConfigs/{id}.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.channel_v1.types.ChannelPartnerRepricingConfig:
+                Configuration for how a distributor
+                will rebill a channel partner (also
+                known as a distributor-authorized
+                reseller).
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = service.GetChannelPartnerRepricingConfigRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.get_channel_partner_repricing_config,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def list_channel_partner_repricing_configs(
+        self,
+        request: Union[service.ListChannelPartnerRepricingConfigsRequest, dict] = None,
+        *,
+        parent: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> pagers.ListChannelPartnerRepricingConfigsAsyncPager:
+        r"""Lists information about how a Reseller modifies their bill
+        before sending it to a ChannelPartner.
+
+        Possible Error Codes:
+
+        -  PERMISSION_DENIED: If the account making the request and the
+           account being queried are different.
+        -  NOT_FOUND: The
+           [ChannelPartnerRepricingConfig][google.cloud.channel.v1.ChannelPartnerRepricingConfig]
+           specified does not exist or is not associated with the given
+           account.
+        -  INTERNAL: Any non-user error related to technical issues in
+           the backend. In this case, contact Cloud Channel support.
+
+        Return Value: If successful, the
+        [ChannelPartnerRepricingConfig][google.cloud.channel.v1.ChannelPartnerRepricingConfig]
+        resources. The data for each resource is displayed in the
+        ascending order of:
+
+        -  channel partner ID
+        -  [RepricingConfig.effective_invoice_month][google.cloud.channel.v1.RepricingConfig.effective_invoice_month]
+        -  [ChannelPartnerRepricingConfig.update_time][google.cloud.channel.v1.ChannelPartnerRepricingConfig.update_time]
+
+        If unsuccessful, returns an error.
+
+        .. code-block:: python
+
+            from google.cloud import channel_v1
+
+            def sample_list_channel_partner_repricing_configs():
+                # Create a client
+                client = channel_v1.CloudChannelServiceClient()
+
+                # Initialize request argument(s)
+                request = channel_v1.ListChannelPartnerRepricingConfigsRequest(
+                    parent="parent_value",
+                )
+
+                # Make the request
+                page_result = client.list_channel_partner_repricing_configs(request=request)
+
+                # Handle the response
+                for response in page_result:
+                    print(response)
+
+        Args:
+            request (Union[google.cloud.channel_v1.types.ListChannelPartnerRepricingConfigsRequest, dict]):
+                The request object. Request message for
+                [CloudChannelService.ListChannelPartnerRepricingConfigs][google.cloud.channel.v1.CloudChannelService.ListChannelPartnerRepricingConfigs].
+            parent (:class:`str`):
+                Required. The resource name of the account's
+                [ChannelPartnerLink][google.cloud.channel.v1.ChannelPartnerLink].
+                Parent uses the format:
+                accounts/{account_id}/channelPartnerLinks/{channel_partner_id}.
+                Supports accounts/{account_id}/channelPartnerLinks/- to
+                retrieve configs for all channel partners.
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.channel_v1.services.cloud_channel_service.pagers.ListChannelPartnerRepricingConfigsAsyncPager:
+                Response message for
+                   [CloudChannelService.ListChannelPartnerRepricingConfigs][google.cloud.channel.v1.CloudChannelService.ListChannelPartnerRepricingConfigs].
+
+                Iterating over this object will yield results and
+                resolve additional pages automatically.
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = service.ListChannelPartnerRepricingConfigsRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.list_channel_partner_repricing_configs,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # This method is paged; wrap the response in a pager, which provides
+        # an `__aiter__` convenience method.
+        response = pagers.ListChannelPartnerRepricingConfigsAsyncPager(
+            method=rpc,
+            request=request,
+            response=response,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def create_channel_partner_repricing_config(
+        self,
+        request: Union[service.CreateChannelPartnerRepricingConfigRequest, dict] = None,
+        *,
+        parent: str = None,
+        channel_partner_repricing_config: repricing.ChannelPartnerRepricingConfig = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> repricing.ChannelPartnerRepricingConfig:
+        r"""Creates a ChannelPartnerRepricingConfig. Call this method to set
+        modifications for a specific ChannelPartner's bill. You can only
+        create configs if the
+        [RepricingConfig.effective_invoice_month][google.cloud.channel.v1.RepricingConfig.effective_invoice_month]
+        is a future month. If needed, you can create a config for the
+        current month, with some restrictions.
+
+        When creating a config for a future month, make sure there are
+        no existing configs for that
+        [RepricingConfig.effective_invoice_month][google.cloud.channel.v1.RepricingConfig.effective_invoice_month].
+
+        The following restrictions are for creating configs in the
+        current month.
+
+        -  This functionality is reserved for recovering from an
+           erroneous config, and should not be used for regular business
+           cases.
+        -  The new config will not modify exports used with other
+           configs. Changes to the config may be immediate, but may take
+           up to 24 hours.
+        -  There is a limit of ten configs for any ChannelPartner or
+           [RepricingConfig.effective_invoice_month][google.cloud.channel.v1.RepricingConfig.effective_invoice_month].
+        -  The contained
+           [ChannelPartnerRepricingConfig.repricing_config][google.cloud.channel.v1.ChannelPartnerRepricingConfig.repricing_config]
+           vaule must be different from the value used in the current
+           config for a ChannelPartner.
+
+        Possible Error Codes:
+
+        -  PERMISSION_DENIED: If the account making the request and the
+           account being queried are different.
+        -  INVALID_ARGUMENT: Missing or invalid required parameters in
+           the request. Also displays if the updated config is for the
+           current month or past months.
+        -  NOT_FOUND: The
+           [ChannelPartnerRepricingConfig][google.cloud.channel.v1.ChannelPartnerRepricingConfig]
+           specified does not exist or is not associated with the given
+           account.
+        -  INTERNAL: Any non-user error related to technical issues in
+           the backend. In this case, contact Cloud Channel support.
+
+        Return Value: If successful, the updated
+        [ChannelPartnerRepricingConfig][google.cloud.channel.v1.ChannelPartnerRepricingConfig]
+        resource, otherwise returns an error.
+
+        .. code-block:: python
+
+            from google.cloud import channel_v1
+
+            def sample_create_channel_partner_repricing_config():
+                # Create a client
+                client = channel_v1.CloudChannelServiceClient()
+
+                # Initialize request argument(s)
+                channel_partner_repricing_config = channel_v1.ChannelPartnerRepricingConfig()
+                channel_partner_repricing_config.repricing_config.rebilling_basis = "DIRECT_CUSTOMER_COST"
+
+                request = channel_v1.CreateChannelPartnerRepricingConfigRequest(
+                    parent="parent_value",
+                    channel_partner_repricing_config=channel_partner_repricing_config,
+                )
+
+                # Make the request
+                response = client.create_channel_partner_repricing_config(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.channel_v1.types.CreateChannelPartnerRepricingConfigRequest, dict]):
+                The request object. Request message for
+                [CloudChannelService.CreateChannelPartnerRepricingConfig][google.cloud.channel.v1.CloudChannelService.CreateChannelPartnerRepricingConfig].
+            parent (:class:`str`):
+                Required. The resource name of the ChannelPartner that
+                will receive the repricing config. Parent uses the
+                format:
+                accounts/{account_id}/channelPartnerLinks/{channel_partner_id}
+
+                This corresponds to the ``parent`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            channel_partner_repricing_config (:class:`google.cloud.channel_v1.types.ChannelPartnerRepricingConfig`):
+                Required. The
+                ChannelPartnerRepricingConfig object to
+                update.
+
+                This corresponds to the ``channel_partner_repricing_config`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.channel_v1.types.ChannelPartnerRepricingConfig:
+                Configuration for how a distributor
+                will rebill a channel partner (also
+                known as a distributor-authorized
+                reseller).
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([parent, channel_partner_repricing_config])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = service.CreateChannelPartnerRepricingConfigRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if parent is not None:
+            request.parent = parent
+        if channel_partner_repricing_config is not None:
+            request.channel_partner_repricing_config = channel_partner_repricing_config
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.create_channel_partner_repricing_config,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("parent", request.parent),)),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def update_channel_partner_repricing_config(
+        self,
+        request: Union[service.UpdateChannelPartnerRepricingConfigRequest, dict] = None,
+        *,
+        channel_partner_repricing_config: repricing.ChannelPartnerRepricingConfig = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> repricing.ChannelPartnerRepricingConfig:
+        r"""Updates a ChannelPartnerRepricingConfig. Call this method to set
+        modifications for a specific ChannelPartner's bill. This method
+        overwrites the existing CustomerRepricingConfig.
+
+        You can only update configs if the
+        [RepricingConfig.effective_invoice_month][google.cloud.channel.v1.RepricingConfig.effective_invoice_month]
+        is a future month. To make changes to configs for the current
+        month, use
+        [CreateChannelPartnerRepricingConfig][google.cloud.channel.v1.CloudChannelService.CreateChannelPartnerRepricingConfig],
+        taking note of its restrictions. You cannot update the
+        [RepricingConfig.effective_invoice_month][google.cloud.channel.v1.RepricingConfig.effective_invoice_month].
+
+        When updating a config in the future:
+
+        -  This config must already exist.
+
+        Possible Error Codes:
+
+        -  PERMISSION_DENIED: If the account making the request and the
+           account being queried are different.
+        -  INVALID_ARGUMENT: Missing or invalid required parameters in
+           the request. Also displays if the updated config is for the
+           current month or past months.
+        -  NOT_FOUND: The
+           [ChannelPartnerRepricingConfig][google.cloud.channel.v1.ChannelPartnerRepricingConfig]
+           specified does not exist or is not associated with the given
+           account.
+        -  INTERNAL: Any non-user error related to technical issues in
+           the backend. In this case, contact Cloud Channel support.
+
+        Return Value: If successful, the updated
+        [ChannelPartnerRepricingConfig][google.cloud.channel.v1.ChannelPartnerRepricingConfig]
+        resource, otherwise returns an error.
+
+        .. code-block:: python
+
+            from google.cloud import channel_v1
+
+            def sample_update_channel_partner_repricing_config():
+                # Create a client
+                client = channel_v1.CloudChannelServiceClient()
+
+                # Initialize request argument(s)
+                channel_partner_repricing_config = channel_v1.ChannelPartnerRepricingConfig()
+                channel_partner_repricing_config.repricing_config.rebilling_basis = "DIRECT_CUSTOMER_COST"
+
+                request = channel_v1.UpdateChannelPartnerRepricingConfigRequest(
+                    channel_partner_repricing_config=channel_partner_repricing_config,
+                )
+
+                # Make the request
+                response = client.update_channel_partner_repricing_config(request=request)
+
+                # Handle the response
+                print(response)
+
+        Args:
+            request (Union[google.cloud.channel_v1.types.UpdateChannelPartnerRepricingConfigRequest, dict]):
+                The request object. Request message for
+                [CloudChannelService.UpdateChannelPartnerRepricingConfig][google.cloud.channel.v1.CloudChannelService.UpdateChannelPartnerRepricingConfig].
+            channel_partner_repricing_config (:class:`google.cloud.channel_v1.types.ChannelPartnerRepricingConfig`):
+                Required. The
+                ChannelPartnerRepricingConfig object to
+                update.
+
+                This corresponds to the ``channel_partner_repricing_config`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+
+        Returns:
+            google.cloud.channel_v1.types.ChannelPartnerRepricingConfig:
+                Configuration for how a distributor
+                will rebill a channel partner (also
+                known as a distributor-authorized
+                reseller).
+
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([channel_partner_repricing_config])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = service.UpdateChannelPartnerRepricingConfigRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if channel_partner_repricing_config is not None:
+            request.channel_partner_repricing_config = channel_partner_repricing_config
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.update_channel_partner_repricing_config,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    (
+                        "channel_partner_repricing_config.name",
+                        request.channel_partner_repricing_config.name,
+                    ),
+                )
+            ),
+        )
+
+        # Send the request.
+        response = await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
+
+        # Done; return the response.
+        return response
+
+    async def delete_channel_partner_repricing_config(
+        self,
+        request: Union[service.DeleteChannelPartnerRepricingConfigRequest, dict] = None,
+        *,
+        name: str = None,
+        retry: OptionalRetry = gapic_v1.method.DEFAULT,
+        timeout: float = None,
+        metadata: Sequence[Tuple[str, str]] = (),
+    ) -> None:
+        r"""Deletes the given
+        [ChannelPartnerRepricingConfig][google.cloud.channel.v1.ChannelPartnerRepricingConfig]
+        permanently. You can only delete configs if their
+        [RepricingConfig.effective_invoice_month][google.cloud.channel.v1.RepricingConfig.effective_invoice_month]
+        is set to a date after the current month.
+
+        Possible error codes:
+
+        -  PERMISSION_DENIED: The account making the request does not
+           own this customer.
+        -  INVALID_ARGUMENT: Required request parameters are missing or
+           invalid.
+        -  FAILED_PRECONDITION: The
+           [ChannelPartnerRepricingConfig][google.cloud.channel.v1.ChannelPartnerRepricingConfig]
+           is active or in the past.
+        -  NOT_FOUND: No
+           [ChannelPartnerRepricingConfig][google.cloud.channel.v1.ChannelPartnerRepricingConfig]
+           found for the name in the request.
+
+        .. code-block:: python
+
+            from google.cloud import channel_v1
+
+            def sample_delete_channel_partner_repricing_config():
+                # Create a client
+                client = channel_v1.CloudChannelServiceClient()
+
+                # Initialize request argument(s)
+                request = channel_v1.DeleteChannelPartnerRepricingConfigRequest(
+                    name="name_value",
+                )
+
+                # Make the request
+                client.delete_channel_partner_repricing_config(request=request)
+
+        Args:
+            request (Union[google.cloud.channel_v1.types.DeleteChannelPartnerRepricingConfigRequest, dict]):
+                The request object. Request message for
+                DeleteChannelPartnerRepricingConfig.
+            name (:class:`str`):
+                Required. The resource name of the
+                channel partner repricing config rule to
+                delete.
+
+                This corresponds to the ``name`` field
+                on the ``request`` instance; if ``request`` is provided, this
+                should not be set.
+            retry (google.api_core.retry.Retry): Designation of what errors, if any,
+                should be retried.
+            timeout (float): The timeout for this request.
+            metadata (Sequence[Tuple[str, str]]): Strings which should be
+                sent along with the request as metadata.
+        """
+        # Create or coerce a protobuf request object.
+        # Quick check: If we got a request object, we should *not* have
+        # gotten any keyword arguments that map to the request.
+        has_flattened_params = any([name])
+        if request is not None and has_flattened_params:
+            raise ValueError(
+                "If the `request` argument is set, then none of "
+                "the individual field arguments should be set."
+            )
+
+        request = service.DeleteChannelPartnerRepricingConfigRequest(request)
+
+        # If we have keyword arguments corresponding to fields on the
+        # request, apply these.
+        if name is not None:
+            request.name = name
+
+        # Wrap the RPC method; this adds retry and timeout information,
+        # and friendly error handling.
+        rpc = gapic_v1.method_async.wrap_method(
+            self._client._transport.delete_channel_partner_repricing_config,
+            default_timeout=None,
+            client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("name", request.name),)),
+        )
+
+        # Send the request.
+        await rpc(
+            request,
+            retry=retry,
+            timeout=timeout,
+            metadata=metadata,
+        )
 
     async def lookup_offer(
         self,
