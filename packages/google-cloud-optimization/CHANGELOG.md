@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.0](https://github.com/googleapis/python-optimization/compare/v0.1.1...v1.0.0) (2022-04-26)
+
+
+### Features
+
+* bump release level to production/stable ([#31](https://github.com/googleapis/python-optimization/issues/31)) ([dd9377f](https://github.com/googleapis/python-optimization/commit/dd9377f24b3e1ffcaee7c23c72872696bbaa6a20))
+
 ### [0.1.1](https://github.com/googleapis/python-optimization/compare/v0.1.0...v0.1.1) (2022-04-25)
 
 
