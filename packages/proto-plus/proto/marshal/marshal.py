@@ -215,7 +215,8 @@ class BaseMarshal:
             raise TypeError(
                 "Parameter must be instance of the same class; "
                 "expected {expected}, got {got}".format(
-                    expected=proto_type.__name__, got=pb_value.__class__.__name__,
+                    expected=proto_type.__name__,
+                    got=pb_value.__class__.__name__,
                 ),
             )
 

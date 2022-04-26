@@ -47,11 +47,15 @@ class ValueRule:
             return str(value.string_value)
         if kind == "struct_value":
             return self._marshal.to_python(
-                struct_pb2.Struct, value.struct_value, absent=False,
+                struct_pb2.Struct,
+                value.struct_value,
+                absent=False,
             )
         if kind == "list_value":
             return self._marshal.to_python(
-                struct_pb2.ListValue, value.list_value, absent=False,
+                struct_pb2.ListValue,
+                value.list_value,
+                absent=False,
             )
         # If more variants are ever added, we want to fail loudly
         # instead of tacitly returning None.
@@ -126,7 +130,9 @@ class StructRule:
         if isinstance(value, struct_pb2.Struct):
             return value
         if isinstance(value, maps.MapComposite):
-            return struct_pb2.Struct(fields={k: v for k, v in value.pb.items()},)
+            return struct_pb2.Struct(
+                fields={k: v for k, v in value.pb.items()},
+            )
 
         # We got a dict (or something dict-like); convert it.
         answer = struct_pb2.Struct(

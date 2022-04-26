@@ -23,7 +23,7 @@ jobs:
         with:
           python-version: 3.8
       - name: Install black
-        run: pip install black==19.10b0
+        run: pip install black==22.3.0
       - name: Check diff
         run: black --diff --check .
   docs:

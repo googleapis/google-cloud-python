@@ -78,7 +78,8 @@ class Field:
             if isinstance(self.message, str):
                 if not self.message.startswith(self.package):
                     self.message = "{package}.{name}".format(
-                        package=self.package, name=self.message,
+                        package=self.package,
+                        name=self.message,
                     )
                 type_name = self.message
             elif self.message:
@@ -90,7 +91,8 @@ class Field:
             elif isinstance(self.enum, str):
                 if not self.enum.startswith(self.package):
                     self.enum = "{package}.{name}".format(
-                        package=self.package, name=self.enum,
+                        package=self.package,
+                        name=self.enum,
                     )
                 type_name = self.enum
             elif self.enum:

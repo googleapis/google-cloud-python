@@ -21,7 +21,10 @@ from google.protobuf import descriptor_pb2
 from proto import _file_info, _package_info
 
 PACKAGE = "a.test.package.salting.with.manifest"
-__protobuf__ = proto.module(package=PACKAGE, manifest={"This", "That"},)
+__protobuf__ = proto.module(
+    package=PACKAGE,
+    manifest={"This", "That"},
+)
 
 
 class This(proto.Message):
@@ -49,7 +52,9 @@ def sample_file_info(name):
         filename,
         _file_info._FileInfo(
             descriptor=descriptor_pb2.FileDescriptorProto(
-                name=filename, package=package, syntax="proto3",
+                name=filename,
+                package=package,
+                syntax="proto3",
             ),
             enums=collections.OrderedDict(),
             messages=collections.OrderedDict(),

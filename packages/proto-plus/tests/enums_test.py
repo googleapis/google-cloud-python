@@ -14,7 +14,12 @@
 
 import proto
 
-__protobuf__ = proto.module(package="test.proto", manifest={"Enums",},)
+__protobuf__ = proto.module(
+    package="test.proto",
+    manifest={
+        "Enums",
+    },
+)
 
 
 class OneEnum(proto.Enum):

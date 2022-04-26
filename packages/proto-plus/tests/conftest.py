@@ -92,7 +92,9 @@ def _register_messages(scope, iterable, sym_db):
     """Create and register messages from the file descriptor."""
     for name, descriptor in iterable.items():
         new_msg = reflection.GeneratedProtocolMessageType(
-            name, (message.Message,), {"DESCRIPTOR": descriptor, "__module__": None},
+            name,
+            (message.Message,),
+            {"DESCRIPTOR": descriptor, "__module__": None},
         )
         sym_db.RegisterMessage(new_msg)
         setattr(scope, name, new_msg)

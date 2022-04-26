@@ -40,7 +40,9 @@ class _FileInfo(
         if not descriptor:
             descriptor = cls.registry[filename] = cls(
                 descriptor=descriptor_pb2.FileDescriptorProto(
-                    name=filename, package=package, syntax="proto3",
+                    name=filename,
+                    package=package,
+                    syntax="proto3",
                 ),
                 enums=collections.OrderedDict(),
                 messages=collections.OrderedDict(),

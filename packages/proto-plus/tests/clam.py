@@ -14,7 +14,13 @@
 
 import proto
 
-__protobuf__ = proto.module(package="ocean.clam.v1", manifest={"Clam", "Species",},)
+__protobuf__ = proto.module(
+    package="ocean.clam.v1",
+    manifest={
+        "Clam",
+        "Species",
+    },
+)
 
 
 class Species(proto.Enum):

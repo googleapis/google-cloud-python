@@ -15,7 +15,12 @@
 import proto
 import zone
 
-__protobuf__ = proto.module(package="ocean.mollusc.v1", manifest={"Mollusc",},)
+__protobuf__ = proto.module(
+    package="ocean.mollusc.v1",
+    manifest={
+        "Mollusc",
+    },
+)
 
 
 class Mollusc(proto.Message):

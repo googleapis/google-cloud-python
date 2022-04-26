@@ -36,7 +36,8 @@ class EnumRule:
                 # the user realizes that an unexpected value came along.
                 warnings.warn(
                     "Unrecognized {name} enum value: {value}".format(
-                        name=self._enum.__name__, value=value,
+                        name=self._enum.__name__,
+                        value=value,
                     )
                 )
         return value

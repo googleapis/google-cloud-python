@@ -66,7 +66,11 @@ def test_enum_append():
         OYSTER = 1
 
     class MolluscContainer(proto.Message):
-        bivalves = proto.RepeatedField(proto.ENUM, number=1, enum=Bivalve,)
+        bivalves = proto.RepeatedField(
+            proto.ENUM,
+            number=1,
+            enum=Bivalve,
+        )
 
     mc = MolluscContainer()
     clam = Bivalve.CLAM
@@ -82,7 +86,12 @@ def test_enum_map_insert():
         OYSTER = 1
 
     class MolluscContainer(proto.Message):
-        bivalves = proto.MapField(proto.STRING, proto.ENUM, number=1, enum=Bivalve,)
+        bivalves = proto.MapField(
+            proto.STRING,
+            proto.ENUM,
+            number=1,
+            enum=Bivalve,
+        )
 
     mc = MolluscContainer()
     clam = Bivalve.CLAM

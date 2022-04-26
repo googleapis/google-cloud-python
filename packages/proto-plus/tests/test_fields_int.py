@@ -65,12 +65,12 @@ def test_int_size():
         big = proto.Field(proto.INT64, number=2)
 
     foo = Foo()
-    foo.big = 2 ** 40
-    assert foo.big == 2 ** 40
+    foo.big = 2**40
+    assert foo.big == 2**40
     with pytest.raises(ValueError):
-        foo.small = 2 ** 40
+        foo.small = 2**40
     with pytest.raises(ValueError):
-        Foo(small=2 ** 40)
+        Foo(small=2**40)
 
 
 def test_int_unsigned():

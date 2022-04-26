@@ -75,7 +75,9 @@ def test_repeated_composite_falsy_behavior():
 def test_repeated_composite_marshaled():
     class Foo(proto.Message):
         timestamps = proto.RepeatedField(
-            proto.MESSAGE, message=timestamp_pb2.Timestamp, number=1,
+            proto.MESSAGE,
+            message=timestamp_pb2.Timestamp,
+            number=1,
         )
 
     foo = Foo(

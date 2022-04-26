@@ -16,7 +16,12 @@
 import proto
 
 
-__protobuf__ = proto.module(package="ocean.zone.v1", manifest={"Zone",},)
+__protobuf__ = proto.module(
+    package="ocean.zone.v1",
+    manifest={
+        "Zone",
+    },
+)
 
 
 class Zone(proto.Enum):
