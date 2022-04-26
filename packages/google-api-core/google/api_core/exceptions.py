@@ -599,7 +599,9 @@ def from_grpc_error(rpc_exc):
     """
     # NOTE(lidiz) All gRPC error shares the parent class grpc.RpcError.
     # However, check for grpc.RpcError breaks backward compatibility.
-    if isinstance(rpc_exc, grpc.Call) or _is_informative_grpc_error(rpc_exc):
+    if (
+        grpc is not None and isinstance(rpc_exc, grpc.Call)
+    ) or _is_informative_grpc_error(rpc_exc):
         details, err_info = _parse_grpc_error_details(rpc_exc)
         return from_grpc_status(
             rpc_exc.code(),
