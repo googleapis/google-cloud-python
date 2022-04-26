@@ -1,15 +1,15 @@
 Python Client for Bare Metal Solution API
 =========================================
 
-|GA| |pypi| |versions|
+|preview| |pypi| |versions|
 
 `Bare Metal Solution API`_:
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |GA| image:: https://img.shields.io/badge/support-GA-gold.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#general-availability
+.. |preview| image:: https://img.shields.io/badge/support-preview-orange.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#beta-support
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-bare-metal-solution.svg
    :target: https://pypi.org/project/google-cloud-bare-metal-solution/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-bare-metal-solution.svg
