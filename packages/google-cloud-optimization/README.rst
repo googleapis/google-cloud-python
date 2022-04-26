@@ -1,15 +1,15 @@
 Python Client for Cloud Optimization API
 ========================================
 
-|preview| |pypi| |versions|
+|stable| |pypi| |versions|
 
 `Cloud Optimization API`_: 
 
 - `Client Library Documentation`_
 - `Product Documentation`_
 
-.. |preview| image:: https://img.shields.io/badge/support-preview-orange.svg
-   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#beta-support
+.. |stable| image:: https://img.shields.io/badge/support-stable-gold.svg
+   :target: https://github.com/googleapis/google-cloud-python/blob/main/README.rst#general-availability
 .. |pypi| image:: https://img.shields.io/pypi/v/google-cloud-optimization.svg
    :target: https://pypi.org/project/google-cloud-optimization/
 .. |versions| image:: https://img.shields.io/pypi/pyversions/google-cloud-optimization.svg
