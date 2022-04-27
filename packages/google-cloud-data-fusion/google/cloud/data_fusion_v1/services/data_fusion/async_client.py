@@ -224,9 +224,9 @@ class DataFusionAsyncClient:
 
             from google.cloud import data_fusion_v1
 
-            def sample_list_available_versions():
+            async def sample_list_available_versions():
                 # Create a client
-                client = data_fusion_v1.DataFusionClient()
+                client = data_fusion_v1.DataFusionAsyncClient()
 
                 # Initialize request argument(s)
                 request = data_fusion_v1.ListAvailableVersionsRequest(
@@ -237,7 +237,7 @@ class DataFusionAsyncClient:
                 page_result = client.list_available_versions(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -334,9 +334,9 @@ class DataFusionAsyncClient:
 
             from google.cloud import data_fusion_v1
 
-            def sample_list_instances():
+            async def sample_list_instances():
                 # Create a client
-                client = data_fusion_v1.DataFusionClient()
+                client = data_fusion_v1.DataFusionAsyncClient()
 
                 # Initialize request argument(s)
                 request = data_fusion_v1.ListInstancesRequest(
@@ -347,7 +347,7 @@ class DataFusionAsyncClient:
                 page_result = client.list_instances(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -420,9 +420,9 @@ class DataFusionAsyncClient:
 
             from google.cloud import data_fusion_v1
 
-            def sample_get_instance():
+            async def sample_get_instance():
                 # Create a client
-                client = data_fusion_v1.DataFusionClient()
+                client = data_fusion_v1.DataFusionAsyncClient()
 
                 # Initialize request argument(s)
                 request = data_fusion_v1.GetInstanceRequest(
@@ -430,7 +430,7 @@ class DataFusionAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_instance(request=request)
+                response = await client.get_instance(request=request)
 
                 # Handle the response
                 print(response)
@@ -495,9 +495,9 @@ class DataFusionAsyncClient:
 
             from google.cloud import data_fusion_v1
 
-            def sample_create_instance():
+            async def sample_create_instance():
                 # Create a client
-                client = data_fusion_v1.DataFusionClient()
+                client = data_fusion_v1.DataFusionAsyncClient()
 
                 # Initialize request argument(s)
                 request = data_fusion_v1.CreateInstanceRequest(
@@ -510,7 +510,7 @@ class DataFusionAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -623,9 +623,9 @@ class DataFusionAsyncClient:
 
             from google.cloud import data_fusion_v1
 
-            def sample_delete_instance():
+            async def sample_delete_instance():
                 # Create a client
-                client = data_fusion_v1.DataFusionClient()
+                client = data_fusion_v1.DataFusionAsyncClient()
 
                 # Initialize request argument(s)
                 request = data_fusion_v1.DeleteInstanceRequest(
@@ -637,7 +637,7 @@ class DataFusionAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -745,9 +745,9 @@ class DataFusionAsyncClient:
 
             from google.cloud import data_fusion_v1
 
-            def sample_update_instance():
+            async def sample_update_instance():
                 # Create a client
-                client = data_fusion_v1.DataFusionClient()
+                client = data_fusion_v1.DataFusionAsyncClient()
 
                 # Initialize request argument(s)
                 instance = data_fusion_v1.Instance()
@@ -762,7 +762,7 @@ class DataFusionAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -880,9 +880,9 @@ class DataFusionAsyncClient:
 
             from google.cloud import data_fusion_v1
 
-            def sample_restart_instance():
+            async def sample_restart_instance():
                 # Create a client
-                client = data_fusion_v1.DataFusionClient()
+                client = data_fusion_v1.DataFusionAsyncClient()
 
                 # Initialize request argument(s)
                 request = data_fusion_v1.RestartInstanceRequest(
@@ -894,7 +894,7 @@ class DataFusionAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
