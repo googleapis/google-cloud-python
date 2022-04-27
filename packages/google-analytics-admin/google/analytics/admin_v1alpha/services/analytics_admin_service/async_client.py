@@ -309,9 +309,9 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_get_account():
+            async def sample_get_account():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = admin_v1alpha.GetAccountRequest(
@@ -319,7 +319,7 @@ class AnalyticsAdminServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_account(request=request)
+                response = await client.get_account(request=request)
 
                 # Handle the response
                 print(response)
@@ -407,9 +407,9 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_list_accounts():
+            async def sample_list_accounts():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = admin_v1alpha.ListAccountsRequest(
@@ -419,7 +419,7 @@ class AnalyticsAdminServiceAsyncClient:
                 page_result = client.list_accounts(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -496,9 +496,9 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_delete_account():
+            async def sample_delete_account():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = admin_v1alpha.DeleteAccountRequest(
@@ -506,7 +506,7 @@ class AnalyticsAdminServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_account(request=request)
+                await client.delete_account(request=request)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.DeleteAccountRequest, dict]):
@@ -581,9 +581,9 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_update_account():
+            async def sample_update_account():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 account = admin_v1alpha.Account()
@@ -594,7 +594,7 @@ class AnalyticsAdminServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_account(request=request)
+                response = await client.update_account(request=request)
 
                 # Handle the response
                 print(response)
@@ -692,16 +692,16 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_provision_account_ticket():
+            async def sample_provision_account_ticket():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = admin_v1alpha.ProvisionAccountTicketRequest(
                 )
 
                 # Make the request
-                response = client.provision_account_ticket(request=request)
+                response = await client.provision_account_ticket(request=request)
 
                 # Handle the response
                 print(response)
@@ -759,9 +759,9 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_list_account_summaries():
+            async def sample_list_account_summaries():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = admin_v1alpha.ListAccountSummariesRequest(
@@ -771,7 +771,7 @@ class AnalyticsAdminServiceAsyncClient:
                 page_result = client.list_account_summaries(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -839,9 +839,9 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_get_property():
+            async def sample_get_property():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = admin_v1alpha.GetPropertyRequest(
@@ -849,7 +849,7 @@ class AnalyticsAdminServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_property(request=request)
+                response = await client.get_property(request=request)
 
                 # Handle the response
                 print(response)
@@ -938,9 +938,9 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_list_properties():
+            async def sample_list_properties():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = admin_v1alpha.ListPropertiesRequest(
@@ -951,7 +951,7 @@ class AnalyticsAdminServiceAsyncClient:
                 page_result = client.list_properties(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1020,9 +1020,9 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_create_property():
+            async def sample_create_property():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 property = admin_v1alpha.Property()
@@ -1034,7 +1034,7 @@ class AnalyticsAdminServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_property(request=request)
+                response = await client.create_property(request=request)
 
                 # Handle the response
                 print(response)
@@ -1125,9 +1125,9 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_delete_property():
+            async def sample_delete_property():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = admin_v1alpha.DeletePropertyRequest(
@@ -1135,7 +1135,7 @@ class AnalyticsAdminServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.delete_property(request=request)
+                response = await client.delete_property(request=request)
 
                 # Handle the response
                 print(response)
@@ -1222,9 +1222,9 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_update_property():
+            async def sample_update_property():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 property = admin_v1alpha.Property()
@@ -1236,7 +1236,7 @@ class AnalyticsAdminServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_property(request=request)
+                response = await client.update_property(request=request)
 
                 # Handle the response
                 print(response)
@@ -1337,9 +1337,9 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_get_user_link():
+            async def sample_get_user_link():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = admin_v1alpha.GetUserLinkRequest(
@@ -1347,7 +1347,7 @@ class AnalyticsAdminServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_user_link(request=request)
+                response = await client.get_user_link(request=request)
 
                 # Handle the response
                 print(response)
@@ -1432,9 +1432,9 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_batch_get_user_links():
+            async def sample_batch_get_user_links():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = admin_v1alpha.BatchGetUserLinksRequest(
@@ -1443,7 +1443,7 @@ class AnalyticsAdminServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.batch_get_user_links(request=request)
+                response = await client.batch_get_user_links(request=request)
 
                 # Handle the response
                 print(response)
@@ -1507,9 +1507,9 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_list_user_links():
+            async def sample_list_user_links():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = admin_v1alpha.ListUserLinksRequest(
@@ -1520,7 +1520,7 @@ class AnalyticsAdminServiceAsyncClient:
                 page_result = client.list_user_links(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1624,9 +1624,9 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_audit_user_links():
+            async def sample_audit_user_links():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = admin_v1alpha.AuditUserLinksRequest(
@@ -1637,7 +1637,7 @@ class AnalyticsAdminServiceAsyncClient:
                 page_result = client.audit_user_links(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1716,9 +1716,9 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_create_user_link():
+            async def sample_create_user_link():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = admin_v1alpha.CreateUserLinkRequest(
@@ -1726,7 +1726,7 @@ class AnalyticsAdminServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_user_link(request=request)
+                response = await client.create_user_link(request=request)
 
                 # Handle the response
                 print(response)
@@ -1829,9 +1829,9 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_batch_create_user_links():
+            async def sample_batch_create_user_links():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 requests = admin_v1alpha.CreateUserLinkRequest()
@@ -1843,7 +1843,7 @@ class AnalyticsAdminServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.batch_create_user_links(request=request)
+                response = await client.batch_create_user_links(request=request)
 
                 # Handle the response
                 print(response)
@@ -1907,16 +1907,16 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_update_user_link():
+            async def sample_update_user_link():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = admin_v1alpha.UpdateUserLinkRequest(
                 )
 
                 # Make the request
-                response = client.update_user_link(request=request)
+                response = await client.update_user_link(request=request)
 
                 # Handle the response
                 print(response)
@@ -2002,9 +2002,9 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_batch_update_user_links():
+            async def sample_batch_update_user_links():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = admin_v1alpha.BatchUpdateUserLinksRequest(
@@ -2012,7 +2012,7 @@ class AnalyticsAdminServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.batch_update_user_links(request=request)
+                response = await client.batch_update_user_links(request=request)
 
                 # Handle the response
                 print(response)
@@ -2076,9 +2076,9 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_delete_user_link():
+            async def sample_delete_user_link():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = admin_v1alpha.DeleteUserLinkRequest(
@@ -2086,7 +2086,7 @@ class AnalyticsAdminServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_user_link(request=request)
+                await client.delete_user_link(request=request)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.DeleteUserLinkRequest, dict]):
@@ -2159,9 +2159,9 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_batch_delete_user_links():
+            async def sample_batch_delete_user_links():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 requests = admin_v1alpha.DeleteUserLinkRequest()
@@ -2173,7 +2173,7 @@ class AnalyticsAdminServiceAsyncClient:
                 )
 
                 # Make the request
-                client.batch_delete_user_links(request=request)
+                await client.batch_delete_user_links(request=request)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.BatchDeleteUserLinksRequest, dict]):
@@ -2227,9 +2227,9 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_create_firebase_link():
+            async def sample_create_firebase_link():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = admin_v1alpha.CreateFirebaseLinkRequest(
@@ -2237,7 +2237,7 @@ class AnalyticsAdminServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_firebase_link(request=request)
+                response = await client.create_firebase_link(request=request)
 
                 # Handle the response
                 print(response)
@@ -2331,9 +2331,9 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_delete_firebase_link():
+            async def sample_delete_firebase_link():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = admin_v1alpha.DeleteFirebaseLinkRequest(
@@ -2341,7 +2341,7 @@ class AnalyticsAdminServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_firebase_link(request=request)
+                await client.delete_firebase_link(request=request)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.DeleteFirebaseLinkRequest, dict]):
@@ -2416,9 +2416,9 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_list_firebase_links():
+            async def sample_list_firebase_links():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = admin_v1alpha.ListFirebaseLinksRequest(
@@ -2429,7 +2429,7 @@ class AnalyticsAdminServiceAsyncClient:
                 page_result = client.list_firebase_links(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -2525,9 +2525,9 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_get_global_site_tag():
+            async def sample_get_global_site_tag():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = admin_v1alpha.GetGlobalSiteTagRequest(
@@ -2535,7 +2535,7 @@ class AnalyticsAdminServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_global_site_tag(request=request)
+                response = await client.get_global_site_tag(request=request)
 
                 # Handle the response
                 print(response)
@@ -2626,9 +2626,9 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_create_google_ads_link():
+            async def sample_create_google_ads_link():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = admin_v1alpha.CreateGoogleAdsLinkRequest(
@@ -2636,7 +2636,7 @@ class AnalyticsAdminServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_google_ads_link(request=request)
+                response = await client.create_google_ads_link(request=request)
 
                 # Handle the response
                 print(response)
@@ -2731,16 +2731,16 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_update_google_ads_link():
+            async def sample_update_google_ads_link():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = admin_v1alpha.UpdateGoogleAdsLinkRequest(
                 )
 
                 # Make the request
-                response = client.update_google_ads_link(request=request)
+                response = await client.update_google_ads_link(request=request)
 
                 # Handle the response
                 print(response)
@@ -2837,9 +2837,9 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_delete_google_ads_link():
+            async def sample_delete_google_ads_link():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = admin_v1alpha.DeleteGoogleAdsLinkRequest(
@@ -2847,7 +2847,7 @@ class AnalyticsAdminServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_google_ads_link(request=request)
+                await client.delete_google_ads_link(request=request)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.DeleteGoogleAdsLinkRequest, dict]):
@@ -2920,9 +2920,9 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_list_google_ads_links():
+            async def sample_list_google_ads_links():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = admin_v1alpha.ListGoogleAdsLinksRequest(
@@ -2933,7 +2933,7 @@ class AnalyticsAdminServiceAsyncClient:
                 page_result = client.list_google_ads_links(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -3029,9 +3029,9 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_get_data_sharing_settings():
+            async def sample_get_data_sharing_settings():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = admin_v1alpha.GetDataSharingSettingsRequest(
@@ -3039,7 +3039,7 @@ class AnalyticsAdminServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_data_sharing_settings(request=request)
+                response = await client.get_data_sharing_settings(request=request)
 
                 # Handle the response
                 print(response)
@@ -3130,9 +3130,9 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_get_measurement_protocol_secret():
+            async def sample_get_measurement_protocol_secret():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = admin_v1alpha.GetMeasurementProtocolSecretRequest(
@@ -3140,7 +3140,7 @@ class AnalyticsAdminServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_measurement_protocol_secret(request=request)
+                response = await client.get_measurement_protocol_secret(request=request)
 
                 # Handle the response
                 print(response)
@@ -3229,9 +3229,9 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_list_measurement_protocol_secrets():
+            async def sample_list_measurement_protocol_secrets():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = admin_v1alpha.ListMeasurementProtocolSecretsRequest(
@@ -3242,7 +3242,7 @@ class AnalyticsAdminServiceAsyncClient:
                 page_result = client.list_measurement_protocol_secrets(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -3341,9 +3341,9 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_create_measurement_protocol_secret():
+            async def sample_create_measurement_protocol_secret():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 measurement_protocol_secret = admin_v1alpha.MeasurementProtocolSecret()
@@ -3355,7 +3355,7 @@ class AnalyticsAdminServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_measurement_protocol_secret(request=request)
+                response = await client.create_measurement_protocol_secret(request=request)
 
                 # Handle the response
                 print(response)
@@ -3452,9 +3452,9 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_delete_measurement_protocol_secret():
+            async def sample_delete_measurement_protocol_secret():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = admin_v1alpha.DeleteMeasurementProtocolSecretRequest(
@@ -3462,7 +3462,7 @@ class AnalyticsAdminServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_measurement_protocol_secret(request=request)
+                await client.delete_measurement_protocol_secret(request=request)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.DeleteMeasurementProtocolSecretRequest, dict]):
@@ -3540,9 +3540,9 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_update_measurement_protocol_secret():
+            async def sample_update_measurement_protocol_secret():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 measurement_protocol_secret = admin_v1alpha.MeasurementProtocolSecret()
@@ -3553,7 +3553,7 @@ class AnalyticsAdminServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_measurement_protocol_secret(request=request)
+                response = await client.update_measurement_protocol_secret(request=request)
 
                 # Handle the response
                 print(response)
@@ -3659,9 +3659,9 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_acknowledge_user_data_collection():
+            async def sample_acknowledge_user_data_collection():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = admin_v1alpha.AcknowledgeUserDataCollectionRequest(
@@ -3670,7 +3670,7 @@ class AnalyticsAdminServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.acknowledge_user_data_collection(request=request)
+                response = await client.acknowledge_user_data_collection(request=request)
 
                 # Handle the response
                 print(response)
@@ -3734,9 +3734,9 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_search_change_history_events():
+            async def sample_search_change_history_events():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = admin_v1alpha.SearchChangeHistoryEventsRequest(
@@ -3747,7 +3747,7 @@ class AnalyticsAdminServiceAsyncClient:
                 page_result = client.search_change_history_events(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -3821,9 +3821,9 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_get_google_signals_settings():
+            async def sample_get_google_signals_settings():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = admin_v1alpha.GetGoogleSignalsSettingsRequest(
@@ -3831,7 +3831,7 @@ class AnalyticsAdminServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_google_signals_settings(request=request)
+                response = await client.get_google_signals_settings(request=request)
 
                 # Handle the response
                 print(response)
@@ -3918,16 +3918,16 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_update_google_signals_settings():
+            async def sample_update_google_signals_settings():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = admin_v1alpha.UpdateGoogleSignalsSettingsRequest(
                 )
 
                 # Make the request
-                response = client.update_google_signals_settings(request=request)
+                response = await client.update_google_signals_settings(request=request)
 
                 # Handle the response
                 print(response)
@@ -4033,9 +4033,9 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_create_conversion_event():
+            async def sample_create_conversion_event():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = admin_v1alpha.CreateConversionEventRequest(
@@ -4043,7 +4043,7 @@ class AnalyticsAdminServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_conversion_event(request=request)
+                response = await client.create_conversion_event(request=request)
 
                 # Handle the response
                 print(response)
@@ -4139,9 +4139,9 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_get_conversion_event():
+            async def sample_get_conversion_event():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = admin_v1alpha.GetConversionEventRequest(
@@ -4149,7 +4149,7 @@ class AnalyticsAdminServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_conversion_event(request=request)
+                response = await client.get_conversion_event(request=request)
 
                 # Handle the response
                 print(response)
@@ -4236,9 +4236,9 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_delete_conversion_event():
+            async def sample_delete_conversion_event():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = admin_v1alpha.DeleteConversionEventRequest(
@@ -4246,7 +4246,7 @@ class AnalyticsAdminServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_conversion_event(request=request)
+                await client.delete_conversion_event(request=request)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.DeleteConversionEventRequest, dict]):
@@ -4323,9 +4323,9 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_list_conversion_events():
+            async def sample_list_conversion_events():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = admin_v1alpha.ListConversionEventsRequest(
@@ -4336,7 +4336,7 @@ class AnalyticsAdminServiceAsyncClient:
                 page_result = client.list_conversion_events(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -4434,9 +4434,9 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_get_display_video360_advertiser_link():
+            async def sample_get_display_video360_advertiser_link():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = admin_v1alpha.GetDisplayVideo360AdvertiserLinkRequest(
@@ -4444,7 +4444,7 @@ class AnalyticsAdminServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_display_video360_advertiser_link(request=request)
+                response = await client.get_display_video360_advertiser_link(request=request)
 
                 # Handle the response
                 print(response)
@@ -4534,9 +4534,9 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_list_display_video360_advertiser_links():
+            async def sample_list_display_video360_advertiser_links():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = admin_v1alpha.ListDisplayVideo360AdvertiserLinksRequest(
@@ -4547,7 +4547,7 @@ class AnalyticsAdminServiceAsyncClient:
                 page_result = client.list_display_video360_advertiser_links(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -4650,9 +4650,9 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_create_display_video360_advertiser_link():
+            async def sample_create_display_video360_advertiser_link():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = admin_v1alpha.CreateDisplayVideo360AdvertiserLinkRequest(
@@ -4660,7 +4660,7 @@ class AnalyticsAdminServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_display_video360_advertiser_link(request=request)
+                response = await client.create_display_video360_advertiser_link(request=request)
 
                 # Handle the response
                 print(response)
@@ -4759,9 +4759,9 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_delete_display_video360_advertiser_link():
+            async def sample_delete_display_video360_advertiser_link():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = admin_v1alpha.DeleteDisplayVideo360AdvertiserLinkRequest(
@@ -4769,7 +4769,7 @@ class AnalyticsAdminServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_display_video360_advertiser_link(request=request)
+                await client.delete_display_video360_advertiser_link(request=request)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.DeleteDisplayVideo360AdvertiserLinkRequest, dict]):
@@ -4848,16 +4848,16 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_update_display_video360_advertiser_link():
+            async def sample_update_display_video360_advertiser_link():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = admin_v1alpha.UpdateDisplayVideo360AdvertiserLinkRequest(
                 )
 
                 # Make the request
-                response = client.update_display_video360_advertiser_link(request=request)
+                response = await client.update_display_video360_advertiser_link(request=request)
 
                 # Handle the response
                 print(response)
@@ -4965,9 +4965,9 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_get_display_video360_advertiser_link_proposal():
+            async def sample_get_display_video360_advertiser_link_proposal():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = admin_v1alpha.GetDisplayVideo360AdvertiserLinkProposalRequest(
@@ -4975,7 +4975,7 @@ class AnalyticsAdminServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_display_video360_advertiser_link_proposal(request=request)
+                response = await client.get_display_video360_advertiser_link_proposal(request=request)
 
                 # Handle the response
                 print(response)
@@ -5074,9 +5074,9 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_list_display_video360_advertiser_link_proposals():
+            async def sample_list_display_video360_advertiser_link_proposals():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = admin_v1alpha.ListDisplayVideo360AdvertiserLinkProposalsRequest(
@@ -5087,7 +5087,7 @@ class AnalyticsAdminServiceAsyncClient:
                 page_result = client.list_display_video360_advertiser_link_proposals(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -5187,9 +5187,9 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_create_display_video360_advertiser_link_proposal():
+            async def sample_create_display_video360_advertiser_link_proposal():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = admin_v1alpha.CreateDisplayVideo360AdvertiserLinkProposalRequest(
@@ -5197,7 +5197,7 @@ class AnalyticsAdminServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_display_video360_advertiser_link_proposal(request=request)
+                response = await client.create_display_video360_advertiser_link_proposal(request=request)
 
                 # Handle the response
                 print(response)
@@ -5306,9 +5306,9 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_delete_display_video360_advertiser_link_proposal():
+            async def sample_delete_display_video360_advertiser_link_proposal():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = admin_v1alpha.DeleteDisplayVideo360AdvertiserLinkProposalRequest(
@@ -5316,7 +5316,7 @@ class AnalyticsAdminServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_display_video360_advertiser_link_proposal(request=request)
+                await client.delete_display_video360_advertiser_link_proposal(request=request)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.DeleteDisplayVideo360AdvertiserLinkProposalRequest, dict]):
@@ -5397,9 +5397,9 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_approve_display_video360_advertiser_link_proposal():
+            async def sample_approve_display_video360_advertiser_link_proposal():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = admin_v1alpha.ApproveDisplayVideo360AdvertiserLinkProposalRequest(
@@ -5407,7 +5407,7 @@ class AnalyticsAdminServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.approve_display_video360_advertiser_link_proposal(request=request)
+                response = await client.approve_display_video360_advertiser_link_proposal(request=request)
 
                 # Handle the response
                 print(response)
@@ -5480,9 +5480,9 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_cancel_display_video360_advertiser_link_proposal():
+            async def sample_cancel_display_video360_advertiser_link_proposal():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = admin_v1alpha.CancelDisplayVideo360AdvertiserLinkProposalRequest(
@@ -5490,7 +5490,7 @@ class AnalyticsAdminServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.cancel_display_video360_advertiser_link_proposal(request=request)
+                response = await client.cancel_display_video360_advertiser_link_proposal(request=request)
 
                 # Handle the response
                 print(response)
@@ -5564,9 +5564,9 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_create_custom_dimension():
+            async def sample_create_custom_dimension():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 custom_dimension = admin_v1alpha.CustomDimension()
@@ -5580,7 +5580,7 @@ class AnalyticsAdminServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_custom_dimension(request=request)
+                response = await client.create_custom_dimension(request=request)
 
                 # Handle the response
                 print(response)
@@ -5673,16 +5673,16 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_update_custom_dimension():
+            async def sample_update_custom_dimension():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = admin_v1alpha.UpdateCustomDimensionRequest(
                 )
 
                 # Make the request
-                response = client.update_custom_dimension(request=request)
+                response = await client.update_custom_dimension(request=request)
 
                 # Handle the response
                 print(response)
@@ -5776,9 +5776,9 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_list_custom_dimensions():
+            async def sample_list_custom_dimensions():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = admin_v1alpha.ListCustomDimensionsRequest(
@@ -5789,7 +5789,7 @@ class AnalyticsAdminServiceAsyncClient:
                 page_result = client.list_custom_dimensions(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -5884,9 +5884,9 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_archive_custom_dimension():
+            async def sample_archive_custom_dimension():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = admin_v1alpha.ArchiveCustomDimensionRequest(
@@ -5894,7 +5894,7 @@ class AnalyticsAdminServiceAsyncClient:
                 )
 
                 # Make the request
-                client.archive_custom_dimension(request=request)
+                await client.archive_custom_dimension(request=request)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.ArchiveCustomDimensionRequest, dict]):
@@ -5969,9 +5969,9 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_get_custom_dimension():
+            async def sample_get_custom_dimension():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = admin_v1alpha.GetCustomDimensionRequest(
@@ -5979,7 +5979,7 @@ class AnalyticsAdminServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_custom_dimension(request=request)
+                response = await client.get_custom_dimension(request=request)
 
                 # Handle the response
                 print(response)
@@ -6064,9 +6064,9 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_create_custom_metric():
+            async def sample_create_custom_metric():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 custom_metric = admin_v1alpha.CustomMetric()
@@ -6081,7 +6081,7 @@ class AnalyticsAdminServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_custom_metric(request=request)
+                response = await client.create_custom_metric(request=request)
 
                 # Handle the response
                 print(response)
@@ -6172,16 +6172,16 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_update_custom_metric():
+            async def sample_update_custom_metric():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = admin_v1alpha.UpdateCustomMetricRequest(
                 )
 
                 # Make the request
-                response = client.update_custom_metric(request=request)
+                response = await client.update_custom_metric(request=request)
 
                 # Handle the response
                 print(response)
@@ -6275,9 +6275,9 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_list_custom_metrics():
+            async def sample_list_custom_metrics():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = admin_v1alpha.ListCustomMetricsRequest(
@@ -6288,7 +6288,7 @@ class AnalyticsAdminServiceAsyncClient:
                 page_result = client.list_custom_metrics(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -6383,9 +6383,9 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_archive_custom_metric():
+            async def sample_archive_custom_metric():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = admin_v1alpha.ArchiveCustomMetricRequest(
@@ -6393,7 +6393,7 @@ class AnalyticsAdminServiceAsyncClient:
                 )
 
                 # Make the request
-                client.archive_custom_metric(request=request)
+                await client.archive_custom_metric(request=request)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.ArchiveCustomMetricRequest, dict]):
@@ -6467,9 +6467,9 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_get_custom_metric():
+            async def sample_get_custom_metric():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = admin_v1alpha.GetCustomMetricRequest(
@@ -6477,7 +6477,7 @@ class AnalyticsAdminServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_custom_metric(request=request)
+                response = await client.get_custom_metric(request=request)
 
                 # Handle the response
                 print(response)
@@ -6562,9 +6562,9 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_get_data_retention_settings():
+            async def sample_get_data_retention_settings():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = admin_v1alpha.GetDataRetentionSettingsRequest(
@@ -6572,7 +6572,7 @@ class AnalyticsAdminServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_data_retention_settings(request=request)
+                response = await client.get_data_retention_settings(request=request)
 
                 # Handle the response
                 print(response)
@@ -6662,16 +6662,16 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_update_data_retention_settings():
+            async def sample_update_data_retention_settings():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = admin_v1alpha.UpdateDataRetentionSettingsRequest(
                 )
 
                 # Make the request
-                response = client.update_data_retention_settings(request=request)
+                response = await client.update_data_retention_settings(request=request)
 
                 # Handle the response
                 print(response)
@@ -6776,9 +6776,9 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_create_data_stream():
+            async def sample_create_data_stream():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 data_stream = admin_v1alpha.DataStream()
@@ -6790,7 +6790,7 @@ class AnalyticsAdminServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_data_stream(request=request)
+                response = await client.create_data_stream(request=request)
 
                 # Handle the response
                 print(response)
@@ -6882,9 +6882,9 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_delete_data_stream():
+            async def sample_delete_data_stream():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = admin_v1alpha.DeleteDataStreamRequest(
@@ -6892,7 +6892,7 @@ class AnalyticsAdminServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_data_stream(request=request)
+                await client.delete_data_stream(request=request)
 
         Args:
             request (Union[google.analytics.admin_v1alpha.types.DeleteDataStreamRequest, dict]):
@@ -6967,16 +6967,16 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_update_data_stream():
+            async def sample_update_data_stream():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = admin_v1alpha.UpdateDataStreamRequest(
                 )
 
                 # Make the request
-                response = client.update_data_stream(request=request)
+                response = await client.update_data_stream(request=request)
 
                 # Handle the response
                 print(response)
@@ -7072,9 +7072,9 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_list_data_streams():
+            async def sample_list_data_streams():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = admin_v1alpha.ListDataStreamsRequest(
@@ -7085,7 +7085,7 @@ class AnalyticsAdminServiceAsyncClient:
                 page_result = client.list_data_streams(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -7180,9 +7180,9 @@ class AnalyticsAdminServiceAsyncClient:
 
             from google.analytics import admin_v1alpha
 
-            def sample_get_data_stream():
+            async def sample_get_data_stream():
                 # Create a client
-                client = admin_v1alpha.AnalyticsAdminServiceClient()
+                client = admin_v1alpha.AnalyticsAdminServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = admin_v1alpha.GetDataStreamRequest(
@@ -7190,7 +7190,7 @@ class AnalyticsAdminServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_data_stream(request=request)
+                response = await client.get_data_stream(request=request)
 
                 # Handle the response
                 print(response)
