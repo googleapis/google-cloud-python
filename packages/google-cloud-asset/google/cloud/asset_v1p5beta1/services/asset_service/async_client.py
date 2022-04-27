@@ -222,9 +222,9 @@ class AssetServiceAsyncClient:
 
             from google.cloud import asset_v1p5beta1
 
-            def sample_list_assets():
+            async def sample_list_assets():
                 # Create a client
-                client = asset_v1p5beta1.AssetServiceClient()
+                client = asset_v1p5beta1.AssetServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = asset_v1p5beta1.ListAssetsRequest(
@@ -235,7 +235,7 @@ class AssetServiceAsyncClient:
                 page_result = client.list_assets(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:

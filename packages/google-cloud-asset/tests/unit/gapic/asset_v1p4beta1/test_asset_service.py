@@ -742,7 +742,7 @@ def test_analyze_iam_policy_field_headers():
     # a field header. Set these to a non-empty value.
     request = asset_service.AnalyzeIamPolicyRequest()
 
-    request.analysis_query.parent = "analysis_query.parent/value"
+    request.analysis_query.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -760,7 +760,7 @@ def test_analyze_iam_policy_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "analysis_query.parent=analysis_query.parent/value",
+        "analysis_query.parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -774,7 +774,7 @@ async def test_analyze_iam_policy_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = asset_service.AnalyzeIamPolicyRequest()
 
-    request.analysis_query.parent = "analysis_query.parent/value"
+    request.analysis_query.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -794,7 +794,7 @@ async def test_analyze_iam_policy_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "analysis_query.parent=analysis_query.parent/value",
+        "analysis_query.parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -897,7 +897,7 @@ def test_export_iam_policy_analysis_field_headers():
     # a field header. Set these to a non-empty value.
     request = asset_service.ExportIamPolicyAnalysisRequest()
 
-    request.analysis_query.parent = "analysis_query.parent/value"
+    request.analysis_query.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -915,7 +915,7 @@ def test_export_iam_policy_analysis_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "analysis_query.parent=analysis_query.parent/value",
+        "analysis_query.parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -929,7 +929,7 @@ async def test_export_iam_policy_analysis_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = asset_service.ExportIamPolicyAnalysisRequest()
 
-    request.analysis_query.parent = "analysis_query.parent/value"
+    request.analysis_query.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -949,7 +949,7 @@ async def test_export_iam_policy_analysis_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "analysis_query.parent=analysis_query.parent/value",
+        "analysis_query.parent=parent_value",
     ) in kw["metadata"]
 
 

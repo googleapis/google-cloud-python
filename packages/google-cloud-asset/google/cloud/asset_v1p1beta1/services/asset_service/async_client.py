@@ -220,9 +220,9 @@ class AssetServiceAsyncClient:
 
             from google.cloud import asset_v1p1beta1
 
-            def sample_search_all_resources():
+            async def sample_search_all_resources():
                 # Create a client
-                client = asset_v1p1beta1.AssetServiceClient()
+                client = asset_v1p1beta1.AssetServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = asset_v1p1beta1.SearchAllResourcesRequest(
@@ -233,7 +233,7 @@ class AssetServiceAsyncClient:
                 page_result = client.search_all_resources(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -368,9 +368,9 @@ class AssetServiceAsyncClient:
 
             from google.cloud import asset_v1p1beta1
 
-            def sample_search_all_iam_policies():
+            async def sample_search_all_iam_policies():
                 # Create a client
-                client = asset_v1p1beta1.AssetServiceClient()
+                client = asset_v1p1beta1.AssetServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = asset_v1p1beta1.SearchAllIamPoliciesRequest(
@@ -381,7 +381,7 @@ class AssetServiceAsyncClient:
                 page_result = client.search_all_iam_policies(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:

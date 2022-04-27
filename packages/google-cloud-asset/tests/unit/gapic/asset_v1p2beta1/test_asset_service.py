@@ -742,7 +742,7 @@ def test_create_feed_field_headers():
     # a field header. Set these to a non-empty value.
     request = asset_service.CreateFeedRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_feed), "__call__") as call:
@@ -758,7 +758,7 @@ def test_create_feed_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -772,7 +772,7 @@ async def test_create_feed_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = asset_service.CreateFeedRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_feed), "__call__") as call:
@@ -788,7 +788,7 @@ async def test_create_feed_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -982,7 +982,7 @@ def test_get_feed_field_headers():
     # a field header. Set these to a non-empty value.
     request = asset_service.GetFeedRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_feed), "__call__") as call:
@@ -998,7 +998,7 @@ def test_get_feed_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1012,7 +1012,7 @@ async def test_get_feed_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = asset_service.GetFeedRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_feed), "__call__") as call:
@@ -1028,7 +1028,7 @@ async def test_get_feed_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1204,7 +1204,7 @@ def test_list_feeds_field_headers():
     # a field header. Set these to a non-empty value.
     request = asset_service.ListFeedsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_feeds), "__call__") as call:
@@ -1220,7 +1220,7 @@ def test_list_feeds_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1234,7 +1234,7 @@ async def test_list_feeds_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = asset_service.ListFeedsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_feeds), "__call__") as call:
@@ -1252,7 +1252,7 @@ async def test_list_feeds_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1448,7 +1448,7 @@ def test_update_feed_field_headers():
     # a field header. Set these to a non-empty value.
     request = asset_service.UpdateFeedRequest()
 
-    request.feed.name = "feed.name/value"
+    request.feed.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_feed), "__call__") as call:
@@ -1464,7 +1464,7 @@ def test_update_feed_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "feed.name=feed.name/value",
+        "feed.name=name_value",
     ) in kw["metadata"]
 
 
@@ -1478,7 +1478,7 @@ async def test_update_feed_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = asset_service.UpdateFeedRequest()
 
-    request.feed.name = "feed.name/value"
+    request.feed.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_feed), "__call__") as call:
@@ -1494,7 +1494,7 @@ async def test_update_feed_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "feed.name=feed.name/value",
+        "feed.name=name_value",
     ) in kw["metadata"]
 
 
@@ -1668,7 +1668,7 @@ def test_delete_feed_field_headers():
     # a field header. Set these to a non-empty value.
     request = asset_service.DeleteFeedRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_feed), "__call__") as call:
@@ -1684,7 +1684,7 @@ def test_delete_feed_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1698,7 +1698,7 @@ async def test_delete_feed_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = asset_service.DeleteFeedRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_feed), "__call__") as call:
@@ -1714,7 +1714,7 @@ async def test_delete_feed_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 

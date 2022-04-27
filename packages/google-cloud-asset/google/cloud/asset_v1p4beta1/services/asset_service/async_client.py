@@ -215,9 +215,9 @@ class AssetServiceAsyncClient:
 
             from google.cloud import asset_v1p4beta1
 
-            def sample_analyze_iam_policy():
+            async def sample_analyze_iam_policy():
                 # Create a client
-                client = asset_v1p4beta1.AssetServiceClient()
+                client = asset_v1p4beta1.AssetServiceAsyncClient()
 
                 # Initialize request argument(s)
                 analysis_query = asset_v1p4beta1.IamPolicyAnalysisQuery()
@@ -228,7 +228,7 @@ class AssetServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.analyze_iam_policy(request=request)
+                response = await client.analyze_iam_policy(request=request)
 
                 # Handle the response
                 print(response)
@@ -306,9 +306,9 @@ class AssetServiceAsyncClient:
 
             from google.cloud import asset_v1p4beta1
 
-            def sample_export_iam_policy_analysis():
+            async def sample_export_iam_policy_analysis():
                 # Create a client
-                client = asset_v1p4beta1.AssetServiceClient()
+                client = asset_v1p4beta1.AssetServiceAsyncClient()
 
                 # Initialize request argument(s)
                 analysis_query = asset_v1p4beta1.IamPolicyAnalysisQuery()
@@ -327,7 +327,7 @@ class AssetServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

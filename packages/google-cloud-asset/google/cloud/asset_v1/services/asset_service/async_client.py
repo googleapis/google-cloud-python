@@ -240,9 +240,9 @@ class AssetServiceAsyncClient:
 
             from google.cloud import asset_v1
 
-            def sample_export_assets():
+            async def sample_export_assets():
                 # Create a client
-                client = asset_v1.AssetServiceClient()
+                client = asset_v1.AssetServiceAsyncClient()
 
                 # Initialize request argument(s)
                 output_config = asset_v1.OutputConfig()
@@ -258,7 +258,7 @@ class AssetServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -335,9 +335,9 @@ class AssetServiceAsyncClient:
 
             from google.cloud import asset_v1
 
-            def sample_list_assets():
+            async def sample_list_assets():
                 # Create a client
-                client = asset_v1.AssetServiceClient()
+                client = asset_v1.AssetServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = asset_v1.ListAssetsRequest(
@@ -348,7 +348,7 @@ class AssetServiceAsyncClient:
                 page_result = client.list_assets(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -459,9 +459,9 @@ class AssetServiceAsyncClient:
 
             from google.cloud import asset_v1
 
-            def sample_batch_get_assets_history():
+            async def sample_batch_get_assets_history():
                 # Create a client
-                client = asset_v1.AssetServiceClient()
+                client = asset_v1.AssetServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = asset_v1.BatchGetAssetsHistoryRequest(
@@ -469,7 +469,7 @@ class AssetServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.batch_get_assets_history(request=request)
+                response = await client.batch_get_assets_history(request=request)
 
                 # Handle the response
                 print(response)
@@ -542,9 +542,9 @@ class AssetServiceAsyncClient:
 
             from google.cloud import asset_v1
 
-            def sample_create_feed():
+            async def sample_create_feed():
                 # Create a client
-                client = asset_v1.AssetServiceClient()
+                client = asset_v1.AssetServiceAsyncClient()
 
                 # Initialize request argument(s)
                 feed = asset_v1.Feed()
@@ -557,7 +557,7 @@ class AssetServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_feed(request=request)
+                response = await client.create_feed(request=request)
 
                 # Handle the response
                 print(response)
@@ -653,9 +653,9 @@ class AssetServiceAsyncClient:
 
             from google.cloud import asset_v1
 
-            def sample_get_feed():
+            async def sample_get_feed():
                 # Create a client
-                client = asset_v1.AssetServiceClient()
+                client = asset_v1.AssetServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = asset_v1.GetFeedRequest(
@@ -663,7 +663,7 @@ class AssetServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_feed(request=request)
+                response = await client.get_feed(request=request)
 
                 # Handle the response
                 print(response)
@@ -765,9 +765,9 @@ class AssetServiceAsyncClient:
 
             from google.cloud import asset_v1
 
-            def sample_list_feeds():
+            async def sample_list_feeds():
                 # Create a client
-                client = asset_v1.AssetServiceClient()
+                client = asset_v1.AssetServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = asset_v1.ListFeedsRequest(
@@ -775,7 +775,7 @@ class AssetServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.list_feeds(request=request)
+                response = await client.list_feeds(request=request)
 
                 # Handle the response
                 print(response)
@@ -871,9 +871,9 @@ class AssetServiceAsyncClient:
 
             from google.cloud import asset_v1
 
-            def sample_update_feed():
+            async def sample_update_feed():
                 # Create a client
-                client = asset_v1.AssetServiceClient()
+                client = asset_v1.AssetServiceAsyncClient()
 
                 # Initialize request argument(s)
                 feed = asset_v1.Feed()
@@ -884,7 +884,7 @@ class AssetServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_feed(request=request)
+                response = await client.update_feed(request=request)
 
                 # Handle the response
                 print(response)
@@ -978,9 +978,9 @@ class AssetServiceAsyncClient:
 
             from google.cloud import asset_v1
 
-            def sample_delete_feed():
+            async def sample_delete_feed():
                 # Create a client
-                client = asset_v1.AssetServiceClient()
+                client = asset_v1.AssetServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = asset_v1.DeleteFeedRequest(
@@ -988,7 +988,7 @@ class AssetServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_feed(request=request)
+                await client.delete_feed(request=request)
 
         Args:
             request (Union[google.cloud.asset_v1.types.DeleteFeedRequest, dict]):
@@ -1077,9 +1077,9 @@ class AssetServiceAsyncClient:
 
             from google.cloud import asset_v1
 
-            def sample_search_all_resources():
+            async def sample_search_all_resources():
                 # Create a client
-                client = asset_v1.AssetServiceClient()
+                client = asset_v1.AssetServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = asset_v1.SearchAllResourcesRequest(
@@ -1090,7 +1090,7 @@ class AssetServiceAsyncClient:
                 page_result = client.search_all_resources(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1286,9 +1286,9 @@ class AssetServiceAsyncClient:
 
             from google.cloud import asset_v1
 
-            def sample_search_all_iam_policies():
+            async def sample_search_all_iam_policies():
                 # Create a client
-                client = asset_v1.AssetServiceClient()
+                client = asset_v1.AssetServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = asset_v1.SearchAllIamPoliciesRequest(
@@ -1299,7 +1299,7 @@ class AssetServiceAsyncClient:
                 page_result = client.search_all_iam_policies(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1471,9 +1471,9 @@ class AssetServiceAsyncClient:
 
             from google.cloud import asset_v1
 
-            def sample_analyze_iam_policy():
+            async def sample_analyze_iam_policy():
                 # Create a client
-                client = asset_v1.AssetServiceClient()
+                client = asset_v1.AssetServiceAsyncClient()
 
                 # Initialize request argument(s)
                 analysis_query = asset_v1.IamPolicyAnalysisQuery()
@@ -1484,7 +1484,7 @@ class AssetServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.analyze_iam_policy(request=request)
+                response = await client.analyze_iam_policy(request=request)
 
                 # Handle the response
                 print(response)
@@ -1569,9 +1569,9 @@ class AssetServiceAsyncClient:
 
             from google.cloud import asset_v1
 
-            def sample_analyze_iam_policy_longrunning():
+            async def sample_analyze_iam_policy_longrunning():
                 # Create a client
-                client = asset_v1.AssetServiceClient()
+                client = asset_v1.AssetServiceAsyncClient()
 
                 # Initialize request argument(s)
                 analysis_query = asset_v1.IamPolicyAnalysisQuery()
@@ -1590,7 +1590,7 @@ class AssetServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1673,9 +1673,9 @@ class AssetServiceAsyncClient:
 
             from google.cloud import asset_v1
 
-            def sample_analyze_move():
+            async def sample_analyze_move():
                 # Create a client
-                client = asset_v1.AssetServiceClient()
+                client = asset_v1.AssetServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = asset_v1.AnalyzeMoveRequest(
@@ -1684,7 +1684,7 @@ class AssetServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.analyze_move(request=request)
+                response = await client.analyze_move(request=request)
 
                 # Handle the response
                 print(response)

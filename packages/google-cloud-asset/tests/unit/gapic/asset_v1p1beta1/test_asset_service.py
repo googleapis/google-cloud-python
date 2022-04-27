@@ -738,7 +738,7 @@ def test_search_all_resources_field_headers():
     # a field header. Set these to a non-empty value.
     request = asset_service.SearchAllResourcesRequest()
 
-    request.scope = "scope/value"
+    request.scope = "scope_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -756,7 +756,7 @@ def test_search_all_resources_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "scope=scope/value",
+        "scope=scope_value",
     ) in kw["metadata"]
 
 
@@ -770,7 +770,7 @@ async def test_search_all_resources_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = asset_service.SearchAllResourcesRequest()
 
-    request.scope = "scope/value"
+    request.scope = "scope_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -790,7 +790,7 @@ async def test_search_all_resources_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "scope=scope/value",
+        "scope=scope_value",
     ) in kw["metadata"]
 
 
@@ -947,7 +947,7 @@ def test_search_all_resources_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, assets.StandardResourceMetadata) for i in results)
 
@@ -1201,7 +1201,7 @@ def test_search_all_iam_policies_field_headers():
     # a field header. Set these to a non-empty value.
     request = asset_service.SearchAllIamPoliciesRequest()
 
-    request.scope = "scope/value"
+    request.scope = "scope_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1219,7 +1219,7 @@ def test_search_all_iam_policies_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "scope=scope/value",
+        "scope=scope_value",
     ) in kw["metadata"]
 
 
@@ -1233,7 +1233,7 @@ async def test_search_all_iam_policies_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = asset_service.SearchAllIamPoliciesRequest()
 
-    request.scope = "scope/value"
+    request.scope = "scope_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1253,7 +1253,7 @@ async def test_search_all_iam_policies_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "scope=scope/value",
+        "scope=scope_value",
     ) in kw["metadata"]
 
 
@@ -1400,7 +1400,7 @@ def test_search_all_iam_policies_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, assets.IamPolicySearchResult) for i in results)
 
