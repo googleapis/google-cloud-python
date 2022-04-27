@@ -261,9 +261,9 @@ class AutoMlAsyncClient:
 
             from google.cloud import automl_v1beta1
 
-            def sample_create_dataset():
+            async def sample_create_dataset():
                 # Create a client
-                client = automl_v1beta1.AutoMlClient()
+                client = automl_v1beta1.AutoMlAsyncClient()
 
                 # Initialize request argument(s)
                 dataset = automl_v1beta1.Dataset()
@@ -276,7 +276,7 @@ class AutoMlAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_dataset(request=request)
+                response = await client.create_dataset(request=request)
 
                 # Handle the response
                 print(response)
@@ -370,9 +370,9 @@ class AutoMlAsyncClient:
 
             from google.cloud import automl_v1beta1
 
-            def sample_get_dataset():
+            async def sample_get_dataset():
                 # Create a client
-                client = automl_v1beta1.AutoMlClient()
+                client = automl_v1beta1.AutoMlAsyncClient()
 
                 # Initialize request argument(s)
                 request = automl_v1beta1.GetDatasetRequest(
@@ -380,7 +380,7 @@ class AutoMlAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_dataset(request=request)
+                response = await client.get_dataset(request=request)
 
                 # Handle the response
                 print(response)
@@ -477,9 +477,9 @@ class AutoMlAsyncClient:
 
             from google.cloud import automl_v1beta1
 
-            def sample_list_datasets():
+            async def sample_list_datasets():
                 # Create a client
-                client = automl_v1beta1.AutoMlClient()
+                client = automl_v1beta1.AutoMlAsyncClient()
 
                 # Initialize request argument(s)
                 request = automl_v1beta1.ListDatasetsRequest(
@@ -490,7 +490,7 @@ class AutoMlAsyncClient:
                 page_result = client.list_datasets(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -595,9 +595,9 @@ class AutoMlAsyncClient:
 
             from google.cloud import automl_v1beta1
 
-            def sample_update_dataset():
+            async def sample_update_dataset():
                 # Create a client
-                client = automl_v1beta1.AutoMlClient()
+                client = automl_v1beta1.AutoMlAsyncClient()
 
                 # Initialize request argument(s)
                 dataset = automl_v1beta1.Dataset()
@@ -609,7 +609,7 @@ class AutoMlAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_dataset(request=request)
+                response = await client.update_dataset(request=request)
 
                 # Handle the response
                 print(response)
@@ -702,9 +702,9 @@ class AutoMlAsyncClient:
 
             from google.cloud import automl_v1beta1
 
-            def sample_delete_dataset():
+            async def sample_delete_dataset():
                 # Create a client
-                client = automl_v1beta1.AutoMlClient()
+                client = automl_v1beta1.AutoMlAsyncClient()
 
                 # Initialize request argument(s)
                 request = automl_v1beta1.DeleteDatasetRequest(
@@ -716,7 +716,7 @@ class AutoMlAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -842,9 +842,9 @@ class AutoMlAsyncClient:
 
             from google.cloud import automl_v1beta1
 
-            def sample_import_data():
+            async def sample_import_data():
                 # Create a client
-                client = automl_v1beta1.AutoMlClient()
+                client = automl_v1beta1.AutoMlAsyncClient()
 
                 # Initialize request argument(s)
                 request = automl_v1beta1.ImportDataRequest(
@@ -856,7 +856,7 @@ class AutoMlAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -977,9 +977,9 @@ class AutoMlAsyncClient:
 
             from google.cloud import automl_v1beta1
 
-            def sample_export_data():
+            async def sample_export_data():
                 # Create a client
-                client = automl_v1beta1.AutoMlClient()
+                client = automl_v1beta1.AutoMlAsyncClient()
 
                 # Initialize request argument(s)
                 request = automl_v1beta1.ExportDataRequest(
@@ -991,7 +991,7 @@ class AutoMlAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1106,9 +1106,9 @@ class AutoMlAsyncClient:
 
             from google.cloud import automl_v1beta1
 
-            def sample_get_annotation_spec():
+            async def sample_get_annotation_spec():
                 # Create a client
-                client = automl_v1beta1.AutoMlClient()
+                client = automl_v1beta1.AutoMlAsyncClient()
 
                 # Initialize request argument(s)
                 request = automl_v1beta1.GetAnnotationSpecRequest(
@@ -1116,7 +1116,7 @@ class AutoMlAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_annotation_spec(request=request)
+                response = await client.get_annotation_spec(request=request)
 
                 # Handle the response
                 print(response)
@@ -1209,9 +1209,9 @@ class AutoMlAsyncClient:
 
             from google.cloud import automl_v1beta1
 
-            def sample_get_table_spec():
+            async def sample_get_table_spec():
                 # Create a client
-                client = automl_v1beta1.AutoMlClient()
+                client = automl_v1beta1.AutoMlAsyncClient()
 
                 # Initialize request argument(s)
                 request = automl_v1beta1.GetTableSpecRequest(
@@ -1219,7 +1219,7 @@ class AutoMlAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_table_spec(request=request)
+                response = await client.get_table_spec(request=request)
 
                 # Handle the response
                 print(response)
@@ -1322,9 +1322,9 @@ class AutoMlAsyncClient:
 
             from google.cloud import automl_v1beta1
 
-            def sample_list_table_specs():
+            async def sample_list_table_specs():
                 # Create a client
-                client = automl_v1beta1.AutoMlClient()
+                client = automl_v1beta1.AutoMlAsyncClient()
 
                 # Initialize request argument(s)
                 request = automl_v1beta1.ListTableSpecsRequest(
@@ -1335,7 +1335,7 @@ class AutoMlAsyncClient:
                 page_result = client.list_table_specs(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1440,16 +1440,16 @@ class AutoMlAsyncClient:
 
             from google.cloud import automl_v1beta1
 
-            def sample_update_table_spec():
+            async def sample_update_table_spec():
                 # Create a client
-                client = automl_v1beta1.AutoMlClient()
+                client = automl_v1beta1.AutoMlAsyncClient()
 
                 # Initialize request argument(s)
                 request = automl_v1beta1.UpdateTableSpecRequest(
                 )
 
                 # Make the request
-                response = client.update_table_spec(request=request)
+                response = await client.update_table_spec(request=request)
 
                 # Handle the response
                 print(response)
@@ -1544,9 +1544,9 @@ class AutoMlAsyncClient:
 
             from google.cloud import automl_v1beta1
 
-            def sample_get_column_spec():
+            async def sample_get_column_spec():
                 # Create a client
-                client = automl_v1beta1.AutoMlClient()
+                client = automl_v1beta1.AutoMlAsyncClient()
 
                 # Initialize request argument(s)
                 request = automl_v1beta1.GetColumnSpecRequest(
@@ -1554,7 +1554,7 @@ class AutoMlAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_column_spec(request=request)
+                response = await client.get_column_spec(request=request)
 
                 # Handle the response
                 print(response)
@@ -1649,9 +1649,9 @@ class AutoMlAsyncClient:
 
             from google.cloud import automl_v1beta1
 
-            def sample_list_column_specs():
+            async def sample_list_column_specs():
                 # Create a client
-                client = automl_v1beta1.AutoMlClient()
+                client = automl_v1beta1.AutoMlAsyncClient()
 
                 # Initialize request argument(s)
                 request = automl_v1beta1.ListColumnSpecsRequest(
@@ -1662,7 +1662,7 @@ class AutoMlAsyncClient:
                 page_result = client.list_column_specs(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1767,16 +1767,16 @@ class AutoMlAsyncClient:
 
             from google.cloud import automl_v1beta1
 
-            def sample_update_column_spec():
+            async def sample_update_column_spec():
                 # Create a client
-                client = automl_v1beta1.AutoMlClient()
+                client = automl_v1beta1.AutoMlAsyncClient()
 
                 # Initialize request argument(s)
                 request = automl_v1beta1.UpdateColumnSpecRequest(
                 )
 
                 # Make the request
-                response = client.update_column_spec(request=request)
+                response = await client.update_column_spec(request=request)
 
                 # Handle the response
                 print(response)
@@ -1868,9 +1868,9 @@ class AutoMlAsyncClient:
 
             from google.cloud import automl_v1beta1
 
-            def sample_create_model():
+            async def sample_create_model():
                 # Create a client
-                client = automl_v1beta1.AutoMlClient()
+                client = automl_v1beta1.AutoMlAsyncClient()
 
                 # Initialize request argument(s)
                 request = automl_v1beta1.CreateModelRequest(
@@ -1882,7 +1882,7 @@ class AutoMlAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1986,9 +1986,9 @@ class AutoMlAsyncClient:
 
             from google.cloud import automl_v1beta1
 
-            def sample_get_model():
+            async def sample_get_model():
                 # Create a client
-                client = automl_v1beta1.AutoMlClient()
+                client = automl_v1beta1.AutoMlAsyncClient()
 
                 # Initialize request argument(s)
                 request = automl_v1beta1.GetModelRequest(
@@ -1996,7 +1996,7 @@ class AutoMlAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_model(request=request)
+                response = await client.get_model(request=request)
 
                 # Handle the response
                 print(response)
@@ -2089,9 +2089,9 @@ class AutoMlAsyncClient:
 
             from google.cloud import automl_v1beta1
 
-            def sample_list_models():
+            async def sample_list_models():
                 # Create a client
-                client = automl_v1beta1.AutoMlClient()
+                client = automl_v1beta1.AutoMlAsyncClient()
 
                 # Initialize request argument(s)
                 request = automl_v1beta1.ListModelsRequest(
@@ -2102,7 +2102,7 @@ class AutoMlAsyncClient:
                 page_result = client.list_models(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -2210,9 +2210,9 @@ class AutoMlAsyncClient:
 
             from google.cloud import automl_v1beta1
 
-            def sample_delete_model():
+            async def sample_delete_model():
                 # Create a client
-                client = automl_v1beta1.AutoMlClient()
+                client = automl_v1beta1.AutoMlAsyncClient()
 
                 # Initialize request argument(s)
                 request = automl_v1beta1.DeleteModelRequest(
@@ -2224,7 +2224,7 @@ class AutoMlAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2354,9 +2354,9 @@ class AutoMlAsyncClient:
 
             from google.cloud import automl_v1beta1
 
-            def sample_deploy_model():
+            async def sample_deploy_model():
                 # Create a client
-                client = automl_v1beta1.AutoMlClient()
+                client = automl_v1beta1.AutoMlAsyncClient()
 
                 # Initialize request argument(s)
                 request = automl_v1beta1.DeployModelRequest(
@@ -2368,7 +2368,7 @@ class AutoMlAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2482,9 +2482,9 @@ class AutoMlAsyncClient:
 
             from google.cloud import automl_v1beta1
 
-            def sample_undeploy_model():
+            async def sample_undeploy_model():
                 # Create a client
-                client = automl_v1beta1.AutoMlClient()
+                client = automl_v1beta1.AutoMlAsyncClient()
 
                 # Initialize request argument(s)
                 request = automl_v1beta1.UndeployModelRequest(
@@ -2496,7 +2496,7 @@ class AutoMlAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2611,9 +2611,9 @@ class AutoMlAsyncClient:
 
             from google.cloud import automl_v1beta1
 
-            def sample_export_model():
+            async def sample_export_model():
                 # Create a client
-                client = automl_v1beta1.AutoMlClient()
+                client = automl_v1beta1.AutoMlAsyncClient()
 
                 # Initialize request argument(s)
                 request = automl_v1beta1.ExportModelRequest(
@@ -2625,7 +2625,7 @@ class AutoMlAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2757,9 +2757,9 @@ class AutoMlAsyncClient:
 
             from google.cloud import automl_v1beta1
 
-            def sample_export_evaluated_examples():
+            async def sample_export_evaluated_examples():
                 # Create a client
-                client = automl_v1beta1.AutoMlClient()
+                client = automl_v1beta1.AutoMlAsyncClient()
 
                 # Initialize request argument(s)
                 request = automl_v1beta1.ExportEvaluatedExamplesRequest(
@@ -2771,7 +2771,7 @@ class AutoMlAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -2887,9 +2887,9 @@ class AutoMlAsyncClient:
 
             from google.cloud import automl_v1beta1
 
-            def sample_get_model_evaluation():
+            async def sample_get_model_evaluation():
                 # Create a client
-                client = automl_v1beta1.AutoMlClient()
+                client = automl_v1beta1.AutoMlAsyncClient()
 
                 # Initialize request argument(s)
                 request = automl_v1beta1.GetModelEvaluationRequest(
@@ -2897,7 +2897,7 @@ class AutoMlAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_model_evaluation(request=request)
+                response = await client.get_model_evaluation(request=request)
 
                 # Handle the response
                 print(response)
@@ -2990,9 +2990,9 @@ class AutoMlAsyncClient:
 
             from google.cloud import automl_v1beta1
 
-            def sample_list_model_evaluations():
+            async def sample_list_model_evaluations():
                 # Create a client
-                client = automl_v1beta1.AutoMlClient()
+                client = automl_v1beta1.AutoMlAsyncClient()
 
                 # Initialize request argument(s)
                 request = automl_v1beta1.ListModelEvaluationsRequest(
@@ -3003,7 +3003,7 @@ class AutoMlAsyncClient:
                 page_result = client.list_model_evaluations(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:

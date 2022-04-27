@@ -767,7 +767,7 @@ def test_predict_field_headers():
     # a field header. Set these to a non-empty value.
     request = prediction_service.PredictRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.predict), "__call__") as call:
@@ -783,7 +783,7 @@ def test_predict_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -797,7 +797,7 @@ async def test_predict_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = prediction_service.PredictRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.predict), "__call__") as call:
@@ -815,7 +815,7 @@ async def test_predict_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1025,7 +1025,7 @@ def test_batch_predict_field_headers():
     # a field header. Set these to a non-empty value.
     request = prediction_service.BatchPredictRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.batch_predict), "__call__") as call:
@@ -1041,7 +1041,7 @@ def test_batch_predict_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1055,7 +1055,7 @@ async def test_batch_predict_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = prediction_service.BatchPredictRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.batch_predict), "__call__") as call:
@@ -1073,7 +1073,7 @@ async def test_batch_predict_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 

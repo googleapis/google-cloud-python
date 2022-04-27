@@ -248,9 +248,9 @@ class PredictionServiceAsyncClient:
 
             from google.cloud import automl_v1beta1
 
-            def sample_predict():
+            async def sample_predict():
                 # Create a client
-                client = automl_v1beta1.PredictionServiceClient()
+                client = automl_v1beta1.PredictionServiceAsyncClient()
 
                 # Initialize request argument(s)
                 payload = automl_v1beta1.ExamplePayload()
@@ -262,7 +262,7 @@ class PredictionServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.predict(request=request)
+                response = await client.predict(request=request)
 
                 # Handle the response
                 print(response)
@@ -407,9 +407,9 @@ class PredictionServiceAsyncClient:
 
             from google.cloud import automl_v1beta1
 
-            def sample_batch_predict():
+            async def sample_batch_predict():
                 # Create a client
-                client = automl_v1beta1.PredictionServiceClient()
+                client = automl_v1beta1.PredictionServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = automl_v1beta1.BatchPredictRequest(
@@ -421,7 +421,7 @@ class PredictionServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
