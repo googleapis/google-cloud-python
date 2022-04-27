@@ -223,9 +223,9 @@ class ClusterManagerAsyncClient:
 
             from google.cloud import container_v1beta1
 
-            def sample_list_clusters():
+            async def sample_list_clusters():
                 # Create a client
-                client = container_v1beta1.ClusterManagerClient()
+                client = container_v1beta1.ClusterManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = container_v1beta1.ListClustersRequest(
@@ -234,7 +234,7 @@ class ClusterManagerAsyncClient:
                 )
 
                 # Make the request
-                response = client.list_clusters(request=request)
+                response = await client.list_clusters(request=request)
 
                 # Handle the response
                 print(response)
@@ -346,9 +346,9 @@ class ClusterManagerAsyncClient:
 
             from google.cloud import container_v1beta1
 
-            def sample_get_cluster():
+            async def sample_get_cluster():
                 # Create a client
-                client = container_v1beta1.ClusterManagerClient()
+                client = container_v1beta1.ClusterManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = container_v1beta1.GetClusterRequest(
@@ -358,7 +358,7 @@ class ClusterManagerAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_cluster(request=request)
+                response = await client.get_cluster(request=request)
 
                 # Handle the response
                 print(response)
@@ -491,9 +491,9 @@ class ClusterManagerAsyncClient:
 
             from google.cloud import container_v1beta1
 
-            def sample_create_cluster():
+            async def sample_create_cluster():
                 # Create a client
-                client = container_v1beta1.ClusterManagerClient()
+                client = container_v1beta1.ClusterManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = container_v1beta1.CreateClusterRequest(
@@ -502,7 +502,7 @@ class ClusterManagerAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_cluster(request=request)
+                response = await client.create_cluster(request=request)
 
                 # Handle the response
                 print(response)
@@ -616,9 +616,9 @@ class ClusterManagerAsyncClient:
 
             from google.cloud import container_v1beta1
 
-            def sample_update_cluster():
+            async def sample_update_cluster():
                 # Create a client
-                client = container_v1beta1.ClusterManagerClient()
+                client = container_v1beta1.ClusterManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = container_v1beta1.UpdateClusterRequest(
@@ -628,7 +628,7 @@ class ClusterManagerAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_cluster(request=request)
+                response = await client.update_cluster(request=request)
 
                 # Handle the response
                 print(response)
@@ -750,9 +750,9 @@ class ClusterManagerAsyncClient:
 
             from google.cloud import container_v1beta1
 
-            def sample_update_node_pool():
+            async def sample_update_node_pool():
                 # Create a client
-                client = container_v1beta1.ClusterManagerClient()
+                client = container_v1beta1.ClusterManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = container_v1beta1.UpdateNodePoolRequest(
@@ -765,7 +765,7 @@ class ClusterManagerAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_node_pool(request=request)
+                response = await client.update_node_pool(request=request)
 
                 # Handle the response
                 print(response)
@@ -831,9 +831,9 @@ class ClusterManagerAsyncClient:
 
             from google.cloud import container_v1beta1
 
-            def sample_set_node_pool_autoscaling():
+            async def sample_set_node_pool_autoscaling():
                 # Create a client
-                client = container_v1beta1.ClusterManagerClient()
+                client = container_v1beta1.ClusterManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = container_v1beta1.SetNodePoolAutoscalingRequest(
@@ -844,7 +844,7 @@ class ClusterManagerAsyncClient:
                 )
 
                 # Make the request
-                response = client.set_node_pool_autoscaling(request=request)
+                response = await client.set_node_pool_autoscaling(request=request)
 
                 # Handle the response
                 print(response)
@@ -913,9 +913,9 @@ class ClusterManagerAsyncClient:
 
             from google.cloud import container_v1beta1
 
-            def sample_set_logging_service():
+            async def sample_set_logging_service():
                 # Create a client
-                client = container_v1beta1.ClusterManagerClient()
+                client = container_v1beta1.ClusterManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = container_v1beta1.SetLoggingServiceRequest(
@@ -926,7 +926,7 @@ class ClusterManagerAsyncClient:
                 )
 
                 # Make the request
-                response = client.set_logging_service(request=request)
+                response = await client.set_logging_service(request=request)
 
                 # Handle the response
                 print(response)
@@ -1063,9 +1063,9 @@ class ClusterManagerAsyncClient:
 
             from google.cloud import container_v1beta1
 
-            def sample_set_monitoring_service():
+            async def sample_set_monitoring_service():
                 # Create a client
-                client = container_v1beta1.ClusterManagerClient()
+                client = container_v1beta1.ClusterManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = container_v1beta1.SetMonitoringServiceRequest(
@@ -1076,7 +1076,7 @@ class ClusterManagerAsyncClient:
                 )
 
                 # Make the request
-                response = client.set_monitoring_service(request=request)
+                response = await client.set_monitoring_service(request=request)
 
                 # Handle the response
                 print(response)
@@ -1215,9 +1215,9 @@ class ClusterManagerAsyncClient:
 
             from google.cloud import container_v1beta1
 
-            def sample_set_addons_config():
+            async def sample_set_addons_config():
                 # Create a client
-                client = container_v1beta1.ClusterManagerClient()
+                client = container_v1beta1.ClusterManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = container_v1beta1.SetAddonsConfigRequest(
@@ -1227,7 +1227,7 @@ class ClusterManagerAsyncClient:
                 )
 
                 # Make the request
-                response = client.set_addons_config(request=request)
+                response = await client.set_addons_config(request=request)
 
                 # Handle the response
                 print(response)
@@ -1355,9 +1355,9 @@ class ClusterManagerAsyncClient:
 
             from google.cloud import container_v1beta1
 
-            def sample_set_locations():
+            async def sample_set_locations():
                 # Create a client
-                client = container_v1beta1.ClusterManagerClient()
+                client = container_v1beta1.ClusterManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = container_v1beta1.SetLocationsRequest(
@@ -1368,7 +1368,7 @@ class ClusterManagerAsyncClient:
                 )
 
                 # Make the request
-                response = client.set_locations(request=request)
+                response = await client.set_locations(request=request)
 
                 # Handle the response
                 print(response)
@@ -1504,9 +1504,9 @@ class ClusterManagerAsyncClient:
 
             from google.cloud import container_v1beta1
 
-            def sample_update_master():
+            async def sample_update_master():
                 # Create a client
-                client = container_v1beta1.ClusterManagerClient()
+                client = container_v1beta1.ClusterManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = container_v1beta1.UpdateMasterRequest(
@@ -1517,7 +1517,7 @@ class ClusterManagerAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_master(request=request)
+                response = await client.update_master(request=request)
 
                 # Handle the response
                 print(response)
@@ -1653,9 +1653,9 @@ class ClusterManagerAsyncClient:
 
             from google.cloud import container_v1beta1
 
-            def sample_set_master_auth():
+            async def sample_set_master_auth():
                 # Create a client
-                client = container_v1beta1.ClusterManagerClient()
+                client = container_v1beta1.ClusterManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = container_v1beta1.SetMasterAuthRequest(
@@ -1666,7 +1666,7 @@ class ClusterManagerAsyncClient:
                 )
 
                 # Make the request
-                response = client.set_master_auth(request=request)
+                response = await client.set_master_auth(request=request)
 
                 # Handle the response
                 print(response)
@@ -1743,9 +1743,9 @@ class ClusterManagerAsyncClient:
 
             from google.cloud import container_v1beta1
 
-            def sample_delete_cluster():
+            async def sample_delete_cluster():
                 # Create a client
-                client = container_v1beta1.ClusterManagerClient()
+                client = container_v1beta1.ClusterManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = container_v1beta1.DeleteClusterRequest(
@@ -1755,7 +1755,7 @@ class ClusterManagerAsyncClient:
                 )
 
                 # Make the request
-                response = client.delete_cluster(request=request)
+                response = await client.delete_cluster(request=request)
 
                 # Handle the response
                 print(response)
@@ -1880,9 +1880,9 @@ class ClusterManagerAsyncClient:
 
             from google.cloud import container_v1beta1
 
-            def sample_list_operations():
+            async def sample_list_operations():
                 # Create a client
-                client = container_v1beta1.ClusterManagerClient()
+                client = container_v1beta1.ClusterManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = container_v1beta1.ListOperationsRequest(
@@ -1891,7 +1891,7 @@ class ClusterManagerAsyncClient:
                 )
 
                 # Make the request
-                response = client.list_operations(request=request)
+                response = await client.list_operations(request=request)
 
                 # Handle the response
                 print(response)
@@ -2004,9 +2004,9 @@ class ClusterManagerAsyncClient:
 
             from google.cloud import container_v1beta1
 
-            def sample_get_operation():
+            async def sample_get_operation():
                 # Create a client
-                client = container_v1beta1.ClusterManagerClient()
+                client = container_v1beta1.ClusterManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = container_v1beta1.GetOperationRequest(
@@ -2016,7 +2016,7 @@ class ClusterManagerAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_operation(request=request)
+                response = await client.get_operation(request=request)
 
                 # Handle the response
                 print(response)
@@ -2140,9 +2140,9 @@ class ClusterManagerAsyncClient:
 
             from google.cloud import container_v1beta1
 
-            def sample_cancel_operation():
+            async def sample_cancel_operation():
                 # Create a client
-                client = container_v1beta1.ClusterManagerClient()
+                client = container_v1beta1.ClusterManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = container_v1beta1.CancelOperationRequest(
@@ -2152,7 +2152,7 @@ class ClusterManagerAsyncClient:
                 )
 
                 # Make the request
-                client.cancel_operation(request=request)
+                await client.cancel_operation(request=request)
 
         Args:
             request (Union[google.cloud.container_v1beta1.types.CancelOperationRequest, dict]):
@@ -2252,9 +2252,9 @@ class ClusterManagerAsyncClient:
 
             from google.cloud import container_v1beta1
 
-            def sample_get_server_config():
+            async def sample_get_server_config():
                 # Create a client
-                client = container_v1beta1.ClusterManagerClient()
+                client = container_v1beta1.ClusterManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = container_v1beta1.GetServerConfigRequest(
@@ -2263,7 +2263,7 @@ class ClusterManagerAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_server_config(request=request)
+                response = await client.get_server_config(request=request)
 
                 # Handle the response
                 print(response)
@@ -2375,9 +2375,9 @@ class ClusterManagerAsyncClient:
 
             from google.cloud import container_v1beta1
 
-            def sample_list_node_pools():
+            async def sample_list_node_pools():
                 # Create a client
-                client = container_v1beta1.ClusterManagerClient()
+                client = container_v1beta1.ClusterManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = container_v1beta1.ListNodePoolsRequest(
@@ -2387,7 +2387,7 @@ class ClusterManagerAsyncClient:
                 )
 
                 # Make the request
-                response = client.list_node_pools(request=request)
+                response = await client.list_node_pools(request=request)
 
                 # Handle the response
                 print(response)
@@ -2509,16 +2509,16 @@ class ClusterManagerAsyncClient:
 
             from google.cloud import container_v1beta1
 
-            def sample_get_json_web_keys():
+            async def sample_get_json_web_keys():
                 # Create a client
-                client = container_v1beta1.ClusterManagerClient()
+                client = container_v1beta1.ClusterManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = container_v1beta1.GetJSONWebKeysRequest(
                 )
 
                 # Make the request
-                response = client.get_json_web_keys(request=request)
+                response = await client.get_json_web_keys(request=request)
 
                 # Handle the response
                 print(response)
@@ -2589,9 +2589,9 @@ class ClusterManagerAsyncClient:
 
             from google.cloud import container_v1beta1
 
-            def sample_get_node_pool():
+            async def sample_get_node_pool():
                 # Create a client
-                client = container_v1beta1.ClusterManagerClient()
+                client = container_v1beta1.ClusterManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = container_v1beta1.GetNodePoolRequest(
@@ -2602,7 +2602,7 @@ class ClusterManagerAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_node_pool(request=request)
+                response = await client.get_node_pool(request=request)
 
                 # Handle the response
                 print(response)
@@ -2777,9 +2777,9 @@ class ClusterManagerAsyncClient:
 
             from google.cloud import container_v1beta1
 
-            def sample_create_node_pool():
+            async def sample_create_node_pool():
                 # Create a client
-                client = container_v1beta1.ClusterManagerClient()
+                client = container_v1beta1.ClusterManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = container_v1beta1.CreateNodePoolRequest(
@@ -2789,7 +2789,7 @@ class ClusterManagerAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_node_pool(request=request)
+                response = await client.create_node_pool(request=request)
 
                 # Handle the response
                 print(response)
@@ -2911,9 +2911,9 @@ class ClusterManagerAsyncClient:
 
             from google.cloud import container_v1beta1
 
-            def sample_delete_node_pool():
+            async def sample_delete_node_pool():
                 # Create a client
-                client = container_v1beta1.ClusterManagerClient()
+                client = container_v1beta1.ClusterManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = container_v1beta1.DeleteNodePoolRequest(
@@ -2924,7 +2924,7 @@ class ClusterManagerAsyncClient:
                 )
 
                 # Make the request
-                response = client.delete_node_pool(request=request)
+                response = await client.delete_node_pool(request=request)
 
                 # Handle the response
                 print(response)
@@ -3062,9 +3062,9 @@ class ClusterManagerAsyncClient:
 
             from google.cloud import container_v1beta1
 
-            def sample_rollback_node_pool_upgrade():
+            async def sample_rollback_node_pool_upgrade():
                 # Create a client
-                client = container_v1beta1.ClusterManagerClient()
+                client = container_v1beta1.ClusterManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = container_v1beta1.RollbackNodePoolUpgradeRequest(
@@ -3075,7 +3075,7 @@ class ClusterManagerAsyncClient:
                 )
 
                 # Make the request
-                response = client.rollback_node_pool_upgrade(request=request)
+                response = await client.rollback_node_pool_upgrade(request=request)
 
                 # Handle the response
                 print(response)
@@ -3205,9 +3205,9 @@ class ClusterManagerAsyncClient:
 
             from google.cloud import container_v1beta1
 
-            def sample_set_node_pool_management():
+            async def sample_set_node_pool_management():
                 # Create a client
-                client = container_v1beta1.ClusterManagerClient()
+                client = container_v1beta1.ClusterManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = container_v1beta1.SetNodePoolManagementRequest(
@@ -3218,7 +3218,7 @@ class ClusterManagerAsyncClient:
                 )
 
                 # Make the request
-                response = client.set_node_pool_management(request=request)
+                response = await client.set_node_pool_management(request=request)
 
                 # Handle the response
                 print(response)
@@ -3357,9 +3357,9 @@ class ClusterManagerAsyncClient:
 
             from google.cloud import container_v1beta1
 
-            def sample_set_labels():
+            async def sample_set_labels():
                 # Create a client
-                client = container_v1beta1.ClusterManagerClient()
+                client = container_v1beta1.ClusterManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = container_v1beta1.SetLabelsRequest(
@@ -3370,7 +3370,7 @@ class ClusterManagerAsyncClient:
                 )
 
                 # Make the request
-                response = client.set_labels(request=request)
+                response = await client.set_labels(request=request)
 
                 # Handle the response
                 print(response)
@@ -3515,9 +3515,9 @@ class ClusterManagerAsyncClient:
 
             from google.cloud import container_v1beta1
 
-            def sample_set_legacy_abac():
+            async def sample_set_legacy_abac():
                 # Create a client
-                client = container_v1beta1.ClusterManagerClient()
+                client = container_v1beta1.ClusterManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = container_v1beta1.SetLegacyAbacRequest(
@@ -3528,7 +3528,7 @@ class ClusterManagerAsyncClient:
                 )
 
                 # Make the request
-                response = client.set_legacy_abac(request=request)
+                response = await client.set_legacy_abac(request=request)
 
                 # Handle the response
                 print(response)
@@ -3652,9 +3652,9 @@ class ClusterManagerAsyncClient:
 
             from google.cloud import container_v1beta1
 
-            def sample_start_ip_rotation():
+            async def sample_start_ip_rotation():
                 # Create a client
-                client = container_v1beta1.ClusterManagerClient()
+                client = container_v1beta1.ClusterManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = container_v1beta1.StartIPRotationRequest(
@@ -3664,7 +3664,7 @@ class ClusterManagerAsyncClient:
                 )
 
                 # Make the request
-                response = client.start_ip_rotation(request=request)
+                response = await client.start_ip_rotation(request=request)
 
                 # Handle the response
                 print(response)
@@ -3779,9 +3779,9 @@ class ClusterManagerAsyncClient:
 
             from google.cloud import container_v1beta1
 
-            def sample_complete_ip_rotation():
+            async def sample_complete_ip_rotation():
                 # Create a client
-                client = container_v1beta1.ClusterManagerClient()
+                client = container_v1beta1.ClusterManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = container_v1beta1.CompleteIPRotationRequest(
@@ -3791,7 +3791,7 @@ class ClusterManagerAsyncClient:
                 )
 
                 # Make the request
-                response = client.complete_ip_rotation(request=request)
+                response = await client.complete_ip_rotation(request=request)
 
                 # Handle the response
                 print(response)
@@ -3905,9 +3905,9 @@ class ClusterManagerAsyncClient:
 
             from google.cloud import container_v1beta1
 
-            def sample_set_node_pool_size():
+            async def sample_set_node_pool_size():
                 # Create a client
-                client = container_v1beta1.ClusterManagerClient()
+                client = container_v1beta1.ClusterManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = container_v1beta1.SetNodePoolSizeRequest(
@@ -3919,7 +3919,7 @@ class ClusterManagerAsyncClient:
                 )
 
                 # Make the request
-                response = client.set_node_pool_size(request=request)
+                response = await client.set_node_pool_size(request=request)
 
                 # Handle the response
                 print(response)
@@ -3988,9 +3988,9 @@ class ClusterManagerAsyncClient:
 
             from google.cloud import container_v1beta1
 
-            def sample_set_network_policy():
+            async def sample_set_network_policy():
                 # Create a client
-                client = container_v1beta1.ClusterManagerClient()
+                client = container_v1beta1.ClusterManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = container_v1beta1.SetNetworkPolicyRequest(
@@ -4000,7 +4000,7 @@ class ClusterManagerAsyncClient:
                 )
 
                 # Make the request
-                response = client.set_network_policy(request=request)
+                response = await client.set_network_policy(request=request)
 
                 # Handle the response
                 print(response)
@@ -4124,9 +4124,9 @@ class ClusterManagerAsyncClient:
 
             from google.cloud import container_v1beta1
 
-            def sample_set_maintenance_policy():
+            async def sample_set_maintenance_policy():
                 # Create a client
-                client = container_v1beta1.ClusterManagerClient()
+                client = container_v1beta1.ClusterManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = container_v1beta1.SetMaintenancePolicyRequest(
@@ -4136,7 +4136,7 @@ class ClusterManagerAsyncClient:
                 )
 
                 # Make the request
-                response = client.set_maintenance_policy(request=request)
+                response = await client.set_maintenance_policy(request=request)
 
                 # Handle the response
                 print(response)
@@ -4254,9 +4254,9 @@ class ClusterManagerAsyncClient:
 
             from google.cloud import container_v1beta1
 
-            def sample_list_usable_subnetworks():
+            async def sample_list_usable_subnetworks():
                 # Create a client
-                client = container_v1beta1.ClusterManagerClient()
+                client = container_v1beta1.ClusterManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = container_v1beta1.ListUsableSubnetworksRequest(
@@ -4267,7 +4267,7 @@ class ClusterManagerAsyncClient:
                 page_result = client.list_usable_subnetworks(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -4376,9 +4376,9 @@ class ClusterManagerAsyncClient:
 
             from google.cloud import container_v1beta1
 
-            def sample_list_locations():
+            async def sample_list_locations():
                 # Create a client
-                client = container_v1beta1.ClusterManagerClient()
+                client = container_v1beta1.ClusterManagerAsyncClient()
 
                 # Initialize request argument(s)
                 request = container_v1beta1.ListLocationsRequest(
@@ -4386,7 +4386,7 @@ class ClusterManagerAsyncClient:
                 )
 
                 # Make the request
-                response = client.list_locations(request=request)
+                response = await client.list_locations(request=request)
 
                 # Handle the response
                 print(response)
