@@ -231,9 +231,9 @@ class ReportErrorsServiceAsyncClient:
 
             from google.cloud import errorreporting_v1beta1
 
-            def sample_report_error_event():
+            async def sample_report_error_event():
                 # Create a client
-                client = errorreporting_v1beta1.ReportErrorsServiceClient()
+                client = errorreporting_v1beta1.ReportErrorsServiceAsyncClient()
 
                 # Initialize request argument(s)
                 event = errorreporting_v1beta1.ReportedErrorEvent()
@@ -245,7 +245,7 @@ class ReportErrorsServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.report_error_event(request=request)
+                response = await client.report_error_event(request=request)
 
                 # Handle the response
                 print(response)

@@ -766,7 +766,7 @@ def test_list_group_stats_field_headers():
     # a field header. Set these to a non-empty value.
     request = error_stats_service.ListGroupStatsRequest()
 
-    request.project_name = "project_name/value"
+    request.project_name = "project_name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_group_stats), "__call__") as call:
@@ -782,7 +782,7 @@ def test_list_group_stats_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "project_name=project_name/value",
+        "project_name=project_name_value",
     ) in kw["metadata"]
 
 
@@ -796,7 +796,7 @@ async def test_list_group_stats_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = error_stats_service.ListGroupStatsRequest()
 
-    request.project_name = "project_name/value"
+    request.project_name = "project_name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_group_stats), "__call__") as call:
@@ -814,7 +814,7 @@ async def test_list_group_stats_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "project_name=project_name/value",
+        "project_name=project_name_value",
     ) in kw["metadata"]
 
 
@@ -967,7 +967,7 @@ def test_list_group_stats_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, error_stats_service.ErrorGroupStats) for i in results)
 
@@ -1210,7 +1210,7 @@ def test_list_events_field_headers():
     # a field header. Set these to a non-empty value.
     request = error_stats_service.ListEventsRequest()
 
-    request.project_name = "project_name/value"
+    request.project_name = "project_name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_events), "__call__") as call:
@@ -1226,7 +1226,7 @@ def test_list_events_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "project_name=project_name/value",
+        "project_name=project_name_value",
     ) in kw["metadata"]
 
 
@@ -1240,7 +1240,7 @@ async def test_list_events_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = error_stats_service.ListEventsRequest()
 
-    request.project_name = "project_name/value"
+    request.project_name = "project_name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_events), "__call__") as call:
@@ -1258,7 +1258,7 @@ async def test_list_events_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "project_name=project_name/value",
+        "project_name=project_name_value",
     ) in kw["metadata"]
 
 
@@ -1399,7 +1399,7 @@ def test_list_events_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, common.ErrorEvent) for i in results)
 
@@ -1635,7 +1635,7 @@ def test_delete_events_field_headers():
     # a field header. Set these to a non-empty value.
     request = error_stats_service.DeleteEventsRequest()
 
-    request.project_name = "project_name/value"
+    request.project_name = "project_name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_events), "__call__") as call:
@@ -1651,7 +1651,7 @@ def test_delete_events_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "project_name=project_name/value",
+        "project_name=project_name_value",
     ) in kw["metadata"]
 
 
@@ -1665,7 +1665,7 @@ async def test_delete_events_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = error_stats_service.DeleteEventsRequest()
 
-    request.project_name = "project_name/value"
+    request.project_name = "project_name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_events), "__call__") as call:
@@ -1683,7 +1683,7 @@ async def test_delete_events_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "project_name=project_name/value",
+        "project_name=project_name_value",
     ) in kw["metadata"]
 
 

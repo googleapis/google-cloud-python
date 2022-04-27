@@ -219,9 +219,9 @@ class ErrorGroupServiceAsyncClient:
 
             from google.cloud import errorreporting_v1beta1
 
-            def sample_get_group():
+            async def sample_get_group():
                 # Create a client
-                client = errorreporting_v1beta1.ErrorGroupServiceClient()
+                client = errorreporting_v1beta1.ErrorGroupServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = errorreporting_v1beta1.GetGroupRequest(
@@ -229,7 +229,7 @@ class ErrorGroupServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_group(request=request)
+                response = await client.get_group(request=request)
 
                 # Handle the response
                 print(response)
@@ -321,16 +321,16 @@ class ErrorGroupServiceAsyncClient:
 
             from google.cloud import errorreporting_v1beta1
 
-            def sample_update_group():
+            async def sample_update_group():
                 # Create a client
-                client = errorreporting_v1beta1.ErrorGroupServiceClient()
+                client = errorreporting_v1beta1.ErrorGroupServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = errorreporting_v1beta1.UpdateGroupRequest(
                 )
 
                 # Make the request
-                response = client.update_group(request=request)
+                response = await client.update_group(request=request)
 
                 # Handle the response
                 print(response)

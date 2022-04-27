@@ -770,7 +770,7 @@ def test_get_group_field_headers():
     # a field header. Set these to a non-empty value.
     request = error_group_service.GetGroupRequest()
 
-    request.group_name = "group_name/value"
+    request.group_name = "group_name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_group), "__call__") as call:
@@ -786,7 +786,7 @@ def test_get_group_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "group_name=group_name/value",
+        "group_name=group_name_value",
     ) in kw["metadata"]
 
 
@@ -800,7 +800,7 @@ async def test_get_group_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = error_group_service.GetGroupRequest()
 
-    request.group_name = "group_name/value"
+    request.group_name = "group_name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_group), "__call__") as call:
@@ -816,7 +816,7 @@ async def test_get_group_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "group_name=group_name/value",
+        "group_name=group_name_value",
     ) in kw["metadata"]
 
 
@@ -1006,7 +1006,7 @@ def test_update_group_field_headers():
     # a field header. Set these to a non-empty value.
     request = error_group_service.UpdateGroupRequest()
 
-    request.group.name = "group.name/value"
+    request.group.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_group), "__call__") as call:
@@ -1022,7 +1022,7 @@ def test_update_group_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "group.name=group.name/value",
+        "group.name=name_value",
     ) in kw["metadata"]
 
 
@@ -1036,7 +1036,7 @@ async def test_update_group_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = error_group_service.UpdateGroupRequest()
 
-    request.group.name = "group.name/value"
+    request.group.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_group), "__call__") as call:
@@ -1052,7 +1052,7 @@ async def test_update_group_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "group.name=group.name/value",
+        "group.name=name_value",
     ) in kw["metadata"]
 
 

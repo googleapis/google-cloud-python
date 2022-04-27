@@ -774,7 +774,7 @@ def test_report_error_event_field_headers():
     # a field header. Set these to a non-empty value.
     request = report_errors_service.ReportErrorEventRequest()
 
-    request.project_name = "project_name/value"
+    request.project_name = "project_name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -792,7 +792,7 @@ def test_report_error_event_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "project_name=project_name/value",
+        "project_name=project_name_value",
     ) in kw["metadata"]
 
 
@@ -806,7 +806,7 @@ async def test_report_error_event_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = report_errors_service.ReportErrorEventRequest()
 
-    request.project_name = "project_name/value"
+    request.project_name = "project_name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -826,7 +826,7 @@ async def test_report_error_event_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "project_name=project_name/value",
+        "project_name=project_name_value",
     ) in kw["metadata"]
 
 

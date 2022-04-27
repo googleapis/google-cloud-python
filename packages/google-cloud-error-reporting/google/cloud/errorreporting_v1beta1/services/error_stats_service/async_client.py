@@ -223,9 +223,9 @@ class ErrorStatsServiceAsyncClient:
 
             from google.cloud import errorreporting_v1beta1
 
-            def sample_list_group_stats():
+            async def sample_list_group_stats():
                 # Create a client
-                client = errorreporting_v1beta1.ErrorStatsServiceClient()
+                client = errorreporting_v1beta1.ErrorStatsServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = errorreporting_v1beta1.ListGroupStatsRequest(
@@ -236,7 +236,7 @@ class ErrorStatsServiceAsyncClient:
                 page_result = client.list_group_stats(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -355,9 +355,9 @@ class ErrorStatsServiceAsyncClient:
 
             from google.cloud import errorreporting_v1beta1
 
-            def sample_list_events():
+            async def sample_list_events():
                 # Create a client
-                client = errorreporting_v1beta1.ErrorStatsServiceClient()
+                client = errorreporting_v1beta1.ErrorStatsServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = errorreporting_v1beta1.ListEventsRequest(
@@ -369,7 +369,7 @@ class ErrorStatsServiceAsyncClient:
                 page_result = client.list_events(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -479,9 +479,9 @@ class ErrorStatsServiceAsyncClient:
 
             from google.cloud import errorreporting_v1beta1
 
-            def sample_delete_events():
+            async def sample_delete_events():
                 # Create a client
-                client = errorreporting_v1beta1.ErrorStatsServiceClient()
+                client = errorreporting_v1beta1.ErrorStatsServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = errorreporting_v1beta1.DeleteEventsRequest(
@@ -489,7 +489,7 @@ class ErrorStatsServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.delete_events(request=request)
+                response = await client.delete_events(request=request)
 
                 # Handle the response
                 print(response)
