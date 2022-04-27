@@ -218,9 +218,9 @@ class FirewallAsyncClient:
 
             from google.cloud import appengine_admin_v1
 
-            def sample_list_ingress_rules():
+            async def sample_list_ingress_rules():
                 # Create a client
-                client = appengine_admin_v1.FirewallClient()
+                client = appengine_admin_v1.FirewallAsyncClient()
 
                 # Initialize request argument(s)
                 request = appengine_admin_v1.ListIngressRulesRequest(
@@ -230,7 +230,7 @@ class FirewallAsyncClient:
                 page_result = client.list_ingress_rules(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -308,16 +308,16 @@ class FirewallAsyncClient:
 
             from google.cloud import appengine_admin_v1
 
-            def sample_batch_update_ingress_rules():
+            async def sample_batch_update_ingress_rules():
                 # Create a client
-                client = appengine_admin_v1.FirewallClient()
+                client = appengine_admin_v1.FirewallAsyncClient()
 
                 # Initialize request argument(s)
                 request = appengine_admin_v1.BatchUpdateIngressRulesRequest(
                 )
 
                 # Make the request
-                response = client.batch_update_ingress_rules(request=request)
+                response = await client.batch_update_ingress_rules(request=request)
 
                 # Handle the response
                 print(response)
@@ -378,16 +378,16 @@ class FirewallAsyncClient:
 
             from google.cloud import appengine_admin_v1
 
-            def sample_create_ingress_rule():
+            async def sample_create_ingress_rule():
                 # Create a client
-                client = appengine_admin_v1.FirewallClient()
+                client = appengine_admin_v1.FirewallAsyncClient()
 
                 # Initialize request argument(s)
                 request = appengine_admin_v1.CreateIngressRuleRequest(
                 )
 
                 # Make the request
-                response = client.create_ingress_rule(request=request)
+                response = await client.create_ingress_rule(request=request)
 
                 # Handle the response
                 print(response)
@@ -452,16 +452,16 @@ class FirewallAsyncClient:
 
             from google.cloud import appengine_admin_v1
 
-            def sample_get_ingress_rule():
+            async def sample_get_ingress_rule():
                 # Create a client
-                client = appengine_admin_v1.FirewallClient()
+                client = appengine_admin_v1.FirewallAsyncClient()
 
                 # Initialize request argument(s)
                 request = appengine_admin_v1.GetIngressRuleRequest(
                 )
 
                 # Make the request
-                response = client.get_ingress_rule(request=request)
+                response = await client.get_ingress_rule(request=request)
 
                 # Handle the response
                 print(response)
@@ -526,16 +526,16 @@ class FirewallAsyncClient:
 
             from google.cloud import appengine_admin_v1
 
-            def sample_update_ingress_rule():
+            async def sample_update_ingress_rule():
                 # Create a client
-                client = appengine_admin_v1.FirewallClient()
+                client = appengine_admin_v1.FirewallAsyncClient()
 
                 # Initialize request argument(s)
                 request = appengine_admin_v1.UpdateIngressRuleRequest(
                 )
 
                 # Make the request
-                response = client.update_ingress_rule(request=request)
+                response = await client.update_ingress_rule(request=request)
 
                 # Handle the response
                 print(response)
@@ -600,16 +600,16 @@ class FirewallAsyncClient:
 
             from google.cloud import appengine_admin_v1
 
-            def sample_delete_ingress_rule():
+            async def sample_delete_ingress_rule():
                 # Create a client
-                client = appengine_admin_v1.FirewallClient()
+                client = appengine_admin_v1.FirewallAsyncClient()
 
                 # Initialize request argument(s)
                 request = appengine_admin_v1.DeleteIngressRuleRequest(
                 )
 
                 # Make the request
-                client.delete_ingress_rule(request=request)
+                await client.delete_ingress_rule(request=request)
 
         Args:
             request (Union[google.cloud.appengine_admin_v1.types.DeleteIngressRuleRequest, dict]):

@@ -223,9 +223,9 @@ class AuthorizedCertificatesAsyncClient:
 
             from google.cloud import appengine_admin_v1
 
-            def sample_list_authorized_certificates():
+            async def sample_list_authorized_certificates():
                 # Create a client
-                client = appengine_admin_v1.AuthorizedCertificatesClient()
+                client = appengine_admin_v1.AuthorizedCertificatesAsyncClient()
 
                 # Initialize request argument(s)
                 request = appengine_admin_v1.ListAuthorizedCertificatesRequest(
@@ -235,7 +235,7 @@ class AuthorizedCertificatesAsyncClient:
                 page_result = client.list_authorized_certificates(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -308,16 +308,16 @@ class AuthorizedCertificatesAsyncClient:
 
             from google.cloud import appengine_admin_v1
 
-            def sample_get_authorized_certificate():
+            async def sample_get_authorized_certificate():
                 # Create a client
-                client = appengine_admin_v1.AuthorizedCertificatesClient()
+                client = appengine_admin_v1.AuthorizedCertificatesAsyncClient()
 
                 # Initialize request argument(s)
                 request = appengine_admin_v1.GetAuthorizedCertificateRequest(
                 )
 
                 # Make the request
-                response = client.get_authorized_certificate(request=request)
+                response = await client.get_authorized_certificate(request=request)
 
                 # Handle the response
                 print(response)
@@ -383,16 +383,16 @@ class AuthorizedCertificatesAsyncClient:
 
             from google.cloud import appengine_admin_v1
 
-            def sample_create_authorized_certificate():
+            async def sample_create_authorized_certificate():
                 # Create a client
-                client = appengine_admin_v1.AuthorizedCertificatesClient()
+                client = appengine_admin_v1.AuthorizedCertificatesAsyncClient()
 
                 # Initialize request argument(s)
                 request = appengine_admin_v1.CreateAuthorizedCertificateRequest(
                 )
 
                 # Make the request
-                response = client.create_authorized_certificate(request=request)
+                response = await client.create_authorized_certificate(request=request)
 
                 # Handle the response
                 print(response)
@@ -463,16 +463,16 @@ class AuthorizedCertificatesAsyncClient:
 
             from google.cloud import appengine_admin_v1
 
-            def sample_update_authorized_certificate():
+            async def sample_update_authorized_certificate():
                 # Create a client
-                client = appengine_admin_v1.AuthorizedCertificatesClient()
+                client = appengine_admin_v1.AuthorizedCertificatesAsyncClient()
 
                 # Initialize request argument(s)
                 request = appengine_admin_v1.UpdateAuthorizedCertificateRequest(
                 )
 
                 # Make the request
-                response = client.update_authorized_certificate(request=request)
+                response = await client.update_authorized_certificate(request=request)
 
                 # Handle the response
                 print(response)
@@ -538,16 +538,16 @@ class AuthorizedCertificatesAsyncClient:
 
             from google.cloud import appengine_admin_v1
 
-            def sample_delete_authorized_certificate():
+            async def sample_delete_authorized_certificate():
                 # Create a client
-                client = appengine_admin_v1.AuthorizedCertificatesClient()
+                client = appengine_admin_v1.AuthorizedCertificatesAsyncClient()
 
                 # Initialize request argument(s)
                 request = appengine_admin_v1.DeleteAuthorizedCertificateRequest(
                 )
 
                 # Make the request
-                client.delete_authorized_certificate(request=request)
+                await client.delete_authorized_certificate(request=request)
 
         Args:
             request (Union[google.cloud.appengine_admin_v1.types.DeleteAuthorizedCertificateRequest, dict]):

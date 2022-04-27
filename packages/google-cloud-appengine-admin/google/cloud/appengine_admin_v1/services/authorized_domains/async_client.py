@@ -219,9 +219,9 @@ class AuthorizedDomainsAsyncClient:
 
             from google.cloud import appengine_admin_v1
 
-            def sample_list_authorized_domains():
+            async def sample_list_authorized_domains():
                 # Create a client
-                client = appengine_admin_v1.AuthorizedDomainsClient()
+                client = appengine_admin_v1.AuthorizedDomainsAsyncClient()
 
                 # Initialize request argument(s)
                 request = appengine_admin_v1.ListAuthorizedDomainsRequest(
@@ -231,7 +231,7 @@ class AuthorizedDomainsAsyncClient:
                 page_result = client.list_authorized_domains(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:

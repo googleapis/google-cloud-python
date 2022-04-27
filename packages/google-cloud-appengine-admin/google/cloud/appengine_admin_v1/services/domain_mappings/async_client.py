@@ -219,9 +219,9 @@ class DomainMappingsAsyncClient:
 
             from google.cloud import appengine_admin_v1
 
-            def sample_list_domain_mappings():
+            async def sample_list_domain_mappings():
                 # Create a client
-                client = appengine_admin_v1.DomainMappingsClient()
+                client = appengine_admin_v1.DomainMappingsAsyncClient()
 
                 # Initialize request argument(s)
                 request = appengine_admin_v1.ListDomainMappingsRequest(
@@ -231,7 +231,7 @@ class DomainMappingsAsyncClient:
                 page_result = client.list_domain_mappings(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -303,16 +303,16 @@ class DomainMappingsAsyncClient:
 
             from google.cloud import appengine_admin_v1
 
-            def sample_get_domain_mapping():
+            async def sample_get_domain_mapping():
                 # Create a client
-                client = appengine_admin_v1.DomainMappingsClient()
+                client = appengine_admin_v1.DomainMappingsAsyncClient()
 
                 # Initialize request argument(s)
                 request = appengine_admin_v1.GetDomainMappingRequest(
                 )
 
                 # Make the request
-                response = client.get_domain_mapping(request=request)
+                response = await client.get_domain_mapping(request=request)
 
                 # Handle the response
                 print(response)
@@ -378,9 +378,9 @@ class DomainMappingsAsyncClient:
 
             from google.cloud import appengine_admin_v1
 
-            def sample_create_domain_mapping():
+            async def sample_create_domain_mapping():
                 # Create a client
-                client = appengine_admin_v1.DomainMappingsClient()
+                client = appengine_admin_v1.DomainMappingsAsyncClient()
 
                 # Initialize request argument(s)
                 request = appengine_admin_v1.CreateDomainMappingRequest(
@@ -391,7 +391,7 @@ class DomainMappingsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -469,9 +469,9 @@ class DomainMappingsAsyncClient:
 
             from google.cloud import appengine_admin_v1
 
-            def sample_update_domain_mapping():
+            async def sample_update_domain_mapping():
                 # Create a client
-                client = appengine_admin_v1.DomainMappingsClient()
+                client = appengine_admin_v1.DomainMappingsAsyncClient()
 
                 # Initialize request argument(s)
                 request = appengine_admin_v1.UpdateDomainMappingRequest(
@@ -482,7 +482,7 @@ class DomainMappingsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -558,9 +558,9 @@ class DomainMappingsAsyncClient:
 
             from google.cloud import appengine_admin_v1
 
-            def sample_delete_domain_mapping():
+            async def sample_delete_domain_mapping():
                 # Create a client
-                client = appengine_admin_v1.DomainMappingsClient()
+                client = appengine_admin_v1.DomainMappingsAsyncClient()
 
                 # Initialize request argument(s)
                 request = appengine_admin_v1.DeleteDomainMappingRequest(
@@ -571,7 +571,7 @@ class DomainMappingsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

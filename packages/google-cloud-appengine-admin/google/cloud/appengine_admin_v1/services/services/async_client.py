@@ -212,9 +212,9 @@ class ServicesAsyncClient:
 
             from google.cloud import appengine_admin_v1
 
-            def sample_list_services():
+            async def sample_list_services():
                 # Create a client
-                client = appengine_admin_v1.ServicesClient()
+                client = appengine_admin_v1.ServicesAsyncClient()
 
                 # Initialize request argument(s)
                 request = appengine_admin_v1.ListServicesRequest(
@@ -224,7 +224,7 @@ class ServicesAsyncClient:
                 page_result = client.list_services(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -297,16 +297,16 @@ class ServicesAsyncClient:
 
             from google.cloud import appengine_admin_v1
 
-            def sample_get_service():
+            async def sample_get_service():
                 # Create a client
-                client = appengine_admin_v1.ServicesClient()
+                client = appengine_admin_v1.ServicesAsyncClient()
 
                 # Initialize request argument(s)
                 request = appengine_admin_v1.GetServiceRequest(
                 )
 
                 # Make the request
-                response = client.get_service(request=request)
+                response = await client.get_service(request=request)
 
                 # Handle the response
                 print(response)
@@ -379,9 +379,9 @@ class ServicesAsyncClient:
 
             from google.cloud import appengine_admin_v1
 
-            def sample_update_service():
+            async def sample_update_service():
                 # Create a client
-                client = appengine_admin_v1.ServicesClient()
+                client = appengine_admin_v1.ServicesAsyncClient()
 
                 # Initialize request argument(s)
                 request = appengine_admin_v1.UpdateServiceRequest(
@@ -392,7 +392,7 @@ class ServicesAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -473,9 +473,9 @@ class ServicesAsyncClient:
 
             from google.cloud import appengine_admin_v1
 
-            def sample_delete_service():
+            async def sample_delete_service():
                 # Create a client
-                client = appengine_admin_v1.ServicesClient()
+                client = appengine_admin_v1.ServicesAsyncClient()
 
                 # Initialize request argument(s)
                 request = appengine_admin_v1.DeleteServiceRequest(
@@ -486,7 +486,7 @@ class ServicesAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

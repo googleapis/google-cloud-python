@@ -214,16 +214,16 @@ class ApplicationsAsyncClient:
 
             from google.cloud import appengine_admin_v1
 
-            def sample_get_application():
+            async def sample_get_application():
                 # Create a client
-                client = appengine_admin_v1.ApplicationsClient()
+                client = appengine_admin_v1.ApplicationsAsyncClient()
 
                 # Initialize request argument(s)
                 request = appengine_admin_v1.GetApplicationRequest(
                 )
 
                 # Make the request
-                response = client.get_application(request=request)
+                response = await client.get_application(request=request)
 
                 # Handle the response
                 print(response)
@@ -297,9 +297,9 @@ class ApplicationsAsyncClient:
 
             from google.cloud import appengine_admin_v1
 
-            def sample_create_application():
+            async def sample_create_application():
                 # Create a client
-                client = appengine_admin_v1.ApplicationsClient()
+                client = appengine_admin_v1.ApplicationsAsyncClient()
 
                 # Initialize request argument(s)
                 request = appengine_admin_v1.CreateApplicationRequest(
@@ -310,7 +310,7 @@ class ApplicationsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -383,9 +383,9 @@ class ApplicationsAsyncClient:
 
             from google.cloud import appengine_admin_v1
 
-            def sample_update_application():
+            async def sample_update_application():
                 # Create a client
-                client = appengine_admin_v1.ApplicationsClient()
+                client = appengine_admin_v1.ApplicationsAsyncClient()
 
                 # Initialize request argument(s)
                 request = appengine_admin_v1.UpdateApplicationRequest(
@@ -396,7 +396,7 @@ class ApplicationsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -479,9 +479,9 @@ class ApplicationsAsyncClient:
 
             from google.cloud import appengine_admin_v1
 
-            def sample_repair_application():
+            async def sample_repair_application():
                 # Create a client
-                client = appengine_admin_v1.ApplicationsClient()
+                client = appengine_admin_v1.ApplicationsAsyncClient()
 
                 # Initialize request argument(s)
                 request = appengine_admin_v1.RepairApplicationRequest(
@@ -492,7 +492,7 @@ class ApplicationsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

@@ -215,9 +215,9 @@ class VersionsAsyncClient:
 
             from google.cloud import appengine_admin_v1
 
-            def sample_list_versions():
+            async def sample_list_versions():
                 # Create a client
-                client = appengine_admin_v1.VersionsClient()
+                client = appengine_admin_v1.VersionsAsyncClient()
 
                 # Initialize request argument(s)
                 request = appengine_admin_v1.ListVersionsRequest(
@@ -227,7 +227,7 @@ class VersionsAsyncClient:
                 page_result = client.list_versions(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -301,16 +301,16 @@ class VersionsAsyncClient:
 
             from google.cloud import appengine_admin_v1
 
-            def sample_get_version():
+            async def sample_get_version():
                 # Create a client
-                client = appengine_admin_v1.VersionsClient()
+                client = appengine_admin_v1.VersionsAsyncClient()
 
                 # Initialize request argument(s)
                 request = appengine_admin_v1.GetVersionRequest(
                 )
 
                 # Make the request
-                response = client.get_version(request=request)
+                response = await client.get_version(request=request)
 
                 # Handle the response
                 print(response)
@@ -374,9 +374,9 @@ class VersionsAsyncClient:
 
             from google.cloud import appengine_admin_v1
 
-            def sample_create_version():
+            async def sample_create_version():
                 # Create a client
-                client = appengine_admin_v1.VersionsClient()
+                client = appengine_admin_v1.VersionsAsyncClient()
 
                 # Initialize request argument(s)
                 request = appengine_admin_v1.CreateVersionRequest(
@@ -387,7 +387,7 @@ class VersionsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -495,9 +495,9 @@ class VersionsAsyncClient:
 
             from google.cloud import appengine_admin_v1
 
-            def sample_update_version():
+            async def sample_update_version():
                 # Create a client
-                client = appengine_admin_v1.VersionsClient()
+                client = appengine_admin_v1.VersionsAsyncClient()
 
                 # Initialize request argument(s)
                 request = appengine_admin_v1.UpdateVersionRequest(
@@ -508,7 +508,7 @@ class VersionsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -581,9 +581,9 @@ class VersionsAsyncClient:
 
             from google.cloud import appengine_admin_v1
 
-            def sample_delete_version():
+            async def sample_delete_version():
                 # Create a client
-                client = appengine_admin_v1.VersionsClient()
+                client = appengine_admin_v1.VersionsAsyncClient()
 
                 # Initialize request argument(s)
                 request = appengine_admin_v1.DeleteVersionRequest(
@@ -594,7 +594,7 @@ class VersionsAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

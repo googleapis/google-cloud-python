@@ -784,7 +784,7 @@ def test_list_authorized_certificates_field_headers():
     # a field header. Set these to a non-empty value.
     request = appengine.ListAuthorizedCertificatesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -802,7 +802,7 @@ def test_list_authorized_certificates_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -816,7 +816,7 @@ async def test_list_authorized_certificates_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = appengine.ListAuthorizedCertificatesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -836,7 +836,7 @@ async def test_list_authorized_certificates_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -887,7 +887,7 @@ def test_list_authorized_certificates_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, certificate.AuthorizedCertificate) for i in results)
 
@@ -1161,7 +1161,7 @@ def test_get_authorized_certificate_field_headers():
     # a field header. Set these to a non-empty value.
     request = appengine.GetAuthorizedCertificateRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1179,7 +1179,7 @@ def test_get_authorized_certificate_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1193,7 +1193,7 @@ async def test_get_authorized_certificate_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = appengine.GetAuthorizedCertificateRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1213,7 +1213,7 @@ async def test_get_authorized_certificate_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1342,7 +1342,7 @@ def test_create_authorized_certificate_field_headers():
     # a field header. Set these to a non-empty value.
     request = appengine.CreateAuthorizedCertificateRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1360,7 +1360,7 @@ def test_create_authorized_certificate_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1374,7 +1374,7 @@ async def test_create_authorized_certificate_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = appengine.CreateAuthorizedCertificateRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1394,7 +1394,7 @@ async def test_create_authorized_certificate_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1523,7 +1523,7 @@ def test_update_authorized_certificate_field_headers():
     # a field header. Set these to a non-empty value.
     request = appengine.UpdateAuthorizedCertificateRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1541,7 +1541,7 @@ def test_update_authorized_certificate_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1555,7 +1555,7 @@ async def test_update_authorized_certificate_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = appengine.UpdateAuthorizedCertificateRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1575,7 +1575,7 @@ async def test_update_authorized_certificate_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1676,7 +1676,7 @@ def test_delete_authorized_certificate_field_headers():
     # a field header. Set these to a non-empty value.
     request = appengine.DeleteAuthorizedCertificateRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1694,7 +1694,7 @@ def test_delete_authorized_certificate_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1708,7 +1708,7 @@ async def test_delete_authorized_certificate_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = appengine.DeleteAuthorizedCertificateRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1726,7 +1726,7 @@ async def test_delete_authorized_certificate_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 

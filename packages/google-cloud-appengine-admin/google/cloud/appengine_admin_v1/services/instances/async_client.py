@@ -220,9 +220,9 @@ class InstancesAsyncClient:
 
             from google.cloud import appengine_admin_v1
 
-            def sample_list_instances():
+            async def sample_list_instances():
                 # Create a client
-                client = appengine_admin_v1.InstancesClient()
+                client = appengine_admin_v1.InstancesAsyncClient()
 
                 # Initialize request argument(s)
                 request = appengine_admin_v1.ListInstancesRequest(
@@ -232,7 +232,7 @@ class InstancesAsyncClient:
                 page_result = client.list_instances(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -304,16 +304,16 @@ class InstancesAsyncClient:
 
             from google.cloud import appengine_admin_v1
 
-            def sample_get_instance():
+            async def sample_get_instance():
                 # Create a client
-                client = appengine_admin_v1.InstancesClient()
+                client = appengine_admin_v1.InstancesAsyncClient()
 
                 # Initialize request argument(s)
                 request = appengine_admin_v1.GetInstanceRequest(
                 )
 
                 # Make the request
-                response = client.get_instance(request=request)
+                response = await client.get_instance(request=request)
 
                 # Handle the response
                 print(response)
@@ -391,9 +391,9 @@ class InstancesAsyncClient:
 
             from google.cloud import appengine_admin_v1
 
-            def sample_delete_instance():
+            async def sample_delete_instance():
                 # Create a client
-                client = appengine_admin_v1.InstancesClient()
+                client = appengine_admin_v1.InstancesAsyncClient()
 
                 # Initialize request argument(s)
                 request = appengine_admin_v1.DeleteInstanceRequest(
@@ -404,7 +404,7 @@ class InstancesAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -497,9 +497,9 @@ class InstancesAsyncClient:
 
             from google.cloud import appengine_admin_v1
 
-            def sample_debug_instance():
+            async def sample_debug_instance():
                 # Create a client
-                client = appengine_admin_v1.InstancesClient()
+                client = appengine_admin_v1.InstancesAsyncClient()
 
                 # Initialize request argument(s)
                 request = appengine_admin_v1.DebugInstanceRequest(
@@ -510,7 +510,7 @@ class InstancesAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
