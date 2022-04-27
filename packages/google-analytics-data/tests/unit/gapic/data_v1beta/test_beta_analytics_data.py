@@ -769,7 +769,7 @@ def test_run_report_field_headers():
     # a field header. Set these to a non-empty value.
     request = analytics_data_api.RunReportRequest()
 
-    request.property = "property/value"
+    request.property = "property_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.run_report), "__call__") as call:
@@ -785,7 +785,7 @@ def test_run_report_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "property=property/value",
+        "property=property_value",
     ) in kw["metadata"]
 
 
@@ -799,7 +799,7 @@ async def test_run_report_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = analytics_data_api.RunReportRequest()
 
-    request.property = "property/value"
+    request.property = "property_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.run_report), "__call__") as call:
@@ -817,7 +817,7 @@ async def test_run_report_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "property=property/value",
+        "property=property_value",
     ) in kw["metadata"]
 
 
@@ -920,7 +920,7 @@ def test_run_pivot_report_field_headers():
     # a field header. Set these to a non-empty value.
     request = analytics_data_api.RunPivotReportRequest()
 
-    request.property = "property/value"
+    request.property = "property_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.run_pivot_report), "__call__") as call:
@@ -936,7 +936,7 @@ def test_run_pivot_report_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "property=property/value",
+        "property=property_value",
     ) in kw["metadata"]
 
 
@@ -950,7 +950,7 @@ async def test_run_pivot_report_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = analytics_data_api.RunPivotReportRequest()
 
-    request.property = "property/value"
+    request.property = "property_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.run_pivot_report), "__call__") as call:
@@ -968,7 +968,7 @@ async def test_run_pivot_report_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "property=property/value",
+        "property=property_value",
     ) in kw["metadata"]
 
 
@@ -1077,7 +1077,7 @@ def test_batch_run_reports_field_headers():
     # a field header. Set these to a non-empty value.
     request = analytics_data_api.BatchRunReportsRequest()
 
-    request.property = "property/value"
+    request.property = "property_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1095,7 +1095,7 @@ def test_batch_run_reports_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "property=property/value",
+        "property=property_value",
     ) in kw["metadata"]
 
 
@@ -1109,7 +1109,7 @@ async def test_batch_run_reports_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = analytics_data_api.BatchRunReportsRequest()
 
-    request.property = "property/value"
+    request.property = "property_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1129,7 +1129,7 @@ async def test_batch_run_reports_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "property=property/value",
+        "property=property_value",
     ) in kw["metadata"]
 
 
@@ -1238,7 +1238,7 @@ def test_batch_run_pivot_reports_field_headers():
     # a field header. Set these to a non-empty value.
     request = analytics_data_api.BatchRunPivotReportsRequest()
 
-    request.property = "property/value"
+    request.property = "property_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1256,7 +1256,7 @@ def test_batch_run_pivot_reports_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "property=property/value",
+        "property=property_value",
     ) in kw["metadata"]
 
 
@@ -1270,7 +1270,7 @@ async def test_batch_run_pivot_reports_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = analytics_data_api.BatchRunPivotReportsRequest()
 
-    request.property = "property/value"
+    request.property = "property_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1290,7 +1290,7 @@ async def test_batch_run_pivot_reports_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "property=property/value",
+        "property=property_value",
     ) in kw["metadata"]
 
 
@@ -1392,7 +1392,7 @@ def test_get_metadata_field_headers():
     # a field header. Set these to a non-empty value.
     request = analytics_data_api.GetMetadataRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_metadata), "__call__") as call:
@@ -1408,7 +1408,7 @@ def test_get_metadata_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1422,7 +1422,7 @@ async def test_get_metadata_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = analytics_data_api.GetMetadataRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_metadata), "__call__") as call:
@@ -1440,7 +1440,7 @@ async def test_get_metadata_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1635,7 +1635,7 @@ def test_run_realtime_report_field_headers():
     # a field header. Set these to a non-empty value.
     request = analytics_data_api.RunRealtimeReportRequest()
 
-    request.property = "property/value"
+    request.property = "property_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1653,7 +1653,7 @@ def test_run_realtime_report_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "property=property/value",
+        "property=property_value",
     ) in kw["metadata"]
 
 
@@ -1667,7 +1667,7 @@ async def test_run_realtime_report_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = analytics_data_api.RunRealtimeReportRequest()
 
-    request.property = "property/value"
+    request.property = "property_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1687,7 +1687,7 @@ async def test_run_realtime_report_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "property=property/value",
+        "property=property_value",
     ) in kw["metadata"]
 
 
@@ -1790,7 +1790,7 @@ def test_check_compatibility_field_headers():
     # a field header. Set these to a non-empty value.
     request = analytics_data_api.CheckCompatibilityRequest()
 
-    request.property = "property/value"
+    request.property = "property_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1808,7 +1808,7 @@ def test_check_compatibility_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "property=property/value",
+        "property=property_value",
     ) in kw["metadata"]
 
 
@@ -1822,7 +1822,7 @@ async def test_check_compatibility_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = analytics_data_api.CheckCompatibilityRequest()
 
-    request.property = "property/value"
+    request.property = "property_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1842,7 +1842,7 @@ async def test_check_compatibility_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "property=property/value",
+        "property=property_value",
     ) in kw["metadata"]
 
 

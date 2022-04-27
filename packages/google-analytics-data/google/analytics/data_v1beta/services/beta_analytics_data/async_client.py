@@ -224,16 +224,16 @@ class BetaAnalyticsDataAsyncClient:
 
             from google.analytics import data_v1beta
 
-            def sample_run_report():
+            async def sample_run_report():
                 # Create a client
-                client = data_v1beta.BetaAnalyticsDataClient()
+                client = data_v1beta.BetaAnalyticsDataAsyncClient()
 
                 # Initialize request argument(s)
                 request = data_v1beta.RunReportRequest(
                 )
 
                 # Make the request
-                response = client.run_report(request=request)
+                response = await client.run_report(request=request)
 
                 # Handle the response
                 print(response)
@@ -300,16 +300,16 @@ class BetaAnalyticsDataAsyncClient:
 
             from google.analytics import data_v1beta
 
-            def sample_run_pivot_report():
+            async def sample_run_pivot_report():
                 # Create a client
-                client = data_v1beta.BetaAnalyticsDataClient()
+                client = data_v1beta.BetaAnalyticsDataAsyncClient()
 
                 # Initialize request argument(s)
                 request = data_v1beta.RunPivotReportRequest(
                 )
 
                 # Make the request
-                response = client.run_pivot_report(request=request)
+                response = await client.run_pivot_report(request=request)
 
                 # Handle the response
                 print(response)
@@ -373,16 +373,16 @@ class BetaAnalyticsDataAsyncClient:
 
             from google.analytics import data_v1beta
 
-            def sample_batch_run_reports():
+            async def sample_batch_run_reports():
                 # Create a client
-                client = data_v1beta.BetaAnalyticsDataClient()
+                client = data_v1beta.BetaAnalyticsDataAsyncClient()
 
                 # Initialize request argument(s)
                 request = data_v1beta.BatchRunReportsRequest(
                 )
 
                 # Make the request
-                response = client.batch_run_reports(request=request)
+                response = await client.batch_run_reports(request=request)
 
                 # Handle the response
                 print(response)
@@ -446,16 +446,16 @@ class BetaAnalyticsDataAsyncClient:
 
             from google.analytics import data_v1beta
 
-            def sample_batch_run_pivot_reports():
+            async def sample_batch_run_pivot_reports():
                 # Create a client
-                client = data_v1beta.BetaAnalyticsDataClient()
+                client = data_v1beta.BetaAnalyticsDataAsyncClient()
 
                 # Initialize request argument(s)
                 request = data_v1beta.BatchRunPivotReportsRequest(
                 )
 
                 # Make the request
-                response = client.batch_run_pivot_reports(request=request)
+                response = await client.batch_run_pivot_reports(request=request)
 
                 # Handle the response
                 print(response)
@@ -529,9 +529,9 @@ class BetaAnalyticsDataAsyncClient:
 
             from google.analytics import data_v1beta
 
-            def sample_get_metadata():
+            async def sample_get_metadata():
                 # Create a client
-                client = data_v1beta.BetaAnalyticsDataClient()
+                client = data_v1beta.BetaAnalyticsDataAsyncClient()
 
                 # Initialize request argument(s)
                 request = data_v1beta.GetMetadataRequest(
@@ -539,7 +539,7 @@ class BetaAnalyticsDataAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_metadata(request=request)
+                response = await client.get_metadata(request=request)
 
                 # Handle the response
                 print(response)
@@ -636,16 +636,16 @@ class BetaAnalyticsDataAsyncClient:
 
             from google.analytics import data_v1beta
 
-            def sample_run_realtime_report():
+            async def sample_run_realtime_report():
                 # Create a client
-                client = data_v1beta.BetaAnalyticsDataClient()
+                client = data_v1beta.BetaAnalyticsDataAsyncClient()
 
                 # Initialize request argument(s)
                 request = data_v1beta.RunRealtimeReportRequest(
                 )
 
                 # Make the request
-                response = client.run_realtime_report(request=request)
+                response = await client.run_realtime_report(request=request)
 
                 # Handle the response
                 print(response)
@@ -718,16 +718,16 @@ class BetaAnalyticsDataAsyncClient:
 
             from google.analytics import data_v1beta
 
-            def sample_check_compatibility():
+            async def sample_check_compatibility():
                 # Create a client
-                client = data_v1beta.BetaAnalyticsDataClient()
+                client = data_v1beta.BetaAnalyticsDataAsyncClient()
 
                 # Initialize request argument(s)
                 request = data_v1beta.CheckCompatibilityRequest(
                 )
 
                 # Make the request
-                response = client.check_compatibility(request=request)
+                response = await client.check_compatibility(request=request)
 
                 # Handle the response
                 print(response)
