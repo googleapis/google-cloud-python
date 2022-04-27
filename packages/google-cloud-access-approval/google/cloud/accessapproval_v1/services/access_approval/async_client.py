@@ -267,9 +267,9 @@ class AccessApprovalAsyncClient:
 
             from google.cloud import accessapproval_v1
 
-            def sample_list_approval_requests():
+            async def sample_list_approval_requests():
                 # Create a client
-                client = accessapproval_v1.AccessApprovalClient()
+                client = accessapproval_v1.AccessApprovalAsyncClient()
 
                 # Initialize request argument(s)
                 request = accessapproval_v1.ListApprovalRequestsMessage(
@@ -279,7 +279,7 @@ class AccessApprovalAsyncClient:
                 page_result = client.list_approval_requests(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -385,16 +385,16 @@ class AccessApprovalAsyncClient:
 
             from google.cloud import accessapproval_v1
 
-            def sample_get_approval_request():
+            async def sample_get_approval_request():
                 # Create a client
-                client = accessapproval_v1.AccessApprovalClient()
+                client = accessapproval_v1.AccessApprovalAsyncClient()
 
                 # Initialize request argument(s)
                 request = accessapproval_v1.GetApprovalRequestMessage(
                 )
 
                 # Make the request
-                response = client.get_approval_request(request=request)
+                response = await client.get_approval_request(request=request)
 
                 # Handle the response
                 print(response)
@@ -490,16 +490,16 @@ class AccessApprovalAsyncClient:
 
             from google.cloud import accessapproval_v1
 
-            def sample_approve_approval_request():
+            async def sample_approve_approval_request():
                 # Create a client
-                client = accessapproval_v1.AccessApprovalClient()
+                client = accessapproval_v1.AccessApprovalAsyncClient()
 
                 # Initialize request argument(s)
                 request = accessapproval_v1.ApproveApprovalRequestMessage(
                 )
 
                 # Make the request
-                response = client.approve_approval_request(request=request)
+                response = await client.approve_approval_request(request=request)
 
                 # Handle the response
                 print(response)
@@ -571,16 +571,16 @@ class AccessApprovalAsyncClient:
 
             from google.cloud import accessapproval_v1
 
-            def sample_dismiss_approval_request():
+            async def sample_dismiss_approval_request():
                 # Create a client
-                client = accessapproval_v1.AccessApprovalClient()
+                client = accessapproval_v1.AccessApprovalAsyncClient()
 
                 # Initialize request argument(s)
                 request = accessapproval_v1.DismissApprovalRequestMessage(
                 )
 
                 # Make the request
-                response = client.dismiss_approval_request(request=request)
+                response = await client.dismiss_approval_request(request=request)
 
                 # Handle the response
                 print(response)
@@ -645,16 +645,16 @@ class AccessApprovalAsyncClient:
 
             from google.cloud import accessapproval_v1
 
-            def sample_get_access_approval_settings():
+            async def sample_get_access_approval_settings():
                 # Create a client
-                client = accessapproval_v1.AccessApprovalClient()
+                client = accessapproval_v1.AccessApprovalAsyncClient()
 
                 # Initialize request argument(s)
                 request = accessapproval_v1.GetAccessApprovalSettingsMessage(
                 )
 
                 # Make the request
-                response = client.get_access_approval_settings(request=request)
+                response = await client.get_access_approval_settings(request=request)
 
                 # Handle the response
                 print(response)
@@ -753,16 +753,16 @@ class AccessApprovalAsyncClient:
 
             from google.cloud import accessapproval_v1
 
-            def sample_update_access_approval_settings():
+            async def sample_update_access_approval_settings():
                 # Create a client
-                client = accessapproval_v1.AccessApprovalClient()
+                client = accessapproval_v1.AccessApprovalAsyncClient()
 
                 # Initialize request argument(s)
                 request = accessapproval_v1.UpdateAccessApprovalSettingsMessage(
                 )
 
                 # Make the request
-                response = client.update_access_approval_settings(request=request)
+                response = await client.update_access_approval_settings(request=request)
 
                 # Handle the response
                 print(response)
@@ -873,16 +873,16 @@ class AccessApprovalAsyncClient:
 
             from google.cloud import accessapproval_v1
 
-            def sample_delete_access_approval_settings():
+            async def sample_delete_access_approval_settings():
                 # Create a client
-                client = accessapproval_v1.AccessApprovalClient()
+                client = accessapproval_v1.AccessApprovalAsyncClient()
 
                 # Initialize request argument(s)
                 request = accessapproval_v1.DeleteAccessApprovalSettingsMessage(
                 )
 
                 # Make the request
-                client.delete_access_approval_settings(request=request)
+                await client.delete_access_approval_settings(request=request)
 
         Args:
             request (Union[google.cloud.accessapproval_v1.types.DeleteAccessApprovalSettingsMessage, dict]):

@@ -750,7 +750,7 @@ def test_list_approval_requests_field_headers():
     # a field header. Set these to a non-empty value.
     request = accessapproval.ListApprovalRequestsMessage()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -768,7 +768,7 @@ def test_list_approval_requests_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -782,7 +782,7 @@ async def test_list_approval_requests_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = accessapproval.ListApprovalRequestsMessage()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -802,7 +802,7 @@ async def test_list_approval_requests_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -939,7 +939,7 @@ def test_list_approval_requests_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, accessapproval.ApprovalRequest) for i in results)
 
@@ -1200,7 +1200,7 @@ def test_get_approval_request_field_headers():
     # a field header. Set these to a non-empty value.
     request = accessapproval.GetApprovalRequestMessage()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1218,7 +1218,7 @@ def test_get_approval_request_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1232,7 +1232,7 @@ async def test_get_approval_request_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = accessapproval.GetApprovalRequestMessage()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1252,7 +1252,7 @@ async def test_get_approval_request_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1454,7 +1454,7 @@ def test_approve_approval_request_field_headers():
     # a field header. Set these to a non-empty value.
     request = accessapproval.ApproveApprovalRequestMessage()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1472,7 +1472,7 @@ def test_approve_approval_request_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1486,7 +1486,7 @@ async def test_approve_approval_request_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = accessapproval.ApproveApprovalRequestMessage()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1506,7 +1506,7 @@ async def test_approve_approval_request_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1622,7 +1622,7 @@ def test_dismiss_approval_request_field_headers():
     # a field header. Set these to a non-empty value.
     request = accessapproval.DismissApprovalRequestMessage()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1640,7 +1640,7 @@ def test_dismiss_approval_request_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1654,7 +1654,7 @@ async def test_dismiss_approval_request_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = accessapproval.DismissApprovalRequestMessage()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1674,7 +1674,7 @@ async def test_dismiss_approval_request_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1791,7 +1791,7 @@ def test_get_access_approval_settings_field_headers():
     # a field header. Set these to a non-empty value.
     request = accessapproval.GetAccessApprovalSettingsMessage()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1809,7 +1809,7 @@ def test_get_access_approval_settings_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1823,7 +1823,7 @@ async def test_get_access_approval_settings_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = accessapproval.GetAccessApprovalSettingsMessage()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1843,7 +1843,7 @@ async def test_get_access_approval_settings_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2046,7 +2046,7 @@ def test_update_access_approval_settings_field_headers():
     # a field header. Set these to a non-empty value.
     request = accessapproval.UpdateAccessApprovalSettingsMessage()
 
-    request.settings.name = "settings.name/value"
+    request.settings.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2064,7 +2064,7 @@ def test_update_access_approval_settings_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "settings.name=settings.name/value",
+        "settings.name=name_value",
     ) in kw["metadata"]
 
 
@@ -2078,7 +2078,7 @@ async def test_update_access_approval_settings_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = accessapproval.UpdateAccessApprovalSettingsMessage()
 
-    request.settings.name = "settings.name/value"
+    request.settings.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2098,7 +2098,7 @@ async def test_update_access_approval_settings_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "settings.name=settings.name/value",
+        "settings.name=name_value",
     ) in kw["metadata"]
 
 
@@ -2295,7 +2295,7 @@ def test_delete_access_approval_settings_field_headers():
     # a field header. Set these to a non-empty value.
     request = accessapproval.DeleteAccessApprovalSettingsMessage()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2313,7 +2313,7 @@ def test_delete_access_approval_settings_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2327,7 +2327,7 @@ async def test_delete_access_approval_settings_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = accessapproval.DeleteAccessApprovalSettingsMessage()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2345,7 +2345,7 @@ async def test_delete_access_approval_settings_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
