@@ -779,7 +779,7 @@ def test_create_workload_field_headers():
     # a field header. Set these to a non-empty value.
     request = assuredworkloads_v1beta1.CreateWorkloadRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_workload), "__call__") as call:
@@ -795,7 +795,7 @@ def test_create_workload_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -809,7 +809,7 @@ async def test_create_workload_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = assuredworkloads_v1beta1.CreateWorkloadRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_workload), "__call__") as call:
@@ -827,7 +827,7 @@ async def test_create_workload_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1067,7 +1067,7 @@ def test_update_workload_field_headers():
     # a field header. Set these to a non-empty value.
     request = assuredworkloads_v1beta1.UpdateWorkloadRequest()
 
-    request.workload.name = "workload.name/value"
+    request.workload.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_workload), "__call__") as call:
@@ -1083,7 +1083,7 @@ def test_update_workload_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "workload.name=workload.name/value",
+        "workload.name=name_value",
     ) in kw["metadata"]
 
 
@@ -1097,7 +1097,7 @@ async def test_update_workload_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = assuredworkloads_v1beta1.UpdateWorkloadRequest()
 
-    request.workload.name = "workload.name/value"
+    request.workload.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_workload), "__call__") as call:
@@ -1115,7 +1115,7 @@ async def test_update_workload_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "workload.name=workload.name/value",
+        "workload.name=name_value",
     ) in kw["metadata"]
 
 
@@ -1302,7 +1302,7 @@ def test_delete_workload_field_headers():
     # a field header. Set these to a non-empty value.
     request = assuredworkloads_v1beta1.DeleteWorkloadRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_workload), "__call__") as call:
@@ -1318,7 +1318,7 @@ def test_delete_workload_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1332,7 +1332,7 @@ async def test_delete_workload_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = assuredworkloads_v1beta1.DeleteWorkloadRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_workload), "__call__") as call:
@@ -1348,7 +1348,7 @@ async def test_delete_workload_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1576,7 +1576,7 @@ def test_get_workload_field_headers():
     # a field header. Set these to a non-empty value.
     request = assuredworkloads_v1beta1.GetWorkloadRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_workload), "__call__") as call:
@@ -1592,7 +1592,7 @@ def test_get_workload_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1606,7 +1606,7 @@ async def test_get_workload_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = assuredworkloads_v1beta1.GetWorkloadRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_workload), "__call__") as call:
@@ -1624,7 +1624,7 @@ async def test_get_workload_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1809,7 +1809,7 @@ def test_list_workloads_field_headers():
     # a field header. Set these to a non-empty value.
     request = assuredworkloads_v1beta1.ListWorkloadsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_workloads), "__call__") as call:
@@ -1825,7 +1825,7 @@ def test_list_workloads_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1839,7 +1839,7 @@ async def test_list_workloads_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = assuredworkloads_v1beta1.ListWorkloadsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_workloads), "__call__") as call:
@@ -1857,7 +1857,7 @@ async def test_list_workloads_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1988,7 +1988,7 @@ def test_list_workloads_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, assuredworkloads_v1beta1.Workload) for i in results)
 

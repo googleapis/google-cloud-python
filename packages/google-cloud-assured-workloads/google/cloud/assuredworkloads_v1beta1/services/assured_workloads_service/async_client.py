@@ -231,9 +231,9 @@ class AssuredWorkloadsServiceAsyncClient:
 
             from google.cloud import assuredworkloads_v1beta1
 
-            def sample_create_workload():
+            async def sample_create_workload():
                 # Create a client
-                client = assuredworkloads_v1beta1.AssuredWorkloadsServiceClient()
+                client = assuredworkloads_v1beta1.AssuredWorkloadsServiceAsyncClient()
 
                 # Initialize request argument(s)
                 workload = assuredworkloads_v1beta1.Workload()
@@ -250,7 +250,7 @@ class AssuredWorkloadsServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -356,9 +356,9 @@ class AssuredWorkloadsServiceAsyncClient:
 
             from google.cloud import assuredworkloads_v1beta1
 
-            def sample_update_workload():
+            async def sample_update_workload():
                 # Create a client
-                client = assuredworkloads_v1beta1.AssuredWorkloadsServiceClient()
+                client = assuredworkloads_v1beta1.AssuredWorkloadsServiceAsyncClient()
 
                 # Initialize request argument(s)
                 workload = assuredworkloads_v1beta1.Workload()
@@ -370,7 +370,7 @@ class AssuredWorkloadsServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_workload(request=request)
+                response = await client.update_workload(request=request)
 
                 # Handle the response
                 print(response)
@@ -470,9 +470,9 @@ class AssuredWorkloadsServiceAsyncClient:
 
             from google.cloud import assuredworkloads_v1beta1
 
-            def sample_delete_workload():
+            async def sample_delete_workload():
                 # Create a client
-                client = assuredworkloads_v1beta1.AssuredWorkloadsServiceClient()
+                client = assuredworkloads_v1beta1.AssuredWorkloadsServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = assuredworkloads_v1beta1.DeleteWorkloadRequest(
@@ -480,7 +480,7 @@ class AssuredWorkloadsServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_workload(request=request)
+                await client.delete_workload(request=request)
 
         Args:
             request (Union[google.cloud.assuredworkloads_v1beta1.types.DeleteWorkloadRequest, dict]):
@@ -562,9 +562,9 @@ class AssuredWorkloadsServiceAsyncClient:
 
             from google.cloud import assuredworkloads_v1beta1
 
-            def sample_get_workload():
+            async def sample_get_workload():
                 # Create a client
-                client = assuredworkloads_v1beta1.AssuredWorkloadsServiceClient()
+                client = assuredworkloads_v1beta1.AssuredWorkloadsServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = assuredworkloads_v1beta1.GetWorkloadRequest(
@@ -572,7 +572,7 @@ class AssuredWorkloadsServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_workload(request=request)
+                response = await client.get_workload(request=request)
 
                 # Handle the response
                 print(response)
@@ -670,9 +670,9 @@ class AssuredWorkloadsServiceAsyncClient:
 
             from google.cloud import assuredworkloads_v1beta1
 
-            def sample_list_workloads():
+            async def sample_list_workloads():
                 # Create a client
-                client = assuredworkloads_v1beta1.AssuredWorkloadsServiceClient()
+                client = assuredworkloads_v1beta1.AssuredWorkloadsServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = assuredworkloads_v1beta1.ListWorkloadsRequest(
@@ -683,7 +683,7 @@ class AssuredWorkloadsServiceAsyncClient:
                 page_result = client.list_workloads(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
