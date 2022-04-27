@@ -229,9 +229,9 @@ class TetherAsyncClient:
 
             from google.cloud import apigeeconnect_v1
 
-            def sample_egress():
+            async def sample_egress():
                 # Create a client
-                client = apigeeconnect_v1.TetherClient()
+                client = apigeeconnect_v1.TetherAsyncClient()
 
                 # Initialize request argument(s)
                 request = apigeeconnect_v1.EgressResponse(
@@ -248,10 +248,10 @@ class TetherAsyncClient:
                         yield request
 
                 # Make the request
-                stream = client.egress(requests=request_generator())
+                stream = await client.egress(requests=request_generator())
 
                 # Handle the response
-                for response in stream:
+                async for response in stream:
                     print(response)
 
         Args:

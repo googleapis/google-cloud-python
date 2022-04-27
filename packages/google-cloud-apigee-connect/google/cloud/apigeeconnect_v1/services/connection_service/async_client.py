@@ -221,9 +221,9 @@ class ConnectionServiceAsyncClient:
 
             from google.cloud import apigeeconnect_v1
 
-            def sample_list_connections():
+            async def sample_list_connections():
                 # Create a client
-                client = apigeeconnect_v1.ConnectionServiceClient()
+                client = apigeeconnect_v1.ConnectionServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = apigeeconnect_v1.ListConnectionsRequest(
@@ -234,7 +234,7 @@ class ConnectionServiceAsyncClient:
                 page_result = client.list_connections(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
