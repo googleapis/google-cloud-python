@@ -219,16 +219,16 @@ class SnapshotsV1Beta3AsyncClient:
 
             from google.cloud import dataflow_v1beta3
 
-            def sample_get_snapshot():
+            async def sample_get_snapshot():
                 # Create a client
-                client = dataflow_v1beta3.SnapshotsV1Beta3Client()
+                client = dataflow_v1beta3.SnapshotsV1Beta3AsyncClient()
 
                 # Initialize request argument(s)
                 request = dataflow_v1beta3.GetSnapshotRequest(
                 )
 
                 # Make the request
-                response = client.get_snapshot(request=request)
+                response = await client.get_snapshot(request=request)
 
                 # Handle the response
                 print(response)
@@ -258,6 +258,18 @@ class SnapshotsV1Beta3AsyncClient:
             client_info=DEFAULT_CLIENT_INFO,
         )
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", request.project_id),
+                    ("location", request.location),
+                    ("snapshot_id", request.snapshot_id),
+                )
+            ),
+        )
+
         # Send the request.
         response = await rpc(
             request,
@@ -283,16 +295,16 @@ class SnapshotsV1Beta3AsyncClient:
 
             from google.cloud import dataflow_v1beta3
 
-            def sample_delete_snapshot():
+            async def sample_delete_snapshot():
                 # Create a client
-                client = dataflow_v1beta3.SnapshotsV1Beta3Client()
+                client = dataflow_v1beta3.SnapshotsV1Beta3AsyncClient()
 
                 # Initialize request argument(s)
                 request = dataflow_v1beta3.DeleteSnapshotRequest(
                 )
 
                 # Make the request
-                response = client.delete_snapshot(request=request)
+                response = await client.delete_snapshot(request=request)
 
                 # Handle the response
                 print(response)
@@ -321,6 +333,18 @@ class SnapshotsV1Beta3AsyncClient:
             client_info=DEFAULT_CLIENT_INFO,
         )
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", request.project_id),
+                    ("location", request.location),
+                    ("snapshot_id", request.snapshot_id),
+                )
+            ),
+        )
+
         # Send the request.
         response = await rpc(
             request,
@@ -346,16 +370,16 @@ class SnapshotsV1Beta3AsyncClient:
 
             from google.cloud import dataflow_v1beta3
 
-            def sample_list_snapshots():
+            async def sample_list_snapshots():
                 # Create a client
-                client = dataflow_v1beta3.SnapshotsV1Beta3Client()
+                client = dataflow_v1beta3.SnapshotsV1Beta3AsyncClient()
 
                 # Initialize request argument(s)
                 request = dataflow_v1beta3.ListSnapshotsRequest(
                 )
 
                 # Make the request
-                response = client.list_snapshots(request=request)
+                response = await client.list_snapshots(request=request)
 
                 # Handle the response
                 print(response)
@@ -382,6 +406,18 @@ class SnapshotsV1Beta3AsyncClient:
             self._client._transport.list_snapshots,
             default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", request.project_id),
+                    ("location", request.location),
+                    ("job_id", request.job_id),
+                )
+            ),
         )
 
         # Send the request.

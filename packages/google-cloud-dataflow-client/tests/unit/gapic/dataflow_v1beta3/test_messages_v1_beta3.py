@@ -758,6 +758,75 @@ async def test_list_job_messages_async_from_dict():
     await test_list_job_messages_async(request_type=dict)
 
 
+def test_list_job_messages_field_headers():
+    client = MessagesV1Beta3Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = messages.ListJobMessagesRequest()
+
+    request.project_id = "project_id_value"
+    request.location = "location_value"
+    request.job_id = "job_id_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_job_messages), "__call__"
+    ) as call:
+        call.return_value = messages.ListJobMessagesResponse()
+        client.list_job_messages(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "project_id=project_id_value&location=location_value&job_id=job_id_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_job_messages_field_headers_async():
+    client = MessagesV1Beta3AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = messages.ListJobMessagesRequest()
+
+    request.project_id = "project_id_value"
+    request.location = "location_value"
+    request.job_id = "job_id_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.list_job_messages), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            messages.ListJobMessagesResponse()
+        )
+        await client.list_job_messages(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "project_id=project_id_value&location=location_value&job_id=job_id_value",
+    ) in kw["metadata"]
+
+
 def test_list_job_messages_pager(transport_name: str = "grpc"):
     client = MessagesV1Beta3Client(
         credentials=ga_credentials.AnonymousCredentials,
@@ -798,11 +867,20 @@ def test_list_job_messages_pager(transport_name: str = "grpc"):
         )
 
         metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", ""),
+                    ("location", ""),
+                    ("job_id", ""),
+                )
+            ),
+        )
         pager = client.list_job_messages(request={})
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, messages.JobMessage) for i in results)
 

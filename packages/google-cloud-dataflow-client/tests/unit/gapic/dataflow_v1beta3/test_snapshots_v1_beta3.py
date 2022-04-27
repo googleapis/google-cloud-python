@@ -777,6 +777,69 @@ async def test_get_snapshot_async_from_dict():
     await test_get_snapshot_async(request_type=dict)
 
 
+def test_get_snapshot_field_headers():
+    client = SnapshotsV1Beta3Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = snapshots.GetSnapshotRequest()
+
+    request.project_id = "project_id_value"
+    request.location = "location_value"
+    request.snapshot_id = "snapshot_id_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_snapshot), "__call__") as call:
+        call.return_value = snapshots.Snapshot()
+        client.get_snapshot(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "project_id=project_id_value&location=location_value&snapshot_id=snapshot_id_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_snapshot_field_headers_async():
+    client = SnapshotsV1Beta3AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = snapshots.GetSnapshotRequest()
+
+    request.project_id = "project_id_value"
+    request.location = "location_value"
+    request.snapshot_id = "snapshot_id_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_snapshot), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(snapshots.Snapshot())
+        await client.get_snapshot(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "project_id=project_id_value&location=location_value&snapshot_id=snapshot_id_value",
+    ) in kw["metadata"]
+
+
 @pytest.mark.parametrize(
     "request_type",
     [
@@ -860,6 +923,71 @@ async def test_delete_snapshot_async_from_dict():
     await test_delete_snapshot_async(request_type=dict)
 
 
+def test_delete_snapshot_field_headers():
+    client = SnapshotsV1Beta3Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = snapshots.DeleteSnapshotRequest()
+
+    request.project_id = "project_id_value"
+    request.location = "location_value"
+    request.snapshot_id = "snapshot_id_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_snapshot), "__call__") as call:
+        call.return_value = snapshots.DeleteSnapshotResponse()
+        client.delete_snapshot(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "project_id=project_id_value&location=location_value&snapshot_id=snapshot_id_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_delete_snapshot_field_headers_async():
+    client = SnapshotsV1Beta3AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = snapshots.DeleteSnapshotRequest()
+
+    request.project_id = "project_id_value"
+    request.location = "location_value"
+    request.snapshot_id = "snapshot_id_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.delete_snapshot), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            snapshots.DeleteSnapshotResponse()
+        )
+        await client.delete_snapshot(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "project_id=project_id_value&location=location_value&snapshot_id=snapshot_id_value",
+    ) in kw["metadata"]
+
+
 @pytest.mark.parametrize(
     "request_type",
     [
@@ -941,6 +1069,71 @@ async def test_list_snapshots_async(
 @pytest.mark.asyncio
 async def test_list_snapshots_async_from_dict():
     await test_list_snapshots_async(request_type=dict)
+
+
+def test_list_snapshots_field_headers():
+    client = SnapshotsV1Beta3Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = snapshots.ListSnapshotsRequest()
+
+    request.project_id = "project_id_value"
+    request.location = "location_value"
+    request.job_id = "job_id_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_snapshots), "__call__") as call:
+        call.return_value = snapshots.ListSnapshotsResponse()
+        client.list_snapshots(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "project_id=project_id_value&location=location_value&job_id=job_id_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_snapshots_field_headers_async():
+    client = SnapshotsV1Beta3AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = snapshots.ListSnapshotsRequest()
+
+    request.project_id = "project_id_value"
+    request.location = "location_value"
+    request.job_id = "job_id_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_snapshots), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            snapshots.ListSnapshotsResponse()
+        )
+        await client.list_snapshots(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "project_id=project_id_value&location=location_value&job_id=job_id_value",
+    ) in kw["metadata"]
 
 
 def test_credentials_transport_error():

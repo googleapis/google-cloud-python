@@ -217,16 +217,16 @@ class FlexTemplatesServiceAsyncClient:
 
             from google.cloud import dataflow_v1beta3
 
-            def sample_launch_flex_template():
+            async def sample_launch_flex_template():
                 # Create a client
-                client = dataflow_v1beta3.FlexTemplatesServiceClient()
+                client = dataflow_v1beta3.FlexTemplatesServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dataflow_v1beta3.LaunchFlexTemplateRequest(
                 )
 
                 # Make the request
-                response = client.launch_flex_template(request=request)
+                response = await client.launch_flex_template(request=request)
 
                 # Handle the response
                 print(response)
@@ -256,6 +256,17 @@ class FlexTemplatesServiceAsyncClient:
             self._client._transport.launch_flex_template,
             default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", request.project_id),
+                    ("location", request.location),
+                )
+            ),
         )
 
         # Send the request.

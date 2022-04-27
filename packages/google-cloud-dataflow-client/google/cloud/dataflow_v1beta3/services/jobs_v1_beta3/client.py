@@ -471,6 +471,17 @@ class JobsV1Beta3Client(metaclass=JobsV1Beta3ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.create_job]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", request.project_id),
+                    ("location", request.location),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -543,6 +554,18 @@ class JobsV1Beta3Client(metaclass=JobsV1Beta3ClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.get_job]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", request.project_id),
+                    ("location", request.location),
+                    ("job_id", request.job_id),
+                )
+            ),
+        )
 
         # Send the request.
         response = rpc(
@@ -617,6 +640,18 @@ class JobsV1Beta3Client(metaclass=JobsV1Beta3ClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.update_job]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", request.project_id),
+                    ("location", request.location),
+                    ("job_id", request.job_id),
+                )
+            ),
+        )
 
         # Send the request.
         response = rpc(
@@ -703,6 +738,17 @@ class JobsV1Beta3Client(metaclass=JobsV1Beta3ClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.list_jobs]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", request.project_id),
+                    ("location", request.location),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,
@@ -788,6 +834,14 @@ class JobsV1Beta3Client(metaclass=JobsV1Beta3ClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.aggregated_list_jobs]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("project_id", request.project_id),)
+            ),
+        )
 
         # Send the request.
         response = rpc(
@@ -928,6 +982,18 @@ class JobsV1Beta3Client(metaclass=JobsV1Beta3ClientMeta):
         # Wrap the RPC method; this adds retry and timeout information,
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.snapshot_job]
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", request.project_id),
+                    ("location", request.location),
+                    ("job_id", request.job_id),
+                )
+            ),
+        )
 
         # Send the request.
         response = rpc(

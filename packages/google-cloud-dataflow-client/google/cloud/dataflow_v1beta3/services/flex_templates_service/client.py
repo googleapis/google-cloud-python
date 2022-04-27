@@ -462,6 +462,17 @@ class FlexTemplatesServiceClient(metaclass=FlexTemplatesServiceClientMeta):
         # and friendly error handling.
         rpc = self._transport._wrapped_methods[self._transport.launch_flex_template]
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", request.project_id),
+                    ("location", request.location),
+                )
+            ),
+        )
+
         # Send the request.
         response = rpc(
             request,

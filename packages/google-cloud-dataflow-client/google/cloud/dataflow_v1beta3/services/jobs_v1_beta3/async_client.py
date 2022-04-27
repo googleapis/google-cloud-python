@@ -223,16 +223,16 @@ class JobsV1Beta3AsyncClient:
 
             from google.cloud import dataflow_v1beta3
 
-            def sample_create_job():
+            async def sample_create_job():
                 # Create a client
-                client = dataflow_v1beta3.JobsV1Beta3Client()
+                client = dataflow_v1beta3.JobsV1Beta3AsyncClient()
 
                 # Initialize request argument(s)
                 request = dataflow_v1beta3.CreateJobRequest(
                 )
 
                 # Make the request
-                response = client.create_job(request=request)
+                response = await client.create_job(request=request)
 
                 # Handle the response
                 print(response)
@@ -262,6 +262,17 @@ class JobsV1Beta3AsyncClient:
             self._client._transport.create_job,
             default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", request.project_id),
+                    ("location", request.location),
+                )
+            ),
         )
 
         # Send the request.
@@ -295,16 +306,16 @@ class JobsV1Beta3AsyncClient:
 
             from google.cloud import dataflow_v1beta3
 
-            def sample_get_job():
+            async def sample_get_job():
                 # Create a client
-                client = dataflow_v1beta3.JobsV1Beta3Client()
+                client = dataflow_v1beta3.JobsV1Beta3AsyncClient()
 
                 # Initialize request argument(s)
                 request = dataflow_v1beta3.GetJobRequest(
                 )
 
                 # Make the request
-                response = client.get_job(request=request)
+                response = await client.get_job(request=request)
 
                 # Handle the response
                 print(response)
@@ -334,6 +345,18 @@ class JobsV1Beta3AsyncClient:
             self._client._transport.get_job,
             default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", request.project_id),
+                    ("location", request.location),
+                    ("job_id", request.job_id),
+                )
+            ),
         )
 
         # Send the request.
@@ -368,16 +391,16 @@ class JobsV1Beta3AsyncClient:
 
             from google.cloud import dataflow_v1beta3
 
-            def sample_update_job():
+            async def sample_update_job():
                 # Create a client
-                client = dataflow_v1beta3.JobsV1Beta3Client()
+                client = dataflow_v1beta3.JobsV1Beta3AsyncClient()
 
                 # Initialize request argument(s)
                 request = dataflow_v1beta3.UpdateJobRequest(
                 )
 
                 # Make the request
-                response = client.update_job(request=request)
+                response = await client.update_job(request=request)
 
                 # Handle the response
                 print(response)
@@ -407,6 +430,18 @@ class JobsV1Beta3AsyncClient:
             self._client._transport.update_job,
             default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", request.project_id),
+                    ("location", request.location),
+                    ("job_id", request.job_id),
+                )
+            ),
         )
 
         # Send the request.
@@ -442,9 +477,9 @@ class JobsV1Beta3AsyncClient:
 
             from google.cloud import dataflow_v1beta3
 
-            def sample_list_jobs():
+            async def sample_list_jobs():
                 # Create a client
-                client = dataflow_v1beta3.JobsV1Beta3Client()
+                client = dataflow_v1beta3.JobsV1Beta3AsyncClient()
 
                 # Initialize request argument(s)
                 request = dataflow_v1beta3.ListJobsRequest(
@@ -454,7 +489,7 @@ class JobsV1Beta3AsyncClient:
                 page_result = client.list_jobs(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -493,6 +528,17 @@ class JobsV1Beta3AsyncClient:
             client_info=DEFAULT_CLIENT_INFO,
         )
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", request.project_id),
+                    ("location", request.location),
+                )
+            ),
+        )
+
         # Send the request.
         response = await rpc(
             request,
@@ -527,9 +573,9 @@ class JobsV1Beta3AsyncClient:
 
             from google.cloud import dataflow_v1beta3
 
-            def sample_aggregated_list_jobs():
+            async def sample_aggregated_list_jobs():
                 # Create a client
-                client = dataflow_v1beta3.JobsV1Beta3Client()
+                client = dataflow_v1beta3.JobsV1Beta3AsyncClient()
 
                 # Initialize request argument(s)
                 request = dataflow_v1beta3.ListJobsRequest(
@@ -539,7 +585,7 @@ class JobsV1Beta3AsyncClient:
                 page_result = client.aggregated_list_jobs(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -578,6 +624,14 @@ class JobsV1Beta3AsyncClient:
             client_info=DEFAULT_CLIENT_INFO,
         )
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (("project_id", request.project_id),)
+            ),
+        )
+
         # Send the request.
         response = await rpc(
             request,
@@ -613,16 +667,16 @@ class JobsV1Beta3AsyncClient:
 
             from google.cloud import dataflow_v1beta3
 
-            def sample_check_active_jobs():
+            async def sample_check_active_jobs():
                 # Create a client
-                client = dataflow_v1beta3.JobsV1Beta3Client()
+                client = dataflow_v1beta3.JobsV1Beta3AsyncClient()
 
                 # Initialize request argument(s)
                 request = dataflow_v1beta3.CheckActiveJobsRequest(
                 )
 
                 # Make the request
-                response = client.check_active_jobs(request=request)
+                response = await client.check_active_jobs(request=request)
 
                 # Handle the response
                 print(response)
@@ -677,16 +731,16 @@ class JobsV1Beta3AsyncClient:
 
             from google.cloud import dataflow_v1beta3
 
-            def sample_snapshot_job():
+            async def sample_snapshot_job():
                 # Create a client
-                client = dataflow_v1beta3.JobsV1Beta3Client()
+                client = dataflow_v1beta3.JobsV1Beta3AsyncClient()
 
                 # Initialize request argument(s)
                 request = dataflow_v1beta3.SnapshotJobRequest(
                 )
 
                 # Make the request
-                response = client.snapshot_job(request=request)
+                response = await client.snapshot_job(request=request)
 
                 # Handle the response
                 print(response)
@@ -714,6 +768,18 @@ class JobsV1Beta3AsyncClient:
             self._client._transport.snapshot_job,
             default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", request.project_id),
+                    ("location", request.location),
+                    ("job_id", request.job_id),
+                )
+            ),
         )
 
         # Send the request.

@@ -225,9 +225,9 @@ class MessagesV1Beta3AsyncClient:
 
             from google.cloud import dataflow_v1beta3
 
-            def sample_list_job_messages():
+            async def sample_list_job_messages():
                 # Create a client
-                client = dataflow_v1beta3.MessagesV1Beta3Client()
+                client = dataflow_v1beta3.MessagesV1Beta3AsyncClient()
 
                 # Initialize request argument(s)
                 request = dataflow_v1beta3.ListJobMessagesRequest(
@@ -237,7 +237,7 @@ class MessagesV1Beta3AsyncClient:
                 page_result = client.list_job_messages(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -271,6 +271,18 @@ class MessagesV1Beta3AsyncClient:
             self._client._transport.list_job_messages,
             default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", request.project_id),
+                    ("location", request.location),
+                    ("job_id", request.job_id),
+                )
+            ),
         )
 
         # Send the request.

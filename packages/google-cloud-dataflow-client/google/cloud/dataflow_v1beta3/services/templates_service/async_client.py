@@ -219,9 +219,9 @@ class TemplatesServiceAsyncClient:
 
             from google.cloud import dataflow_v1beta3
 
-            def sample_create_job_from_template():
+            async def sample_create_job_from_template():
                 # Create a client
-                client = dataflow_v1beta3.TemplatesServiceClient()
+                client = dataflow_v1beta3.TemplatesServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dataflow_v1beta3.CreateJobFromTemplateRequest(
@@ -229,7 +229,7 @@ class TemplatesServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_job_from_template(request=request)
+                response = await client.create_job_from_template(request=request)
 
                 # Handle the response
                 print(response)
@@ -261,6 +261,17 @@ class TemplatesServiceAsyncClient:
             client_info=DEFAULT_CLIENT_INFO,
         )
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", request.project_id),
+                    ("location", request.location),
+                )
+            ),
+        )
+
         # Send the request.
         response = await rpc(
             request,
@@ -286,9 +297,9 @@ class TemplatesServiceAsyncClient:
 
             from google.cloud import dataflow_v1beta3
 
-            def sample_launch_template():
+            async def sample_launch_template():
                 # Create a client
-                client = dataflow_v1beta3.TemplatesServiceClient()
+                client = dataflow_v1beta3.TemplatesServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dataflow_v1beta3.LaunchTemplateRequest(
@@ -296,7 +307,7 @@ class TemplatesServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.launch_template(request=request)
+                response = await client.launch_template(request=request)
 
                 # Handle the response
                 print(response)
@@ -327,6 +338,17 @@ class TemplatesServiceAsyncClient:
             client_info=DEFAULT_CLIENT_INFO,
         )
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", request.project_id),
+                    ("location", request.location),
+                )
+            ),
+        )
+
         # Send the request.
         response = await rpc(
             request,
@@ -352,9 +374,9 @@ class TemplatesServiceAsyncClient:
 
             from google.cloud import dataflow_v1beta3
 
-            def sample_get_template():
+            async def sample_get_template():
                 # Create a client
-                client = dataflow_v1beta3.TemplatesServiceClient()
+                client = dataflow_v1beta3.TemplatesServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = dataflow_v1beta3.GetTemplateRequest(
@@ -362,7 +384,7 @@ class TemplatesServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_template(request=request)
+                response = await client.get_template(request=request)
 
                 # Handle the response
                 print(response)
@@ -392,6 +414,17 @@ class TemplatesServiceAsyncClient:
             self._client._transport.get_template,
             default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", request.project_id),
+                    ("location", request.location),
+                )
+            ),
         )
 
         # Send the request.

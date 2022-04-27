@@ -770,6 +770,67 @@ async def test_create_job_async_from_dict():
     await test_create_job_async(request_type=dict)
 
 
+def test_create_job_field_headers():
+    client = JobsV1Beta3Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = jobs.CreateJobRequest()
+
+    request.project_id = "project_id_value"
+    request.location = "location_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_job), "__call__") as call:
+        call.return_value = jobs.Job()
+        client.create_job(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "project_id=project_id_value&location=location_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_create_job_field_headers_async():
+    client = JobsV1Beta3AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = jobs.CreateJobRequest()
+
+    request.project_id = "project_id_value"
+    request.location = "location_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.create_job), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(jobs.Job())
+        await client.create_job(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "project_id=project_id_value&location=location_value",
+    ) in kw["metadata"]
+
+
 @pytest.mark.parametrize(
     "request_type",
     [
@@ -909,6 +970,69 @@ async def test_get_job_async(
 @pytest.mark.asyncio
 async def test_get_job_async_from_dict():
     await test_get_job_async(request_type=dict)
+
+
+def test_get_job_field_headers():
+    client = JobsV1Beta3Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = jobs.GetJobRequest()
+
+    request.project_id = "project_id_value"
+    request.location = "location_value"
+    request.job_id = "job_id_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_job), "__call__") as call:
+        call.return_value = jobs.Job()
+        client.get_job(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "project_id=project_id_value&location=location_value&job_id=job_id_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_job_field_headers_async():
+    client = JobsV1Beta3AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = jobs.GetJobRequest()
+
+    request.project_id = "project_id_value"
+    request.location = "location_value"
+    request.job_id = "job_id_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_job), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(jobs.Job())
+        await client.get_job(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "project_id=project_id_value&location=location_value&job_id=job_id_value",
+    ) in kw["metadata"]
 
 
 @pytest.mark.parametrize(
@@ -1052,6 +1176,69 @@ async def test_update_job_async_from_dict():
     await test_update_job_async(request_type=dict)
 
 
+def test_update_job_field_headers():
+    client = JobsV1Beta3Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = jobs.UpdateJobRequest()
+
+    request.project_id = "project_id_value"
+    request.location = "location_value"
+    request.job_id = "job_id_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_job), "__call__") as call:
+        call.return_value = jobs.Job()
+        client.update_job(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "project_id=project_id_value&location=location_value&job_id=job_id_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_update_job_field_headers_async():
+    client = JobsV1Beta3AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = jobs.UpdateJobRequest()
+
+    request.project_id = "project_id_value"
+    request.location = "location_value"
+    request.job_id = "job_id_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.update_job), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(jobs.Job())
+        await client.update_job(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "project_id=project_id_value&location=location_value&job_id=job_id_value",
+    ) in kw["metadata"]
+
+
 @pytest.mark.parametrize(
     "request_type",
     [
@@ -1141,6 +1328,69 @@ async def test_list_jobs_async_from_dict():
     await test_list_jobs_async(request_type=dict)
 
 
+def test_list_jobs_field_headers():
+    client = JobsV1Beta3Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = jobs.ListJobsRequest()
+
+    request.project_id = "project_id_value"
+    request.location = "location_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_jobs), "__call__") as call:
+        call.return_value = jobs.ListJobsResponse()
+        client.list_jobs(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "project_id=project_id_value&location=location_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_list_jobs_field_headers_async():
+    client = JobsV1Beta3AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = jobs.ListJobsRequest()
+
+    request.project_id = "project_id_value"
+    request.location = "location_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.list_jobs), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            jobs.ListJobsResponse()
+        )
+        await client.list_jobs(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "project_id=project_id_value&location=location_value",
+    ) in kw["metadata"]
+
+
 def test_list_jobs_pager(transport_name: str = "grpc"):
     client = JobsV1Beta3Client(
         credentials=ga_credentials.AnonymousCredentials,
@@ -1179,11 +1429,19 @@ def test_list_jobs_pager(transport_name: str = "grpc"):
         )
 
         metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", ""),
+                    ("location", ""),
+                )
+            ),
+        )
         pager = client.list_jobs(request={})
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, jobs.Job) for i in results)
 
@@ -1421,6 +1679,71 @@ async def test_aggregated_list_jobs_async_from_dict():
     await test_aggregated_list_jobs_async(request_type=dict)
 
 
+def test_aggregated_list_jobs_field_headers():
+    client = JobsV1Beta3Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = jobs.ListJobsRequest()
+
+    request.project_id = "project_id_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.aggregated_list_jobs), "__call__"
+    ) as call:
+        call.return_value = jobs.ListJobsResponse()
+        client.aggregated_list_jobs(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "project_id=project_id_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_aggregated_list_jobs_field_headers_async():
+    client = JobsV1Beta3AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = jobs.ListJobsRequest()
+
+    request.project_id = "project_id_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.aggregated_list_jobs), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            jobs.ListJobsResponse()
+        )
+        await client.aggregated_list_jobs(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "project_id=project_id_value",
+    ) in kw["metadata"]
+
+
 def test_aggregated_list_jobs_pager(transport_name: str = "grpc"):
     client = JobsV1Beta3Client(
         credentials=ga_credentials.AnonymousCredentials,
@@ -1461,11 +1784,14 @@ def test_aggregated_list_jobs_pager(transport_name: str = "grpc"):
         )
 
         metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata((("project_id", ""),)),
+        )
         pager = client.aggregated_list_jobs(request={})
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, jobs.Job) for i in results)
 
@@ -1820,6 +2146,69 @@ async def test_snapshot_job_async(
 @pytest.mark.asyncio
 async def test_snapshot_job_async_from_dict():
     await test_snapshot_job_async(request_type=dict)
+
+
+def test_snapshot_job_field_headers():
+    client = JobsV1Beta3Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = jobs.SnapshotJobRequest()
+
+    request.project_id = "project_id_value"
+    request.location = "location_value"
+    request.job_id = "job_id_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.snapshot_job), "__call__") as call:
+        call.return_value = snapshots.Snapshot()
+        client.snapshot_job(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "project_id=project_id_value&location=location_value&job_id=job_id_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_snapshot_job_field_headers_async():
+    client = JobsV1Beta3AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = jobs.SnapshotJobRequest()
+
+    request.project_id = "project_id_value"
+    request.location = "location_value"
+    request.job_id = "job_id_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.snapshot_job), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(snapshots.Snapshot())
+        await client.snapshot_job(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "project_id=project_id_value&location=location_value&job_id=job_id_value",
+    ) in kw["metadata"]
 
 
 def test_credentials_transport_error():

@@ -734,6 +734,69 @@ async def test_get_job_metrics_async_from_dict():
     await test_get_job_metrics_async(request_type=dict)
 
 
+def test_get_job_metrics_field_headers():
+    client = MetricsV1Beta3Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = metrics.GetJobMetricsRequest()
+
+    request.project_id = "project_id_value"
+    request.location = "location_value"
+    request.job_id = "job_id_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_job_metrics), "__call__") as call:
+        call.return_value = metrics.JobMetrics()
+        client.get_job_metrics(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "project_id=project_id_value&location=location_value&job_id=job_id_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_job_metrics_field_headers_async():
+    client = MetricsV1Beta3AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = metrics.GetJobMetricsRequest()
+
+    request.project_id = "project_id_value"
+    request.location = "location_value"
+    request.job_id = "job_id_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(type(client.transport.get_job_metrics), "__call__") as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(metrics.JobMetrics())
+        await client.get_job_metrics(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "project_id=project_id_value&location=location_value&job_id=job_id_value",
+    ) in kw["metadata"]
+
+
 @pytest.mark.parametrize(
     "request_type",
     [
@@ -829,6 +892,75 @@ async def test_get_job_execution_details_async_from_dict():
     await test_get_job_execution_details_async(request_type=dict)
 
 
+def test_get_job_execution_details_field_headers():
+    client = MetricsV1Beta3Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = metrics.GetJobExecutionDetailsRequest()
+
+    request.project_id = "project_id_value"
+    request.location = "location_value"
+    request.job_id = "job_id_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_job_execution_details), "__call__"
+    ) as call:
+        call.return_value = metrics.JobExecutionDetails()
+        client.get_job_execution_details(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "project_id=project_id_value&location=location_value&job_id=job_id_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_job_execution_details_field_headers_async():
+    client = MetricsV1Beta3AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = metrics.GetJobExecutionDetailsRequest()
+
+    request.project_id = "project_id_value"
+    request.location = "location_value"
+    request.job_id = "job_id_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_job_execution_details), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            metrics.JobExecutionDetails()
+        )
+        await client.get_job_execution_details(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "project_id=project_id_value&location=location_value&job_id=job_id_value",
+    ) in kw["metadata"]
+
+
 def test_get_job_execution_details_pager(transport_name: str = "grpc"):
     client = MetricsV1Beta3Client(
         credentials=ga_credentials.AnonymousCredentials,
@@ -869,11 +1001,20 @@ def test_get_job_execution_details_pager(transport_name: str = "grpc"):
         )
 
         metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", ""),
+                    ("location", ""),
+                    ("job_id", ""),
+                )
+            ),
+        )
         pager = client.get_job_execution_details(request={})
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, metrics.StageSummary) for i in results)
 
@@ -1118,6 +1259,77 @@ async def test_get_stage_execution_details_async_from_dict():
     await test_get_stage_execution_details_async(request_type=dict)
 
 
+def test_get_stage_execution_details_field_headers():
+    client = MetricsV1Beta3Client(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = metrics.GetStageExecutionDetailsRequest()
+
+    request.project_id = "project_id_value"
+    request.location = "location_value"
+    request.job_id = "job_id_value"
+    request.stage_id = "stage_id_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_stage_execution_details), "__call__"
+    ) as call:
+        call.return_value = metrics.StageExecutionDetails()
+        client.get_stage_execution_details(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls) == 1
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "project_id=project_id_value&location=location_value&job_id=job_id_value&stage_id=stage_id_value",
+    ) in kw["metadata"]
+
+
+@pytest.mark.asyncio
+async def test_get_stage_execution_details_field_headers_async():
+    client = MetricsV1Beta3AsyncClient(
+        credentials=ga_credentials.AnonymousCredentials(),
+    )
+
+    # Any value that is part of the HTTP/1.1 URI should be sent as
+    # a field header. Set these to a non-empty value.
+    request = metrics.GetStageExecutionDetailsRequest()
+
+    request.project_id = "project_id_value"
+    request.location = "location_value"
+    request.job_id = "job_id_value"
+    request.stage_id = "stage_id_value"
+
+    # Mock the actual call within the gRPC stub, and fake the request.
+    with mock.patch.object(
+        type(client.transport.get_stage_execution_details), "__call__"
+    ) as call:
+        call.return_value = grpc_helpers_async.FakeUnaryUnaryCall(
+            metrics.StageExecutionDetails()
+        )
+        await client.get_stage_execution_details(request)
+
+        # Establish that the underlying gRPC stub method was called.
+        assert len(call.mock_calls)
+        _, args, _ = call.mock_calls[0]
+        assert args[0] == request
+
+    # Establish that the field header was sent.
+    _, _, kw = call.mock_calls[0]
+    assert (
+        "x-goog-request-params",
+        "project_id=project_id_value&location=location_value&job_id=job_id_value&stage_id=stage_id_value",
+    ) in kw["metadata"]
+
+
 def test_get_stage_execution_details_pager(transport_name: str = "grpc"):
     client = MetricsV1Beta3Client(
         credentials=ga_credentials.AnonymousCredentials,
@@ -1158,11 +1370,21 @@ def test_get_stage_execution_details_pager(transport_name: str = "grpc"):
         )
 
         metadata = ()
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", ""),
+                    ("location", ""),
+                    ("job_id", ""),
+                    ("stage_id", ""),
+                )
+            ),
+        )
         pager = client.get_stage_execution_details(request={})
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, metrics.WorkerDetails) for i in results)
 

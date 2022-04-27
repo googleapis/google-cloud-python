@@ -227,16 +227,16 @@ class MetricsV1Beta3AsyncClient:
 
             from google.cloud import dataflow_v1beta3
 
-            def sample_get_job_metrics():
+            async def sample_get_job_metrics():
                 # Create a client
-                client = dataflow_v1beta3.MetricsV1Beta3Client()
+                client = dataflow_v1beta3.MetricsV1Beta3AsyncClient()
 
                 # Initialize request argument(s)
                 request = dataflow_v1beta3.GetJobMetricsRequest(
                 )
 
                 # Make the request
-                response = client.get_job_metrics(request=request)
+                response = await client.get_job_metrics(request=request)
 
                 # Handle the response
                 print(response)
@@ -276,6 +276,18 @@ class MetricsV1Beta3AsyncClient:
             client_info=DEFAULT_CLIENT_INFO,
         )
 
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", request.project_id),
+                    ("location", request.location),
+                    ("job_id", request.job_id),
+                )
+            ),
+        )
+
         # Send the request.
         response = await rpc(
             request,
@@ -304,9 +316,9 @@ class MetricsV1Beta3AsyncClient:
 
             from google.cloud import dataflow_v1beta3
 
-            def sample_get_job_execution_details():
+            async def sample_get_job_execution_details():
                 # Create a client
-                client = dataflow_v1beta3.MetricsV1Beta3Client()
+                client = dataflow_v1beta3.MetricsV1Beta3AsyncClient()
 
                 # Initialize request argument(s)
                 request = dataflow_v1beta3.GetJobExecutionDetailsRequest(
@@ -316,7 +328,7 @@ class MetricsV1Beta3AsyncClient:
                 page_result = client.get_job_execution_details(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -347,6 +359,18 @@ class MetricsV1Beta3AsyncClient:
             self._client._transport.get_job_execution_details,
             default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", request.project_id),
+                    ("location", request.location),
+                    ("job_id", request.job_id),
+                )
+            ),
         )
 
         # Send the request.
@@ -387,9 +411,9 @@ class MetricsV1Beta3AsyncClient:
 
             from google.cloud import dataflow_v1beta3
 
-            def sample_get_stage_execution_details():
+            async def sample_get_stage_execution_details():
                 # Create a client
-                client = dataflow_v1beta3.MetricsV1Beta3Client()
+                client = dataflow_v1beta3.MetricsV1Beta3AsyncClient()
 
                 # Initialize request argument(s)
                 request = dataflow_v1beta3.GetStageExecutionDetailsRequest(
@@ -399,7 +423,7 @@ class MetricsV1Beta3AsyncClient:
                 page_result = client.get_stage_execution_details(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -431,6 +455,19 @@ class MetricsV1Beta3AsyncClient:
             self._client._transport.get_stage_execution_details,
             default_timeout=None,
             client_info=DEFAULT_CLIENT_INFO,
+        )
+
+        # Certain fields should be provided within the metadata header;
+        # add these here.
+        metadata = tuple(metadata) + (
+            gapic_v1.routing_header.to_grpc_metadata(
+                (
+                    ("project_id", request.project_id),
+                    ("location", request.location),
+                    ("job_id", request.job_id),
+                    ("stage_id", request.stage_id),
+                )
+            ),
         )
 
         # Send the request.
