@@ -240,9 +240,9 @@ class ApiGatewayServiceAsyncClient:
 
             from google.cloud import apigateway_v1
 
-            def sample_list_gateways():
+            async def sample_list_gateways():
                 # Create a client
-                client = apigateway_v1.ApiGatewayServiceClient()
+                client = apigateway_v1.ApiGatewayServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = apigateway_v1.ListGatewaysRequest(
@@ -253,7 +253,7 @@ class ApiGatewayServiceAsyncClient:
                 page_result = client.list_gateways(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -348,9 +348,9 @@ class ApiGatewayServiceAsyncClient:
 
             from google.cloud import apigateway_v1
 
-            def sample_get_gateway():
+            async def sample_get_gateway():
                 # Create a client
-                client = apigateway_v1.ApiGatewayServiceClient()
+                client = apigateway_v1.ApiGatewayServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = apigateway_v1.GetGatewayRequest(
@@ -358,7 +358,7 @@ class ApiGatewayServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_gateway(request=request)
+                response = await client.get_gateway(request=request)
 
                 # Handle the response
                 print(response)
@@ -450,9 +450,9 @@ class ApiGatewayServiceAsyncClient:
 
             from google.cloud import apigateway_v1
 
-            def sample_create_gateway():
+            async def sample_create_gateway():
                 # Create a client
-                client = apigateway_v1.ApiGatewayServiceClient()
+                client = apigateway_v1.ApiGatewayServiceAsyncClient()
 
                 # Initialize request argument(s)
                 gateway = apigateway_v1.Gateway()
@@ -469,7 +469,7 @@ class ApiGatewayServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -594,9 +594,9 @@ class ApiGatewayServiceAsyncClient:
 
             from google.cloud import apigateway_v1
 
-            def sample_update_gateway():
+            async def sample_update_gateway():
                 # Create a client
-                client = apigateway_v1.ApiGatewayServiceClient()
+                client = apigateway_v1.ApiGatewayServiceAsyncClient()
 
                 # Initialize request argument(s)
                 gateway = apigateway_v1.Gateway()
@@ -611,7 +611,7 @@ class ApiGatewayServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -731,9 +731,9 @@ class ApiGatewayServiceAsyncClient:
 
             from google.cloud import apigateway_v1
 
-            def sample_delete_gateway():
+            async def sample_delete_gateway():
                 # Create a client
-                client = apigateway_v1.ApiGatewayServiceClient()
+                client = apigateway_v1.ApiGatewayServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = apigateway_v1.DeleteGatewayRequest(
@@ -745,7 +745,7 @@ class ApiGatewayServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -861,9 +861,9 @@ class ApiGatewayServiceAsyncClient:
 
             from google.cloud import apigateway_v1
 
-            def sample_list_apis():
+            async def sample_list_apis():
                 # Create a client
-                client = apigateway_v1.ApiGatewayServiceClient()
+                client = apigateway_v1.ApiGatewayServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = apigateway_v1.ListApisRequest(
@@ -874,7 +874,7 @@ class ApiGatewayServiceAsyncClient:
                 page_result = client.list_apis(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -969,9 +969,9 @@ class ApiGatewayServiceAsyncClient:
 
             from google.cloud import apigateway_v1
 
-            def sample_get_api():
+            async def sample_get_api():
                 # Create a client
-                client = apigateway_v1.ApiGatewayServiceClient()
+                client = apigateway_v1.ApiGatewayServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = apigateway_v1.GetApiRequest(
@@ -979,7 +979,7 @@ class ApiGatewayServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_api(request=request)
+                response = await client.get_api(request=request)
 
                 # Handle the response
                 print(response)
@@ -1066,9 +1066,9 @@ class ApiGatewayServiceAsyncClient:
 
             from google.cloud import apigateway_v1
 
-            def sample_create_api():
+            async def sample_create_api():
                 # Create a client
-                client = apigateway_v1.ApiGatewayServiceClient()
+                client = apigateway_v1.ApiGatewayServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = apigateway_v1.CreateApiRequest(
@@ -1081,7 +1081,7 @@ class ApiGatewayServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1205,9 +1205,9 @@ class ApiGatewayServiceAsyncClient:
 
             from google.cloud import apigateway_v1
 
-            def sample_update_api():
+            async def sample_update_api():
                 # Create a client
-                client = apigateway_v1.ApiGatewayServiceClient()
+                client = apigateway_v1.ApiGatewayServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = apigateway_v1.UpdateApiRequest(
@@ -1218,7 +1218,7 @@ class ApiGatewayServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1335,9 +1335,9 @@ class ApiGatewayServiceAsyncClient:
 
             from google.cloud import apigateway_v1
 
-            def sample_delete_api():
+            async def sample_delete_api():
                 # Create a client
-                client = apigateway_v1.ApiGatewayServiceClient()
+                client = apigateway_v1.ApiGatewayServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = apigateway_v1.DeleteApiRequest(
@@ -1349,7 +1349,7 @@ class ApiGatewayServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1465,9 +1465,9 @@ class ApiGatewayServiceAsyncClient:
 
             from google.cloud import apigateway_v1
 
-            def sample_list_api_configs():
+            async def sample_list_api_configs():
                 # Create a client
-                client = apigateway_v1.ApiGatewayServiceClient()
+                client = apigateway_v1.ApiGatewayServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = apigateway_v1.ListApiConfigsRequest(
@@ -1478,7 +1478,7 @@ class ApiGatewayServiceAsyncClient:
                 page_result = client.list_api_configs(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1573,9 +1573,9 @@ class ApiGatewayServiceAsyncClient:
 
             from google.cloud import apigateway_v1
 
-            def sample_get_api_config():
+            async def sample_get_api_config():
                 # Create a client
-                client = apigateway_v1.ApiGatewayServiceClient()
+                client = apigateway_v1.ApiGatewayServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = apigateway_v1.GetApiConfigRequest(
@@ -1583,7 +1583,7 @@ class ApiGatewayServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_api_config(request=request)
+                response = await client.get_api_config(request=request)
 
                 # Handle the response
                 print(response)
@@ -1672,9 +1672,9 @@ class ApiGatewayServiceAsyncClient:
 
             from google.cloud import apigateway_v1
 
-            def sample_create_api_config():
+            async def sample_create_api_config():
                 # Create a client
-                client = apigateway_v1.ApiGatewayServiceClient()
+                client = apigateway_v1.ApiGatewayServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = apigateway_v1.CreateApiConfigRequest(
@@ -1687,7 +1687,7 @@ class ApiGatewayServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1810,9 +1810,9 @@ class ApiGatewayServiceAsyncClient:
 
             from google.cloud import apigateway_v1
 
-            def sample_update_api_config():
+            async def sample_update_api_config():
                 # Create a client
-                client = apigateway_v1.ApiGatewayServiceClient()
+                client = apigateway_v1.ApiGatewayServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = apigateway_v1.UpdateApiConfigRequest(
@@ -1823,7 +1823,7 @@ class ApiGatewayServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1941,9 +1941,9 @@ class ApiGatewayServiceAsyncClient:
 
             from google.cloud import apigateway_v1
 
-            def sample_delete_api_config():
+            async def sample_delete_api_config():
                 # Create a client
-                client = apigateway_v1.ApiGatewayServiceClient()
+                client = apigateway_v1.ApiGatewayServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = apigateway_v1.DeleteApiConfigRequest(
@@ -1955,7 +1955,7 @@ class ApiGatewayServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)

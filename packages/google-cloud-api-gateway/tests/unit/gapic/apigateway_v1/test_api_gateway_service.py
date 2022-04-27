@@ -772,7 +772,7 @@ def test_list_gateways_field_headers():
     # a field header. Set these to a non-empty value.
     request = apigateway.ListGatewaysRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_gateways), "__call__") as call:
@@ -788,7 +788,7 @@ def test_list_gateways_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -802,7 +802,7 @@ async def test_list_gateways_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = apigateway.ListGatewaysRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_gateways), "__call__") as call:
@@ -820,7 +820,7 @@ async def test_list_gateways_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -951,7 +951,7 @@ def test_list_gateways_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, apigateway.Gateway) for i in results)
 
@@ -1208,7 +1208,7 @@ def test_get_gateway_field_headers():
     # a field header. Set these to a non-empty value.
     request = apigateway.GetGatewayRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_gateway), "__call__") as call:
@@ -1224,7 +1224,7 @@ def test_get_gateway_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1238,7 +1238,7 @@ async def test_get_gateway_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = apigateway.GetGatewayRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_gateway), "__call__") as call:
@@ -1254,7 +1254,7 @@ async def test_get_gateway_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1430,7 +1430,7 @@ def test_create_gateway_field_headers():
     # a field header. Set these to a non-empty value.
     request = apigateway.CreateGatewayRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_gateway), "__call__") as call:
@@ -1446,7 +1446,7 @@ def test_create_gateway_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1460,7 +1460,7 @@ async def test_create_gateway_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = apigateway.CreateGatewayRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_gateway), "__call__") as call:
@@ -1478,7 +1478,7 @@ async def test_create_gateway_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1676,7 +1676,7 @@ def test_update_gateway_field_headers():
     # a field header. Set these to a non-empty value.
     request = apigateway.UpdateGatewayRequest()
 
-    request.gateway.name = "gateway.name/value"
+    request.gateway.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_gateway), "__call__") as call:
@@ -1692,7 +1692,7 @@ def test_update_gateway_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "gateway.name=gateway.name/value",
+        "gateway.name=name_value",
     ) in kw["metadata"]
 
 
@@ -1706,7 +1706,7 @@ async def test_update_gateway_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = apigateway.UpdateGatewayRequest()
 
-    request.gateway.name = "gateway.name/value"
+    request.gateway.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_gateway), "__call__") as call:
@@ -1724,7 +1724,7 @@ async def test_update_gateway_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "gateway.name=gateway.name/value",
+        "gateway.name=name_value",
     ) in kw["metadata"]
 
 
@@ -1912,7 +1912,7 @@ def test_delete_gateway_field_headers():
     # a field header. Set these to a non-empty value.
     request = apigateway.DeleteGatewayRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_gateway), "__call__") as call:
@@ -1928,7 +1928,7 @@ def test_delete_gateway_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1942,7 +1942,7 @@ async def test_delete_gateway_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = apigateway.DeleteGatewayRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_gateway), "__call__") as call:
@@ -1960,7 +1960,7 @@ async def test_delete_gateway_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2148,7 +2148,7 @@ def test_list_apis_field_headers():
     # a field header. Set these to a non-empty value.
     request = apigateway.ListApisRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_apis), "__call__") as call:
@@ -2164,7 +2164,7 @@ def test_list_apis_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -2178,7 +2178,7 @@ async def test_list_apis_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = apigateway.ListApisRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_apis), "__call__") as call:
@@ -2196,7 +2196,7 @@ async def test_list_apis_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -2327,7 +2327,7 @@ def test_list_apis_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, apigateway.Api) for i in results)
 
@@ -2580,7 +2580,7 @@ def test_get_api_field_headers():
     # a field header. Set these to a non-empty value.
     request = apigateway.GetApiRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_api), "__call__") as call:
@@ -2596,7 +2596,7 @@ def test_get_api_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2610,7 +2610,7 @@ async def test_get_api_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = apigateway.GetApiRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_api), "__call__") as call:
@@ -2626,7 +2626,7 @@ async def test_get_api_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2802,7 +2802,7 @@ def test_create_api_field_headers():
     # a field header. Set these to a non-empty value.
     request = apigateway.CreateApiRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_api), "__call__") as call:
@@ -2818,7 +2818,7 @@ def test_create_api_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -2832,7 +2832,7 @@ async def test_create_api_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = apigateway.CreateApiRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_api), "__call__") as call:
@@ -2850,7 +2850,7 @@ async def test_create_api_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -3048,7 +3048,7 @@ def test_update_api_field_headers():
     # a field header. Set these to a non-empty value.
     request = apigateway.UpdateApiRequest()
 
-    request.api.name = "api.name/value"
+    request.api.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_api), "__call__") as call:
@@ -3064,7 +3064,7 @@ def test_update_api_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "api.name=api.name/value",
+        "api.name=name_value",
     ) in kw["metadata"]
 
 
@@ -3078,7 +3078,7 @@ async def test_update_api_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = apigateway.UpdateApiRequest()
 
-    request.api.name = "api.name/value"
+    request.api.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_api), "__call__") as call:
@@ -3096,7 +3096,7 @@ async def test_update_api_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "api.name=api.name/value",
+        "api.name=name_value",
     ) in kw["metadata"]
 
 
@@ -3284,7 +3284,7 @@ def test_delete_api_field_headers():
     # a field header. Set these to a non-empty value.
     request = apigateway.DeleteApiRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_api), "__call__") as call:
@@ -3300,7 +3300,7 @@ def test_delete_api_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3314,7 +3314,7 @@ async def test_delete_api_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = apigateway.DeleteApiRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_api), "__call__") as call:
@@ -3332,7 +3332,7 @@ async def test_delete_api_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3520,7 +3520,7 @@ def test_list_api_configs_field_headers():
     # a field header. Set these to a non-empty value.
     request = apigateway.ListApiConfigsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_api_configs), "__call__") as call:
@@ -3536,7 +3536,7 @@ def test_list_api_configs_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -3550,7 +3550,7 @@ async def test_list_api_configs_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = apigateway.ListApiConfigsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_api_configs), "__call__") as call:
@@ -3568,7 +3568,7 @@ async def test_list_api_configs_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -3699,7 +3699,7 @@ def test_list_api_configs_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, apigateway.ApiConfig) for i in results)
 
@@ -3956,7 +3956,7 @@ def test_get_api_config_field_headers():
     # a field header. Set these to a non-empty value.
     request = apigateway.GetApiConfigRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_api_config), "__call__") as call:
@@ -3972,7 +3972,7 @@ def test_get_api_config_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3986,7 +3986,7 @@ async def test_get_api_config_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = apigateway.GetApiConfigRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_api_config), "__call__") as call:
@@ -4004,7 +4004,7 @@ async def test_get_api_config_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -4188,7 +4188,7 @@ def test_create_api_config_field_headers():
     # a field header. Set these to a non-empty value.
     request = apigateway.CreateApiConfigRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4206,7 +4206,7 @@ def test_create_api_config_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -4220,7 +4220,7 @@ async def test_create_api_config_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = apigateway.CreateApiConfigRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4240,7 +4240,7 @@ async def test_create_api_config_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -4448,7 +4448,7 @@ def test_update_api_config_field_headers():
     # a field header. Set these to a non-empty value.
     request = apigateway.UpdateApiConfigRequest()
 
-    request.api_config.name = "api_config.name/value"
+    request.api_config.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4466,7 +4466,7 @@ def test_update_api_config_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "api_config.name=api_config.name/value",
+        "api_config.name=name_value",
     ) in kw["metadata"]
 
 
@@ -4480,7 +4480,7 @@ async def test_update_api_config_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = apigateway.UpdateApiConfigRequest()
 
-    request.api_config.name = "api_config.name/value"
+    request.api_config.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4500,7 +4500,7 @@ async def test_update_api_config_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "api_config.name=api_config.name/value",
+        "api_config.name=name_value",
     ) in kw["metadata"]
 
 
@@ -4698,7 +4698,7 @@ def test_delete_api_config_field_headers():
     # a field header. Set these to a non-empty value.
     request = apigateway.DeleteApiConfigRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4716,7 +4716,7 @@ def test_delete_api_config_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -4730,7 +4730,7 @@ async def test_delete_api_config_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = apigateway.DeleteApiConfigRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4750,7 +4750,7 @@ async def test_delete_api_config_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
