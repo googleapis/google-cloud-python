@@ -19,6 +19,25 @@ import synthtool as s
 from synthtool import gcp
 from synthtool.languages import python
 
+default_version = "v2"
+
+for library in s.get_staging_dirs(default_version):
+    # Avoid breaking change due to change in field renames.
+    # https://github.com/googleapis/python-bigquery/issues/319
+    s.replace(
+        library / f"google/cloud/bigquery_{library.name}/types/standard_sql.py",
+        r"type_ ",
+        "type ",
+    )
+    # Patch docs issue
+    s.replace(
+        library / f"google/cloud/bigquery_{library.name}/types/model.py",
+        r"""\"predicted_\"""",
+        """`predicted_`""",
+    )
+    s.move(library / f"google/cloud/bigquery_{library.name}/types")
+s.remove_staging_dirs()
+
 common = gcp.CommonTemplates()
 
 # ----------------------------------------------------------------------------

@@ -55,7 +55,7 @@ class Model(proto.Message):
             model.
         friendly_name (str):
             Optional. A descriptive name for this model.
-        labels (Sequence[google.cloud.bigquery_v2.types.Model.LabelsEntry]):
+        labels (Mapping[str, str]):
             The labels associated with this model. You
             can use these to organize and group your models.
             Label keys and values can be no longer than 63
@@ -1200,7 +1200,7 @@ class Model(proto.Message):
                 initial_learn_rate (float):
                     Specifies the initial learning rate for the
                     line search learn rate strategy.
-                label_class_weights (Sequence[google.cloud.bigquery_v2.types.Model.TrainingRun.TrainingOptions.LabelClassWeightsEntry]):
+                label_class_weights (Mapping[str, float]):
                     Weights associated with each label class, for
                     rebalancing the training data. Only applicable
                     for classification models.
