@@ -238,9 +238,9 @@ class LivestreamServiceAsyncClient:
 
             from google.cloud.video import live_stream_v1
 
-            def sample_create_channel():
+            async def sample_create_channel():
                 # Create a client
-                client = live_stream_v1.LivestreamServiceClient()
+                client = live_stream_v1.LivestreamServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = live_stream_v1.CreateChannelRequest(
@@ -253,7 +253,7 @@ class LivestreamServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -372,9 +372,9 @@ class LivestreamServiceAsyncClient:
 
             from google.cloud.video import live_stream_v1
 
-            def sample_list_channels():
+            async def sample_list_channels():
                 # Create a client
-                client = live_stream_v1.LivestreamServiceClient()
+                client = live_stream_v1.LivestreamServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = live_stream_v1.ListChannelsRequest(
@@ -385,7 +385,7 @@ class LivestreamServiceAsyncClient:
                 page_result = client.list_channels(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -489,9 +489,9 @@ class LivestreamServiceAsyncClient:
 
             from google.cloud.video import live_stream_v1
 
-            def sample_get_channel():
+            async def sample_get_channel():
                 # Create a client
-                client = live_stream_v1.LivestreamServiceClient()
+                client = live_stream_v1.LivestreamServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = live_stream_v1.GetChannelRequest(
@@ -499,7 +499,7 @@ class LivestreamServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_channel(request=request)
+                response = await client.get_channel(request=request)
 
                 # Handle the response
                 print(response)
@@ -600,9 +600,9 @@ class LivestreamServiceAsyncClient:
 
             from google.cloud.video import live_stream_v1
 
-            def sample_delete_channel():
+            async def sample_delete_channel():
                 # Create a client
-                client = live_stream_v1.LivestreamServiceClient()
+                client = live_stream_v1.LivestreamServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = live_stream_v1.DeleteChannelRequest(
@@ -614,7 +614,7 @@ class LivestreamServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -722,9 +722,9 @@ class LivestreamServiceAsyncClient:
 
             from google.cloud.video import live_stream_v1
 
-            def sample_update_channel():
+            async def sample_update_channel():
                 # Create a client
-                client = live_stream_v1.LivestreamServiceClient()
+                client = live_stream_v1.LivestreamServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = live_stream_v1.UpdateChannelRequest(
@@ -735,7 +735,7 @@ class LivestreamServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -859,9 +859,9 @@ class LivestreamServiceAsyncClient:
 
             from google.cloud.video import live_stream_v1
 
-            def sample_start_channel():
+            async def sample_start_channel():
                 # Create a client
-                client = live_stream_v1.LivestreamServiceClient()
+                client = live_stream_v1.LivestreamServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = live_stream_v1.StartChannelRequest(
@@ -873,7 +873,7 @@ class LivestreamServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -973,9 +973,9 @@ class LivestreamServiceAsyncClient:
 
             from google.cloud.video import live_stream_v1
 
-            def sample_stop_channel():
+            async def sample_stop_channel():
                 # Create a client
-                client = live_stream_v1.LivestreamServiceClient()
+                client = live_stream_v1.LivestreamServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = live_stream_v1.StopChannelRequest(
@@ -987,7 +987,7 @@ class LivestreamServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1088,9 +1088,9 @@ class LivestreamServiceAsyncClient:
 
             from google.cloud.video import live_stream_v1
 
-            def sample_create_input():
+            async def sample_create_input():
                 # Create a client
-                client = live_stream_v1.LivestreamServiceClient()
+                client = live_stream_v1.LivestreamServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = live_stream_v1.CreateInputRequest(
@@ -1103,7 +1103,7 @@ class LivestreamServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1217,9 +1217,9 @@ class LivestreamServiceAsyncClient:
 
             from google.cloud.video import live_stream_v1
 
-            def sample_list_inputs():
+            async def sample_list_inputs():
                 # Create a client
-                client = live_stream_v1.LivestreamServiceClient()
+                client = live_stream_v1.LivestreamServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = live_stream_v1.ListInputsRequest(
@@ -1230,7 +1230,7 @@ class LivestreamServiceAsyncClient:
                 page_result = client.list_inputs(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1334,9 +1334,9 @@ class LivestreamServiceAsyncClient:
 
             from google.cloud.video import live_stream_v1
 
-            def sample_get_input():
+            async def sample_get_input():
                 # Create a client
-                client = live_stream_v1.LivestreamServiceClient()
+                client = live_stream_v1.LivestreamServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = live_stream_v1.GetInputRequest(
@@ -1344,7 +1344,7 @@ class LivestreamServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_input(request=request)
+                response = await client.get_input(request=request)
 
                 # Handle the response
                 print(response)
@@ -1440,9 +1440,9 @@ class LivestreamServiceAsyncClient:
 
             from google.cloud.video import live_stream_v1
 
-            def sample_delete_input():
+            async def sample_delete_input():
                 # Create a client
-                client = live_stream_v1.LivestreamServiceClient()
+                client = live_stream_v1.LivestreamServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = live_stream_v1.DeleteInputRequest(
@@ -1454,7 +1454,7 @@ class LivestreamServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1562,9 +1562,9 @@ class LivestreamServiceAsyncClient:
 
             from google.cloud.video import live_stream_v1
 
-            def sample_update_input():
+            async def sample_update_input():
                 # Create a client
-                client = live_stream_v1.LivestreamServiceClient()
+                client = live_stream_v1.LivestreamServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = live_stream_v1.UpdateInputRequest(
@@ -1575,7 +1575,7 @@ class LivestreamServiceAsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
@@ -1692,9 +1692,9 @@ class LivestreamServiceAsyncClient:
 
             from google.cloud.video import live_stream_v1
 
-            def sample_create_event():
+            async def sample_create_event():
                 # Create a client
-                client = live_stream_v1.LivestreamServiceClient()
+                client = live_stream_v1.LivestreamServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = live_stream_v1.CreateEventRequest(
@@ -1703,7 +1703,7 @@ class LivestreamServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_event(request=request)
+                response = await client.create_event(request=request)
 
                 # Handle the response
                 print(response)
@@ -1811,9 +1811,9 @@ class LivestreamServiceAsyncClient:
 
             from google.cloud.video import live_stream_v1
 
-            def sample_list_events():
+            async def sample_list_events():
                 # Create a client
-                client = live_stream_v1.LivestreamServiceClient()
+                client = live_stream_v1.LivestreamServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = live_stream_v1.ListEventsRequest(
@@ -1824,7 +1824,7 @@ class LivestreamServiceAsyncClient:
                 page_result = client.list_events(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1929,9 +1929,9 @@ class LivestreamServiceAsyncClient:
 
             from google.cloud.video import live_stream_v1
 
-            def sample_get_event():
+            async def sample_get_event():
                 # Create a client
-                client = live_stream_v1.LivestreamServiceClient()
+                client = live_stream_v1.LivestreamServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = live_stream_v1.GetEventRequest(
@@ -1939,7 +1939,7 @@ class LivestreamServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_event(request=request)
+                response = await client.get_event(request=request)
 
                 # Handle the response
                 print(response)
@@ -2036,9 +2036,9 @@ class LivestreamServiceAsyncClient:
 
             from google.cloud.video import live_stream_v1
 
-            def sample_delete_event():
+            async def sample_delete_event():
                 # Create a client
-                client = live_stream_v1.LivestreamServiceClient()
+                client = live_stream_v1.LivestreamServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = live_stream_v1.DeleteEventRequest(
@@ -2046,7 +2046,7 @@ class LivestreamServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_event(request=request)
+                await client.delete_event(request=request)
 
         Args:
             request (Union[google.cloud.video.live_stream_v1.types.DeleteEventRequest, dict]):
