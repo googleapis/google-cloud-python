@@ -251,9 +251,9 @@ class BinauthzManagementServiceV1AsyncClient:
 
             from google.cloud import binaryauthorization_v1
 
-            def sample_get_policy():
+            async def sample_get_policy():
                 # Create a client
-                client = binaryauthorization_v1.BinauthzManagementServiceV1Client()
+                client = binaryauthorization_v1.BinauthzManagementServiceV1AsyncClient()
 
                 # Initialize request argument(s)
                 request = binaryauthorization_v1.GetPolicyRequest(
@@ -261,7 +261,7 @@ class BinauthzManagementServiceV1AsyncClient:
                 )
 
                 # Make the request
-                response = client.get_policy(request=request)
+                response = await client.get_policy(request=request)
 
                 # Handle the response
                 print(response)
@@ -364,9 +364,9 @@ class BinauthzManagementServiceV1AsyncClient:
 
             from google.cloud import binaryauthorization_v1
 
-            def sample_update_policy():
+            async def sample_update_policy():
                 # Create a client
-                client = binaryauthorization_v1.BinauthzManagementServiceV1Client()
+                client = binaryauthorization_v1.BinauthzManagementServiceV1AsyncClient()
 
                 # Initialize request argument(s)
                 policy = binaryauthorization_v1.Policy()
@@ -378,7 +378,7 @@ class BinauthzManagementServiceV1AsyncClient:
                 )
 
                 # Make the request
-                response = client.update_policy(request=request)
+                response = await client.update_policy(request=request)
 
                 # Handle the response
                 print(response)
@@ -488,9 +488,9 @@ class BinauthzManagementServiceV1AsyncClient:
 
             from google.cloud import binaryauthorization_v1
 
-            def sample_create_attestor():
+            async def sample_create_attestor():
                 # Create a client
-                client = binaryauthorization_v1.BinauthzManagementServiceV1Client()
+                client = binaryauthorization_v1.BinauthzManagementServiceV1AsyncClient()
 
                 # Initialize request argument(s)
                 attestor = binaryauthorization_v1.Attestor()
@@ -504,7 +504,7 @@ class BinauthzManagementServiceV1AsyncClient:
                 )
 
                 # Make the request
-                response = client.create_attestor(request=request)
+                response = await client.create_attestor(request=request)
 
                 # Handle the response
                 print(response)
@@ -617,9 +617,9 @@ class BinauthzManagementServiceV1AsyncClient:
 
             from google.cloud import binaryauthorization_v1
 
-            def sample_get_attestor():
+            async def sample_get_attestor():
                 # Create a client
-                client = binaryauthorization_v1.BinauthzManagementServiceV1Client()
+                client = binaryauthorization_v1.BinauthzManagementServiceV1AsyncClient()
 
                 # Initialize request argument(s)
                 request = binaryauthorization_v1.GetAttestorRequest(
@@ -627,7 +627,7 @@ class BinauthzManagementServiceV1AsyncClient:
                 )
 
                 # Make the request
-                response = client.get_attestor(request=request)
+                response = await client.get_attestor(request=request)
 
                 # Handle the response
                 print(response)
@@ -728,9 +728,9 @@ class BinauthzManagementServiceV1AsyncClient:
 
             from google.cloud import binaryauthorization_v1
 
-            def sample_update_attestor():
+            async def sample_update_attestor():
                 # Create a client
-                client = binaryauthorization_v1.BinauthzManagementServiceV1Client()
+                client = binaryauthorization_v1.BinauthzManagementServiceV1AsyncClient()
 
                 # Initialize request argument(s)
                 attestor = binaryauthorization_v1.Attestor()
@@ -742,7 +742,7 @@ class BinauthzManagementServiceV1AsyncClient:
                 )
 
                 # Make the request
-                response = client.update_attestor(request=request)
+                response = await client.update_attestor(request=request)
 
                 # Handle the response
                 print(response)
@@ -845,9 +845,9 @@ class BinauthzManagementServiceV1AsyncClient:
 
             from google.cloud import binaryauthorization_v1
 
-            def sample_list_attestors():
+            async def sample_list_attestors():
                 # Create a client
-                client = binaryauthorization_v1.BinauthzManagementServiceV1Client()
+                client = binaryauthorization_v1.BinauthzManagementServiceV1AsyncClient()
 
                 # Initialize request argument(s)
                 request = binaryauthorization_v1.ListAttestorsRequest(
@@ -858,7 +858,7 @@ class BinauthzManagementServiceV1AsyncClient:
                 page_result = client.list_attestors(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -969,9 +969,9 @@ class BinauthzManagementServiceV1AsyncClient:
 
             from google.cloud import binaryauthorization_v1
 
-            def sample_delete_attestor():
+            async def sample_delete_attestor():
                 # Create a client
-                client = binaryauthorization_v1.BinauthzManagementServiceV1Client()
+                client = binaryauthorization_v1.BinauthzManagementServiceV1AsyncClient()
 
                 # Initialize request argument(s)
                 request = binaryauthorization_v1.DeleteAttestorRequest(
@@ -979,7 +979,7 @@ class BinauthzManagementServiceV1AsyncClient:
                 )
 
                 # Make the request
-                client.delete_attestor(request=request)
+                await client.delete_attestor(request=request)
 
         Args:
             request (Union[google.cloud.binaryauthorization_v1.types.DeleteAttestorRequest, dict]):

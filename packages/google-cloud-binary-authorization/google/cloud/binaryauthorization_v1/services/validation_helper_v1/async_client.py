@@ -215,9 +215,9 @@ class ValidationHelperV1AsyncClient:
 
             from google.cloud import binaryauthorization_v1
 
-            def sample_validate_attestation_occurrence():
+            async def sample_validate_attestation_occurrence():
                 # Create a client
-                client = binaryauthorization_v1.ValidationHelperV1Client()
+                client = binaryauthorization_v1.ValidationHelperV1AsyncClient()
 
                 # Initialize request argument(s)
                 request = binaryauthorization_v1.ValidateAttestationOccurrenceRequest(
@@ -227,7 +227,7 @@ class ValidationHelperV1AsyncClient:
                 )
 
                 # Make the request
-                response = client.validate_attestation_occurrence(request=request)
+                response = await client.validate_attestation_occurrence(request=request)
 
                 # Handle the response
                 print(response)

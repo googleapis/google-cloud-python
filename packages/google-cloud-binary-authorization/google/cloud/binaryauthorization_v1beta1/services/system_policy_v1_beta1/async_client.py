@@ -220,9 +220,9 @@ class SystemPolicyV1Beta1AsyncClient:
 
             from google.cloud import binaryauthorization_v1beta1
 
-            def sample_get_system_policy():
+            async def sample_get_system_policy():
                 # Create a client
-                client = binaryauthorization_v1beta1.SystemPolicyV1Beta1Client()
+                client = binaryauthorization_v1beta1.SystemPolicyV1Beta1AsyncClient()
 
                 # Initialize request argument(s)
                 request = binaryauthorization_v1beta1.GetSystemPolicyRequest(
@@ -230,7 +230,7 @@ class SystemPolicyV1Beta1AsyncClient:
                 )
 
                 # Make the request
-                response = client.get_system_policy(request=request)
+                response = await client.get_system_policy(request=request)
 
                 # Handle the response
                 print(response)
