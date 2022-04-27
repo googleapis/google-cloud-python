@@ -235,9 +235,9 @@ class ConfigServiceV2AsyncClient:
 
             from google.cloud import logging_v2
 
-            def sample_list_buckets():
+            async def sample_list_buckets():
                 # Create a client
-                client = logging_v2.ConfigServiceV2Client()
+                client = logging_v2.ConfigServiceV2AsyncClient()
 
                 # Initialize request argument(s)
                 request = logging_v2.ListBucketsRequest(
@@ -248,7 +248,7 @@ class ConfigServiceV2AsyncClient:
                 page_result = client.list_buckets(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -351,9 +351,9 @@ class ConfigServiceV2AsyncClient:
 
             from google.cloud import logging_v2
 
-            def sample_get_bucket():
+            async def sample_get_bucket():
                 # Create a client
-                client = logging_v2.ConfigServiceV2Client()
+                client = logging_v2.ConfigServiceV2AsyncClient()
 
                 # Initialize request argument(s)
                 request = logging_v2.GetBucketRequest(
@@ -361,7 +361,7 @@ class ConfigServiceV2AsyncClient:
                 )
 
                 # Make the request
-                response = client.get_bucket(request=request)
+                response = await client.get_bucket(request=request)
 
                 # Handle the response
                 print(response)
@@ -425,9 +425,9 @@ class ConfigServiceV2AsyncClient:
 
             from google.cloud import logging_v2
 
-            def sample_create_bucket():
+            async def sample_create_bucket():
                 # Create a client
-                client = logging_v2.ConfigServiceV2Client()
+                client = logging_v2.ConfigServiceV2AsyncClient()
 
                 # Initialize request argument(s)
                 request = logging_v2.CreateBucketRequest(
@@ -436,7 +436,7 @@ class ConfigServiceV2AsyncClient:
                 )
 
                 # Make the request
-                response = client.create_bucket(request=request)
+                response = await client.create_bucket(request=request)
 
                 # Handle the response
                 print(response)
@@ -509,9 +509,9 @@ class ConfigServiceV2AsyncClient:
 
             from google.cloud import logging_v2
 
-            def sample_update_bucket():
+            async def sample_update_bucket():
                 # Create a client
-                client = logging_v2.ConfigServiceV2Client()
+                client = logging_v2.ConfigServiceV2AsyncClient()
 
                 # Initialize request argument(s)
                 request = logging_v2.UpdateBucketRequest(
@@ -519,7 +519,7 @@ class ConfigServiceV2AsyncClient:
                 )
 
                 # Make the request
-                response = client.update_bucket(request=request)
+                response = await client.update_bucket(request=request)
 
                 # Handle the response
                 print(response)
@@ -586,9 +586,9 @@ class ConfigServiceV2AsyncClient:
 
             from google.cloud import logging_v2
 
-            def sample_delete_bucket():
+            async def sample_delete_bucket():
                 # Create a client
-                client = logging_v2.ConfigServiceV2Client()
+                client = logging_v2.ConfigServiceV2AsyncClient()
 
                 # Initialize request argument(s)
                 request = logging_v2.DeleteBucketRequest(
@@ -596,7 +596,7 @@ class ConfigServiceV2AsyncClient:
                 )
 
                 # Make the request
-                client.delete_bucket(request=request)
+                await client.delete_bucket(request=request)
 
         Args:
             request (Union[google.cloud.logging_v2.types.DeleteBucketRequest, dict]):
@@ -648,9 +648,9 @@ class ConfigServiceV2AsyncClient:
 
             from google.cloud import logging_v2
 
-            def sample_undelete_bucket():
+            async def sample_undelete_bucket():
                 # Create a client
-                client = logging_v2.ConfigServiceV2Client()
+                client = logging_v2.ConfigServiceV2AsyncClient()
 
                 # Initialize request argument(s)
                 request = logging_v2.UndeleteBucketRequest(
@@ -658,7 +658,7 @@ class ConfigServiceV2AsyncClient:
                 )
 
                 # Make the request
-                client.undelete_bucket(request=request)
+                await client.undelete_bucket(request=request)
 
         Args:
             request (Union[google.cloud.logging_v2.types.UndeleteBucketRequest, dict]):
@@ -709,9 +709,9 @@ class ConfigServiceV2AsyncClient:
 
             from google.cloud import logging_v2
 
-            def sample_list_views():
+            async def sample_list_views():
                 # Create a client
-                client = logging_v2.ConfigServiceV2Client()
+                client = logging_v2.ConfigServiceV2AsyncClient()
 
                 # Initialize request argument(s)
                 request = logging_v2.ListViewsRequest(
@@ -722,7 +722,7 @@ class ConfigServiceV2AsyncClient:
                 page_result = client.list_views(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -817,9 +817,9 @@ class ConfigServiceV2AsyncClient:
 
             from google.cloud import logging_v2
 
-            def sample_get_view():
+            async def sample_get_view():
                 # Create a client
-                client = logging_v2.ConfigServiceV2Client()
+                client = logging_v2.ConfigServiceV2AsyncClient()
 
                 # Initialize request argument(s)
                 request = logging_v2.GetViewRequest(
@@ -827,7 +827,7 @@ class ConfigServiceV2AsyncClient:
                 )
 
                 # Make the request
-                response = client.get_view(request=request)
+                response = await client.get_view(request=request)
 
                 # Handle the response
                 print(response)
@@ -890,9 +890,9 @@ class ConfigServiceV2AsyncClient:
 
             from google.cloud import logging_v2
 
-            def sample_create_view():
+            async def sample_create_view():
                 # Create a client
-                client = logging_v2.ConfigServiceV2Client()
+                client = logging_v2.ConfigServiceV2AsyncClient()
 
                 # Initialize request argument(s)
                 request = logging_v2.CreateViewRequest(
@@ -901,7 +901,7 @@ class ConfigServiceV2AsyncClient:
                 )
 
                 # Make the request
-                response = client.create_view(request=request)
+                response = await client.create_view(request=request)
 
                 # Handle the response
                 print(response)
@@ -967,9 +967,9 @@ class ConfigServiceV2AsyncClient:
 
             from google.cloud import logging_v2
 
-            def sample_update_view():
+            async def sample_update_view():
                 # Create a client
-                client = logging_v2.ConfigServiceV2Client()
+                client = logging_v2.ConfigServiceV2AsyncClient()
 
                 # Initialize request argument(s)
                 request = logging_v2.UpdateViewRequest(
@@ -977,7 +977,7 @@ class ConfigServiceV2AsyncClient:
                 )
 
                 # Make the request
-                response = client.update_view(request=request)
+                response = await client.update_view(request=request)
 
                 # Handle the response
                 print(response)
@@ -1042,9 +1042,9 @@ class ConfigServiceV2AsyncClient:
 
             from google.cloud import logging_v2
 
-            def sample_delete_view():
+            async def sample_delete_view():
                 # Create a client
-                client = logging_v2.ConfigServiceV2Client()
+                client = logging_v2.ConfigServiceV2AsyncClient()
 
                 # Initialize request argument(s)
                 request = logging_v2.DeleteViewRequest(
@@ -1052,7 +1052,7 @@ class ConfigServiceV2AsyncClient:
                 )
 
                 # Make the request
-                client.delete_view(request=request)
+                await client.delete_view(request=request)
 
         Args:
             request (Union[google.cloud.logging_v2.types.DeleteViewRequest, dict]):
@@ -1103,9 +1103,9 @@ class ConfigServiceV2AsyncClient:
 
             from google.cloud import logging_v2
 
-            def sample_list_sinks():
+            async def sample_list_sinks():
                 # Create a client
-                client = logging_v2.ConfigServiceV2Client()
+                client = logging_v2.ConfigServiceV2AsyncClient()
 
                 # Initialize request argument(s)
                 request = logging_v2.ListSinksRequest(
@@ -1116,7 +1116,7 @@ class ConfigServiceV2AsyncClient:
                 page_result = client.list_sinks(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1227,9 +1227,9 @@ class ConfigServiceV2AsyncClient:
 
             from google.cloud import logging_v2
 
-            def sample_get_sink():
+            async def sample_get_sink():
                 # Create a client
-                client = logging_v2.ConfigServiceV2Client()
+                client = logging_v2.ConfigServiceV2AsyncClient()
 
                 # Initialize request argument(s)
                 request = logging_v2.GetSinkRequest(
@@ -1237,7 +1237,7 @@ class ConfigServiceV2AsyncClient:
                 )
 
                 # Make the request
-                response = client.get_sink(request=request)
+                response = await client.get_sink(request=request)
 
                 # Handle the response
                 print(response)
@@ -1356,9 +1356,9 @@ class ConfigServiceV2AsyncClient:
 
             from google.cloud import logging_v2
 
-            def sample_create_sink():
+            async def sample_create_sink():
                 # Create a client
-                client = logging_v2.ConfigServiceV2Client()
+                client = logging_v2.ConfigServiceV2AsyncClient()
 
                 # Initialize request argument(s)
                 sink = logging_v2.LogSink()
@@ -1371,7 +1371,7 @@ class ConfigServiceV2AsyncClient:
                 )
 
                 # Make the request
-                response = client.create_sink(request=request)
+                response = await client.create_sink(request=request)
 
                 # Handle the response
                 print(response)
@@ -1488,9 +1488,9 @@ class ConfigServiceV2AsyncClient:
 
             from google.cloud import logging_v2
 
-            def sample_update_sink():
+            async def sample_update_sink():
                 # Create a client
-                client = logging_v2.ConfigServiceV2Client()
+                client = logging_v2.ConfigServiceV2AsyncClient()
 
                 # Initialize request argument(s)
                 sink = logging_v2.LogSink()
@@ -1503,7 +1503,7 @@ class ConfigServiceV2AsyncClient:
                 )
 
                 # Make the request
-                response = client.update_sink(request=request)
+                response = await client.update_sink(request=request)
 
                 # Handle the response
                 print(response)
@@ -1652,9 +1652,9 @@ class ConfigServiceV2AsyncClient:
 
             from google.cloud import logging_v2
 
-            def sample_delete_sink():
+            async def sample_delete_sink():
                 # Create a client
-                client = logging_v2.ConfigServiceV2Client()
+                client = logging_v2.ConfigServiceV2AsyncClient()
 
                 # Initialize request argument(s)
                 request = logging_v2.DeleteSinkRequest(
@@ -1662,7 +1662,7 @@ class ConfigServiceV2AsyncClient:
                 )
 
                 # Make the request
-                client.delete_sink(request=request)
+                await client.delete_sink(request=request)
 
         Args:
             request (Union[google.cloud.logging_v2.types.DeleteSinkRequest, dict]):
@@ -1759,9 +1759,9 @@ class ConfigServiceV2AsyncClient:
 
             from google.cloud import logging_v2
 
-            def sample_list_exclusions():
+            async def sample_list_exclusions():
                 # Create a client
-                client = logging_v2.ConfigServiceV2Client()
+                client = logging_v2.ConfigServiceV2AsyncClient()
 
                 # Initialize request argument(s)
                 request = logging_v2.ListExclusionsRequest(
@@ -1772,7 +1772,7 @@ class ConfigServiceV2AsyncClient:
                 page_result = client.list_exclusions(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1883,9 +1883,9 @@ class ConfigServiceV2AsyncClient:
 
             from google.cloud import logging_v2
 
-            def sample_get_exclusion():
+            async def sample_get_exclusion():
                 # Create a client
-                client = logging_v2.ConfigServiceV2Client()
+                client = logging_v2.ConfigServiceV2AsyncClient()
 
                 # Initialize request argument(s)
                 request = logging_v2.GetExclusionRequest(
@@ -1893,7 +1893,7 @@ class ConfigServiceV2AsyncClient:
                 )
 
                 # Make the request
-                response = client.get_exclusion(request=request)
+                response = await client.get_exclusion(request=request)
 
                 # Handle the response
                 print(response)
@@ -2006,9 +2006,9 @@ class ConfigServiceV2AsyncClient:
 
             from google.cloud import logging_v2
 
-            def sample_create_exclusion():
+            async def sample_create_exclusion():
                 # Create a client
-                client = logging_v2.ConfigServiceV2Client()
+                client = logging_v2.ConfigServiceV2AsyncClient()
 
                 # Initialize request argument(s)
                 exclusion = logging_v2.LogExclusion()
@@ -2021,7 +2021,7 @@ class ConfigServiceV2AsyncClient:
                 )
 
                 # Make the request
-                response = client.create_exclusion(request=request)
+                response = await client.create_exclusion(request=request)
 
                 # Handle the response
                 print(response)
@@ -2135,9 +2135,9 @@ class ConfigServiceV2AsyncClient:
 
             from google.cloud import logging_v2
 
-            def sample_update_exclusion():
+            async def sample_update_exclusion():
                 # Create a client
-                client = logging_v2.ConfigServiceV2Client()
+                client = logging_v2.ConfigServiceV2AsyncClient()
 
                 # Initialize request argument(s)
                 exclusion = logging_v2.LogExclusion()
@@ -2150,7 +2150,7 @@ class ConfigServiceV2AsyncClient:
                 )
 
                 # Make the request
-                response = client.update_exclusion(request=request)
+                response = await client.update_exclusion(request=request)
 
                 # Handle the response
                 print(response)
@@ -2275,9 +2275,9 @@ class ConfigServiceV2AsyncClient:
 
             from google.cloud import logging_v2
 
-            def sample_delete_exclusion():
+            async def sample_delete_exclusion():
                 # Create a client
-                client = logging_v2.ConfigServiceV2Client()
+                client = logging_v2.ConfigServiceV2AsyncClient()
 
                 # Initialize request argument(s)
                 request = logging_v2.DeleteExclusionRequest(
@@ -2285,7 +2285,7 @@ class ConfigServiceV2AsyncClient:
                 )
 
                 # Make the request
-                client.delete_exclusion(request=request)
+                await client.delete_exclusion(request=request)
 
         Args:
             request (Union[google.cloud.logging_v2.types.DeleteExclusionRequest, dict]):
@@ -2387,9 +2387,9 @@ class ConfigServiceV2AsyncClient:
 
             from google.cloud import logging_v2
 
-            def sample_get_cmek_settings():
+            async def sample_get_cmek_settings():
                 # Create a client
-                client = logging_v2.ConfigServiceV2Client()
+                client = logging_v2.ConfigServiceV2AsyncClient()
 
                 # Initialize request argument(s)
                 request = logging_v2.GetCmekSettingsRequest(
@@ -2397,7 +2397,7 @@ class ConfigServiceV2AsyncClient:
                 )
 
                 # Make the request
-                response = client.get_cmek_settings(request=request)
+                response = await client.get_cmek_settings(request=request)
 
                 # Handle the response
                 print(response)
@@ -2487,9 +2487,9 @@ class ConfigServiceV2AsyncClient:
 
             from google.cloud import logging_v2
 
-            def sample_update_cmek_settings():
+            async def sample_update_cmek_settings():
                 # Create a client
-                client = logging_v2.ConfigServiceV2Client()
+                client = logging_v2.ConfigServiceV2AsyncClient()
 
                 # Initialize request argument(s)
                 request = logging_v2.UpdateCmekSettingsRequest(
@@ -2497,7 +2497,7 @@ class ConfigServiceV2AsyncClient:
                 )
 
                 # Make the request
-                response = client.update_cmek_settings(request=request)
+                response = await client.update_cmek_settings(request=request)
 
                 # Handle the response
                 print(response)
@@ -2584,9 +2584,9 @@ class ConfigServiceV2AsyncClient:
 
             from google.cloud import logging_v2
 
-            def sample_get_settings():
+            async def sample_get_settings():
                 # Create a client
-                client = logging_v2.ConfigServiceV2Client()
+                client = logging_v2.ConfigServiceV2AsyncClient()
 
                 # Initialize request argument(s)
                 request = logging_v2.GetSettingsRequest(
@@ -2594,7 +2594,7 @@ class ConfigServiceV2AsyncClient:
                 )
 
                 # Make the request
-                response = client.get_settings(request=request)
+                response = await client.get_settings(request=request)
 
                 # Handle the response
                 print(response)
@@ -2718,9 +2718,9 @@ class ConfigServiceV2AsyncClient:
 
             from google.cloud import logging_v2
 
-            def sample_update_settings():
+            async def sample_update_settings():
                 # Create a client
-                client = logging_v2.ConfigServiceV2Client()
+                client = logging_v2.ConfigServiceV2AsyncClient()
 
                 # Initialize request argument(s)
                 request = logging_v2.UpdateSettingsRequest(
@@ -2728,7 +2728,7 @@ class ConfigServiceV2AsyncClient:
                 )
 
                 # Make the request
-                response = client.update_settings(request=request)
+                response = await client.update_settings(request=request)
 
                 # Handle the response
                 print(response)
@@ -2836,9 +2836,9 @@ class ConfigServiceV2AsyncClient:
 
             from google.cloud import logging_v2
 
-            def sample_copy_log_entries():
+            async def sample_copy_log_entries():
                 # Create a client
-                client = logging_v2.ConfigServiceV2Client()
+                client = logging_v2.ConfigServiceV2AsyncClient()
 
                 # Initialize request argument(s)
                 request = logging_v2.CopyLogEntriesRequest(
@@ -2851,7 +2851,7 @@ class ConfigServiceV2AsyncClient:
 
                 print("Waiting for operation to complete...")
 
-                response = operation.result()
+                response = await operation.result()
 
                 # Handle the response
                 print(response)
