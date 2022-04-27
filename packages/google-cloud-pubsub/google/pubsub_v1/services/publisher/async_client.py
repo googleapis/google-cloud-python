@@ -224,9 +224,9 @@ class PublisherAsyncClient:
 
             from google import pubsub_v1
 
-            def sample_create_topic():
+            async def sample_create_topic():
                 # Create a client
-                client = pubsub_v1.PublisherClient()
+                client = pubsub_v1.PublisherAsyncClient()
 
                 # Initialize request argument(s)
                 request = pubsub_v1.Topic(
@@ -234,7 +234,7 @@ class PublisherAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_topic(request=request)
+                response = await client.create_topic(request=request)
 
                 # Handle the response
                 print(response)
@@ -332,9 +332,9 @@ class PublisherAsyncClient:
 
             from google import pubsub_v1
 
-            def sample_update_topic():
+            async def sample_update_topic():
                 # Create a client
-                client = pubsub_v1.PublisherClient()
+                client = pubsub_v1.PublisherAsyncClient()
 
                 # Initialize request argument(s)
                 topic = pubsub_v1.Topic()
@@ -345,7 +345,7 @@ class PublisherAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_topic(request=request)
+                response = await client.update_topic(request=request)
 
                 # Handle the response
                 print(response)
@@ -420,9 +420,9 @@ class PublisherAsyncClient:
 
             from google import pubsub_v1
 
-            def sample_publish():
+            async def sample_publish():
                 # Create a client
-                client = pubsub_v1.PublisherClient()
+                client = pubsub_v1.PublisherAsyncClient()
 
                 # Initialize request argument(s)
                 request = pubsub_v1.PublishRequest(
@@ -430,7 +430,7 @@ class PublisherAsyncClient:
                 )
 
                 # Make the request
-                response = client.publish(request=request)
+                response = await client.publish(request=request)
 
                 # Handle the response
                 print(response)
@@ -536,9 +536,9 @@ class PublisherAsyncClient:
 
             from google import pubsub_v1
 
-            def sample_get_topic():
+            async def sample_get_topic():
                 # Create a client
-                client = pubsub_v1.PublisherClient()
+                client = pubsub_v1.PublisherAsyncClient()
 
                 # Initialize request argument(s)
                 request = pubsub_v1.GetTopicRequest(
@@ -546,7 +546,7 @@ class PublisherAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_topic(request=request)
+                response = await client.get_topic(request=request)
 
                 # Handle the response
                 print(response)
@@ -640,9 +640,9 @@ class PublisherAsyncClient:
 
             from google import pubsub_v1
 
-            def sample_list_topics():
+            async def sample_list_topics():
                 # Create a client
-                client = pubsub_v1.PublisherClient()
+                client = pubsub_v1.PublisherAsyncClient()
 
                 # Initialize request argument(s)
                 request = pubsub_v1.ListTopicsRequest(
@@ -653,7 +653,7 @@ class PublisherAsyncClient:
                 page_result = client.list_topics(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -759,9 +759,9 @@ class PublisherAsyncClient:
 
             from google import pubsub_v1
 
-            def sample_list_topic_subscriptions():
+            async def sample_list_topic_subscriptions():
                 # Create a client
-                client = pubsub_v1.PublisherClient()
+                client = pubsub_v1.PublisherAsyncClient()
 
                 # Initialize request argument(s)
                 request = pubsub_v1.ListTopicSubscriptionsRequest(
@@ -772,7 +772,7 @@ class PublisherAsyncClient:
                 page_result = client.list_topic_subscriptions(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -884,9 +884,9 @@ class PublisherAsyncClient:
 
             from google import pubsub_v1
 
-            def sample_list_topic_snapshots():
+            async def sample_list_topic_snapshots():
                 # Create a client
-                client = pubsub_v1.PublisherClient()
+                client = pubsub_v1.PublisherAsyncClient()
 
                 # Initialize request argument(s)
                 request = pubsub_v1.ListTopicSnapshotsRequest(
@@ -897,7 +897,7 @@ class PublisherAsyncClient:
                 page_result = client.list_topic_snapshots(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1009,9 +1009,9 @@ class PublisherAsyncClient:
 
             from google import pubsub_v1
 
-            def sample_delete_topic():
+            async def sample_delete_topic():
                 # Create a client
-                client = pubsub_v1.PublisherClient()
+                client = pubsub_v1.PublisherAsyncClient()
 
                 # Initialize request argument(s)
                 request = pubsub_v1.DeleteTopicRequest(
@@ -1019,7 +1019,7 @@ class PublisherAsyncClient:
                 )
 
                 # Make the request
-                client.delete_topic(request=request)
+                await client.delete_topic(request=request)
 
         Args:
             request (Union[google.pubsub_v1.types.DeleteTopicRequest, dict]):
@@ -1105,9 +1105,9 @@ class PublisherAsyncClient:
 
             from google import pubsub_v1
 
-            def sample_detach_subscription():
+            async def sample_detach_subscription():
                 # Create a client
-                client = pubsub_v1.PublisherClient()
+                client = pubsub_v1.PublisherAsyncClient()
 
                 # Initialize request argument(s)
                 request = pubsub_v1.DetachSubscriptionRequest(
@@ -1115,7 +1115,7 @@ class PublisherAsyncClient:
                 )
 
                 # Make the request
-                response = client.detach_subscription(request=request)
+                response = await client.detach_subscription(request=request)
 
                 # Handle the response
                 print(response)

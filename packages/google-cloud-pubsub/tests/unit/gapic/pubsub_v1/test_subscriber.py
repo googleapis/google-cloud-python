@@ -766,7 +766,7 @@ def test_create_subscription_field_headers():
     # a field header. Set these to a non-empty value.
     request = pubsub.Subscription()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -784,7 +784,7 @@ def test_create_subscription_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -798,7 +798,7 @@ async def test_create_subscription_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = pubsub.Subscription()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -816,7 +816,7 @@ async def test_create_subscription_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1060,7 +1060,7 @@ def test_get_subscription_field_headers():
     # a field header. Set these to a non-empty value.
     request = pubsub.GetSubscriptionRequest()
 
-    request.subscription = "subscription/value"
+    request.subscription = "subscription_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_subscription), "__call__") as call:
@@ -1076,7 +1076,7 @@ def test_get_subscription_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "subscription=subscription/value",
+        "subscription=subscription_value",
     ) in kw["metadata"]
 
 
@@ -1090,7 +1090,7 @@ async def test_get_subscription_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = pubsub.GetSubscriptionRequest()
 
-    request.subscription = "subscription/value"
+    request.subscription = "subscription_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_subscription), "__call__") as call:
@@ -1106,7 +1106,7 @@ async def test_get_subscription_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "subscription=subscription/value",
+        "subscription=subscription_value",
     ) in kw["metadata"]
 
 
@@ -1322,7 +1322,7 @@ def test_update_subscription_field_headers():
     # a field header. Set these to a non-empty value.
     request = pubsub.UpdateSubscriptionRequest()
 
-    request.subscription.name = "subscription.name/value"
+    request.subscription.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1340,7 +1340,7 @@ def test_update_subscription_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "subscription.name=subscription.name/value",
+        "subscription.name=name_value",
     ) in kw["metadata"]
 
 
@@ -1354,7 +1354,7 @@ async def test_update_subscription_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = pubsub.UpdateSubscriptionRequest()
 
-    request.subscription.name = "subscription.name/value"
+    request.subscription.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1372,7 +1372,7 @@ async def test_update_subscription_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "subscription.name=subscription.name/value",
+        "subscription.name=name_value",
     ) in kw["metadata"]
 
 
@@ -1480,7 +1480,7 @@ def test_list_subscriptions_field_headers():
     # a field header. Set these to a non-empty value.
     request = pubsub.ListSubscriptionsRequest()
 
-    request.project = "project/value"
+    request.project = "project_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1498,7 +1498,7 @@ def test_list_subscriptions_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "project=project/value",
+        "project=project_value",
     ) in kw["metadata"]
 
 
@@ -1512,7 +1512,7 @@ async def test_list_subscriptions_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = pubsub.ListSubscriptionsRequest()
 
-    request.project = "project/value"
+    request.project = "project_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1532,7 +1532,7 @@ async def test_list_subscriptions_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "project=project/value",
+        "project=project_value",
     ) in kw["metadata"]
 
 
@@ -1669,7 +1669,7 @@ def test_list_subscriptions_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, pubsub.Subscription) for i in results)
 
@@ -1914,7 +1914,7 @@ def test_delete_subscription_field_headers():
     # a field header. Set these to a non-empty value.
     request = pubsub.DeleteSubscriptionRequest()
 
-    request.subscription = "subscription/value"
+    request.subscription = "subscription_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1932,7 +1932,7 @@ def test_delete_subscription_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "subscription=subscription/value",
+        "subscription=subscription_value",
     ) in kw["metadata"]
 
 
@@ -1946,7 +1946,7 @@ async def test_delete_subscription_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = pubsub.DeleteSubscriptionRequest()
 
-    request.subscription = "subscription/value"
+    request.subscription = "subscription_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1964,7 +1964,7 @@ async def test_delete_subscription_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "subscription=subscription/value",
+        "subscription=subscription_value",
     ) in kw["metadata"]
 
 
@@ -2148,7 +2148,7 @@ def test_modify_ack_deadline_field_headers():
     # a field header. Set these to a non-empty value.
     request = pubsub.ModifyAckDeadlineRequest()
 
-    request.subscription = "subscription/value"
+    request.subscription = "subscription_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2166,7 +2166,7 @@ def test_modify_ack_deadline_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "subscription=subscription/value",
+        "subscription=subscription_value",
     ) in kw["metadata"]
 
 
@@ -2180,7 +2180,7 @@ async def test_modify_ack_deadline_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = pubsub.ModifyAckDeadlineRequest()
 
-    request.subscription = "subscription/value"
+    request.subscription = "subscription_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2198,7 +2198,7 @@ async def test_modify_ack_deadline_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "subscription=subscription/value",
+        "subscription=subscription_value",
     ) in kw["metadata"]
 
 
@@ -2396,7 +2396,7 @@ def test_acknowledge_field_headers():
     # a field header. Set these to a non-empty value.
     request = pubsub.AcknowledgeRequest()
 
-    request.subscription = "subscription/value"
+    request.subscription = "subscription_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.acknowledge), "__call__") as call:
@@ -2412,7 +2412,7 @@ def test_acknowledge_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "subscription=subscription/value",
+        "subscription=subscription_value",
     ) in kw["metadata"]
 
 
@@ -2426,7 +2426,7 @@ async def test_acknowledge_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = pubsub.AcknowledgeRequest()
 
-    request.subscription = "subscription/value"
+    request.subscription = "subscription_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.acknowledge), "__call__") as call:
@@ -2442,7 +2442,7 @@ async def test_acknowledge_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "subscription=subscription/value",
+        "subscription=subscription_value",
     ) in kw["metadata"]
 
 
@@ -2626,7 +2626,7 @@ def test_pull_field_headers():
     # a field header. Set these to a non-empty value.
     request = pubsub.PullRequest()
 
-    request.subscription = "subscription/value"
+    request.subscription = "subscription_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.pull), "__call__") as call:
@@ -2642,7 +2642,7 @@ def test_pull_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "subscription=subscription/value",
+        "subscription=subscription_value",
     ) in kw["metadata"]
 
 
@@ -2656,7 +2656,7 @@ async def test_pull_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = pubsub.PullRequest()
 
-    request.subscription = "subscription/value"
+    request.subscription = "subscription_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.pull), "__call__") as call:
@@ -2672,7 +2672,7 @@ async def test_pull_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "subscription=subscription/value",
+        "subscription=subscription_value",
     ) in kw["metadata"]
 
 
@@ -2948,7 +2948,7 @@ def test_modify_push_config_field_headers():
     # a field header. Set these to a non-empty value.
     request = pubsub.ModifyPushConfigRequest()
 
-    request.subscription = "subscription/value"
+    request.subscription = "subscription_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2966,7 +2966,7 @@ def test_modify_push_config_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "subscription=subscription/value",
+        "subscription=subscription_value",
     ) in kw["metadata"]
 
 
@@ -2980,7 +2980,7 @@ async def test_modify_push_config_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = pubsub.ModifyPushConfigRequest()
 
-    request.subscription = "subscription/value"
+    request.subscription = "subscription_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2998,7 +2998,7 @@ async def test_modify_push_config_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "subscription=subscription/value",
+        "subscription=subscription_value",
     ) in kw["metadata"]
 
 
@@ -3198,7 +3198,7 @@ def test_get_snapshot_field_headers():
     # a field header. Set these to a non-empty value.
     request = pubsub.GetSnapshotRequest()
 
-    request.snapshot = "snapshot/value"
+    request.snapshot = "snapshot_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_snapshot), "__call__") as call:
@@ -3214,7 +3214,7 @@ def test_get_snapshot_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "snapshot=snapshot/value",
+        "snapshot=snapshot_value",
     ) in kw["metadata"]
 
 
@@ -3228,7 +3228,7 @@ async def test_get_snapshot_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = pubsub.GetSnapshotRequest()
 
-    request.snapshot = "snapshot/value"
+    request.snapshot = "snapshot_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_snapshot), "__call__") as call:
@@ -3244,7 +3244,7 @@ async def test_get_snapshot_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "snapshot=snapshot/value",
+        "snapshot=snapshot_value",
     ) in kw["metadata"]
 
 
@@ -3426,7 +3426,7 @@ def test_list_snapshots_field_headers():
     # a field header. Set these to a non-empty value.
     request = pubsub.ListSnapshotsRequest()
 
-    request.project = "project/value"
+    request.project = "project_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_snapshots), "__call__") as call:
@@ -3442,7 +3442,7 @@ def test_list_snapshots_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "project=project/value",
+        "project=project_value",
     ) in kw["metadata"]
 
 
@@ -3456,7 +3456,7 @@ async def test_list_snapshots_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = pubsub.ListSnapshotsRequest()
 
-    request.project = "project/value"
+    request.project = "project_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_snapshots), "__call__") as call:
@@ -3474,7 +3474,7 @@ async def test_list_snapshots_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "project=project/value",
+        "project=project_value",
     ) in kw["metadata"]
 
 
@@ -3605,7 +3605,7 @@ def test_list_snapshots_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, pubsub.Snapshot) for i in results)
 
@@ -3850,7 +3850,7 @@ def test_create_snapshot_field_headers():
     # a field header. Set these to a non-empty value.
     request = pubsub.CreateSnapshotRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_snapshot), "__call__") as call:
@@ -3866,7 +3866,7 @@ def test_create_snapshot_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3880,7 +3880,7 @@ async def test_create_snapshot_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = pubsub.CreateSnapshotRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_snapshot), "__call__") as call:
@@ -3896,7 +3896,7 @@ async def test_create_snapshot_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -4092,7 +4092,7 @@ def test_update_snapshot_field_headers():
     # a field header. Set these to a non-empty value.
     request = pubsub.UpdateSnapshotRequest()
 
-    request.snapshot.name = "snapshot.name/value"
+    request.snapshot.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_snapshot), "__call__") as call:
@@ -4108,7 +4108,7 @@ def test_update_snapshot_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "snapshot.name=snapshot.name/value",
+        "snapshot.name=name_value",
     ) in kw["metadata"]
 
 
@@ -4122,7 +4122,7 @@ async def test_update_snapshot_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = pubsub.UpdateSnapshotRequest()
 
-    request.snapshot.name = "snapshot.name/value"
+    request.snapshot.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_snapshot), "__call__") as call:
@@ -4138,7 +4138,7 @@ async def test_update_snapshot_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "snapshot.name=snapshot.name/value",
+        "snapshot.name=name_value",
     ) in kw["metadata"]
 
 
@@ -4232,7 +4232,7 @@ def test_delete_snapshot_field_headers():
     # a field header. Set these to a non-empty value.
     request = pubsub.DeleteSnapshotRequest()
 
-    request.snapshot = "snapshot/value"
+    request.snapshot = "snapshot_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_snapshot), "__call__") as call:
@@ -4248,7 +4248,7 @@ def test_delete_snapshot_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "snapshot=snapshot/value",
+        "snapshot=snapshot_value",
     ) in kw["metadata"]
 
 
@@ -4262,7 +4262,7 @@ async def test_delete_snapshot_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = pubsub.DeleteSnapshotRequest()
 
-    request.snapshot = "snapshot/value"
+    request.snapshot = "snapshot_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_snapshot), "__call__") as call:
@@ -4278,7 +4278,7 @@ async def test_delete_snapshot_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "snapshot=snapshot/value",
+        "snapshot=snapshot_value",
     ) in kw["metadata"]
 
 
@@ -4452,7 +4452,7 @@ def test_seek_field_headers():
     # a field header. Set these to a non-empty value.
     request = pubsub.SeekRequest()
 
-    request.subscription = "subscription/value"
+    request.subscription = "subscription_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.seek), "__call__") as call:
@@ -4468,7 +4468,7 @@ def test_seek_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "subscription=subscription/value",
+        "subscription=subscription_value",
     ) in kw["metadata"]
 
 
@@ -4482,7 +4482,7 @@ async def test_seek_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = pubsub.SeekRequest()
 
-    request.subscription = "subscription/value"
+    request.subscription = "subscription_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.seek), "__call__") as call:
@@ -4498,7 +4498,7 @@ async def test_seek_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "subscription=subscription/value",
+        "subscription=subscription_value",
     ) in kw["metadata"]
 
 

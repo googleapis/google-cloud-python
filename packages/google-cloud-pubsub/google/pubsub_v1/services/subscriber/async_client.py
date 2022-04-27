@@ -250,9 +250,9 @@ class SubscriberAsyncClient:
 
             from google import pubsub_v1
 
-            def sample_create_subscription():
+            async def sample_create_subscription():
                 # Create a client
-                client = pubsub_v1.SubscriberClient()
+                client = pubsub_v1.SubscriberAsyncClient()
 
                 # Initialize request argument(s)
                 request = pubsub_v1.Subscription(
@@ -261,7 +261,7 @@ class SubscriberAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_subscription(request=request)
+                response = await client.create_subscription(request=request)
 
                 # Handle the response
                 print(response)
@@ -415,9 +415,9 @@ class SubscriberAsyncClient:
 
             from google import pubsub_v1
 
-            def sample_get_subscription():
+            async def sample_get_subscription():
                 # Create a client
-                client = pubsub_v1.SubscriberClient()
+                client = pubsub_v1.SubscriberAsyncClient()
 
                 # Initialize request argument(s)
                 request = pubsub_v1.GetSubscriptionRequest(
@@ -425,7 +425,7 @@ class SubscriberAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_subscription(request=request)
+                response = await client.get_subscription(request=request)
 
                 # Handle the response
                 print(response)
@@ -522,9 +522,9 @@ class SubscriberAsyncClient:
 
             from google import pubsub_v1
 
-            def sample_update_subscription():
+            async def sample_update_subscription():
                 # Create a client
-                client = pubsub_v1.SubscriberClient()
+                client = pubsub_v1.SubscriberAsyncClient()
 
                 # Initialize request argument(s)
                 subscription = pubsub_v1.Subscription()
@@ -536,7 +536,7 @@ class SubscriberAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_subscription(request=request)
+                response = await client.update_subscription(request=request)
 
                 # Handle the response
                 print(response)
@@ -609,9 +609,9 @@ class SubscriberAsyncClient:
 
             from google import pubsub_v1
 
-            def sample_list_subscriptions():
+            async def sample_list_subscriptions():
                 # Create a client
-                client = pubsub_v1.SubscriberClient()
+                client = pubsub_v1.SubscriberAsyncClient()
 
                 # Initialize request argument(s)
                 request = pubsub_v1.ListSubscriptionsRequest(
@@ -622,7 +622,7 @@ class SubscriberAsyncClient:
                 page_result = client.list_subscriptions(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -732,9 +732,9 @@ class SubscriberAsyncClient:
 
             from google import pubsub_v1
 
-            def sample_delete_subscription():
+            async def sample_delete_subscription():
                 # Create a client
-                client = pubsub_v1.SubscriberClient()
+                client = pubsub_v1.SubscriberAsyncClient()
 
                 # Initialize request argument(s)
                 request = pubsub_v1.DeleteSubscriptionRequest(
@@ -742,7 +742,7 @@ class SubscriberAsyncClient:
                 )
 
                 # Make the request
-                client.delete_subscription(request=request)
+                await client.delete_subscription(request=request)
 
         Args:
             request (Union[google.pubsub_v1.types.DeleteSubscriptionRequest, dict]):
@@ -833,9 +833,9 @@ class SubscriberAsyncClient:
 
             from google import pubsub_v1
 
-            def sample_modify_ack_deadline():
+            async def sample_modify_ack_deadline():
                 # Create a client
-                client = pubsub_v1.SubscriberClient()
+                client = pubsub_v1.SubscriberAsyncClient()
 
                 # Initialize request argument(s)
                 request = pubsub_v1.ModifyAckDeadlineRequest(
@@ -845,7 +845,7 @@ class SubscriberAsyncClient:
                 )
 
                 # Make the request
-                client.modify_ack_deadline(request=request)
+                await client.modify_ack_deadline(request=request)
 
         Args:
             request (Union[google.pubsub_v1.types.ModifyAckDeadlineRequest, dict]):
@@ -962,9 +962,9 @@ class SubscriberAsyncClient:
 
             from google import pubsub_v1
 
-            def sample_acknowledge():
+            async def sample_acknowledge():
                 # Create a client
-                client = pubsub_v1.SubscriberClient()
+                client = pubsub_v1.SubscriberAsyncClient()
 
                 # Initialize request argument(s)
                 request = pubsub_v1.AcknowledgeRequest(
@@ -973,7 +973,7 @@ class SubscriberAsyncClient:
                 )
 
                 # Make the request
-                client.acknowledge(request=request)
+                await client.acknowledge(request=request)
 
         Args:
             request (Union[google.pubsub_v1.types.AcknowledgeRequest, dict]):
@@ -1071,9 +1071,9 @@ class SubscriberAsyncClient:
 
             from google import pubsub_v1
 
-            def sample_pull():
+            async def sample_pull():
                 # Create a client
-                client = pubsub_v1.SubscriberClient()
+                client = pubsub_v1.SubscriberAsyncClient()
 
                 # Initialize request argument(s)
                 request = pubsub_v1.PullRequest(
@@ -1082,7 +1082,7 @@ class SubscriberAsyncClient:
                 )
 
                 # Make the request
-                response = client.pull(request=request)
+                response = await client.pull(request=request)
 
                 # Handle the response
                 print(response)
@@ -1218,9 +1218,9 @@ class SubscriberAsyncClient:
 
             from google import pubsub_v1
 
-            def sample_streaming_pull():
+            async def sample_streaming_pull():
                 # Create a client
-                client = pubsub_v1.SubscriberClient()
+                client = pubsub_v1.SubscriberAsyncClient()
 
                 # Initialize request argument(s)
                 request = pubsub_v1.StreamingPullRequest(
@@ -1239,10 +1239,10 @@ class SubscriberAsyncClient:
                         yield request
 
                 # Make the request
-                stream = client.streaming_pull(requests=request_generator())
+                stream = await client.streaming_pull(requests=request_generator())
 
                 # Handle the response
-                for response in stream:
+                async for response in stream:
                     print(response)
 
         Args:
@@ -1319,9 +1319,9 @@ class SubscriberAsyncClient:
 
             from google import pubsub_v1
 
-            def sample_modify_push_config():
+            async def sample_modify_push_config():
                 # Create a client
-                client = pubsub_v1.SubscriberClient()
+                client = pubsub_v1.SubscriberAsyncClient()
 
                 # Initialize request argument(s)
                 request = pubsub_v1.ModifyPushConfigRequest(
@@ -1329,7 +1329,7 @@ class SubscriberAsyncClient:
                 )
 
                 # Make the request
-                client.modify_push_config(request=request)
+                await client.modify_push_config(request=request)
 
         Args:
             request (Union[google.pubsub_v1.types.ModifyPushConfigRequest, dict]):
@@ -1433,9 +1433,9 @@ class SubscriberAsyncClient:
 
             from google import pubsub_v1
 
-            def sample_get_snapshot():
+            async def sample_get_snapshot():
                 # Create a client
-                client = pubsub_v1.SubscriberClient()
+                client = pubsub_v1.SubscriberAsyncClient()
 
                 # Initialize request argument(s)
                 request = pubsub_v1.GetSnapshotRequest(
@@ -1443,7 +1443,7 @@ class SubscriberAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_snapshot(request=request)
+                response = await client.get_snapshot(request=request)
 
                 # Handle the response
                 print(response)
@@ -1546,9 +1546,9 @@ class SubscriberAsyncClient:
 
             from google import pubsub_v1
 
-            def sample_list_snapshots():
+            async def sample_list_snapshots():
                 # Create a client
-                client = pubsub_v1.SubscriberClient()
+                client = pubsub_v1.SubscriberAsyncClient()
 
                 # Initialize request argument(s)
                 request = pubsub_v1.ListSnapshotsRequest(
@@ -1559,7 +1559,7 @@ class SubscriberAsyncClient:
                 page_result = client.list_snapshots(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1683,9 +1683,9 @@ class SubscriberAsyncClient:
 
             from google import pubsub_v1
 
-            def sample_create_snapshot():
+            async def sample_create_snapshot():
                 # Create a client
-                client = pubsub_v1.SubscriberClient()
+                client = pubsub_v1.SubscriberAsyncClient()
 
                 # Initialize request argument(s)
                 request = pubsub_v1.CreateSnapshotRequest(
@@ -1694,7 +1694,7 @@ class SubscriberAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_snapshot(request=request)
+                response = await client.create_snapshot(request=request)
 
                 # Handle the response
                 print(response)
@@ -1820,16 +1820,16 @@ class SubscriberAsyncClient:
 
             from google import pubsub_v1
 
-            def sample_update_snapshot():
+            async def sample_update_snapshot():
                 # Create a client
-                client = pubsub_v1.SubscriberClient()
+                client = pubsub_v1.SubscriberAsyncClient()
 
                 # Initialize request argument(s)
                 request = pubsub_v1.UpdateSnapshotRequest(
                 )
 
                 # Make the request
-                response = client.update_snapshot(request=request)
+                response = await client.update_snapshot(request=request)
 
                 # Handle the response
                 print(response)
@@ -1917,9 +1917,9 @@ class SubscriberAsyncClient:
 
             from google import pubsub_v1
 
-            def sample_delete_snapshot():
+            async def sample_delete_snapshot():
                 # Create a client
-                client = pubsub_v1.SubscriberClient()
+                client = pubsub_v1.SubscriberAsyncClient()
 
                 # Initialize request argument(s)
                 request = pubsub_v1.DeleteSnapshotRequest(
@@ -1927,7 +1927,7 @@ class SubscriberAsyncClient:
                 )
 
                 # Make the request
-                client.delete_snapshot(request=request)
+                await client.delete_snapshot(request=request)
 
         Args:
             request (Union[google.pubsub_v1.types.DeleteSnapshotRequest, dict]):
@@ -2016,9 +2016,9 @@ class SubscriberAsyncClient:
 
             from google import pubsub_v1
 
-            def sample_seek():
+            async def sample_seek():
                 # Create a client
-                client = pubsub_v1.SubscriberClient()
+                client = pubsub_v1.SubscriberAsyncClient()
 
                 # Initialize request argument(s)
                 request = pubsub_v1.SeekRequest(
@@ -2026,7 +2026,7 @@ class SubscriberAsyncClient:
                 )
 
                 # Make the request
-                response = client.seek(request=request)
+                response = await client.seek(request=request)
 
                 # Handle the response
                 print(response)

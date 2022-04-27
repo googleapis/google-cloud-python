@@ -736,7 +736,7 @@ def test_create_topic_field_headers():
     # a field header. Set these to a non-empty value.
     request = pubsub.Topic()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_topic), "__call__") as call:
@@ -752,7 +752,7 @@ def test_create_topic_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -766,7 +766,7 @@ async def test_create_topic_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = pubsub.Topic()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.create_topic), "__call__") as call:
@@ -782,7 +782,7 @@ async def test_create_topic_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -972,7 +972,7 @@ def test_update_topic_field_headers():
     # a field header. Set these to a non-empty value.
     request = pubsub.UpdateTopicRequest()
 
-    request.topic.name = "topic.name/value"
+    request.topic.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_topic), "__call__") as call:
@@ -988,7 +988,7 @@ def test_update_topic_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "topic.name=topic.name/value",
+        "topic.name=name_value",
     ) in kw["metadata"]
 
 
@@ -1002,7 +1002,7 @@ async def test_update_topic_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = pubsub.UpdateTopicRequest()
 
-    request.topic.name = "topic.name/value"
+    request.topic.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.update_topic), "__call__") as call:
@@ -1018,7 +1018,7 @@ async def test_update_topic_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "topic.name=topic.name/value",
+        "topic.name=name_value",
     ) in kw["metadata"]
 
 
@@ -1120,7 +1120,7 @@ def test_publish_field_headers():
     # a field header. Set these to a non-empty value.
     request = pubsub.PublishRequest()
 
-    request.topic = "topic/value"
+    request.topic = "topic_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.publish), "__call__") as call:
@@ -1136,7 +1136,7 @@ def test_publish_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "topic=topic/value",
+        "topic=topic_value",
     ) in kw["metadata"]
 
 
@@ -1150,7 +1150,7 @@ async def test_publish_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = pubsub.PublishRequest()
 
-    request.topic = "topic/value"
+    request.topic = "topic_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.publish), "__call__") as call:
@@ -1168,7 +1168,7 @@ async def test_publish_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "topic=topic/value",
+        "topic=topic_value",
     ) in kw["metadata"]
 
 
@@ -1370,7 +1370,7 @@ def test_get_topic_field_headers():
     # a field header. Set these to a non-empty value.
     request = pubsub.GetTopicRequest()
 
-    request.topic = "topic/value"
+    request.topic = "topic_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_topic), "__call__") as call:
@@ -1386,7 +1386,7 @@ def test_get_topic_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "topic=topic/value",
+        "topic=topic_value",
     ) in kw["metadata"]
 
 
@@ -1400,7 +1400,7 @@ async def test_get_topic_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = pubsub.GetTopicRequest()
 
-    request.topic = "topic/value"
+    request.topic = "topic_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_topic), "__call__") as call:
@@ -1416,7 +1416,7 @@ async def test_get_topic_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "topic=topic/value",
+        "topic=topic_value",
     ) in kw["metadata"]
 
 
@@ -1598,7 +1598,7 @@ def test_list_topics_field_headers():
     # a field header. Set these to a non-empty value.
     request = pubsub.ListTopicsRequest()
 
-    request.project = "project/value"
+    request.project = "project_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_topics), "__call__") as call:
@@ -1614,7 +1614,7 @@ def test_list_topics_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "project=project/value",
+        "project=project_value",
     ) in kw["metadata"]
 
 
@@ -1628,7 +1628,7 @@ async def test_list_topics_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = pubsub.ListTopicsRequest()
 
-    request.project = "project/value"
+    request.project = "project_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.list_topics), "__call__") as call:
@@ -1646,7 +1646,7 @@ async def test_list_topics_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "project=project/value",
+        "project=project_value",
     ) in kw["metadata"]
 
 
@@ -1777,7 +1777,7 @@ def test_list_topics_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, pubsub.Topic) for i in results)
 
@@ -2028,7 +2028,7 @@ def test_list_topic_subscriptions_field_headers():
     # a field header. Set these to a non-empty value.
     request = pubsub.ListTopicSubscriptionsRequest()
 
-    request.topic = "topic/value"
+    request.topic = "topic_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2046,7 +2046,7 @@ def test_list_topic_subscriptions_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "topic=topic/value",
+        "topic=topic_value",
     ) in kw["metadata"]
 
 
@@ -2060,7 +2060,7 @@ async def test_list_topic_subscriptions_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = pubsub.ListTopicSubscriptionsRequest()
 
-    request.topic = "topic/value"
+    request.topic = "topic_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2080,7 +2080,7 @@ async def test_list_topic_subscriptions_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "topic=topic/value",
+        "topic=topic_value",
     ) in kw["metadata"]
 
 
@@ -2217,7 +2217,7 @@ def test_list_topic_subscriptions_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, str) for i in results)
 
@@ -2474,7 +2474,7 @@ def test_list_topic_snapshots_field_headers():
     # a field header. Set these to a non-empty value.
     request = pubsub.ListTopicSnapshotsRequest()
 
-    request.topic = "topic/value"
+    request.topic = "topic_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2492,7 +2492,7 @@ def test_list_topic_snapshots_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "topic=topic/value",
+        "topic=topic_value",
     ) in kw["metadata"]
 
 
@@ -2506,7 +2506,7 @@ async def test_list_topic_snapshots_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = pubsub.ListTopicSnapshotsRequest()
 
-    request.topic = "topic/value"
+    request.topic = "topic_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2526,7 +2526,7 @@ async def test_list_topic_snapshots_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "topic=topic/value",
+        "topic=topic_value",
     ) in kw["metadata"]
 
 
@@ -2663,7 +2663,7 @@ def test_list_topic_snapshots_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, str) for i in results)
 
@@ -2902,7 +2902,7 @@ def test_delete_topic_field_headers():
     # a field header. Set these to a non-empty value.
     request = pubsub.DeleteTopicRequest()
 
-    request.topic = "topic/value"
+    request.topic = "topic_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_topic), "__call__") as call:
@@ -2918,7 +2918,7 @@ def test_delete_topic_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "topic=topic/value",
+        "topic=topic_value",
     ) in kw["metadata"]
 
 
@@ -2932,7 +2932,7 @@ async def test_delete_topic_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = pubsub.DeleteTopicRequest()
 
-    request.topic = "topic/value"
+    request.topic = "topic_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.delete_topic), "__call__") as call:
@@ -2948,7 +2948,7 @@ async def test_delete_topic_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "topic=topic/value",
+        "topic=topic_value",
     ) in kw["metadata"]
 
 
@@ -3130,7 +3130,7 @@ def test_detach_subscription_field_headers():
     # a field header. Set these to a non-empty value.
     request = pubsub.DetachSubscriptionRequest()
 
-    request.subscription = "subscription/value"
+    request.subscription = "subscription_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3148,7 +3148,7 @@ def test_detach_subscription_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "subscription=subscription/value",
+        "subscription=subscription_value",
     ) in kw["metadata"]
 
 
@@ -3162,7 +3162,7 @@ async def test_detach_subscription_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = pubsub.DetachSubscriptionRequest()
 
-    request.subscription = "subscription/value"
+    request.subscription = "subscription_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3182,7 +3182,7 @@ async def test_detach_subscription_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "subscription=subscription/value",
+        "subscription=subscription_value",
     ) in kw["metadata"]
 
 

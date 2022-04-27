@@ -222,9 +222,9 @@ class SchemaServiceAsyncClient:
 
             from google import pubsub_v1
 
-            def sample_create_schema():
+            async def sample_create_schema():
                 # Create a client
-                client = pubsub_v1.SchemaServiceClient()
+                client = pubsub_v1.SchemaServiceAsyncClient()
 
                 # Initialize request argument(s)
                 schema = pubsub_v1.Schema()
@@ -236,7 +236,7 @@ class SchemaServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_schema(request=request)
+                response = await client.create_schema(request=request)
 
                 # Handle the response
                 print(response)
@@ -343,9 +343,9 @@ class SchemaServiceAsyncClient:
 
             from google import pubsub_v1
 
-            def sample_get_schema():
+            async def sample_get_schema():
                 # Create a client
-                client = pubsub_v1.SchemaServiceClient()
+                client = pubsub_v1.SchemaServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = pubsub_v1.GetSchemaRequest(
@@ -353,7 +353,7 @@ class SchemaServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_schema(request=request)
+                response = await client.get_schema(request=request)
 
                 # Handle the response
                 print(response)
@@ -435,9 +435,9 @@ class SchemaServiceAsyncClient:
 
             from google import pubsub_v1
 
-            def sample_list_schemas():
+            async def sample_list_schemas():
                 # Create a client
-                client = pubsub_v1.SchemaServiceClient()
+                client = pubsub_v1.SchemaServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = pubsub_v1.ListSchemasRequest(
@@ -448,7 +448,7 @@ class SchemaServiceAsyncClient:
                 page_result = client.list_schemas(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -542,9 +542,9 @@ class SchemaServiceAsyncClient:
 
             from google import pubsub_v1
 
-            def sample_delete_schema():
+            async def sample_delete_schema():
                 # Create a client
-                client = pubsub_v1.SchemaServiceClient()
+                client = pubsub_v1.SchemaServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = pubsub_v1.DeleteSchemaRequest(
@@ -552,7 +552,7 @@ class SchemaServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_schema(request=request)
+                await client.delete_schema(request=request)
 
         Args:
             request (Union[google.pubsub_v1.types.DeleteSchemaRequest, dict]):
@@ -626,9 +626,9 @@ class SchemaServiceAsyncClient:
 
             from google import pubsub_v1
 
-            def sample_validate_schema():
+            async def sample_validate_schema():
                 # Create a client
-                client = pubsub_v1.SchemaServiceClient()
+                client = pubsub_v1.SchemaServiceAsyncClient()
 
                 # Initialize request argument(s)
                 schema = pubsub_v1.Schema()
@@ -640,7 +640,7 @@ class SchemaServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.validate_schema(request=request)
+                response = await client.validate_schema(request=request)
 
                 # Handle the response
                 print(response)
@@ -733,9 +733,9 @@ class SchemaServiceAsyncClient:
 
             from google import pubsub_v1
 
-            def sample_validate_message():
+            async def sample_validate_message():
                 # Create a client
-                client = pubsub_v1.SchemaServiceClient()
+                client = pubsub_v1.SchemaServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = pubsub_v1.ValidateMessageRequest(
@@ -744,7 +744,7 @@ class SchemaServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.validate_message(request=request)
+                response = await client.validate_message(request=request)
 
                 # Handle the response
                 print(response)
