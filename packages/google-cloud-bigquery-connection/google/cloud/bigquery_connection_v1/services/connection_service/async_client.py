@@ -225,9 +225,9 @@ class ConnectionServiceAsyncClient:
 
             from google.cloud import bigquery_connection_v1
 
-            def sample_create_connection():
+            async def sample_create_connection():
                 # Create a client
-                client = bigquery_connection_v1.ConnectionServiceClient()
+                client = bigquery_connection_v1.ConnectionServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = bigquery_connection_v1.CreateConnectionRequest(
@@ -235,7 +235,7 @@ class ConnectionServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_connection(request=request)
+                response = await client.create_connection(request=request)
 
                 # Handle the response
                 print(response)
@@ -337,9 +337,9 @@ class ConnectionServiceAsyncClient:
 
             from google.cloud import bigquery_connection_v1
 
-            def sample_get_connection():
+            async def sample_get_connection():
                 # Create a client
-                client = bigquery_connection_v1.ConnectionServiceClient()
+                client = bigquery_connection_v1.ConnectionServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = bigquery_connection_v1.GetConnectionRequest(
@@ -347,7 +347,7 @@ class ConnectionServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_connection(request=request)
+                response = await client.get_connection(request=request)
 
                 # Handle the response
                 print(response)
@@ -443,9 +443,9 @@ class ConnectionServiceAsyncClient:
 
             from google.cloud import bigquery_connection_v1
 
-            def sample_list_connections():
+            async def sample_list_connections():
                 # Create a client
-                client = bigquery_connection_v1.ConnectionServiceClient()
+                client = bigquery_connection_v1.ConnectionServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = bigquery_connection_v1.ListConnectionsRequest(
@@ -457,7 +457,7 @@ class ConnectionServiceAsyncClient:
                 page_result = client.list_connections(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -566,9 +566,9 @@ class ConnectionServiceAsyncClient:
 
             from google.cloud import bigquery_connection_v1
 
-            def sample_update_connection():
+            async def sample_update_connection():
                 # Create a client
-                client = bigquery_connection_v1.ConnectionServiceClient()
+                client = bigquery_connection_v1.ConnectionServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = bigquery_connection_v1.UpdateConnectionRequest(
@@ -576,7 +576,7 @@ class ConnectionServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_connection(request=request)
+                response = await client.update_connection(request=request)
 
                 # Handle the response
                 print(response)
@@ -680,9 +680,9 @@ class ConnectionServiceAsyncClient:
 
             from google.cloud import bigquery_connection_v1
 
-            def sample_delete_connection():
+            async def sample_delete_connection():
                 # Create a client
-                client = bigquery_connection_v1.ConnectionServiceClient()
+                client = bigquery_connection_v1.ConnectionServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = bigquery_connection_v1.DeleteConnectionRequest(
@@ -690,7 +690,7 @@ class ConnectionServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_connection(request=request)
+                await client.delete_connection(request=request)
 
         Args:
             request (Union[google.cloud.bigquery_connection_v1.types.DeleteConnectionRequest, dict]):
@@ -776,9 +776,9 @@ class ConnectionServiceAsyncClient:
             from google.cloud import bigquery_connection_v1
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
-            def sample_get_iam_policy():
+            async def sample_get_iam_policy():
                 # Create a client
-                client = bigquery_connection_v1.ConnectionServiceClient()
+                client = bigquery_connection_v1.ConnectionServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = iam_policy_pb2.GetIamPolicyRequest(
@@ -786,7 +786,7 @@ class ConnectionServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_iam_policy(request=request)
+                response = await client.get_iam_policy(request=request)
 
                 # Handle the response
                 print(response)
@@ -939,9 +939,9 @@ class ConnectionServiceAsyncClient:
             from google.cloud import bigquery_connection_v1
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
-            def sample_set_iam_policy():
+            async def sample_set_iam_policy():
                 # Create a client
-                client = bigquery_connection_v1.ConnectionServiceClient()
+                client = bigquery_connection_v1.ConnectionServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = iam_policy_pb2.SetIamPolicyRequest(
@@ -949,7 +949,7 @@ class ConnectionServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.set_iam_policy(request=request)
+                response = await client.set_iam_policy(request=request)
 
                 # Handle the response
                 print(response)
@@ -1106,9 +1106,9 @@ class ConnectionServiceAsyncClient:
             from google.cloud import bigquery_connection_v1
             from google.iam.v1 import iam_policy_pb2  # type: ignore
 
-            def sample_test_iam_permissions():
+            async def sample_test_iam_permissions():
                 # Create a client
-                client = bigquery_connection_v1.ConnectionServiceClient()
+                client = bigquery_connection_v1.ConnectionServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = iam_policy_pb2.TestIamPermissionsRequest(
@@ -1117,7 +1117,7 @@ class ConnectionServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.test_iam_permissions(request=request)
+                response = await client.test_iam_permissions(request=request)
 
                 # Handle the response
                 print(response)
