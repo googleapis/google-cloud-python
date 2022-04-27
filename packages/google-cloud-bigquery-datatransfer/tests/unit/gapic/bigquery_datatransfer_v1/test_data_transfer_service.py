@@ -841,7 +841,7 @@ def test_get_data_source_field_headers():
     # a field header. Set these to a non-empty value.
     request = datatransfer.GetDataSourceRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_data_source), "__call__") as call:
@@ -857,7 +857,7 @@ def test_get_data_source_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -871,7 +871,7 @@ async def test_get_data_source_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = datatransfer.GetDataSourceRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_data_source), "__call__") as call:
@@ -889,7 +889,7 @@ async def test_get_data_source_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -1079,7 +1079,7 @@ def test_list_data_sources_field_headers():
     # a field header. Set these to a non-empty value.
     request = datatransfer.ListDataSourcesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1097,7 +1097,7 @@ def test_list_data_sources_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1111,7 +1111,7 @@ async def test_list_data_sources_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = datatransfer.ListDataSourcesRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1131,7 +1131,7 @@ async def test_list_data_sources_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1268,7 +1268,7 @@ def test_list_data_sources_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, datatransfer.DataSource) for i in results)
 
@@ -1559,7 +1559,7 @@ def test_create_transfer_config_field_headers():
     # a field header. Set these to a non-empty value.
     request = datatransfer.CreateTransferConfigRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1577,7 +1577,7 @@ def test_create_transfer_config_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1591,7 +1591,7 @@ async def test_create_transfer_config_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = datatransfer.CreateTransferConfigRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1611,7 +1611,7 @@ async def test_create_transfer_config_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -1853,7 +1853,7 @@ def test_update_transfer_config_field_headers():
     # a field header. Set these to a non-empty value.
     request = datatransfer.UpdateTransferConfigRequest()
 
-    request.transfer_config.name = "transfer_config.name/value"
+    request.transfer_config.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1871,7 +1871,7 @@ def test_update_transfer_config_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "transfer_config.name=transfer_config.name/value",
+        "transfer_config.name=name_value",
     ) in kw["metadata"]
 
 
@@ -1885,7 +1885,7 @@ async def test_update_transfer_config_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = datatransfer.UpdateTransferConfigRequest()
 
-    request.transfer_config.name = "transfer_config.name/value"
+    request.transfer_config.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -1905,7 +1905,7 @@ async def test_update_transfer_config_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "transfer_config.name=transfer_config.name/value",
+        "transfer_config.name=name_value",
     ) in kw["metadata"]
 
 
@@ -2102,7 +2102,7 @@ def test_delete_transfer_config_field_headers():
     # a field header. Set these to a non-empty value.
     request = datatransfer.DeleteTransferConfigRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2120,7 +2120,7 @@ def test_delete_transfer_config_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2134,7 +2134,7 @@ async def test_delete_transfer_config_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = datatransfer.DeleteTransferConfigRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2152,7 +2152,7 @@ async def test_delete_transfer_config_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2381,7 +2381,7 @@ def test_get_transfer_config_field_headers():
     # a field header. Set these to a non-empty value.
     request = datatransfer.GetTransferConfigRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2399,7 +2399,7 @@ def test_get_transfer_config_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2413,7 +2413,7 @@ async def test_get_transfer_config_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = datatransfer.GetTransferConfigRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2433,7 +2433,7 @@ async def test_get_transfer_config_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -2628,7 +2628,7 @@ def test_list_transfer_configs_field_headers():
     # a field header. Set these to a non-empty value.
     request = datatransfer.ListTransferConfigsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2646,7 +2646,7 @@ def test_list_transfer_configs_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -2660,7 +2660,7 @@ async def test_list_transfer_configs_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = datatransfer.ListTransferConfigsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -2680,7 +2680,7 @@ async def test_list_transfer_configs_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -2817,7 +2817,7 @@ def test_list_transfer_configs_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, transfer.TransferConfig) for i in results)
 
@@ -3065,7 +3065,7 @@ def test_schedule_transfer_runs_field_headers():
     # a field header. Set these to a non-empty value.
     request = datatransfer.ScheduleTransferRunsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3083,7 +3083,7 @@ def test_schedule_transfer_runs_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -3097,7 +3097,7 @@ async def test_schedule_transfer_runs_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = datatransfer.ScheduleTransferRunsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3117,7 +3117,7 @@ async def test_schedule_transfer_runs_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -3326,7 +3326,7 @@ def test_start_manual_transfer_runs_field_headers():
     # a field header. Set these to a non-empty value.
     request = datatransfer.StartManualTransferRunsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3344,7 +3344,7 @@ def test_start_manual_transfer_runs_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -3358,7 +3358,7 @@ async def test_start_manual_transfer_runs_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = datatransfer.StartManualTransferRunsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3378,7 +3378,7 @@ async def test_start_manual_transfer_runs_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -3501,7 +3501,7 @@ def test_get_transfer_run_field_headers():
     # a field header. Set these to a non-empty value.
     request = datatransfer.GetTransferRunRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_transfer_run), "__call__") as call:
@@ -3517,7 +3517,7 @@ def test_get_transfer_run_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3531,7 +3531,7 @@ async def test_get_transfer_run_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = datatransfer.GetTransferRunRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(type(client.transport.get_transfer_run), "__call__") as call:
@@ -3549,7 +3549,7 @@ async def test_get_transfer_run_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3731,7 +3731,7 @@ def test_delete_transfer_run_field_headers():
     # a field header. Set these to a non-empty value.
     request = datatransfer.DeleteTransferRunRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3749,7 +3749,7 @@ def test_delete_transfer_run_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3763,7 +3763,7 @@ async def test_delete_transfer_run_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = datatransfer.DeleteTransferRunRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3781,7 +3781,7 @@ async def test_delete_transfer_run_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -3973,7 +3973,7 @@ def test_list_transfer_runs_field_headers():
     # a field header. Set these to a non-empty value.
     request = datatransfer.ListTransferRunsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -3991,7 +3991,7 @@ def test_list_transfer_runs_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -4005,7 +4005,7 @@ async def test_list_transfer_runs_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = datatransfer.ListTransferRunsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4025,7 +4025,7 @@ async def test_list_transfer_runs_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -4162,7 +4162,7 @@ def test_list_transfer_runs_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, transfer.TransferRun) for i in results)
 
@@ -4415,7 +4415,7 @@ def test_list_transfer_logs_field_headers():
     # a field header. Set these to a non-empty value.
     request = datatransfer.ListTransferLogsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4433,7 +4433,7 @@ def test_list_transfer_logs_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -4447,7 +4447,7 @@ async def test_list_transfer_logs_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = datatransfer.ListTransferLogsRequest()
 
-    request.parent = "parent/value"
+    request.parent = "parent_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4467,7 +4467,7 @@ async def test_list_transfer_logs_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "parent=parent/value",
+        "parent=parent_value",
     ) in kw["metadata"]
 
 
@@ -4604,7 +4604,7 @@ def test_list_transfer_logs_pager(transport_name: str = "grpc"):
 
         assert pager._metadata == metadata
 
-        results = [i for i in pager]
+        results = list(pager)
         assert len(results) == 6
         assert all(isinstance(i, transfer.TransferMessage) for i in results)
 
@@ -4857,7 +4857,7 @@ def test_check_valid_creds_field_headers():
     # a field header. Set these to a non-empty value.
     request = datatransfer.CheckValidCredsRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4875,7 +4875,7 @@ def test_check_valid_creds_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -4889,7 +4889,7 @@ async def test_check_valid_creds_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = datatransfer.CheckValidCredsRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -4909,7 +4909,7 @@ async def test_check_valid_creds_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -5095,7 +5095,7 @@ def test_enroll_data_sources_field_headers():
     # a field header. Set these to a non-empty value.
     request = datatransfer.EnrollDataSourcesRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5113,7 +5113,7 @@ def test_enroll_data_sources_field_headers():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 
@@ -5127,7 +5127,7 @@ async def test_enroll_data_sources_field_headers_async():
     # a field header. Set these to a non-empty value.
     request = datatransfer.EnrollDataSourcesRequest()
 
-    request.name = "name/value"
+    request.name = "name_value"
 
     # Mock the actual call within the gRPC stub, and fake the request.
     with mock.patch.object(
@@ -5145,7 +5145,7 @@ async def test_enroll_data_sources_field_headers_async():
     _, _, kw = call.mock_calls[0]
     assert (
         "x-goog-request-params",
-        "name=name/value",
+        "name=name_value",
     ) in kw["metadata"]
 
 

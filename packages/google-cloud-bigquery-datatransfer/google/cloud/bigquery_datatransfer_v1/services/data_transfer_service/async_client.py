@@ -237,9 +237,9 @@ class DataTransferServiceAsyncClient:
 
             from google.cloud import bigquery_datatransfer_v1
 
-            def sample_get_data_source():
+            async def sample_get_data_source():
                 # Create a client
-                client = bigquery_datatransfer_v1.DataTransferServiceClient()
+                client = bigquery_datatransfer_v1.DataTransferServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = bigquery_datatransfer_v1.GetDataSourceRequest(
@@ -247,7 +247,7 @@ class DataTransferServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_data_source(request=request)
+                response = await client.get_data_source(request=request)
 
                 # Handle the response
                 print(response)
@@ -345,9 +345,9 @@ class DataTransferServiceAsyncClient:
 
             from google.cloud import bigquery_datatransfer_v1
 
-            def sample_list_data_sources():
+            async def sample_list_data_sources():
                 # Create a client
-                client = bigquery_datatransfer_v1.DataTransferServiceClient()
+                client = bigquery_datatransfer_v1.DataTransferServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = bigquery_datatransfer_v1.ListDataSourcesRequest(
@@ -358,7 +358,7 @@ class DataTransferServiceAsyncClient:
                 page_result = client.list_data_sources(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -466,9 +466,9 @@ class DataTransferServiceAsyncClient:
 
             from google.cloud import bigquery_datatransfer_v1
 
-            def sample_create_transfer_config():
+            async def sample_create_transfer_config():
                 # Create a client
-                client = bigquery_datatransfer_v1.DataTransferServiceClient()
+                client = bigquery_datatransfer_v1.DataTransferServiceAsyncClient()
 
                 # Initialize request argument(s)
                 transfer_config = bigquery_datatransfer_v1.TransferConfig()
@@ -480,7 +480,7 @@ class DataTransferServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.create_transfer_config(request=request)
+                response = await client.create_transfer_config(request=request)
 
                 # Handle the response
                 print(response)
@@ -592,9 +592,9 @@ class DataTransferServiceAsyncClient:
 
             from google.cloud import bigquery_datatransfer_v1
 
-            def sample_update_transfer_config():
+            async def sample_update_transfer_config():
                 # Create a client
-                client = bigquery_datatransfer_v1.DataTransferServiceClient()
+                client = bigquery_datatransfer_v1.DataTransferServiceAsyncClient()
 
                 # Initialize request argument(s)
                 transfer_config = bigquery_datatransfer_v1.TransferConfig()
@@ -605,7 +605,7 @@ class DataTransferServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.update_transfer_config(request=request)
+                response = await client.update_transfer_config(request=request)
 
                 # Handle the response
                 print(response)
@@ -710,9 +710,9 @@ class DataTransferServiceAsyncClient:
 
             from google.cloud import bigquery_datatransfer_v1
 
-            def sample_delete_transfer_config():
+            async def sample_delete_transfer_config():
                 # Create a client
-                client = bigquery_datatransfer_v1.DataTransferServiceClient()
+                client = bigquery_datatransfer_v1.DataTransferServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = bigquery_datatransfer_v1.DeleteTransferConfigRequest(
@@ -720,7 +720,7 @@ class DataTransferServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_transfer_config(request=request)
+                await client.delete_transfer_config(request=request)
 
         Args:
             request (Union[google.cloud.bigquery_datatransfer_v1.types.DeleteTransferConfigRequest, dict]):
@@ -806,9 +806,9 @@ class DataTransferServiceAsyncClient:
 
             from google.cloud import bigquery_datatransfer_v1
 
-            def sample_get_transfer_config():
+            async def sample_get_transfer_config():
                 # Create a client
-                client = bigquery_datatransfer_v1.DataTransferServiceClient()
+                client = bigquery_datatransfer_v1.DataTransferServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = bigquery_datatransfer_v1.GetTransferConfigRequest(
@@ -816,7 +816,7 @@ class DataTransferServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_transfer_config(request=request)
+                response = await client.get_transfer_config(request=request)
 
                 # Handle the response
                 print(response)
@@ -920,9 +920,9 @@ class DataTransferServiceAsyncClient:
 
             from google.cloud import bigquery_datatransfer_v1
 
-            def sample_list_transfer_configs():
+            async def sample_list_transfer_configs():
                 # Create a client
-                client = bigquery_datatransfer_v1.DataTransferServiceClient()
+                client = bigquery_datatransfer_v1.DataTransferServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = bigquery_datatransfer_v1.ListTransferConfigsRequest(
@@ -933,7 +933,7 @@ class DataTransferServiceAsyncClient:
                 page_result = client.list_transfer_configs(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1045,9 +1045,9 @@ class DataTransferServiceAsyncClient:
 
             from google.cloud import bigquery_datatransfer_v1
 
-            def sample_schedule_transfer_runs():
+            async def sample_schedule_transfer_runs():
                 # Create a client
-                client = bigquery_datatransfer_v1.DataTransferServiceClient()
+                client = bigquery_datatransfer_v1.DataTransferServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = bigquery_datatransfer_v1.ScheduleTransferRunsRequest(
@@ -1055,7 +1055,7 @@ class DataTransferServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.schedule_transfer_runs(request=request)
+                response = await client.schedule_transfer_runs(request=request)
 
                 # Handle the response
                 print(response)
@@ -1166,16 +1166,16 @@ class DataTransferServiceAsyncClient:
 
             from google.cloud import bigquery_datatransfer_v1
 
-            def sample_start_manual_transfer_runs():
+            async def sample_start_manual_transfer_runs():
                 # Create a client
-                client = bigquery_datatransfer_v1.DataTransferServiceClient()
+                client = bigquery_datatransfer_v1.DataTransferServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = bigquery_datatransfer_v1.StartManualTransferRunsRequest(
                 )
 
                 # Make the request
-                response = client.start_manual_transfer_runs(request=request)
+                response = await client.start_manual_transfer_runs(request=request)
 
                 # Handle the response
                 print(response)
@@ -1240,9 +1240,9 @@ class DataTransferServiceAsyncClient:
 
             from google.cloud import bigquery_datatransfer_v1
 
-            def sample_get_transfer_run():
+            async def sample_get_transfer_run():
                 # Create a client
-                client = bigquery_datatransfer_v1.DataTransferServiceClient()
+                client = bigquery_datatransfer_v1.DataTransferServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = bigquery_datatransfer_v1.GetTransferRunRequest(
@@ -1250,7 +1250,7 @@ class DataTransferServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.get_transfer_run(request=request)
+                response = await client.get_transfer_run(request=request)
 
                 # Handle the response
                 print(response)
@@ -1346,9 +1346,9 @@ class DataTransferServiceAsyncClient:
 
             from google.cloud import bigquery_datatransfer_v1
 
-            def sample_delete_transfer_run():
+            async def sample_delete_transfer_run():
                 # Create a client
-                client = bigquery_datatransfer_v1.DataTransferServiceClient()
+                client = bigquery_datatransfer_v1.DataTransferServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = bigquery_datatransfer_v1.DeleteTransferRunRequest(
@@ -1356,7 +1356,7 @@ class DataTransferServiceAsyncClient:
                 )
 
                 # Make the request
-                client.delete_transfer_run(request=request)
+                await client.delete_transfer_run(request=request)
 
         Args:
             request (Union[google.cloud.bigquery_datatransfer_v1.types.DeleteTransferRunRequest, dict]):
@@ -1443,9 +1443,9 @@ class DataTransferServiceAsyncClient:
 
             from google.cloud import bigquery_datatransfer_v1
 
-            def sample_list_transfer_runs():
+            async def sample_list_transfer_runs():
                 # Create a client
-                client = bigquery_datatransfer_v1.DataTransferServiceClient()
+                client = bigquery_datatransfer_v1.DataTransferServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = bigquery_datatransfer_v1.ListTransferRunsRequest(
@@ -1456,7 +1456,7 @@ class DataTransferServiceAsyncClient:
                 page_result = client.list_transfer_runs(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1564,9 +1564,9 @@ class DataTransferServiceAsyncClient:
 
             from google.cloud import bigquery_datatransfer_v1
 
-            def sample_list_transfer_logs():
+            async def sample_list_transfer_logs():
                 # Create a client
-                client = bigquery_datatransfer_v1.DataTransferServiceClient()
+                client = bigquery_datatransfer_v1.DataTransferServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = bigquery_datatransfer_v1.ListTransferLogsRequest(
@@ -1577,7 +1577,7 @@ class DataTransferServiceAsyncClient:
                 page_result = client.list_transfer_logs(request=request)
 
                 # Handle the response
-                for response in page_result:
+                async for response in page_result:
                     print(response)
 
         Args:
@@ -1685,9 +1685,9 @@ class DataTransferServiceAsyncClient:
 
             from google.cloud import bigquery_datatransfer_v1
 
-            def sample_check_valid_creds():
+            async def sample_check_valid_creds():
                 # Create a client
-                client = bigquery_datatransfer_v1.DataTransferServiceClient()
+                client = bigquery_datatransfer_v1.DataTransferServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = bigquery_datatransfer_v1.CheckValidCredsRequest(
@@ -1695,7 +1695,7 @@ class DataTransferServiceAsyncClient:
                 )
 
                 # Make the request
-                response = client.check_valid_creds(request=request)
+                response = await client.check_valid_creds(request=request)
 
                 # Handle the response
                 print(response)
@@ -1804,16 +1804,16 @@ class DataTransferServiceAsyncClient:
 
             from google.cloud import bigquery_datatransfer_v1
 
-            def sample_enroll_data_sources():
+            async def sample_enroll_data_sources():
                 # Create a client
-                client = bigquery_datatransfer_v1.DataTransferServiceClient()
+                client = bigquery_datatransfer_v1.DataTransferServiceAsyncClient()
 
                 # Initialize request argument(s)
                 request = bigquery_datatransfer_v1.EnrollDataSourcesRequest(
                 )
 
                 # Make the request
-                client.enroll_data_sources(request=request)
+                await client.enroll_data_sources(request=request)
 
         Args:
             request (Union[google.cloud.bigquery_datatransfer_v1.types.EnrollDataSourcesRequest, dict]):
